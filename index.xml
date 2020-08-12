@@ -6,10 +6,21 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Running wsl commands using system2() function in R</title>
+      <link>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</guid>
+      <description>Using “wsl” command in system2() to run commands in wsl
+system2(&amp;quot;wsl&amp;quot;, &amp;quot;cd ~/bioinfor/; ls&amp;quot;, stdout = TRUE)## [1] &amp;quot;AF086833.gb&amp;quot; &amp;quot;RNASeqByExample&amp;quot; &amp;quot;chr22.fa&amp;quot;We can retrieve the SARS-coronavirus 2 gene sequences using efetch
+system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_045512&amp;quot;, stdout = &amp;quot;../../../NC_045512.gb&amp;quot;)system2(&amp;quot;wsl&amp;quot;, &amp;quot;cat ../../../NC_045512.gb | head&amp;quot;, stdout = TRUE)## [1] &amp;quot;LOCUS NC_045512 29903 bp ss-RNA linear VRL 18-JUL-2020&amp;quot;## [2] &amp;quot;DEFINITION Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1,&amp;quot;## [3] &amp;quot; complete genome.</description>
+    </item>
     
     <item>
       <title>Hello Hugo</title>
@@ -17,7 +28,7 @@
       <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/08/11/hello-hugo/</guid>
-      <description>中文字体</description>
+      <description>echo hello## hello</description>
     </item>
     
     <item>

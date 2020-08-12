@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.74.3" />
 
 
-<title>Hello Hugo - A Hugo website</title>
-<meta property="og:title" content="Hello Hugo - A Hugo website">
+<title>Running wsl commands using system2() function in R - A Hugo website</title>
+<meta property="og:title" content="Running wsl commands using system2() function in R - A Hugo website">
 
 
   <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
@@ -65,10 +65,10 @@
     <span class="article-duration">1 min read</span>
     
 
-    <h1 class="article-title">Hello Hugo</h1>
+    <h1 class="article-title">Running wsl commands using system2() function in R</h1>
 
     
-    <span class="article-date">2020-08-11</span>
+    <span class="article-date">2020-08-12</span>
     
 
     <div class="article-content">
@@ -76,8 +76,22 @@
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<pre class="bash"><code>echo hello</code></pre>
-<pre><code>## hello</code></pre>
+<p>Using “wsl” command in system2() to run commands in wsl</p>
+<pre class="r"><code>system2(&quot;wsl&quot;, &quot;cd ~/bioinfor/; ls&quot;, stdout = TRUE)</code></pre>
+<pre><code>## [1] &quot;AF086833.gb&quot;     &quot;RNASeqByExample&quot; &quot;chr22.fa&quot;</code></pre>
+<p>We can retrieve the SARS-coronavirus 2 gene sequences using efetch</p>
+<pre class="r"><code>system2(&quot;wsl&quot;,&quot;efetch -db=nuccore -format=gb -id=NC_045512&quot;, stdout = &quot;../../../NC_045512.gb&quot;)</code></pre>
+<pre class="r"><code>system2(&quot;wsl&quot;, &quot;cat ../../../NC_045512.gb | head&quot;, stdout = TRUE)</code></pre>
+<pre><code>##  [1] &quot;LOCUS       NC_045512              29903 bp ss-RNA     linear   VRL 18-JUL-2020&quot;
+##  [2] &quot;DEFINITION  Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1,&quot;
+##  [3] &quot;            complete genome.&quot;                                                   
+##  [4] &quot;ACCESSION   NC_045512&quot;                                                          
+##  [5] &quot;VERSION     NC_045512.2&quot;                                                        
+##  [6] &quot;DBLINK      BioProject: PRJNA485481&quot;                                            
+##  [7] &quot;KEYWORDS    RefSeq.&quot;                                                            
+##  [8] &quot;SOURCE      Severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2)&quot;       
+##  [9] &quot;  ORGANISM  Severe acute respiratory syndrome coronavirus 2&quot;                    
+## [10] &quot;            Viruses; Riboviria; Orthornavirae; Pisuviricota; Pisoniviricetes;&quot;</code></pre>
 
     </div>
   </article>

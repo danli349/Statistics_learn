@@ -4,7 +4,17 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-08-11T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-08-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</loc>
+    <lastmod>2020-08-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -14,11 +24,6 @@
   
   <url>
     <loc>/2020/08/11/hello-hugo/</loc>
-    <lastmod>2020-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2020-08-11T00:00:00+00:00</lastmod>
   </url>
   
