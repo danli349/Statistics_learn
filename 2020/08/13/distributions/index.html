@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>How to get the beautiful probability density function (pdf) of Normal Distribution - A Hugo website</title>
+<meta property="og:title" content="How to get the beautiful probability density function (pdf) of Normal Distribution - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">How to get the beautiful probability density function (pdf) of Normal Distribution</h1>
+
+    
+    <span class="article-date">2020-08-13</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>How can we derive the probability density function (pdf) of <strong>Normal Distribution</strong>?
+<span class="math display">\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&lt;y&lt;+\infty\]</span></p>
+<p>Let’s draw a normal pdf first</p>
+<pre class="r"><code>#draw normal pdf
+x &lt;- seq(-5, 5, length.out = 201); dx &lt;- diff(x)[1]
+y &lt;- dnorm(x, mean = 0, sd = 1)
+base::plot(x, y, type = &quot;l&quot;, col = &quot;skyblue&quot;,
+           xlab=&quot;x&quot; , ylab=&quot;p(x)&quot; , cex.lab=1.5,
+    main=&quot;Normal Probability Density&quot; , cex.main=1.5,
+    lwd=2)
+text( 0, .6*max(y) , bquote( paste(mu ,&quot; = 0 &quot;) )
+      , cex=1.5 )
+text( 0, .5*max(y) , bquote( paste(sigma ,&quot; = 1 &quot;) )
+      , cex=1.5 )</code></pre>
+<p><img src="../../../../post/2020-08-13-distributions_files/figure-html/unnamed-chunk-1-1.svg" width="576" /></p>
+<p>Let <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span>, . . . be a set of random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, and their moment-generating functions are <span class="math inline">\(M_{W_i}(t), \quad i=1,2,...,n\)</span>
+Let <span class="math inline">\(S_i=(W_i-\mu)/\sigma\)</span>, then <span class="math inline">\(E(S_i)=0\)</span> and <span class="math inline">\(Var(S_i)=1\)</span>.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
