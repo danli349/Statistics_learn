@@ -152,8 +152,8 @@
 ## [28] &quot;UniProtKB\tP0DTC1\tenables\tGO:0046872\tGO_REF:0000043\tECO:0000322\tUniProtKB-KW:KW-0479\t\t20200321\tUniProt\t\tgo_evidence=IEA&quot;    
 ## [29] &quot;UniProtKB\tP0DTC1\tinvolved_in\tGO:0006508\tGO_REF:0000043\tECO:0000322\tUniProtKB-KW:KW-0645\t\t20200321\tUniProt\t\tgo_evidence=IEA&quot;
 ## [30] &quot;UniProtKB\tP0DTC1\tinvolved_in\tGO:0016032\tGO_REF:0000043\tECO:0000322\tUniProtKB-KW:KW-0945\t\t20200321\tUniProt\t\tgo_evidence=IEA&quot;</code></pre>
-<pre class="r"><code>#GOLGA2 is the most highly annotated proteins in the GO dataset.
-system2(&quot;wsl&quot;, &quot;cat sars-cov-2_targets.gaf | cut -f 3 | sort | uniq -c | sort -r | head&quot;, stdout = TRUE)</code></pre>
+<p><em><a href="https://www.wikiwand.com/en/GOLGA2"><span style="color: red;">GOLGA2</span></a></em> is the most highly annotated proteins in the GO dataset.</p>
+<pre class="r"><code>system2(&quot;wsl&quot;, &quot;cat sars-cov-2_targets.gaf | cut -f 3 | sort | uniq -c | sort -r | head&quot;, stdout = TRUE)</code></pre>
 <pre><code>##  [1] &quot;    437 GOLGA2&quot; &quot;    270 RHOA&quot;   &quot;    260 ITGB1&quot;  &quot;    217 RIPK1&quot; 
 ##  [5] &quot;    211 RBX1&quot;   &quot;    187 NUP62&quot;  &quot;    171 TBK1&quot;   &quot;    156 PRKACA&quot;
 ##  [9] &quot;    155 HDAC2&quot;  &quot;    153 TLE5&quot;</code></pre>
