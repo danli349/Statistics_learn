@@ -91,8 +91,31 @@ text( 0, .6*max(y) , bquote( paste(mu ,&quot; = 0 &quot;) )
 text( 0, .5*max(y) , bquote( paste(sigma ,&quot; = 1 &quot;) )
       , cex=1.5 )</code></pre>
 <p><img src="../../../../post/2020-08-13-distributions_files/figure-html/unnamed-chunk-1-1.svg" width="576" /></p>
-<p>Let <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span>, . . . be a set of random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, and their moment-generating functions are <span class="math inline">\(M_{W_i}(t), \quad i=1,2,...,n\)</span>
-Let <span class="math inline">\(S_i=(W_i-\mu)/\sigma\)</span>, then <span class="math inline">\(E(S_i)=0\)</span> and <span class="math inline">\(Var(S_i)=1\)</span>.</p>
+<p>Let <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span>, . . . be a set of random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, then <span class="math inline">\(E(W_i-\mu)=0\)</span>, <span class="math inline">\(Var(W_i-\mu)=\sigma^2\)</span>.</p>
+<p>Let <span class="math inline">\(S_i=(W_i-\mu)/\sigma\)</span>, then <span class="math inline">\(E(S_i)=0\)</span> and <span class="math inline">\(Var(S_i)=1\)</span>, and then the moment-generating functions of <span class="math inline">\(S_i\)</span> is <span class="math inline">\(M(t)\)</span></p>
+<p>Then, <span class="math inline">\(M_{(S_1+...+S_N)/\sqrt{n}}(t)=[M(t/\sqrt{n})]^n\)</span>,</p>
+<p><span class="math inline">\(M^{(0)}(s)t^0/0!=1\)</span>,
+<span class="math inline">\(M^{(1)}(s)t^1/1!=E(S_i)t^1/1!=0\)</span>,
+<span class="math inline">\(M^{(2)}(s)t^2/2!=M^{(2)}(s)t^2/2\)</span>,
+……
+<span class="math display">\[M^{(2)}(t/\sqrt{n})t^2/2=M^{(2)}(t)t^2/2n\]</span>
+When <span class="math inline">\(n\to+\infty\)</span>, applying Taylor’s theorem, for some number r, |r| &lt; |t|,
+<span class="math display">\[\begin{align}
+\lim_{n\to+\infty}[M(t/\sqrt{n})]^n&amp;=\lim_{n\to+\infty}[1+M^{(2)}(r)t^2/2n]^n \\
+&amp;=exp\lim_{n\to+\infty}n \;ln[1+M^{(2)}(r)t^2/2n]\\
+&amp;=exp\lim_{n\to+\infty}M^{(2)}(r)\frac{t^2}{2}\;\frac{ln[1+M^{(2)}(r)t^2/2n]}{M^{(2)}(r)t^2/2n}\\
+&amp;=exp\lim_{n\to+\infty}M^{(2)}(r)\frac{t^2}{2}\;\frac{ln[1+M^{(2)}(r)t^2/2n]-ln(1)}{M^{(2)}(r)t^2/2n}
+\end{align}\]</span></p>
+<p>Because as <span class="math inline">\(n\to+\infty,M^{(2)}(r)\frac{t^2}{2n}\to0\)</span>
+<span class="math display">\[\lim_{n\to+\infty}\frac{ln[1+M^{(2)}(r)t^2/2n]-ln(1)}{M^{(2)}(r)t^2/2n}=ln^{(1)}1=1\]</span>
+Because as <span class="math inline">\(n\to+\infty,M^{(2)}(r)=Var(S_i)=1\)</span>
+<span class="math display">\[\lim_{n\to+\infty}M^{(2)}(r)\frac{t^2}{2}=\frac{t^2}{2}\]</span>
+So, <span class="math display">\[\lim_{n\to+\infty}[M(t/\sqrt{n})]^n=e^{t^2/2}\]</span></p>
+<p><span class="math inline">\(e^{\frac{t^2}{2}}\)</span> is the moment-generating function for a standard normal
+random variable. So <span class="math inline">\(\frac{S_1+...+S_N}{\sqrt{n}}=\frac{W_1+...+W_N-n\mu}{\sqrt{n}\sigma}\)</span>
+is a standard normal random variable. Which means
+<span class="math display">\[\lim_{n\to+\infty}P\Biggl(a\le\frac{W_1+...+W_N-n\mu}{\sqrt{n}\sigma} \le b\Biggl)=\frac{1}{\sqrt{2\pi}}\int_{a}^{b} e^{-z^2/2}dz\]</span>
+, which is called Central Limit Theorem.</p>
 
     </div>
   </article>
