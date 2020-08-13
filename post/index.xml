@@ -22,14 +22,5 @@ system2(&amp;quot;wsl&amp;quot;, &amp;quot;cd ~/bioinfor/; ls&amp;quot;, stdout 
 system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_045512&amp;quot;, stdout = &amp;quot;../../../NC_045512.gb&amp;quot;)system2(&amp;quot;wsl&amp;quot;, &amp;quot;cat ../../../NC_045512.gb | head&amp;quot;, stdout = TRUE)## [1] &amp;quot;LOCUS NC_045512 29903 bp ss-RNA linear VRL 18-JUL-2020&amp;quot;## [2] &amp;quot;DEFINITION Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1,&amp;quot;## [3] &amp;quot; complete genome.</description>
     </item>
     
-    <item>
-      <title>Hello Hugo</title>
-      <link>/2020/08/11/hello-hugo/</link>
-      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/11/hello-hugo/</guid>
-      <description>echo hello## hello</description>
-    </item>
-    
   </channel>
 </rss>

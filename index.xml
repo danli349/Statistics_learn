@@ -23,15 +23,6 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
     </item>
     
     <item>
-      <title>Hello Hugo</title>
-      <link>/2020/08/11/hello-hugo/</link>
-      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/11/hello-hugo/</guid>
-      <description>echo hello## hello</description>
-    </item>
-    
-    <item>
       <title>About</title>
       <link>/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
