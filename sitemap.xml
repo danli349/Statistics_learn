@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-08-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/distribution/</loc>
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
@@ -18,12 +23,22 @@
   </url>
   
   <url>
+    <loc>/categories/latex/</loc>
+    <lastmod>2020-08-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2020-08-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2020/08/14/using-tikz/</loc>
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
   
@@ -45,10 +60,6 @@
   <url>
     <loc>/vitae/</loc>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
   </url>
   
 </urlset>

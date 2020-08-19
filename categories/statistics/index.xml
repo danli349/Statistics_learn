@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistics on A Hugo website</title>
+    <link>/categories/statistics/</link>
+    <description>Recent content in Statistics on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 16 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to get the Cumulative distribution function of Normal distribution</title>
+      <link>/2020/08/16/how-to-get-the-cumulative-distribution-function-of-normal-distribution/</link>
+      <pubDate>Sun, 16 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/16/how-to-get-the-cumulative-distribution-function-of-normal-distribution/</guid>
+      <description>The Cumulative distribution function of Normal distribution is\[\Phi(x)=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t-\mu}{\sigma})^2}dt\]We can move the distribution to \(\mu=0\), which will not change the Cumulative distribution function.
+\[\Phi(x)=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\]
+The \(\Phi^2(x)\) is easier to calculate using the Polar coordinate system,*when \(x&amp;lt;0\)\[\begin{align}\Phi^2(x)&amp;amp;=\Biggl(\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\Biggl)^2\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{s}{\sigma})^2}ds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{x}e^{-\frac{t^2+s^2}{2\sigma^2}}dtds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{x}^{+\infty}e^{-\frac{t^2+s^2}{2\sigma^2}}dtds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{0}^{\frac{\pi}{2}}d\theta\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}rdr\\&amp;amp;=\frac{1}{4\sigma^2}\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}rdr\\&amp;amp;=-\frac{1}{4}\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}d(-\frac{r^2}{2\sigma^2})\\&amp;amp;=-\frac{1}{4}(0-e^{-\frac{x^2}{2\sigma^2}})\\&amp;amp;=\frac{1}{4}e^{-\frac{x^2}{2\sigma^2}}\end{align}\]
+Then \(\Phi(x)=\sqrt{\frac{1}{4}e^{-\frac{x^2}{2\sigma^2}}}=\frac{1}{2}e^{-\frac{x^2}{4\sigma^2}}\)
+*when \(x\ge0\), \(\Phi(x)=1-\Phi(-x)=1-\frac{1}{2}e^{-\frac{x^2}{4\sigma^2}}\)
+when \(\sigma=1\).\(\Phi(1)=1-\frac{1}{2}e^{-\frac{1}{4}}=\)</description>
+    </item>
+    
+  </channel>
+</rss>

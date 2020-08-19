@@ -23,6 +23,17 @@
     </item>
     
     <item>
+      <title>Using Tikz</title>
+      <link>/2020/08/14/using-tikz/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/14/using-tikz/</guid>
+      <description>TikZ pictureTikZ pictureHere is a TikZ picutre\begin{tikzpicture}\draw (0,0) circle (2cm);\end{tikzpicture}
+Here is another TikZ picutre\begin{tikzpicture}\begin{axis}[xmax=9,ymax=9, samples=50]\addplot[blue, ultra thick] (x,xx);\addplot[red, ultra thick] (xx,x);\end{axis}\end{tikzpicture}
+</description>
+    </item>
+    
+    <item>
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
       <link>/2020/08/13/distributions/</link>
       <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
