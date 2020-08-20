@@ -50,9 +50,9 @@ Let’s draw a normal pdf first
       <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</guid>
-      <description>Using “wsl” command in system2() to run commands in wsl
-system2(&amp;quot;wsl&amp;quot;, &amp;quot;cd ~/bioinfor/; ls&amp;quot;, stdout = TRUE)## [1] &amp;quot;AF086833.gb&amp;quot; &amp;quot;RNASeqByExample&amp;quot; &amp;quot;chr22.fa&amp;quot;We can retrieve the SARS-coronavirus 2 gene sequences using efetch
-system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_045512&amp;quot;, stdout = &amp;quot;../../../NC_045512.gb&amp;quot;)system2(&amp;quot;wsl&amp;quot;, &amp;quot;cat ../../../NC_045512.gb | head&amp;quot;, stdout = TRUE)## [1] &amp;quot;LOCUS NC_045512 29903 bp ss-RNA linear VRL 18-JUL-2020&amp;quot;## [2] &amp;quot;DEFINITION Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1,&amp;quot;## [3] &amp;quot; complete genome.</description>
+      <description>Accession number NC_045512 in Fasta format.Using “wsl” command in system2() to run commands in wsl
+system2(&amp;quot;wsl&amp;quot;, &amp;quot;cd ~/bioinfor/; ls&amp;quot;, stdout = TRUE)## [1] &amp;quot;AF086833.gb&amp;quot; &amp;quot;NC_045512-version1.fa&amp;quot; &amp;quot;RNASeqByExample&amp;quot; ## [4] &amp;quot;chr22.fa&amp;quot; &amp;quot;runinfo.csv&amp;quot;We can retrieve the SARS-coronavirus 2 gene sequences using efetch
+system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_045512&amp;quot;, stdout = &amp;quot;../../../NC_045512.gb&amp;quot;)Accession number NC_045512 in Fasta format.system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=fasta -id=NC_045512 &amp;gt; NC_045512.fa&amp;quot;, stdout = TRUE)## character(0)system2(&amp;quot;wsl&amp;quot;, &amp;quot;cat .</description>
     </item>
     
   </channel>

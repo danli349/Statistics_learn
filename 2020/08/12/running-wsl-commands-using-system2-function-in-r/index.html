@@ -75,12 +75,22 @@
       
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
+<div id="TOC">
+<ul>
+<li><a href="#accession-number-nc_045512-in-fasta-format.">Accession number NC_045512 in Fasta format.</a></li>
+</ul>
+</div>
 
 <p>Using “wsl” command in system2() to run commands in wsl</p>
 <pre class="r"><code>system2(&quot;wsl&quot;, &quot;cd ~/bioinfor/; ls&quot;, stdout = TRUE)</code></pre>
-<pre><code>## [1] &quot;AF086833.gb&quot;     &quot;RNASeqByExample&quot; &quot;chr22.fa&quot;</code></pre>
+<pre><code>## [1] &quot;AF086833.gb&quot;           &quot;NC_045512-version1.fa&quot; &quot;RNASeqByExample&quot;      
+## [4] &quot;chr22.fa&quot;              &quot;runinfo.csv&quot;</code></pre>
 <p>We can retrieve the SARS-coronavirus 2 gene sequences using efetch</p>
 <pre class="r"><code>system2(&quot;wsl&quot;,&quot;efetch -db=nuccore -format=gb -id=NC_045512&quot;, stdout = &quot;../../../NC_045512.gb&quot;)</code></pre>
+<div id="accession-number-nc_045512-in-fasta-format." class="section level1">
+<h1>Accession number NC_045512 in Fasta format.</h1>
+<pre class="r"><code>system2(&quot;wsl&quot;,&quot;efetch -db=nuccore -format=fasta -id=NC_045512 &gt; NC_045512.fa&quot;, stdout = TRUE)</code></pre>
+<pre><code>## character(0)</code></pre>
 <pre class="r"><code>system2(&quot;wsl&quot;, &quot;cat ../../../NC_045512.gb | head&quot;, stdout = TRUE)</code></pre>
 <pre><code>##  [1] &quot;LOCUS       NC_045512              29903 bp ss-RNA     linear   VRL 18-JUL-2020&quot;
 ##  [2] &quot;DEFINITION  Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1,&quot;
@@ -157,6 +167,7 @@
 <pre><code>##  [1] &quot;    437 GOLGA2&quot; &quot;    270 RHOA&quot;   &quot;    260 ITGB1&quot;  &quot;    217 RIPK1&quot; 
 ##  [5] &quot;    211 RBX1&quot;   &quot;    187 NUP62&quot;  &quot;    171 TBK1&quot;   &quot;    156 PRKACA&quot;
 ##  [9] &quot;    155 HDAC2&quot;  &quot;    153 TLE5&quot;</code></pre>
+</div>
 
     </div>
   </article>
