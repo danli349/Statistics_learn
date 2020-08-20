@@ -6,37 +6,12 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 14 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Edit image using python</title>
-      <link>/2020/08/14/edit-image-using-python/</link>
-      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/14/edit-image-using-python/</guid>
-      <description>from PIL import Image, ImageFilterimage = Image.open(&amp;#39;../../1.png&amp;#39;)image2 = image.filter(ImageFilter.CONTOUR)image2.save(&amp;#39;../../2.png&amp;#39;)image.show()image1
-image2.show()image2
-</description>
-    </item>
-    
-    <item>
-<<<<<<< HEAD
-      <title>Using Tikz</title>
-      <link>/2020/08/14/using-tikz/</link>
-      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/14/using-tikz/</guid>
-      <description>TikZ pictureTikZ pictureHere is a TikZ picutre\begin{tikzpicture}\draw (0,0) circle (2cm);\end{tikzpicture}
-Here is another TikZ picutre\begin{tikzpicture}\begin{axis}[xmax=9,ymax=9, samples=50]\addplot[blue, ultra thick] (x,xx);\addplot[red, ultra thick] (xx,x);\end{axis}\end{tikzpicture}
-</description>
-    </item>
-    
-    <item>
-=======
->>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
       <link>/2020/08/13/distributions/</link>
       <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
