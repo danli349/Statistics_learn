@@ -23,6 +23,7 @@
     </item>
     
     <item>
+<<<<<<< HEAD
       <title>Using Tikz</title>
       <link>/2020/08/14/using-tikz/</link>
       <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
@@ -34,6 +35,8 @@
     </item>
     
     <item>
+=======
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
       <link>/2020/08/13/distributions/</link>
       <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>

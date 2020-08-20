@@ -5,6 +5,7 @@
   <url>
     <loc>/</loc>
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
+<<<<<<< HEAD
   </url>
   
   <url>
@@ -29,16 +30,42 @@
   
   <url>
     <loc>/post/</loc>
+=======
+  </url>
+  
+  <url>
+    <loc>/tags/distribution/</loc>
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+<<<<<<< HEAD
     <loc>/tags/</loc>
+=======
+    <loc>/2020/08/14/edit-image-using-python/</loc>
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+<<<<<<< HEAD
     <loc>/2020/08/14/using-tikz/</loc>
+=======
+    <loc>/post/</loc>
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
+    <lastmod>2020-08-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+<<<<<<< HEAD
+    <loc>/2020/08/13/distributions/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+=======
+    <loc>/tags/</loc>
     <lastmod>2020-08-14T00:00:00+00:00</lastmod>
   </url>
   
@@ -48,6 +75,7 @@
   </url>
   
   <url>
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
     <loc>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</loc>
     <lastmod>2020-08-12T00:00:00+00:00</lastmod>
   </url>
@@ -62,4 +90,11 @@
     <priority>0</priority>
   </url>
   
+<<<<<<< HEAD
+=======
+  <url>
+    <loc>/categories/</loc>
+  </url>
+  
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
 </urlset>

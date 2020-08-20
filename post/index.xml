@@ -15,6 +15,31 @@
       <title>Edit image using python</title>
       <link>/2020/08/14/edit-image-using-python/</link>
       <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+<<<<<<< HEAD
+=======
+      
+      <guid>/2020/08/14/edit-image-using-python/</guid>
+      <description>from PIL import Image, ImageFilterimage = Image.open(&amp;#39;../../1.png&amp;#39;)image2 = image.filter(ImageFilter.CONTOUR)image2.save(&amp;#39;../../2.png&amp;#39;)image.show()image1
+image2.show()image2
+</description>
+    </item>
+    
+    <item>
+      <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
+      <link>/2020/08/13/distributions/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/13/distributions/</guid>
+      <description>How can we derive the probability density function (pdf) of Normal Distribution?\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&amp;lt;y&amp;lt;+\infty\]
+Let’s draw a normal pdf first
+#draw normal pdfx &amp;lt;- seq(-5, 5, length.out = 201); dx &amp;lt;- diff(x)[1]y &amp;lt;- dnorm(x, mean = 0, sd = 1)base::plot(x, y, type = &amp;quot;l&amp;quot;, col = &amp;quot;skyblue&amp;quot;,xlab=&amp;quot;x&amp;quot; , ylab=&amp;quot;p(x)&amp;quot; , cex.lab=1.5,main=&amp;quot;Normal Probability Density&amp;quot; , cex.main=1.5,lwd=2)text( 0, .6*max(y) , bquote( paste(mu ,&amp;quot; = 0 &amp;quot;) ), cex=1.</description>
+    </item>
+    
+    <item>
+      <title>Running wsl commands using system2() function in R</title>
+      <link>/2020/08/12/running-wsl-commands-using-system2-function-in-r/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
       
       <guid>/2020/08/14/edit-image-using-python/</guid>
       <description>from PIL import Image, ImageFilterimage = Image.open(&amp;#39;../../1.png&amp;#39;)image2 = image.filter(ImageFilter.CONTOUR)image2.save(&amp;#39;../../2.png&amp;#39;)image.show()image1
@@ -33,6 +58,7 @@
 </description>
     </item>
     
+<<<<<<< HEAD
     <item>
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
       <link>/2020/08/13/distributions/</link>
@@ -55,5 +81,7 @@ system2(&amp;quot;wsl&amp;quot;, &amp;quot;cd ~/bioinfor/; ls&amp;quot;, stdout 
 system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_045512&amp;quot;, stdout = &amp;quot;../../../NC_045512.gb&amp;quot;)Accession number NC_045512 in Fasta format.system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=fasta -id=NC_045512 &amp;gt; NC_045512.fa&amp;quot;, stdout = TRUE)## character(0)system2(&amp;quot;wsl&amp;quot;, &amp;quot;cat .</description>
     </item>
     
+=======
+>>>>>>> 072ae123a94428496332cb63a55dcdba4d380e36
   </channel>
 </rss>
