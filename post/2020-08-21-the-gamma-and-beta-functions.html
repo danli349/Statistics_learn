@@ -386,7 +386,7 @@ summary {
 <p>The Gamma function: <span class="math display">\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt=(s-1)!\]</span></p>
 <p>The product of two Gamma functions: <span class="math display">\[\begin{align}
 \Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
-&amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad du=zdt;\quad dv=dz)\\
+&amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad dudv=zdtdz)\\
 &amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\
 &amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\
 &amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt
