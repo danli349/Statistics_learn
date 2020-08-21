@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Statistics on A Hugo website</title>
+    <title>statistics on A Hugo website</title>
     <link>/categories/statistics/</link>
-    <description>Recent content in Statistics on A Hugo website</description>
+    <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>How to get the Cumulative distribution function of Normal distribution</title>
-      <link>/2020/08/16/how-to-get-the-cumulative-distribution-function-of-normal-distribution/</link>
-      <pubDate>Sun, 16 Aug 2020 00:00:00 +0000</pubDate>
+      <title>The Gamma and Beta functions</title>
+      <link>/2020/08/21/the-gamma-and-beta-functions/</link>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/08/16/how-to-get-the-cumulative-distribution-function-of-normal-distribution/</guid>
-      <description>The Cumulative distribution function of Normal distribution is\[\Phi(x)=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t-\mu}{\sigma})^2}dt\]We can move the distribution to \(\mu=0\), which will not change the Cumulative distribution function.
-\[\Phi(x)=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\]
-The \(\Phi^2(x)\) is easier to calculate using the Polar coordinate system,*when \(x&amp;lt;0\)\[\begin{align}\Phi^2(x)&amp;amp;=\Biggl(\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\Biggl)^2\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{t}{\sigma})^2}dt\int_{-\infty}^{x} e^{-\frac{1}{2}(\frac{s}{\sigma})^2}ds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{x}e^{-\frac{t^2+s^2}{2\sigma^2}}dtds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{x}^{+\infty}e^{-\frac{t^2+s^2}{2\sigma^2}}dtds\\&amp;amp;=\frac{1}{2\pi\sigma^2}\int_{0}^{\frac{\pi}{2}}d\theta\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}rdr\\&amp;amp;=\frac{1}{4\sigma^2}\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}rdr\\&amp;amp;=-\frac{1}{4}\int_{x}^{+\infty}e^{-\frac{r^2}{2\sigma^2}}d(-\frac{r^2}{2\sigma^2})\\&amp;amp;=-\frac{1}{4}(0-e^{-\frac{x^2}{2\sigma^2}})\\&amp;amp;=\frac{1}{4}e^{-\frac{x^2}{2\sigma^2}}\end{align}\]
-Then \(\Phi(x)=\sqrt{\frac{1}{4}e^{-\frac{x^2}{2\sigma^2}}}=\frac{1}{2}e^{-\frac{x^2}{4\sigma^2}}\)
-*when \(x\ge0\), \(\Phi(x)=1-\Phi(-x)=1-\frac{1}{2}e^{-\frac{x^2}{4\sigma^2}}\)
-when \(\sigma=1\).\(\Phi(1)=1-\frac{1}{2}e^{-\frac{1}{4}}=\)</description>
+      <guid>/2020/08/21/the-gamma-and-beta-functions/</guid>
+      <description>The Gamma function:\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt=(s-1)!\]
+The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\&amp;amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad du=zdt;\quad dv=dz)\\&amp;amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\&amp;amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\&amp;amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\end{align}\]
+We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}=\frac{(x-1)!(y-1)!}{(x+y-1)!}\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
     </item>
     
   </channel>

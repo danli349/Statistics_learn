@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>The Gamma and Beta functions - A Hugo website</title>
+<meta property="og:title" content="The Gamma and Beta functions - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">The Gamma and Beta functions</h1>
+
+    
+    <span class="article-date">2020-08-21</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The Gamma function:
+<span class="math display">\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt=(s-1)!\]</span></p>
+<p>The product of two Gamma functions:
+<span class="math display">\[\begin{align}
+\Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
+&amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad du=zdt;\quad dv=dz)\\
+&amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\
+&amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\
+&amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt
+\end{align}\]</span></p>
+<p>We define this integral <span class="math inline">\(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\)</span> as <span class="math inline">\(B(x,y),\quad (x&gt;0 ;\quad y&gt;0)\)</span>, this is the Beta function.
+<span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}=\frac{(x-1)!(y-1)!}{(x+y-1)!}\)</span> this is the complete Beta function.
+<span class="math inline">\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\)</span> is the incomplete Beta function.
+And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

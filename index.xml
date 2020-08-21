@@ -6,10 +6,21 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Gamma and Beta functions</title>
+      <link>/2020/08/21/the-gamma-and-beta-functions/</link>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/21/the-gamma-and-beta-functions/</guid>
+      <description>The Gamma function:\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt=(s-1)!\]
+The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\&amp;amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad du=zdt;\quad dv=dz)\\&amp;amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\&amp;amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\&amp;amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\end{align}\]
+We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}=\frac{(x-1)!(y-1)!}{(x+y-1)!}\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
+    </item>
     
     <item>
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
