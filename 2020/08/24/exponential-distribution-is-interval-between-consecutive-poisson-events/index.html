@@ -71,17 +71,20 @@
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Let’s denote the interval between consecutive Poisson events with random variable Y, during the interval that extends from a to a + y, the number of Poisson events k has the probability <span class="math inline">\(P(k)=e^{-\lambda y} \frac{(\lambda y)^k}{k!}\)</span>, if <span class="math inline">\(k=0\)</span> $e^{-y} =e^{-y} $ means there is no event during the <span class="math inline">\((a,a+y)\)</span> time period.
-Because there will be no occurrences in the interval <span class="math inline">\((a, a + y)\)</span> only if <span class="math inline">\(Y &gt; y\)</span>,
+<p>Let’s denote the interval between consecutive Poisson events with random variable Y, during the interval that extends from a to a + y, the number of Poisson events k has the probability <span class="math inline">\(P(k)=e^{-\lambda y} \frac{(\lambda y)^k}{k!}\)</span>, if <span class="math inline">\(k=0\)</span>,
+<span class="math inline">\(e^{-\lambda y}\frac{(\lambda y)^0}{0!}=e^{-\lambda y}\)</span> means there is no event during the (a,a+y) time period.</p>
+<p>Because there will be no occurrences in the interval (a, a + y) only if Y &gt; y,
 so <span class="math inline">\(P(Y &gt; y)=e^{-\lambda y}\)</span>, then the cdf is <span class="math inline">\(F_Y(y)=P(Y \le y)=1-P(Y &gt; y)=1-e^{-\lambda y}\)</span>.
 Then the pdf is <span class="math inline">\(\frac{d}{dy}F_Y(y)=\lambda e^{-\lambda y}, \quad y&gt;0\)</span>, which is a Exponential random variable.</p>
 <p>The moment-generating function for a Exponential random variable Y is:
-<span class="math display">\[\begin{align}
+<span class="math display">\[
+\begin{align}
 M_Y(t)=E(e^{tY})&amp;=\int_{0}^{+\infty}e^{ty}\lambda e^{-\lambda y}dy\\
 &amp;=\lambda\int_{0}^{+\infty}e^{-(\lambda-t)y}dy\\
 &amp;=-\frac{\lambda}{\lambda-t}e^{-(\lambda-t)y}\Big|_{y=0}^{y\to+\infty}\\
 &amp;=\frac{\lambda}{\lambda-t}
-\end{align}\]</span></p>
+\end{align}
+\]</span></p>
 <p>The expected value is:
 <span class="math inline">\(M_Y^{(1)}(t)=\frac{d}{dt}\frac{\lambda}{\lambda-t}=\frac{\lambda}{(\lambda-t)^2}|_{t=0}=1/\lambda=E(Y)\)</span></p>
 <p><span class="math inline">\(M_Y^{(2)}(t)=\frac{2\lambda}{(\lambda-t)^3}|_{t=0}=2/\lambda^2=E(Y^2)\)</span>

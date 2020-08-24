@@ -1,0 +1,101 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Exponential distribution is interval between consecutive Poisson events},
+  pdfauthor={Dan Li},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Exponential distribution is interval between consecutive Poisson
+events}
+\author{Dan Li}
+\date{2020-08-24}
+
+\begin{document}
+\maketitle
+
+Let's denote the interval between consecutive Poisson events with random
+variable Y, during the interval that extends from a to a + y, the number
+of Poisson events k has the probability
+\(P(k)=e^{-\lambda y} \frac{(\lambda y)^k}{k!}\), if \(k=0\),
+\(e^{-\lambda y}\frac{(\lambda y)^0}{0!}=e^{-\lambda y}\) means there is
+no event during the (a,a+y) time period.
+
+Because there will be no occurrences in the interval (a, a + y) only if
+Y \textgreater{} y, so \(P(Y > y)=e^{-\lambda y}\), then the cdf is
+\(F_Y(y)=P(Y \le y)=1-P(Y > y)=1-e^{-\lambda y}\). Then the pdf is
+\(\frac{d}{dy}F_Y(y)=\lambda e^{-\lambda y}, \quad y>0\), which is a
+Exponential random variable.
+
+The moment-generating function for a Exponential random variable Y is:
+\[
+\begin{align}
+M_Y(t)=E(e^{tY})&=\int_{0}^{+\infty}e^{ty}\lambda e^{-\lambda y}dy\\
+&=\lambda\int_{0}^{+\infty}e^{-(\lambda-t)y}dy\\
+&=-\frac{\lambda}{\lambda-t}e^{-(\lambda-t)y}\Big|_{y=0}^{y\to+\infty}\\
+&=\frac{\lambda}{\lambda-t}
+\end{align}
+\]
+
+The expected value is:
+\(M_Y^{(1)}(t)=\frac{d}{dt}\frac{\lambda}{\lambda-t}=\frac{\lambda}{(\lambda-t)^2}|_{t=0}=1/\lambda=E(Y)\)
+
+\(M_Y^{(2)}(t)=\frac{2\lambda}{(\lambda-t)^3}|_{t=0}=2/\lambda^2=E(Y^2)\)
+Then, the Variance
+is:\(Var(Y)=E(Y^2)-(E(Y))^2=2/\lambda^2-1/\lambda^2=1/\lambda^2\)
+
+\end{document}
