@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Exponential distribution is interval between consecutive Poisson events</title>
+      <link>/2020/08/24/exponential-distribution-is-interval-between-consecutive-poisson-events/</link>
+      <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/24/exponential-distribution-is-interval-between-consecutive-poisson-events/</guid>
+      <description>Let’s denote the interval between consecutive Poisson events with random variable Y, during the interval that extends from a to a + y, the number of Poisson events k has the probability \(P(k)=e^{-\lambda y} \frac{(\lambda y)^k}{k!}\), if \(k=0\) $e^{-y} =e^{-y} $ means there is no event during the \((a,a+y)\) time period.Because there will be no occurrences in the interval \((a, a + y)\) only if \(Y &amp;gt; y\),so \(P(Y &amp;gt; y)=e^{-\lambda y}\), then the cdf is \(F_Y(y)=P(Y \le y)=1-P(Y &amp;gt; y)=1-e^{-\lambda y}\).</description>
+    </item>
+    
+    <item>
       <title>Poisson is a limit of Binomial when n goes to infinity with np maintained</title>
       <link>/2020/08/24/poisson-is-a-limit-of-binomial-when-n-goes-to-infinity-with-np-maintained/</link>
       <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>

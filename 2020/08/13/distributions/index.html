@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">How to derive the beautiful probability density function (pdf) of Normal Distribution?</h1>
@@ -116,6 +116,15 @@ random variable. So <span class="math inline">\(\frac{S_1+...+S_N}{\sqrt{n}}=\fr
 is a standard normal random variable. Which means
 <span class="math display">\[\lim_{n\to+\infty}P\Biggl(a\le\frac{W_1+...+W_N-n\mu}{\sqrt{n}\sigma} \le b\Biggl)=\frac{1}{\sqrt{2\pi}}\int_{a}^{b} e^{-z^2/2}dz\]</span>
 , which is called <em>Central Limit Theorem</em>.</p>
+<p>The moment-generating function for a normal random variable Y is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tY})&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{ty} e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{y^2-2y\mu+\mu^2-2\sigma^2ty}{2\sigma^2})dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{(y-(\mu+t\sigma^2))^2-2t\mu\sigma^2-t^2\sigma^4}{2\sigma^2})dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}exp(t\mu+t^2\sigma^2/2)\int_{-\infty}^{+\infty}exp(-\frac{1}{2}\frac{(y-(\mu+t\sigma^2))^2}{\sigma^2})dy\\
+&amp;=exp(t\mu+t^2\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+t\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy\\
+&amp;=e^{t\mu+t^2\sigma^2/2}
+\end{align}\]</span></p>
 
     </div>
   </article>
