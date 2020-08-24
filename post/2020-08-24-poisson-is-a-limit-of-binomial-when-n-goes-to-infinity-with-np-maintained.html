@@ -11,9 +11,9 @@
 
 <meta name="author" content="Dan Li" />
 
-<meta name="date" content="2020-08-21" />
+<meta name="date" content="2020-08-24" />
 
-<title>The Gamma and Beta functions</title>
+<title>Poisson is a limit of Binomial when n goes to infinity with np maintained</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -376,22 +376,24 @@ summary {
 
 
 
-<h1 class="title toc-ignore">The Gamma and Beta functions</h1>
+<h1 class="title toc-ignore">Poisson is a limit of Binomial when n goes to infinity with np maintained</h1>
 <h4 class="author">Dan Li</h4>
-<h4 class="date">2020-08-21</h4>
+<h4 class="date">2020-08-24</h4>
 
 </div>
 
 
-<p>The Gamma function: <span class="math inline">\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\)</span> <span class="math inline">\(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)</span></p>
-<p>The product of two Gamma functions: <span class="math display">\[\begin{align}
-\Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
-&amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad dudv=zdtdz)\\
-&amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\
-&amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\
-&amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt
+<p>The binomial random variable has a pdf like this: <span class="math inline">\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\)</span> Its Moment-generating function is: <span class="math display">\[\begin{align}
+M_X(t)=E(e^{tX})=&amp;\sum_{k=0}^{n}e^{tk}\binom{n}{k}p^k(1-p)^{n-k}\\
+&amp;=\sum_{k=0}^{n}\binom{n}{k}(e^tp)^k(1-p)^{n-k}\\
+&amp;=(1-p+pe^t)^n
 \end{align}\]</span></p>
-<p>We define this integral <span class="math inline">\(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\)</span> as <span class="math inline">\(B(x,y),\quad (x&gt;0 ;\quad y&gt;0)\)</span>, this is the Beta function. <span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\)</span> <span class="math inline">\(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\)</span> this is the complete Beta function. <span class="math inline">\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\)</span> is the incomplete Beta function. And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.</p>
+<p>Then <span class="math inline">\(M_X^{(1)}(t)=n(1-p+pe^t)^{n-1}pe^t|_{t=0}=np=E(X)\)</span> <span class="math display">\[\begin{align}
+M_X^{(2)}(t)&amp;=n(n-1)(1-p+pe^t)^{n-2}pe^tpe^t+n(1-p+pe^t)^{n-1}pe^t|_{t=0}\\
+&amp;=n(n-1)p^2+np=E(X^2)
+\end{align}\]</span></p>
+<p>Then <span class="math inline">\(Var(X)=E(X^2)-(E(X))^2=n(n-1)p^2+np-(np)^2=-np^2+np=np(1-p)\)</span></p>
+<p>For the binomial random variable X: <span class="math inline">\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\)</span>, if <span class="math inline">\(n\to+\infty\)</span> with <span class="math inline">\(\lambda=np\)</span> remains constant, then</p>
 
 
 
