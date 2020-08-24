@@ -35,6 +35,16 @@ The moment-generating function of Poisson random variable X is:\[\begin{align}
     </item>
     
     <item>
+      <title>The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events</title>
+      <link>/2020/08/24/the-gamma-random-variable-denotes-the-waiting-time-for-the-rth-poisson-event/</link>
+      <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/24/the-gamma-random-variable-denotes-the-waiting-time-for-the-rth-poisson-event/</guid>
+      <description>The Gamma random variable denotes the waiting time for the rth Poisson event, and also denotes the sum of r Exponential random variables.
+let Y denote the waiting time to the occurrence of the \(r^{th}\) Poisson event,the probability fewer than r Poisson events occur in [0, y] time period is\(P(Y&amp;gt;y)=\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\), then,the probability of the \(r^{th}\) occurrence in [0, y] time period is\[\begin{align}F_Y(y)=P(Y\le y)&amp;amp;=1-P(Y&amp;gt;y)\\&amp;amp;=1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!</description>
+    </item>
+    
+    <item>
       <title>The Gamma and Beta functions</title>
       <link>/2020/08/21/the-gamma-and-beta-functions/</link>
       <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>

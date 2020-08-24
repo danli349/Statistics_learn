@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events - A Hugo website</title>
+<meta property="og:title" content="The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events</h1>
+
+    
+    <span class="article-date">2020-08-24</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the rth Poisson event, and also denotes the sum of r Exponential random variables.</span></strong></p>
+<p>let Y denote the waiting time to the occurrence of the <span class="math inline">\(r^{th}\)</span> Poisson event,
+the probability fewer than r Poisson events occur in [0, y] time period is
+<span class="math inline">\(P(Y&gt;y)=\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\)</span>, then,
+the probability of the <span class="math inline">\(r^{th}\)</span> occurrence in [0, y] time period is
+<span class="math display">\[\begin{align}
+F_Y(y)=P(Y\le y)&amp;=1-P(Y&gt;y)\\
+&amp;=1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}
+\end{align}\]</span></p>
+<p>Then, <span class="math display">\[\begin{align}
+f_Y(y)=\frac{d}{dy}F_Y(y)&amp;=\frac{d}{dy}\Biggl(1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\Biggr)\\
+&amp;=\sum_{k=0}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}-\sum_{k=1}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^{k-1}}{(k-1)!}\\
+&amp;=\sum_{k=0}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}-\sum_{k=0}^{r-2}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}\\
+&amp;=\lambda e^{-\lambda y}\frac{(\lambda y)^{r-1}}{(r-1)!}\\
+&amp;=\frac{\lambda^r}{(r-1)!}y^{r-1}e^{-\lambda y}\\
+&amp;=\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}, \quad y&gt;0
+\end{align}\]</span>, this is the Gamma distribution.</p>
+<p>The moment-generating function for a Gamma random variable Y is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tY})&amp;=\int_{0}^{+\infty}e^{ty}\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}dy\\
+&amp;=\frac{\lambda^r}{(\lambda-t)^r}\int_{0}^{+\infty}\frac{(\lambda-t)^r}{\Gamma(r)}y^{r-1}e^{-(\lambda-t)y}dy\\
+&amp;=\frac{\lambda^r}{(\lambda-t)^r}\\
+&amp;=(\frac{\lambda}{\lambda-t})^r\\
+&amp;=(1-\frac{t}{\lambda})^{-r}
+\end{align}\]</span></p>
+<p>The mean is
+<span class="math display">\[\begin{align}
+E(Y)=M_X^{(1)}(t)&amp;=\frac{d}{dt}(1-\frac{t}{\lambda})^{-r}\\
+&amp;=\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1}|_{t=0}\\
+&amp;=\frac{r}{\lambda}
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+E(Y^2)=M_X^{(2)}(t)&amp;=\frac{d}{dt}(\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1})\\
+&amp;=\frac{r(r+1)}{\lambda^2}(1-\frac{t}{\lambda})^{-r-2}|_{t=0}\\
+&amp;=\frac{r(r+1)}{\lambda^2}
+\end{align}\]</span></p>
+<p>Then, <span class="math inline">\(Var(Y)=E(Y^2)-(E(Y))^2=\frac{r(r+1)}{\lambda^2}-\frac{r^2}{\lambda^2}=\frac{r}{\lambda^2}\)</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
