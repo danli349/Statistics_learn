@@ -6,10 +6,34 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Poisson is a limit of Binomial when n goes to infinity with np maintained</title>
+      <link>/2020/08/24/poisson-is-a-limit-of-binomial-when-n-goes-to-infinity-with-np-maintained/</link>
+      <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/24/poisson-is-a-limit-of-binomial-when-n-goes-to-infinity-with-np-maintained/</guid>
+      <description>The binomial random variable has a pdf like this:\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\)Its moment-generating function is:\[\begin{align}M_X(t)=E(e^{tX})&amp;amp;=\sum_{k=0}^{n}e^{tk}\binom{n}{k}p^k(1-p)^{n-k}\\&amp;amp;=\sum_{k=0}^{n}\binom{n}{k}(e^tp)^k(1-p)^{n-k}\\&amp;amp;=(1-p+pe^t)^n\end{align}\]
+Then \(M_X^{(1)}(t)=n(1-p+pe^t)^{n-1}pe^t|_{t=0}=np=E(X)\)\[\begin{align}M_X^{(2)}(t)&amp;amp;=n(n-1)(1-p+pe^t)^{n-2}pe^tpe^t+n(1-p+pe^t)^{n-1}pe^t|_{t=0}\\&amp;amp;=n(n-1)p^2+np=E(X^2)\end{align}\]
+Then \(Var(X)=E(X^2)-(E(X))^2=n(n-1)p^2+np-(np)^2=-np^2+np=np(1-p)\)
+For the binomial random variable X:\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\), if \(n\to+\infty\) with \(\lambda=np\) remains constant, then\[\begin{align}\lim_{n\to+\infty}\binom{n}{k}p^k(1-p)^{n-k}&amp;amp;=\lim_{n\to+\infty}\frac{n!}{k!(n-k)!}(\frac{\lambda}{n})^k(1-\frac{\lambda}{n})^{n-k}\\&amp;amp;=\lim_{n\to+\infty}\frac{n!}{k!(n-k)!}\lambda^k(\frac{1}{n})^k(1-\frac{\lambda}{n})^n(1-\frac{\lambda}{n})^{-k}\\&amp;amp;=\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n!}{(n-k)!}(\frac{1}{n})^k(\frac{n}{n-\lambda})^k(1-\frac{\lambda}{n})^n\\&amp;amp;=e^{-\lambda}\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n!}{(n-k)!}(\frac{1}{n-\lambda})^k\\&amp;amp;=e^{-\lambda}\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n(n-1)...(n-k+1)}{(n-\lambda)(n-\lambda)...(n-\lambda)}\\&amp;amp;=e^{-\lambda}\frac{\lambda^k}{k!}\end{align}\]
+The moment-generating function of Poisson random variable X is:\[\begin{align}M_X(t)=E(e^{tX})&amp;amp;=\sum_{k=0}^{n}e^{tk}e^{-\lambda}\frac{\lambda^k}{k!}\\&amp;amp;=e^{-\lambda}\sum_{k=0}^{n}\frac{(\lambda e^t)^k}{k!}\\&amp;amp;=e^{-\lambda}e^{\lambda e^t}\\&amp;amp;=e^{\lambda e^t-\lambda}\end{align}\]</description>
+    </item>
+    
+    <item>
+      <title>The Gamma and Beta functions</title>
+      <link>/2020/08/21/the-gamma-and-beta-functions/</link>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/21/the-gamma-and-beta-functions/</guid>
+      <description>The Gamma function:\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\) \(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)
+The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\&amp;amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad dudv=zdtdz)\\&amp;amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\&amp;amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\&amp;amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\end{align}\]
+We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\) \(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
+    </item>
     
     <item>
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>

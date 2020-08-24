@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>Poisson is a limit of Binomial when n goes to infinity with np maintained - A Hugo website</title>
+<meta property="og:title" content="Poisson is a limit of Binomial when n goes to infinity with np maintained - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Poisson is a limit of Binomial when n goes to infinity with np maintained</h1>
+
+    
+    <span class="article-date">2020-08-24</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The binomial random variable has a pdf like this:
+<span class="math inline">\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\)</span>
+Its moment-generating function is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tX})&amp;=\sum_{k=0}^{n}e^{tk}\binom{n}{k}p^k(1-p)^{n-k}\\
+&amp;=\sum_{k=0}^{n}\binom{n}{k}(e^tp)^k(1-p)^{n-k}\\
+&amp;=(1-p+pe^t)^n
+\end{align}\]</span></p>
+<p>Then <span class="math inline">\(M_X^{(1)}(t)=n(1-p+pe^t)^{n-1}pe^t|_{t=0}=np=E(X)\)</span>
+<span class="math display">\[\begin{align}
+M_X^{(2)}(t)&amp;=n(n-1)(1-p+pe^t)^{n-2}pe^tpe^t+n(1-p+pe^t)^{n-1}pe^t|_{t=0}\\
+&amp;=n(n-1)p^2+np=E(X^2)
+\end{align}\]</span></p>
+<p>Then <span class="math inline">\(Var(X)=E(X^2)-(E(X))^2=n(n-1)p^2+np-(np)^2=-np^2+np=np(1-p)\)</span></p>
+<p>For the binomial random variable X:
+<span class="math inline">\(P_X(k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,2,...,n\)</span>, if <span class="math inline">\(n\to+\infty\)</span> with <span class="math inline">\(\lambda=np\)</span> remains constant, then
+<span class="math display">\[\begin{align}
+\lim_{n\to+\infty}\binom{n}{k}p^k(1-p)^{n-k}&amp;=\lim_{n\to+\infty}\frac{n!}{k!(n-k)!}(\frac{\lambda}{n})^k(1-\frac{\lambda}{n})^{n-k}\\
+&amp;=\lim_{n\to+\infty}\frac{n!}{k!(n-k)!}\lambda^k(\frac{1}{n})^k(1-\frac{\lambda}{n})^n(1-\frac{\lambda}{n})^{-k}\\
+&amp;=\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n!}{(n-k)!}(\frac{1}{n})^k(\frac{n}{n-\lambda})^k(1-\frac{\lambda}{n})^n\\
+&amp;=e^{-\lambda}\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n!}{(n-k)!}(\frac{1}{n-\lambda})^k\\
+&amp;=e^{-\lambda}\frac{\lambda^k}{k!}\lim_{n\to+\infty}\frac{n(n-1)...(n-k+1)}{(n-\lambda)(n-\lambda)...(n-\lambda)}\\
+&amp;=e^{-\lambda}\frac{\lambda^k}{k!}
+\end{align}\]</span></p>
+<p>The moment-generating function of Poisson random variable X is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tX})&amp;=\sum_{k=0}^{n}e^{tk}e^{-\lambda}\frac{\lambda^k}{k!}\\
+&amp;=e^{-\lambda}\sum_{k=0}^{n}\frac{(\lambda e^t)^k}{k!}\\
+&amp;=e^{-\lambda}e^{\lambda e^t}\\
+&amp;=e^{\lambda e^t-\lambda}
+\end{align}\]</span></p>
+<p>Then, <span class="math inline">\(M_X^{(1)}(t)=\lambda e^te^{\lambda e^t-\lambda}|_{t=0}=\lambda=E(X)\)</span>
+<span class="math inline">\(M_X^{(2)}(t)=\lambda (e^te^{\lambda e^t-\lambda}+e^te^t\lambda e^{\lambda e^t-\lambda})|_{t=0}=\lambda (1+\lambda)=\lambda+\lambda^2=E(X^2)\)</span>
+And <span class="math inline">\(Var(X)=E(X^2)-(E(X))^2=\lambda\)</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

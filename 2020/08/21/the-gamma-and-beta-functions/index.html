@@ -72,7 +72,7 @@
 
 
 <p>The Gamma function:
-<span class="math display">\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt=(s-1)!\]</span></p>
+<span class="math inline">\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\)</span> <span class="math inline">\(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)</span></p>
 <p>The product of two Gamma functions:
 <span class="math display">\[\begin{align}
 \Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
@@ -82,7 +82,7 @@
 &amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt
 \end{align}\]</span></p>
 <p>We define this integral <span class="math inline">\(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\)</span> as <span class="math inline">\(B(x,y),\quad (x&gt;0 ;\quad y&gt;0)\)</span>, this is the Beta function.
-<span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}=\frac{(x-1)!(y-1)!}{(x+y-1)!}\)</span> this is the complete Beta function.
+<span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\)</span> <span class="math inline">\(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\)</span> this is the complete Beta function.
 <span class="math inline">\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\)</span> is the incomplete Beta function.
 And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.</p>
 
