@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>Geometric Distribution is the first success occurs on kth Bernoulli trial, Negative Binomial is the rth success occurs on kth Bernoulli trial - A Hugo website</title>
+<meta property="og:title" content="Geometric Distribution is the first success occurs on kth Bernoulli trial, Negative Binomial is the rth success occurs on kth Bernoulli trial - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Geometric Distribution is the first success occurs on kth Bernoulli trial, Negative Binomial is the rth success occurs on kth Bernoulli trial</h1>
+
+    
+    <span class="article-date">2020-08-25</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The Geometric variable X has a pdf like this:
+<span class="math display">\[P_X(k)=P(X=k)=(1-p)^{k-1}p, \quad k=1,2,3,..\]</span></p>
+<p>The moment-generating function for a Geometric random variable X is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tX})&amp;=\sum_{all\ k}e^{tk}(1-p)^{k-1}p\\
+&amp;=\frac{p}{1-p}\sum_{all\ k}(e^t(1-p))^{k}\\
+&amp;=\frac{p}{1-p}(\frac{1}{1-e^t(1-p)}-1)\\
+&amp;=\frac{pe^t}{1-(1-p)e^t}
+\end{align}\]</span></p>
+<p>The expected value is:
+<span class="math display">\[\begin{align}
+M_X^{(1)}(t)&amp;=\frac{d}{dt}\frac{pe^t}{1-(1-p)e^t}\\
+&amp;=\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}\Bigl|_{t=0}\\
+&amp;=1+\frac{p(1-p)}{p^2}\\
+&amp;=\frac{1}{p}
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+M_X^{(2)}(t)&amp;=\frac{d}{dt}\Bigl(\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}\Bigr)\\
+&amp;=\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}+\frac{2pe^{2t}(1-p)}{(1-(1-p)e^t)^2}+\frac{2pe^{3t}(1-p)^2}{(1-(1-p)e^t)^3}\Biggl|_{t=0}\\
+&amp;=1+(1/p-1)+2(1/p-1)+2(1/p-1)^2\\
+&amp;=2/p^2-1/p
+\end{align}\]</span></p>
+<p>Then, the Variance is:<span class="math inline">\(Var(X)=E(X^2)-(E(X))^2=2/p^2-1/p-1/p^2=1/p^2-1/p=\frac{1-p}{p^2}\)</span></p>
+<p><strong><span style="color: red;">Negative Binomial is the rth success occurs on kth Bernoulli trial</span></strong>
+The Negative Binomial variable Y has a pdf like this:
+<span class="math display">\[P_Y(k)=P(Y=k)=\binom{k-1}{r-1}p^r(1-p)^{k-r}, \quad k=r,r+1,r+2,...\]</span>
+The moment-generating function for a Geometric random variable X is:
+<span class="math inline">\(M_Y(t)=E(e^{tY})=[\frac{pe^t}{1-(1-p)e^t}]^r\)</span></p>
+<p>The expected value is:<span class="math inline">\(M_Y^{(1)}(t)=\frac{r}{p}\)</span>
+the Variance is:<span class="math inline">\(Var(Y)=E(Y^2)-(E(Y))^2=\frac{r(1-p)}{p^2}\)</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

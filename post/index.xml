@@ -6,10 +6,24 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Geometric Distribution is the first success occurs on kth Bernoulli trial, Negative Binomial is the rth success occurs on kth Bernoulli trial</title>
+      <link>/2020/08/25/geometric-distribution-is-the-first-success-occurs-on-kth-bernoulli-trial-negative-binomial-is-the-rth-success-occurs-on-kth-bernoulli-trial/</link>
+      <pubDate>Tue, 25 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/25/geometric-distribution-is-the-first-success-occurs-on-kth-bernoulli-trial-negative-binomial-is-the-rth-success-occurs-on-kth-bernoulli-trial/</guid>
+      <description>The Geometric variable X has a pdf like this:\[P_X(k)=P(X=k)=(1-p)^{k-1}p, \quad k=1,2,3,..\]
+The moment-generating function for a Geometric random variable X is:\[\begin{align}M_X(t)=E(e^{tX})&amp;amp;=\sum_{all\ k}e^{tk}(1-p)^{k-1}p\\&amp;amp;=\frac{p}{1-p}\sum_{all\ k}(e^t(1-p))^{k}\\&amp;amp;=\frac{p}{1-p}(\frac{1}{1-e^t(1-p)}-1)\\&amp;amp;=\frac{pe^t}{1-(1-p)e^t}\end{align}\]
+The expected value is:\[\begin{align}M_X^{(1)}(t)&amp;amp;=\frac{d}{dt}\frac{pe^t}{1-(1-p)e^t}\\&amp;amp;=\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}\Bigl|_{t=0}\\&amp;amp;=1+\frac{p(1-p)}{p^2}\\&amp;amp;=\frac{1}{p}\end{align}\]
+\[\begin{align}M_X^{(2)}(t)&amp;amp;=\frac{d}{dt}\Bigl(\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}\Bigr)\\&amp;amp;=\frac{pe^t}{1-(1-p)e^t}+\frac{pe^t(1-p)e^t}{(1-(1-p)e^t)^2}+\frac{2pe^{2t}(1-p)}{(1-(1-p)e^t)^2}+\frac{2pe^{3t}(1-p)^2}{(1-(1-p)e^t)^3}\Biggl|_{t=0}\\&amp;amp;=1+(1/p-1)+2(1/p-1)+2(1/p-1)^2\\&amp;amp;=2/p^2-1/p\end{align}\]
+Then, the Variance is:\(Var(X)=E(X^2)-(E(X))^2=2/p^2-1/p-1/p^2=1/p^2-1/p=\frac{1-p}{p^2}\)
+Negative Binomial is the rth success occurs on kth Bernoulli trialThe Negative Binomial variable Y has a pdf like this:\[P_Y(k)=P(Y=k)=\binom{k-1}{r-1}p^r(1-p)^{k-r}, \quad k=r,r+1,r+2,.</description>
+    </item>
     
     <item>
       <title>Exponential distribution is interval between consecutive Poisson events</title>
