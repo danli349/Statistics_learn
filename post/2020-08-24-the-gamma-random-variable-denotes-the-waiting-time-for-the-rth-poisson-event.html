@@ -13,7 +13,7 @@
 
 <meta name="date" content="2020-08-24" />
 
-<title>The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events</title>
+<title>The Gamma random variable denotes the waiting time for the r^{th} Poisson event also the sum of r Exponential events</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -376,14 +376,14 @@ summary {
 
 
 
-<h1 class="title toc-ignore">The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events</h1>
+<h1 class="title toc-ignore">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event also the sum of r Exponential events</h1>
 <h4 class="author">Dan Li</h4>
 <h4 class="date">2020-08-24</h4>
 
 </div>
 
 
-<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the rth Poisson event, and also denotes the sum of r Exponential random variables.</span></strong></p>
+<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event, and also denotes the sum of r Exponential random variables. The sum of m Gamma random variables (shared the same parameter <span class="math inline">\(\lambda\)</span>) is a Gamma random variable, which denotes the waiting time for the <span class="math inline">\((\sum_{i=1}^{m} r_i)^{th}\)</span> Poisson event, and also denotes the sum of <span class="math inline">\(\sum_{i=1}^{m} r_i\)</span> Exponential random variables.</span></strong></p>
 <p>let Y denote the waiting time to the occurrence of the <span class="math inline">\(r^{th}\)</span> Poisson event, the probability fewer than r Poisson events occur in [0, y] time period is <span class="math inline">\(P(Y&gt;y)=\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\)</span>, then, the probability of the <span class="math inline">\(r^{th}\)</span> occurrence in [0, y] time period is <span class="math display">\[\begin{align}
 F_Y(y)=P(Y\le y)&amp;=1-P(Y&gt;y)\\
 &amp;=1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}
@@ -403,7 +403,20 @@ M_X(t)=E(e^{tY})&amp;=\int_{0}^{+\infty}e^{ty}\frac{\lambda^r}{\Gamma(r)}y^{r-1}
 &amp;=(\frac{\lambda}{\lambda-t})^r\\
 &amp;=(1-\frac{t}{\lambda})^{-r}
 \end{align}\]</span></p>
-<p>The mean is <span class="math inline">\(M_X^{(1)}(t)\)</span></p>
+<p>The mean is <span class="math display">\[\begin{align}
+E(Y)=M_X^{(1)}(t)&amp;=\frac{d}{dt}(1-\frac{t}{\lambda})^{-r}\\
+&amp;=\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1}|_{t=0}\\
+&amp;=\frac{r}{\lambda}
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+E(Y^2)=M_X^{(2)}(t)&amp;=\frac{d}{dt}(\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1})\\
+&amp;=\frac{r(r+1)}{\lambda^2}(1-\frac{t}{\lambda})^{-r-2}|_{t=0}\\
+&amp;=\frac{r(r+1)}{\lambda^2}
+\end{align}\]</span></p>
+<p>Then, <span class="math inline">\(Var(Y)=E(Y^2)-(E(Y))^2=\frac{r(r+1)}{\lambda^2}-\frac{r^2}{\lambda^2}=\frac{r}{\lambda^2}\)</span></p>
+<p>The pdf of the sum of m Gamma random variables with parameters <span class="math inline">\(s_i\)</span> and shared the same parameter <span class="math inline">\(\lambda\)</span> is: <span class="math display">\[\begin{align}
+f_{\sum_{i=1}^{m} Y_i}(t)&amp;=\int_{0}^{t}
+\end{align}\]</span></p>
 
 
 

@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.74.3" />
 
 
-<title>The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events - A Hugo website</title>
-<meta property="og:title" content="The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events - A Hugo website">
+<title>The Gamma random variable denotes the waiting time for the $r^{th}$ Poisson event also the sum of r Exponential events - A Hugo website</title>
+<meta property="og:title" content="The Gamma random variable denotes the waiting time for the $r^{th}$ Poisson event also the sum of r Exponential events - A Hugo website">
 
 
   <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
@@ -57,10 +57,10 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
-    <h1 class="article-title">The Gamma random variable denotes the waiting time for the rth Poisson event also the sum of r Exponential events</h1>
+    <h1 class="article-title">The Gamma random variable denotes the waiting time for the $r^{th}$ Poisson event also the sum of r Exponential events</h1>
 
     
     <span class="article-date">2020-08-24</span>
@@ -71,7 +71,7 @@
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the rth Poisson event, and also denotes the sum of r Exponential random variables.</span></strong></p>
+<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event, and also denotes the sum of r Exponential random variables. The sum of m Gamma random variables (shared the same parameter <span class="math inline">\(\lambda\)</span>) is a Gamma random variable, which denotes the waiting time for the <span class="math inline">\((\sum_{i=1}^{m} r_i)^{th}\)</span> Poisson event, and also denotes the sum of <span class="math inline">\(\sum_{i=1}^{m} r_i\)</span> Exponential random variables.</span></strong></p>
 <p>let Y denote the waiting time to the occurrence of the <span class="math inline">\(r^{th}\)</span> Poisson event,
 the probability fewer than r Poisson events occur in [0, y] time period is
 <span class="math inline">\(P(Y&gt;y)=\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\)</span>, then,
@@ -108,6 +108,13 @@ E(Y^2)=M_X^{(2)}(t)&amp;=\frac{d}{dt}(\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r
 &amp;=\frac{r(r+1)}{\lambda^2}
 \end{align}\]</span></p>
 <p>Then, <span class="math inline">\(Var(Y)=E(Y^2)-(E(Y))^2=\frac{r(r+1)}{\lambda^2}-\frac{r^2}{\lambda^2}=\frac{r}{\lambda^2}\)</span></p>
+<p>The pdf of the sum of m Gamma random variables with parameters <span class="math inline">\(s_i\)</span> and shared the same parameter <span class="math inline">\(\lambda\)</span> is:
+<span class="math display">\[\begin{align}
+f_{\sum_{i=1}^{m} Y_i}(t)&amp;=\frac{e^{(-\lambda \sum u_i)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}\int_{0}^{t}(\prod u_i^{r_i-1})du \quad (\sum u_i=t)\\
+&amp;=\frac{e^{(-\lambda t)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}t^{\sum (r_i-1)}t^{m-1}\int_{0}^{1}(\prod v_i^{r_i-1})dv\quad (u_i=tv_i, \sum v_i=1)\\
+&amp;=\frac{e^{(-\lambda t)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}t^{(\sum r_i)-1}\frac{\prod_{i=1}^{m}\Gamma(r_i)}{\Gamma(\sum r_i)}\\
+&amp;=\frac{e^{(-\lambda t)}}{\Gamma(\sum r_i)}\lambda^{(\sum r_i)}t^{(\sum r_i)-1}
+\end{align}\]</span></p>
 
     </div>
   </article>
