@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>From the Cumulative distribution of standard normal distribution can get the chi square distribution  - A Hugo website</title>
+<meta property="og:title" content="From the Cumulative distribution of standard normal distribution can get the chi square distribution  - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">From the Cumulative distribution of standard normal distribution can get the chi square distribution </h1>
+
+    
+    <span class="article-date">2020-08-29</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The Cumulative distribution function of standard Normal distribution in the region <span class="math inline">\((-x,x),x&gt;0\)</span> is:
+<span class="math display">\[\begin{align}
+\Phi(x)&amp;=\frac{1}{\sqrt{2\pi}}\int_{-x}^{x} e^{-\frac{1}{2}z^2}dz\\
+&amp;=\frac{2}{\sqrt{2\pi}}\int_{0}^{x} e^{-\frac{1}{2}z^2}dz\\
+&amp;=\frac{2}{\sqrt{2\pi}}\int_{0}^{\sqrt{x}} \frac{1}{2\sqrt{u}}e^{-\frac{1}{2}u}du \quad (u=z^2)\\
+&amp;=\frac{1}{\sqrt{2\pi}}\int_{0}^{\sqrt{x}} \frac{1}{\sqrt{u}}e^{-\frac{1}{2}u}du\\
+&amp;=\int_{0}^{\sqrt{x}}\frac{(\frac{1}{2})^{\frac{1}{2}}}{\Gamma(\frac{1}{2})}u^{(\frac{1}{2})-1}e^{-\frac{1}{2}u}du
+\end{align}\]</span></p>
+<p>Here, the integrand
+<span class="math inline">\(f_U(u)=\frac{(\frac{1}{2})^{\frac{1}{2}}}{\Gamma(\frac{1}{2})}u^{(\frac{1}{2})-1}e^{-\frac{1}{2}u}\)</span>
+is a special Gamma distribution with <span class="math inline">\(r=\frac{1}{2}, \lambda=\frac{1}{2}\)</span>. Here, the <span class="math inline">\(u=z^2\)</span>, where the <span class="math inline">\(z\)</span> is independent standard normal random variable.</p>
+<p>And the sum of several <span class="math inline">\(U\)</span> variables <span class="math inline">\(Y=\sum_{j=1}^{m} U_j=\sum_{j=1}^{m} Z_{j}^{2}\)</span> is still a Gamma distribution:<span class="math inline">\(f_Y(y)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}y^{(\frac{m}{2})-1}e^{-\frac{1}{2}y}\)</span>, and we give the special Gamma distribution with <span class="math inline">\(r=\frac{m}{2}, \lambda=\frac{1}{2}\)</span> a new name: <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(m\)</span> degrees of freedom.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

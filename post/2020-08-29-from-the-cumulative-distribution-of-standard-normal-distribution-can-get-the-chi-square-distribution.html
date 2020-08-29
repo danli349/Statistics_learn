@@ -11,9 +11,9 @@
 
 <meta name="author" content="Dan Li" />
 
-<meta name="date" content="2020-08-24" />
+<meta name="date" content="2020-08-29" />
 
-<title>The Gamma random variable denotes the waiting time for the r^{th} Poisson event also the sum of r Exponential events</title>
+<title>From the Cumulative distribution of standard normal distribution can get the chi square distribution</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -376,50 +376,22 @@ summary {
 
 
 
-<h1 class="title toc-ignore">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event also the sum of r Exponential events</h1>
+<h1 class="title toc-ignore">From the Cumulative distribution of standard normal distribution can get the chi square distribution</h1>
 <h4 class="author">Dan Li</h4>
-<h4 class="date">2020-08-24</h4>
+<h4 class="date">2020-08-29</h4>
 
 </div>
 
 
-<p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event, and also denotes the sum of r Exponential random variables. The sum of m Gamma random variables (shared the same parameter <span class="math inline">\(\lambda\)</span>) is a Gamma random variable, which denotes the waiting time for the <span class="math inline">\((\sum_{i=1}^{m} r_i)^{th}\)</span> Poisson event, and also denotes the sum of <span class="math inline">\(\sum_{i=1}^{m} r_i\)</span> Exponential random variables.</span></strong></p>
-<p>let Y denote the waiting time to the occurrence of the <span class="math inline">\(r^{th}\)</span> Poisson event, the probability fewer than r Poisson events occur in [0, y] time period is <span class="math inline">\(P(Y&gt;y)=\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\)</span>, then, the probability of the <span class="math inline">\(r^{th}\)</span> occurrence in [0, y] time period is <span class="math display">\[\begin{align}
-F_Y(y)=P(Y\le y)&amp;=1-P(Y&gt;y)\\
-&amp;=1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}
+<p>The Cumulative distribution function of standard Normal distribution in the region <span class="math inline">\((-x,x),x&gt;0\)</span> is: <span class="math display">\[\begin{align}
+\Phi(x)&amp;=\frac{1}{\sqrt{2\pi}}\int_{-x}^{x} e^{-\frac{1}{2}z^2}dz\\
+&amp;=\frac{2}{\sqrt{2\pi}}\int_{0}^{x} e^{-\frac{1}{2}z^2}dz\\
+&amp;=\frac{2}{\sqrt{2\pi}}\int_{0}^{\sqrt{x}} \frac{1}{2\sqrt{u}}e^{-\frac{1}{2}u}du \quad (u=z^2)\\
+&amp;=\frac{1}{\sqrt{2\pi}}\int_{0}^{\sqrt{x}} \frac{1}{\sqrt{u}}e^{-\frac{1}{2}u}du\\
+&amp;=\int_{0}^{\sqrt{x}}\frac{(\frac{1}{2})^{\frac{1}{2}}}{\Gamma(\frac{1}{2})}u^{(\frac{1}{2})-1}e^{-\frac{1}{2}u}du
 \end{align}\]</span></p>
-<p>Then, <span class="math display">\[\begin{align}
-f_Y(y)=\frac{d}{dy}F_Y(y)&amp;=\frac{d}{dy}\Biggl(1-\sum_{k=0}^{r-1}e^{-\lambda y}\frac{(\lambda y)^k}{k!}\Biggr)\\
-&amp;=\sum_{k=0}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}-\sum_{k=1}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^{k-1}}{(k-1)!}\\
-&amp;=\sum_{k=0}^{r-1}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}-\sum_{k=0}^{r-2}\lambda e^{-\lambda y}\frac{(\lambda y)^k}{k!}\\
-&amp;=\lambda e^{-\lambda y}\frac{(\lambda y)^{r-1}}{(r-1)!}\\
-&amp;=\frac{\lambda^r}{(r-1)!}y^{r-1}e^{-\lambda y}\\
-&amp;=\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}, \quad y&gt;0
-\end{align}\]</span>, this is the Gamma distribution.</p>
-<p>The moment-generating function for a Gamma random variable Y is: <span class="math display">\[\begin{align}
-M_X(t)=E(e^{tY})&amp;=\int_{0}^{+\infty}e^{ty}\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}dy\\
-&amp;=\frac{\lambda^r}{(\lambda-t)^r}\int_{0}^{+\infty}\frac{(\lambda-t)^r}{\Gamma(r)}y^{r-1}e^{-(\lambda-t)y}dy\\
-&amp;=\frac{\lambda^r}{(\lambda-t)^r}\\
-&amp;=(\frac{\lambda}{\lambda-t})^r\\
-&amp;=(1-\frac{t}{\lambda})^{-r}
-\end{align}\]</span></p>
-<p>The mean is <span class="math display">\[\begin{align}
-E(Y)=M_X^{(1)}(t)&amp;=\frac{d}{dt}(1-\frac{t}{\lambda})^{-r}\\
-&amp;=\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1}|_{t=0}\\
-&amp;=\frac{r}{\lambda}
-\end{align}\]</span></p>
-<p><span class="math display">\[\begin{align}
-E(Y^2)=M_X^{(2)}(t)&amp;=\frac{d}{dt}(\frac{r}{\lambda}(1-\frac{t}{\lambda})^{-r-1})\\
-&amp;=\frac{r(r+1)}{\lambda^2}(1-\frac{t}{\lambda})^{-r-2}|_{t=0}\\
-&amp;=\frac{r(r+1)}{\lambda^2}
-\end{align}\]</span></p>
-<p>Then, <span class="math inline">\(Var(Y)=E(Y^2)-(E(Y))^2=\frac{r(r+1)}{\lambda^2}-\frac{r^2}{\lambda^2}=\frac{r}{\lambda^2}\)</span></p>
-<p>The pdf of the sum of m Gamma random variables with parameters <span class="math inline">\(s_i\)</span> and shared the same parameter <span class="math inline">\(\lambda\)</span> is: <span class="math display">\[\begin{align}
-f_{\sum_{i=1}^{m} Y_i}(t)&amp;=\frac{e^{(-\lambda \sum u_i)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}\int_{0}^{t}(\prod u_i^{r_i-1})du \quad (\sum u_i=t)\\
-&amp;=\frac{e^{(-\lambda t)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}t^{\sum (r_i-1)}t^{m-1}\int_{0}^{1}(\prod v_i^{r_i-1})dv\quad (u_i=tv_i, \sum v_i=1)\\
-&amp;=\frac{e^{(-\lambda t)}}{\prod_{i=1}^{m}\Gamma(r_i)}\lambda^{(\sum r_i)}t^{(\sum r_i)-1}\frac{\prod_{i=1}^{m}\Gamma(r_i)}{\Gamma(\sum r_i)}\\
-&amp;=\frac{e^{(-\lambda t)}}{\Gamma(\sum r_i)}\lambda^{(\sum r_i)}t^{(\sum r_i)-1}
-\end{align}\]</span></p>
+<p>Here, the integrand <span class="math inline">\(f_U(u)=\frac{(\frac{1}{2})^{\frac{1}{2}}}{\Gamma(\frac{1}{2})}u^{(\frac{1}{2})-1}e^{-\frac{1}{2}u}\)</span> is a special Gamma distribution with <span class="math inline">\(r=\frac{1}{2}, \lambda=\frac{1}{2}\)</span>. Here, the <span class="math inline">\(u=z^2\)</span>, where the <span class="math inline">\(z\)</span> is independent standard normal random variable.</p>
+<p>And the sum of several <span class="math inline">\(U\)</span> variables <span class="math inline">\(Y=\sum_{j=1}^{m} U_j=\sum_{j=1}^{m} Z_{j}^{2}\)</span> is still a Gamma distribution;<span class="math inline">\(f_Y(y)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}y^{(\frac{m}{2})-1}e^{-\frac{1}{2}y}\)</span>, and we give the special Gamma distribution with <span class="math inline">\(r=\frac{m}{2}, \lambda=\frac{1}{2}\)</span> a new name: <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(m\)</span> degrees of freedom.</p>
 
 
 

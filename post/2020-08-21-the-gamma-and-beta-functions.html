@@ -392,6 +392,25 @@ summary {
 &amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt
 \end{align}\]</span></p>
 <p>We define this integral <span class="math inline">\(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\)</span> as <span class="math inline">\(B(x,y),\quad (x&gt;0 ;\quad y&gt;0)\)</span>, this is the Beta function. <span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\)</span> <span class="math inline">\(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\)</span> this is the complete Beta function. <span class="math inline">\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\)</span> is the incomplete Beta function. And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.</p>
+<p>Let’s calculate the very important <span class="math inline">\(\Gamma(\frac{1}{2})\)</span>: <span class="math display">\[\begin{align}
+\Gamma^2(\frac{1}{2})&amp;=\Bigl(\int_{0}^{+\infty}t^{\frac{1}{2}-1}e^{-t}dt\Bigr)^2\\
+&amp;=\Bigl(\int_{0}^{+\infty}u^{-1}e^{-u^2}2udu\Bigr)^2\quad(t=u^2)\\
+&amp;=\Bigl(2\int_{0}^{+\infty}e^{-u^2}du\Bigr)^2\\
+&amp;=4\int_{0}^{+\infty}e^{-u^2}du\int_{0}^{+\infty}e^{-v^2}dv\\
+&amp;=4\int_{0}^{+\infty}\int_{0}^{+\infty}e^{-(u^2+v^2)}dudv\\
+&amp;=4\int_{0}^{\pi/2}\int_{0}^{+\infty}e^{-r^2}rdrd\theta\\
+&amp;=4\int_{0}^{\pi/2}d\theta\int_{0}^{+\infty}e^{-r^2}rdr\\
+&amp;=4\frac{\pi}{2}(-\frac{1}{2})e^{-r^2}\Bigl|_{0}^{+\infty}\\
+&amp;=\pi
+\end{align}\]</span></p>
+<p>Then, <span class="math inline">\(\Gamma(\frac{1}{2})=\sqrt{\pi}\)</span>;<br />
+and <span class="math inline">\(\Gamma(\frac{3}{2})=(\frac{3}{2}-1)\Gamma(\frac{3}{2}-1)=\frac{1}{2}\sqrt{\pi}\)</span></p>
+<p>The <span class="math inline">\(\Gamma(\frac{m}{2})\)</span> is very important for chi square distribution:<br />
+<span class="math display">\[\Gamma(\frac{m}{2})=
+\begin{cases}
+(\frac{m}{2})!,  &amp; \text{if $m$ is even} \\[2ex]
+(\frac{m}{2}-1)(\frac{m}{2}-2)...\frac{1}{2}\sqrt{\pi}, &amp; \text{if $m$ is odd}
+\end{cases}\]</span></p>
 
 
 
