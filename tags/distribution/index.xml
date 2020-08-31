@@ -93,16 +93,5 @@ The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=
 We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\) \(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
     </item>
     
-    <item>
-      <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
-      <link>/2020/08/13/distributions/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/13/distributions/</guid>
-      <description>How can we derive the probability density function (pdf) of Normal Distribution?\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&amp;lt;y&amp;lt;+\infty\]
-Let’s draw a normal pdf first
-#draw normal pdfx &amp;lt;- seq(-5, 5, length.out = 201); dx &amp;lt;- diff(x)[1]y &amp;lt;- dnorm(x, mean = 0, sd = 1)base::plot(x, y, type = &amp;quot;l&amp;quot;, col = &amp;quot;skyblue&amp;quot;,xlab=&amp;quot;x&amp;quot; , ylab=&amp;quot;p(x)&amp;quot; , cex.lab=1.5,main=&amp;quot;Normal Probability Density&amp;quot; , cex.main=1.5,lwd=2)text( 0, .6*max(y) , bquote( paste(mu ,&amp;quot; = 0 &amp;quot;) ), cex=1.</description>
-    </item>
-    
   </channel>
 </rss>
