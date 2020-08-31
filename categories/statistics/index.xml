@@ -6,10 +6,21 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The square of Student t random variable is a F distribution with with 1 and n df</title>
+      <link>/2020/08/30/the-square-of-student-t-random-variable-is-a-f-distribution-with-with-1-and-n-df/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/30/the-square-of-student-t-random-variable-is-a-f-distribution-with-with-1-and-n-df/</guid>
+      <description>The Student t ratio with \(n\) degrees of freedom is denoted \(T_n\), where\(T_n=\frac{Z}{\sqrt{\frac{U}{n}}}\), \(Z\) is a standard normal random variable and \(U\) is a \(\chi^2\) random variable independent of \(Z\) with \(n\) degrees of freedom.
+Because \(T_n^2= \frac{Z^2}{U/n}\) has an \(F\) distribution with \(1\) and \(n\) df, then,\[f_{T_n^2}(t)=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-\frac{1}{2}}}{(n+t)^{\frac{1+n}{2}}},\quad t&amp;gt;0\]
+Then,\[\begin{align}f_{T_n}(t)&amp;amp;=\frac{d}{dt}F_{T_n}(t)\\&amp;amp;=\frac{d}{dt}P(T_n\le t)\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+P(0\le T_n\le t))\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(-t\le T_n\le t))\quad (t&amp;gt;0)\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(T_n^2\le t^2))\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}F_{T_n^2}(t^2))\\&amp;amp;=t\cdot f_{T_n^2}(t^2)\\&amp;amp;=t\cdot \frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-1}}{(n+t^2)^{\frac{1+n}{2}}}\\&amp;amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}\\&amp;amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n\pi}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}\end{align}\]</description>
+    </item>
     
     <item>
       <title>From the Cumulative distribution of standard normal distribution can get the chi square distribution </title>

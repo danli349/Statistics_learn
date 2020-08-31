@@ -6,10 +6,21 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The square of Student t random variable is a F distribution with with 1 and n df</title>
+      <link>/2020/08/30/the-square-of-student-t-random-variable-is-a-f-distribution-with-with-1-and-n-df/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/30/the-square-of-student-t-random-variable-is-a-f-distribution-with-with-1-and-n-df/</guid>
+      <description>The Student t ratio with \(n\) degrees of freedom is denoted \(T_n\), where\(T_n=\frac{Z}{\sqrt{\frac{U}{n}}}\), \(Z\) is a standard normal random variable and \(U\) is a \(\chi^2\) random variable independent of \(Z\) with \(n\) degrees of freedom.
+Because \(T_n^2= \frac{Z^2}{U/n}\) has an \(F\) distribution with \(1\) and \(n\) df, then,\[f_{T_n^2}(t)=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-\frac{1}{2}}}{(n+t)^{\frac{1+n}{2}}},\quad t&amp;gt;0\]
+Then,\[\begin{align}f_{T_n}(t)&amp;amp;=\frac{d}{dt}F_{T_n}(t)\\&amp;amp;=\frac{d}{dt}P(T_n\le t)\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+P(0\le T_n\le t))\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(-t\le T_n\le t))\quad (t&amp;gt;0)\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(T_n^2\le t^2))\\&amp;amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}F_{T_n^2}(t^2))\\&amp;amp;=t\cdot f_{T_n^2}(t^2)\\&amp;amp;=t\cdot \frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-1}}{(n+t^2)^{\frac{1+n}{2}}}\\&amp;amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}\\&amp;amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n\pi}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}\end{align}\]</description>
+    </item>
     
     <item>
       <title>From the Cumulative distribution of standard normal distribution can get the chi square distribution </title>
@@ -91,6 +102,17 @@ let Y denote the waiting time to the occurrence of the \(r^{th}\) Poisson event,
       <description>The Gamma function:\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\) \(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)
 The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\&amp;amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad dudv=zdtdz)\\&amp;amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\&amp;amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\&amp;amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\end{align}\]
 We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\) \(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
+    </item>
+    
+    <item>
+      <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
+      <link>/2020/08/13/distributions/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/13/distributions/</guid>
+      <description>How can we derive the probability density function (pdf) of Normal Distribution?\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&amp;lt;y&amp;lt;+\infty\]
+Let’s draw a normal pdf first
+#draw normal pdfx &amp;lt;- seq(-5, 5, length.out = 201); dx &amp;lt;- diff(x)[1]y &amp;lt;- dnorm(x, mean = 0, sd = 1)base::plot(x, y, type = &amp;quot;l&amp;quot;, col = &amp;quot;skyblue&amp;quot;,xlab=&amp;quot;x&amp;quot; , ylab=&amp;quot;p(x)&amp;quot; , cex.lab=1.5,main=&amp;quot;Normal Probability Density&amp;quot; , cex.main=1.5,lwd=2)text( 0, .6*max(y) , bquote( paste(mu ,&amp;quot; = 0 &amp;quot;) ), cex=1.</description>
     </item>
     
   </channel>

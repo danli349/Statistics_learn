@@ -125,12 +125,36 @@ M_X(t)=E(e^{tY})&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{ty} 
 &amp;=exp(t\mu+t^2\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+t\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy\\
 &amp;=e^{t\mu+t^2\sigma^2/2}
 \end{align}\]</span></p>
-<p>Let <span class="math inline">\(Y_1, Y_2,...,Y_n\)</span> be any set of independent normal random variables with means <span class="math inline">\(\mu_1,\mu_2,...,\mu_n\)</span> and variances <span class="math inline">\(\sigma_1^2,\sigma_2^2,...,\sigma_n^2\)</span>, and let <span class="math inline">\(a_1,a_2,...,a_n\)</span> be any set of constants, then, <span class="math inline">\(Y=\sum_{i=1}^{n} a_iY_i\)</span> is normally distributed. Because,
+<p>Let <span class="math inline">\(Y\)</span> is a normal random variable with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, and let <span class="math inline">\(W=aY,(a\ne0)\)</span> <span class="math inline">\(a\)</span> is a constant, then,<br />
 <span class="math display">\[\begin{align}
-M_Y(t)&amp;=\prod_{i=1}^{n} M_{Y_i}(t)\\
-&amp;=\prod_{i=1}^{n}e^{(t\mu_{i}+(t^2\sigma_{i}^2)/2)}\\
-&amp;=e^{(t\sum\mu_{i}+(\sum\sigma_{i}^2)t^2/2)}
-\end{align}\]</span>, which shows that Y is normal random variables with mean <span class="math inline">\(\mu=\sum\mu_i\)</span>, variance <span class="math inline">\(\sigma^2=\sum\sigma_i^2\)</span></p>
+f_W(\omega)&amp;=\frac{1}{|a|}f_Y(\frac{1}{a}\omega)\\
+&amp;=\frac{1}{|a|}\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{-\frac{1}{2}(\frac{\frac{1}{a}y-\mu}{\sigma})^2}dy\\
+&amp;=\frac{1}{|a|}\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{-\frac{1}{2}(\frac{y-a\mu}{a\sigma})^2}dy
+\end{align}\]</span>, which shows that <span class="math inline">\(W\)</span> is normal random variables with mean <span class="math inline">\(a\mu\)</span>, variance <span class="math inline">\(a^2\sigma^2\)</span>.</p>
+<p>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are normal random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, and let <span class="math inline">\(W=X+Y\)</span>, then,<br />
+<span class="math display">\[\begin{align}
+f_W(w)&amp;=\frac{d}{dw}F_W(w)\\
+&amp;=\frac{d}{dw}P(X+Y ≤ w)\\
+&amp;=\frac{d}{dw}\Biggl[\int_{-\infty}^{+\infty}\int_{-\infty}^{w-x}f_X(x)f_Y(y)dydx\Biggr]\\
+&amp;=\frac{d}{dw}\Biggl[\int_{-\infty}^{+\infty}f_X(x)\Bigl[\int_{-\infty}^{w-x}f_Y(y)dy\Bigr]dx\Biggr]\\
+&amp;=\frac{d}{dw}\Biggl[\int_{-\infty}^{+\infty}f_X(x)F_Y(w-x)dx\Biggr]\\
+&amp;=\int_{-\infty}^{+\infty}f_X(x)\Biggl[\frac{d}{dw}F_Y(w-x)\Biggr]dx\\
+&amp;=\int_{-\infty}^{+\infty}f_X(x)f_Y(w-x)dx\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{w-x-\mu}{\sigma})^2}dx\\
+&amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{+\infty}exp\Biggl[{-\frac{1}{2}\Bigl[(\frac{x-\mu}{\sigma})^2+(\frac{w-x-\mu}{\sigma})^2\Bigr]}\Biggr]dx\\
+&amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\frac{(2x^2-2wx+w^2-2w\mu+2\mu^2)}{\sigma^2}\Biggr]dx\\
+&amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\frac{(x^2-wx+\frac{1}{2}w^2-w\mu+\mu^2)}{\frac{1}{2}\sigma^2}\Biggr]dx\\
+&amp;=\frac{1}{2\pi\sigma^2}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\frac{(x-\frac{1}{2}w)^2+\frac{1}{4}w^2-w\mu+\mu^2)}{\frac{1}{2}\sigma^2}\Biggr]dx\\
+&amp;=\frac{1}{\sqrt{2\pi}\sqrt{2}\sigma}exp\Biggl[-\frac{1}{2}\frac{\frac{1}{4}w^2-w\mu+\mu^2}{(\frac{1}{\sqrt{2}}\sigma)^2}\Biggr]
+\frac{1}{\sqrt{2\pi}\frac{1}{\sqrt{2}}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\frac{(x-\frac{1}{2}w)^2}{(\frac{1}{\sqrt{2}}\sigma)^2}\Biggr]dx\\
+&amp;=\frac{1}{\sqrt{2\pi}\sqrt{2}\sigma}exp\Biggl[-\frac{1}{2}\frac{\frac{1}{4}w^2-w\mu+\mu^2}{(\frac{1}{\sqrt{2}}\sigma)^2}\Biggr]\\
+&amp;=\frac{1}{\sqrt{2\pi}\sqrt{2}\sigma}exp\Biggl[-\frac{1}{2}\frac{w^2-4w\mu+4\mu^2}{(\sqrt{2}\sigma)^2}\Biggr]\\
+&amp;=\frac{1}{\sqrt{2\pi}\sqrt{2}\sigma}exp\Biggl[-\frac{1}{2}\frac{(w-2\mu)^2}{(\sqrt{2}\sigma)^2}\Biggr]
+\end{align}\]</span>, then <span class="math inline">\(W=X+Y\)</span> is a new normal random variable with mean <span class="math inline">\(2\mu\)</span>, variance <span class="math inline">\(2\sigma^2\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are normal random variables with different means <span class="math inline">\(\mu_X\)</span> and <span class="math inline">\(\mu_Y\)</span> and different variances <span class="math inline">\(\sigma_X^2\)</span> and <span class="math inline">\(\sigma_Y^2\)</span>, and let <span class="math inline">\(W=X+Y\)</span>, then,
+<span class="math display">\[\begin{align}
+f_W(w)&amp;=\frac{1}{\sqrt{2\pi}\sqrt{\sigma_X^2+\sigma_Y^2}}exp\Biggl[-\frac{1}{2}\Bigl[\frac{w-(\mu_X+\mu_Y)}{\sqrt{\sigma_X^2+\sigma_Y^2}}\Bigr]^2\Biggr]
+\end{align}\]</span>, then <span class="math inline">\(W=X+Y\)</span> is a new normal random variable with mean <span class="math inline">\(\mu_X+\mu_Y\)</span>, variance <span class="math inline">\(\sqrt{\sigma_X^2+\sigma_Y^2}\)</span>.</p>
 
     </div>
   </article>

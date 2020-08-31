@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>The square of Student t random variable is a F distribution with with 1 and n df - A Hugo website</title>
+<meta property="og:title" content="The square of Student t random variable is a F distribution with with 1 and n df - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">The square of Student t random variable is a F distribution with with 1 and n df</h1>
+
+    
+    <span class="article-date">2020-08-30</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The Student t ratio with <span class="math inline">\(n\)</span> degrees of freedom is denoted <span class="math inline">\(T_n\)</span>, where
+<span class="math inline">\(T_n=\frac{Z}{\sqrt{\frac{U}{n}}}\)</span>, <span class="math inline">\(Z\)</span> is a standard normal random variable and <span class="math inline">\(U\)</span> is a <span class="math inline">\(\chi^2\)</span> random variable independent of <span class="math inline">\(Z\)</span> with <span class="math inline">\(n\)</span> degrees of freedom.</p>
+<p>Because <span class="math inline">\(T_n^2= \frac{Z^2}{U/n}\)</span> has an <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(1\)</span> and <span class="math inline">\(n\)</span> df, then,
+<span class="math display">\[f_{T_n^2}(t)=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-\frac{1}{2}}}{(n+t)^{\frac{1+n}{2}}},\quad t&gt;0\]</span></p>
+<p>Then,
+<span class="math display">\[\begin{align}
+f_{T_n}(t)&amp;=\frac{d}{dt}F_{T_n}(t)\\
+&amp;=\frac{d}{dt}P(T_n\le t)\\
+&amp;=\frac{d}{dt}(\frac{1}{2}+P(0\le T_n\le t))\\
+&amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(-t\le T_n\le t))\quad (t&gt;0)\\
+&amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}P(T_n^2\le t^2))\\
+&amp;=\frac{d}{dt}(\frac{1}{2}+\frac{1}{2}F_{T_n^2}(t^2))\\
+&amp;=t\cdot f_{T_n^2}(t^2)\\
+&amp;=t\cdot \frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{n^{\frac{n}{2}}t^{-1}}{(n+t^2)^{\frac{1+n}{2}}}\\
+&amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}\\
+&amp;=\frac{\Gamma(\frac{1+n}{2})}{\Gamma(\frac{n}{2})}\frac{1}{\sqrt{n\pi}}\frac{1}{(1+\frac{t^2}{n})^{\frac{1+n}{2}}}
+\end{align}\]</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
