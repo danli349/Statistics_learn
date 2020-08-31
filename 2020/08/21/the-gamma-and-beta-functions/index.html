@@ -84,7 +84,11 @@
 <p>We define this integral <span class="math inline">\(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\)</span> as <span class="math inline">\(B(x,y),\quad (x&gt;0 ;\quad y&gt;0)\)</span>, this is the Beta function.
 <span class="math inline">\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\)</span> <span class="math inline">\(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\)</span> this is the complete Beta function.
 <span class="math inline">\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\)</span> is the incomplete Beta function.
-And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.</p>
+And <span class="math inline">\(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\)</span> is the Regularized incomplete Beta function.<br />
+<span class="math display">\[\begin{align}
+B(x;a,b)&amp;=\frac{x^a}{a} 2F_1(a,1-b;a+1;x)\\
+&amp;=\frac{x^a}{a}\sum_{n=0}^{+\infty}\frac{(a)_n(1-b)_n}{(a+1)_n}\frac{x^n}{n!}
+\end{align}\]</span></p>
 <p>Let’s calculate the very important <span class="math inline">\(\Gamma(\frac{1}{2})\)</span>:
 <span class="math display">\[\begin{align}
 \Gamma^2(\frac{1}{2})&amp;=\Bigl(\int_{0}^{+\infty}t^{\frac{1}{2}-1}e^{-t}dt\Bigr)^2\\
