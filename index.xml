@@ -105,6 +105,15 @@ We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y)
     </item>
     
     <item>
+      <title>Edit image using python</title>
+      <link>/2020/08/14/edit-image-using-python/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/14/edit-image-using-python/</guid>
+      <description>from PIL import Image, ImageFilterimage1 = Image.open(&amp;#39;1.png&amp;#39;)image2 = image1.filter(ImageFilter.CONTOUR)image2.save(&amp;#39;2.png&amp;#39;)image1.show()image2.show()Figure 1: image1.Figure 2: image2.</description>
+    </item>
+    
+    <item>
       <title>How to derive the beautiful probability density function (pdf) of Normal Distribution?</title>
       <link>/2020/08/13/distributions/</link>
       <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>

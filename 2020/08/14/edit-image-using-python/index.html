@@ -77,18 +77,22 @@
 
 
 <pre class="python"><code>from PIL import Image, ImageFilter
-image = Image.open(&#39;../../1.png&#39;)
-image2 = image.filter(ImageFilter.CONTOUR)
-image2.save(&#39;../../2.png&#39;)
-image.show()</code></pre>
-<div class="figure">
-<img src="../../1.png" alt="" />
-<p class="caption">image1</p>
+image1 = Image.open(&#39;1.png&#39;)
+image2 = image1.filter(ImageFilter.CONTOUR)
+image2.save(&#39;2.png&#39;)
+image1.show()
+image2.show()</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="1.png" alt="image1." width="50%" />
+<p class="caption">
+Figure 1: image1.
+</p>
 </div>
-<pre class="python"><code>image2.show()</code></pre>
-<div class="figure">
-<img src="../../2.png" alt="" />
-<p class="caption">image2</p>
+<div class="figure"><span id="fig:unnamed-chunk-3"></span>
+<img src="2.png" alt="image2." width="50%" />
+<p class="caption">
+Figure 2: image2.
+</p>
 </div>
 
     </div>
