@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>regression on A Hugo website</title>
+    <title>Regression on A Hugo website</title>
     <link>/tags/regression/</link>
-    <description>Recent content in regression on A Hugo website</description>
+    <description>Recent content in Regression on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 04 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2020/08/10/hello-r-markdown/</link>
-      <pubDate>Mon, 10 Aug 2020 00:00:00 +0000</pubDate>
+      <title>Regression random variable Y for a given value x</title>
+      <link>/2020/09/04/regression-random-variable-y-for-a-given-value-x/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/08/10/hello-r-markdown/</guid>
-      <description>R MarkdownIncluding Plots\(S_n = \sum_{i=1}^n X_i\)
-R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.</description>
+      <guid>/2020/09/04/regression-random-variable-y-for-a-given-value-x/</guid>
+      <description>We want to make regression of a random variable \(Y\) for a given value \(x\), the function \(f_{Y|x}(y)\) denotes the pdf of the random variable \(Y\) for a given value \(x\), and the expected value associated with \(f_{Y|x}(y)\) is \(E(Y | x)\). The function\(y = E(Y | x)\) is called the regression curve of \(Y\) on \(x\). The regression model is called simple linear model if it satisfy the \(4\) assumptions:</description>
+    </item>
+    
+    <item>
+      <title>Linear Regression</title>
+      <link>/2020/09/03/linear-regression/</link>
+      <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/03/linear-regression/</guid>
+      <description>If there are \(n\) points \((x_1,y_1),(x_2,y_3),...,(x_n,y_n)\), the straight line \(y=a+bx\) minimizing the sum of the squares of the vertical distances from the data points to the line \(L=\sum_{i=1}^{n}(y_i-a-bx_i)^2\), then we take partial derivatives of L with respect to \(a\) and \(b\) and let them equal to \(0\) to get least squares coefficients \(a\) and \(b\):\[\frac{\partial L}{\partial b}=-2\sum_{i=1}^{n}(y_i-a-bx_i)x_i=0\], then \[\sum_{i=1}^{n}x_iy_i=a\sum_{i=1}^{n}x_i+b\sum_{i=1}^{n}x_i^2\]
+And, \[\frac{\partial L}{\partial a}=-2\sum_{i=1}^{n}(y_i-a-bx_i)=0\], then\[\sum_{i=1}^{n}y_i=na+b\sum_{i=1}^{n}x_i\]these 2 equations are:\[\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_i^2\\n &amp;amp; \displaystyle\sum_{i=1}^{n}x_i\\\end{bmatrix}\begin{bmatrix}a\\b\end{bmatrix}=\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_iy_i\\\displaystyle\sum_{i=1}^{n}y_i\end{bmatrix}\]then, using Cramer’s rule\[\begin{align}b&amp;amp;=\frac{\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_iy_i\\n &amp;amp; \displaystyle\sum_{i=1}^{n}y_i\\\end{bmatrix}}{\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_i^2\\n &amp;amp; \displaystyle\sum_{i=1}^{n}x_i\\\end{bmatrix}}\\&amp;amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)-n(\displaystyle\sum_{i=1}^{n}x_iy_i)}{(\displaystyle\sum_{i=1}^{n}x_i)^2-n\displaystyle\sum_{i=1}^{n}x_i^2}\\&amp;amp;=\frac{n(\displaystyle\sum_{i=1}^{n}x_iy_i)-(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{n\displaystyle\sum_{i=1}^{n}x_i^2-(\displaystyle\sum_{i=1}^{n}x_i)^2}\\&amp;amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_iy_i)-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{\displaystyle\sum_{i=1}^{n}x_i^2-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)^2}\end{align}\], and, \(a=\frac{\displaystyle\sum_{i=1}^{n}y_i-b\sum_{i=1}^{n}x_i}{n}=\bar y-b\bar x\), which shows point \((\bar x, \bar y)\) is in the line.</description>
     </item>
     
   </channel>

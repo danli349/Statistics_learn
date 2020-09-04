@@ -6,10 +6,29 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 04 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Regression random variable Y for a given value x</title>
+      <link>/2020/09/04/regression-random-variable-y-for-a-given-value-x/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/04/regression-random-variable-y-for-a-given-value-x/</guid>
+      <description>We want to make regression of a random variable \(Y\) for a given value \(x\), the function \(f_{Y|x}(y)\) denotes the pdf of the random variable \(Y\) for a given value \(x\), and the expected value associated with \(f_{Y|x}(y)\) is \(E(Y | x)\). The function\(y = E(Y | x)\) is called the regression curve of \(Y\) on \(x\). The regression model is called simple linear model if it satisfy the \(4\) assumptions:</description>
+    </item>
+    
+    <item>
+      <title>Linear Regression</title>
+      <link>/2020/09/03/linear-regression/</link>
+      <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/03/linear-regression/</guid>
+      <description>If there are \(n\) points \((x_1,y_1),(x_2,y_3),...,(x_n,y_n)\), the straight line \(y=a+bx\) minimizing the sum of the squares of the vertical distances from the data points to the line \(L=\sum_{i=1}^{n}(y_i-a-bx_i)^2\), then we take partial derivatives of L with respect to \(a\) and \(b\) and let them equal to \(0\) to get least squares coefficients \(a\) and \(b\):\[\frac{\partial L}{\partial b}=-2\sum_{i=1}^{n}(y_i-a-bx_i)x_i=0\], then \[\sum_{i=1}^{n}x_iy_i=a\sum_{i=1}^{n}x_i+b\sum_{i=1}^{n}x_i^2\]
+And, \[\frac{\partial L}{\partial a}=-2\sum_{i=1}^{n}(y_i-a-bx_i)=0\], then\[\sum_{i=1}^{n}y_i=na+b\sum_{i=1}^{n}x_i\]these 2 equations are:\[\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_i^2\\n &amp;amp; \displaystyle\sum_{i=1}^{n}x_i\\\end{bmatrix}\begin{bmatrix}a\\b\end{bmatrix}=\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_iy_i\\\displaystyle\sum_{i=1}^{n}y_i\end{bmatrix}\]then, using Cramer’s rule\[\begin{align}b&amp;amp;=\frac{\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_iy_i\\n &amp;amp; \displaystyle\sum_{i=1}^{n}y_i\\\end{bmatrix}}{\begin{bmatrix}\displaystyle\sum_{i=1}^{n}x_i &amp;amp; \displaystyle\sum_{i=1}^{n}x_i^2\\n &amp;amp; \displaystyle\sum_{i=1}^{n}x_i\\\end{bmatrix}}\\&amp;amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)-n(\displaystyle\sum_{i=1}^{n}x_iy_i)}{(\displaystyle\sum_{i=1}^{n}x_i)^2-n\displaystyle\sum_{i=1}^{n}x_i^2}\\&amp;amp;=\frac{n(\displaystyle\sum_{i=1}^{n}x_iy_i)-(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{n\displaystyle\sum_{i=1}^{n}x_i^2-(\displaystyle\sum_{i=1}^{n}x_i)^2}\\&amp;amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_iy_i)-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{\displaystyle\sum_{i=1}^{n}x_i^2-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)^2}\end{align}\], and, \(a=\frac{\displaystyle\sum_{i=1}^{n}y_i-b\sum_{i=1}^{n}x_i}{n}=\bar y-b\bar x\), which shows point \((\bar x, \bar y)\) is in the line.</description>
+    </item>
     
     <item>
       <title>The square of Student t random variable is a F distribution with with 1 and n df</title>
@@ -102,15 +121,6 @@ let Y denote the waiting time to the occurrence of the \(r^{th}\) Poisson event,
       <description>The Gamma function:\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\) \(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)
 The product of two Gamma functions:\[\begin{align}\Gamma(x)\Gamma(y)&amp;amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\&amp;amp;=\int_{u=0}^{+\infty}\int_{v=0}^{+\infty}e^{-(u+v)}u^{x-1}v^{y-1}dudv \quad (let\quad u+v=z; \quad u/z=t; \quad v/z=1-t; \quad dudv=zdtdz)\\&amp;amp;=\int_{z=0}^{+\infty}\int_{t=0}^{t=1}e^{-z}(zt)^{x-1}(z(1-t))^{y-1}zdtdz\\&amp;amp;=\int_{z=0}^{+\infty}e^{-z}z^{(x+y-1)}dz\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\\&amp;amp;=\Gamma(x+y)\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\end{align}\]
 We define this integral \(\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt\) as \(B(x,y),\quad (x&amp;gt;0 ;\quad y&amp;gt;0)\), this is the Beta function.\(B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\) \(\Bigl(=\frac{(x-1)!(y-1)!}{(x+y-1)!}\quad x;y\in \mathbb Z^+ \Bigr)\) this is the complete Beta function.\(B(x;a,b)=\int_{t=0}^{t=x}t^{(a-1)}(1-t)^{(b-1)}dt\) is the incomplete Beta function.And \(I_x(a,b)=\frac{B(x;a,b)}{B(a,b)}\) is the Regularized incomplete Beta function.</description>
-    </item>
-    
-    <item>
-      <title>Edit image using python</title>
-      <link>/2020/08/14/edit-image-using-python/</link>
-      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/08/14/edit-image-using-python/</guid>
-      <description>from PIL import Image, ImageFilterimage1 = Image.open(&amp;#39;1.png&amp;#39;)image2 = image1.filter(ImageFilter.CONTOUR)image2.save(&amp;#39;2.png&amp;#39;)image1.show()image2.show()Figure 1: image1.Figure 2: image2.</description>
     </item>
     
     <item>

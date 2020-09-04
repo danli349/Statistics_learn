@@ -91,6 +91,10 @@ text( 0, .6*max(y) , bquote( paste(mu ,&quot; = 0 &quot;) )
 text( 0, .5*max(y) , bquote( paste(sigma ,&quot; = 1 &quot;) )
       , cex=1.5 )</code></pre>
 <p><img src="../../../../post/2020-08-13-distributions_files/figure-html/unnamed-chunk-1-1.svg" width="576" /></p>
+<pre class="r"><code>par(mar = c(4, 4, 2, .1))
+curve(dnorm, -3, 3, xlab = &#39;x&#39;, ylab = &#39;Phi(x)&#39;,
+      main = &#39;The density function&#39;)</code></pre>
+<p><img src="../../../../post/2020-08-13-distributions_files/figure-html/unnamed-chunk-2-1.svg" width="576" /></p>
 <p>Let <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span>, . . . be a set of random variables with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, then <span class="math inline">\(E(W_i-\mu)=0\)</span>, <span class="math inline">\(Var(W_i-\mu)=\sigma^2\)</span>.</p>
 <p>Let <span class="math inline">\(S_i=(W_i-\mu)/\sigma\)</span>, then <span class="math inline">\(E(S_i)=0\)</span> and <span class="math inline">\(Var(S_i)=1\)</span>, and then the moment-generating functions of <span class="math inline">\(S_i\)</span> is <span class="math inline">\(M(t)\)</span></p>
 <p>Then, <span class="math inline">\(M_{(S_1+...+S_N)/\sqrt{n}}(t)=[M(t/\sqrt{n})]^n\)</span>,</p>
