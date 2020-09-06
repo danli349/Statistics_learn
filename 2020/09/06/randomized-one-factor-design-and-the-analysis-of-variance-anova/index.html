@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>Randomized one-factor design and the analysis of variance (ANOVA) - A Hugo website</title>
+<meta property="og:title" content="Randomized one-factor design and the analysis of variance (ANOVA) - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Randomized one-factor design and the analysis of variance (ANOVA)</h1>
+
+    
+    <span class="article-date">2020-09-06</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>If we want to compare the average effects elicited by <span class="math inline">\(k\)</span> different levels of some given factor, there will be <span class="math inline">\(k\)</span> <strong>independent</strong> random samples of sizes <span class="math inline">\(n_j\quad (j=1,2,...,k)\)</span>, the total sample size is <span class="math inline">\(n=\displaystyle\sum_{j=1}^{k}n_j\)</span>. Let <span class="math inline">\(Y_{ij}\)</span> represent the <span class="math inline">\(i^{th}\)</span> observation recorded for the <span class="math inline">\(j^{th}\)</span> level.
+<span class="math display">\[
+  \begin{array}{c|cccc}
+  &amp;&amp;\text{treatment}&amp;\text{levels}&amp;\\
+  \hline
+    &amp; 1 &amp; 2 &amp; \cdots &amp; k \\
+    \hline
+    &amp; Y_{11} &amp; Y_{12} &amp; \cdots &amp; Y_{1k} \\
+    &amp; Y_{21} &amp; Y_{22} &amp; \cdots &amp; Y_{2k} \\
+    &amp;\vdots &amp;\vdots &amp;\cdots&amp;\vdots \\
+    &amp;Y_{n_11} &amp;Y_{n_22} &amp;\cdots&amp;Y_{n_kk} \\
+  \text{Sample sizes:}&amp;n_1&amp;n_2&amp;\cdots&amp;n_k\\
+  \text{Sample totals:}&amp;T_{. 1}&amp;T_{. 2}&amp;\cdots&amp;T_{. k}\\
+  \text{Sample means:}&amp;\overline Y_{. 1}&amp;\overline Y_{. 2}&amp;\cdots&amp;\overline Y_{. k}\\
+  \text{True means:}&amp;\mu_1&amp;\mu_2&amp;\cdots&amp;\mu_k\\
+  \end{array}
+\]</span></p>
+<p>Where <span class="math display">\[T_{.j}=\displaystyle\sum_{i=1}^{n_j}Y_{ij}\]</span>, <span class="math display">\[\overline Y_{.j}=\frac{1}{n_j}\displaystyle\sum_{i=1}^{n_j}Y_{ij}=\frac{T_{.j}}{n_j}\]</span>, and
+<span class="math display">\[T_{..}=\sum_{j=1}^{k}\sum_{i=1}^{n_j}Y_{ij}=\sum_{j=1}^{k}T_{.j}\]</span>, <span class="math display">\[\overline T_{..}=\frac{1}{n}T_{..}\]</span></p>
+<p>Now we presume that for each <span class="math inline">\(j\)</span>, <span class="math inline">\(Y_{1j}, Y_{2j}, . . . ,Y_{njj}\)</span> is a random sample from a <strong>normal</strong> distribution and <strong>independent</strong> with each other with mean <span class="math inline">\(\mu_j,j = 1, 2, . . . , k,\)</span> and variance <span class="math inline">\(\sigma^2\)</span> (constant for all <span class="math inline">\(j\)</span>).</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

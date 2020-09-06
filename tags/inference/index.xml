@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Inference on A Hugo website</title>
+    <link>/tags/inference/</link>
+    <description>Recent content in Inference on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 06 Sep 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/inference/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Randomized one-factor design and the analysis of variance (ANOVA)</title>
+      <link>/2020/09/06/randomized-one-factor-design-and-the-analysis-of-variance-anova/</link>
+      <pubDate>Sun, 06 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/06/randomized-one-factor-design-and-the-analysis-of-variance-anova/</guid>
+      <description>If we want to compare the average effects elicited by \(k\) different levels of some given factor, there will be \(k\) independent random samples of sizes \(n_j\quad (j=1,2,...,k)\), the total sample size is \(n=\displaystyle\sum_{j=1}^{k}n_j\). Let \(Y_{ij}\) represent the \(i^{th}\) observation recorded for the \(j^{th}\) level.\[\begin{array}{c|cccc}&amp;amp;&amp;amp;\text{treatment}&amp;amp;\text{levels}&amp;amp;\\\hline&amp;amp; 1 &amp;amp; 2 &amp;amp; \cdots &amp;amp; k \\\hline&amp;amp; Y_{11} &amp;amp; Y_{12} &amp;amp; \cdots &amp;amp; Y_{1k} \\&amp;amp; Y_{21} &amp;amp; Y_{22} &amp;amp; \cdots &amp;amp; Y_{2k} \\&amp;amp;\vdots &amp;amp;\vdots &amp;amp;\cdots&amp;amp;\vdots \\&amp;amp;Y_{n_11} &amp;amp;Y_{n_22} &amp;amp;\cdots&amp;amp;Y_{n_kk} \\\text{Sample sizes:}&amp;amp;n_1&amp;amp;n_2&amp;amp;\cdots&amp;amp;n_k\\\text{Sample totals:}&amp;amp;T_{.</description>
+    </item>
+    
+  </channel>
+</rss>
