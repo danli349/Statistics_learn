@@ -6,10 +6,20 @@
     <description>Recent content in Regression on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>covariance and correlation coefficient</title>
+      <link>/2020/09/05/covariance-and-correlation-coefficient/</link>
+      <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/05/covariance-and-correlation-coefficient/</guid>
+      <description>We define the covariance of any two random variables \(X\) and \(Y\), written \(Cov(X,Y)\), as: \(Cov(X,Y) = E(XY) − E(X)E(Y)\).If \(X\) and \(Y\) are independent random variables,\[\begin{align}E(XY)&amp;amp;=\int\int xy\cdot f_{X,Y}(x,y)dxdy\\&amp;amp;=\int\int xy\cdot f_X(x)f_Y(y)dxdy\\&amp;amp;=\int x\cdot f_X(x)dx\int y\cdot f_Y(y)dy\\&amp;amp;=E(X)E(Y)\end{align}\], then \(Cov(X,Y) = E(XY) − E(X)E(Y)=0\)
+The Variance of the sum of two random variables \(aX + bY\) is:\[\begin{align}Var(aX + bY) &amp;amp;= E(aX + bY)^2-(E(aX + bY))^2\\&amp;amp;=E(aX + bY)^2-(a\mu_X+b\mu_Y)^2\\&amp;amp;=E(a^2X^2+2aXbY+b^2Y^2)-a^2\mu_X^2-2a\mu_Xb\mu_Y-b^2\mu_Y^2\\&amp;amp;=a^2(E(X^2)-\mu_X^2)+b^2(E(Y^2)-\mu_Y^2)+2ab(E(XY)-\mu_X\mu_Y)\\&amp;amp;=a^2Var(X)+b^2Var(Y)+2abCov(X,Y)\end{align}\].</description>
+    </item>
     
     <item>
       <title>Regression random variable Y for a given value x</title>
