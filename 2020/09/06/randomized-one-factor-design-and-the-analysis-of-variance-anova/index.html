@@ -121,7 +121,19 @@ SSTOT&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{..})^2\\
 &amp;=SSE+SSTR
 \end{align}\]</span></p>
 <p>Because <span class="math inline">\(SSTR/\sigma^2\)</span> and <span class="math inline">\(SSE/\sigma^2\)</span> are independent <span class="math inline">\(\chi^2\)</span> square random variables with <span class="math inline">\(k − 1\)</span> and <span class="math inline">\(n − k\)</span> df,<br />
-if <span class="math inline">\(H0:\mu_1 = \mu_2 = \cdots = \mu_k=\mu\)</span> is true, <span class="math display">\[F=\frac{SSTR/(k-1)}{SSE/(n-k)}\]</span> has a <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(k − 1\)</span> and <span class="math inline">\(n − k\)</span> df.</p>
+if <span class="math inline">\(H0:\mu_1 = \mu_2 = \cdots = \mu_k\)</span> is true, <span class="math display">\[F=\frac{SSTR/(k-1)}{SSE/(n-k)}\]</span> has a <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(k − 1\)</span> and <span class="math inline">\(n − k\)</span> df.</p>
+<p><strong>ANOVA table</strong> for testing <span class="math inline">\(H0:\mu_1 = \mu_2 = \cdots = \mu_k\)</span>:</p>
+<p><span class="math display">\[
+\begin{array}{lccccc}
+\hline
+Source &amp; df &amp; SS &amp; MS &amp; F &amp; P \\
+\hline
+Treatment &amp; k-1 &amp; SSTR &amp; MSTR &amp; \frac{MSTR}{MSE} &amp; P(F_{k−1,n− k} \ge F(observed)) \\
+Error &amp; n-k &amp; SSE &amp; MSE &amp;  \\
+Total &amp; n-1 &amp; SSTOT\\
+\hline
+\end{array}
+\]</span></p>
 
     </div>
   </article>
