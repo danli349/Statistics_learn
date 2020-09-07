@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Randomized one-factor design and the analysis of variance (ANOVA)</h1>
@@ -88,9 +88,25 @@
   \text{True means:}&amp;\mu_1&amp;\mu_2&amp;\cdots&amp;\mu_k\\
   \end{array}
 \]</span></p>
-<p>Where <span class="math display">\[T_{.j}=\displaystyle\sum_{i=1}^{n_j}Y_{ij}\]</span>, <span class="math display">\[\overline Y_{.j}=\frac{1}{n_j}\displaystyle\sum_{i=1}^{n_j}Y_{ij}=\frac{T_{.j}}{n_j}\]</span>, and
-<span class="math display">\[T_{..}=\sum_{j=1}^{k}\sum_{i=1}^{n_j}Y_{ij}=\sum_{j=1}^{k}T_{.j}\]</span>, <span class="math display">\[\overline T_{..}=\frac{1}{n}T_{..}\]</span></p>
-<p>Now we presume that for each <span class="math inline">\(j\)</span>, <span class="math inline">\(Y_{1j}, Y_{2j}, . . . ,Y_{njj}\)</span> is a random sample from a <strong>normal</strong> distribution and <strong>independent</strong> with each other with mean <span class="math inline">\(\mu_j,j = 1, 2, . . . , k,\)</span> and variance <span class="math inline">\(\sigma^2\)</span> (constant for all <span class="math inline">\(j\)</span>).</p>
+<p>Where <span class="math display">\[T_{.j}=\displaystyle\sum_{i=1}^{n_j}Y_{ij}\]</span>, <span class="math display">\[\overline Y_{.j}=\frac{1}{n_j}\displaystyle\sum_{i=1}^{n_j}Y_{ij}=\frac{T_{.j}}{n_j}\]</span>, and the overall total is <span class="math display">\[T_{..}=\sum_{j=1}^{k}\sum_{i=1}^{n_j}Y_{ij}=\sum_{j=1}^{k}T_{.j}\]</span>, overall mean is <span class="math display">\[\overline Y_{..}=\frac{1}{n}T_{..}\]</span></p>
+<p>Now we presume that for each <span class="math inline">\(j\)</span>, <span class="math inline">\(Y_{1j}, Y_{2j}, . . . ,Y_{njj}\)</span> is a random sample from a <strong>normal</strong> distribution and <strong>independent</strong> with each other with mean <span class="math inline">\(\mu_j,j = 1, 2, . . . , k,\)</span> and variance <span class="math inline">\(\sigma^2\)</span> (constant for all <span class="math inline">\(j\)</span>). The maximum likelihood estimator of <span class="math inline">\(μ_j\)</span> is <span class="math inline">\(\overline Y_{.j}\)</span> and the maximum likelihood estimator of <span class="math inline">\(μ\)</span> is <span class="math inline">\(\overline Y_{..}\)</span>.</p>
+<p>The <span style="color: red;"><strong>sum of squares of treatment (<span class="math inline">\(SSTR\)</span>)</strong></span> estimates the variation among the <span class="math inline">\(\mu_j\)</span>’s and is defined by
+<span class="math display">\[\begin{align}
+SSTR=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(\overline Y_{.j}-\overline Y_{..})^2
+&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\overline Y_{..})^2\\
+&amp;=\sum_{j=1}^{k}n_j\Bigl[(\overline Y_{.j}-\mu)-(\overline Y_{..}-\mu)\Bigr]^2\\
+&amp;=\sum_{j=1}^{k}n_j\Bigl[(\overline Y_{.j}-\mu)^2-2(\overline Y_{.j}-\mu)(\overline Y_{..}-\mu)+(\overline Y_{..}-\mu)^2\Bigr]\\
+&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2+\sum_{j=1}^{k}n_j(\overline Y_{..}-\mu)^2-2\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)(\overline Y_{..}-\mu)\\
+&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2+n(\overline Y_{..}-\mu)^2-2(\overline Y_{..}-\mu)n(\overline Y_{..}-\mu)\\
+&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}-\mu)^2
+\end{align}\]</span>. Then,
+<span class="math display">\[\begin{align}
+E(SSTR)&amp;=E\Bigl(\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}-\mu)^2\Bigr)\\
+&amp;=\sum_{j=1}^{k}n_jE(\overline Y_{.j}-\mu)^2-nE(\overline Y_{..}-\mu)^2\\
+&amp;=\sum_{j=1}^{k}n_j\Bigl(Var(\overline Y_{.j}-\mu)+(E(\overline Y_{.j}-\mu))^2\Bigr)-n\frac{\sigma^2}{n}\\
+&amp;=\sum_{j=1}^{k}n_j(\frac{\sigma^2}{n_j})+\sum_{j=1}^{k}n_j(E(\overline Y_{.j}-\mu))^2-\sigma^2\\
+&amp;=(k-1)\sigma^2+\sum_{j=1}^{k}n_j(\mu_j-\mu)^2
+\end{align}\]</span>. When <span class="math inline">\(\sigma^2\)</span> is known, the null hypothesis that the treatment level means are all equal <span class="math inline">\(H0:μ_1 = μ_2 = \cdots = μ_k=\mu\)</span> is true, <span class="math inline">\(E(SSTR)=(k-1)\sigma^2\)</span>, and <span class="math inline">\(\frac{SSTR}{\sigma^2}\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(k − 1\)</span> degrees of freedom.</p>
 
     </div>
   </article>
