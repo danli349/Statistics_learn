@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">Randomized one-factor design and the analysis of variance (ANOVA)</h1>
@@ -106,7 +106,22 @@ E(SSTR)&amp;=E\Bigl(\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}
 &amp;=\sum_{j=1}^{k}n_j\Bigl(Var(\overline Y_{.j}-\mu)+(E(\overline Y_{.j}-\mu))^2\Bigr)-n\frac{\sigma^2}{n}\\
 &amp;=\sum_{j=1}^{k}n_j(\frac{\sigma^2}{n_j})+\sum_{j=1}^{k}n_j(E(\overline Y_{.j}-\mu))^2-\sigma^2\\
 &amp;=(k-1)\sigma^2+\sum_{j=1}^{k}n_j(\mu_j-\mu)^2
-\end{align}\]</span>. When <span class="math inline">\(\sigma^2\)</span> is known, the null hypothesis that the treatment level means are all equal <span class="math inline">\(H0:μ_1 = μ_2 = \cdots = μ_k=\mu\)</span> is true, <span class="math inline">\(E(SSTR)=(k-1)\sigma^2\)</span>, and <span class="math inline">\(\frac{SSTR}{\sigma^2}\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(k − 1\)</span> degrees of freedom.</p>
+\end{align}\]</span>.</p>
+<p>When <span class="math inline">\(\sigma^2\)</span> is known, the null hypothesis that the treatment level means are all equal <span class="math inline">\(H0:\mu_1 = \mu_2 = \cdots = \mu_k=\mu\)</span> is true, <span class="math inline">\(E(SSTR)=(k-1)\sigma^2\)</span>, and <span class="math inline">\(\frac{SSTR}{\sigma^2}\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(k − 1\)</span> degrees of freedom.</p>
+<p>When <span class="math inline">\(\sigma^2\)</span> is unknown, the <span class="math inline">\(j^{th}\)</span> sample variance is:
+<span class="math display">\[S_j^2=\frac{1}{n_j-1}\displaystyle\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})^2\]</span>, and the <span style="color: red;"><strong>sum of squares of error (SSE)</strong></span> is: <span class="math display">\[SSE=\sum_{j=1}^{k}(n_j-1)S_j^2=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})^2\]</span>.</p>
+<p>Whether or not <span class="math inline">\(\mu_1 = \mu_2 = \cdots = \mu_k\)</span> is true, <span class="math inline">\((n_j-1)S_j^2/\sigma^2\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(n_j − 1\)</span> degrees of freedom, and <span class="math inline">\(SSE/\sigma^2\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(n − k\)</span> degrees of freedom.</p>
+<p>The <span style="color: red;"><strong>Sum of squares of total (SSTOT)</strong></span> is the variation of the data about the parameter <span class="math inline">\(\mu\)</span>,
+<span class="math display">\[\begin{align}
+SSTOT&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{..})^2\\
+&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}\Bigl[(Y_{ij}-\overline Y_{.j})+(\overline Y_{.j}-\overline Y_{..})\Bigr]^2\\
+&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})^2+\sum_{j=1}^{k}\sum_{i=1}^{n_j}(\overline Y_{.j}-\overline Y_{..})^2+2\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})(\overline Y_{.j}-\overline Y_{..})\\
+&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})^2+\sum_{j=1}^{k}\sum_{i=1}^{n_j}(\overline Y_{.j}-\overline Y_{..})^2+2\sum_{j=1}^{k}(\overline Y_{.j}-\overline Y_{..})\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})\\
+&amp;=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(Y_{ij}-\overline Y_{.j})^2+\sum_{j=1}^{k}\sum_{i=1}^{n_j}(\overline Y_{.j}-\overline Y_{..})^2\\
+&amp;=SSE+SSTR
+\end{align}\]</span></p>
+<p>Because <span class="math inline">\(SSTR/\sigma^2\)</span> and <span class="math inline">\(SSE/\sigma^2\)</span> are independent <span class="math inline">\(\chi^2\)</span> square random variables with <span class="math inline">\(k − 1\)</span> and <span class="math inline">\(n − k\)</span> df,<br />
+if <span class="math inline">\(H0:\mu_1 = \mu_2 = \cdots = \mu_k=\mu\)</span> is true, <span class="math display">\[F=\frac{SSTR/(k-1)}{SSE/(n-k)}\]</span> has a <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(k − 1\)</span> and <span class="math inline">\(n − k\)</span> df.</p>
 
     </div>
   </article>

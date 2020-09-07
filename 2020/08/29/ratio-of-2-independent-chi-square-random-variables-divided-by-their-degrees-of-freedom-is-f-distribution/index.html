@@ -73,7 +73,7 @@
 
 <p>When V and U are 2 <span class="math inline">\(\chi^2\)</span> independent random variables: <span class="math inline">\(f_V(v)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}v^{(\frac{m}{2})-1}e^{-\frac{1}{2}v}\)</span><br />
 <span class="math inline">\(f_U(u)=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{(\frac{n}{2})-1}e^{-\frac{1}{2}u}\)</span><br />
-with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom, then, The pdf for <span class="math inline">\(W=V/U\)</span> is:<br />
+with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom, then, the pdf for <span class="math inline">\(W=V/U\)</span> is:<br />
 <span class="math display">\[\begin{align}
 f_{V/U}(\omega)&amp;=\int_{0}^{+\infty}|u|f_U(u)f_V(u\omega)du\\
 &amp;=\int_{0}^{+\infty}u\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{\frac{n}{2}-1}e^{-\frac{1}{2}u}  \frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(u\omega)^{\frac{m}{2}-1}e^{-\frac{1}{2}u\omega}du\\
@@ -82,14 +82,14 @@ f_{V/U}(\omega)&amp;=\int_{0}^{+\infty}|u|f_U(u)f_V(u\omega)du\\
 &amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} (\frac{\Gamma(\frac{n+m}{2})}{(\frac{1}{2}(1+\omega))^{\frac{n+m}{2}}})\\
 &amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{\omega^{\frac{m}{2}-1}}{(1+\omega)^{\frac{n+m}{2}}}
 \end{align}\]</span></p>
-<p>Then,
+<p>Then, the pdf for <span class="math inline">\(W=\frac{V/m}{U/n}\)</span> is:
 <span class="math display">\[\begin{align}
 f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
 &amp;=\frac{m}{n}f_{V/U}(\frac{m}{n}\omega)\\
 &amp;=\frac{m}{n}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(1+\frac{m}{n}\omega)^{\frac{n+m}{2}}}\\
 &amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m}{n}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}n^{\frac{n+m}{2}}\\
 &amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}
-\end{align}\]</span></p>
+\end{align}\]</span>, which is a <span style="color: red;"><strong><span class="math inline">\(F\)</span> distribution</strong></span> with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom.</p>
 
     </div>
   </article>
