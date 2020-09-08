@@ -73,7 +73,8 @@
 
 <p>If we want to compare the average effects elicited by <span class="math inline">\(k\)</span> different levels of some given factor, there will be <span class="math inline">\(k\)</span> <strong>independent</strong> random samples of sizes <span class="math inline">\(n_j\quad (j=1,2,...,k)\)</span>, the total sample size is <span class="math inline">\(n=\displaystyle\sum_{j=1}^{k}n_j\)</span>. Let <span class="math inline">\(Y_{ij}\)</span> represent the <span class="math inline">\(i^{th}\)</span> observation recorded for the <span class="math inline">\(j^{th}\)</span> level.
 <span class="math display">\[
-  \begin{array}{c|cccc}
+  \begin{array}{|c|cccc|}
+  \hline
   &amp;&amp;\text{treatment}&amp;\text{levels}&amp;\\
   \hline
     &amp; 1 &amp; 2 &amp; \cdots &amp; k \\
@@ -86,6 +87,7 @@
   \text{Sample totals:}&amp;T_{. 1}&amp;T_{. 2}&amp;\cdots&amp;T_{. k}\\
   \text{Sample means:}&amp;\overline Y_{. 1}&amp;\overline Y_{. 2}&amp;\cdots&amp;\overline Y_{. k}\\
   \text{True means:}&amp;\mu_1&amp;\mu_2&amp;\cdots&amp;\mu_k\\
+  \hline
   \end{array}
 \]</span></p>
 <p>Where <span class="math display">\[T_{.j}=\displaystyle\sum_{i=1}^{n_j}Y_{ij}\]</span>, <span class="math display">\[\overline Y_{.j}=\frac{1}{n_j}\displaystyle\sum_{i=1}^{n_j}Y_{ij}=\frac{T_{.j}}{n_j}\]</span>, and the overall total is <span class="math display">\[T_{..}=\sum_{j=1}^{k}\sum_{i=1}^{n_j}Y_{ij}=\sum_{j=1}^{k}T_{.j}\]</span>, overall mean is <span class="math display">\[\overline Y_{..}=\frac{1}{n}T_{..}\]</span></p>
