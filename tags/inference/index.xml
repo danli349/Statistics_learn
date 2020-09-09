@@ -17,8 +17,7 @@
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/09/07/testing-subhypotheses-with-contrasts/</guid>
-      <description>A linear combination of the true means of \(k\) factor levels \(\mu_1,\mu_2,\cdots,\mu_k\) of the randomized-one-factor-design \(C=\displaystyle\sum_{j=1}^{k}c_j\mu_j\) is said to be a contrast if the sum of its coefficients \(\displaystyle\sum_{j=1}^{k}c_j=0\). Because \(\overline Y_{.j}\) is always an unbiased estimator for \(\mu_j\), we can use it to estimate C \(\hat C=\displaystyle\sum_{j=1}^{k}c_j\overline Y_{.j}\).
-Then, \(E(\hat C=)=\displaystyle\sum_{j=1}^{k}c_jE(\overline Y_{.j})=C=\displaystyle\sum_{j=1}^{k}c_j\mu_j=C\)</description>
+      <description>A linear combination of the true means of \(k\) factor levels \(\mu_1,\mu_2,\cdots,\mu_k\) of the randomized-one-factor-design \(C=\displaystyle\sum_{j=1}^{k}c_j\mu_j\) is said to be a contrast if the sum of its coefficients \(\displaystyle\sum_{j=1}^{k}c_j=0\). Because \(\overline Y_{.j}\) is always an unbiased estimator for \(\mu_j\), we can use it to estimate C \(\hat C=\displaystyle\sum_{j=1}^{k}c_j\overline Y_{.j}\). Because \(Y_{ij}\) are normal, so \(\hat C\) is also normal.Then, \(E(\hat C)=\displaystyle\sum_{j=1}^{k}c_jE(\overline Y_{.j})=\displaystyle\sum_{j=1}^{k}c_j\mu_j=C\) and \(Var(\hat C)=\displaystyle\sum_{j=1}^{k}c_j^2Var(\overline Y_{.j})=\displaystyle\sum_{j=1}^{k}c_j^2\frac{\sigma^2}{n_j}=\sigma^2\displaystyle\sum_{j=1}^{k}\frac{c_j^2}{n_j}\). Replacing \(\sigma^2\) by its estimate \(MSE\) gives a formula for the estimated variance \(S_{\hat C}^2=MSE\displaystyle\sum_{j=1}^{k}\frac{c_j^2}{n_j}\).</description>
     </item>
     
     <item>
