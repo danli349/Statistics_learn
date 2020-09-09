@@ -17,7 +17,7 @@
       <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/09/09/randomized-block-design/</guid>
-      <description>In the Randomized block design, all of the sample sizes are the same \(b\), which is the blocks, the mathematical model associated with \(Y_{ij}\) is :\(Y_{ij}=\mu_j+\beta_i+\epsilon_{ij}\), the term \(\beta_i\) represents the effect of the \(i^{th}\) block.\[\begin{array}{|cc|cccc ccc|}\hline&amp;amp;&amp;amp;&amp;amp;\text{treatment}&amp;amp;\text{levels}&amp;amp; &amp;amp; &amp;amp; Block\;Totals&amp;amp;Block\;Means&amp;amp; Block\;Effects\\&amp;amp; &amp;amp; 1 &amp;amp; 2 &amp;amp; \cdots &amp;amp; k \\\hline&amp;amp;1&amp;amp; Y_{11} &amp;amp; Y_{12} &amp;amp; \cdots &amp;amp; Y_{1k} &amp;amp;&amp;amp; T_{1.} &amp;amp; \overline Y_{1.</description>
+      <description>In the Randomized block design, all of the sample sizes are the same \(b\), which is the blocks, the mathematical model associated with \(Y_{ij}\) is :\(Y_{ij}=\mu_j+\beta_i+\epsilon_{ij}\), the term \(\beta_i\) represents the effect of the \(i^{th}\) block.\[\begin{array}{|cc|cccc ccc|}\hline&amp;amp;&amp;amp;&amp;amp;\text{treatment}&amp;amp;\text{levels}&amp;amp; &amp;amp; &amp;amp; Block&amp;amp;Block&amp;amp; Block\\&amp;amp; &amp;amp; 1 &amp;amp; 2 &amp;amp; \cdots &amp;amp; k &amp;amp;&amp;amp; Totals &amp;amp; Means &amp;amp; Effects \\\hline&amp;amp;1&amp;amp; Y_{11} &amp;amp; Y_{12} &amp;amp; \cdots &amp;amp; Y_{1k} &amp;amp;&amp;amp; T_{1.</description>
     </item>
     
     <item>
