@@ -100,7 +100,10 @@ SSTR=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(\overline Y_{.j}-\overline Y_{..})^2
 &amp;=\sum_{j=1}^{k}n_j\Bigl[(\overline Y_{.j}-\mu)^2-2(\overline Y_{.j}-\mu)(\overline Y_{..}-\mu)+(\overline Y_{..}-\mu)^2\Bigr]\\
 &amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2+\sum_{j=1}^{k}n_j(\overline Y_{..}-\mu)^2-2\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)(\overline Y_{..}-\mu)\\
 &amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2+n(\overline Y_{..}-\mu)^2-2(\overline Y_{..}-\mu)n(\overline Y_{..}-\mu)\\
-&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}-\mu)^2
+&amp;=\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}-\mu)^2\\
+&amp;=\sum_{j=1}^{k}n_j\overline Y_{.j}^2-2\sum_{j=1}^{k}n_j\overline Y_{.j}\mu+\sum_{j=1}^{k}n_j\mu^2-n\overline Y_{..}^2+2n\overline Y_{..}\mu-n\mu^2\\
+&amp;=\sum_{j=1}^{k}n_j\overline Y_{.j}^2-n\overline Y_{..}^2\\
+&amp;=\sum_{j=1}^{k}\frac{\overline T_{.j}^2}{n_j}-\frac{T_{..}^2}{n}
 \end{align}\]</span>. Then,
 <span class="math display">\[\begin{align}
 E(SSTR)&amp;=E\Bigl(\sum_{j=1}^{k}n_j(\overline Y_{.j}-\mu)^2-n(\overline Y_{..}-\mu)^2\Bigr)\\

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>Randomized block design - A Hugo website</title>
+<meta property="og:title" content="Randomized block design - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Randomized block design</h1>
+
+    
+    <span class="article-date">2020-09-09</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>In the Randomized block design, all of the sample sizes are the same <span class="math inline">\(b\)</span>, which is the blocks, the mathematical model associated with <span class="math inline">\(Y_{ij}\)</span> is :<span class="math inline">\(Y_{ij}=\mu_j+\beta_i+\epsilon_{ij}\)</span>, the term <span class="math inline">\(\beta_i\)</span> represents the effect of the <span class="math inline">\(i^{th}\)</span> block.
+<span class="math display">\[
+  \begin{array}{|cc|cccc ccc|}
+  \hline
+  &amp;&amp;&amp;\text{treatment}&amp;\text{levels}&amp; &amp; &amp; Block\;Totals&amp;Block\;Means&amp; Block\;Effects\\
+    &amp; &amp; 1 &amp; 2 &amp; \cdots &amp; k \\
+    \hline
+    &amp;1&amp; Y_{11} &amp; Y_{12} &amp; \cdots &amp; Y_{1k} &amp;&amp; T_{1.} &amp; \overline Y_{1.}&amp;\beta_1\\
+    &amp;2&amp; Y_{21} &amp; Y_{22} &amp; \cdots &amp; Y_{2k} &amp;&amp; T_{2.} &amp; \overline Y_{2.}&amp;\beta_2\\
+    &amp;\vdots&amp;\vdots &amp;\vdots &amp;\cdots&amp;\vdots &amp;&amp; \vdots &amp; \vdots &amp; \vdots\\
+    &amp;b&amp;Y_{b1} &amp;Y_{b2} &amp;\cdots&amp;Y_{bk} &amp;&amp; T_{b.} &amp; \overline Y_{b.}&amp;\beta_b\\
+  \text{Sample totals:}&amp;&amp;T_{. 1}&amp;T_{. 2}&amp;\cdots&amp;T_{. k} &amp; &amp;T_{. .}\\
+  \text{Sample means:}&amp;&amp;\overline Y_{. 1}&amp;\overline Y_{. 2}&amp;\cdots&amp;\overline Y_{. k} &amp; &amp; &amp;\overline Y_{. .}\\
+  \text{True means:}&amp;&amp;\mu_1&amp;\mu_2&amp;\cdots&amp;\mu_k\\
+  \hline
+  \end{array}
+\]</span></p>
+<p>The estimate for <span class="math inline">\(\beta_i\)</span> is <span class="math inline">\(E(\beta_i)=E(Y_{ij}-\mu_j-\epsilon_{ij})=\overline Y_{i.}-\mu=\overline Y_{i.}-\overline Y_{..}\)</span>. The expression for <span class="math inline">\(SSE\)</span> is:
+<span class="math display">\[\begin{align}
+SSE&amp;=\sum_{i=1}^{b}\sum_{j=1}^{k}(Y_{ij}-\overline Y_{.j})^2\\
+&amp;=\sum_{i=1}^{b}\sum_{j=1}^{k}[(Y_{ij}-\overline Y_{.j})+(\overline Y_{i.}-\overline Y_{..})-(\overline Y_{i.}-\overline Y_{..})]^2\\
+&amp;=\sum_{i=1}^{b}\sum_{j=1}^{k}[(\overline Y_{i.}-\overline Y_{..})+(Y_{ij}-\overline Y_{.j}-\overline Y_{i.}+\overline Y_{..})]^2\\
+&amp;=\sum_{i=1}^{b}\sum_{j=1}^{k}(\overline Y_{i.}-\overline Y_{..})^2+2\sum_{i=1}^{b}\sum_{j=1}^{k}(\overline Y_{i.}-\overline Y_{..})(Y_{ij}-\overline Y_{.j}-\overline Y_{i.}+\overline Y_{..})+\sum_{i=1}^{b}\sum_{j=1}^{k}(Y_{ij}-\overline Y_{.j}-\overline Y_{i.}+\overline Y_{..})^2\\
+&amp;=\sum_{i=1}^{b}\sum_{j=1}^{k}(\overline Y_{i.}-\overline Y_{..})^2+\sum_{i=1}^{b}\sum_{j=1}^{k}(Y_{ij}-\overline Y_{.j}-\overline Y_{i.}+\overline Y_{..})^2
+\end{align}\]</span><br />
+The first term <span class="math inline">\(\displaystyle\sum_{i=1}^{b}\sum_{j=1}^{k}(\overline Y_{i.}-\overline Y_{..})^2\)</span> is called the <span style="color: red;"><strong>sum of squares of block (<span class="math inline">\(SSB\)</span>)</strong></span>, and the second term <span class="math inline">\(\displaystyle\sum_{i=1}^{b}\sum_{j=1}^{k}(Y_{ij}-\overline Y_{.j}-\overline Y_{i.}+\overline Y_{..})^2\)</span> is the new <span style="color: red;"><strong>sum of squares of random error (<span class="math inline">\(SSE\)</span>)</strong></span>.<br />
+The <span style="color: red;"><strong>sum of squares of total (<span class="math inline">\(SSTOT\)</span>)</strong></span> is <span class="math inline">\(\displaystyle\sum_{i=1}^{b}\sum_{j=1}^{k}(Y_{ij}-\overline Y_{..})^2\)</span>.<br />
+The <span style="color: red;"><strong>sum of squares of treatment (<span class="math inline">\(SSTR\)</span>)</strong></span> is <span class="math inline">\(\displaystyle\sum_{i=1}^{b}\sum_{j=1}^{k}(\overline Y_{.j}-\overline Y_{..})^2\)</span>.
+Then <span class="math inline">\(SSTOT=SSTR+SSB+SSE\)</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
