@@ -6,10 +6,21 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Bivariate Normal Distribution</title>
+      <link>/2020/09/10/the-bivariate-normal-distribution/</link>
+      <pubDate>Thu, 10 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/10/the-bivariate-normal-distribution/</guid>
+      <description>The univariate normal pdf is:\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&amp;lt;y&amp;lt;+\infty\]
+The bivariate normal pdf is, \[f_{X,Y}(x, y)=Ke^{-\frac{1}{2}c(x^2-2\nu xy+y^2)}, \quad -\infty&amp;lt;x, y&amp;lt;+\infty\] where \(c\) and \(\nu\) are constants.\[\begin{align}f_{X,Y}(x, y)&amp;amp;=Ke^{-\frac{1}{2}c(x^2-2\nu xy+y^2)}\\&amp;amp;=Ke^{-\frac{1}{2}c(x^2-\nu^2x^2+\nu^2x^2-2\nu xy+y^2)}\\&amp;amp;=Ke^{-\frac{1}{2}c(x^2-\nu^2x^2)+(\nu x-y)^2}\\&amp;amp;=Ke^{-\frac{1}{2}cx^2(1-\nu^2)}e^{-\frac{1}{2}c(\nu x-y)^2}\\\end{align}\] The exponents must be negative, so \(1-\nu^2&amp;gt;0\).
+\[\begin{align}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}f_{X,Y}(x, y)dxdy&amp;amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}Ke^{-\frac{1}{2}cx^2(1-\nu^2)}e^{-\frac{1}{2}c(\nu x-y)^2}dxdy\\&amp;amp;=K\int_{-\infty}^{+\infty}e^{-\frac{1}{2}cx^2(1-\nu^2)} \Biggl[\int_{-\infty}^{+\infty}e^{-\frac{1}{2}c(y-\nu x)^2}dy\Biggr]dx\\&amp;amp;=K\int_{-\infty}^{+\infty}e^{-\frac{1}{2}cx^2(1-\nu^2)}\frac{\sqrt{2\pi}}{\sqrt{c}}dx\\&amp;amp;=K\frac{\sqrt{2\pi}}{\sqrt{c}}\frac{\sqrt{2\pi}}{\sqrt{c(1-\nu^2)}}\\&amp;amp;=K\frac{2\pi}{c\sqrt{1-\nu^2}}\\&amp;amp;=1\end{align}\] Then \(K=\frac{c\sqrt{1-\nu^2}}{2\pi}\), if we choose \(c=\frac{1}{1-\nu^2}\), then \(K=\frac{1}{2\pi\sqrt{1-\nu^2}}\) and\[\begin{align}f_{X,Y}(x, y)&amp;amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(x^2-2\nu xy+y^2)}\\&amp;amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(x^2-\nu^2x^2+\nu^2x^2-2\nu xy+y^2)}\\&amp;amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}\end{align}\] The marginal pdfs are sure the standard normal:\[\begin{align}f_{X}(x)&amp;amp;=\int_{-\infty}^{+\infty}f_{X,Y}(x, y)dy\\&amp;amp;=\int_{-\infty}^{+\infty}\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\\&amp;amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}\int_{-\infty}^{+\infty}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\\&amp;amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}\sqrt{2\pi}\sqrt{1-\nu^2}\\&amp;amp;=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2}\end{align}\] and \(E(X)=E(Y)=0\) and \(\sigma_X=\sigma_Y=1\), then the correlation coefficient between X and Y is:\[\begin{align}\rho(X,Y)&amp;amp;=\frac{Cov(X,Y)}{\sigma_X\sigma_Y}\\&amp;amp;=\frac{E(XY) − E(X)E(Y)}{\sigma_X\sigma_Y}\\&amp;amp;=E(XY)\\&amp;amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}xyf_{X,Y}(x, y)dxdy\\&amp;amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}xy\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dxdy\\&amp;amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}xe^{-\frac{1}{2}x^2} \Biggl[\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi(1-\nu^2)}}ye^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\Biggr]dx\\&amp;amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}xe^{-\frac{1}{2}x^2}\nu x dx\\&amp;amp;=\nu\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}x^2e^{-\frac{1}{2}x^2}dx\\&amp;amp;=\nu Var(X)\\&amp;amp;=\nu \sigma_X\\&amp;amp;=\nu\end{align}\] So \(\nu\) is the correlation coefficient between X and Y.</description>
+    </item>
     
     <item>
       <title>Randomized block design</title>

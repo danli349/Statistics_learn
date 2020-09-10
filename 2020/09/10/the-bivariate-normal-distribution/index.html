@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<title>The Bivariate Normal Distribution - A Hugo website</title>
+<meta property="og:title" content="The Bivariate Normal Distribution - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">The Bivariate Normal Distribution</h1>
+
+    
+    <span class="article-date">2020-09-10</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The univariate normal pdf is:
+<span class="math display">\[f_Y(y)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}, \quad -\infty&lt;y&lt;+\infty\]</span></p>
+<p>The bivariate normal pdf is, <span class="math display">\[f_{X,Y}(x, y)=Ke^{-\frac{1}{2}c(x^2-2\nu xy+y^2)}, \quad -\infty&lt;x, y&lt;+\infty\]</span> where <span class="math inline">\(c\)</span> and <span class="math inline">\(\nu\)</span> are constants.
+<span class="math display">\[\begin{align}
+f_{X,Y}(x, y)&amp;=Ke^{-\frac{1}{2}c(x^2-2\nu xy+y^2)}\\
+&amp;=Ke^{-\frac{1}{2}c(x^2-\nu^2x^2+\nu^2x^2-2\nu xy+y^2)}\\
+&amp;=Ke^{-\frac{1}{2}c(x^2-\nu^2x^2)+(\nu x-y)^2}\\
+&amp;=Ke^{-\frac{1}{2}cx^2(1-\nu^2)}e^{-\frac{1}{2}c(\nu x-y)^2}\\
+\end{align}\]</span> The exponents must be negative, so <span class="math inline">\(1-\nu^2&gt;0\)</span>.<br />
+<span class="math display">\[\begin{align}
+\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}f_{X,Y}(x, y)dxdy&amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}Ke^{-\frac{1}{2}cx^2(1-\nu^2)}e^{-\frac{1}{2}c(\nu x-y)^2}dxdy\\
+&amp;=K\int_{-\infty}^{+\infty}e^{-\frac{1}{2}cx^2(1-\nu^2)} \Biggl[\int_{-\infty}^{+\infty}e^{-\frac{1}{2}c(y-\nu x)^2}dy\Biggr]dx\\
+&amp;=K\int_{-\infty}^{+\infty}e^{-\frac{1}{2}cx^2(1-\nu^2)}\frac{\sqrt{2\pi}}{\sqrt{c}}dx\\
+&amp;=K\frac{\sqrt{2\pi}}{\sqrt{c}}\frac{\sqrt{2\pi}}{\sqrt{c(1-\nu^2)}}\\
+&amp;=K\frac{2\pi}{c\sqrt{1-\nu^2}}\\
+&amp;=1
+\end{align}\]</span> Then <span class="math inline">\(K=\frac{c\sqrt{1-\nu^2}}{2\pi}\)</span>, if we choose <span class="math inline">\(c=\frac{1}{1-\nu^2}\)</span>, then <span class="math inline">\(K=\frac{1}{2\pi\sqrt{1-\nu^2}}\)</span> and
+<span class="math display">\[\begin{align}
+f_{X,Y}(x, y)&amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(x^2-2\nu xy+y^2)}\\
+&amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(x^2-\nu^2x^2+\nu^2x^2-2\nu xy+y^2)}\\
+&amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}
+\end{align}\]</span> The marginal pdfs are sure the standard normal:
+<span class="math display">\[\begin{align}
+f_{X}(x)&amp;=\int_{-\infty}^{+\infty}f_{X,Y}(x, y)dy\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\\
+&amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}\int_{-\infty}^{+\infty}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\\
+&amp;=\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}\sqrt{2\pi}\sqrt{1-\nu^2}\\
+&amp;=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2}
+\end{align}\]</span> and <span class="math inline">\(E(X)=E(Y)=0\)</span> and <span class="math inline">\(\sigma_X=\sigma_Y=1\)</span>, then the correlation coefficient between X and Y is:
+<span class="math display">\[\begin{align}
+\rho(X,Y)&amp;=\frac{Cov(X,Y)}{\sigma_X\sigma_Y}\\
+&amp;=\frac{E(XY) − E(X)E(Y)}{\sigma_X\sigma_Y}\\
+&amp;=E(XY)\\
+&amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}xyf_{X,Y}(x, y)dxdy\\
+&amp;=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}xy\frac{1}{2\pi\sqrt{1-\nu^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dxdy\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}xe^{-\frac{1}{2}x^2} \Biggl[\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi(1-\nu^2)}}ye^{-\frac{1}{2}\frac{1}{1-\nu^2}(\nu x-y)^2}dy\Biggr]dx\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}xe^{-\frac{1}{2}x^2}\nu x dx\\
+&amp;=\nu\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}x^2e^{-\frac{1}{2}x^2}dx\\
+&amp;=\nu Var(X)\\
+&amp;=\nu \sigma_X\\
+&amp;=\nu
+\end{align}\]</span> So <span class="math inline">\(\nu\)</span> is the correlation coefficient between X and Y.</p>
+<p>Then we can replace <span class="math inline">\(x\)</span> with <span class="math inline">\((x − \mu_X )/\sigma_X\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\((y − \mu_Y )/\sigma_Y\)</span> in the <span class="math inline">\(f_{X,Y}(x, y)\)</span>.
+iF <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> ARE random variables with joint pdf <span class="math display">\[\begin{align}
+f_{X,Y}(x, y)&amp;=\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho^2}\Bigl[(\frac{x − \mu_X}{\sigma_X})^2-2\rho(\frac{x − \mu_X}{\sigma_X})(\frac{y − \mu_Y}{\sigma_Y}) +(\frac{y − \mu_Y}{\sigma_Y})^2\Bigr]\Biggr]\\
+\end{align}\]</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are said to have <span style="color: red;"><strong>bivariate normal distribution</strong></span> and <span class="math inline">\(\rho\)</span> is the correlation coefficient between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p>When <span class="math inline">\(E(X)=\mu_X=E(Y)=\mu_Y=0\)</span> and <span class="math inline">\(\sigma_X=\sigma_Y=1\)</span>, the conditional expectation is <span class="math inline">\(E(Y|x)\)</span>, because
+<span class="math display">\[\begin{align}
+f_{Y|x}(y)&amp;=\frac{f_{X,Y}(x, y)}{f_{X}(x)}\\
+&amp;=\frac{\frac{1}{2\pi\sqrt{1-\rho^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\rho^2}(\rho x-y)^2}}{\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2}}\\
+&amp;=\frac{1}{\sqrt{2\pi}\sqrt{1-\rho^2}}e^{-\frac{1}{2}\frac{1}{1-\rho^2}(y-\rho x)^2}
+\end{align}\]</span> is a normal random variable with mean <span class="math inline">\(\rho x\)</span> and variance <span class="math inline">\(1−\rho^2\)</span>, then <span class="math inline">\(E(Y|x)=\rho x\)</span> and <span class="math inline">\(Var(Y|x)=\sigma_Y^2(1−\rho^2)=(1−\rho^2)\)</span>, replacing <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(\frac{x − \mu_X}{\sigma_X}\)</span> and <span class="math inline">\(\frac{y − \mu_Y}{\sigma_Y}\)</span> we can get : <span class="math display">\[E(Y|x)=E(\frac{y − \mu_Y}{\sigma_Y}|\frac{x − \mu_X}{\sigma_X})=\mu_Y+\sigma_Y(E(y|\frac{x − \mu_X}{\sigma_X}))=\mu_Y+\sigma_Y\rho \frac{x − \mu_X}{\sigma_X}\]</span> and <span class="math display">\[Var(Y|x)=\sigma_Y^2(1-\rho^2)\]</span></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
