@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="../../../../css/fonts.css" media="all">
 <link rel="stylesheet" href="../../../../css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">The Bivariate Normal Distribution</h1>
@@ -123,6 +128,73 @@ f_{Y|x}(y)&amp;=\frac{f_{X,Y}(x, y)}{f_{X}(x)}\\
 &amp;=\frac{\frac{1}{2\pi\sqrt{1-\rho^2}}e^{-\frac{1}{2}x^2}e^{-\frac{1}{2}\frac{1}{1-\rho^2}(\rho x-y)^2}}{\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2}}\\
 &amp;=\frac{1}{\sqrt{2\pi}\sqrt{1-\rho^2}}e^{-\frac{1}{2}\frac{1}{1-\rho^2}(y-\rho x)^2}
 \end{align}\]</span> is a normal random variable with mean <span class="math inline">\(\rho x\)</span> and variance <span class="math inline">\(1−\rho^2\)</span>, then <span class="math inline">\(E(Y|x)=\rho x\)</span> and <span class="math inline">\(Var(Y|x)=(1−\rho^2)\)</span>, replacing <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\(\frac{x − \mu_X}{\sigma_X}\)</span> and <span class="math inline">\(\frac{y − \mu_Y}{\sigma_Y}\)</span> we can get : <span class="math display">\[E(Y|x)=E(\frac{y − \mu_Y}{\sigma_Y}|\frac{x − \mu_X}{\sigma_X})=\mu_Y+\sigma_Y(E(y|\frac{x − \mu_X}{\sigma_X}))=\mu_Y+\sigma_Y\rho \frac{x − \mu_X}{\sigma_X}\]</span> and <span class="math inline">\(Var(Y|x)=\sigma_Y^2(1-\rho^2)\)</span>.</p>
+<p>We can generate groups of bivariate Gaussian variables with different means with following steps using <em>python</em> :
+1. Generate 10 means <span class="math inline">\(m_k\)</span> and covariances <span class="math inline">\(\mathbf{I}\)</span> from a bivariate Gaussian for 2 classes<br />
+<span class="math display">\[
+  \begin{equation}
+  m_k \sim \begin{cases}
+  N((1,0)^T, \mathbf{I}) &amp; \text{ for BLUE}, \\
+  N((0,1)^T, \mathbf{I}) &amp; \text{ for ORANGE}
+  \end{cases}
+  \end{equation}
+\]</span><br />
+2. For each class, we generate 100 observations as follows:
+1. Pick an <span class="math inline">\(m_k\)</span> at random with probability <span class="math inline">\(1/10\)</span>
+2. Generate <span class="math inline">\(x_i \sim N(m_k, \mathbf{I}/5)\)</span></p>
+<pre class="python bg-success"><code>import random
+import numpy as np
+import matplotlib.pyplot as plt
+
+def generate_data(sample_size:int)-&gt;tuple:
+    # Parameters for mean distributions
+    mean_blue = [1, 0]
+    mean_orange = [0, 1]
+    mean_cov = np.eye(2)
+    mean_size = 10
+    
+    # Additional parameters for blue and orange distributions
+    sample_cov = np.eye(2)/5
+    
+    # Generate mean components for blue and orange (10 means for each)
+    sample_blue_mean = np.random.multivariate_normal(mean_blue, mean_cov, mean_size)
+    sample_orange_mean = np.random.multivariate_normal(mean_orange, mean_cov, mean_size)
+    
+    # Generate blue points
+    sample_blue = np.array([
+        np.random.multivariate_normal(sample_blue_mean[random.randint(0, 9)],
+                                      sample_cov)
+        for _ in range(sample_size)
+    ])
+    y_blue = [0 for _ in range(sample_size)]
+
+    # Generate orange points
+    sample_orange = np.array([
+        np.random.multivariate_normal(sample_orange_mean[random.randint(0, 9)],
+                                      sample_cov)
+        for _ in range(sample_size)
+    ])
+    y_orange = [1 for _ in range(sample_size)]
+
+    data_x = np.concatenate((sample_blue, sample_orange), axis=0)
+    data_y = np.concatenate((y_blue, y_orange))
+    return data_x, data_y</code></pre>
+<pre class="python bg-success"><code>sample_size = 100
+data_x, data_y = generate_data(sample_size)
+sample_blue = data_x[data_y == 0, :]
+sample_orange = data_x[data_y == 1, :]
+
+# Plot
+fig = plt.figure(figsize=(10, 10))
+ax1 = fig.add_subplot(1, 1, 1)
+
+ax1.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;)
+ax1.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;)
+ax1.set_title(&#39;0/1 Response&#39;)
+
+plot_x_min, plot_x_max = ax1.get_xlim()
+plot_y_min, plot_y_max = ax1.get_ylim()
+plt.show()</code></pre>
+<p><img src="../../../../post/2020-09-10-the-bivariate-normal-distribution_files/figure-html/unnamed-chunk-3-1.svg" /><!-- --></p>
 
     </div>
   </article>
@@ -145,6 +217,18 @@ f_{Y|x}(y)&amp;=\frac{f_{X,Y}(x, y)}{f_{X}(x)}\\
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 <script src="../../../../js/math-code.js"></script>
