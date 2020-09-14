@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">The Bivariate Normal Distribution</h1>
@@ -177,14 +177,15 @@ def generate_data(sample_size:int)-&gt;tuple:
 
     data_x = np.concatenate((sample_blue, sample_orange), axis=0)
     data_y = np.concatenate((y_blue, y_orange))
-    return data_x, data_y</code></pre>
-<pre class="python bg-success"><code>sample_size = 100
+    return data_x, data_y
+
+sample_size = 100
 data_x, data_y = generate_data(sample_size)
 sample_blue = data_x[data_y == 0, :]
 sample_orange = data_x[data_y == 1, :]
 
 # Plot
-fig = plt.figure(figsize=(10, 10))
+fig = plt.figure(figsize=(6, 6))
 ax1 = fig.add_subplot(1, 1, 1)
 
 ax1.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;)
@@ -194,7 +195,127 @@ ax1.set_title(&#39;0/1 Response&#39;)
 plot_x_min, plot_x_max = ax1.get_xlim()
 plot_y_min, plot_y_max = ax1.get_ylim()
 plt.show()</code></pre>
+<p><img src="../../../../post/2020-09-10-the-bivariate-normal-distribution_files/figure-html/unnamed-chunk-2-1.svg" /><!-- --></p>
+<pre class="python bg-success"><code>import numpy as np
+import matplotlib.pyplot as plt
+import seaborn
+seaborn.set()
+mean_1 = np.array([0, 0])
+cova_1 = np.array([[1, 0],
+                 [0, 1]])
+
+mean_2 = np.array([0, -7])
+cova_2 = np.array([[4, 0],
+                 [0, 0.25]])
+
+mean_3 = np.array([4, 4])
+cova_3 = np.array([[4, -3],
+                 [-3, 0.25]])
+
+x_1, y_1 = np.random.multivariate_normal(mean=mean_1, cov=cova_1, size=2000).T
+x_2, y_2 = np.random.multivariate_normal(mean=mean_2, cov=cova_2, size=2000).T
+x_3, y_3 = np.random.multivariate_normal(mean=mean_3, cov=cova_3, size=2000).T</code></pre>
+<pre><code>## C:/Users/lidan/Anaconda3/python.exe:1: RuntimeWarning: covariance is not positive-semidefinite.</code></pre>
+<pre class="python bg-success"><code>plt.plot(x_1, y_1, &#39;ro&#39;, alpha=0.05)
+plt.plot(x_2, y_2, &#39;bo&#39;, alpha=0.05)
+plt.plot(x_3, y_3, &#39;go&#39;, alpha=0.05)
+
+plt.gca().axes.set_xlim(-10, 10)</code></pre>
+<pre><code>## (-10, 10)</code></pre>
+<pre class="python bg-success"><code>plt.gca().axes.set_ylim(-10, 10)</code></pre>
+<pre><code>## (-10, 10)</code></pre>
+<pre class="python bg-success"><code>plt.show()</code></pre>
 <p><img src="../../../../post/2020-09-10-the-bivariate-normal-distribution_files/figure-html/unnamed-chunk-3-1.svg" /><!-- --></p>
+<p>We can calculate the eigenvalues and eigenvectors of the covariance matrix using <strong>linalg</strong> of <em>scipy</em>:</p>
+<pre class="python bg-success"><code>import numpy as np
+import matplotlib.pyplot as plt
+from scipy import linalg
+import seaborn
+seaborn.set()
+
+mean_1 = np.array([0, 0])
+mean_2 = np.array([20, -20])
+
+cova = np.array([[34, 12],
+              [12, 41]])
+
+x_1, y_1 = np.random.multivariate_normal(mean=mean_1, cov=cova, size=4000).T
+x_2, y_2 = np.random.multivariate_normal(mean=mean_2, cov=cova, size=4000).T
+
+plt.plot(x_1, y_1, &#39;ro&#39;, alpha=0.05)
+plt.plot(x_2, y_2, &#39;bo&#39;, alpha=0.05)
+
+plt.gca().axes.set_xlim(-20, 40)</code></pre>
+<pre><code>## (-20, 40)</code></pre>
+<pre class="python bg-success"><code>plt.gca().axes.set_ylim(-40, 20)</code></pre>
+<pre><code>## (-40, 20)</code></pre>
+<pre class="python bg-success"><code>evalue, evector = linalg.eig(cova)
+print(evalue)</code></pre>
+<pre><code>## [25.+0.j 50.+0.j]</code></pre>
+<pre class="python bg-success"><code>print(evector)</code></pre>
+<pre><code>## [[-0.8 -0.6]
+##  [ 0.6 -0.8]]</code></pre>
+<pre class="python bg-success"><code>plt.show()</code></pre>
+<p><img src="../../../../post/2020-09-10-the-bivariate-normal-distribution_files/figure-html/unnamed-chunk-4-1.svg" /><!-- --></p>
+<p>Visualizing the bivariate Gaussian distribution (from Christian Hill’s blog <a href="https://scipython.com/blog/" class="uri">https://scipython.com/blog/</a>):</p>
+<pre class="python bg-success"><code>import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+
+# Our 2-dimensional distribution will be over variables X and Y
+N = 60
+X = np.linspace(-3, 3, N)
+Y = np.linspace(-3, 4, N)
+X, Y = np.meshgrid(X, Y)
+
+# Mean vector and covariance matrix
+mu = np.array([0., 1.])
+Sigma = np.array([[ 1. , -0.5], [-0.5,  1.5]])
+
+# Pack X and Y into a single 3-dimensional array
+pos = np.empty(X.shape + (2,))
+pos[:, :, 0] = X
+pos[:, :, 1] = Y
+
+def multivariate_gaussian(pos, mu, Sigma):
+    &quot;&quot;&quot;Return the multivariate Gaussian distribution on array pos.
+
+    pos is an array constructed by packing the meshed arrays of variables
+    x_1, x_2, x_3, ..., x_k into its _last_ dimension.
+
+    &quot;&quot;&quot;
+
+    n = mu.shape[0]
+    Sigma_det = np.linalg.det(Sigma)
+    Sigma_inv = np.linalg.inv(Sigma)
+    N = np.sqrt((2*np.pi)**n * Sigma_det)
+    # This einsum call calculates (x-mu)T.Sigma-1.(x-mu) in a vectorized
+    # way across all the input variables.
+    fac = np.einsum(&#39;...k,kl,...l-&gt;...&#39;, pos-mu, Sigma_inv, pos-mu)
+
+    return np.exp(-fac / 2) / N
+
+# The distribution on the variables X, Y packed into pos.
+Z = multivariate_gaussian(pos, mu, Sigma)
+
+# Create a surface plot and projected filled contour plot under it.
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+ax.plot_surface(X, Y, Z, rstride=3, cstride=3, linewidth=1, antialiased=True,
+                cmap=cm.viridis)
+
+cset = ax.contourf(X, Y, Z, zdir=&#39;z&#39;, offset=-0.15, cmap=cm.viridis)
+
+# Adjust the limits, ticks and view angle
+ax.set_zlim(-0.15,0.2)</code></pre>
+<pre><code>## (-0.15, 0.2)</code></pre>
+<pre class="python bg-success"><code>ax.set_zticks(np.linspace(0,0.2,5))</code></pre>
+<pre><code>## [&lt;matplotlib.axis.XTick object at 0x0000000067649C08&gt;, &lt;matplotlib.axis.XTick object at 0x00000000677F8EC8&gt;, &lt;matplotlib.axis.XTick object at 0x0000000067826988&gt;, &lt;matplotlib.axis.XTick object at 0x0000000067828248&gt;, &lt;matplotlib.axis.XTick object at 0x0000000067828748&gt;]</code></pre>
+<pre class="python bg-success"><code>ax.view_init(27, -21)
+
+plt.show()</code></pre>
+<p><img src="../../../../post/2020-09-10-the-bivariate-normal-distribution_files/figure-html/unnamed-chunk-5-1.svg" /><!-- --></p>
 
     </div>
   </article>
