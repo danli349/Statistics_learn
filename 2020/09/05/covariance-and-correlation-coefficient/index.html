@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">covariance and correlation coefficient</h1>
@@ -96,6 +96,52 @@ Var(aX + bY) &amp;= E(aX + bY)^2-(E(aX + bY))^2\\
 Then the Variance of the sum of <span class="math inline">\(n\)</span> random variables <span class="math inline">\(W_1,W_2, . . . ,W_n\)</span> is:
 <span class="math display">\[Var(\sum_{i=1}^{n}a_iW_i)=\sum_{i=1}^{n}a_i^2Var(W_i)+2\sum_{i&lt;j}a_ia_jCov(W_i,W_j)\]</span></p>
 <p>The correlation coefficient of any two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, is denoted with <span class="math inline">\(\rho(X,Y)\)</span>, and given by: <span class="math inline">\(\rho(X,Y)=\frac{Cov(X,Y)}{\sigma_X\sigma_Y}=Cov(\frac{X-\mu_X}{\sigma_X}, \frac{Y-\mu_Y}{\sigma_Y})\)</span></p>
+<p>For any two random variables <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, if we define the <span class="math inline">\(Cov(X_1,X_2)\)</span> as <span class="math inline">\(\sigma_{12}\)</span>, then
+<span class="math display">\[\begin{align}
+Cov(aX_1 + bX_2)&amp;=E(aX_1-a\mu_1)(bX_2-b\mu_2)\\
+&amp;=abE(X_1-\mu_1)(X_2-\mu_2)\\
+&amp;=abCov(X_1,X_2)\\
+&amp;=ab\sigma_{12}
+\end{align}\]</span> And <span class="math display">\[Var(aX_1 + bX_2)=a^2\sigma_{11}+b^2\sigma_{22}+2ab\sigma_{12}\]</span></p>
+<p>We can use vector and matrix to denote <span class="math inline">\(aX_1 + bX_2\)</span> as:
+<span class="math display">\[\mathbf c^T\mathbf X=\begin{bmatrix}
+a&amp;b
+\end{bmatrix}\begin{bmatrix}
+X_1\\
+X_2
+\end{bmatrix}\]</span> and denote the variance-covariance matrix as <span class="math display">\[\mathbf \Sigma=\begin{bmatrix}
+\sigma_{11}&amp;\sigma_{12}\\
+\sigma_{12}&amp;\sigma_{22}
+\end{bmatrix}\]</span>, then <span class="math display">\[\begin{align}
+Var(aX_1 + bX_2)&amp;=Var(\mathbf c^T\mathbf X)\\
+&amp;=a^2\sigma_{11}+b^2\sigma_{22}+2ab\sigma_{12}\\
+&amp;=\mathbf c^T\mathbf \Sigma\mathbf c
+\end{align}\]</span></p>
+<p>In general, the <span class="math inline">\(q\)</span> linear combinations of the <span class="math inline">\(p\)</span> random variables <span class="math inline">\(X_1,\cdots,X_p\)</span>:
+<span class="math display">\[\begin{array}{c}
+Z_1&amp;=c_{11}X_1+c_{12}X_2+\cdots+c_{1p}X_p\\
+Z_2&amp;=c_{21}X_1+c_{22}X_2+\cdots+c_{2p}X_p\\
+&amp;\vdots\\
+Z_q&amp;=c_{q1}X_1+c_{q2}X_2+\cdots+c_{qp}X_p\\
+\end{array}\]</span> or <span class="math display">\[\mathbf Z=\begin{bmatrix}
+Z_1\\
+Z_2\\
+\vdots\\
+Z_q
+\end{bmatrix}=\begin{bmatrix}
+c_{11}&amp;c_{12}&amp;\cdots&amp;c_{1p}\\
+c_{21}&amp;c_{22}&amp;\cdots&amp;c_{2p}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+c_{q1}&amp;c_{q2}&amp;\cdots&amp;c_{qp}
+\end{bmatrix}\begin{bmatrix}
+X_1\\
+X_2\\
+\vdots\\
+X_q
+\end{bmatrix}=\mathbf C \mathbf X
+\]</span> The linear combinations <span class="math inline">\(\mathbf Z=\mathbf C \mathbf X\)</span> have:<br />
+<span class="math inline">\(\mathbf\mu_{\mathbf Z}=E(\mathbf Z)=E(\mathbf C \mathbf X)=\mathbf C \mathbf\mu_{\mathbf X}\)</span><br />
+<span class="math inline">\(\mathbf \Sigma_{\mathbf Z}=Cov(\mathbf Z)=Cov(\mathbf C\mathbf X)=\mathbf C\mathbf \Sigma_{\mathbf X}\mathbf C^T\)</span></p>
 
     </div>
   </article>
