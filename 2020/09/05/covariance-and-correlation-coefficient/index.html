@@ -122,15 +122,15 @@ X_{1}\\
 X_{2}\\
 \vdots\\
 X_{p}\\
-\end{bmatrix}\]</span> has the expectation matrix <span class="math display">\[E(\mathbf X)=\mathbf\mu_{\mathbf X}=\begin{bmatrix}
+\end{bmatrix}\]</span> has the expectation matrix <span class="math display">\[E(\mathbf X)=\boldsymbol\mu_{\mathbf X}=\begin{bmatrix}
 \mu_{1}\\
 \mu_{2}\\
 \vdots\\
 \mu_{p}\\
-\end{bmatrix}\]</span> and the covariance matrix <span class="math display">\[\mathbf \Sigma=\begin{bmatrix}
+\end{bmatrix}\]</span> and the covariance matrix <span class="math display">\[\mathbf \Sigma_{\mathbf X}=\begin{bmatrix}
 \sigma_{11}&amp;\sigma_{12}&amp;\cdots&amp;\sigma_{1p}\\
 \sigma_{12}&amp;\sigma_{22}&amp;\cdots&amp;\sigma_{2p}\\
-\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
 \sigma_{1p}&amp;\sigma_{2p}&amp;\cdots&amp;\sigma_{pp}\\
 \end{bmatrix}
 \]</span>
@@ -148,7 +148,7 @@ Z_q
 \end{bmatrix}=\begin{bmatrix}
 c_{11}&amp;c_{12}&amp;\cdots&amp;c_{1p}\\
 c_{21}&amp;c_{22}&amp;\cdots&amp;c_{2p}\\
-\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
 c_{q1}&amp;c_{q2}&amp;\cdots&amp;c_{qp}
 \end{bmatrix}\begin{bmatrix}
 X_1\\
@@ -157,7 +157,7 @@ X_2\\
 X_q
 \end{bmatrix}=\mathbf C \mathbf X
 \]</span> The linear combinations <span class="math inline">\(\mathbf Z=\mathbf C \mathbf X\)</span> have:<br />
-<span class="math inline">\(\mathbf\mu_{\mathbf Z}=E(\mathbf Z)=E(\mathbf C \mathbf X)=\mathbf C \mathbf\mu_{\mathbf X}\)</span><br />
+<span class="math inline">\(\boldsymbol\mu_{\mathbf Z}=E(\mathbf Z)=E(\mathbf C \mathbf X)=\mathbf C \boldsymbol\mu_{\mathbf X}\)</span><br />
 <span class="math inline">\(\mathbf \Sigma_{\mathbf Z}=Cov(\mathbf Z)=Cov(\mathbf C\mathbf X)=\mathbf C\mathbf \Sigma_{\mathbf X}\mathbf C^T\)</span></p>
 
     </div>
