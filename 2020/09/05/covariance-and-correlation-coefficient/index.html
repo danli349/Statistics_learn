@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">covariance and correlation coefficient</h1>
@@ -185,6 +185,79 @@ E(\mathbf {\overline X})&amp;=E(\frac{1}{n}\displaystyle\sum_{j=1}^n\mathbf X_j)
 \end{align}\]</span> then
 <span class="math display">\[Cov(\mathbf {\overline X})=E((\mathbf {\overline X}-\boldsymbol\mu)(\mathbf {\overline X}-\boldsymbol\mu)^T)=\frac{1}{n^2}\sum_{j=1}^n\sum_{k=1}^nE\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_k-\boldsymbol\mu)^T\Bigr)
 \]</span> because for <span class="math inline">\(j\ne k\)</span>, <span class="math inline">\(\mathbf X_j\)</span> and <span class="math inline">\(\mathbf X_k\)</span> are independent, so <span class="math inline">\(E\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_k-\boldsymbol\mu)^T\Bigr)=0\)</span>, then <span class="math display">\[Cov(\mathbf {\overline X})=\frac{1}{n^2}\sum_{j=1}^nE\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_j-\boldsymbol\mu)^T\Bigr)=\frac{1}{n^2}\sum_{j=1}^n\mathbf\Sigma=\frac{1}{n}\mathbf\Sigma\]</span> <span class="math inline">\(\mathbf\Sigma\)</span> is the <strong>population variance–covariance matrix</strong>.</p>
+<p>To obtain the expected value of <span class="math inline">\(\mathbf S_n\)</span>:
+<span class="math display">\[\begin{align}
+E(n\mathbf S_n)=E\sum_{j=1}^n\Bigl((\mathbf X_j-\mathbf{\overline X})(\mathbf X_j-\mathbf{\overline X})^T\Bigr)&amp;=E\sum_{j=1}^n\Bigl((\mathbf X_j-\mathbf{\overline X})(\mathbf X_j^T-\mathbf{\overline X}^T)\Bigr)\\
+&amp;=E\sum_{j=1}^n\Bigl((\mathbf X_j-\mathbf{\overline X})\mathbf X_j^T-(\mathbf X_j-\mathbf{\overline X})\mathbf{\overline X}^T)\Bigr)\\
+&amp;=E\sum_{j=1}^n(\mathbf X_j-\mathbf{\overline X})\mathbf X_j^T-\sum_{j=1}^n(\mathbf X_j-\mathbf{\overline X})\mathbf{\overline X}^T)\\
+&amp;=E\sum_{j=1}^n(\mathbf X_j-\mathbf{\overline X})\mathbf X_j^T\\
+&amp;=E\Bigl(\sum_{j=1}^n\mathbf X_j\mathbf X_j^T-\sum_{j=1}^n\mathbf{\overline X}\mathbf X_j^T\Bigr)\\
+&amp;=E\Bigl(\sum_{j=1}^n\mathbf X_j\mathbf X_j^T-n\mathbf{\overline X}\mathbf{\overline X}^T\Bigr)\\
+&amp;=\sum_{j=1}^nE(\mathbf X_j\mathbf X_j^T)-nE(\mathbf{\overline X}\mathbf{\overline X}^T)\\
+&amp;=\sum_{j=1}^n(\mathbf\Sigma+\boldsymbol\mu\boldsymbol\mu^T)-n(\frac{1}{n}\mathbf\Sigma+\boldsymbol\mu\boldsymbol\mu^T)\\
+&amp;=(n-1)\mathbf\Sigma
+\end{align}\]</span>, then <span class="math inline">\(E(\mathbf S_n)=\frac{n-1}{n}\mathbf\Sigma\)</span> and the <span style="color: red;"><strong>Unbiased Sample Variance–Covariance Matrix <span class="math inline">\(\mathbf S=\frac{1}{n-1}\sum_{j=1}^n(\mathbf X_j-\mathbf{\overline X})(\mathbf X_j-\mathbf{\overline X})^T\)</span></strong></span> is the Unbiased estimator of population variance–covariance matrix <span class="math inline">\(\mathbf \Sigma\)</span> <span class="math display">\[\underset{(p,p)}{\mathbf S}=\frac{n}{n-1}\mathbf S_n=\frac{1}{n-1}\sum_{j=1}^n(\mathbf X_j-\mathbf{\overline X})(\mathbf X_j-\mathbf{\overline X})^T\]</span>, here <span class="math inline">\(\underset{(p,p)}{\mathbf S}\)</span> has <span class="math inline">\((i,k)^{th}\)</span> entry <span class="math display">\[s_{i,k}=\frac{1}{n-1}\sum_{j=1}^{n}(X_{ji}-\overline X_i)(X_{jk}-\overline X_k),\quad 0\le i,k\le p\]</span>, and contains <span class="math inline">\(p\)</span> variances and <span class="math inline">\(\frac{1}{2}(p^2-p)\)</span> covariances.</p>
+<p>We can also use matrix operations on the data matrix <span class="math display">\[\mathbf X=\begin{bmatrix}
+x_{11}&amp;x_{12}&amp;\cdots&amp;x_{1p}\\
+x_{21}&amp;x_{22}&amp;\cdots&amp;x_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+x_{n1}&amp;x_{n2}&amp;\cdots&amp;x_{np}
+\end{bmatrix}\]</span> to calculate <span class="math inline">\(\overline {\mathbf X}\)</span> and <span class="math inline">\(\mathbf S\)</span>:
+let <span class="math display">\[\mathbf 1=\begin{bmatrix}
+1\\
+1\\
+\vdots\\
+1
+\end{bmatrix}\]</span> then <span class="math display">\[\overline {\mathbf X}=\frac{1}{n}\mathbf X^T\mathbf 1\]</span> and <span class="math display">\[\mathbf 1\overline {\mathbf X}^T=\mathbf 1(\frac{1}{n}\mathbf X^T\mathbf 1)^T=\frac{1}{n}\mathbf 1\mathbf 1^T\mathbf X=\begin{bmatrix}
+\bar{x_1}&amp;\bar{x_2}&amp;\cdots&amp;\bar{x_p}\\
+\bar{x_1}&amp;\bar{x_2}&amp;\cdots&amp;\bar{x_p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\bar{x_1}&amp;\bar{x_2}&amp;\cdots&amp;\bar{x_p}
+\end{bmatrix}\]</span> Subtracting this result from <span class="math inline">\(\mathbf X\)</span> produces the matrix of deviations:<span class="math display">\[\mathbf X-\frac{1}{n}\mathbf 1\mathbf 1^T\mathbf X=\begin{bmatrix}
+x_{11}-\bar{x_1}&amp;x_{12}-\bar{x_2}&amp;\cdots&amp;x_{1p}-\bar{x_p}\\
+x_{21}-\bar{x_1}&amp;x_{22}-\bar{x_2}&amp;\cdots&amp;x_{2p}-\bar{x_p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+x_{n1}-\bar{x_1}&amp;x_{n2}-\bar{x_2}&amp;\cdots&amp;x_{np}-\bar{x_p}
+\end{bmatrix}\]</span> Now, the matrix <span class="math inline">\((n-1)\mathbf S\)</span> representing sums of squares and cross products: <span class="math display">\[\begin{align}
+(n-1)\mathbf S&amp;=(\mathbf X-\frac{1}{n}\mathbf 1\mathbf 1^T\mathbf X)^T(\mathbf X-\frac{1}{n}\mathbf 1\mathbf 1^T\mathbf X)\\
+&amp;=\Bigl((\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)\mathbf X\Bigr)^T\Bigl((\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)\mathbf X\Bigr)\\
+&amp;=\mathbf X^T(\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)^T(\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)\mathbf X\\
+&amp;=\mathbf X^T(\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)\mathbf X\\
+\end{align}\]</span> then <span class="math display">\[\mathbf S=\frac{1}{n-1}\mathbf X^T(\mathbf 1-\frac{1}{n}\mathbf 1\mathbf 1^T)\mathbf X\]</span></p>
+<p>The <span class="math inline">\(p\times p\)</span> sample <span style="color: red;"><strong>standard deviation matrix</strong></span> is <span class="math display">\[
+\underset{(p\times p)}{\mathbf D^{\frac{1}{2}}}=\begin{bmatrix}
+\sqrt{s_{11}}&amp;0&amp;\cdots&amp;0\\
+0&amp;\sqrt{s_{22}}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\sqrt{s_{pp}}
+\end{bmatrix}
+\]</span> <span class="math display">\[
+\underset{(p\times p)}{\mathbf D^{-\frac{1}{2}}}=\begin{bmatrix}
+\frac{1}{\sqrt{s_{11}}}&amp;0&amp;\cdots&amp;0\\
+0&amp;\frac{1}{\sqrt{s_{22}}}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\frac{1}{\sqrt{s_{pp}}}
+\end{bmatrix}
+\]</span> since <span class="math display">\[
+\underset{(p\times p)}{\mathbf S}=\begin{bmatrix}
+s_{11}&amp;s_{12}&amp;\cdots&amp;s_{1p}\\
+s_{12}&amp;s_{22}&amp;\cdots&amp;s_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+s_{1p}&amp;s_{2p}&amp;\cdots&amp;s_{pp}
+\end{bmatrix}
+\]</span> and the <strong>sample correlation matrix</strong> <span class="math display">\[
+\underset{(p\times p)}{\mathbf R}=\begin{bmatrix}
+\frac{s_{11}}{\sqrt{s_{11}}\sqrt{s_{11}}}&amp;\frac{s_{12}}{\sqrt{s_{11}}\sqrt{s_{22}}}&amp;\cdots&amp;\frac{s_{1p}}{\sqrt{s_{11}}\sqrt{s_{pp}}}\\
+\frac{s_{12}}{\sqrt{s_{11}}\sqrt{s_{22}}}&amp;\frac{s_{22}}{\sqrt{s_{22}}\sqrt{s_{22}}}&amp;\cdots&amp;\frac{s_{2p}}{\sqrt{s_{22}}\sqrt{s_{pp}}}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\frac{s_{1p}}{\sqrt{s_{11}}\sqrt{s_{pp}}}&amp;\frac{s_{2p}}{\sqrt{s_{22}}\sqrt{s_{pp}}}&amp;\cdots&amp;\frac{s_{pp}}{\sqrt{s_{pp}}\sqrt{s_{pp}}}\\
+\end{bmatrix}=\begin{bmatrix}
+1&amp;r_{12}&amp;\cdots&amp;r_{1p}\\
+r_{12}&amp;1&amp;\cdots&amp;r_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+r_{1p}&amp;r_{2p}&amp;\cdots&amp;1\\
+\end{bmatrix}
+\]</span> we have <span class="math display">\[\underset{(p\times p)}{\mathbf R}=\underset{(p\times p)}{\mathbf D^{-\frac{1}{2}}}\underset{(p\times p)}{\mathbf S}\underset{(p\times p)}{\mathbf D^{-\frac{1}{2}}}\]</span> and <span class="math display">\[\mathbf S=\mathbf D^{\frac{1}{2}}\mathbf R\mathbf D^{\frac{1}{2}}\]</span></p>
 
     </div>
   </article>
