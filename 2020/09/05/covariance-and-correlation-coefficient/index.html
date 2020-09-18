@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">covariance and correlation coefficient</h1>
@@ -159,6 +159,32 @@ X_q
 \]</span> The linear combinations <span class="math inline">\(\mathbf Z=\mathbf C \mathbf X\)</span> have:<br />
 <span class="math inline">\(\boldsymbol\mu_{\mathbf Z}=E(\mathbf Z)=E(\mathbf C \mathbf X)=\mathbf C \boldsymbol\mu_{\mathbf X}\)</span><br />
 <span class="math inline">\(\mathbf \Sigma_{\mathbf Z}=Cov(\mathbf Z)=Cov(\mathbf C\mathbf X)=\mathbf C\mathbf \Sigma_{\mathbf X}\mathbf C^T\)</span></p>
+<p>If we collect <span class="math inline">\(n\)</span> sets of measurements on <span class="math inline">\(p\)</span> variables, and treat the measurements as random variables, the <em>random sample</em> can be defined as:
+<span class="math display">\[\mathbf X=\begin{bmatrix}
+X_{11}&amp;X_{12}&amp;\cdots&amp;X_{1p}\\
+X_{21}&amp;X_{22}&amp;\cdots&amp;X_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+X_{n1}&amp;X_{n2}&amp;\cdots&amp;X_{np}
+\end{bmatrix}=\begin{bmatrix}
+\mathbf X_1^T\\
+\mathbf X_2^T\\
+\mathbf \vdots\\
+\mathbf X_n^T
+\end{bmatrix}
+\]</span>, with each set of measurements <span class="math inline">\(\mathbf X_j^T\)</span> on <span class="math inline">\(p\)</span> variables is a random vector and represent <strong>independent</strong> observations from a common joint distribution with density function <span class="math inline">\(f(\mathbf x)=f(x_1,x_2,\ldots,x_p)\)</span>. Then <span class="math inline">\(\mathbf {\overline X}=\frac{1}{n}\displaystyle\sum_{j=1}^n\mathbf X_j\)</span><br />
+<span class="math display">\[\begin{align}
+E(\mathbf {\overline X})&amp;=E(\frac{1}{n}\displaystyle\sum_{j=1}^n\mathbf X_j)\\
+&amp;=E(\frac{1}{n}\mathbf X_1)+\ldots +E(\frac{1}{n}\mathbf X_n)\\
+&amp;=\frac{1}{n}\boldsymbol\mu+\ldots +\frac{1}{n}\boldsymbol\mu\\
+&amp;=\boldsymbol\mu
+\end{align}\]</span> <span class="math inline">\(\boldsymbol\mu\)</span> is the <strong>population mean vector</strong>.<br />
+<span class="math display">\[\begin{align}
+(\mathbf {\overline X}-\boldsymbol\mu)(\mathbf {\overline X}-\boldsymbol\mu)^T&amp;=(\frac{1}{n}\displaystyle\sum_{j=1}^n\mathbf X_j-\boldsymbol\mu)(\frac{1}{n}\displaystyle\sum_{j=1}^n\mathbf X_j-\boldsymbol\mu)^T\\
+&amp;=\Biggl(\frac{1}{n}\displaystyle\sum_{j=1}^n(\mathbf X_j-\boldsymbol\mu)\Biggr)\Biggl(\frac{1}{n}\displaystyle\sum_{k=1}^n(\mathbf X_k-\boldsymbol\mu)\Biggr)^T\\
+&amp;=\frac{1}{n^2}\sum_{j=1}^n\sum_{k=1}^n(\mathbf X_j-\boldsymbol\mu)(\mathbf X_k-\boldsymbol\mu)^T\\
+\end{align}\]</span> then
+<span class="math display">\[Cov(\mathbf {\overline X})=E((\mathbf {\overline X}-\boldsymbol\mu)(\mathbf {\overline X}-\boldsymbol\mu)^T)=\frac{1}{n^2}\sum_{j=1}^n\sum_{k=1}^nE\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_k-\boldsymbol\mu)^T\Bigr)
+\]</span> because for <span class="math inline">\(j\ne k\)</span>, <span class="math inline">\(\mathbf X_j\)</span> and <span class="math inline">\(\mathbf X_k\)</span> are independent, so <span class="math inline">\(E\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_k-\boldsymbol\mu)^T\Bigr)=0\)</span>, then <span class="math display">\[Cov(\mathbf {\overline X})=\frac{1}{n^2}\sum_{j=1}^nE\Bigl((\mathbf X_j-\boldsymbol\mu)(\mathbf X_j-\boldsymbol\mu)^T\Bigr)=\frac{1}{n^2}\sum_{j=1}^n\mathbf\Sigma=\frac{1}{n}\mathbf\Sigma\]</span> <span class="math inline">\(\mathbf\Sigma\)</span> is the <strong>population variance–covariance matrix</strong>.</p>
 
     </div>
   </article>
