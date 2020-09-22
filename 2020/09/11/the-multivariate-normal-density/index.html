@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">1 min read</span>
     
 
     <h1 class="article-title">The Multivariate Normal Density</h1>
@@ -71,6 +71,11 @@
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
+<p>The univariate normal pdf is:
+<span class="math display">\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}, \quad -\infty&lt;x&lt;+\infty\]</span> The term <span class="math inline">\((\frac{x-\mu}{\sigma})^2=(x-\mu)(\sigma^2)^{-1}(x-\mu)\)</span> measures the square of
+the <strong>univariate distance</strong> from <span class="math inline">\(x\)</span> to <span class="math inline">\(\mu\)</span> in standard deviation units. This can be generalized to a <span class="math inline">\(p\times 1\)</span> vector <span class="math inline">\(\mathbf x\)</span> of observations on several variables as <span class="math inline">\((\mathbf x-\boldsymbol \mu)(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)\)</span>, which is the square of the <strong>multivariate generalized distance</strong> from <span class="math inline">\(\mathbf x\)</span> to <span class="math inline">\(\boldsymbol \mu\)</span>, the <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(\mathbf \Sigma\)</span> is the variance–covariance matrix of <span class="math inline">\(\mathbf X\)</span>. Because the volume under the surface of the multivariate density function unity for any <span class="math inline">\(p\)</span> is <span class="math inline">\((2\pi)^{-p/2}|\boldsymbol\Sigma|^{-1/2}\)</span>, then a <span class="math inline">\(p\)</span>-dimensional normal density for the random vector <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span> has the form <span class="math display">\[
+f_X(\mathbf x)=\frac{1}{(2\pi)^{p/2}|\mathbf\Sigma|^{1/2}}e^{-\frac{1}{2}(\mathbf x-\boldsymbol \mu)^T(\mathbf\Sigma)^{-1}(\mathbf x-\boldsymbol \mu)}, \quad -\infty&lt;x_i&lt;+\infty, \quad i=1,2,\cdots,p
+\]</span>, which can be denoted by <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf\Sigma)\)</span></p>
 
     </div>
   </article>
@@ -95,6 +100,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
