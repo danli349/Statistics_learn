@@ -77,7 +77,7 @@ the <strong>univariate distance</strong> from <span class="math inline">\(x\)</s
 f_X(\mathbf x)=\frac{1}{(2\pi)^{p/2}|\mathbf\Sigma|^{1/2}}e^{-\frac{1}{2}(\mathbf x-\boldsymbol \mu)^T(\mathbf\Sigma)^{-1}(\mathbf x-\boldsymbol \mu)}, \quad -\infty&lt;x_i&lt;+\infty, \quad i=1,2,\cdots,p
 \]</span>, which can be denoted by <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf\Sigma)\)</span>.</p>
 <p>For the <span style="color: red;"><strong>bivariate normal distribution</strong></span>, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are random variables with joint pdf <span class="math display">\[\begin{align}
-f_{X_1,X_2}(x_1, x_2)&amp;=\frac{1}{2\pi\sqrt{\sigma_{11}\sigma_{22}}\sqrt{1-\rho_{12}^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho_{12}^2}\Bigl[(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})^2-2\rho_{12}(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}}) +(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}})^2\Bigr]\Biggr]\\
+f_{X_1,X_2}(x_1, x_2)&amp;=\frac{1}{2\pi\sqrt{\sigma_{11}\sigma_{22}}\sqrt{1-\rho_{12}^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho_{12}^2}\Bigl[(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})^2-2\rho_{12}(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}}) +(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}})^2\Bigr]\Biggr]
 \end{align}\]</span> and <span class="math inline">\(\rho_{12}=\frac{Cov(X_1,X_2)}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}=\frac{\sigma_{12}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}\)</span> is the correlation coefficient between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. The inverse of the covariance matrix <span class="math display">\[\mathbf \Sigma=\begin{bmatrix}
 \sigma_{11}&amp;\sigma_{12}\\
 \sigma_{12}&amp;\sigma_{22}
@@ -116,14 +116,32 @@ x_2-\mu_2
 \end{align}\]</span>
 Then <span class="math inline">\((\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)=c^2\)</span> are ellipsoids centered at <span class="math inline">\(\boldsymbol \mu\)</span> and have axes <span class="math inline">\(\pm c\sqrt{\lambda_i}\mathbf e_i\)</span>.</p>
 <ul>
-<li>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf \Sigma)\)</span>, any linear combination of the components of <span class="math inline">\(\mathbf X\)</span>, <span class="math inline">\(\mathbf a^T\mathbf X=a_1X_1+a_2X_2+\cdots+a_pX_p\)</span> is also normally distributed as <span class="math inline">\(N_p(\mathbf a^T\boldsymbol \mu, \mathbf a^T\mathbf \Sigma\mathbf a)\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf \Sigma)\)</span>, any linear combination of the components of <span class="math inline">\(\mathbf X\)</span>, <span class="math inline">\(\mathbf a^T\mathbf X=a_1X_1+a_2X_2+\cdots+a_pX_p\)</span> is also normally distributed as <span class="math inline">\(N_p(\mathbf a^T\boldsymbol \mu, \mathbf a^T\mathbf \Sigma\mathbf a)\)</span>. <span class="math display">\[\begin{align}
+\mathbf a^T\mathbf \Sigma\mathbf a&amp;=\begin{bmatrix}
+a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1p}
+\end{bmatrix}\begin{bmatrix}
+\sigma_{11}&amp;\sigma_{12}&amp;\cdots&amp;\sigma_{1p}\\
+\sigma_{12}&amp;\sigma_{22}&amp;\cdots&amp;\sigma_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\sigma_{1p}&amp;\sigma_{2p}&amp;\cdots&amp;\sigma_{pp}\\
+\end{bmatrix}\begin{bmatrix}
+a_{11}\\
+a_{12}\\
+\vdots\\
+a_{1p}
+\end{bmatrix}\\
+\end{align}\]</span></li>
 <li>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf \Sigma)\)</span>, the <span class="math inline">\(q\)</span> linear combination of the components of <span class="math inline">\(\mathbf X\)</span>, <span class="math display">\[\underset{(q\times p)}{\mathbf A}\underset{(p\times 1)}{\mathbf X}=\begin{bmatrix}
 a_{11}X_1+a_{12}X_2+\cdots+a_{1p}X_p\\
 a_{21}X_1+a_{22}X_2+\cdots+a_{2p}X_p\\
 \vdots\\
 a_{q1}X_1+a_{q2}X_2+\cdots+a_{qp}X_p\\
-\end{bmatrix}\]</span> are also normally distributed as <span class="math inline">\(N_q(\mathbf A\boldsymbol \mu, \mathbf A\mathbf \Sigma\mathbf A^T)\)</span>.</li>
+\end{bmatrix}\]</span> are also normally distributed as <span class="math inline">\(N_q(\underset{q\times p}{\mathbf A}\underset{p\times 1}{\boldsymbol \mu}, \underset{q\times p}{\mathbf A}\underset{p\times p}{\mathbf \Sigma}\underset{p\times q}{\mathbf A^T})\)</span>.</li>
 <li>The marginal distribution of any component <span class="math inline">\(X_i, i\in \{1,\cdots,p\}\)</span> of <span class="math inline">\(\mathbf X\)</span> is <span class="math inline">\(N_p(\mu_i, \sigma_{ii})\)</span>.</li>
+<li>The conditional density of <span class="math inline">\(X_1\)</span> given that <span class="math inline">\(X_2=x_2\)</span> for any bivariate distribution is <span class="math display">\[\begin{align}
+f(X_1|x_2)&amp;=\frac{f(x_1, x_2)}{f(x_2)}\\
+&amp;=\frac{\frac{1}{2\pi\sqrt{\sigma_{11}\sigma_{22}}\sqrt{1-\rho_{12}^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho_{12}^2}\Bigl[(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})^2-2\rho_{12}(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}}) +(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}})^2\Bigr]\Biggr]}{\frac{1}{\sqrt{2\pi}\sqrt{\sigma_{22}}}e^{-\frac{1}{2}\frac{(x_2-\mu_2)^2}{\sigma_{22}}}}\\
+\end{align}\]</span></li>
 </ul>
 
     </div>
