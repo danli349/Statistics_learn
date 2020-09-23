@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.74.3" />
+<meta name="generator" content="Hugo 0.75.1" />
 
 
 <title>The Multivariate Normal Density - A Hugo website</title>
@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">The Multivariate Normal Density</h1>
@@ -73,9 +73,58 @@
 
 <p>The univariate normal pdf is:
 <span class="math display">\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}, \quad -\infty&lt;x&lt;+\infty\]</span> The term <span class="math inline">\((\frac{x-\mu}{\sigma})^2=(x-\mu)(\sigma^2)^{-1}(x-\mu)\)</span> measures the square of
-the <strong>univariate distance</strong> from <span class="math inline">\(x\)</span> to <span class="math inline">\(\mu\)</span> in standard deviation units. This can be generalized to a <span class="math inline">\(p\times 1\)</span> vector <span class="math inline">\(\mathbf x\)</span> of observations on several variables as <span class="math inline">\((\mathbf x-\boldsymbol \mu)(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)\)</span>, which is the square of the <strong>multivariate generalized distance</strong> from <span class="math inline">\(\mathbf x\)</span> to <span class="math inline">\(\boldsymbol \mu\)</span>, the <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(\mathbf \Sigma\)</span> is the variance–covariance matrix of <span class="math inline">\(\mathbf X\)</span>. Because the volume under the surface of the multivariate density function unity for any <span class="math inline">\(p\)</span> is <span class="math inline">\((2\pi)^{-p/2}|\boldsymbol\Sigma|^{-1/2}\)</span>, then a <span class="math inline">\(p\)</span>-dimensional normal density for the random vector <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span> has the form <span class="math display">\[
+the <strong>univariate distance</strong> from <span class="math inline">\(x\)</span> to <span class="math inline">\(\mu\)</span> in standard deviation units. This can be generalized to a <span class="math inline">\(p\times 1\)</span> vector <span class="math inline">\(\mathbf x\)</span> of observations on several variables as <span class="math inline">\((\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)\)</span>, which is the square of the <strong>multivariate generalized distance</strong> from <span class="math inline">\(\mathbf x\)</span> to <span class="math inline">\(\boldsymbol \mu\)</span>, the <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(\mathbf \Sigma\)</span> is the variance–covariance matrix of <span class="math inline">\(\mathbf X\)</span>. Because the volume under the surface of the multivariate density function unity for any <span class="math inline">\(p\)</span> is <span class="math inline">\((2\pi)^{-p/2}|\boldsymbol\Sigma|^{-1/2}\)</span>, then a <span class="math inline">\(p\)</span>-dimensional normal density for the random vector <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span> has the form <span class="math display">\[
 f_X(\mathbf x)=\frac{1}{(2\pi)^{p/2}|\mathbf\Sigma|^{1/2}}e^{-\frac{1}{2}(\mathbf x-\boldsymbol \mu)^T(\mathbf\Sigma)^{-1}(\mathbf x-\boldsymbol \mu)}, \quad -\infty&lt;x_i&lt;+\infty, \quad i=1,2,\cdots,p
-\]</span>, which can be denoted by <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf\Sigma)\)</span></p>
+\]</span>, which can be denoted by <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf\Sigma)\)</span>.</p>
+<p>For the <span style="color: red;"><strong>bivariate normal distribution</strong></span>, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are random variables with joint pdf <span class="math display">\[\begin{align}
+f_{X_1,X_2}(x_1, x_2)&amp;=\frac{1}{2\pi\sqrt{\sigma_{11}\sigma_{22}}\sqrt{1-\rho_{12}^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho_{12}^2}\Bigl[(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})^2-2\rho_{12}(\frac{x_1 − \mu_1}{\sqrt{\sigma_{11}}})(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}}) +(\frac{x_2 − \mu_2}{\sqrt{\sigma_{22}}})^2\Bigr]\Biggr]\\
+\end{align}\]</span> and <span class="math inline">\(\rho_{12}=\frac{Cov(X_1,X_2)}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}=\frac{\sigma_{12}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}\)</span> is the correlation coefficient between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. The inverse of the covariance matrix <span class="math display">\[\mathbf \Sigma=\begin{bmatrix}
+\sigma_{11}&amp;\sigma_{12}\\
+\sigma_{12}&amp;\sigma_{22}
+\end{bmatrix}
+\]</span> is <span class="math display">\[\mathbf \Sigma^{-1}=\frac{1}{\sigma_{11}\sigma_{22}-\sigma_{12}^2}\begin{bmatrix}
+\sigma_{22}&amp;-\sigma_{12}\\
+-\sigma_{12}&amp;\sigma_{11}
+\end{bmatrix}
+\]</span>, because <span class="math inline">\(\sigma_{11}\sigma_{22}-\sigma_{12}^2=\sigma_{11}\sigma_{22}(1-\rho_{12}^2)\)</span>, the <strong>squared distance</strong> becomes <span class="math display">\[\begin{align}
+(\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)&amp;=\begin{bmatrix}
+x_1-\mu_1&amp;x_2-\mu_2
+\end{bmatrix}\frac{1}{\sigma_{11}\sigma_{22}(1-\rho_{12}^2)}\begin{bmatrix}
+\sigma_{22}&amp;-\sigma_{12}\\
+-\sigma_{12}&amp;\sigma_{11}
+\end{bmatrix}\begin{bmatrix}
+x_1-\mu_1\\
+x_2-\mu_2
+\end{bmatrix}\\
+&amp;=\begin{bmatrix}
+x_1-\mu_1&amp;x_2-\mu_2
+\end{bmatrix}\frac{1}{\sigma_{11}\sigma_{22}(1-\rho_{12}^2)}\begin{bmatrix}
+\sigma_{22}&amp;-\rho_{12}\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}\\
+-\rho_{12}\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}&amp;\sigma_{11}
+\end{bmatrix}\begin{bmatrix}
+x_1-\mu_1\\
+x_2-\mu_2
+\end{bmatrix}\\
+&amp;=\frac{\sigma_{22}(x_1-\mu_1)^2+\sigma_{11}(x_2-\mu_2)^2-2\rho_{12}\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}(x_1-\mu_1)(x_2-\mu_2)}{\sigma_{11}\sigma_{22}(1-\rho_{12}^2)}\\
+&amp;=\frac{1}{(1-\rho_{12}^2)}\Biggl[\Biggl(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\Biggr)^2+\Biggl(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\Biggr)^2-2\rho_{12}\Biggl(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\Biggr)\Biggl(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\Biggr)\Biggr]
+\end{align}\]</span> since <span class="math inline">\(|\mathbf \Sigma|=\sigma_{11}\sigma_{22}-\sigma_{12}^2=\sigma_{11}\sigma_{22}(1-\rho^2)\)</span>, then the compact general form of <strong>bivariate normal distribution</strong> is <span class="math display">\[f_{X_1,X_2}(x_1, x_2)=f(\mathbf x)=\frac{1}{2\pi|\mathbf\Sigma|^{1/2}}e^{-\frac{1}{2}(\mathbf x-\boldsymbol \mu)^T(\mathbf\Sigma)^{-1}(\mathbf x-\boldsymbol \mu)}\]</span></p>
+<p><span class="math inline">\(\{ \text{all } \mathbf x \text{ that } (\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)=c^2 \}\)</span> is called <span style="color: red;"><strong>Constant probability density contour</strong></span>.</p>
+<p>If <span class="math inline">\((\lambda, \mathbf e),\mathbf e\ne0\)</span> is an eigenvalue–eigenvector pair for positive definite matrix <span class="math inline">\(\mathbf \Sigma\)</span>, then <span class="math inline">\(0&lt;\mathbf e^T\mathbf\Sigma\mathbf e=\mathbf e^T\lambda\mathbf e=\lambda\mathbf e^T\mathbf e=\lambda\)</span>, and <span class="math inline">\(\mathbf e=\mathbf \Sigma^{-1}\mathbf \Sigma\mathbf e=\mathbf \Sigma^{-1}\lambda\mathbf e\Rightarrow\frac{1}{\lambda}\mathbf e=\Sigma^{-1}\mathbf e\)</span>, which shows <span class="math inline">\((\frac{1}{\lambda}, \mathbf e)\)</span> is an eigenvalue–eigenvector pair for matrix <span class="math inline">\(\mathbf \Sigma^{-1}\)</span>, which is also positive definite, because <span class="math display">\[\begin{align}
+\mathbf x^T\mathbf \Sigma^{-1}\mathbf x&amp;=\mathbf x^T\Biggl(\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}\mathbf e_i\mathbf e_i^T\Biggr)\mathbf x\\
+&amp;=\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}\mathbf x^T(\mathbf e_i\mathbf e_i^T)\mathbf x\\
+&amp;=\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}(\mathbf x^T\mathbf e_i)^2\ge0
+\end{align}\]</span>
+Then <span class="math inline">\((\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)=c^2\)</span> are ellipsoids centered at <span class="math inline">\(\boldsymbol \mu\)</span> and have axes <span class="math inline">\(\pm c\sqrt{\lambda_i}\mathbf e_i\)</span>.</p>
+<ul>
+<li>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf \Sigma)\)</span>, any linear combination of the components of <span class="math inline">\(\mathbf X\)</span>, <span class="math inline">\(\mathbf a^T\mathbf X=a_1X_1+a_2X_2+\cdots+a_pX_p\)</span> is also normally distributed as <span class="math inline">\(N_p(\mathbf a^T\boldsymbol \mu, \mathbf a^T\mathbf \Sigma\mathbf a)\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol \mu, \mathbf \Sigma)\)</span>, the <span class="math inline">\(q\)</span> linear combination of the components of <span class="math inline">\(\mathbf X\)</span>, <span class="math display">\[\underset{(q\times p)}{\mathbf A}\underset{(p\times 1)}{\mathbf X}=\begin{bmatrix}
+a_{11}X_1+a_{12}X_2+\cdots+a_{1p}X_p\\
+a_{21}X_1+a_{22}X_2+\cdots+a_{2p}X_p\\
+\vdots\\
+a_{q1}X_1+a_{q2}X_2+\cdots+a_{qp}X_p\\
+\end{bmatrix}\]</span> are also normally distributed as <span class="math inline">\(N_q(\mathbf A\boldsymbol \mu, \mathbf A\mathbf \Sigma\mathbf A^T)\)</span>.</li>
+<li>The marginal distribution of any component <span class="math inline">\(X_i, i\in \{1,\cdots,p\}\)</span> of <span class="math inline">\(\mathbf X\)</span> is <span class="math inline">\(N_p(\mu_i, \sigma_{ii})\)</span>.</li>
+</ul>
 
     </div>
   </article>

@@ -6,11 +6,7 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Sep 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 14 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>statistical distance and Positive Definite quadratic forms</title>
       <link>/2020/09/14/statistical-distance-and-positive-definite-quadratic-forms/</link>
@@ -26,7 +22,7 @@
       <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/09/11/the-multivariate-normal-density/</guid>
-      <description>The univariate normal pdf is:\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}, \quad -\infty&amp;lt;x&amp;lt;+\infty\] The term \((\frac{x-\mu}{\sigma})^2=(x-\mu)(\sigma^2)^{-1}(x-\mu)\) measures the square ofthe univariate distance from \(x\) to \(\mu\) in standard deviation units. This can be generalized to a \(p\times 1\) vector \(\mathbf x\) of observations on several variables as \((\mathbf x-\boldsymbol \mu)(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)\), which is the square of the multivariate generalized distance from \(\mathbf x\) to \(\boldsymbol \mu\), the \(p\times p\) matrix \(\mathbf \Sigma\) is the variance–covariance matrix of \(\mathbf X\).</description>
+      <description>The univariate normal pdf is:\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}, \quad -\infty&amp;lt;x&amp;lt;+\infty\] The term \((\frac{x-\mu}{\sigma})^2=(x-\mu)(\sigma^2)^{-1}(x-\mu)\) measures the square ofthe univariate distance from \(x\) to \(\mu\) in standard deviation units. This can be generalized to a \(p\times 1\) vector \(\mathbf x\) of observations on several variables as \((\mathbf x-\boldsymbol \mu)^T(\mathbf \Sigma)^{-1}(\mathbf x-\boldsymbol \mu)\), which is the square of the multivariate generalized distance from \(\mathbf x\) to \(\boldsymbol \mu\), the \(p\times p\) matrix \(\mathbf \Sigma\) is the variance–covariance matrix of \(\mathbf X\).</description>
     </item>
     
     <item>

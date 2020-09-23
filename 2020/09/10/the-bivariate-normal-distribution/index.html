@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.74.3" />
+<meta name="generator" content="Hugo 0.75.1" />
 
 
 <title>The Bivariate Normal Distribution - A Hugo website</title>
@@ -119,9 +119,9 @@ f_{X}(x)&amp;=\int_{-\infty}^{+\infty}f_{X,Y}(x, y)dy\\
 &amp;=\nu
 \end{align}\]</span> So <span class="math inline">\(\nu\)</span> is the correlation coefficient between X and Y.</p>
 <p>Then we can replace <span class="math inline">\(x\)</span> with <span class="math inline">\((x − \mu_X )/\sigma_X\)</span> and <span class="math inline">\(y\)</span> with <span class="math inline">\((y − \mu_Y )/\sigma_Y\)</span> in the <span class="math inline">\(f_{X,Y}(x, y)\)</span>.
-iF <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> ARE random variables with joint pdf <span class="math display">\[\begin{align}
+If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are random variables with joint pdf <span class="math display">\[\begin{align}
 f_{X,Y}(x, y)&amp;=\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}exp\Biggl[-\frac{1}{2}\frac{1}{1-\rho^2}\Bigl[(\frac{x − \mu_X}{\sigma_X})^2-2\rho(\frac{x − \mu_X}{\sigma_X})(\frac{y − \mu_Y}{\sigma_Y}) +(\frac{y − \mu_Y}{\sigma_Y})^2\Bigr]\Biggr]\\
-\end{align}\]</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are said to have <span style="color: red;"><strong>bivariate normal distribution</strong></span> and <span class="math inline">\(\rho\)</span> is the correlation coefficient between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+\end{align}\]</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are said to have <span style="color: red;"><strong>bivariate normal distribution</strong></span> and <span class="math inline">\(\mu_X=E(X)\)</span>, <span class="math inline">\(\mu_Y=E(Y)\)</span> and <span class="math inline">\(\rho_{X,Y}=\frac{Cov(X,Y)}{\sigma_X\sigma_Y}=\frac{\sigma_{XY}}{\sigma_X\sigma_Y}\)</span>, if we denote <span class="math inline">\(Cov(X,Y)\)</span> as <span class="math inline">\(\sigma_{XY}\)</span>.</p>
 <p>When <span class="math inline">\(E(X)=\mu_X=E(Y)=\mu_Y=0\)</span> and <span class="math inline">\(\sigma_X=\sigma_Y=1\)</span>, the conditional expectation is <span class="math inline">\(E(Y|x)\)</span>, because
 <span class="math display">\[\begin{align}
 f_{Y|x}(y)&amp;=\frac{f_{X,Y}(x, y)}{f_{X}(x)}\\
@@ -216,9 +216,9 @@ plt.plot(x_1, y_1, &#39;ro&#39;, alpha=0.05)
 plt.plot(x_2, y_2, &#39;bo&#39;, alpha=0.05)
 
 plt.gca().axes.set_xlim(-20, 40)</code></pre>
-<pre><code>## (-20, 40)</code></pre>
+<pre><code>## (-20.0, 40.0)</code></pre>
 <pre class="python bg-success"><code>plt.gca().axes.set_ylim(-40, 20)</code></pre>
-<pre><code>## (-40, 20)</code></pre>
+<pre><code>## (-40.0, 20.0)</code></pre>
 <pre class="python bg-success"><code>evalue, evector = linalg.eig(cova)
 print(evalue)</code></pre>
 <pre><code>## [25.+0.j 50.+0.j]</code></pre>
@@ -281,7 +281,7 @@ cset = ax.contourf(X, Y, Z, zdir=&#39;z&#39;, offset=-0.15, cmap=cm.viridis)
 ax.set_zlim(-0.15,0.2)</code></pre>
 <pre><code>## (-0.15, 0.2)</code></pre>
 <pre class="python bg-success"><code>ax.set_zticks(np.linspace(0,0.2,5))</code></pre>
-<pre><code>## [&lt;matplotlib.axis.XTick object at 0x000000006766B888&gt;, &lt;matplotlib.axis.XTick object at 0x00000000675DAAC8&gt;, &lt;matplotlib.axis.XTick object at 0x00000000677D0488&gt;, &lt;matplotlib.axis.XTick object at 0x00000000677D0888&gt;, &lt;matplotlib.axis.XTick object at 0x000000006780F248&gt;]</code></pre>
+<pre><code>## [&lt;matplotlib.axis.XTick object at 0x000000003BA90308&gt;, &lt;matplotlib.axis.XTick object at 0x000000003BA85148&gt;, &lt;matplotlib.axis.XTick object at 0x000000003BACD688&gt;, &lt;matplotlib.axis.XTick object at 0x000000003BACDCC8&gt;, &lt;matplotlib.axis.XTick object at 0x000000003BACF648&gt;]</code></pre>
 <pre class="python bg-success"><code>ax.view_init(27, -21)
 
 plt.show()</code></pre>
