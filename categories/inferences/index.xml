@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Inferences on A Hugo website</title>
+    <link>/categories/inferences/</link>
+    <description>Recent content in Inferences on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 25 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/inferences/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Inferences about the mean</title>
+      <link>/2020/09/25/inferences-about-the-mean/</link>
+      <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/25/inferences-about-the-mean/</guid>
+      <description>The hypothesis testing about the mean is a test of the competing hypotheses: \(H_0:\mu=\mu_0\) and \(H_1:\mu\ne\mu_0\). If \(X_1,X_2,\cdots,X_n\) denote a random sample from a normal population, the appropriate test statistic is \(t=\frac{(\overline X-\mu_0)}{s/\sqrt{n}}\) with \(s^2=\frac{1}{(n-1)}\displaystyle\sum_{i=1}^{n}(X_i-\overline X)^2\). Rejecting \(H_0\) when \(|t|\) is large is equivalent to rejecting \(H_0\) when \(t^2=\frac{(\overline X-\mu_0)^2}{s^2/n}=n(\overline X-\mu_0)(s^2)^{-1}(\overline X-\mu_0)\) is large. Then the test becomes reject \(H_0\) in favor of \(H_1\) at significance level \(\alpha\) if \(n(\overline X-\mu_0)(s^2)^{-1}(\overline X-\mu_0)&amp;gt;t_{n-1}^2(\alpha/2)\), its multivariate analog is \(T^2=(\overline {\mathbf X}-\boldsymbol\mu_0)^T(\frac{1}{n}\mathbf S)^{-1}(\overline {\mathbf X}-\boldsymbol\mu_0)=n(\overline {\mathbf X}-\boldsymbol\mu_0)^T\mathbf S^{-1}(\overline {\mathbf X}-\boldsymbol\mu_0)\), where \(\underset{(p\times p)}{\mathbf S}=\frac{1}{n-1}\displaystyle\sum_{j=1}^{n}(\underset{(p\times 1)}{\mathbf X_j}-\underset{(p\times 1)}{\overline {\mathbf X}})(\underset{(p\times 1)}{\mathbf X_j}-\underset{(p\times 1)}{\overline {\mathbf X}})^T\)</description>
+    </item>
+    
+  </channel>
+</rss>

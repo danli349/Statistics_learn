@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">The Multivariate Normal Density</h1>
@@ -188,6 +188,8 @@ L(\boldsymbol \mu,\mathbf\Sigma)&amp;=\prod_{j=1}^{n}\Biggl[\frac{1}{(2\pi)^{p/2
 &amp;=\frac{1}{(2\pi)^{\frac{np}{2}}|\mathbf\Sigma|^{n/2}}e^{-\frac{1}{2}tr\Biggl[\mathbf\Sigma^{-1}\sum_{j=1}^{n}(\mathbf x_j-\boldsymbol \mu)^T(\mathbf x_j-\boldsymbol\mu)\Biggr]}\\
 &amp;=\frac{1}{(2\pi)^{\frac{np}{2}}|\mathbf\Sigma|^{n/2}}e^{-\frac{1}{2}tr\Biggl[\mathbf\Sigma^{-1}\Biggl(\sum_{j=1}^{n}(\mathbf x_j-\overline{\mathbf x})(\mathbf x_j-\overline{\mathbf x})^T+n(\overline{\mathbf x}-\boldsymbol\mu)(\overline{\mathbf x}-\boldsymbol\mu)^T\Biggr)\Biggr]}\\
 \end{align}\]</span> the likelihood function maximized with respect to <span class="math inline">\(\hat{\boldsymbol \mu}=\overline{\mathbf x}\)</span> <span class="math inline">\(L(\boldsymbol \mu,\mathbf\Sigma)=\frac{1}{(2\pi)^{\frac{np}{2}}|\mathbf\Sigma|^{n/2}}e^{-\frac{1}{2}tr\Biggl[\mathbf\Sigma^{-1}\Biggl(\sum_{j=1}^{n}(\mathbf x_j-\overline{\mathbf x})(\mathbf x_j-\overline{\mathbf x})^T\Biggr)\Biggr]}\)</span> and maximized with respect to <span class="math inline">\(\hat{\mathbf\Sigma}=\frac{1}{2n/2}\displaystyle\sum_{j=1}^{n}(\mathbf x_j-\overline{\mathbf x})(\mathbf x_j-\overline{\mathbf x})^T=\frac{1}{n}\displaystyle\sum_{j=1}^{n}(\mathbf x_j-\overline{\mathbf x})(\mathbf x_j-\overline{\mathbf x})^T=\frac{n-1}{n}\mathbf S\)</span>, the maximized likelihood function is <span class="math inline">\(L(\hat{\boldsymbol\mu},\hat{\mathbf\Sigma})=\frac{1}{(2\pi)^{np/2}}\frac{1}{|\hat{\mathbf\Sigma}|^{n/2}}e^{-np/2}\)</span></p></li>
+<li><p>For the sample variance <span class="math inline">\(s^2\)</span> of the univariate normal random variables <span class="math inline">\(s^2=\frac{1}{n-1}\sum_{j=1}^{n}(X_j-\overline X)^2=\frac{\sigma^2}{n-1}\sum_{j=1}^{n}(\frac{X_j-\overline X}{\sigma})^2=\frac{\sigma^2}{n-1}\chi_{n-1}^2\)</span>. The sampling distribution of the sample covariance matrix of multivariate normal random variables <span class="math inline">\(N_p(\boldsymbol\mu,\mathbf\Sigma)\)</span> is <span class="math inline">\(\mathbf S=\frac{1}{n-1}\sum_{j=1}^{n}\mathbf Z_j\mathbf Z_j^T\)</span> and <span class="math inline">\(\sum_{j=1}^{n}\mathbf Z_j\mathbf Z_j^T\)</span> is called the <strong>Wishart distribution</strong> with <span class="math inline">\(n\)</span> df.</p></li>
+<li><p><span class="math inline">\(\overline {\mathbf X}\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol\mu,\frac{1}{n}\mathbf\Sigma)\)</span> then <span class="math inline">\(\sqrt{n}(\overline {\mathbf X}-\boldsymbol\mu)\)</span> is distributed as <span class="math inline">\(N_p(0,\mathbf\Sigma)\)</span> and <span class="math inline">\(n(\overline {\mathbf X}-\boldsymbol\mu)^T\mathbf\Sigma^{-1}(\overline {\mathbf X}-\boldsymbol\mu)\approx n(\overline {\mathbf X}-\boldsymbol\mu)^T\mathbf S^{-1}(\overline {\mathbf X}-\boldsymbol\mu)\)</span> is distributed as <span class="math inline">\(\chi_p^2\)</span></p></li>
 </ul>
 
     </div>
