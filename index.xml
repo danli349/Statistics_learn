@@ -232,7 +232,7 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
       
       <guid>/vitae/</guid>
       <description>Dan Li Contact Information
-Email: dan@danli.org; Homepage:http://www.danli.org/; Twitter: @LiDan</description>
+Email: dan@danli.org; Homepage:http://danli.org/; Twitter: @LiDan</description>
     </item>
     
   </channel>
