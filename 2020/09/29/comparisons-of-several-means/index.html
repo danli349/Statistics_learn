@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Comparisons of several means - A Hugo website</title>
+<meta property="og:title" content="Comparisons of several means - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Comparisons of several means</h1>
+
+    
+    <span class="article-date">2020-09-29</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<ul>
+<li>Paired Comparisons:<br />
+If there are <span class="math inline">\(2\)</span> treatments over multivariate <span class="math inline">\(\mathbf X_p\)</span>, the difference between treatment <span class="math inline">\(1\)</span> and treatment <span class="math inline">\(2\)</span> is <span class="math inline">\(\mathbf D_j=\mathbf X_{j1}-\mathbf X_{j2},\quad j=1,2,\cdots,n\)</span> if <span class="math inline">\(\mathbf D_j\)</span> are independent <span class="math inline">\(N_p(\boldsymbol\delta, \mathbf\Sigma_d)\)</span> random vectors, inferences
+about the vector of mean differences <span class="math inline">\(\boldsymbol\delta\)</span> can be based upon a <span class="math inline">\(T^2\)</span>-statistic: <span class="math inline">\(T^2=n(\overline{\mathbf D}-\boldsymbol\delta)^T\mathbf S_d^{-1}(\overline{\mathbf D}-\boldsymbol\delta)\)</span> is distributed as an <span class="math inline">\(\frac{(n-1)p}{n-p}F_{p,n-p}\)</span> random variable, where <span class="math inline">\(\overline{\mathbf D}=\displaystyle\frac{1}{n}\displaystyle\sum_{j=1}^{n}\mathbf D_j\)</span> and <span class="math inline">\(\mathbf S_d=\displaystyle\frac{1}{n-1}\displaystyle\sum_{j=1}^{n}(\mathbf D_j-\overline{\mathbf D})(\mathbf D_j-\overline{\mathbf D})^T\)</span>, then an <span class="math inline">\(\alpha\)</span>-level hypothesis test of <span class="math inline">\(H_0:\boldsymbol\delta=\mathbf 0\)</span> versus <span class="math inline">\(H_1:\boldsymbol\delta\ne\mathbf 0\)</span>, rejects <span class="math inline">\(H_0\)</span> if the observed <span class="math inline">\(T^2=n\overline{\mathbf D}^T\mathbf S_d^{-1}\overline{\mathbf D}&gt;\frac{(n-1)p}{n-p}F_{p,n-p}(\alpha)\)</span>.<br />
+A <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>confidence region</strong> for <span class="math inline">\(\boldsymbol\delta\)</span> is the ellipsoid determined by all <span class="math inline">\(\boldsymbol\delta\)</span> that <span class="math inline">\((\overline{\mathbf D}-\boldsymbol\delta)^T\mathbf S_d^{-1}(\overline{\mathbf D}-\boldsymbol\delta)\le\frac{(n-1)p}{n(n-p)}F_{p,n-p}(\alpha)\)</span> and <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>simultaneous confidence intervals</strong> for the individual mean differences <span class="math inline">\(\delta_i\)</span> are given by <span class="math inline">\(\Biggl(\overline{D_i}-\sqrt{\frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha)}\sqrt{\frac{s_{ii}}{n}},\quad \overline{D_i}+\sqrt{\frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha)}\sqrt{\frac{s_{ii}}{n}}\Biggr)\)</span><br />
+and the <strong>Bonferroni simultaneous confidence intervals</strong> for the individual mean differences are <span class="math inline">\(\Biggl(\overline{D_i}-t_{n-1}(\frac{\alpha}{2p})\sqrt{\frac{s_{ii}}{n}},\quad \overline{D_i}+t_{n-1}(\frac{\alpha}{2p})\sqrt{\frac{s_{ii}}{n}}\Biggr)\)</span></li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

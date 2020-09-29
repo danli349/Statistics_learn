@@ -6,7 +6,17 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 25 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Comparisons of several means</title>
+      <link>/2020/09/29/comparisons-of-several-means/</link>
+      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/29/comparisons-of-several-means/</guid>
+      <description>Paired Comparisons:
+If there are \(2\) treatments over multivariate \(\mathbf X_p\), the difference between treatment \(1\) and treatment \(2\) is \(\mathbf D_j=\mathbf X_{j1}-\mathbf X_{j2},\quad j=1,2,\cdots,n\) if \(\mathbf D_j\) are independent \(N_p(\boldsymbol\delta, \mathbf\Sigma_d)\) random vectors, inferencesabout the vector of mean differences \(\boldsymbol\delta\) can be based upon a \(T^2\)-statistic: \(T^2=n(\overline{\mathbf D}-\boldsymbol\delta)^T\mathbf S_d^{-1}(\overline{\mathbf D}-\boldsymbol\delta)\) is distributed as an \(\frac{(n-1)p}{n-p}F_{p,n-p}\) random variable, where \(\overline{\mathbf D}=\displaystyle\frac{1}{n}\displaystyle\sum_{j=1}^{n}\mathbf D_j\) and \(\mathbf S_d=\displaystyle\frac{1}{n-1}\displaystyle\sum_{j=1}^{n}(\mathbf D_j-\overline{\mathbf D})(\mathbf D_j-\overline{\mathbf D})^T\), then an \(\alpha\)-level hypothesis test of \(H_0:\boldsymbol\delta=\mathbf 0\) versus \(H_1:\boldsymbol\delta\ne\mathbf 0\), rejects \(H_0\) if the observed \(T^2=n\overline{\mathbf D}^T\mathbf S_d^{-1}\overline{\mathbf D}&amp;gt;\frac{(n-1)p}{n-p}F_{p,n-p}(\alpha)\).</description>
+    </item>
+    
     <item>
       <title>Inferences about the mean</title>
       <link>/2020/09/25/inferences-about-the-mean/</link>
@@ -222,7 +232,7 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/vitae/</guid>
-      <description>Dan Li Contact Information </description>
+      <description>Dan Li Contact Information Email: dan@danli.org; Homepage:http://danli.org/; Twitter: @LiDan</description>
     </item>
     
   </channel>
