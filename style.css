@@ -1,0 +1,9 @@
+h1.title {
+  font-size: 38px;
+  color: DarkRed;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
