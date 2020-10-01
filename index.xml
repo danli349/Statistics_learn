@@ -232,10 +232,7 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/vitae/</guid>
-      <description>Dan Li \
-Contact Information 
-\
-Email: dan@danli.org; Homepage:http://danli.org/; Twitter: @LiDan</description>
+      <description>Dan Li Contact Information Email: dan@danli.org; Homepage:http://danli.org/; Twitter: @LiDan</description>
     </item>
     
   </channel>

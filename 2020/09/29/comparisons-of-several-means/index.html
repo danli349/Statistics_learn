@@ -41,7 +41,7 @@
 
   <ul class="nav-links">
     
-    <li><a href="../../../../vitae.html">CV</a></li>
+    <li><a href="../../../../vitae/">CV</a></li>
     
     <li><a href="https://github.com/danli349">GitHub</a></li>
     
@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Comparisons of several means</h1>
@@ -118,7 +118,30 @@ T^2&amp;=\Bigl[(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-(\boldsymbol\
 &amp;=N_p(\mathbf 0, \mathbf\Sigma)^T\Bigl(\frac{\mathbf W_{n_1+n_2-2}(\mathbf\Sigma)}{n_1+n_2-2}\Bigr)^{-1}N_p(\mathbf 0, \mathbf\Sigma)
 \end{align}\]</span>is distributed as<span class="math inline">\(\displaystyle\frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1}\)</span> and <span class="math inline">\(P\Biggl[\Bigl[(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]^T\Bigl[(\frac{1}{n_1}+\frac{1}{n_2})\mathbf S_{pooled}\Bigr]^{-1}\Bigl[(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]\le\displaystyle\frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1}(\alpha)\Biggl]=1-\alpha\)</span></p></li>
 <li><p>The contrasts of sample means <span class="math inline">\(\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})\)</span> has <span class="math inline">\(E(\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2}))=\mathbf a^T(\boldsymbol\mu_1-\boldsymbol\mu_2)\)</span> and <span class="math inline">\(Cov(\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2}))=\mathbf a^T(\frac{n_1-1}{n_1+n_2-2}\mathbf S_1+\frac{n_2-1}{n_1+n_2-2}\mathbf S_2)\mathbf a=\mathbf a^T\mathbf S_{pooled}\mathbf a\)</span> and then <span class="math inline">\(t^2=\frac{\Bigl[\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-\mathbf a^T(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]^2}{\Bigl(\displaystyle\frac{1}{n_1}+\displaystyle\frac{1}{n_2}\Bigr)\mathbf a^T\mathbf S_{pooled}\mathbf a}=\frac{\Bigl[\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2}-(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]^2}{\Bigl(\displaystyle\frac{1}{n_1}+\displaystyle\frac{1}{n_2}\Bigr)\mathbf a^T\mathbf S_{pooled}\mathbf a}\le\Bigl[(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]^T\Bigl[(\frac{1}{n_1}+\frac{1}{n_2})\mathbf S_{pooled}\Bigr]^{-1}\Bigl[(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})-(\boldsymbol\mu_1-\boldsymbol\mu_2)\Bigr]=T^2\)</span> So, <span class="math inline">\((1-\alpha)=P\Bigl[T^2\le\displaystyle\frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1}(\alpha)\Bigr]\)</span> and the <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>simultaneous confidence intervals</strong> for the contrasts <span class="math inline">\(\mathbf a^T(\boldsymbol\mu_1-\boldsymbol\mu_2)\)</span> are given by <span class="math inline">\(\Biggl(\mathbf a^T(\overline{\mathbf X}_{1}-\overline{\mathbf X}_{2})\pm\sqrt{\displaystyle\frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1}(\alpha)}\sqrt{\mathbf a^T\Bigl(\frac{1}{n_1}+\frac{1}{n_2}\Bigr)\mathbf S_{pooled}\mathbf a}\Biggr)\)</span> and the <strong>Bonferroni <span class="math inline">\(100(1-\alpha)\%\)</span> simultaneous confidence intervals</strong> for the individual mean differences are <span class="math inline">\(\mu_{1i}-\mu_{2i}:(\overline{x}_{1i}-\overline{x}_{2i})\pm t_{n_1+n_2-2}(\frac{\alpha}{2p})\sqrt{(\frac{1}{n_1}+\frac{1}{n_2})s_{ii,pooled}}\)</span></p></li>
+<li><p><span style="color: red;"><strong>Multivariate Analysis of Variance (MANOVA)</strong></span><br />
+In randomized one-way design experiments for multivariate <span class="math inline">\(\mathbf x_p\)</span>, there are <span class="math inline">\(k\)</span> treatments and <span class="math inline">\(n_i\quad (i=1,2,3,\cdots,k)\)</span> samples for each treatment, for treatment <span class="math inline">\(i\)</span> the samples are <span class="math inline">\(\mathbf x_{i1},\mathbf x_{i2},\cdots,\mathbf x_{ij},\cdots,\mathbf x_{in_i}\quad (j=1,2,3,\cdots,n_i)\)</span>. We assume that 1) The random samples from different populations are independent, 2) All populations have a common covariance matrix <span class="math inline">\(\mathbf\Sigma\)</span>, 3) Each population is multivariate normal <span class="math inline">\(N_p(\boldsymbol\mu_i, \mathbf\Sigma)\)</span>. <span class="math inline">\(\underset{i^{th}\text{ population}\\\ \text{mean}}{\boldsymbol\mu_i}=\underset{\text{overall}\\\ \text{mean}}{\boldsymbol\mu}+\underset{i^{th}\text{ treatment}\\\ \text{effect}}{\boldsymbol\tau_i}\)</span> and <span class="math inline">\(\mathbf x_{ij}=\underset{\text{overall}\\\ \text{mean}}{\boldsymbol\mu}+\underset{i^{th}\text{ treatment}\\\ \text{effect}}{\boldsymbol\tau_i}+\underset{\text{random}\\\ \text{error}}{\mathbf e_{ij}}\)</span> and
+<span class="math inline">\(\displaystyle\sum_{i=1}^{k}n_i\boldsymbol\tau_i=\displaystyle\sum_{i=1}^{k}n_i(\boldsymbol\mu_i-\boldsymbol\mu)=\displaystyle\sum_{i=1}^{k}n_i\boldsymbol\mu_i-\displaystyle\sum_{i=1}^{k}n_i\boldsymbol\mu=0\)</span> the analysis of variance is based upon an analogous decomposition of the observations, <span class="math inline">\(\underset{\text{observation}}{\mathbf x_{ij}}=\underset{\text{overall mean}}{\overline{\mathbf x}}+\underset{\text{ith treatment effect}}{(\overline{\mathbf x}_i-\overline{\mathbf x})}+\underset{\text{error}}{(\mathbf x_{ij}-\overline{\mathbf x}_i)}\)</span> Then <span class="math inline">\(\mathbf x_{ij}-\overline{\mathbf x}=(\overline{\mathbf x}_i-\overline{\mathbf x})+(\mathbf x_{ij}-\overline{\mathbf x}_i)\)</span>, square both side we have
+<span class="math inline">\((\mathbf x_{ij}-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x})^T=(\overline{\mathbf x}_i-\overline{\mathbf x})(\overline{\mathbf x}_i-\overline{\mathbf x})^T+2(\overline{\mathbf x}_i-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x}_i)+(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T\)</span> sum both side over <span class="math inline">\(j\)</span> we have</p></li>
 </ul>
+<p><span class="math display">\[\begin{align}
+\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x})^T&amp;=\displaystyle\sum_{j=1}^{n_i}(\overline{\mathbf x}_i-\overline{\mathbf x})(\overline{\mathbf x}_i-\overline{\mathbf x})^T+2\displaystyle\sum_{j=1}^{n_i}(\overline{\mathbf x}_i-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x}_i)+\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T\\
+&amp;=\displaystyle\sum_{j=1}^{n_i}(\overline{\mathbf x}_i-\overline{\mathbf x})(\overline{\mathbf x}_i-\overline{\mathbf x})^T+\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T\\
+&amp;=n_i(\overline{\mathbf x}_i-\overline{\mathbf x})(\overline{\mathbf x}_i-\overline{\mathbf x})^T+\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T
+\end{align}\]</span> Next, summing both sides over <span class="math inline">\(i\)</span> we have</p>
+<p><span class="math display">\[\begin{align}
+\underset{SSTOT}{\displaystyle\sum_{i=1}^{k}\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x})^T}=\underset{SSTR}{\displaystyle\sum_{i=1}^{k}n_i(\overline{\mathbf x}_i-\overline{\mathbf x})(\overline{\mathbf x}_i-\overline{\mathbf x})^T}+\underset{SSE}{\displaystyle\sum_{i=1}^{k}\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T}
+\end{align}\]</span> the MANOVA table is
+<span class="math display">\[\begin{array}{lccccc}
+\hline
+Source &amp; d.f. &amp; SS &amp; MS \\
+\hline
+Treatment &amp; k-1 &amp; SSTR &amp; MSTR  \\
+Error &amp; n-k &amp; SSE &amp; MSE &amp;  \\
+Total &amp; n-1 &amp; SSTOT\\
+\hline
+\end{array}
+\]</span> with <span class="math inline">\(n=\displaystyle\sum_{i=1}^{k}n_i\)</span> we rejects <span class="math inline">\(H0:\boldsymbol\tau_1 = \boldsymbol\tau_2 = \cdots = \boldsymbol\tau_k\)</span> if the ratio of generalized variances:
+<span class="math inline">\(\Lambda^{*}=\frac{|SSE|}{|SSTOT|}\frac{\Biggl|\displaystyle\sum_{i=1}^{k}\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x}_i)(\mathbf x_{ij}-\overline{\mathbf x}_i)^T\Biggr|}{\Biggl|\displaystyle\sum_{i=1}^{k}\displaystyle\sum_{j=1}^{n_i}(\mathbf x_{ij}-\overline{\mathbf x})(\mathbf x_{ij}-\overline{\mathbf x})^T\Biggr|}\)</span> is too small.</p>
 
     </div>
   </article>
