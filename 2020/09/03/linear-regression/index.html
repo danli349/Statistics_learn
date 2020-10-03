@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Linear Regression</h1>
@@ -104,7 +104,36 @@ n &amp; \displaystyle\sum_{i=1}^{n}x_i\\
 &amp;=\frac{n(\displaystyle\sum_{i=1}^{n}x_iy_i)-(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{n\displaystyle\sum_{i=1}^{n}x_i^2-(\displaystyle\sum_{i=1}^{n}x_i)^2}\\
 &amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_iy_i)-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{\displaystyle\sum_{i=1}^{n}x_i^2-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)^2}
 \end{align}\]</span>, and, <span class="math inline">\(a=\frac{\displaystyle\sum_{i=1}^{n}y_i-b\sum_{i=1}^{n}x_i}{n}=\bar y-b\bar x\)</span>, which shows point <span class="math inline">\((\bar x, \bar y)\)</span> is in the line.</p>
-<p>We call <span class="math inline">\(\hat y_i=a+bx_i\)</span> the <span color="blue"><strong>predicted value</strong></span> of <span class="math inline">\(y_i\)</span>, and <span class="math inline">\(y_i-\hat y_i\)</span> the <span class="math inline">\(i^{th}\)</span> <span color="blue"><strong>residual</strong></span>.</p>
+<p>We call <span class="math inline">\(\hat y_i=a+bx_i\)</span> the <strong>predicted value</strong> of <span class="math inline">\(y_i\)</span>, and <span class="math inline">\(y_i-\hat y_i\)</span> the <span class="math inline">\(i^{th}\)</span> <strong>residual</strong>.</p>
+<ul>
+<li><p>univariate linear regression models:<br />
+When there are <span class="math inline">\(n\)</span> response variables <span class="math inline">\(Y_i, i=1,2,\cdots,n\)</span> and <span class="math inline">\(r\)</span> predictor variables <span class="math inline">\(Z_{ij},j=1,2,\cdots,r\)</span> for each response variable:
+<span class="math display">\[
+\begin{bmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n\\
+\end{bmatrix}=\begin{bmatrix}
+1&amp;Z_{11}&amp;Z_{12}&amp;\cdots&amp;Z_{1r}\\
+1&amp;Z_{21}&amp;Z_{22}&amp;\cdots&amp;Z_{2r}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;Z_{n1}&amp;Z_{n2}&amp;\cdots&amp;Z_{nr}\\
+\end{bmatrix}\begin{bmatrix}
+\beta_0\\
+\beta_1\\
+\vdots\\
+\beta_r\\
+\end{bmatrix}+\begin{bmatrix}
+\epsilon_1\\
+\epsilon_2\\
+\vdots\\
+\epsilon_n\\
+\end{bmatrix}
+\]</span> or
+<span class="math inline">\(\mathbf Y=\mathbf Z\boldsymbol\beta+\boldsymbol\epsilon\)</span>, where <span class="math inline">\(E(\boldsymbol\epsilon)=\boldsymbol0\)</span>, <span class="math inline">\(Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\sigma^2\mathbf I\)</span>. We have to find the regression coefficients <span class="math inline">\(\boldsymbol\beta\)</span> and the error variance <span class="math inline">\(\sigma^2\)</span> that are consistent with the available data. Denote <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> as least squares estimate of <span class="math inline">\(\boldsymbol\beta\)</span>, then <span class="math inline">\(\hat{\boldsymbol y}=\mathbf Z\hat{\boldsymbol\beta}\)</span> and <span class="math inline">\(\hat{\boldsymbol y}\)</span> is the projection of vector <span class="math inline">\(\boldsymbol y\)</span> on the column space of <span class="math inline">\(\mathbf Z\)</span>, so <span class="math inline">\(\boldsymbol y-\hat{\boldsymbol y}=\boldsymbol y-\mathbf Z\hat{\boldsymbol\beta}\)</span> is perpendicular to column space of <span class="math inline">\(\mathbf Z\)</span>, so <span class="math inline">\(\mathbf Z^T(\boldsymbol y-\mathbf Z\hat{\boldsymbol\beta})=\mathbf Z^T\boldsymbol y-\mathbf Z^T\mathbf Z\hat{\boldsymbol\beta}=\boldsymbol0\Rightarrow\mathbf Z^T\boldsymbol y=\mathbf Z^T\mathbf Z\hat{\boldsymbol\beta}\)</span>. <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is a <span class="math inline">\((r+1)(r+1)\)</span> asymmetric matrix. Because the column space of <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> must in the column space of <span class="math inline">\(\mathbf Z\)</span> and row space of <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> must in the row space of <span class="math inline">\(\mathbf Z\)</span> so the rank of <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)\le r+1\)</span> and <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)\le n\)</span>, because <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is a <span class="math inline">\((r+1)(r+1)\)</span> matrix, so only when <span class="math inline">\(r+1\le n\)</span>, it will be possible that <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)=r+1\)</span> and <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is invertible. Then <span class="math inline">\(\hat{\boldsymbol\beta}=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol y\)</span></p></li>
+<li><p>multivariate linear regression models</p></li>
+</ul>
 
     </div>
   </article>
