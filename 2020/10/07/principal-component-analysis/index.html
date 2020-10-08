@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Principal Component Analysis - A Hugo website</title>
+<meta property="og:title" content="Principal Component Analysis - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Principal Component Analysis</h1>
+
+    
+    <span class="article-date">2020-10-07</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Let the random vector <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span> have the covariance matrix <span class="math inline">\(\boldsymbol\Sigma\)</span> with eigenvalues <span class="math inline">\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\)</span>, the linear combinations <span class="math inline">\(Y_i=\mathbf a_i^T\mathbf X=a_{i1}X_1+a_{i2}X_2+\cdots+a_{ip}X_p, \quad (i=1,2,\cdots,p)\)</span> has <span class="math inline">\(Var(Y_i)=Var(\mathbf a_i^T\mathbf X)=\mathbf a_i^TCov(\mathbf X)\mathbf a_i=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_i\)</span> and <span class="math inline">\(Cov(Y_i,Y_k)=Cov(\mathbf a_i^T\mathbf X, \mathbf a_k^T\mathbf X)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_k \quad i,k=1,2,\cdots,p\)</span>. The principal components are those <span style="color: red;"><strong>uncorrelated</strong></span> linear combinations of <span class="math inline">\([X_1,X_2,\cdots,X_p]\)</span>, <span class="math inline">\(Y_1,Y_2,\cdots,Y_p\)</span> whose variances <span class="math inline">\(Var(Y_i)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_i\)</span> are as large as possible, <span style="color: red;"><strong>subject to <span class="math inline">\(\mathbf a_i^T\mathbf a_i=1\)</span></strong></span>. These linear combinations represent the selection of a new coordinate system obtained by rotating the original system with <span class="math inline">\(X_1,X_2,\cdots,X_p\)</span> as the coordinate axes.<br />
+The first principal component is the linear combination with maximum variance, <span class="math inline">\(Var(Y_1)=\mathbf a_1^T\boldsymbol\Sigma\mathbf a_1, \quad \mathbf a_1^T\mathbf a_1=1\)</span>, and the second principal component is <span class="math inline">\(Var(Y_2)=\mathbf a_2^T\boldsymbol\Sigma\mathbf a_2, \quad \mathbf a_2^T\mathbf a_2=1, \quad Cov(Y_1,Y_2)=\mathbf a_1^T\boldsymbol\Sigma\mathbf a_2=0\)</span>, and the <span class="math inline">\(i^{th}\)</span> principal component is <span class="math inline">\(Var(Y_i)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_i, \quad \mathbf a_i^T\mathbf a_i=1, \quad Cov(Y_i,Y_k)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_k=0, \quad i&gt;k\)</span>.<br />
+Let <span class="math inline">\((\lambda_i,\boldsymbol e_i), \quad i=1,2,\cdots,p\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma\)</span>, where <span class="math inline">\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\)</span> Because <span class="math display">\[\frac{\mathbf a^T\boldsymbol\Sigma\mathbf a}{\mathbf a^T\mathbf a}=\frac{\mathbf a^T\mathbf B^{\frac{1}{2}}\mathbf B^{\frac{1}{2}}\mathbf a}{\mathbf a^T\mathbf a}=\frac{\mathbf a^T\mathbf P\boldsymbol \Lambda^{\frac{1}{2}}\mathbf P^T\mathbf P\boldsymbol \Lambda^{\frac{1}{2}}\mathbf P^T\mathbf a}{\mathbf a^T\mathbf P\mathbf P^T\mathbf a}=\frac{\mathbf y^T\boldsymbol\Lambda\mathbf y}{\mathbf y^T\mathbf y}\\
+=\frac{\displaystyle\sum_{i=1}^{p}\lambda_iy_i^2}{\displaystyle\sum_{i=1}^{p}y_i^2}\le \lambda_1\frac{\displaystyle\sum_{i=1}^{p}y_i^2}{\displaystyle\sum_{i=1}^{p}y_i^2}=\lambda_1\]</span> where <span class="math inline">\(\underset{p\times p}{\mathbf P}\)</span> is the orthogonal matrix whose columns are the eigenvectors <span class="math inline">\(\mathbf e_1,\mathbf e_2,\cdots,\mathbf e_p\)</span> and <span class="math inline">\(\underset{p\times p}{\boldsymbol\Lambda}\)</span> is the diagonal matrix with eigenvalues <span class="math inline">\(\lambda_1,\lambda_2,\cdots,\lambda_p\)</span> along the main diagonal, and <span class="math inline">\(\underset{\mathbf a\ne\mathbf 0}{\text{max}}\displaystyle\frac{\mathbf a^T\boldsymbol\Sigma\mathbf a}{\mathbf a^T\mathbf a}=\lambda_1=\frac{\mathbf e_1^T\boldsymbol\Sigma\mathbf e_1}{\mathbf e_1^T\mathbf e_1}=\mathbf e_1^T\boldsymbol\Sigma\mathbf e_1=Var(Y_1)\)</span> when <span class="math inline">\((\mathbf a=\mathbf e_1)\)</span>. Similarly,<span class="math inline">\(\underset{\mathbf a\bot\mathbf e_1,\mathbf e_2,\cdots,\mathbf e_k}{\text{max}}\displaystyle\frac{\mathbf a^T\boldsymbol\Sigma\mathbf a}{\mathbf a^T\mathbf a}=\lambda_{k+1}=Var(Y_{k+1}) \quad k=1,2,\cdots,p-1\)</span> when <span class="math inline">\((\mathbf a=\mathbf e_{k+1})\)</span>.<br />
+Then <span class="math inline">\(Y_1=\mathbf e_1^T\mathbf X, Y_2=\mathbf e_2^T\mathbf X,\cdots,Y_p=\mathbf e_p^T\mathbf X\)</span> are <span style="color: red;"><strong>the principal components</strong></span>, which are uncorrelated and have variances equal to the eigenvalues of the covariance matrix <span class="math inline">\(\boldsymbol\Sigma\)</span> of <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li>Because the covariance matrix <span class="math inline">\(\boldsymbol\Sigma\)</span> of <span class="math inline">\(\mathbf X^T=[X_1,X_2,\cdots,X_p]\)</span> has diagonal elements <span class="math inline">\(\sigma_{11},\sigma_{22},\dots,\sigma_{pp}\)</span>, so <span class="math inline">\(tr(\boldsymbol\Sigma)=\displaystyle\sum_{i=1}^{p}\sigma_{ii}=\sum_{i=1}^{p}Var(X_i)\)</span> And because <span class="math inline">\(tr(\boldsymbol\Sigma)=tr(\mathbf P\boldsymbol\Lambda\mathbf P^T)=tr(\boldsymbol\Lambda\mathbf P^T\mathbf P)=tr(\boldsymbol\Lambda)=\displaystyle\sum_{i=1}^{p}\lambda_i=\displaystyle\sum_{i=1}^{p}Var(Y_i)\)</span> so <span class="math inline">\(\text{Total population variance }=\displaystyle\sum_{i=1}^{p}Var(X_i)=\displaystyle\sum_{i=1}^{p}Var(Y_i)\)</span></li>
+</ol>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Principal Component Analysis</title>
+      <link>/2020/10/07/principal-component-analysis/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/10/07/principal-component-analysis/</guid>
+      <description>Let the random vector \(\mathbf X^T=[X_1,X_2,\cdots,X_p]\) have the covariance matrix \(\boldsymbol\Sigma\) with eigenvalues \(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\), the linear combinations \(Y_i=\mathbf a_i^T\mathbf X=a_{i1}X_1+a_{i2}X_2+\cdots+a_{ip}X_p, \quad (i=1,2,\cdots,p)\) has \(Var(Y_i)=Var(\mathbf a_i^T\mathbf X)=\mathbf a_i^TCov(\mathbf X)\mathbf a_i=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_i\) and \(Cov(Y_i,Y_k)=Cov(\mathbf a_i^T\mathbf X, \mathbf a_k^T\mathbf X)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_k \quad i,k=1,2,\cdots,p\). The principal components are those uncorrelated linear combinations of \([X_1,X_2,\cdots,X_p]\), \(Y_1,Y_2,\cdots,Y_p\) whose variances \(Var(Y_i)=\mathbf a_i^T\boldsymbol\Sigma\mathbf a_i\) are as large as possible, subject to \(\mathbf a_i^T\mathbf a_i=1\). These linear combinations represent the selection of a new coordinate system obtained by rotating the original system with \(X_1,X_2,\cdots,X_p\) as the coordinate axes.</description>
+    </item>
+    
     <item>
       <title>Comparisons of several means</title>
       <link>/2020/09/29/comparisons-of-several-means/</link>
