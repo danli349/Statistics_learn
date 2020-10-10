@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="../../../../css/fonts.css" media="all">
 <link rel="stylesheet" href="../../../../css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">9 min read</span>
     
 
     <h1 class="article-title">Principal Component Analysis</h1>
@@ -84,8 +89,173 @@ Then <span class="math inline">\(Y_1=\mathbf e_1^T\mathbf X, Y_2=\mathbf e_2^T\m
 <li><p>Becasue the <span class="math inline">\(k^{th}\)</span> component of <span class="math inline">\(\mathbf X\)</span> is <span class="math inline">\(X_k=\mathbf a_k^T\mathbf X\)</span>, where <span class="math inline">\(\mathbf a_k^T=[0,\cdots,0,1,0,\cdots,0]\)</span> and because <span class="math inline">\(Y_i=\mathbf e_i^T\mathbf X\)</span>, then <span class="math inline">\(Cov(Y_i, X_k)=Cov(X_k, Y_i)=Cov(\mathbf a_k^T\mathbf X, \mathbf e_i^T\mathbf X)=\mathbf a_k^T\boldsymbol\Sigma\mathbf e_i=\mathbf a_k^T\lambda_i\mathbf e_i=\lambda_ie_{ik}\)</span> Then the correlation coefficients between the principal components <span class="math inline">\(Y_i\)</span> and the variables <span class="math inline">\(X_k\)</span> is <span class="math display">\[\rho_{Y_i,X_k}=\frac{Cov(Y_i, X_k)}{\sqrt{Var(Y_i)}\sqrt{Var(X_k)}}=\frac{\lambda_ie_{ik}}{\sqrt{\lambda_i}\sqrt{\sigma_{kk}}}=\frac{\sqrt{\lambda_i}e_{ik}}{\sqrt{\sigma_{kk}}}\quad (i,k=1,2,\cdots,p)\]</span></p></li>
 <li><p>If multivariate normal random variables <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol\mu, \boldsymbol\Sigma)\)</span>, then <strong>contours of constant density</strong> for <span class="math inline">\(\mathbf X\)</span> are on the ellipsoids centered with <span class="math inline">\(\boldsymbol\mu\)</span>: <span class="math display">\[(\mathbf x-\boldsymbol\mu)^T\boldsymbol\Sigma^{-1}(\mathbf x-\boldsymbol\mu)=(\mathbf x-\boldsymbol\mu)^T\displaystyle\sum_{i=1}^{p}(\frac{1}{\lambda_i}\mathbf e_i\mathbf e_i^T)(\mathbf x-\boldsymbol\mu)\\
 =\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}\Bigl[\mathbf e_i^T(\mathbf x-\boldsymbol\mu)\Bigr]^2=c^2\]</span>, which have axes <span class="math inline">\(\pm c\sqrt{\lambda_i}\mathbf e_i, \quad (i=1,2,\cdots, p)\)</span>, where <span class="math inline">\((\lambda_i,\mathbf e_i)\)</span> are the eigenvalue–eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma\)</span>. We can translate <span class="math inline">\(\boldsymbol\mu=\boldsymbol0\)</span> without change the Covariance of <span class="math inline">\(\mathbf X\)</span>, then <span class="math inline">\(\mathbf x^T\boldsymbol\Sigma^{-1}\mathbf x=\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}(\mathbf e_i^T\mathbf x)^2=\displaystyle\sum_{i=1}^{p}\frac{1}{\lambda_i}y_i^2=c^2\)</span>, where <span class="math inline">\(y_i=\mathbf e_i^T\mathbf x\)</span> are the principal components of <span class="math inline">\(\mathbf x\)</span> and this equation defines an ellipsoid in a coordinate system with axes <span class="math inline">\(y_i\)</span> lying in the directions <span class="math inline">\(\mathbf e_i\)</span>, which are the directions of the axes of a constant density ellipsoid. Any point on the <span class="math inline">\(i^{th}\)</span> ellipsoid axis has <span class="math inline">\(\mathbf x\)</span> coordinates proportional to <span class="math inline">\(\mathbf e_i^T=[e_{i1},e_{i2},\cdots,e_{ip}]\)</span></p></li>
-<li></li>
+<li><p>If the random variables are standardized with <span class="math display">\[Z_i=\frac{X_i-\mu_i}{\sqrt{\sigma_{ii}}}\]</span>, with matrix notation <span class="math inline">\(\mathbf Z=(\mathbf D^{\frac{1}{2}})^{-1}(\mathbf X-\boldsymbol\mu)\)</span> where <span class="math display">\[\mathbf D=\begin{bmatrix}
+\sigma_{11}&amp;0&amp;0&amp;\cdots&amp;0\\
+0&amp;\sigma_{22}&amp;0&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;0&amp;\cdots&amp;\sigma_{pp}\\
+\end{bmatrix}\]</span> Then <span class="math inline">\(E(\mathbf Z)=\mathbf0\)</span> and <span class="math display">\[Cov(\mathbf Z)=(\mathbf D^{\frac{1}{2}})^{-1}\boldsymbol\Sigma(\mathbf D^{\frac{1}{2}})^{-1}=\begin{bmatrix}
+\frac{\sigma_{11}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{11}}}&amp;\frac{\sigma_{12}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}&amp;\frac{\sigma_{13}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{33}}}&amp;\cdots&amp;\frac{\sigma_{1p}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{pp}}}\\
+\frac{\sigma_{12}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}}&amp;\frac{\sigma_{22}}{\sqrt{\sigma_{22}}\sqrt{\sigma_{22}}}&amp;\frac{\sigma_{23}}{\sqrt{\sigma_{22}}\sqrt{\sigma_{33}}}&amp;\cdots&amp;\frac{\sigma_{2p}}{\sqrt{\sigma_{22}}\sqrt{\sigma_{pp}}}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\frac{\sigma_{1p}}{\sqrt{\sigma_{11}}\sqrt{\sigma_{pp}}}&amp;\frac{\sigma_{2p}}{\sqrt{\sigma_{22}}\sqrt{\sigma_{pp}}}&amp;\frac{\sigma_{3p}}{\sqrt{\sigma_{33}}\sqrt{\sigma_{pp}}}&amp;\cdots&amp;\frac{\sigma_{pp}}{\sqrt{\sigma_{pp}}\sqrt{\sigma_{pp}}}\\
+\end{bmatrix}=\boldsymbol\rho\]</span> Then the principal components of <span class="math inline">\(\mathbf Z\)</span> can be generated from the eigenvectors of <span class="math inline">\(\boldsymbol\rho\)</span>, which is both the covariance matrix of <span class="math inline">\(\mathbf Z\)</span> and the correlation matrix of <span class="math inline">\(\mathbf X\)</span> Usually, the principal components derived from <span class="math inline">\(\boldsymbol\Sigma\)</span> are different from those derived from <span class="math inline">\(\boldsymbol\rho\)</span></p></li>
 </ol>
+<ul>
+<li>Sample Principal Components<br />
+</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>For the <span class="math inline">\(n\)</span> measurements on <span class="math inline">\(p\)</span>-dimensional population <span class="math inline">\(\mathbf x_1,\mathbf x_2,\cdots,\mathbf x_n\)</span>, with mean vector <span class="math inline">\(\boldsymbol\mu\)</span> and covariance matrix <span class="math inline">\(\underset{p\times p}{\boldsymbol\Sigma}\)</span>. These samples has the mean vector <span class="math inline">\(\bar{\mathbf x}\)</span> and sample covariance matrix <span class="math inline">\(\underset{p\times p}{\mathbf S}\)</span> and the sample correlation matrix of <span class="math inline">\(\underset{p\times p}{\mathbf R}\)</span>. The linear combination of the <span class="math inline">\(j^{th}\)</span> measurement <span class="math inline">\(\mathbf x_j\)</span>, is <span class="math inline">\(\mathbf a_1^T\mathbf x_j=a_{11}x_{j1}+a_{12}x_{j2}+\cdots+a_{1p}x_{jp}, \quad (j=1,2,\cdots,n)\)</span>, then the linear combination of sample mean is <span class="math inline">\(\mathbf a_1^T\bar{\mathbf x}\)</span> and sample variance is <span class="math inline">\(\mathbf a_1^T\mathbf S\mathbf a_1\)</span>, two linear combinations <span class="math inline">\(\mathbf a_1^T\mathbf x_j, \mathbf a_2^T\mathbf x_j\)</span> have sample covariance <span class="math inline">\(\mathbf a_1^T\mathbf S\mathbf a_2\)</span>. The <span class="math inline">\(i^{th}\)</span> principal component of of sample <span class="math inline">\(\mathbf x_j\)</span> is the linear combination <span class="math inline">\(\mathbf a_i^T\mathbf x_j\)</span> that maximizes <span class="math inline">\(Var(\mathbf a_i^T\mathbf x_j)\)</span> subject to <span class="math inline">\(\mathbf a_i^T\mathbf a_i=1\)</span> and <span class="math inline">\(Var(\mathbf a_i^T\mathbf x_j,\mathbf a_k^T\mathbf x_j)=0, \quad k&lt;i\)</span>. The first principal component maximizes <span class="math inline">\(\mathbf a_1^T\mathbf S\mathbf a_1\)</span> is <span class="math inline">\(\hat{y}_1=\hat{\mathbf e}_1^T\mathbf x_j\)</span>, which is attained when <span class="math inline">\(\mathbf a_1=\hat{\mathbf e}_1\)</span>, and <span class="math inline">\(\hat{\mathbf e}_1\)</span> is the eigenvector of <span class="math inline">\(\mathbf S\)</span>.<br />
+For the <span class="math inline">\(n\)</span> measurements on <span class="math inline">\(p\)</span>-dimensional population, if the eigenvalue-eigenvector pairs of the sample covariance matrix <span class="math inline">\(\underset{p\times p}{\mathbf S}\)</span> are <span class="math inline">\(\{(\hat{\lambda}_i,\hat{\mathbf e}_i), \quad (i=1,2,\cdots,p)\}\)</span>, the <span class="math inline">\(i^{th}\)</span> sample principal component is given by <span class="math inline">\(\hat{y}_i=\hat{\mathbf e}_i^T\mathbf x, \quad (i=1,2,\cdots,p)\)</span>, where <span class="math inline">\(\hat{\lambda}_1\ge\hat{\lambda}_2\ge\cdots\hat{\lambda}_p\)</span> and <span class="math inline">\(\mathbf x\)</span> is any observation on the variables <span class="math inline">\(x_1,x_2,\cdots,x_p\)</span>. Also the variance of sample principal component is <span class="math inline">\(Var(\hat{y}_i)=\hat{\lambda}_i\)</span> and the covariance between the sample principal component and the variables is <span class="math inline">\(Cov(\hat{y}_i,\hat{x}_k)=0, k\ne i\)</span> and total sample variance is <span class="math inline">\(\displaystyle\sum_{i=1}^{p}s_{ii}=\sum_{i=1}^{p}\hat{\lambda}_i\)</span>. Similarly, the correlation coefficients between the principal component <span class="math inline">\(\hat{y}_i\)</span> and the variables <span class="math inline">\(x_k\)</span> is <span class="math inline">\(\rho_{\hat{y}_i,x_k}=\displaystyle\frac{Cov(\hat{y}_i,x_k)}{\sqrt{Var(\hat{y}_i)}\sqrt{Var(x_k)}}=\frac{\hat{e}_{ik}\sqrt{\hat{\lambda}_i}}{\sqrt{s_{kk}}}, \quad i,k=1,2,\cdots,p\)</span></p></li>
+<li><p>If <span class="math inline">\(\mathbf X\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol\mu, \boldsymbol\Sigma)\)</span>, the sample principal components <span class="math inline">\(\hat{y}_i=\hat{\mathbf e}_i^T(\mathbf x-\bar{\mathbf x})\)</span> are realizations of population principal components <span class="math inline">\(Y_i=\mathbf e_i^T(\mathbf X-\boldsymbol\mu)\)</span>, with <span class="math inline">\(Y_i\)</span> is distributed as <span class="math inline">\(N_p(\boldsymbol0, \boldsymbol\Lambda)\)</span>, and the diagonal matrix <span class="math inline">\(\boldsymbol\Lambda\)</span> has entries <span class="math inline">\(\lambda_1,\lambda_2,\cdots,\lambda_p\)</span>, which are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma\)</span>. The contour consisting of all vectors <span class="math inline">\(\mathbf x\)</span> that satisfy <span class="math inline">\((\mathbf x-\bar{\mathbf x})^T\mathbf S^{-1}(\mathbf x-\bar{\mathbf x})=c^2\)</span>, estimates the constant density contour <span class="math inline">\((\mathbf x-\boldsymbol\mu)^T\boldsymbol\Sigma^{-1}(\mathbf x-\boldsymbol\mu)=c^2\)</span></p></li>
+</ol>
+<pre class="r bg-success"><code>data(longley)
+longley</code></pre>
+<pre><code>##      GNP.deflator     GNP Unemployed Armed.Forces Population Year Employed
+## 1947         83.0 234.289      235.6        159.0    107.608 1947   60.323
+## 1948         88.5 259.426      232.5        145.6    108.632 1948   61.122
+## 1949         88.2 258.054      368.2        161.6    109.773 1949   60.171
+## 1950         89.5 284.599      335.1        165.0    110.929 1950   61.187
+## 1951         96.2 328.975      209.9        309.9    112.075 1951   63.221
+## 1952         98.1 346.999      193.2        359.4    113.270 1952   63.639
+## 1953         99.0 365.385      187.0        354.7    115.094 1953   64.989
+## 1954        100.0 363.112      357.8        335.0    116.219 1954   63.761
+## 1955        101.2 397.469      290.4        304.8    117.388 1955   66.019
+## 1956        104.6 419.180      282.2        285.7    118.734 1956   67.857
+## 1957        108.4 442.769      293.6        279.8    120.445 1957   68.169
+## 1958        110.8 444.546      468.1        263.7    121.950 1958   66.513
+## 1959        112.6 482.704      381.3        255.2    123.366 1959   68.655
+## 1960        114.2 502.601      393.1        251.4    125.368 1960   69.564
+## 1961        115.7 518.173      480.6        257.2    127.852 1961   69.331
+## 1962        116.9 554.894      400.7        282.7    130.081 1962   70.551</code></pre>
+<pre class="r bg-success"><code>dim(longley)</code></pre>
+<pre><code>## [1] 16  7</code></pre>
+<pre class="r bg-success"><code>cor(longley)</code></pre>
+<pre><code>##              GNP.deflator       GNP Unemployed Armed.Forces Population
+## GNP.deflator    1.0000000 0.9915892  0.6206334    0.4647442  0.9791634
+## GNP             0.9915892 1.0000000  0.6042609    0.4464368  0.9910901
+## Unemployed      0.6206334 0.6042609  1.0000000   -0.1774206  0.6865515
+## Armed.Forces    0.4647442 0.4464368 -0.1774206    1.0000000  0.3644163
+## Population      0.9791634 0.9910901  0.6865515    0.3644163  1.0000000
+## Year            0.9911492 0.9952735  0.6682566    0.4172451  0.9939528
+## Employed        0.9708985 0.9835516  0.5024981    0.4573074  0.9603906
+##                   Year  Employed
+## GNP.deflator 0.9911492 0.9708985
+## GNP          0.9952735 0.9835516
+## Unemployed   0.6682566 0.5024981
+## Armed.Forces 0.4172451 0.4573074
+## Population   0.9939528 0.9603906
+## Year         1.0000000 0.9713295
+## Employed     0.9713295 1.0000000</code></pre>
+<pre class="r bg-success"><code>cov(longley)</code></pre>
+<pre><code>##              GNP.deflator       GNP Unemployed Armed.Forces Population
+## GNP.deflator    116.45763 1063.6041   625.8666     349.0254   73.50300
+## GNP            1063.60412 9879.3537  5612.4370    3088.0428  685.24094
+## Unemployed      625.86663 5612.4370  8732.2343   -1153.7876  446.27415
+## Armed.Forces    349.02537 3088.0428 -1153.7876    4843.0410  176.40981
+## Population       73.50300  685.2409   446.2742     176.4098   48.38735
+## Year             50.92333  470.9779   297.3033     138.2433   32.91740
+## Employed         36.79666  343.3302   164.9103     111.7681   23.46197
+##                   Year  Employed
+## GNP.deflator  50.92333  36.79666
+## GNP          470.97790 343.33021
+## Unemployed   297.30333 164.91027
+## Armed.Forces 138.24333 111.76811
+## Population    32.91740  23.46197
+## Year          22.66667  16.24093
+## Employed      16.24093  12.33392</code></pre>
+<pre class="r bg-success"><code># Get the eigenvalues and eigenvectors using eigen()
+(en &lt;- eigen(cov(longley)))</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1] 1.536819e+04 7.078799e+03 1.205492e+03 1.645780e+00 2.352774e-01
+## [6] 9.817098e-02 9.428974e-03
+## 
+## $vectors
+##             [,1]        [,2]        [,3]         [,4]         [,5]         [,6]
+## [1,] -0.08246505  0.03431671  0.04174461  0.953414736  0.200588528 -0.201911092
+## [2,] -0.75612880  0.31889266  0.55626174 -0.078811527 -0.003389211  0.100012924
+## [3,] -0.62581871 -0.58065916 -0.52048350 -0.006811143 -0.010137793  0.006269162
+## [4,] -0.15764282  0.74796225 -0.64460779 -0.011957646 -0.003793022 -0.002353907
+## [5,] -0.05438061  0.01345204  0.03418848 -0.281879616  0.461366947 -0.837567707
+## [6,] -0.03716835  0.01181644  0.01849000  0.019100099 -0.323260157 -0.132982953
+## [7,] -0.02509395  0.01402362  0.02995436  0.069128695 -0.801423112 -0.479562668
+##              [,7]
+## [1,] -0.016606051
+## [2,]  0.030401713
+## [3,]  0.009713214
+## [4,]  0.004370434
+## [5,] -0.043101018
+## [6,] -0.935729980
+## [7,]  0.348192811</code></pre>
+<pre class="r bg-success"><code># Eigenvectors are always orthogonal, calculate A&#39;A using crossprod()
+crossprod(en$vectors)</code></pre>
+<pre><code>##               [,1]          [,2]          [,3]          [,4]          [,5]
+## [1,]  1.000000e+00 -6.619054e-17  5.594483e-17 -7.155734e-18 -3.469447e-18
+## [2,] -6.619054e-17  1.000000e+00  1.501078e-16 -4.445229e-17  0.000000e+00
+## [3,]  5.594483e-17  1.501078e-16  1.000000e+00 -1.647987e-17  6.938894e-18
+## [4,] -7.155734e-18 -4.445229e-17 -1.647987e-17  1.000000e+00 -5.551115e-17
+## [5,] -3.469447e-18  0.000000e+00  6.938894e-18 -5.551115e-17  1.000000e+00
+## [6,] -5.204170e-18  1.561251e-17  1.734723e-18  2.012279e-16 -4.440892e-16
+## [7,]  0.000000e+00  8.673617e-19 -6.938894e-18  0.000000e+00  0.000000e+00
+##               [,6]          [,7]
+## [1,] -5.204170e-18  0.000000e+00
+## [2,]  1.561251e-17  8.673617e-19
+## [3,]  1.734723e-18 -6.938894e-18
+## [4,]  2.012279e-16  0.000000e+00
+## [5,] -4.440892e-16  0.000000e+00
+## [6,]  1.000000e+00 -2.775558e-17
+## [7,] -2.775558e-17  1.000000e+00</code></pre>
+<pre class="r bg-success"><code># trace(cov) = sum of eigenvalues
+matlib::tr(cov(longley))</code></pre>
+<pre><code>## [1] 23654.47</code></pre>
+<pre class="r bg-success"><code>sum(en$values)</code></pre>
+<pre><code>## [1] 23654.47</code></pre>
+<pre class="r bg-success"><code># determinant = product of eigenvalues, det(A)=∏λi, This means that the determinant will be zero # if any λi=0.
+det(cov(longley))</code></pre>
+<pre><code>## [1] 47005222</code></pre>
+<pre class="r bg-success"><code>prod(en$values)</code></pre>
+<pre><code>## [1] 47005222</code></pre>
+<pre class="r bg-success"><code># rank = number of non-zero eigenvalues
+matlib::R(cov(longley))</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r bg-success"><code>sum(en$values != 0)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r bg-success"><code># sum of squares of A = sum of squares of eigenvalues, ∑λ2i.
+sum((cov(longley))^2)</code></pre>
+<pre><code>## [1] 287744025</code></pre>
+<pre class="r bg-success"><code>sum(en$values^2)</code></pre>
+<pre><code>## [1] 287744025</code></pre>
+<pre class="r bg-success"><code># get the reverse matrix using solve()
+AI &lt;- solve(cov(longley))
+AI</code></pre>
+<pre><code>##              GNP.deflator         GNP   Unemployed Armed.Forces   Population
+## GNP.deflator   1.16786027 -0.30776300 -0.042606945 -0.013034547  2.028608136
+## GNP           -0.30776300  0.20404438  0.037941637  0.012064719 -0.985381346
+## Unemployed    -0.04260695  0.03794164  0.011169221  0.004788169 -0.116613849
+## Armed.Forces  -0.01303455  0.01206472  0.004788169  0.002655552 -0.005301107
+## Population     2.02860814 -0.98538135 -0.116613849 -0.005301107  8.295913765
+## Year           1.65695843 -3.14878669 -0.958587835 -0.425468239  4.774745254
+## Employed      -0.27011189  0.64236279  0.362297651  0.185293607  0.916474819
+##                     Year    Employed
+## GNP.deflator   1.6569584  -0.2701119
+## GNP           -3.1487867   0.6423628
+## Unemployed    -0.9585878   0.3622977
+## Armed.Forces  -0.4254682   0.1852936
+## Population     4.7747453   0.9164748
+## Year          93.4862110 -32.8030642
+## Employed     -32.8030642  17.9334871</code></pre>
+<pre class="r bg-success"><code># zapsmall() is handy for cleaning up tiny values.
+zapsmall(AI %*% cov(longley))</code></pre>
+<pre><code>##              GNP.deflator GNP Unemployed Armed.Forces Population Year Employed
+## GNP.deflator            1   0          0            0          0    0        0
+## GNP                     0   1          0            0          0    0        0
+## Unemployed              0   0          1            0          0    0        0
+## Armed.Forces            0   0          0            1          0    0        0
+## Population              0   0          0            0          1    0        0
+## Year                    0   0          0            0          0    1        0
+## Employed                0   0          0            0          0    0        1</code></pre>
 
     </div>
   </article>
@@ -106,6 +276,18 @@ Then <span class="math inline">\(Y_1=\mathbf e_1^T\mathbf X, Y_2=\mathbf e_2^T\m
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 <script src="../../../../js/math-code.js"></script>
