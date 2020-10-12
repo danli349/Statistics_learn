@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Random Matrix Theory</title>
+      <link>/2020/10/12/random-matrix-theory/</link>
+      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/10/12/random-matrix-theory/</guid>
+      <description>If \(\mathbf X_i\) is drawn from a p-variate normal distribution with zero mean \(N_p(\boldsymbol0, \boldsymbol\Sigma)\), let \((p\times n)\) matrix \[\underset{(p\times n)}{\mathbf Z}=\begin{bmatrix}\mathbf X_1&amp;amp;\mathbf X_2&amp;amp;\cdots&amp;amp;\mathbf X_n\end{bmatrix}\], Then the Wishart distribution is the probability distribution of the \(p\times p\) random matrix \[\underset{(p\times p)}{\mathbf W}=\begin{bmatrix}\mathbf X_1&amp;amp;\mathbf X_2&amp;amp;\cdots&amp;amp;\mathbf X_n\end{bmatrix}\]</description>
+    </item>
+    
     <item>
       <title>Factor analysis</title>
       <link>/2020/10/11/factor-analysis/</link>
