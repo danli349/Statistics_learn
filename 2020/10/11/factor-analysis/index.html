@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">1 min read</span>
     
 
     <h1 class="article-title">Factor analysis</h1>
@@ -71,6 +71,32 @@
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
+<p>Let <span class="math inline">\(\mathbf X\)</span> is drawn from a <span class="math inline">\(p\)</span>-variate normal distribution with <span class="math inline">\(N_p(\boldsymbol\mu, \boldsymbol\Sigma)\)</span> distribution. The matrix of factor loadings <span class="math display">\[\mathbf L=\begin{bmatrix}
+\ell_{11}&amp;\ell_{12}&amp;\cdots&amp;\ell_{1m}\\
+\ell_{21}&amp;\ell_{22}&amp;\cdots&amp;\ell_{2m}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\ell_{p1}&amp;\ell_{p2}&amp;\cdots&amp;\ell_{pm}\\
+\end{bmatrix}\]</span> with <span class="math inline">\(\ell_{ij}\)</span> is the <em>loading</em> of the <span class="math inline">\(i^{th}\)</span> variable on the <span class="math inline">\(j^{th}\)</span> factor.</p>
+<p>The common factor is <span class="math display">\[\mathbf F=\begin{bmatrix}
+F_1\\
+F_2\\
+\vdots\\
+F_m\\
+\end{bmatrix}\]</span> with <span class="math inline">\(E(\mathbf F)=\underset{(m\times 1)}{\mathbf0}\)</span> and <span class="math inline">\(Cov(\mathbf F)=E(\mathbf F\mathbf F^T)=\underset{(m\times m)}{\mathbf I}\)</span> Then the <strong>Orthogonal factor model</strong> is <span class="math display">\[\underset{(p\times1)}{\mathbf X-\boldsymbol\mu}=\underset{(p\times m)}{\mathbf L}\underset{(m\times1)}{\mathbf F}+\underset{(p\times1)}{\boldsymbol\epsilon}\]</span> with <span class="math inline">\(E(\boldsymbol\epsilon)=\underset{(p\times 1)}{\mathbf0}\)</span> and <span class="math display">\[Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\boldsymbol\Psi=\begin{bmatrix}
+\sigma_{11}&amp;0&amp;\cdots&amp;0\\
+0&amp;\sigma_{22}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\sigma_{pp}\\
+\end{bmatrix}\]</span> and <span class="math inline">\(\mathbf F\)</span> and <span class="math inline">\(\boldsymbol\epsilon\)</span> are independent with <span class="math inline">\(Cov(\boldsymbol\epsilon,\mathbf F)=E(\boldsymbol\epsilon\mathbf F^T)=\underset{(p\times m)}{\mathbf0}\)</span>
+Because <span class="math inline">\(\mathbf L\)</span> is fixed, then <span class="math display">\[\begin{align}
+Cov(\mathbf X)&amp;=E(\mathbf X-\boldsymbol\mu)(\mathbf X-\boldsymbol\mu)^T\\
+&amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)(\mathbf L\mathbf F+\boldsymbol\epsilon)^T\\
+&amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)((\mathbf L\mathbf F)^T+\boldsymbol\epsilon^T)\\
+&amp;=E\Bigl(\mathbf L\mathbf F(\mathbf L\mathbf F)^T+\boldsymbol\epsilon(\mathbf L\mathbf F)^T+\mathbf L\mathbf F\boldsymbol\epsilon^T+\boldsymbol\epsilon\boldsymbol\epsilon^T\Bigr)\\
+&amp;=\mathbf LE(\mathbf F\mathbf F^T)\mathbf L^T+\mathbf0+\mathbf0+E(\boldsymbol\epsilon\boldsymbol\epsilon^T)\\
+&amp;=\mathbf L\mathbf L^T+\boldsymbol\Psi
+\end{align}\]</span> or <span class="math inline">\(Var(X_i)=\mathbf L_i\mathbf L_i^T=\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2\)</span> with <span class="math inline">\(\mathbf L_i\)</span> is the <span class="math inline">\(i^{th}\)</span> row of <span class="math inline">\(\mathbf L\)</span> and <span class="math inline">\(Cov(X_i,X_k)=\mathbf L_i\mathbf L_k^T=\ell_{i1}\ell_{k1}+\ell_{i2}\ell_{k2}+\cdots+\ell_{im}\ell_{km}\)</span></p>
+<p>and <span class="math inline">\(Cov(\mathbf X,\mathbf F)=E(\mathbf X-\boldsymbol\mu)\mathbf F^T=E(\mathbf L\mathbf F+\boldsymbol\epsilon)\mathbf F^T=\mathbf LE(\mathbf F\mathbf F^T)+E(\boldsymbol\epsilon\mathbf F^T)=\mathbf L\)</span></p>
 
     </div>
   </article>
@@ -93,6 +119,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>

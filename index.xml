@@ -13,7 +13,7 @@
       <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/10/12/random-matrix-theory/</guid>
-      <description>If \(\mathbf X_i\) is drawn from a p-variate normal distribution with zero mean \(N_p(\boldsymbol0, \boldsymbol\Sigma)\), let \((p\times n)\) matrix \[\underset{(p\times n)}{\mathbf Z}=\begin{bmatrix}\mathbf X_1&amp;amp;\mathbf X_2&amp;amp;\cdots&amp;amp;\mathbf X_n\end{bmatrix}\], Then the Wishart distribution is the probability distribution of the \(p\times p\) random matrix \[\underset{(p\times p)}{\mathbf W}=\begin{bmatrix}\mathbf X_1&amp;amp;\mathbf X_2&amp;amp;\cdots&amp;amp;\mathbf X_n\end{bmatrix}\]</description>
+      <description>If \(\mathbf X_j\) is drawn from a p-variate normal distribution with zero mean \(N_p(\boldsymbol0, \boldsymbol\Sigma)\),</description>
     </item>
     
     <item>
@@ -22,7 +22,8 @@
       <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/10/11/factor-analysis/</guid>
-      <description></description>
+      <description>Let \(\mathbf X\) is drawn from a \(p\)-variate normal distribution with \(N_p(\boldsymbol\mu, \boldsymbol\Sigma)\) distribution. The matrix of factor loadings \[\mathbf L=\begin{bmatrix}\ell_{11}&amp;amp;\ell_{12}&amp;amp;\cdots&amp;amp;\ell_{1m}\\\ell_{21}&amp;amp;\ell_{22}&amp;amp;\cdots&amp;amp;\ell_{2m}\\\vdots&amp;amp;\vdots&amp;amp;\ddots&amp;amp;\vdots\\\ell_{p1}&amp;amp;\ell_{p2}&amp;amp;\cdots&amp;amp;\ell_{pm}\\\end{bmatrix}\] with \(\ell_{ij}\) is the loading of the \(i^{th}\) variable on the \(j^{th}\) factor.
+The common factor is \[\mathbf F=\begin{bmatrix}F_1\\F_2\\\vdots\\F_m\\\end{bmatrix}\] with \(E(\mathbf F)=\underset{(m\times 1)}{\mathbf0}\) and \(Cov(\mathbf F)=E(\mathbf F\mathbf F^T)=\underset{(m\times m)}{\mathbf I}\) Then the Orthogonal factor model is \[\underset{(p\times1)}{\mathbf X-\boldsymbol\mu}=\underset{(p\times m)}{\mathbf L}\underset{(m\times1)}{\mathbf F}+\underset{(p\times1)}{\boldsymbol\epsilon}\] with \(E(\boldsymbol\epsilon)=\underset{(p\times 1)}{\mathbf0}\) and \[Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\boldsymbol\Psi=\begin{bmatrix}\sigma_{11}&amp;amp;0&amp;amp;\cdots&amp;amp;0\\0&amp;amp;\sigma_{22}&amp;amp;\cdots&amp;amp;0\\\vdots&amp;amp;\vdots&amp;amp;\ddots&amp;amp;\vdots\\0&amp;amp;0&amp;amp;\cdots&amp;amp;\sigma_{pp}\\\end{bmatrix}\] and \(\mathbf F\) and \(\boldsymbol\epsilon\) are independent with \(Cov(\boldsymbol\epsilon,\mathbf F)=E(\boldsymbol\epsilon\mathbf F^T)=\underset{(p\times m)}{\mathbf0}\)Because \(\mathbf L\) is fixed, then \[\begin{align}Cov(\mathbf X)&amp;amp;=E(\mathbf X-\boldsymbol\mu)(\mathbf X-\boldsymbol\mu)^T\\&amp;amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)(\mathbf L\mathbf F+\boldsymbol\epsilon)^T\\&amp;amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)((\mathbf L\mathbf F)^T+\boldsymbol\epsilon^T)\\&amp;amp;=E\Bigl(\mathbf L\mathbf F(\mathbf L\mathbf F)^T+\boldsymbol\epsilon(\mathbf L\mathbf F)^T+\mathbf L\mathbf F\boldsymbol\epsilon^T+\boldsymbol\epsilon\boldsymbol\epsilon^T\Bigr)\\&amp;amp;=\mathbf LE(\mathbf F\mathbf F^T)\mathbf L^T+\mathbf0+\mathbf0+E(\boldsymbol\epsilon\boldsymbol\epsilon^T)\\&amp;amp;=\mathbf L\mathbf L^T+\boldsymbol\Psi\end{align}\] or \(Var(X_i)=\mathbf L_i\mathbf L_i^T=\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2\) with \(\mathbf L_i\) is the \(i^{th}\) row of \(\mathbf L\) and \(Cov(X_i,X_k)=\mathbf L_i\mathbf L_k^T=\ell_{i1}\ell_{k1}+\ell_{i2}\ell_{k2}+\cdots+\ell_{im}\ell_{km}\)</description>
     </item>
     
     <item>
