@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">3 min read</span>
     
 
     <h1 class="article-title">Factor analysis</h1>
@@ -82,21 +82,65 @@ F_1\\
 F_2\\
 \vdots\\
 F_m\\
-\end{bmatrix}\]</span> with <span class="math inline">\(E(\mathbf F)=\underset{(m\times 1)}{\mathbf0}\)</span> and <span class="math inline">\(Cov(\mathbf F)=E(\mathbf F\mathbf F^T)=\underset{(m\times m)}{\mathbf I}\)</span> Then the <strong>Orthogonal factor model</strong> is <span class="math display">\[\underset{(p\times1)}{\mathbf X-\boldsymbol\mu}=\underset{(p\times m)}{\mathbf L}\underset{(m\times1)}{\mathbf F}+\underset{(p\times1)}{\boldsymbol\epsilon}\]</span> with <span class="math inline">\(E(\boldsymbol\epsilon)=\underset{(p\times 1)}{\mathbf0}\)</span> and <span class="math display">\[Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\boldsymbol\Psi=\begin{bmatrix}
-\sigma_{11}&amp;0&amp;\cdots&amp;0\\
-0&amp;\sigma_{22}&amp;\cdots&amp;0\\
+\end{bmatrix}\]</span> with <span class="math inline">\(E(\mathbf F)=\underset{(m\times 1)}{\mathbf0}\)</span>, <span class="math inline">\(Var(F_j)=1,\quad (j=1,2,\cdots,m)\)</span> and <span class="math inline">\(Cov(\mathbf F)=E(\mathbf F\mathbf F^T)=\underset{(m\times m)}{\mathbf I}\)</span> Then the <strong>Orthogonal factor model</strong> is <span class="math display">\[\underset{(p\times1)}{\mathbf X-\boldsymbol\mu}=\underset{(p\times m)}{\mathbf L}\underset{(m\times1)}{\mathbf F}+\underset{(p\times1)}{\boldsymbol\epsilon}\]</span> with <span class="math inline">\(E(\boldsymbol\epsilon)=\underset{(p\times 1)}{\mathbf0}\)</span> and <span class="math display">\[Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\boldsymbol\Psi=\begin{bmatrix}
+\psi_1&amp;0&amp;\cdots&amp;0\\
+0&amp;\psi_2&amp;\cdots&amp;0\\
 \vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
-0&amp;0&amp;\cdots&amp;\sigma_{pp}\\
-\end{bmatrix}\]</span> and <span class="math inline">\(\mathbf F\)</span> and <span class="math inline">\(\boldsymbol\epsilon\)</span> are independent with <span class="math inline">\(Cov(\boldsymbol\epsilon,\mathbf F)=E(\boldsymbol\epsilon\mathbf F^T)=\underset{(p\times m)}{\mathbf0}\)</span>
+0&amp;0&amp;\cdots&amp;\psi_p\\
+\end{bmatrix}\]</span> with <span class="math inline">\(Var(\epsilon_i)=\psi_i\)</span> and <span class="math inline">\(\mathbf F\)</span> and <span class="math inline">\(\boldsymbol\epsilon\)</span> are independent with <span class="math inline">\(Cov(\boldsymbol\epsilon,\mathbf F)=E(\boldsymbol\epsilon\mathbf F^T)=\underset{(p\times m)}{\mathbf0}\)</span>
 Because <span class="math inline">\(\mathbf L\)</span> is fixed, then <span class="math display">\[\begin{align}
-Cov(\mathbf X)&amp;=E(\mathbf X-\boldsymbol\mu)(\mathbf X-\boldsymbol\mu)^T\\
+\boldsymbol\Sigma=Cov(\mathbf X)&amp;=E(\mathbf X-\boldsymbol\mu)(\mathbf X-\boldsymbol\mu)^T\\
 &amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)(\mathbf L\mathbf F+\boldsymbol\epsilon)^T\\
 &amp;=E(\mathbf L\mathbf F+\boldsymbol\epsilon)((\mathbf L\mathbf F)^T+\boldsymbol\epsilon^T)\\
 &amp;=E\Bigl(\mathbf L\mathbf F(\mathbf L\mathbf F)^T+\boldsymbol\epsilon(\mathbf L\mathbf F)^T+\mathbf L\mathbf F\boldsymbol\epsilon^T+\boldsymbol\epsilon\boldsymbol\epsilon^T\Bigr)\\
 &amp;=\mathbf LE(\mathbf F\mathbf F^T)\mathbf L^T+\mathbf0+\mathbf0+E(\boldsymbol\epsilon\boldsymbol\epsilon^T)\\
 &amp;=\mathbf L\mathbf L^T+\boldsymbol\Psi
-\end{align}\]</span> or <span class="math inline">\(Var(X_i)=\mathbf L_i\mathbf L_i^T=\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2\)</span> with <span class="math inline">\(\mathbf L_i\)</span> is the <span class="math inline">\(i^{th}\)</span> row of <span class="math inline">\(\mathbf L\)</span> and <span class="math inline">\(Cov(X_i,X_k)=\mathbf L_i\mathbf L_k^T=\ell_{i1}\ell_{k1}+\ell_{i2}\ell_{k2}+\cdots+\ell_{im}\ell_{km}\)</span></p>
-<p>and <span class="math inline">\(Cov(\mathbf X,\mathbf F)=E(\mathbf X-\boldsymbol\mu)\mathbf F^T=E(\mathbf L\mathbf F+\boldsymbol\epsilon)\mathbf F^T=\mathbf LE(\mathbf F\mathbf F^T)+E(\boldsymbol\epsilon\mathbf F^T)=\mathbf L\)</span></p>
+\end{align}\]</span> or <span class="math display">\[Var(X_i)=\underset{Var(X_i)}{\underbrace{\sigma_{ii}}}=\mathbf L_i\mathbf L_i^T+\psi_i=\underset{\text{communality}}{\underbrace{\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2}}+\underset{\text{specific variance}}{\underbrace{\psi_i}}\]</span> with <span class="math inline">\(\mathbf L_i\)</span> is the <span class="math inline">\(i^{th}\)</span> row of <span class="math inline">\(\mathbf L\)</span> We can denote the <span class="math inline">\(i^{th}\)</span> <strong>communality</strong> as <span class="math inline">\(h_i^2=\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2,\quad (i=1,2,\cdots,p)\)</span>, which is the sum of squares of the loadings of the <span class="math inline">\(i^{th}\)</span> variable on the <span class="math inline">\(m\)</span> common factors, and the total variance of the <span class="math inline">\(i^{th}\)</span> variable is the sum of <strong>communality</strong> and <strong>specific variance</strong> <span class="math inline">\(\sigma_{ii}=h_i^2+\psi_i\)</span>
+<span class="math display">\[Cov(X_i,X_k)=E(\mathbf L_i^T\mathbf F+\epsilon_i)(\mathbf L_k^T\mathbf F+\epsilon_k)^T=\mathbf L_i^T\mathbf L_k=\ell_{i1}\ell_{k1}+\ell_{i2}\ell_{k2}+\cdots+\ell_{im}\ell_{km}\]</span>
+<span class="math display">\[Cov(\mathbf X,\mathbf F)=E(\mathbf X-\boldsymbol\mu)\mathbf F^T=E(\mathbf L\mathbf F+\boldsymbol\epsilon)\mathbf F^T=\mathbf LE(\mathbf F\mathbf F^T)+E(\boldsymbol\epsilon\mathbf F^T)=\mathbf L\]</span> or <span class="math display">\[Cov(X_i,F_j)=E(X_i-\mu_i)\mathbf F_j^T=E(\mathbf L_i^T\mathbf F+\epsilon_i)\mathbf F_j^T=\ell_{ij}\]</span><br />
+1) The Principal Component (and Principal Factor) Method:<br />
+Let <span class="math inline">\(\boldsymbol\Sigma\)</span> has eigenvalue–eigenvector pairs <span class="math inline">\((\lambda_i,\mathbf e_i)\)</span> with <span class="math inline">\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\)</span> Then <span class="math display">\[\boldsymbol\Sigma=\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T=\begin{bmatrix}
+\sqrt{\lambda_1}\mathbf e_1&amp;\sqrt{\lambda_2}\mathbf e_2&amp;\cdots&amp;\sqrt{\lambda_p}\mathbf e_p\\
+\end{bmatrix}\begin{bmatrix}
+\sqrt{\lambda_1}\mathbf e_1^T\\
+\sqrt{\lambda_2}\mathbf e_2^T\\
+\vdots\\
+\sqrt{\lambda_p}\mathbf e_p^T\\
+\end{bmatrix}\]</span> This factor analysis model has as many factors as variables <span class="math inline">\((m=p)\)</span> and specific variances <span class="math inline">\(\psi_i=0\)</span> for all <span class="math inline">\(i\)</span>. The loading matrix <span class="math inline">\(\mathbf L\)</span> has <span class="math inline">\(j^{th}\)</span> column given by <span class="math inline">\(\sqrt{\lambda_j}\mathbf e_j\)</span> and <span class="math inline">\(\boldsymbol\Sigma=\mathbf L\mathbf L^T\)</span>. when the last <span class="math inline">\(p-m\)</span> eigenvalues are small we can neglect them, then <span class="math display">\[\boldsymbol\Sigma\approx\sum_{i=1}^{m}\lambda_i\mathbf e_i\mathbf e_i^T+\boldsymbol\Psi=\begin{bmatrix}
+\sqrt{\lambda_1}\mathbf e_1&amp;\sqrt{\lambda_2}\mathbf e_2&amp;\cdots&amp;\sqrt{\lambda_m}\mathbf e_m\\
+\end{bmatrix}\begin{bmatrix}
+\sqrt{\lambda_1}\mathbf e_1^T\\
+\sqrt{\lambda_2}\mathbf e_2^T\\
+\vdots\\
+\sqrt{\lambda_m}\mathbf e_m^T\\
+\end{bmatrix}+\boldsymbol\Psi\\
+=\underset{(p\times m)}{\mathbf L}\underset{(m\times p)}{\mathbf L^T}+\begin{bmatrix}
+\psi_1&amp;0&amp;\cdots&amp;0\\
+0&amp;\psi_2&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\psi_p\\
+\end{bmatrix}\]</span> where <span class="math display">\[\psi_i=\sigma_{ii}-\sum_{j=1}^{m}\ell_{ij}^2,\quad (i=1,2,\cdots,p)\]</span> When the sample covariance matrix <span class="math inline">\(\mathbf S\)</span> has eigenvalue–eigenvector pairs <span class="math inline">\((\hat{\lambda}_i,\hat{\mathbf e}_i)\)</span> with <span class="math inline">\(\hat{\lambda}_1\ge\hat{\lambda}_2\ge\cdots\ge\hat{\lambda}_p\ge0\)</span> <span class="math display">\[\mathbf S\approx\begin{bmatrix}
+\sqrt{\hat{\lambda}_1}\hat{\mathbf e}_1&amp;\sqrt{\hat{\lambda}_2}\hat{\mathbf e}_2&amp;\cdots&amp;\sqrt{\hat{\lambda}_m}\hat{\mathbf e}_m\\
+\end{bmatrix}\begin{bmatrix}
+\sqrt{\hat{\lambda}_1}\hat{\mathbf e}_1^T\\
+\sqrt{\hat{\lambda}_2}\hat{\mathbf e}_2^T\\
+\vdots\\
+\sqrt{\hat{\lambda}_m}\hat{\mathbf e}_m^T\\
+\end{bmatrix}+\widetilde{\boldsymbol\Psi}\\
+=\underset{(p\times m)}{\widetilde{\mathbf L}}\underset{(m\times p)}{\widetilde{\mathbf L}^T}+\begin{bmatrix}
+\widetilde{\psi}_1&amp;0&amp;\cdots&amp;0\\
+0&amp;\widetilde{\psi}_2&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\widetilde{\psi}_p\\
+\end{bmatrix}\]</span> <span class="math inline">\(\widetilde{\mathbf L}\)</span> is the the matrix of estimated factor loadings and <span class="math display">\[\widetilde{\psi}_i=s_{ii}-\sum_{j=1}^{m}\widetilde{\ell}_{ij}^2\]</span> <span class="math display">\[\widetilde{h}_i^2=\widetilde{\ell}_{i1}^2+\widetilde{\ell}_{i2}^2+\cdots+\widetilde{\ell}_{im}^2\]</span> <span class="math display">\[Var(X_i)=s_{ii}=\widetilde{h}_i^2+\widetilde{\psi}_i\]</span> The residual matrix is <span class="math inline">\(\mathbf S-\widetilde{\mathbf L}\widetilde{\mathbf L}^T-\widetilde{\boldsymbol\Psi}\)</span> The contribution to the total sample variance <span class="math inline">\(s_{11}+s_{22}+\cdots+s_{pp}=tr(\mathbf S)\)</span> from the first common factor is <span class="math display">\[\widetilde{\ell}_{11}^2+\widetilde{\ell}_{21}^2+\cdots+\widetilde{\ell}_{p1}^2=(\sqrt{\hat{\lambda}_1}\hat{\mathbf e}_1)^T(\sqrt{\hat{\lambda}_1}\hat{\mathbf e}_1)=\hat{\lambda}_1\]</span> Then proportion of total sample variance due to <span class="math inline">\(j^{th}\)</span> factor is <span class="math display">\[\frac{\hat{\lambda}_j}{tr(\mathbf S)}\]</span> The number of common factors in the model are increased until a <strong>suitable proportion</strong> of the total sample variance has been explained.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>If the factor model of correlation matrix is <span class="math inline">\(\mathbf R=\mathbf L\mathbf L^T+\boldsymbol\Psi\)</span> then the <span class="math inline">\(m\)</span> common factors should account for the <strong>communality portions</strong> <span class="math inline">\(h_i^2\)</span> of the diagonal elements <span class="math inline">\(r_{ii}=1=h_i^2+\psi_i\)</span> as well as the off-diagonal elements of <span class="math inline">\(\mathbf R\)</span>. Then <span class="math display">\[\mathbf R-\boldsymbol\Psi=\begin{bmatrix}
+h_1^{*2}&amp;r_{12}&amp;\cdots&amp;r_{1p}\\
+r_{12}&amp;h_2^{*2}&amp;\cdots&amp;r_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+r_{1p}&amp;r_{2p}&amp;\cdots&amp;h_p^{*2}\\
+\end{bmatrix}\]</span> with <span class="math inline">\(\psi_i\)</span> are the specific variances and the <span class="math inline">\(i^{th}\)</span> diagonal element of <span class="math inline">\(\mathbf R\)</span> is <span class="math inline">\(h_i^{*2}=1-\psi^{*}_i\)</span></li>
+</ol>
 
     </div>
   </article>
