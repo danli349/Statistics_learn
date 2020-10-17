@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="../../../../css/fonts.css" media="all">
 <link rel="stylesheet" href="../../../../css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">7 min read</span>
     
 
     <h1 class="article-title">Factor analysis</h1>
@@ -165,8 +170,92 @@ The NULL hypothesis is <span class="math display">\[H_0:\underset{(p\times p)}{\
 =\frac{1}{(2\pi)^{\frac{np}{2}}|\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}|^{n/2}}e^{-\frac{1}{2}tr\Biggl[(\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi})^{-1}\Biggl(\sum_{j=1}^{n}(\mathbf x_j-\overline{\mathbf x})(\mathbf x_j-\overline{\mathbf x})^T\Biggr)\Biggr]}\\
 =\frac{1}{(2\pi)^{\frac{np}{2}}|\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}|^{n/2}}e^{-\frac{1}{2}tr\Biggl[(\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi})^{-1}n\mathbf S_n\Biggr]}\]</span> with the maximum likelihood estimates of <span class="math inline">\(\boldsymbol\mu\)</span> is <span class="math inline">\(\boldsymbol\mu=\bar{\mathbf x}\)</span></p></li>
 <li><p>Factor Rotation<br />
-The <span class="math inline">\((p\times m)\)</span> matrix of rotated loadings is <span class="math inline">\(\hat{\mathbf L}^*=\hat{\mathbf L}\mathbf T\)</span>, where <span class="math inline">\(\hat{\mathbf L}\)</span> is the <span class="math inline">\((p\times m)\)</span> matrix of estimated factor loadings and <span class="math inline">\(\mathbf T\mathbf T^T=\mathbf T^T\mathbf T=\mathbf I\)</span>. Then <span class="math display">\[\hat{\boldsymbol\Sigma}=\mathbf S_n=\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}\mathbf T\mathbf T^T\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}^*\hat{\mathbf L}^{*T}+\hat{\boldsymbol\Psi}\]</span>, which indicates that the residual matrix remains unchanged <span class="math display">\[\mathbf S_n-\hat{\mathbf L}\hat{\mathbf L}^T-\hat{\boldsymbol\Psi}=\mathbf S_n-\hat{\mathbf L}^*\hat{\mathbf L}^{*T}-\hat{\boldsymbol\Psi}\]</span> and the specific variances <span class="math inline">\(\hat{\psi}_i\)</span> and the communalities <span class="math inline">\(\hat{h^2}_i\)</span> are unaltered.</p></li>
+The <span class="math inline">\((p\times m)\)</span> matrix of rotated loadings is <span class="math inline">\(\hat{\mathbf L}^*=\hat{\mathbf L}\mathbf T\)</span>, where <span class="math inline">\(\hat{\mathbf L}\)</span> is the <span class="math inline">\((p\times m)\)</span> matrix of estimated factor loadings and <span class="math inline">\(\mathbf T\mathbf T^T=\mathbf T^T\mathbf T=\mathbf I\)</span>. If <span class="math inline">\(\beta\)</span> is the rotation angle, <span class="math display">\[cos(\alpha+\beta)=cos\alpha cos\beta-sin\alpha sin\beta=xcos\beta-ysin\beta=\begin{bmatrix}
+x&amp;y
+\end{bmatrix}\begin{bmatrix}
+cos\beta\\
+-sin\beta
+\end{bmatrix}\]</span> and <span class="math display">\[sin(\alpha+\beta)=sin\alpha cos\beta+cos\alpha sin\beta=xsin\beta+ycos\beta=\begin{bmatrix}
+x&amp;y
+\end{bmatrix}\begin{bmatrix}
+sin\beta\\
+cos\beta
+\end{bmatrix}\]</span> Then <span class="math display">\[\mathbf T=\begin{bmatrix}
+cos\beta&amp;sin\beta\\
+-sin\beta&amp;cos\beta
+\end{bmatrix}\]</span> which denotes the counterclockwise rotation of the <span class="math inline">\((x,y)\)</span> dots or clockwise rotation of the coordinate axes.
+Then <span class="math display">\[\hat{\boldsymbol\Sigma}=\mathbf S_n=\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}\mathbf T\mathbf T^T\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}^*\hat{\mathbf L}^{*T}+\hat{\boldsymbol\Psi}\]</span>, which indicates that the residual matrix remains unchanged <span class="math display">\[\mathbf S_n-\hat{\mathbf L}\hat{\mathbf L}^T-\hat{\boldsymbol\Psi}=\mathbf S_n-\hat{\mathbf L}^*\hat{\mathbf L}^{*T}-\hat{\boldsymbol\Psi}\]</span> and the specific variances <span class="math inline">\(\hat{\psi}_i\)</span> and the communalities <span class="math inline">\(\hat{h^2}_i\)</span> are unaltered. The <span style="color: red;"><strong>varimax (or normal varimax) criterion</strong></span>: <span class="math display">\[V=\frac{1}{p}\sum_{j=1}^{m}\Biggl[\sum_{i=1}^{p}\Biggl(\frac{\hat{\ell}_{ij}^*}{\hat{h}_i}\Biggr)^4-\Biggl(\sum_{i=1}^{p}\frac{\hat{\ell}_{ij}^{*2}}{\hat{h}_i^2}\Biggr)^2/p\Biggr]\]</span> which selects the orthogonal transformation <span class="math inline">\(\mathbf T\)</span> that makes <span class="math inline">\(V\)</span> as large as possible</p></li>
 </ol>
+<p>If rotation is applied to loadings, then there are at three easy ways to compute varimax-rotated PCs in R:</p>
+<ol style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r bg-success"><code>irisX &lt;- iris[,1:4]      # Iris data
+ncomp &lt;- 2
+irisX[1:5,]</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1          5.1         3.5          1.4         0.2
+## 2          4.9         3.0          1.4         0.2
+## 3          4.7         3.2          1.3         0.2
+## 4          4.6         3.1          1.5         0.2
+## 5          5.0         3.6          1.4         0.2</code></pre>
+<pre class="r bg-success"><code>#ran PCA on 4 variables and selected the top 2 PCs using psych::principal
+#Note that it returns standardized scores, i.e. all PCs have unit variance
+pca_iris_rotated &lt;- psych::principal(irisX, rotate=&quot;varimax&quot;, nfactors=ncomp, scores=TRUE)
+print(pca_iris_rotated$scores[1:5,])  # Scores returned by principal()</code></pre>
+<pre><code>##            RC1        RC2
+## [1,] -1.083475  0.9067262
+## [2,] -1.377536 -0.2648876
+## [3,] -1.419832  0.1165198
+## [4,] -1.471607 -0.1474634
+## [5,] -1.095296  1.0949536</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r bg-success"><code>#ran PCA on 4 variables and selected the top 2 PCs using prcomp
+pca_iris        &lt;- prcomp(irisX, center=T, scale=T)
+pca_iris</code></pre>
+<pre><code>## Standard deviations (1, .., p=4):
+## [1] 1.7083611 0.9560494 0.3830886 0.1439265
+## 
+## Rotation (n x k) = (4 x 4):
+##                     PC1         PC2        PC3        PC4
+## Sepal.Length  0.5210659 -0.37741762  0.7195664  0.2612863
+## Sepal.Width  -0.2693474 -0.92329566 -0.2443818 -0.1235096
+## Petal.Length  0.5804131 -0.02449161 -0.1421264 -0.8014492
+## Petal.Width   0.5648565 -0.06694199 -0.6342727  0.5235971</code></pre>
+<pre class="r bg-success"><code>#Loadings are eigenvectors scaled by the square roots of the respective eigenvalues.
+rawLoadings     &lt;- pca_iris$rotation[,1:ncomp] %*% diag(pca_iris$sdev, ncomp, ncomp)
+rawLoadings</code></pre>
+<pre><code>##                    [,1]        [,2]
+## Sepal.Length  0.8901688 -0.36082989
+## Sepal.Width  -0.4601427 -0.88271627
+## Petal.Length  0.9915552 -0.02341519
+## Petal.Width   0.9649790 -0.06399985</code></pre>
+<pre class="r bg-success"><code>#We can manually use varimax function to rotate the loadings, 
+rotatedLoadings &lt;- varimax(rawLoadings)$loadings
+# then use the new rotated loadings to obtain the scores; one needs to multiple the data with the transposed pseudo-inverse of the rotated #loadings using pracma::pinv() function. This will also yield standardized scores.
+invLoadings     &lt;- t(pracma::pinv(rotatedLoadings))
+scores          &lt;- scale(irisX) %*% invLoadings
+print(scores[1:5,])                   # Scores computed via rotated loadings</code></pre>
+<pre><code>##           [,1]       [,2]
+## [1,] -1.083475 -0.9067262
+## [2,] -1.377536  0.2648876
+## [3,] -1.419832 -0.1165198
+## [4,] -1.471607  0.1474634
+## [5,] -1.095296 -1.0949536</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r bg-success"><code>#One can use varimax function to rotate the loadings, and then use the $rotmat rotation matrix to #rotate the standardized scores obtained with prcomp.
+scores &lt;- scale(pca_iris$x[,1:2]) %*% varimax(rawLoadings)$rotmat
+print(scores[1:5,])                   # Scores computed via rotating the scores</code></pre>
+<pre><code>##           [,1]       [,2]
+## [1,] -1.083475 -0.9067262
+## [2,] -1.377536  0.2648876
+## [3,] -1.419832 -0.1165198
+## [4,] -1.471607  0.1474634
+## [5,] -1.095296 -1.0949536</code></pre>
 
     </div>
   </article>
@@ -187,6 +276,18 @@ The <span class="math inline">\((p\times m)\)</span> matrix of rotated loadings 
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 <script src="../../../../js/math-code.js"></script>
