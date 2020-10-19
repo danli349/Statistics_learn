@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">7 min read</span>
+    <span class="article-duration">9 min read</span>
     
 
     <h1 class="article-title">Factor analysis</h1>
@@ -184,12 +184,19 @@ cos\beta
 cos\beta&amp;sin\beta\\
 -sin\beta&amp;cos\beta
 \end{bmatrix}\]</span> which denotes the counterclockwise rotation of the <span class="math inline">\((x,y)\)</span> dots or clockwise rotation of the coordinate axes.
-Then <span class="math display">\[\hat{\boldsymbol\Sigma}=\mathbf S_n=\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}\mathbf T\mathbf T^T\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}^*\hat{\mathbf L}^{*T}+\hat{\boldsymbol\Psi}\]</span>, which indicates that the residual matrix remains unchanged <span class="math display">\[\mathbf S_n-\hat{\mathbf L}\hat{\mathbf L}^T-\hat{\boldsymbol\Psi}=\mathbf S_n-\hat{\mathbf L}^*\hat{\mathbf L}^{*T}-\hat{\boldsymbol\Psi}\]</span> and the specific variances <span class="math inline">\(\hat{\psi}_i\)</span> and the communalities <span class="math inline">\(\hat{h^2}_i\)</span> are unaltered. The <span style="color: red;"><strong>varimax (or normal varimax) criterion</strong></span>: <span class="math display">\[V=\frac{1}{p}\sum_{j=1}^{m}\Biggl[\sum_{i=1}^{p}\Biggl(\frac{\hat{\ell}_{ij}^*}{\hat{h}_i}\Biggr)^4-\Biggl(\sum_{i=1}^{p}\frac{\hat{\ell}_{ij}^{*2}}{\hat{h}_i^2}\Biggr)^2/p\Biggr]\]</span> which selects the orthogonal transformation <span class="math inline">\(\mathbf T\)</span> that makes <span class="math inline">\(V\)</span> as large as possible</p></li>
+Then <span class="math display">\[\hat{\boldsymbol\Sigma}=\mathbf S_n=\hat{\mathbf L}\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}\mathbf T\mathbf T^T\hat{\mathbf L}^T+\hat{\boldsymbol\Psi}=\hat{\mathbf L}^*\hat{\mathbf L}^{*T}+\hat{\boldsymbol\Psi}\]</span>, which indicates that the residual matrix remains unchanged <span class="math display">\[\mathbf S_n-\hat{\mathbf L}\hat{\mathbf L}^T-\hat{\boldsymbol\Psi}=\mathbf S_n-\hat{\mathbf L}^*\hat{\mathbf L}^{*T}-\hat{\boldsymbol\Psi}\]</span> and the specific variances <span class="math inline">\(\hat{\psi}_i\)</span> and the communalities <span class="math inline">\(\hat{h^2}_i\)</span> are unaltered. The <span style="color: red;"><strong>varimax (or normal varimax) criterion</strong></span>: <span class="math display">\[V=\frac{1}{p}\sum_{j=1}^{m}\Biggl[\sum_{i=1}^{p}\Biggl(\frac{\hat{\ell}_{ij}^*}{\hat{h}_i}\Biggr)^4-\Biggl(\sum_{i=1}^{p}\frac{\hat{\ell}_{ij}^{*2}}{\hat{h}_i^2}\Biggr)^2/p\Biggr]\]</span> which selects the orthogonal transformation <span class="math inline">\(\mathbf T\)</span> that makes <span class="math inline">\(V\)</span> as large as possible.</p></li>
+<li><p>Factor Scores<br />
+The estimated values of the <span class="math inline">\(j^{th}\)</span> common factors <span class="math display">\[\mathbf F=\begin{bmatrix}
+F_1\\
+F_2\\
+\vdots\\
+F_m\\
+\end{bmatrix}\]</span> are <span class="math inline">\(\hat{\mathbf f_j},\quad j=1,2,\cdots,n\)</span> which are called factor scores.</p></li>
+<li><p>PCA and SVD decomposition<br />
+Consider an <span class="math inline">\(n\times m\)</span> data matrix <span class="math inline">\(\mathbf X\)</span>. The singular value decomposition is <span class="math inline">\(\underset{(n\times m)}{\mathbf X}=\underset{(n\times n)}{\mathbf U}\underset{(n\times m)}{\mathbf S}\underset{(m\times m)}{\mathbf V^T}\)</span>, where where <span class="math inline">\(\mathbf V\)</span> has as its columns the (normalized) eigenvectors of <span class="math inline">\(\mathbf X^T\mathbf X\)</span>. A rotation is a change of coordinates and amounts to writing the above equality as: <span class="math display">\[\mathbf X=\mathbf U\mathbf S(\mathbf T\mathbf T^T)\mathbf V^T=(\mathbf U\mathbf S\mathbf T)(\mathbf T^T\mathbf V^T)=\underset{(n\times m)}{\mathbf U^*}\underset{(m\times m)}{\mathbf V^*}\]</span> with <span class="math inline">\(\mathbf T\)</span> being an orthogonal matrix chosen to achieve a <span class="math inline">\(\mathbf V^*\)</span> close to sparse (maximum contrast between entries). Because we never rotate all PC. Rather, we consider a subset of <span class="math inline">\(k&lt;m\)</span> which provides still a decent rank-<span class="math inline">\(k\)</span> approximation of <span class="math inline">\(\mathbf X\)</span> <span class="math display">\[\mathbf X\approx\mathbf U_k\mathbf S_k\mathbf V_k^T\]</span>, so the rotated solution is now <span class="math display">\[\mathbf X\approx(\underset{(n\times n)}{\mathbf U_k}\underset{(n\times k)}{\mathbf S_k}\underset{(k\times k)}{\mathbf T_k})(\underset{(k\times k)}{\mathbf T_k^T}\underset{(k\times n)}{\mathbf V_k^T})=\underset{(n\times k)}{\mathbf U_k^*}\underset{(k\times n)}{\mathbf V_k^*}\]</span> where <span class="math inline">\(\mathbf V_k^*\)</span> is a <span class="math inline">\(k\times n\)</span> matrix.</p></li>
 </ol>
-<p>If rotation is applied to loadings, then there are at three easy ways to compute varimax-rotated PCs in R:</p>
-<ol style="list-style-type: decimal">
-<li></li>
-</ol>
+<p>If rotation is applied to loadings, then there are three easy ways to compute varimax-rotated PCs in R:
+(1)</p>
 <pre class="r bg-success"><code>irisX &lt;- iris[,1:4]      # Iris data
 ncomp &lt;- 2
 irisX[1:5,]</code></pre>
@@ -213,30 +220,49 @@ print(pca_iris_rotated$scores[1:5,])  # Scores returned by principal()</code></p
 <li></li>
 </ol>
 <pre class="r bg-success"><code>#ran PCA on 4 variables and selected the top 2 PCs using prcomp
-pca_iris        &lt;- prcomp(irisX, center=T, scale=T)
-pca_iris</code></pre>
-<pre><code>## Standard deviations (1, .., p=4):
-## [1] 1.7083611 0.9560494 0.3830886 0.1439265
-## 
-## Rotation (n x k) = (4 x 4):
-##                     PC1         PC2        PC3        PC4
+pca_iris &lt;- prcomp(irisX, center=T, scale=T)
+#   the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the # covariance/correlation matrix, though the calculation is actually done with the singular values of the data matrix).
+pca_iris$sdev</code></pre>
+<pre><code>## [1] 1.7083611 0.9560494 0.3830886 0.1439265</code></pre>
+<pre class="r bg-success"><code>sqrt(eigen(cor(irisX))$values)</code></pre>
+<pre><code>## [1] 1.7083611 0.9560494 0.3830886 0.1439265</code></pre>
+<pre class="r bg-success"><code># $rotation is the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors). The function princomp returns this in the element loadings.
+pca_iris$rotation</code></pre>
+<pre><code>##                     PC1         PC2        PC3        PC4
 ## Sepal.Length  0.5210659 -0.37741762  0.7195664  0.2612863
 ## Sepal.Width  -0.2693474 -0.92329566 -0.2443818 -0.1235096
 ## Petal.Length  0.5804131 -0.02449161 -0.1421264 -0.8014492
 ## Petal.Width   0.5648565 -0.06694199 -0.6342727  0.5235971</code></pre>
-<pre class="r bg-success"><code>#Loadings are eigenvectors scaled by the square roots of the respective eigenvalues.
-rawLoadings     &lt;- pca_iris$rotation[,1:ncomp] %*% diag(pca_iris$sdev, ncomp, ncomp)
-rawLoadings</code></pre>
+<pre class="r bg-success"><code>eigen(cor(irisX))$vectors</code></pre>
+<pre><code>##            [,1]        [,2]       [,3]       [,4]
+## [1,]  0.5210659 -0.37741762  0.7195664  0.2612863
+## [2,] -0.2693474 -0.92329566 -0.2443818 -0.1235096
+## [3,]  0.5804131 -0.02449161 -0.1421264 -0.8014492
+## [4,]  0.5648565 -0.06694199 -0.6342727  0.5235971</code></pre>
+<pre class="r bg-success"><code>#raw loading are eigenvectors scaled by the square roots of the respective eigenvalues.
+(rawLoadings &lt;- pca_iris$rotation[,1:ncomp] %*% diag(pca_iris$sdev, ncomp, ncomp))</code></pre>
 <pre><code>##                    [,1]        [,2]
 ## Sepal.Length  0.8901688 -0.36082989
 ## Sepal.Width  -0.4601427 -0.88271627
 ## Petal.Length  0.9915552 -0.02341519
 ## Petal.Width   0.9649790 -0.06399985</code></pre>
 <pre class="r bg-success"><code>#We can manually use varimax function to rotate the loadings, 
-rotatedLoadings &lt;- varimax(rawLoadings)$loadings
-# then use the new rotated loadings to obtain the scores; one needs to multiple the data with the transposed pseudo-inverse of the rotated #loadings using pracma::pinv() function. This will also yield standardized scores.
-invLoadings     &lt;- t(pracma::pinv(rotatedLoadings))
-scores          &lt;- scale(irisX) %*% invLoadings
+(rotatedLoadings &lt;- varimax(rawLoadings, normalize = TRUE)$loadings)</code></pre>
+<pre><code>## 
+## Loadings:
+##              [,1]   [,2]  
+## Sepal.Length  0.959       
+## Sepal.Width  -0.145 -0.985
+## Petal.Length  0.944  0.304
+## Petal.Width   0.932  0.257
+## 
+##                 [,1]  [,2]
+## SS loadings    2.702 1.130
+## Proportion Var 0.676 0.283
+## Cumulative Var 0.676 0.958</code></pre>
+<pre class="r bg-success"><code># then use the new rotated loadings to obtain the scores; one needs to multiple the data with the transposed pseudo-inverse of the rotated #loadings using pracma::pinv() function. This will also yield standardized scores.
+invLoadings &lt;- t(pracma::pinv(rotatedLoadings))
+scores &lt;- scale(irisX) %*% invLoadings
 print(scores[1:5,])                   # Scores computed via rotated loadings</code></pre>
 <pre><code>##           [,1]       [,2]
 ## [1,] -1.083475 -0.9067262
@@ -247,8 +273,11 @@ print(scores[1:5,])                   # Scores computed via rotated loadings</co
 <ol start="3" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre class="r bg-success"><code>#One can use varimax function to rotate the loadings, and then use the $rotmat rotation matrix to #rotate the standardized scores obtained with prcomp.
-scores &lt;- scale(pca_iris$x[,1:2]) %*% varimax(rawLoadings)$rotmat
+<pre class="r bg-success"><code>pca_iris &lt;- prcomp(irisX, center=T, scale=T)
+rawLoadings &lt;- pca_iris$rotation[,1:ncomp] %*% diag(pca_iris$sdev, ncomp, ncomp)
+#One can use varimax function to rotate the loadings, and then use the $rotmat rotation matrix to #rotate the standardized scores obtained with prcomp.
+#pca_iris$x contains the PCs 
+scores &lt;- scale(pca_iris$x[,1:2]) %*% varimax(rawLoadings, normalize = TRUE)$rotmat
 print(scores[1:5,])                   # Scores computed via rotating the scores</code></pre>
 <pre><code>##           [,1]       [,2]
 ## [1,] -1.083475 -0.9067262
