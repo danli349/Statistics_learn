@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Correlation Analysis</h1>
@@ -71,6 +71,28 @@
 <script src="index_files/header-attrs/header-attrs.js"></script>
 
 
+<p>Two groups of variables <span class="math inline">\(\mathbf X\)</span> has <span class="math inline">\(p\)</span> variables <span class="math display">\[\mathbf X=\begin{bmatrix}
+X_1\\
+X_2\\
+\vdots\\
+X_p\\
+\end{bmatrix}\]</span> and <span class="math inline">\(\mathbf Y\)</span> has <span class="math inline">\(q\)</span> variables <span class="math display">\[\mathbf Y=\begin{bmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_q\\
+\end{bmatrix}\]</span> <span class="math display">\[E(\mathbf X)=\boldsymbol\mu_X\]</span> <span class="math display">\[Cov(\mathbf X)=\boldsymbol\Sigma_{XX}\]</span> and <span class="math display">\[E(\mathbf Y)=\boldsymbol\mu_Y\]</span> <span class="math display">\[Cov(\mathbf Y)=\boldsymbol\Sigma_{YY}\]</span> and <span class="math display">\[Cov(\mathbf X,\mathbf Y)=\boldsymbol\Sigma_{XY}=\boldsymbol\Sigma_{YX}^T=E(\mathbf X-\boldsymbol\mu_X)(\mathbf Y-\boldsymbol\mu_Y)^T=\begin{bmatrix}
+\sigma_{X_1Y_1}&amp;\sigma_{X_1Y_2}&amp;\cdots&amp;\sigma_{X_1Y_q}\\
+\sigma_{X_2Y_1}&amp;\sigma_{X_2Y_2}&amp;\cdots&amp;\sigma_{X_2Y_q}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\sigma_{X_pY_1}&amp;\sigma_{X_pY_2}&amp;\cdots&amp;\sigma_{X_pY_q}\\
+\end{bmatrix}\]</span> Linear combinations provide simple summary measures of a set of variables. Let <span class="math display">\[U=\mathbf a^T\mathbf X\]</span> <span class="math display">\[V=\mathbf b^T\mathbf Y\]</span> Then <span class="math display">\[Var(U)=Var(\mathbf a^T\mathbf X)=\mathbf a^TCov(\mathbf X)\mathbf a=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a\]</span> <span class="math display">\[Var(V)=Var(\mathbf b^T\mathbf Y)=\mathbf b^TCov(\mathbf Y)\mathbf b=\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b\]</span> <span class="math display">\[Cov(U,V)=Cov(\mathbf a^T\mathbf X,\mathbf b^T\mathbf Y)=\mathbf a^TCov(\mathbf X,\mathbf Y)\mathbf b=\mathbf a^T\boldsymbol\Sigma_{XY}\mathbf b\]</span> We shall seek coefficient vectors <span class="math inline">\(\mathbf a\)</span> and <span class="math inline">\(\mathbf b\)</span> such that <span class="math display">\[Cor(U,V)=Cor(\mathbf a^T\mathbf X,\mathbf b^T\mathbf Y)=\frac{Cov(\mathbf a^T\mathbf X,\mathbf b^T\mathbf Y)}{\sqrt{Var(\mathbf a^T\mathbf X)}\sqrt{Var(\mathbf b^T\mathbf Y)}}=\frac{\mathbf a^T\boldsymbol\Sigma_{XY}\mathbf b}{\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}}\]</span> is as large as possible. The <span style="color: red;"><strong>first pair of canonical variables</strong></span> is the pair of linear combinations <span class="math inline">\((U_1,V_1)\)</span> which maximize the correlation <span class="math inline">\(Cor(U,V)\)</span> and has unit variances. The <span style="color: red;"><strong><span class="math inline">\(k^{th}\)</span> pair of canonical variables</strong></span> is the pair of linear combinations <span class="math inline">\((U_k,V_k)\)</span> which maximize the correlation <span class="math inline">\(Cor(U,V)\)</span> and has unit variances and uncorrelated with all of the previous <span class="math inline">\(k-1\)</span> canonical variable pairs. If variables <span class="math inline">\(x_1,x_2,\cdots,x_p\)</span> and are uncorrelated, the statistical distance from <span class="math inline">\(\mathbf X\)</span> to origin <span class="math inline">\(\mathbf O\)</span> is <span class="math display">\[d(\mathbf X,\mathbf O)=\sqrt{\frac{x_1^2}{s_{11}}+\frac{x_2^2}{s_{22}}+\cdots+\frac{x_p^2}{s_{pp}}}\]</span> If variables <span class="math inline">\(x_1,x_2,\cdots,x_p\)</span> and are correlated, we can rotate the original
+coordinate system through the angle <span class="math inline">\(\theta\)</span> while keeping the scatters fixed and label the variables in the rotated axes as <span class="math inline">\(\widetilde x_1,\widetilde x_2,\cdots,\widetilde x_p\)</span>, which are uncorrelated. Then the statistical distance from <span class="math inline">\(\mathbf X\)</span> to origin <span class="math inline">\(\mathbf O\)</span> in the rotated axes is <span class="math display">\[d(\mathbf X,\mathbf O)=\sqrt{\frac{\widetilde x_1^2}{\widetilde s_{11}}+\frac{\widetilde x_2^2}{\widetilde s_{22}}+\cdots+\frac{\widetilde x_p^2}{\widetilde s_{pp}}}=\sqrt{\mathbf x^T\mathbf A\mathbf x}\]</span> with <span class="math inline">\(\mathbf A\)</span> is the rotation matrix: <span class="math display">\[\mathbf A=\begin{bmatrix}
+a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1p}\\
+a_{12}&amp;a_{22}&amp;\cdots&amp;a_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
+\end{bmatrix}\]</span></p>
 
     </div>
   </article>
@@ -93,6 +115,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
