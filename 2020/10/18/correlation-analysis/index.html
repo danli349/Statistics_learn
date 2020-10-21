@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="../../../../css/fonts.css" media="all">
 <link rel="stylesheet" href="../../../../css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Correlation Analysis</h1>
@@ -71,7 +76,7 @@
 <script src="index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>Two groups of variables <span class="math inline">\(\mathbf X\)</span> has <span class="math inline">\(p\)</span> variables <span class="math display">\[\mathbf X=\begin{bmatrix}
+<p><strong>Canonical-correlation analysis (CCA)</strong>, also called <strong>canonical variates analysis</strong>, is a way of inferring information from cross-covariance matrices. If we have two groups of variables <span class="math inline">\(\mathbf X\)</span> has <span class="math inline">\(p\)</span> variables <span class="math display">\[\mathbf X=\begin{bmatrix}
 X_1\\
 X_2\\
 \vdots\\
@@ -98,8 +103,78 @@ a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
 <li><p>Let <span class="math inline">\(\underset{p\times 1}{\mathbf b}\)</span> and <span class="math inline">\(\underset{p\times 1}{\mathbf d}\)</span> be any two vectors, and <span class="math inline">\(\underset{p\times p}{\mathbf B}\)</span> is a positive definite matrix. Then <span class="math display">\[(\mathbf b^T\mathbf d)^2=(\mathbf b^T\mathbf B^{1/2}\mathbf B^{-1/2}\mathbf d)^2=\Bigl((\mathbf B^{1/2}\mathbf b)^T(\mathbf B^{-1/2}\mathbf d)\Bigr)^2\\
 \le\Bigl((\mathbf B^{1/2}\mathbf b)^T(\mathbf B^{1/2}\mathbf b)\Bigr)\Bigl((\mathbf B^{-1/2}\mathbf d)^T(\mathbf B^{-1/2}\mathbf d)\Bigr)\\
 =(\mathbf b^T\mathbf B\mathbf b)(\mathbf d^T\mathbf B^{-1}\mathbf d)\]</span> with equality if and only if <span class="math inline">\(\mathbf b=c\mathbf B^{-1}\mathbf d\)</span> for some constant c. So <span class="math display">\[\underset{\mathbf b\ne\mathbf 0}{\text{max}}\Bigl(\frac{\mathbf b^T\mathbf d}{\sqrt{\mathbf b^T\mathbf B\mathbf b}}\Bigr)=\sqrt{\mathbf d^T\mathbf B^{-1}\mathbf d}\]</span> <strong>The meaning of this maximum is the inner product of two vectors is no more than the product of the lengths of the two vectors with/without rotated by a positive definite matrix and its reverse separately.</strong></p></li>
-<li><p>By the spectral decomposition, the hyperellipsoids <span class="math display">\[d^2=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a=\mathbf a^T(\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T)\mathbf a=\sum_{i=1}^{p}\lambda_i(\mathbf a^T\mathbf e_i)^2\quad (i=1,2,\cdots,p)\]</span> where <span class="math inline">\((\lambda_i,\mathbf e_i)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> and <span class="math inline">\(\mathbf a_i=d\lambda_i^{-1/2}\mathbf e_i\)</span> is on the hyperellipsoid with the distance to origin <span class="math inline">\(\mathbf O\)</span> in the <span class="math inline">\(\mathbf e_i\)</span> direction is <span class="math inline">\(\frac{d}{\sqrt{\lambda_i}}\)</span> Then <span class="math display">\[U_i=\mathbf a_i^T\mathbf X=(d\lambda_i^{-1/2}\mathbf e_i)^T\mathbf X=d\lambda_i^{-1/2}\mathbf e_i^T\mathbf X=d\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\mathbf X\]</span> and <span class="math display">\[V_j=\mathbf b_j^T\mathbf Y=c\kappa_j^{-1/2}\mathbf f_j^T\mathbf Y=c\mathbf f_j^T\boldsymbol\Sigma_{YY}^{-1/2}\mathbf Y\]</span> are the maximum uncorrelated values, where <span class="math inline">\((\kappa_j,\mathbf f_j)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{YY}\)</span> and <span class="math inline">\(d=\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}\)</span> and <span class="math inline">\(c=\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}\)</span> Then the maximum correlation is <span class="math display">\[Cor(U_k,V_k)=\frac{\mathbf a_k^T\boldsymbol\Sigma_{XY}\mathbf b_k}{\sqrt{\mathbf a_k^T\boldsymbol\Sigma_{XX}\mathbf a_k}\sqrt{\mathbf b_k^T\boldsymbol\Sigma_{YY}\mathbf b_k}}=\frac{d\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}c\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k}{dc}=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\]</span> and <span class="math display">\[Cor^2(U_i,V_j)=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\)</span></p></li>
+<li><p>By the spectral decomposition, the hyperellipsoids <span class="math display">\[d^2=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a=\mathbf a^T(\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T)\mathbf a=\sum_{i=1}^{p}\lambda_i(\mathbf a^T\mathbf e_i)^2\quad (i=1,2,\cdots,p)\]</span> where <span class="math inline">\((\lambda_i,\mathbf e_i)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> and <span class="math inline">\(\mathbf a_i=d\lambda_i^{-1/2}\mathbf e_i\)</span> is on the hyperellipsoid with the distance to origin <span class="math inline">\(\mathbf O\)</span> in the <span class="math inline">\(\mathbf e_i\)</span> direction is <span class="math inline">\(\frac{d}{\sqrt{\lambda_i}}\)</span> Then <span class="math display">\[U_i=\mathbf a_i^T\mathbf X=(d\lambda_i^{-1/2}\mathbf e_i)^T\mathbf X=d\lambda_i^{-1/2}\mathbf e_i^T\mathbf X=d\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\mathbf X\]</span> and <span class="math display">\[V_j=\mathbf b_j^T\mathbf Y=c\kappa_j^{-1/2}\mathbf f_j^T\mathbf Y=c\mathbf f_j^T\boldsymbol\Sigma_{YY}^{-1/2}\mathbf Y\]</span> are the maximum uncorrelated values, where <span class="math inline">\((\kappa_j,\mathbf f_j)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{YY}\)</span> and <span class="math inline">\(d=\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}\)</span> and <span class="math inline">\(c=\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}\)</span> Then the maximum correlation is <span class="math display">\[Cor(U_k,V_k)=\frac{\mathbf a_k^T\boldsymbol\Sigma_{XY}\mathbf b_k}{\sqrt{\mathbf a_k^T\boldsymbol\Sigma_{XX}\mathbf a_k}\sqrt{\mathbf b_k^T\boldsymbol\Sigma_{YY}\mathbf b_k}}=\frac{d\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}c\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k}{dc}=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\]</span> and <span class="math display">\[Cor^2(U_i,V_j)=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\)</span> also <span class="math display">\[Cor^2(U_i,V_j)=\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k=\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k=\rho_k^{*2}\]</span> where <span class="math inline">\(\rho_k^{*2}\)</span> are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\)</span> Usually, we normalize <span class="math inline">\(\mathbf a\)</span> and <span class="math inline">\(\mathbf b\)</span> to make <span class="math inline">\(d=\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}=1\)</span> and <span class="math inline">\(c=\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}=1\)</span> So <span class="math display">\[Var(U)=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a=1\]</span> <span class="math display">\[Var(V)=\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b=1\]</span></p></li>
+<li><p>If the original variables are standardized with <span class="math display">\[\mathbf Z_X=\begin{bmatrix}
+\mathbf Z_{X1}\\
+\mathbf Z_{X2}\\
+\vdots\\
+\mathbf Z_{Xp}\\
+\end{bmatrix}\]</span> and <span class="math display">\[\mathbf Z_Y=\begin{bmatrix}
+\mathbf Z_{Y1}\\
+\mathbf Z_{Y2}\\
+\vdots\\
+\mathbf Z_{Yq}\\
+\end{bmatrix}\]</span> the <strong>canonical variates</strong> are of the form <span class="math display">\[U_k=\mathbf a_k^T\mathbf Z_X=\mathbf e_k^T\boldsymbol\rho_{XX}^{-1/2}\mathbf Z_X\]</span> and <span class="math display">\[V_k=\mathbf b_k^T\mathbf Z_Y=\mathbf f_k^T\boldsymbol\rho_{YY}^{-1/2}\mathbf Z_Y\]</span> Here <span class="math inline">\(Cov(\mathbf Z_X)=\boldsymbol\rho_{XX}\)</span> and
+<span class="math inline">\(Cov(\mathbf Z_Y)=\boldsymbol\rho_{YY}\)</span> and <span class="math inline">\(Cov(\mathbf Z_X, \mathbf Z_Y)=\boldsymbol\rho_{XY}=\boldsymbol\rho_{YX}^T\)</span> The <strong>canonical correlations</strong> <span class="math display">\[Cor^2(U_k,V_k)=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{XX}^{-1/2}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1/2}\]</span> or the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{YY}^{-1/2}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1/2}\]</span> Then the <strong>canonical coefficients</strong> of the original variables are <span class="math inline">\(\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\Sigma_{YY}^{-1/2}\)</span> and are the same as the <strong>canonical coefficients</strong> of the standardized variables is <span class="math inline">\(\mathbf e_i^T\boldsymbol\rho_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\rho_{YY}^{-1/2}\)</span></p></li>
+<li></li>
 </ol>
+<pre class="r bg-success"><code>## signs of results are random
+pop &lt;- LifeCycleSavings[, 2:3]
+oec &lt;- LifeCycleSavings[, -(2:3)]
+cancor(pop, oec)</code></pre>
+<pre><code>## $cor
+## [1] 0.8247966 0.3652762
+## 
+## $xcoef
+##               [,1]        [,2]
+## pop15 -0.009110856 -0.03622206
+## pop75  0.048647514 -0.26031158
+## 
+## $ycoef
+##              [,1]          [,2]          [,3]
+## sr   0.0084710221  3.337936e-02 -5.157130e-03
+## dpi  0.0001307398 -7.588232e-05  4.543705e-06
+## ddpi 0.0041706000 -1.226790e-02  5.188324e-02
+## 
+## $xcenter
+##   pop15   pop75 
+## 35.0896  2.2930 
+## 
+## $ycenter
+##        sr       dpi      ddpi 
+##    9.6710 1106.7584    3.7576</code></pre>
+<pre class="r bg-success"><code>x &lt;- matrix(rnorm(150), 50, 3)
+y &lt;- matrix(rnorm(250), 50, 5)
+(cxy &lt;- cancor(x, y))</code></pre>
+<pre><code>## $cor
+## [1] 0.6206918 0.2826733 0.2156234
+## 
+## $xcoef
+##              [,1]         [,2]        [,3]
+## [1,]  0.015346726 -0.060297686  0.13415057
+## [2,] -0.009611423 -0.102206116 -0.06395430
+## [3,] -0.133400116  0.001203551  0.03101004
+## 
+## $ycoef
+##             [,1]        [,2]         [,3]        [,4]         [,5]
+## [1,] -0.04229255 -0.04918221 -0.114525088  0.04460277  0.009678731
+## [2,]  0.03605696  0.03184419  0.003524281  0.09381918  0.107638899
+## [3,]  0.11450019 -0.03601656 -0.039067889 -0.08182108  0.046455664
+## [4,]  0.04169086 -0.09364776  0.063782889  0.06069972 -0.019083192
+## [5,] -0.06020507 -0.08031824  0.045365143 -0.04007000  0.089262419
+## 
+## $xcenter
+## [1] 0.1769324 0.1532250 0.1036832
+## 
+## $ycenter
+## [1] -0.15647840  0.14379441 -0.14674524 -0.06994742  0.08398888</code></pre>
+<pre class="r bg-success"><code>all(abs(cor(x %*% cxy$xcoef,
+            y %*% cxy$ycoef)[,1:3] - diag(cxy $ cor)) &lt; 1e-15)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r bg-success"><code>all(abs(cor(x %*% cxy$xcoef) - diag(3)) &lt; 1e-15)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r bg-success"><code>all(abs(cor(y %*% cxy$ycoef) - diag(5)) &lt; 1e-15)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 
     </div>
   </article>
@@ -120,6 +195,18 @@ a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 <script src="../../../../js/math-code.js"></script>
