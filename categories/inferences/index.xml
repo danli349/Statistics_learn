@@ -17,15 +17,6 @@
     </item>
     
     <item>
-      <title>Random Matrix Theory</title>
-      <link>/2020/10/12/random-matrix-theory/</link>
-      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/10/12/random-matrix-theory/</guid>
-      <description>If \(\mathbf X_j\) is drawn from a p-variate normal distribution with zero mean \(N_p(\boldsymbol0, \boldsymbol\Sigma)\),</description>
-    </item>
-    
-    <item>
       <title>Factor analysis</title>
       <link>/2020/10/11/factor-analysis/</link>
       <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>

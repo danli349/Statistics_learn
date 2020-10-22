@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">7 min read</span>
     
 
     <h1 class="article-title">Correlation Analysis</h1>
@@ -115,8 +115,42 @@ a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
 \vdots\\
 \mathbf Z_{Yq}\\
 \end{bmatrix}\]</span> the <strong>canonical variates</strong> are of the form <span class="math display">\[U_k=\mathbf a_k^T\mathbf Z_X=\mathbf e_k^T\boldsymbol\rho_{XX}^{-1/2}\mathbf Z_X\]</span> and <span class="math display">\[V_k=\mathbf b_k^T\mathbf Z_Y=\mathbf f_k^T\boldsymbol\rho_{YY}^{-1/2}\mathbf Z_Y\]</span> Here <span class="math inline">\(Cov(\mathbf Z_X)=\boldsymbol\rho_{XX}\)</span> and
-<span class="math inline">\(Cov(\mathbf Z_Y)=\boldsymbol\rho_{YY}\)</span> and <span class="math inline">\(Cov(\mathbf Z_X, \mathbf Z_Y)=\boldsymbol\rho_{XY}=\boldsymbol\rho_{YX}^T\)</span> The <strong>canonical correlations</strong> <span class="math display">\[Cor^2(U_k,V_k)=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{XX}^{-1/2}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1/2}\]</span> or the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{YY}^{-1/2}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1/2}\]</span> Then the <strong>canonical coefficients</strong> of the original variables are <span class="math inline">\(\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\Sigma_{YY}^{-1/2}\)</span> and are the same as the <strong>canonical coefficients</strong> of the standardized variables is <span class="math inline">\(\mathbf e_i^T\boldsymbol\rho_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\rho_{YY}^{-1/2}\)</span></p></li>
-<li></li>
+<span class="math inline">\(Cov(\mathbf Z_Y)=\boldsymbol\rho_{YY}\)</span> and <span class="math inline">\(Cov(\mathbf Z_X, \mathbf Z_Y)=\boldsymbol\rho_{XY}=\boldsymbol\rho_{YX}^T\)</span> The <strong>canonical correlations</strong> <span class="math display">\[Cor^2(U_k,V_k)=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{XX}^{-1/2}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1/2}\]</span> or the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{YY}^{-1/2}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1/2}\]</span> Then the <strong>canonical coefficients</strong> of the original variables are <span class="math inline">\(\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\Sigma_{YY}^{-1/2}\)</span> and are the same as the <strong>canonical coefficients</strong> of the standardized variables is <span class="math inline">\(\mathbf e_i^T\boldsymbol\rho_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\rho_{YY}^{-1/2}\)</span> The correlations are unaffected by the standardization.</p></li>
+<li><p>The first <span class="math inline">\(p\)</span> canonical variables in <span class="math inline">\(\mathbf U\)</span> are <span class="math display">\[\mathbf U=\mathbf A\mathbf X=\begin{bmatrix}
+\mathbf a_1^T\\
+\mathbf a_2^T\\
+\vdots\\
+\mathbf a_p^T\\
+\end{bmatrix}\begin{bmatrix}
+X_1\\
+X_2\\
+\vdots\\
+X_p\\
+\end{bmatrix}\]</span> where <span class="math inline">\(\mathbf A\)</span> is the matrix whose rows contain the <strong>canonical coefficients</strong>. Then <span class="math display">\[Cov(\mathbf U, \mathbf X)=Cov(\mathbf A\mathbf X, \mathbf X)=\mathbf A\boldsymbol\Sigma_{XX}\]</span>. Because <span class="math inline">\(Var(U_i)=1, (i=1,2,\cdots,p)\)</span> the <strong>canonical correlations</strong> between <strong>canonical variates</strong> and their <strong>component variables</strong> are <span class="math display">\[Cor(U_i,X_k)=\frac{Cov(U_i,X_k)}{\sqrt{1}\sqrt{Var(X_k)}}=\frac{Cov(U_i,X_k)}{\sigma_{kk}^{1/2}}=Cov(U_i,X_k)\sigma_{kk}^{-1/2}=Cov(U_i,\sigma_{kk}^{-1/2}X_k)\]</span>. Let diagonal matrix <span class="math display">\[\mathbf D_{XX}^{-1/2}=\begin{bmatrix}
+\sigma_{11}^{-1/2}&amp;0&amp;\cdots&amp;0\\
+0&amp;\sigma_{22}^{-1/2}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;\sigma_{pp}^{-1/2}\\
+\end{bmatrix}\]</span> Then the <strong>canonical correlations</strong> between <strong>canonical variates</strong> and the <strong>original variables</strong> are <span class="math display">\[\underset{(p\times p)}{\boldsymbol\rho_{\mathbf U, \mathbf X}}=Cor(\mathbf U, \mathbf X)=Cov(\mathbf U, \mathbf D_{XX}^{-1/2}\mathbf X)=Cov(\mathbf A\mathbf X, \mathbf D_{XX}^{-1/2}\mathbf X)=\mathbf A\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}\]</span>
+The first <span class="math inline">\(q\)</span> canonical variables in <span class="math inline">\(\mathbf V\)</span> are <span class="math display">\[\mathbf V=\mathbf B\mathbf Y=\begin{bmatrix}
+\mathbf b_1^T\\
+\mathbf b_2^T\\
+\vdots\\
+\mathbf b_q^T\\
+\end{bmatrix}\begin{bmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_q\\
+\end{bmatrix}\]</span> where <span class="math inline">\(\mathbf B\)</span> is the matrix whose rows contain the <strong>canonical coefficients</strong>. Then the <strong>canonical correlations</strong> between <strong>canonical variates</strong> and the <strong>original variables</strong> are <span class="math display">\[\underset{(q\times q)}{\boldsymbol\rho_{\mathbf V, \mathbf Y}}=Cor(\mathbf V, \mathbf Y)=Cov(\mathbf V, \mathbf D_{YY}^{-1/2}\mathbf Y)=Cov(\mathbf B\mathbf Y, \mathbf D_{YY}^{-1/2}\mathbf Y)=\mathbf B\boldsymbol\Sigma_{YY}\mathbf D_{YY}^{-1/2}\]</span> Similarly, the <strong>canonical correlations</strong> between <strong>canonical variates</strong> <span class="math inline">\(\mathbf U\)</span> and the <strong>original variables</strong> <span class="math inline">\(\mathbf Y\)</span> are <span class="math display">\[\underset{(p\times q)}{\boldsymbol\rho_{\mathbf U, \mathbf Y}}=Cor(\mathbf U, \mathbf Y)=Cov(\mathbf U, \mathbf D_{YY}^{-1/2}\mathbf Y)=Cov(\mathbf A\mathbf X, \mathbf D_{YY}^{-1/2}\mathbf Y)=\mathbf A\boldsymbol\Sigma_{XY}\mathbf D_{YY}^{-1/2}\]</span> and <span class="math display">\[\underset{(q\times p)}{\boldsymbol\rho_{\mathbf V, \mathbf X}}=Cor(\mathbf V, \mathbf X)=Cov(\mathbf V, \mathbf D_{XX}^{-1/2}\mathbf X)=Cov(\mathbf B\mathbf Y, \mathbf D_{XX}^{-1/2}\mathbf X)=\mathbf B\boldsymbol\Sigma_{YX}\mathbf D_{XX}^{-1/2}\]</span></p></li>
+<li><p>If the original variables are standardized with <span class="math display">\[\mathbf Z_X=\begin{bmatrix}
+\mathbf Z_{X1}\\
+\mathbf Z_{X2}\\
+\vdots\\
+\mathbf Z_{Xp}\\
+\end{bmatrix}\]</span> Then <span class="math display">\[\boldsymbol\rho_{\mathbf U, \mathbf Z_X}=Cor(\mathbf U, \mathbf Z_X)=Cov(\mathbf A_Z\mathbf Z_X, \mathbf Z_X)=\mathbf A_Z\boldsymbol\rho_{XX}=\mathbf A_Z\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}\\
+=\mathbf A\mathbf D_{XX}^{1/2}\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}=\mathbf A\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}=\underset{(p\times p)}{\boldsymbol\rho_{\mathbf U, \mathbf X}}\]</span> and <span class="math inline">\(\mathbf A_Z=\mathbf A\mathbf D_{XX}^{1/2}\)</span> are the matrices whose rows contain the canonical coefficients for <span class="math inline">\(\mathbf Z_X\)</span>. The <strong>canonical correlations</strong> are unaffected by the standardization. Similarly, <span class="math display">\[\boldsymbol\rho_{\mathbf V, \mathbf Z_Y}=\mathbf B_Z\boldsymbol\rho_{YY}\]</span></p></li>
+<li><p>Because the correlation between the components in <span class="math inline">\(\mathbf X\)</span> and <span class="math inline">\(\mathbf Y\)</span> is <span class="math inline">\(|\rho_{ik}|=|cor(X_i,Y_k)|=|cor(aX_i,bY_k)|\)</span>, with <span class="math inline">\(\rho_{ik}\)</span> are the entries of matrix <span class="math inline">\(\boldsymbol\rho_{XY}\)</span>, then the <span style="color: red;"><strong>first canonical correlation</strong></span> is the largest of the absolute values of the entries in matrix <span class="math inline">\(\boldsymbol\rho_{XY}=\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\mathbf D_{YY}^{-1/2}\)</span></p></li>
 </ol>
 <pre class="r bg-success"><code>## signs of results are random
 pop &lt;- LifeCycleSavings[, 2:3]
@@ -147,27 +181,27 @@ cancor(pop, oec)</code></pre>
 y &lt;- matrix(rnorm(250), 50, 5)
 (cxy &lt;- cancor(x, y))</code></pre>
 <pre><code>## $cor
-## [1] 0.6206918 0.2826733 0.2156234
+## [1] 0.40666618 0.31432699 0.05595585
 ## 
 ## $xcoef
-##              [,1]         [,2]        [,3]
-## [1,]  0.015346726 -0.060297686  0.13415057
-## [2,] -0.009611423 -0.102206116 -0.06395430
-## [3,] -0.133400116  0.001203551  0.03101004
+##            [,1]         [,2]        [,3]
+## [1,] 0.10968587 -0.008491133 -0.07985580
+## [2,] 0.05989271 -0.073893859  0.07368278
+## [3,] 0.05979526  0.111050029  0.04566178
 ## 
 ## $ycoef
-##             [,1]        [,2]         [,3]        [,4]         [,5]
-## [1,] -0.04229255 -0.04918221 -0.114525088  0.04460277  0.009678731
-## [2,]  0.03605696  0.03184419  0.003524281  0.09381918  0.107638899
-## [3,]  0.11450019 -0.03601656 -0.039067889 -0.08182108  0.046455664
-## [4,]  0.04169086 -0.09364776  0.063782889  0.06069972 -0.019083192
-## [5,] -0.06020507 -0.08031824  0.045365143 -0.04007000  0.089262419
+##              [,1]        [,2]         [,3]        [,4]        [,5]
+## [1,] -0.068716728 -0.01738040  0.110799905 -0.04883899 -0.03803222
+## [2,]  0.026143663  0.10748826 -0.004016641 -0.07070171  0.03731571
+## [3,] -0.007740716 -0.08601291 -0.090643662 -0.10472182  0.03085523
+## [4,] -0.122950091  0.02871050 -0.105918315 -0.02558257  0.01419077
+## [5,]  0.028982924  0.01631119 -0.015801021  0.00425090 -0.12763332
 ## 
 ## $xcenter
-## [1] 0.1769324 0.1532250 0.1036832
+## [1] -0.02022138  0.03698140  0.16253707
 ## 
 ## $ycenter
-## [1] -0.15647840  0.14379441 -0.14674524 -0.06994742  0.08398888</code></pre>
+## [1] -0.04106060  0.05403559 -0.27030200 -0.21792330 -0.08235233</code></pre>
 <pre class="r bg-success"><code>all(abs(cor(x %*% cxy$xcoef,
             y %*% cxy$ycoef)[,1:3] - diag(cxy $ cor)) &lt; 1e-15)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
