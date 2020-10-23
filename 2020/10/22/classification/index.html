@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Classification</h1>
@@ -69,8 +69,29 @@
     <div class="article-content">
       
 <script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
 
 
+<p>2 classes <span class="math inline">\(\pi_1\)</span> and <span class="math inline">\(\pi_2\)</span> have the prior probability <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> separately and <span class="math inline">\(p_1+p_2=1\)</span>. The probabilities of the random variable <span class="math inline">\(\mathbf x\)</span> belong to the 2 classes follow the density function <span class="math inline">\(f_1(\mathbf x)\)</span> and <span class="math inline">\(f_2(\mathbf x)\)</span> over the region <span class="math inline">\(R_1+R_2\)</span> and <span class="math inline">\(\underset{R_1}{\int} f_1(\mathbf x)dx=P(1|1)\)</span>, <span class="math inline">\(\underset{R_2}{\int} f_1(\mathbf x)dx=P(2|1)\)</span>, <span class="math inline">\(\underset{R_2}{\int} f_2(\mathbf x)dx=P(2|2)\)</span>, <span class="math inline">\(\underset{R_1}{\int} f_2(\mathbf x)dx=P(1|2)\)</span>. Then the probability of observation <span class="math inline">\(\mathbf x\)</span> which comes from class <span class="math inline">\(\pi_1\)</span> and is correctly classified as <span class="math inline">\(\pi_1\)</span> is the conditional probability <span class="math display">\[P(\mathbf x\in R_1|\pi_1)P(\pi_1)=P(1|1)p_1\]</span>, and observation <span class="math inline">\(\mathbf x\)</span> is misclassified as <span class="math inline">\(\pi_1\)</span> is <span class="math display">\[P(\mathbf x\in R_1|\pi_2)P(\pi_2)=P(1|2)p_2\]</span> Similarly, observation is correctly classified as <span class="math inline">\(\pi_2\)</span> is the conditional probability <span class="math display">\[P(\mathbf x\in R_2|\pi_2)P(\pi_2)=P(2|2)p_2\]</span>, and observation is misclassified as <span class="math inline">\(\pi_2\)</span> is <span class="math display">\[P(\mathbf x\in R_2|\pi_1)P(\pi_1)=P(2|1)p_1\]</span> The costs of misclassification can be defined by a cost matrix <span class="math display">\[\begin{array}{cc|cc}
+&amp;&amp;\text{Classify as:}\\
+&amp;&amp;\pi_1&amp;\pi_2\\
+\hline\\
+\text{True populations:}&amp;\pi_1&amp;0&amp;c(2|1)\\
+&amp;\pi_2&amp;c(1|2)&amp;0\\
+\end{array}\]</span> Then the <span style="color: red;"><strong>Expected Cost of Misclassification (ECM)</strong></span> is provided by <span class="math display">\[\begin{bmatrix}
+P(2|1)&amp;P(1|2)\\
+\end{bmatrix}\begin{bmatrix}
+0&amp;c(2|1)\\
+c(1|2)&amp;0\\
+\end{bmatrix}\begin{bmatrix}
+p_2\\
+p_1\\
+\end{bmatrix}=P(1|2)c(1|2)p_2+P(2|1)c(2|1)p_1\]</span> A reasonable classification rule should have an ECM as small as possible. The regions boundary between <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span> that minimize the ECM are defined by the values <span class="math inline">\(\mathbf x\)</span> for which <span class="math display">\[\frac{f_1(\mathbf x)}{f_2(\mathbf x)}=\frac{c(1|2)p_2}{c(2|1)p_1}\]</span> We classify a new observation <span class="math inline">\(\mathbf x_0\)</span> into <span class="math inline">\(\pi_1\)</span> if <span class="math display">\[\frac{f_1(\mathbf x_0)}{f_2(\mathbf x_0)}\ge\frac{c(1|2)p_2}{c(2|1)p_1}\]</span> or into <span class="math inline">\(\pi_2\)</span> if <span class="math display">\[\frac{f_1(\mathbf x_0)}{f_2(\mathbf x_0)}\le\frac{c(1|2)p_2}{c(2|1)p_1}\]</span><br />
+The <span style="color: red;"><strong>Total Probability of Misclassification (TPM)</strong></span> is provided by <span class="math inline">\(\text{TPM}=P(2|1)p_1+P(1|2)p_2\)</span></p>
+<ol style="list-style-type: decimal">
+<li>Assume that <span class="math inline">\(f_1(\mathbf x)\)</span> and <span class="math inline">\(f_2(\mathbf x)\)</span> are multivariate normal densities share the same covariance matrix <span class="math inline">\(\boldsymbol\Sigma\)</span> and are distributed as <span class="math inline">\(N(\boldsymbol\mu_1, \boldsymbol\Sigma)\)</span> and <span class="math inline">\(N(\boldsymbol\mu_2, \boldsymbol\Sigma)\)</span></li>
+</ol>
 
     </div>
   </article>
@@ -93,6 +114,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
