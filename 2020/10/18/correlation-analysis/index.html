@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">7 min read</span>
+    <span class="article-duration">8 min read</span>
     
 
     <h1 class="article-title">Correlation Analysis</h1>
@@ -116,7 +116,7 @@ a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
 \mathbf Z_{Yq}\\
 \end{bmatrix}\]</span> the <strong>canonical variates</strong> are of the form <span class="math display">\[U_k=\mathbf a_k^T\mathbf Z_X=\mathbf e_k^T\boldsymbol\rho_{XX}^{-1/2}\mathbf Z_X\]</span> and <span class="math display">\[V_k=\mathbf b_k^T\mathbf Z_Y=\mathbf f_k^T\boldsymbol\rho_{YY}^{-1/2}\mathbf Z_Y\]</span> Here <span class="math inline">\(Cov(\mathbf Z_X)=\boldsymbol\rho_{XX}\)</span> and
 <span class="math inline">\(Cov(\mathbf Z_Y)=\boldsymbol\rho_{YY}\)</span> and <span class="math inline">\(Cov(\mathbf Z_X, \mathbf Z_Y)=\boldsymbol\rho_{XY}=\boldsymbol\rho_{YX}^T\)</span> The <strong>canonical correlations</strong> <span class="math display">\[Cor^2(U_k,V_k)=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{XX}^{-1/2}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1/2}\]</span> or the eigenvalues of the matrix <span class="math display">\[\boldsymbol\rho_{YY}^{-1/2}\boldsymbol\rho_{YX}\boldsymbol\rho_{XX}^{-1}\boldsymbol\rho_{XY}\boldsymbol\rho_{YY}^{-1/2}\]</span> Then the <strong>canonical coefficients</strong> of the original variables are <span class="math inline">\(\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\Sigma_{YY}^{-1/2}\)</span> and are the same as the <strong>canonical coefficients</strong> of the standardized variables is <span class="math inline">\(\mathbf e_i^T\boldsymbol\rho_{XX}^{-1/2}\)</span> and <span class="math inline">\(\mathbf f_i^T\boldsymbol\rho_{YY}^{-1/2}\)</span> The correlations are unaffected by the standardization.</p></li>
-<li><p>The first <span class="math inline">\(p\)</span> canonical variables in <span class="math inline">\(\mathbf U\)</span> are <span class="math display">\[\mathbf U=\mathbf A\mathbf X=\begin{bmatrix}
+<li><p>The first <span class="math inline">\(p\)</span> canonical variables in <span class="math inline">\(\mathbf U\)</span> are <span class="math display">\[\underset{(p\times 1)}{\mathbf U}=\mathbf A\mathbf X=\begin{bmatrix}
 \mathbf a_1^T\\
 \mathbf a_2^T\\
 \vdots\\
@@ -132,7 +132,7 @@ X_p\\
 \vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
 0&amp;0&amp;\cdots&amp;\sigma_{pp}^{-1/2}\\
 \end{bmatrix}\]</span> Then the <strong>canonical correlations</strong> between <strong>canonical variates</strong> and the <strong>original variables</strong> are <span class="math display">\[\underset{(p\times p)}{\boldsymbol\rho_{\mathbf U, \mathbf X}}=Cor(\mathbf U, \mathbf X)=Cov(\mathbf U, \mathbf D_{XX}^{-1/2}\mathbf X)=Cov(\mathbf A\mathbf X, \mathbf D_{XX}^{-1/2}\mathbf X)=\mathbf A\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}\]</span>
-The first <span class="math inline">\(q\)</span> canonical variables in <span class="math inline">\(\mathbf V\)</span> are <span class="math display">\[\mathbf V=\mathbf B\mathbf Y=\begin{bmatrix}
+The first <span class="math inline">\(q\)</span> canonical variables in <span class="math inline">\(\mathbf V\)</span> are <span class="math display">\[\underset{(q\times 1)}{\mathbf V}=\mathbf B\mathbf Y=\begin{bmatrix}
 \mathbf b_1^T\\
 \mathbf b_2^T\\
 \vdots\\
@@ -150,7 +150,8 @@ Y_q\\
 \mathbf Z_{Xp}\\
 \end{bmatrix}\]</span> Then <span class="math display">\[\boldsymbol\rho_{\mathbf U, \mathbf Z_X}=Cor(\mathbf U, \mathbf Z_X)=Cov(\mathbf A_Z\mathbf Z_X, \mathbf Z_X)=\mathbf A_Z\boldsymbol\rho_{XX}=\mathbf A_Z\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}\\
 =\mathbf A\mathbf D_{XX}^{1/2}\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}=\mathbf A\boldsymbol\Sigma_{XX}\mathbf D_{XX}^{-1/2}=\underset{(p\times p)}{\boldsymbol\rho_{\mathbf U, \mathbf X}}\]</span> and <span class="math inline">\(\mathbf A_Z=\mathbf A\mathbf D_{XX}^{1/2}\)</span> are the matrices whose rows contain the canonical coefficients for <span class="math inline">\(\mathbf Z_X\)</span>. The <strong>canonical correlations</strong> are unaffected by the standardization. Similarly, <span class="math display">\[\boldsymbol\rho_{\mathbf V, \mathbf Z_Y}=\mathbf B_Z\boldsymbol\rho_{YY}\]</span></p></li>
-<li><p>Because the correlation between the components in <span class="math inline">\(\mathbf X\)</span> and <span class="math inline">\(\mathbf Y\)</span> is <span class="math inline">\(|\rho_{ik}|=|cor(X_i,Y_k)|=|cor(aX_i,bY_k)|\)</span>, with <span class="math inline">\(\rho_{ik}\)</span> are the entries of matrix <span class="math inline">\(\boldsymbol\rho_{XY}\)</span>, then the <span style="color: red;"><strong>first canonical correlation</strong></span> is the largest of the absolute values of the entries in matrix <span class="math inline">\(\boldsymbol\rho_{XY}=\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\mathbf D_{YY}^{-1/2}\)</span></p></li>
+<li><p>Because the correlation between the components in <span class="math inline">\(\mathbf X\)</span> and <span class="math inline">\(\mathbf Y\)</span> is <span class="math inline">\(|\rho_{ik}|=|cor(X_i,Y_k)|=|cor(aX_i,bY_k)|\)</span>, then the <span style="color: red;"><strong>first canonical correlation</strong></span> is larger than the absolute value of any entry in matrix <span class="math inline">\(Cov(\mathbf Z_X, \mathbf Z_Y)=\boldsymbol\rho_{XY}=\mathbf D_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\mathbf D_{YY}^{-1/2}\)</span></p></li>
+<li><p>The change of coordinates from <span class="math inline">\(\mathbf X\)</span> to <span class="math inline">\(\mathbf U=\mathbf A\mathbf X\)</span> and from <span class="math inline">\(\mathbf Y\)</span> to <span class="math inline">\(\mathbf V=\mathbf B\mathbf Y\)</span> is chosen to maximize <span class="math inline">\(Cor(U_1,V_1)\)</span> and, successively <span class="math inline">\(Cor(U_i,V_i)\)</span> where <span class="math inline">\((U_i,V_i)\)</span> have zero correlation with the previous pairs. The canonical variables <span class="math inline">\(\mathbf U\)</span> have covariance matrix <span class="math display">\[Cov(\mathbf U)=Cov(\mathbf A\mathbf X)=\mathbf A\boldsymbol\Sigma_{XX}\mathbf A^T=\mathbf I\]</span> and <span class="math display">\[\mathbf A=\mathbf E^T\boldsymbol\Sigma_{XX}^{-1/2}=\mathbf E^T\mathbf P_X\boldsymbol\Lambda_{X}^{-1/2}\mathbf P_X^T\]</span> where <span class="math inline">\(\mathbf E\)</span> is an orthogonal matrix with rows <span class="math inline">\(\mathbf e^T\)</span> and <span class="math inline">\(\mathbf P_X\)</span> is an orthogonal matrix with columns are the eigenvectors of <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> and <span class="math inline">\(\boldsymbol\Lambda_{X}\)</span> is a diagonal matrix with the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> on its main diagonal. <span class="math inline">\(\mathbf P_X^T\mathbf X\)</span> is the set of principal components derived from <span class="math inline">\(\mathbf X\)</span> and <span class="math inline">\(\boldsymbol\Lambda_{X}^{-1/2}\mathbf P_X^T\mathbf X\)</span> has <span class="math inline">\(i^{th}\)</span> row <span class="math inline">\(\frac{1}{\sqrt{\lambda_i}}\mathbf p_i^T\mathbf X\)</span> which is the <span class="math inline">\(i^{th}\)</span> principal component scaled to have unit variance. The <span class="math inline">\(Cov(\boldsymbol\Lambda_{X}^{-1/2}\mathbf P_X^T\mathbf X)=\mathbf 1\)</span> Then the canonical variables <span class="math display">\[\mathbf U=\mathbf A\mathbf X=\mathbf E^T\mathbf P_X\boldsymbol\Lambda_{X}^{-1/2}\mathbf P_X^T\mathbf X\]</span> means (1) a transformation of <span class="math inline">\(\mathbf X\)</span> to uncorrelated standardized principal components followed by (2) a rigid (orthogonal) rotation <span class="math inline">\(\mathbf P_X\)</span> determined by <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> and then (3) another rotation <span class="math inline">\(\mathbf E^T\)</span> determined from the full covariance matrix <span class="math display">\[\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\]</span></p></li>
 </ol>
 <pre class="r bg-success"><code>## signs of results are random
 pop &lt;- LifeCycleSavings[, 2:3]
@@ -181,27 +182,27 @@ cancor(pop, oec)</code></pre>
 y &lt;- matrix(rnorm(250), 50, 5)
 (cxy &lt;- cancor(x, y))</code></pre>
 <pre><code>## $cor
-## [1] 0.40666618 0.31432699 0.05595585
+## [1] 0.3147087 0.2550300 0.1188584
 ## 
 ## $xcoef
-##            [,1]         [,2]        [,3]
-## [1,] 0.10968587 -0.008491133 -0.07985580
-## [2,] 0.05989271 -0.073893859  0.07368278
-## [3,] 0.05979526  0.111050029  0.04566178
+##              [,1]        [,2]        [,3]
+## [1,]  0.092568396 -0.10866258 -0.05076406
+## [2,] -0.001751243 -0.09224083  0.11256405
+## [3,] -0.098670930 -0.05809215 -0.05229199
 ## 
 ## $ycoef
-##              [,1]        [,2]         [,3]        [,4]        [,5]
-## [1,] -0.068716728 -0.01738040  0.110799905 -0.04883899 -0.03803222
-## [2,]  0.026143663  0.10748826 -0.004016641 -0.07070171  0.03731571
-## [3,] -0.007740716 -0.08601291 -0.090643662 -0.10472182  0.03085523
-## [4,] -0.122950091  0.02871050 -0.105918315 -0.02558257  0.01419077
-## [5,]  0.028982924  0.01631119 -0.015801021  0.00425090 -0.12763332
+##             [,1]         [,2]         [,3]       [,4]        [,5]
+## [1,]  0.06722311  0.056404259 -0.066280809 0.01657661 -0.09289579
+## [2,]  0.01309860  0.033164486 -0.059992435 0.08052180  0.08999841
+## [3,] -0.06301970  0.109589734  0.096255321 0.01439960  0.03007626
+## [4,] -0.07068785 -0.080775474 -0.009787439 0.10928299 -0.04998109
+## [5,]  0.10569633  0.005996128  0.083380627 0.03100337 -0.01523592
 ## 
 ## $xcenter
-## [1] -0.02022138  0.03698140  0.16253707
+## [1] -0.07308847  0.05304495 -0.12523492
 ## 
 ## $ycenter
-## [1] -0.04106060  0.05403559 -0.27030200 -0.21792330 -0.08235233</code></pre>
+## [1]  0.2065112 -0.1196297  0.1000311  0.0462839  0.1098667</code></pre>
 <pre class="r bg-success"><code>all(abs(cor(x %*% cxy$xcoef,
             y %*% cxy$ycoef)[,1:3] - diag(cxy $ cor)) &lt; 1e-15)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
