@@ -74,6 +74,8 @@
     <div class="article-content">
       
 <script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
 
 
 <p><strong>Canonical-correlation analysis (CCA)</strong>, also called <strong>canonical variates analysis</strong>, is a way of inferring information from cross-covariance matrices. If we have two groups of variables <span class="math inline">\(\mathbf X\)</span> has <span class="math inline">\(p\)</span> variables <span class="math display">\[\mathbf X=\begin{bmatrix}
@@ -102,7 +104,7 @@ a_{1p}&amp;a_{2p}&amp;\cdots&amp;a_{pp}\\
 \end{bmatrix}\]</span> By the spectral decomposition <span class="math display">\[\mathbf A=\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T\quad (i=1,2,\cdots,p)\]</span> so <span class="math display">\[d^2=\mathbf x^T\mathbf A\mathbf x=\mathbf x^T(\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T)\mathbf x=\sum_{i=1}^{p}\lambda_i(\mathbf x^T\mathbf e_i)^2\]</span> Let <span class="math inline">\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\)</span>, then <span class="math inline">\(\mathbf x=d^2\lambda_1^{-1/2}\mathbf e_1\)</span> satisfies <span class="math display">\[\mathbf x^T\mathbf A\mathbf x=\sum_{i=1}^{p}\lambda_i(\mathbf x^T\mathbf e_i)^2=\lambda_1\Bigl[(d^2\lambda_1^{-1/2}\mathbf e_1)^T\mathbf e_1\Bigr]^2=d^2\]</span> and all of the uncorrelated <span class="math inline">\(\mathbf x_i=d\lambda_i^{-1/2}\mathbf e_i\)</span> satisfies <span class="math inline">\(\mathbf x^T\mathbf A\mathbf x=d^2\)</span> Thus, the points at distance <span class="math inline">\(d\)</span> lie on an hyperellipsoids whose axes are given by the eigenvectors of <span class="math inline">\(\mathbf A\)</span> with lengths proportional to the reciprocals of the square roots of the eigenvalues. The constant of proportionality is <span class="math inline">\(d\)</span> and the half-length of the axes of the hyperellipsoid in the direction <span class="math inline">\(\mathbf e_i\)</span> is equal to <span class="math inline">\(\frac{d}{\sqrt{\lambda_i}}\)</span></p></li>
 <li><p>Let <span class="math inline">\(\underset{p\times 1}{\mathbf b}\)</span> and <span class="math inline">\(\underset{p\times 1}{\mathbf d}\)</span> be any two vectors, and <span class="math inline">\(\underset{p\times p}{\mathbf B}\)</span> is a positive definite matrix. Then <span class="math display">\[(\mathbf b^T\mathbf d)^2=(\mathbf b^T\mathbf B^{1/2}\mathbf B^{-1/2}\mathbf d)^2=\Bigl((\mathbf B^{1/2}\mathbf b)^T(\mathbf B^{-1/2}\mathbf d)\Bigr)^2\\
 \le\Bigl((\mathbf B^{1/2}\mathbf b)^T(\mathbf B^{1/2}\mathbf b)\Bigr)\Bigl((\mathbf B^{-1/2}\mathbf d)^T(\mathbf B^{-1/2}\mathbf d)\Bigr)\\
-=(\mathbf b^T\mathbf B\mathbf b)(\mathbf d^T\mathbf B^{-1}\mathbf d)\]</span> with equality if and only if <span class="math inline">\(\mathbf b=c\mathbf B^{-1}\mathbf d\)</span> for some constant c. So <span class="math display">\[\underset{\mathbf b\ne\mathbf 0}{\text{max}}\Bigl(\frac{\mathbf b^T\mathbf d}{\sqrt{\mathbf b^T\mathbf B\mathbf b}}\Bigr)=\sqrt{\mathbf d^T\mathbf B^{-1}\mathbf d}\]</span> <strong>The meaning of this maximum is the inner product of two vectors is no more than the product of the lengths of the two vectors with/without rotated by a positive definite matrix and its reverse separately.</strong></p></li>
+=(\mathbf b^T\mathbf B\mathbf b)(\mathbf d^T\mathbf B^{-1}\mathbf d)\]</span> with equality if and only if <span class="math inline">\(\mathbf b=c\mathbf B^{-1}\mathbf d\)</span> for some constant c. So <span class="math display">\[\underset{\mathbf b\ne\mathbf 0}{\text{max}}\Bigl(\frac{\mathbf b^T\mathbf d}{\sqrt{\mathbf b^T\mathbf B\mathbf b}}\Bigr)=\sqrt{\mathbf d^T\mathbf B^{-1}\mathbf d}\]</span> <strong>The meaning of this maximum is square of the inner product of two vectors is no more than the product of 1) the inner product of one vector with itself with/without rotated by a positive definite matrix and 1) the inner product of the other vector with itself with/without rotated by the reverse matrix. The maximum is achieved when one vector rotated by matrix <span class="math inline">\(\mathbf B\)</span> will be the same direction with another vector</strong>.</p></li>
 <li><p>By the spectral decomposition, the hyperellipsoids <span class="math display">\[d^2=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a=\mathbf a^T(\sum_{i=1}^{p}\lambda_i\mathbf e_i\mathbf e_i^T)\mathbf a=\sum_{i=1}^{p}\lambda_i(\mathbf a^T\mathbf e_i)^2\quad (i=1,2,\cdots,p)\]</span> where <span class="math inline">\((\lambda_i,\mathbf e_i)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{XX}\)</span> and <span class="math inline">\(\mathbf a_i=d\lambda_i^{-1/2}\mathbf e_i\)</span> is on the hyperellipsoid with the distance to origin <span class="math inline">\(\mathbf O\)</span> in the <span class="math inline">\(\mathbf e_i\)</span> direction is <span class="math inline">\(\frac{d}{\sqrt{\lambda_i}}\)</span> Then <span class="math display">\[U_i=\mathbf a_i^T\mathbf X=(d\lambda_i^{-1/2}\mathbf e_i)^T\mathbf X=d\lambda_i^{-1/2}\mathbf e_i^T\mathbf X=d\mathbf e_i^T\boldsymbol\Sigma_{XX}^{-1/2}\mathbf X\]</span> and <span class="math display">\[V_j=\mathbf b_j^T\mathbf Y=c\kappa_j^{-1/2}\mathbf f_j^T\mathbf Y=c\mathbf f_j^T\boldsymbol\Sigma_{YY}^{-1/2}\mathbf Y\]</span> are the maximum uncorrelated values, where <span class="math inline">\((\kappa_j,\mathbf f_j)\)</span> are the eigenvalue-eigenvector pairs of <span class="math inline">\(\boldsymbol\Sigma_{YY}\)</span> and <span class="math inline">\(d=\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}\)</span> and <span class="math inline">\(c=\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}\)</span> Then the maximum correlation is <span class="math display">\[Cor(U_k,V_k)=\frac{\mathbf a_k^T\boldsymbol\Sigma_{XY}\mathbf b_k}{\sqrt{\mathbf a_k^T\boldsymbol\Sigma_{XX}\mathbf a_k}\sqrt{\mathbf b_k^T\boldsymbol\Sigma_{YY}\mathbf b_k}}=\frac{d\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}c\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k}{dc}=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\]</span> and <span class="math display">\[Cor^2(U_i,V_j)=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k=\rho_k^2\]</span> where <span class="math inline">\(\rho_k^2\)</span> are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\)</span> also <span class="math display">\[Cor^2(U_i,V_j)=\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1/2}\mathbf e_k\mathbf e_k^T\boldsymbol\Sigma_{XX}^{-1/2}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k=\mathbf f_k^T\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\mathbf f_k=\rho_k^{*2}\]</span> where <span class="math inline">\(\rho_k^{*2}\)</span> are the eigenvalues of <span class="math inline">\(\boldsymbol\Sigma_{YY}^{-1/2}\boldsymbol\Sigma_{YX}\boldsymbol\Sigma_{XX}^{-1}\boldsymbol\Sigma_{XY}\boldsymbol\Sigma_{YY}^{-1/2}\)</span> Usually, we normalize <span class="math inline">\(\mathbf a\)</span> and <span class="math inline">\(\mathbf b\)</span> to make <span class="math inline">\(d=\sqrt{\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a}=1\)</span> and <span class="math inline">\(c=\sqrt{\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b}=1\)</span> So <span class="math display">\[Var(U)=\mathbf a^T\boldsymbol\Sigma_{XX}\mathbf a=1\]</span> <span class="math display">\[Var(V)=\mathbf b^T\boldsymbol\Sigma_{YY}\mathbf b=1\]</span></p></li>
 <li><p>If the original variables are standardized with <span class="math display">\[\mathbf Z_X=\begin{bmatrix}
 \mathbf Z_{X1}\\
@@ -182,27 +184,27 @@ cancor(pop, oec)</code></pre>
 y &lt;- matrix(rnorm(250), 50, 5)
 (cxy &lt;- cancor(x, y))</code></pre>
 <pre><code>## $cor
-## [1] 0.3147087 0.2550300 0.1188584
+## [1] 0.4918183 0.2354098 0.1637136
 ## 
 ## $xcoef
-##              [,1]        [,2]        [,3]
-## [1,]  0.092568396 -0.10866258 -0.05076406
-## [2,] -0.001751243 -0.09224083  0.11256405
-## [3,] -0.098670930 -0.05809215 -0.05229199
+##            [,1]        [,2]        [,3]
+## [1,] 0.06881307 -0.05581403  0.16461508
+## [2,] 0.04525297  0.14854746  0.03132799
+## [3,] 0.16143704 -0.02363083 -0.02520431
 ## 
 ## $ycoef
-##             [,1]         [,2]         [,3]       [,4]        [,5]
-## [1,]  0.06722311  0.056404259 -0.066280809 0.01657661 -0.09289579
-## [2,]  0.01309860  0.033164486 -0.059992435 0.08052180  0.08999841
-## [3,] -0.06301970  0.109589734  0.096255321 0.01439960  0.03007626
-## [4,] -0.07068785 -0.080775474 -0.009787439 0.10928299 -0.04998109
-## [5,]  0.10569633  0.005996128  0.083380627 0.03100337 -0.01523592
+##             [,1]        [,2]        [,3]         [,4]         [,5]
+## [1,] -0.10672354  0.02867793 -0.04635381  0.111625231  0.073927829
+## [2,] -0.06663058  0.08627632 -0.02481830  0.001466062 -0.096059244
+## [3,]  0.03962257 -0.13055637 -0.03628306  0.023506770 -0.078029785
+## [4,] -0.04184145 -0.03331764 -0.06527045 -0.098847504  0.027471986
+## [5,] -0.08776488 -0.05359128  0.09118866 -0.028252322 -0.002449864
 ## 
 ## $xcenter
-## [1] -0.07308847  0.05304495 -0.12523492
+## [1] -0.05412043  0.01569289 -0.07084644
 ## 
 ## $ycenter
-## [1]  0.2065112 -0.1196297  0.1000311  0.0462839  0.1098667</code></pre>
+## [1]  0.10127986 -0.19804431  0.19346422  0.02522443 -0.13323185</code></pre>
 <pre class="r bg-success"><code>all(abs(cor(x %*% cxy$xcoef,
             y %*% cxy$ycoef)[,1:3] - diag(cxy $ cor)) &lt; 1e-15)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
