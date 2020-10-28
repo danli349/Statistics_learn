@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">7 min read</span>
     
 
     <h1 class="article-title">Classification</h1>
@@ -130,6 +130,47 @@ f_i(\mathbf x)=\frac{1}{(2\pi)^{p/2}|\mathbf\Sigma_i|^{1/2}}e^{-\frac{1}{2}(\mat
 =ln(p_k)-\frac{1}{2}ln|\mathbf S|-\frac{1}{2}D_k^2(\mathbf x)\]</span> with <span class="math inline">\(D_k^2(\mathbf x)=(\mathbf x-\bar{\mathbf x}_k)^T\mathbf S^{-1}(\mathbf x-\bar{\mathbf x}_k)\)</span>, which is the squared distances between the new observation <span class="math inline">\(\mathbf x\)</span> and sample mean <span class="math inline">\(\bar{\mathbf x}_k\)</span>. Then we can allocate <span class="math inline">\(\mathbf x\)</span> to <span class="math inline">\(\pi_k\)</span> if the quadratic discrimination score <span class="math inline">\(\hat{d}_k^Q(\mathbf x)\)</span> is the largest or the squared distances <span class="math inline">\(D_k^2(\mathbf x)\)</span> is smallest. Or equivalently, we can allocate <span class="math inline">\(\mathbf x\)</span> to <span class="math inline">\(\pi_k\)</span> when <span class="math display">\[\hat{d}_k^Q(\mathbf x)-\hat{d}_i^Q(\mathbf x)=ln(\frac{p_k}{p_i})-\frac{1}{2}\Biggl[(\mathbf x-\bar{\mathbf x}_k)^T\mathbf S^{-1}(\mathbf x-\bar{\mathbf x}_k)-(\mathbf x-\bar{\mathbf x}_i)^T\mathbf S^{-1}(\mathbf x-\bar{\mathbf x}_i)\Biggr]\\
 =ln(\frac{p_k}{p_i})-\Biggl[-\bar{\mathbf x}_k^T\mathbf S^{-1}\mathbf x+\frac{1}{2}\bar{\mathbf x}_k^T\mathbf S^{-1}\bar{\mathbf x}_k+\bar{\mathbf x}_i^T\mathbf S^{-1}\mathbf x-\frac{1}{2}\bar{\mathbf x}_i^T\mathbf S^{-1}\bar{\mathbf x}_i\Biggr]\\
 =ln(\frac{p_k}{p_i})+\Biggl[(\bar{\mathbf x}_k-\bar{\mathbf x}_i)^T\mathbf S^{-1}\mathbf x-\frac{1}{2}(\bar{\mathbf x}_k-\bar{\mathbf x}_i)^T\mathbf S^{-1}(\bar{\mathbf x}_k+\bar{\mathbf x}_i)\Biggr]\ge 0\]</span> for all <span class="math inline">\(i=1,2,\cdots,g\)</span></p></li>
+<li><p>Fisher’s approach to Classification with <span class="math inline">\(g\)</span> Populations with the same covariance matrix <span class="math inline">\(\mathbf\Sigma\)</span> which is full rank: A fixed linear combination of the <span class="math inline">\(n_i\)</span> observations of the multivariate random variable from <span class="math inline">\(\pi_i, i=1,2,\cdots,g\)</span> is <span class="math display">\[\underset{(n_i\times p)}{\mathbf X_i}\underset{(p\times 1)}{\mathbf a}=\begin{bmatrix}
+\mathbf x_{i1}^T\\
+\mathbf x_{i2}^T\\
+\vdots\\
+\mathbf x_{in_i}^T
+\end{bmatrix}\mathbf a=\begin{bmatrix}
+y_{i1}\\
+y_{i2}\\
+\vdots\\
+y_{in_i}\\
+\end{bmatrix}=Y_i\]</span> <span class="math inline">\(E(\mathbf X_i)=\boldsymbol\mu_i\)</span> and <span class="math inline">\(Cov(\mathbf X_i)=\mathbf\Sigma\)</span> then <span class="math inline">\(E(Y_i)=\mu_{iY}=\mathbf a^T\boldsymbol\mu_i\)</span> and <span class="math inline">\(Cov(Y_i)=\mathbf a^T\mathbf\Sigma\mathbf a\)</span> which is the same for all populations. The the overall mean of all populations is <span class="math display">\[\bar{\boldsymbol\mu}=\frac{1}{g}\sum_{i=1}^{g}\boldsymbol\mu_i\]</span> and the overall mean of all <span class="math inline">\(Y_i\)</span> is <span class="math display">\[\bar{\mu}_Y=\mathbf a^T\bar{\boldsymbol\mu}\]</span> Then for the squared separation <span class="math display">\[\text{separation}^2=\frac{\displaystyle\sum_{i=1}^{g}(\mu_{iY}-\bar{\mu}_Y)^2}{\sigma_Y^2}=\frac{\displaystyle\sum_{i=1}^{g}(\mathbf a^T\boldsymbol\mu_i-\mathbf a^T\bar{\boldsymbol\mu})^2}{\mathbf a^T\mathbf \Sigma\mathbf a}=\frac{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}(\boldsymbol\mu_i-\bar{\boldsymbol\mu})(\boldsymbol\mu_i-\bar{\boldsymbol\mu})^T\Biggr)\mathbf a}{\mathbf a^T\mathbf \Sigma\mathbf a}\]</span> The squared separation measures the variability between the groups of <span class="math inline">\(Y\)</span>-values relative to the common variability within groups. We can then select <span class="math inline">\(\mathbf a\)</span> to maximize this ratio. For the sample mean vectors <span class="math display">\[\bar{\mathbf x}_i=\frac{1}{n_i}\sum_{j=1}^{n_i}\mathbf x_{ij}\]</span> the mean vector is <span class="math display">\[\bar{\mathbf x}=\frac{1}{g}\sum_{i=1}^{g}\bar{\mathbf x}_i\]</span> and <span class="math display">\[\mathbf S=\frac{\displaystyle\sum_{i=1}^{g}\sum_{j=1}^{n_i}(\mathbf x_{ij}-\bar{\mathbf x}_i)(\mathbf x_{ij}-\bar{\mathbf x}_i)^T}{n_1+n_2+\cdots+n_g-g}\]</span> is the estimate of <span class="math inline">\(\mathbf\Sigma\)</span> Then for the squared separation <span class="math display">\[\text{separation}^2=\frac{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}(\bar{\mathbf x}_i-\bar{\mathbf x})(\bar{\mathbf x}_i-\bar{\mathbf x})^T\Biggr)\mathbf a}{\mathbf a^T\mathbf S\mathbf a}\]</span> Or <span class="math display">\[\frac{\text{separation}^2}{n_1+n_2+\cdots+n_g-g}=\frac{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}(\bar{\mathbf x}_i-\bar{\mathbf x})(\bar{\mathbf x}_i-\bar{\mathbf x})^T\Biggr)\mathbf a}{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}\sum_{j=1}^{n_i}(\mathbf x_{ij}-\bar{\mathbf x}_i)(\mathbf x_{ij}-\bar{\mathbf x}_i)^T\Biggr)\mathbf a}\]</span> Let <span class="math inline">\((\lambda_1, \mathbf e_1),(\lambda_2, \mathbf e_2),\cdots,(\lambda_s, \mathbf e_s), s\le \text{min}(g-1,p)\)</span> are the eigenvalue-eigenvector pairs of matrix <span class="math display">\[\Biggl(\displaystyle\sum_{i=1}^{g}\sum_{j=1}^{n_i}(\mathbf x_{ij}-\bar{\mathbf x}_i)(\mathbf x_{ij}-\bar{\mathbf x}_i)^T\Biggr)^{-1}\Biggl(\displaystyle\sum_{i=1}^{g}(\bar{\mathbf x}_i-\bar{\mathbf x})(\bar{\mathbf x}_i-\bar{\mathbf x})^T\Biggr)\]</span> Then the vector of coefficients <span class="math inline">\(\mathbf a\)</span> that maximizes the ratio <span class="math display">\[\frac{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}(\bar{\mathbf x}_i-\bar{\mathbf x})(\bar{\mathbf x}_i-\bar{\mathbf x})^T\Biggr)\mathbf a}{\mathbf a^T\Biggl(\displaystyle\sum_{i=1}^{g}\sum_{j=1}^{n_i}(\mathbf x_{ij}-\bar{\mathbf x}_i)(\mathbf x_{ij}-\bar{\mathbf x}_i)^T\Biggr)\mathbf a}\]</span> is given by <span class="math inline">\(\mathbf e_1\)</span> and the linear combination <span class="math inline">\(\mathbf e_1^T\mathbf x\)</span> is called the <span style="color: red;"><strong>sample first discriminant</strong></span>, and the linear combination <span class="math inline">\(\mathbf e_k^T\mathbf x\)</span> is called the <span style="color: red;"><strong>sample <span class="math inline">\(k^{th}\)</span> discriminant</strong></span>, <span class="math inline">\(k\le s\)</span>. <span class="math inline">\(\mathbf W=\displaystyle\sum_{i=1}^{g}\sum_{j=1}^{n_i}(\mathbf x_{ij}-\bar{\mathbf x}_i)(\mathbf x_{ij}-\bar{\mathbf x}_i)^T\)</span> is the <span style="color: red;">sample <strong>Within</strong> groups matrix</span>, and <span class="math inline">\(\mathbf B=\displaystyle\sum_{i=1}^{g}(\bar{\mathbf x}_i-\bar{\mathbf x})(\bar{\mathbf x}_i-\bar{\mathbf x})^T\)</span> is the <span style="color: red;">sample <strong>Between</strong> groups matrix</span>. Let <span class="math display">\[\mathbf Y=\begin{bmatrix}
+\mathbf e_1^T\mathbf x\\
+\mathbf e_2^T\mathbf x\\
+\vdots\\
+\mathbf e_s^T\mathbf x\\
+\end{bmatrix}(s\le \text{min}(g-1,p))\]</span> contains all the <strong>sample discriminants</strong>, then population <span class="math inline">\(\mathbf X_i\)</span> with <span class="math inline">\(n_i\)</span> observations have <strong>sample discriminants</strong> <span class="math display">\[\mathbf Y_i=\underset{(s\times p)}{\begin{bmatrix}
+\mathbf e_1^T\\
+\mathbf e_2^T\\
+\vdots\\
+\mathbf e_s^T\\
+\end{bmatrix}}\underset{(p\times n_i)}{\mathbf X_i}=\underset{(s\times n_i)}{\begin{bmatrix}
+\mathbf Y_1\\
+\mathbf Y_2\\
+\vdots\\
+\mathbf Y_s\\
+\end{bmatrix}}(s\le \text{min}(g-1,p))\]</span> and it has mean vector <span class="math display">\[\boldsymbol\mu_{iY}=\begin{bmatrix}
+\mu_{iY_1}\\
+\mu_{iY_2}\\
+\vdots\\
+\mu_{iY_s}\\
+\end{bmatrix}=\begin{bmatrix}
+\mathbf e_1^T\\
+\mathbf e_2^T\\
+\vdots\\
+\mathbf e_s^T\\
+\end{bmatrix}\boldsymbol\mu_i=\begin{bmatrix}
+\mathbf e_1^T\boldsymbol\mu_i\\
+\mathbf e_2^T\boldsymbol\mu_i\\
+\vdots\\
+\mathbf e_s^T\boldsymbol\mu_i\\
+\end{bmatrix}\]</span>. The squared distance from column components of <span class="math inline">\(\mathbf Y_i\)</span> to its column mean <span class="math inline">\(\boldsymbol\mu_{iY}\)</span> is <span class="math display">\[(\mathbf y-\boldsymbol\mu_{iY})^T(\mathbf y-\boldsymbol\mu_{iY})=\sum_{j=1}^{s}[\mathbf a^T(\mathbf x-\boldsymbol\mu_i)]^2\]</span>, we can assigns <span class="math inline">\(\mathbf y\)</span> to population <span class="math inline">\(\pi_k\)</span> if the square of the distance from <span class="math inline">\(\mathbf y\)</span> to <span class="math inline">\(\boldsymbol\mu_{kY}\)</span> is smaller than the square of the distance from <span class="math inline">\(\mathbf y\)</span> to <span class="math inline">\(\boldsymbol\mu_{iY}\)</span> for <span class="math inline">\(i\ne k\)</span> <span class="math display">\[(\mathbf y-\boldsymbol\mu_{kY})^T(\mathbf y-\boldsymbol\mu_{kY})=\sum_{j=1}^{s}[\mathbf a_j^T(\mathbf x-\boldsymbol\mu_k)]^2\le \sum_{j=1}^{s}[\mathbf a_j^T(\mathbf x-\boldsymbol\mu_i)]^2\]</span></p></li>
 </ol>
 
     </div>
