@@ -6,7 +6,16 @@
     <description>Recent content in Inferences on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/inferences/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/inferences/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clustering</title>
+      <link>/2020/10/29/clustering/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/10/29/clustering/</guid>
+      <description>Hierarchical Clustering MethodsNonhierarchical Clustering MethodsCorrespondence Analysis</description>
+    </item>
+    
     <item>
       <title>Classification</title>
       <link>/2020/10/22/classification/</link>
