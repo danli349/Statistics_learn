@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Clustering</h1>
@@ -76,7 +76,15 @@
 <ol style="list-style-type: decimal">
 <li>Hierarchical Clustering Methods</li>
 <li>Nonhierarchical Clustering Methods</li>
-<li>Correspondence Analysis</li>
+<li>Correspondence Analysis<br />
+Matrix <span class="math inline">\(\mathbf X\)</span>, with elements <span class="math inline">\(x_{ij}\)</span>, is an two-way <span class="math inline">\((I\times J=n),i=1,2,\cdots,I;j=1,2,\cdots,J\)</span> contingency table of unscaled frequencies or counts. The matrix of proportions <span class="math inline">\(\mathbf P=\{p_{ij}\}\)</span> with elements <span class="math inline">\(p_{ij}=\frac{1}{n}x_{ij}\)</span>, is called the The <span style="color: red;"><strong>correspondence matrix</strong></span>. The row sums are the vector <span class="math display">\[\mathbf r=\{r_{i}=\sum_{j=1}^{J}p_{ij}=\sum_{j=1}^{J}\frac{1}{n}x_{ij}\}\]</span> or <span class="math display">\[\underset{(I\times 1)}{\mathbf r}=\underset{(I\times J)}{\mathbf P}\underset{(J\times1)}{\mathbf 1_J}\]</span> The column sums are the vector <span class="math display">\[\mathbf c=\{c_{j}=\sum_{i=1}^{I}p_{ij}=\sum_{i=1}^{I}\frac{1}{n}x_{ij}\}\]</span> or <span class="math display">\[\underset{(J\times 1)}{\mathbf c}=\underset{(J\times I)}{\mathbf P^T}\underset{(I\times1)}{\mathbf 1_I}\]</span> Let diagonal matrix <span class="math display">\[\mathbf D_r=diag(r_1,r_2,\cdots,r_I)\]</span> <span class="math display">\[\mathbf D_c=diag(c_1,c_2,\cdots,c_J)\]</span> <span style="color: red;"><strong>Correspondence analysis</strong></span> can be formulated as the weighted least squares problem to select matrix <span class="math inline">\(\hat{\mathbf P}=\{\hat{p}_{ij}\}\)</span>, which is specified reduced rank and can minimize the sum of squares <span class="math display">\[\sum_{i=1}^{I}\sum_{j=1}^{J}\frac{(p_{ij}-\hat{p}_{ij})^2}{r_ic_j}=tr\Bigl[(\mathbf D_r^{-1/2}(\mathbf P-\hat{\mathbf P})\mathbf D_c^{-1/2})(\mathbf D_r^{-1/2}(\mathbf P-\hat{\mathbf P})\mathbf D_c^{-1/2})^T\Bigr]\]</span> since <span class="math inline">\((p_{ij}-\hat{p}_{ij})/\sqrt{r_ic_j}\)</span> is the <span class="math inline">\((i,j)\)</span> element of <span class="math inline">\(\mathbf D_r^{-1/2}(\mathbf P-\hat{\mathbf P})\mathbf D_c^{-1/2}\)</span> The scaled version of the correspondence matrix <span class="math inline">\(\mathbf P=\{p_{ij}\}\)</span> is <span class="math display">\[\mathbf B=\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2}\]</span> the best low <span class="math inline">\(\text{rank}=s\)</span> approximation <span class="math inline">\(\hat{\mathbf B}\)</span> to <span class="math inline">\(\mathbf B\)</span> is given by the first <span class="math inline">\(s\)</span> terms in the the singular-value decomposition <span class="math display">\[\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2}=\sum_{k=1}^{J}\widetilde{\lambda}_k\widetilde{\mathbf u}_k\widetilde{\mathbf v}_k^T\]</span> where <span class="math display">\[\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2}\widetilde{\mathbf v}_k=\widetilde{\lambda}_k\widetilde{\mathbf u}_k\]</span> and <span class="math display">\[\widetilde{\mathbf u}_k^T\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2}=\widetilde{\lambda}_k\widetilde{\mathbf v}_k^T\]</span> Then the approximation to <span class="math inline">\(\mathbf P\)</span> is then given by <span class="math display">\[\hat{\mathbf P}=\mathbf D_r^{1/2}\hat{\mathbf B}\mathbf D_c^{1/2}\approx\sum_{k=1}^{s}\widetilde{\lambda}_k(\mathbf D_r^{1/2}\widetilde{\mathbf u}_k)(\mathbf D_c^{1/2}\widetilde{\mathbf v}_k)^T\]</span> and the error of approximation is <span class="math display">\[\sum_{k=s+1}^{J}\widetilde{\lambda}_k^2\]</span> The term <span class="math inline">\(\mathbf r\mathbf c^T\)</span> always provides the best rank one approximation to the correspondence matrix <span class="math inline">\(\mathbf P\)</span>, this corresponds to the assumption of <strong>independence</strong> of the rows and columns. Let <span class="math inline">\(\widetilde{\mathbf u}_1=\mathbf D_r^{1/2}\mathbf 1_I\)</span> and <span class="math inline">\(\widetilde{\mathbf v}_1=\mathbf D_c^{1/2}\mathbf 1_J\)</span> Then <span class="math display">\[\widetilde{\mathbf u}_1^T(\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2})=(\mathbf D_r^{1/2}\mathbf 1_I)^T(\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2})=\mathbf 1_I^T\mathbf P\mathbf D_c^{-1/2}\\
+=\mathbf c^T\mathbf D_c^{-1/2}=[\sqrt{c_1},\sqrt{c_2},\cdots,\sqrt{c_J}]=(\mathbf D_c^{1/2}\mathbf 1_J)^T=\widetilde{\mathbf v}_1^T\]</span> and <span class="math display">\[(\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2})\widetilde{\mathbf v}_1=(\mathbf D_r^{-1/2}\mathbf P\mathbf D_c^{-1/2})(\mathbf D_c^{1/2}\mathbf 1_J)=\mathbf D_r^{-1/2}\mathbf P\mathbf 1_J\\
+=\mathbf D_r^{-1/2}\mathbf r=\begin{bmatrix}
+\sqrt{r_1}\\
+\sqrt{r_2}\\
+\vdots\\
+\sqrt{r_I}
+\end{bmatrix}=\mathbf D_r^{1/2}\mathbf 1_I=\widetilde{\mathbf u}_1\]</span> that is <span class="math inline">\((\widetilde{\mathbf u}_1,\widetilde{\mathbf v}_1)\)</span> are singular vectors associated with singular value <span class="math inline">\(\widetilde{\lambda}_1=1\)</span> For any correspondence matrix <span class="math inline">\(\mathbf P\)</span>, the <span class="math inline">\(\text{rank}=1\)</span> approximation to <span class="math inline">\(\mathbf P\)</span> is then given by <span class="math display">\[\hat{\mathbf P}=\mathbf D_r^{1/2}\mathbf u_1\mathbf v_1^T\mathbf D_c^{1/2}=\mathbf D_r\mathbf 1_I\mathbf 1_J^T\mathbf D_c=\mathbf r\mathbf c^T\]</span> Then <span class="math inline">\(\mathbf P\)</span> can always be expressed as <span class="math display">\[\mathbf P=\mathbf r\mathbf c^T+\sum_{k=2}^{J}\widetilde{\lambda}_k(\mathbf D_r^{1/2}\widetilde{\mathbf u}_k)(\mathbf D_c^{1/2}\widetilde{\mathbf v}_k)^T\]</span></li>
 </ol>
 
     </div>
@@ -100,6 +108,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
