@@ -13,7 +13,7 @@
       <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/10/31/convex-sets/</guid>
-      <description></description>
+      <description>A set \(C\subseteq\mathbf R^n\) is affine set if for any two distinct points lie in \(C\), \(x_1,x_2\in C\) and \(\theta\in \mathbf R\), the linear combination of these two points lies in \(C\), \(\theta x_1+(1-\theta)x_2\in C\) with the coefficients sum to one. This kind of linear combination is called affine combination. The set of all affine combinations of points in set \(C\subseteq\mathbf R^n\) is called the affine hull of \(C\), and denoted \[\mathbf{\text{aff }}C=\{\theta_1x_1+\cdots+\theta_kx_k|x_1,\cdots,x_k\in C,\theta_1+\cdots+\theta_k=1\}\] The affine hull is the smallest affine set that contains \(C\).</description>
     </item>
     
   </channel>

@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Convex sets</h1>
@@ -73,6 +73,12 @@
 <script src="index_files/anchor-sections/anchor-sections.js"></script>
 
 
+<ol style="list-style-type: decimal">
+<li>A set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is <span style="color: red;"><strong>affine set</strong></span> if for any two distinct points lie in <span class="math inline">\(C\)</span>, <span class="math inline">\(x_1,x_2\in C\)</span> and <span class="math inline">\(\theta\in \mathbf R\)</span>, the linear combination of these two points lies in <span class="math inline">\(C\)</span>, <span class="math inline">\(\theta x_1+(1-\theta)x_2\in C\)</span> with the coefficients sum to one. This kind of linear combination is called affine combination. The set of all affine combinations of points in set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is called the <span style="color: red;"><strong>affine hull</strong></span> of <span class="math inline">\(C\)</span>, and denoted <span class="math display">\[\mathbf{\text{aff }}C=\{\theta_1x_1+\cdots+\theta_kx_k|x_1,\cdots,x_k\in C,\theta_1+\cdots+\theta_k=1\}\]</span> The affine hull is the smallest affine set that contains <span class="math inline">\(C\)</span>.<br />
+</li>
+<li>A set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is <span style="color: red;"><strong>convex set</strong></span> if for any two distinct points lie in <span class="math inline">\(C\)</span>, <span class="math inline">\(x_1,x_2\in C\)</span> and <span class="math inline">\(0\le\theta\le1\)</span>, the line segment between these two points lies in <span class="math inline">\(C\)</span>, <span class="math inline">\(\theta x_1+(1-\theta)x_2\in C\)</span>. The set of all convex combinations of points in set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is called the <span style="color: red;"><strong>convex hull</strong></span> of <span class="math inline">\(C\)</span>, and denoted <span class="math display">\[\mathbf{\text{conv }}C=\{\theta_1x_1+\cdots+\theta_kx_k|x_1,\cdots,x_k\in C,\theta_1,\cdots,\theta_k\ge0,\theta_1+\cdots+\theta_k=1\}\]</span></li>
+<li>A set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is <span style="color: red;"><strong>cone set</strong></span> or <span style="color: red;"><strong>nonnegative homogeneous</strong></span> if for every point <span class="math inline">\(x\)</span> in <span class="math inline">\(C\)</span>, <span class="math inline">\(x\in C\)</span> and <span class="math inline">\(\theta\ge0\)</span>, then we have <span class="math inline">\(\theta x\in C\)</span>. A set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is <span style="color: red;"><strong>convex cone</strong></span> if for any two distinct points lie in <span class="math inline">\(C\)</span>, <span class="math inline">\(x_1,x_2\in C\)</span> and <span class="math inline">\(\theta_1, \theta_2\ge0\)</span>, we have <span class="math display">\[\theta_1x_1+\theta_2x_2\in C\]</span> A point of the form <span class="math inline">\(\theta_1x_1+\cdots+\theta_kx_k\)</span> with <span class="math inline">\(\theta_1,\cdots,\theta_k\ge0\)</span> is called a conic combination. The set of all conic combinations of points in set <span class="math inline">\(C\subseteq\mathbf R^n\)</span> is called the <span style="color: red;"><strong>conic hull</strong></span> of <span class="math inline">\(C\)</span>, and denoted <span class="math display">\[\{\theta_1x_1+\cdots+\theta_kx_k|x_1,\cdots,x_k\in C,\theta_1,\cdots,\theta_k\ge0\}\]</span> which is also the smallest convex cone that contains <span class="math inline">\(C\)</span>.</li>
+</ol>
 
     </div>
   </article>
@@ -95,6 +101,9 @@
     
 
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
