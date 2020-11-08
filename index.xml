@@ -13,7 +13,7 @@
       <pubDate>Fri, 06 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/11/06/set-theory/</guid>
-      <description>Suppose \(Y\subset X\) and \(E\) is open relative to \(Y\), then, to each \(p\in E\), there is a positive number \(r_p\) and the condition \(q\in Y\), \(d(p,q)&amp;lt;r_p\) imply that \(q\in E\). Let \(V_p\) be the set of all \(q\in X\) such that \(d(p,q)&amp;lt;r_p\) and define \[G=\underset{p\in E}{\cup} V_p\] Then \(G\) is an open subset of \(X\), since \(p\in V_p\) for all \(p\in E\), it is clear that \(E\subset G\cap Y\).</description>
+      <description>A neighborhood of \(p\) is a set \(N_r(p)\) consisting of all \(q\) such that \(d(p,q)&amp;lt;r\), for some \(r&amp;gt;0\). The \(r\) is called radius of \(N_r(p)\). A point \(p\) is called a limit point of the set \(E\), if every neighborhood of \(p\) contains a point \(q\ne p\) and \(q\in E\). \(E\) is closed if every limit point of \(E\) is a point of \(E\). \(p\) is called an interior point of \(E\) if there is a neighborhood \(N_r(p)\) of \(p\) such that \(N_r(p)\subset E\).</description>
     </item>
     
     <item>
