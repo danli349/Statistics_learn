@@ -13,7 +13,7 @@
       <pubDate>Fri, 06 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/11/06/set-theory/</guid>
-      <description>A neighborhood of \(p\) is a set \(N_r(p)\) consisting of all \(q\) such that \(d(p,q)&amp;lt;r\), for some \(r&amp;gt;0\). The \(r\) is called radius of \(N_r(p)\). A point \(p\) is called a limit point of the set \(E\), if every neighborhood of \(p\) contains a point \(q\ne p\) and \(q\in E\). \(E\) is closed if every limit point of \(E\) is a point of \(E\). \(p\) is called an interior point of \(E\) if there is a neighborhood \(N_r(p)\) of \(p\) such that \(N_r(p)\subset E\).</description>
+      <description>In metric space, a neighborhood of \(p\) is a set \(N_r(p)\) consisting of all \(q\) such that \(d(p,q)&amp;lt;r\), for some \(r&amp;gt;0\). The \(r\) is called radius of \(N_r(p)\). A point \(p\) is called a limit point of the set \(E\), if every neighborhood of \(p\) contains a point \(q\ne p\) and \(q\in E\). \(E\) is called closed if every limit point of \(E\) is a point of \(E\).</description>
     </item>
     
   </channel>
