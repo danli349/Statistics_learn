@@ -6,7 +6,16 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Numerical Sequences and Series</title>
+      <link>/2020/11/10/numerical-sequences-and-series/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/10/numerical-sequences-and-series/</guid>
+      <description>A sequence \(\{p_n\}\) in a metric space \(X\) is said to converge if there is a point \(p\in X\) with the following property: For every \(\epsilon&amp;gt;0\) there is an integer \(N\) such that \(n\ge N\) implies that \(d(p_n,p)&amp;lt;\epsilon\) and we also say \(\{p_n\}\) converges to \(p\) or \(p\) is the limit of \(\{p_n\}\) and we write \[\lim_{x\to \infty}p_n=p\] or \(p_n\to p\). A sequence \(\{p_n\}\) in a metric space \(X\) is said to be a Cauchy sequence if for every \(\epsilon&amp;gt;0\), there is an integer \(N\) such that \(d(p_n,p_m)&amp;lt;\epsilon\) if \(n\ge N\) and \(m\ge N\).</description>
+    </item>
+    
     <item>
       <title>Set theory</title>
       <link>/2020/11/06/set-theory/</link>

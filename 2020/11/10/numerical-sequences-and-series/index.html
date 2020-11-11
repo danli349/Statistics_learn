@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Numerical Sequences and Series - A Hugo website</title>
+<meta property="og:title" content="Numerical Sequences and Series - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Numerical Sequences and Series</h1>
+
+    
+    <span class="article-date">2020-11-10</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li><p>A sequence <span class="math inline">\(\{p_n\}\)</span> in a metric space <span class="math inline">\(X\)</span> is said to <span style="color: red;"><strong>converge</strong></span> if there is a point <span class="math inline">\(p\in X\)</span> with the following property: For every <span class="math inline">\(\epsilon&gt;0\)</span> there is an integer <span class="math inline">\(N\)</span> such that <span class="math inline">\(n\ge N\)</span> implies that <span class="math inline">\(d(p_n,p)&lt;\epsilon\)</span> and we also say <span class="math inline">\(\{p_n\}\)</span> converges to <span class="math inline">\(p\)</span> or <span class="math inline">\(p\)</span> is the limit of <span class="math inline">\(\{p_n\}\)</span> and we write <span class="math display">\[\lim_{x\to \infty}p_n=p\]</span> or <span class="math inline">\(p_n\to p\)</span>. A sequence <span class="math inline">\(\{p_n\}\)</span> in a metric space <span class="math inline">\(X\)</span> is said to be a <span style="color: red;"><strong>Cauchy sequence</strong></span> if for every <span class="math inline">\(\epsilon&gt;0\)</span>, there is an integer <span class="math inline">\(N\)</span> such that <span class="math inline">\(d(p_n,p_m)&lt;\epsilon\)</span> if <span class="math inline">\(n\ge N\)</span> and <span class="math inline">\(m\ge N\)</span>. The definition of Cauchy sequence does not explicitly involve the limit, which is involved in the definition of convergence. All of the convergent sequences are bounded, because when <span class="math inline">\(p_n\to p\)</span>,<span class="math inline">\(d(p_n,p)\to 0&lt;M\)</span> for any real number <span class="math inline">\(M\)</span> and <span class="math inline">\(p\in X\)</span>.</p></li>
+<li><p><strong>In any metric space <span class="math inline">\(X\)</span>, every convergent sequence is a Cauchy sequence. In <span class="math inline">\(R^k\)</span>, every Cauchy sequence converges</strong>. If <span class="math inline">\(X\)</span> is a compact metric space and if <span class="math inline">\(\{p_n\}\)</span> is a Cauchy sequence in <span class="math inline">\(X\)</span>, then <span class="math inline">\(\{p_n\}\)</span> converges to some point in <span class="math inline">\(X\)</span>. A metric space in which every Cauchy sequence converges is said to be <span style="color: red;"><strong>complete</strong></span>. <strong>All compact metric spaces and all Euclidean spaces are complete</strong>.</p></li>
+<li><p>A sequence <span class="math inline">\(\{p_{n_i}\}, n_1&lt;n_2&lt;n_3&lt;\cdots\)</span> is called a <span style="color: red;"><strong>sebsequence</strong></span> of <span class="math inline">\(\{p_n\}\)</span> with its items selected from <span class="math inline">\(\{p_n\}\)</span>. Its limit is called a <strong>sebsequential limit</strong> of <span class="math inline">\(\{p_n\}\)</span>. Let <span class="math inline">\(E\)</span> be a nonempty subset of a metric space <span class="math inline">\(X\)</span>, and let <span class="math inline">\(S\)</span> be the set of all real numbers of the form <span class="math inline">\(d(p,q)\)</span>, with <span class="math inline">\(p\in E\)</span> and <span class="math inline">\(q\in E\)</span>, then the sup of <span class="math inline">\(S\)</span> is called the <span style="color: red;"><strong>diameter</strong></span> of <span class="math inline">\(E\)</span>.</p></li>
+<li><p><span class="math display">\[\lim_{n\to \infty}\sqrt[n]{n}=1\]</span> because <span class="math display">\[n=(\sqrt[n]{n})^n=(1+(\sqrt[n]{n}-1))^n\\
+={n \choose n}1^n(\sqrt[n]{n}-1)^0+{n-1 \choose n}1^{n-1}(\sqrt[n]{n}-1)^1+{n-2 \choose n}1^{n-2}(\sqrt[n]{n}-1)^2+\cdots\\
+\ge {n-2 \choose n}1^{n-2}(\sqrt[n]{n}-1)^2=\frac{n(n-1)}{2!}(\sqrt[n]{n}-1)^2\\
+\]</span> Then <span class="math display">\[(\sqrt[n]{n}-1)\le \sqrt{\frac{2}{n-1}}\]</span> <span class="math display">\[\lim_{n\to \infty}\sqrt{\frac{2}{n-1}}=0\]</span> <span class="math display">\[\lim_{n\to \infty}(\sqrt[n]{n}-1)=0\]</span></p></li>
+</ol>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
