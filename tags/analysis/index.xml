@@ -6,7 +6,16 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Continuity</title>
+      <link>/2020/11/12/continuity/</link>
+      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/12/continuity/</guid>
+      <description>If a set \(E\) in \(R^k\) is closed and bounded, then \(E\subset I\) for some compact k-cell \(I\), then \(E\) is the closed subset of compact set \(I\) and \(E\) is also compact. A bounded infinite set \(E\) in \(R^k\) is a subset of a compact k-cell \(I\), and \(E\) must have a limit point in \(I\) or \(R^k\). E is compact implies every infinite subset \(K\) of E has a limit point in E, and which implies E is closed and bounded.</description>
+    </item>
+    
     <item>
       <title>Numerical Sequences and Series</title>
       <link>/2020/11/10/numerical-sequences-and-series/</link>
