@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>L&#39;Hospital&#39;s rule and Taylor&#39;s theorem - A Hugo website</title>
+<meta property="og:title" content="L&#39;Hospital&#39;s rule and Taylor&#39;s theorem - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">L&#39;Hospital&#39;s rule and Taylor&#39;s theorem</h1>
+
+    
+    <span class="article-date">2020-11-15</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li><p>If <span class="math inline">\(f\)</span> be defined on <span class="math inline">\([a,b]\)</span> and for <span class="math inline">\(x\in[a,b]\)</span> the limit <span class="math display">\[f&#39;(x)=\underset{t\to x}{\lim}\frac{f(t)-f(x)}{t-x}\]</span> exists, we say that <span class="math inline">\(f\)</span> is <span style="color: red;"><strong>differentiable</strong></span> at <span class="math inline">\(x\)</span>. If <span class="math inline">\(f&#39;\)</span> is defined at every point of a set <span class="math inline">\(E\subset[a,b]\)</span>, we say that <span class="math inline">\(f\)</span> is differentiable on <span class="math inline">\(E\)</span>.</p></li>
+<li><p>L’Hospital’s rule: Suppose <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are real and differentiable in <span class="math inline">\((a, b)\)</span> and <span class="math inline">\(g&#39;(x)\ne 0\)</span> for all <span class="math inline">\(x\in (a,b)\)</span> where <span class="math inline">\(-\infty\le a&lt;b\le+\infty\)</span>. Suppose <span class="math inline">\(\displaystyle\frac{f&#39;(x)}{g&#39;(x)}\to A\)</span> as <span class="math inline">\(x\to a\)</span>. Suppose <span class="math inline">\(-\infty\le A&lt;+\infty\)</span>, choose a real number <span class="math inline">\(q\)</span> such that <span class="math inline">\(A&lt;q\)</span> and choose <span class="math inline">\(r\)</span> such that <span class="math inline">\(A&lt;r&lt;q\)</span>, there is point <span class="math inline">\(c\in(a,b)\)</span> such that <span class="math inline">\(a&lt;x&lt;c\)</span> implies <span class="math display">\[\frac{f&#39;(x)}{g&#39;(x)}&lt;r\]</span><br />
+</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Suppose <span class="math inline">\(f(x)\to 0\)</span> and <span class="math inline">\(g(x)\to 0\)</span> as <span class="math inline">\(x\to a\)</span>. If <span class="math inline">\(a&lt;x&lt;y&lt;c\)</span>, then there is point <span class="math inline">\(t\in (x,y)\)</span> such that <span class="math display">\[\frac{f(x)-f(y)}{g(x)-g(y)}=\frac{f&#39;(t)}{g&#39;(t)}&lt;r\]</span> Suppose <span class="math inline">\(f(x)\to 0\)</span> and <span class="math inline">\(g(x)\to 0\)</span> as <span class="math inline">\(x\to a\)</span>, then <span class="math display">\[\frac{f(y)}{g(y)}\le r&lt;q\quad (a&lt;y&lt;c)\]</span> Then <span class="math display">\[\frac{f(y)}{g(y)}\to A\]</span> or <span class="math display">\[\frac{f(x)}{g(x)}\to A\]</span> as <span class="math inline">\(x\to a\)</span><br />
+</li>
+<li>Suppose <span class="math inline">\(g(x)\to +\infty\)</span> as <span class="math inline">\(x\to a\)</span>. If <span class="math inline">\(a&lt;x&lt;y&lt;c\)</span>, then there is point <span class="math inline">\(c_1\in (a,y)\)</span> such that <span class="math inline">\(g(x)&gt;g(y)\)</span> and <span class="math inline">\(g(x)&gt;0\)</span> if <span class="math inline">\(a&lt;x&lt;c_1\)</span> then <span class="math display">\[\frac{f(x)-f(y)}{g(x)-g(y)}\frac{g(x)-g(y)}{g(x)}=\frac{f(x)-f(y)}{g(x)}&lt;r\frac{g(x)-g(y)}{g(x)}=r-r\frac{g(y)}{g(x)}\]</span> and then <span class="math display">\[\frac{f(x)}{g(x)}&lt;r-r\frac{g(y)}{g(x)}+\frac{f(y)}{g(x)}, \quad (a&lt;x&lt;c_1)\]</span> Because <span class="math inline">\(g(x)\to +\infty\)</span> as <span class="math inline">\(x\to a\)</span>, then there is point <span class="math inline">\(c_2\in (a,c_1)\)</span> <span class="math display">\[\frac{f(x)}{g(x)}&lt;r&lt;q, \quad (a&lt;x&lt;c_2)\]</span> and <span class="math display">\[\frac{f(x)}{g(x)}\to A\]</span> as <span class="math inline">\(x\to a\)</span>.<br />
+</li>
+<li>In the same manner, if <span class="math inline">\(-\infty&lt;A\le+\infty\)</span> and <span class="math inline">\(p\)</span> is chosen so that <span class="math inline">\(p&lt;A\)</span>, we can find a point <span class="math inline">\(c_3\)</span> such that <span class="math display">\[p&lt;\frac{f(x)}{g(x)},\quad(a&lt;x&lt;c_3)\]</span> and <span class="math display">\[\frac{f(x)}{g(x)}\to A\]</span> as <span class="math inline">\(x\to a\)</span>.</li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li>Taylor’s theorem: Soppose <span class="math inline">\(f\)</span> is a real function on <span class="math inline">\([a,b]\)</span>, <span class="math inline">\(n\)</span> is a positive integer, <span class="math inline">\(f^{n-1}\)</span> is continuous on <span class="math inline">\([a,b]\)</span>. Let <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> be distinct points of <span class="math inline">\([a,b]\)</span> then there exist a point <span class="math inline">\(x\)</span> between <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> such that <span class="math display">\[f(\beta)=\frac{f^{(0)}(\alpha)}{0!}(\beta-\alpha)^0+\frac{f^{(1)}(\alpha)}{1!}(\beta-\alpha)^1+\cdots+\frac{f^{(n-1)}(\alpha)}{(n-1)!}(\beta-\alpha)^{n-1}+\frac{f^{(n)}(x)}{n!}(\beta-\alpha)^n\]</span></li>
+</ol>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
