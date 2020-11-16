@@ -14,7 +14,16 @@
       
       <guid>/2020/11/15/l-hospital-s-rule-and-taylor-s-theorem/</guid>
       <description>If \(f\) be defined on \([a,b]\) and for \(x\in[a,b]\) the limit \[f&amp;#39;(x)=\underset{t\to x}{\lim}\frac{f(t)-f(x)}{t-x}\] exists, we say that \(f\) is differentiable at \(x\). If \(f&amp;#39;\) is defined at every point of a set \(E\subset[a,b]\), we say that \(f\) is differentiable on \(E\).
-L’Hospital’s rule: Suppose \(f\) and \(g\) are real and differentiable in \((a, b)\) and \(g&amp;#39;(x)\ne 0\) for all \(x\in (a,b)\) where \(-\infty\le a&amp;lt;b\le+\infty\). Suppose \(\displaystyle\frac{f&amp;#39;(x)}{g&amp;#39;(x)}\to A\) as \(x\to a\).</description>
+The mean value theorem If \(f\) and \(g\) are continuous real functions on \([a,b]\) which are differentiable in \((a,b)\), then there is a point \(x\in(a,b)\) at which \[\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f&amp;#39;(x)}{g&amp;#39;(x)}\] Put \(h(t)=[f(b)-f(a)]g(t)-[g(b)-g(a)]f(t)\quad(a\le t\le b)\) then \(h\) is continuous on \([a,b]\) and differentiable in \((a,b)\), and \(h(a)=[f(b)-f(a)]g(a)-[g(b)-g(a)]f(a)=f(b)g(a)-g(b)f(a)=h(b)\) To prove this theorem, we have to show that \(h&amp;#39;(x)=0\) for some \(x\in(a,b)\).</description>
+    </item>
+    
+    <item>
+      <title>Riemann-Stieltjes integral</title>
+      <link>/2020/11/15/riemann-stieltjes-integral/</link>
+      <pubDate>Sun, 15 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/15/riemann-stieltjes-integral/</guid>
+      <description>A partition P of interval \([a,b]\) is a finite set of points \(x_0,x_1,\cdots,x_n\), where \(a=x_0\le x_1\le \cdots\le x_n=b\) and \(\Delta x_i=x_i-x_{i-1}\quad(i=1,\cdots,n)\). Let \[M_i=\text{sup }f(x)\quad(x_{i-1}\le x\le x_i)\] \[m_i=\text{inf }f(x)\quad(x_{i-1}\le x\le x_i)\] Corresponding to each partition \(P\) of \([a,b]\). We put \[U(P,f)=\sum_{i=1}^{n}M_i\Delta x_i\] \[L(P,f)=\sum_{i=1}^{n}m_i\Delta x_i\] \[\overline{\int}_{a}^{b} f dx=\text{inf}\sum_{i=1}^{n}M_i\Delta x_i\] \[\underline{\int}_{a}^{b} f dx=\text{sup}\sum_{i=1}^{n}m_i\Delta x_i\]which are called upper and lower Riemann integrals of \(f\) over \([a,b]\), respectively. If the upper and lower integrals are equal, we say that \(f\) is Riemann-integrable on \([a,b]\), we write \(f\in\mathscr R\).</description>
     </item>
     
     <item>
