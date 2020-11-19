@@ -14,8 +14,7 @@
       
       <guid>/2020/11/18/power-series/</guid>
       <description>The power series are \[\sum_{n=0}^{\infty}c_nx^n\] The numbers \(c_n\) are called coefficients. \[R=\frac{1}{\displaystyle\lim_{n\to \infty}\text{sup}\sqrt[n]{|c_n|}}\] is called the radius of convergence of power series \[\sum_{n=0}^{\infty}c_nx^n\] \[\displaystyle\lim_{n\to \infty}\text{sup}\sqrt[n]{|c_nx^n|}=\frac{|x|}{R}\] Then \[\sum_{n=0}^{\infty}c_nx^n\] converges if \(|x|&amp;lt;R\) and diverges if \(|x|&amp;gt;R\).
-Suppose the series \(\sum_{n=0}^{\infty}c_nx^n\) converges for \(|x|&amp;lt;R\), then it converges uniformly on \([-R+\varepsilon,R-\varepsilon], \varepsilon&amp;gt;0\).
-Functions which are presented by power series \[f(x)=\sum_{n=0}^{\infty}c_nx^n\] or \[f(x)=\sum_{n=0}^{\infty}c_n(x-a)^n\] are called analytic functions. The function \[f(x)=\sum_{n=0}^{\infty}c_nx^n\] is continuous and differentiable in \((-R,R)\).</description>
+Suppose the series \(\sum_{n=0}^{\infty}c_nx^n\) converges for \(|x|&amp;lt;R\), then it converges uniformly on \([-R+\varepsilon,R-\varepsilon], \varepsilon&amp;gt;0\). For \(|x|\leq R-\varepsilon\) we have \[|c_nx^n|\leq|c_n(R-\varepsilon)^n|\] and since \[\sum c_n(R-\varepsilon)^n\] converges absolutely (every power series converges absolutely in the interior of its radius), then there is an integer \(N\) that \[|\sum_{i=0}^{n}c_ix^i-\sum_{i=0}^{m}c_ix^i|=|\sum_{m+1}^{n}c_ix^i|&amp;lt;\varepsilon,\quad n\ge m\ge N\] then \(\sum_{n=0}^{\infty}c_nx^n\) converges uniformly.</description>
     </item>
     
     <item>
