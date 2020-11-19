@@ -69,10 +69,12 @@
     <div class="article-content">
       
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="../../../../rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="../../../../rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <p>The Gamma function:
-<span class="math inline">\(\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\)</span> <span class="math inline">\(\Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr)\)</span></p>
+<span class="math display">\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\quad \Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr) (0&lt;s&lt;\infty)\]</span></p>
 <p>The product of two Gamma functions:
 <span class="math display">\[\begin{align}
 \Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
@@ -110,6 +112,12 @@ and
 (\frac{m}{2})!,  &amp; \text{if $m$ is even} \\[2ex]
 (\frac{m}{2}-1)(\frac{m}{2}-2)...\frac{1}{2}\sqrt{\pi}, &amp; \text{if $m$ is odd}
 \end{cases}\]</span></p>
+<ol style="list-style-type: decimal">
+<li>The <span style="color: red;"><strong>Stirling’s formula</strong></span>: <span class="math display">\[\Gamma(x+1)\approx(\frac{x}{e})^x\sqrt{2\pi x}\]</span> when <span class="math inline">\(x\)</span> is large. <span class="math display">\[\Gamma(x+1)=\int_{0}^{+\infty}t^{x}e^{-t}dt=\int_{0}^{+\infty}(x(1+u))^{x}e^{-x(1+u)}d(x(1+u))\\
+=x^{x+1}e^{-x}\int_{-1}^{+\infty}(1+u)^{x}e^{-xu}du\\
+=x^{x+1}e^{-x}\int_{-1}^{+\infty}[(1+u)e^{-u}]^xdu,\\
+\{t=x(1+u), 0&lt;x, -1&lt;u&lt;+\infty\}\]</span></li>
+</ol>
 
     </div>
   </article>

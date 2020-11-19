@@ -6,7 +6,28 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Power series</title>
+      <link>/2020/11/18/power-series/</link>
+      <pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/18/power-series/</guid>
+      <description>The power series are \[\sum_{n=0}^{\infty}c_nx^n\] The numbers \(c_n\) are called coefficients. \[R=\frac{1}{\displaystyle\lim_{n\to \infty}\text{sup}\sqrt[n]{|c_n|}}\] is called the radius of convergence of power series \[\sum_{n=0}^{\infty}c_nx^n\] \[\displaystyle\lim_{n\to \infty}\text{sup}\sqrt[n]{|c_nx^n|}=\frac{|x|}{R}\] Then \[\sum_{n=0}^{\infty}c_nx^n\] converges if \(|x|&amp;lt;R\) and diverges if \(|x|&amp;gt;R\).
+Suppose the series \(\sum_{n=0}^{\infty}c_nx^n\) converges for \(|x|&amp;lt;R\), then it converges uniformly on \([-R+\varepsilon,R-\varepsilon], \varepsilon&amp;gt;0\).
+Functions which are presented by power series \[f(x)=\sum_{n=0}^{\infty}c_nx^n\] or \[f(x)=\sum_{n=0}^{\infty}c_n(x-a)^n\] are called analytic functions. The function \[f(x)=\sum_{n=0}^{\infty}c_nx^n\] is continuous and differentiable in \((-R,R)\).</description>
+    </item>
+    
+    <item>
+      <title>Sequences and Series of functions</title>
+      <link>/2020/11/18/sequences-and-series-of-functions/</link>
+      <pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/18/sequences-and-series-of-functions/</guid>
+      <description>A sequence of functions \(\{f_n\}, n=1,2,3,\cdots,\) defined on \(E\), and suppose the sequence of numbers \(\{f_n(x)\}\) converges for every \(x\in E\), we define the function \(f\) by \[f(x)=\lim_{n\to \infty}f_n(x)\quad (x\in E)\] We say that \(\{f_n\}\) converges to \(f\) pointwise on \(E\) and \(f\) is the limit function.
+A sequence of functions \(\{f_n\}, n=1,2,3,\cdots,\) converges uniformly on \(E\) to a function \(f\) if for every \(\epsilon&amp;gt;0\) there is an integer \(N\) such that \(n&amp;gt;N\) implies \[|f_n(x)-f(x)|\le\epsilon\] for all \(x\in E\).</description>
+    </item>
+    
     <item>
       <title>L&#39;Hospital&#39;s rule and Taylor&#39;s theorem</title>
       <link>/2020/11/15/l-hospital-s-rule-and-taylor-s-theorem/</link>
