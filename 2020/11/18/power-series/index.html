@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Power series</h1>
@@ -79,6 +79,19 @@
 <li><p>Functions which are presented by power series <span class="math display">\[f(x)=\sum_{n=0}^{\infty}c_nx^n\]</span> or <span class="math display">\[f(x)=\sum_{n=0}^{\infty}c_n(x-a)^n\]</span> are called <span style="color: red;"><strong>analytic functions</strong></span>. The function <span class="math display">\[f(x)=\sum_{n=0}^{\infty}c_nx^n\]</span> is continuous and differentiable in <span class="math inline">\((-R,R)\)</span>.</p></li>
 <li><p>If <span class="math inline">\(\sum c_n\)</span> converges, the limit of analytic function <span class="math display">\[\lim_{x\to 1}f(x)=\lim_{x\to 1}\sum_{n=0}^{\infty}c_nx^n=\sum_{n=0}^{\infty}c_n\quad (-1&lt;x&lt;1)\]</span> Let <span class="math display">\[s_n=\sum_{i=0}^{n}c_i\]</span> Then <span class="math display">\[\sum_{n=0}^{m}c_nx^n=\sum_{n=0}^{m}(s_n-s_{n-1})x^n=\sum_{n=0}^{m}s_nx^n-\sum_{n=0}^{m}s_{n-1}x^n=\sum_{n=0}^{m-1}s_nx^n+s_mx^m-x\sum_{n=0}^{m-1}s_nx^n\\
 =(1-x)\sum_{n=0}^{m-1}s_nx^n+s_mx^m\]</span> For <span class="math inline">\(|x|&lt;1\)</span>, let <span class="math inline">\(m\to \infty\)</span> and obtain <span class="math display">\[f(x)=(1-x)\sum_{n=0}^{\infty}s_nx^n\]</span> Suppose <span class="math display">\[s=\lim_{n\to\infty}s_n\]</span> let <span class="math inline">\(\varepsilon&gt;0\)</span>, because <span class="math inline">\(s_n=\sum_{i=0}^{n}c_i\)</span> converges, choose <span class="math inline">\(N\)</span> so that <span class="math inline">\(n&gt;N\)</span> implies <span class="math display">\[|s-s_n|&lt;\frac{\varepsilon}{2}\]</span> then since <span class="math display">\[(1-x)\sum_{n=0}^{\infty}x^n=1\quad(|x|&lt;1)\]</span> we obtain <span class="math display">\[|f(x)-s|=|(1-x)\sum_{n=0}^{\infty}(s_n-s)x^n|\leq (1-x)\sum_{n=0}^{N}|s_n-s||x|^n+\frac{\varepsilon}{2}\leq \varepsilon\]</span> Because <span class="math inline">\(x\to1\)</span> we can choose suitable <span class="math inline">\(x\)</span> to make <span class="math display">\[(1-x)\sum_{n=0}^{N}|s_n-s||x|^n\leq \frac{\varepsilon}{2}\]</span></p></li>
+<li><p>If <span class="math inline">\(\sum a_n\)</span> is a series of complex numbers which converges absolutely, then every rearrangement of <span class="math inline">\(\sum a_n\)</span> converges and they all converge to the same sum. Let <span class="math inline">\(\sum a&#39;_n\)</span> be a rearrangement, with partial sums <span class="math inline">\(s&#39;_n\)</span>. Given <span class="math inline">\(\varepsilon&gt;0\)</span>, because <span class="math inline">\(\sum a_n\)</span> converges absolutely, there exists an integer <span class="math inline">\(N\)</span> such that <span class="math inline">\(m\ge n\ge N\)</span> implies <span class="math display">\[\sum_{i=n}^{m}|a_i|\le\varepsilon\]</span> Now choose <span class="math inline">\(p\)</span> such that the integers <span class="math inline">\(1,2,\cdots,N\)</span> are all contained in the set <span class="math inline">\(k_1,k_2,\cdots,k_p\)</span>, then if <span class="math inline">\(n&gt;p\)</span>, the numbers <span class="math inline">\(a_1,a_2,\cdots,a_N\)</span> will cancel in the difference <span class="math inline">\(s_n-s&#39;_n\)</span>, so that <span class="math display">\[|s_n-s&#39;_n|\leq\varepsilon\]</span> Hence <span class="math inline">\(\{s&#39;_n\}\)</span> converges to the same sum as <span class="math inline">\(\{s_n\}\)</span>.</p></li>
+<li><p>The double sequence <span class="math inline">\(\{a_{ij}\},i=1,2,3\cdots,j=1,2,3,\cdots\)</span> suppose that <span class="math display">\[\sum_{i=1}^{\infty}\sum_{j=1}^{\infty}|a_{ij}|\]</span> converges, Then the different rearrangements of <span class="math inline">\(\{a_{ij}\}\)</span> converge to the same sum <span class="math display">\[\sum_{i=1}^{\infty}\sum_{j=1}^{\infty}a_{ij}=\sum_{j=1}^{\infty}\sum_{i=1}^{\infty}a_{ij}\]</span></p></li>
+<li><p>Suppose <span class="math display">\[f(x)=\sum_{n=0}^{\infty}c_nx^n\]</span> the series converging in <span class="math inline">\(|x|&lt;R\)</span> or <span class="math display">\[\lim_{n\to \infty}\text{sup}\sqrt[n]{|c_nx^n|}&lt;1\]</span> We have <span class="math display">\[\begin{align}
+f(x)&amp;=\sum_{n=0}^{\infty}c_nx^n\\
+&amp;=\sum_{n=0}^{\infty}c_n(x-a+a)^n\\
+&amp;=\sum_{n=0}^{\infty}c_n\sum_{m=0}^{n}{n \choose m}(x-a)^ma^{n-m}\\
+\end{align}\]</span> Because if <span class="math inline">\(|x-a|+|a|&lt;R\)</span> <span class="math display">\[\sum_{n=0}^{\infty}\sum_{m=0}^{n}\Biggl|c_n{n \choose m}(x-a)^ma^{n-m}\Biggr|=\sum_{n=0}^{\infty}|c_n|\cdot(|x-a|+|a|)^n\]</span> converges and when <span class="math inline">\(n\to \infty, n\ge m\)</span> <span class="math display">\[\begin{align}
+f(x)&amp;=\sum_{n=0}^{\infty}c_n\sum_{m=0}^{n}{n \choose m}(x-a)^ma^{n-m}\\
+&amp;=\sum_{m=0}^{\infty}\Biggl[\sum_{n=m}^{\infty}{n \choose m}c_na^{n-m}\Biggr](x-a)^m\\
+&amp;=\sum_{m=0}^{\infty}\Biggl[\frac{f^{(m)}(a)}{m!}\Biggr](x-a)^m\\
+&amp;=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n
+\quad(|x-a|+|a|&lt;R)
+\end{align}\]</span> which is the <span style="color: red;"><strong>Taylor’s theorem</strong></span>.</p></li>
 </ol>
 
     </div>
