@@ -6,7 +6,27 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fourier Series</title>
+      <link>/2020/11/21/fourier-series/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/21/fourier-series/</guid>
+      <description>The trigonometric polynomial is \[\begin{align}f(x)&amp;amp;=a_0+\sum_{n=1}^{N}(a_n\cos nx+b_n\sin nx)\\&amp;amp;=a_0+\sum_{n=1}^{N}\Biggl[(a_n\frac{1}{2}(e^{inx}+e^{-inx})+b_n\frac{1}{2i}(e^{inx}-e^{-inx}))\Biggr]\\&amp;amp;=\sum_{-N}^{N}c_ne^{inx}\quad(x\text{ is real}, a_0,\cdots,a_N,b_1,\cdots,b_N \text{ are complex})\end{align}\] When \(N\to\infty\), \[\sum_{-\infty}^{\infty}c_ne^{inx}\quad(x\text{ is real})\] is the trigonometric series. If \(n\) is a nonzero integer, \(e^{inx}\) has period \(2\pi\), hence \[\frac{1}{2\pi}\int_{-\pi}^{\pi}e^{inx}dx=\begin{cases}1 &amp;amp; (\text{if } n=0) \\0 &amp;amp; (\text{if } n=\pm1,\pm2,\cdots)\end{cases}\] Let us multiply \[f(x)=\sum_{-N}^{N}c_ne^{inx}\] by \(e^{-imx}\), where \(m\)is an integer, and integrate the product \[c_m=\frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{-N}^{N}c_ne^{inx}e^{-imx}dx\quad(|m|\leq N)\]</description>
+    </item>
+    
+    <item>
+      <title>Exponential and Logarithmic function</title>
+      <link>/2020/11/20/exponential-and-logarithmic-function/</link>
+      <pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/20/exponential-and-logarithmic-function/</guid>
+      <description>\[e=\sum_{n=0}^{\infty}\frac{1}{n!}\quad(n=0,1,2,3,\cdots)\]
+\[\begin{align}(1+\frac{1}{n})^n&amp;amp;=\sum_{m=0}^{n}{n \choose m}\cdot 1^{m}\cdot(\frac{1}{n})^{n-m}\\&amp;amp;=\sum_{m=0}^{n}{n \choose m}\cdot(\frac{1}{n})^{n-m}\\&amp;amp;={n \choose n}+{n \choose n-1}(\frac{1}{n})+{n \choose n-2}(\frac{1}{n})^2+\cdots+{n \choose 0}(\frac{1}{n})^n\\&amp;amp;=1+n(\frac{1}{n})+\frac{n(n-1)}{2!}(\frac{1}{n})^2+\cdots+\frac{n!}{n!}(\frac{1}{n})^n\\&amp;amp;=1+1+\frac{1}{2!}(1-\frac{1}{n})+\cdots+\frac{1}{n!}(1-\frac{1}{n})(1-\frac{2}{n})\cdots(1-\frac{n-1}{n})\\&amp;amp;\leq \sum_{k=0}^{n}\frac{1}{k!}\leq e\end{align}\] Next if \(n\ge m\), \[(1+\frac{1}{n})^n=1+1+\frac{1}{2!}(1-\frac{1}{n})+\cdots+\frac{1}{n!}(1-\frac{1}{n})(1-\frac{2}{n})\cdots(1-\frac{n-1}{n})\\\ge 1+1+\frac{1}{2!}(1-\frac{1}{n})+\cdots+\frac{1}{m!}(1-\frac{1}{n})(1-\frac{2}{n})\cdots(1-\frac{m-1}{n})\\\ge 1+1+\frac{1}{2!}+\cdots+\frac{1}{m!}\\=\sum_{k=0}^{m}\frac{1}{k!}\] let \(n\to\infty\), keep \(m\) fixed, we get \[\lim_{n\to\infty}\text{inf}(1+\frac{1}{n})^n\ge \sum_{k=0}^{m}\frac{1}{k!}\] when \(m\to\infty\) \[\lim_{n\to\infty}\text{inf}(1+\frac{1}{n})^n\ge e\] Then \[\lim_{n\to\infty}(1+\frac{1}{n})^n=e\]
+The Ratio Test for series convergent: The series \(\sum a_n\) converges if \[\lim_{n\to\infty}\text{sup}\Biggl|\frac{a_{n+1}}{a_n}\Biggr|&amp;lt;1\] and diverges if \[\Biggl|\frac{a_{n+1}}{a_n}\Biggr|\ge1\] for all \(n\ge n_0\) where \(n_0\) is some fixed integer.</description>
+    </item>
+    
     <item>
       <title>Power series</title>
       <link>/2020/11/18/power-series/</link>
