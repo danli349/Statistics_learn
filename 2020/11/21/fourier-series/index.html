@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Fourier Series</h1>
@@ -74,6 +74,17 @@
 
 
 <ol style="list-style-type: decimal">
+<li><p><span class="math display">\[\cos(x)=\frac{1}{2}(e^{ix}+e^{-ix})\]</span>
+<span class="math display">\[\sin(x)=\frac{1}{2i}(e^{ix}-e^{-ix})\]</span>
+<span class="math display">\[e^{ix}=\cos(x)+i\sin(x)\]</span>
+<span class="math display">\[|e^{ix}|^2=e^{ix}\overline{e^{ix}}=e^{ix}e^{-ix}=1\]</span> then <span class="math display">\[|e^{inx}|=1\]</span> Let <span class="math inline">\(x_0\)</span> be the smallest positive number such that <span class="math inline">\(\cos(x_0)=0\)</span>, we define the number <span class="math inline">\(\pi\)</span> by <span class="math inline">\(\pi=2x_0\)</span>. Then <span class="math inline">\(\cos(\pi/2)=0\)</span> Because <span class="math inline">\(|\cos(\pi/2)+i\sin(\pi/2)|=\sqrt{\cos^2(\pi/2)+\sin^2(\pi/2)}=1\)</span> then <span class="math inline">\(\sin^2(\pi/2)=1\)</span> Since <span class="math inline">\(\sin&#39;(x)=\cos(x)&gt;0\)</span> in <span class="math inline">\((0,\pi/2)\)</span>, <span class="math inline">\(\sin(x)\)</span> is increasing in <span class="math inline">\((0,\pi/2)\)</span>, hence <span class="math inline">\(\sin(\pi/2)=1\)</span>. Thus <span class="math display">\[e^{\frac{\pi}{2}i}=\cos(\pi/2)+i\sin(\pi/2)=i\]</span> <span class="math display">\[e^{\pi i}=\cos(\pi)+i\sin(\pi)=-1\]</span>
+<span class="math display">\[e^{-\pi i}=\cos(-\pi)+i\sin(-\pi)=-1\]</span>
+<span class="math display">\[e^{2\pi i}=\cos(2\pi)+i\sin(2\pi)=1\]</span>
+<span class="math display">\[e^{z+2\pi i}=\cos(z+2\pi)+i\sin(z+2\pi)=\cos(z)+i\sin(z)=e^z\quad(\text{z complex})\]</span> Then <span class="math inline">\(e^{ix}\)</span> is periodic, with period <span class="math inline">\(2\pi i\)</span>.
+<span class="math display">\[\int_{-\pi}^{\pi} e^{inx}dx=\frac{e^{inx}}{in}\Biggl|_{-\pi}^{\pi}=\begin{cases}
+2\pi  &amp; (\text{if } n=0) \\
+0 &amp; (\text{if } n=\pm1,\pm2,\cdots)
+\end{cases}\]</span></p></li>
 <li><p>The <span style="color: red;"><strong>trigonometric polynomial</strong></span> is <span class="math display">\[\begin{align}
 f(x)&amp;=a_0+\sum_{n=1}^{N}(a_n\cos nx+b_n\sin nx)\\
 &amp;=a_0+\sum_{n=1}^{N}\Biggl[(a_n\frac{1}{2}(e^{inx}+e^{-inx})+b_n\frac{1}{2i}(e^{inx}-e^{-inx}))\Biggr]\\
@@ -83,7 +94,17 @@ f(x)&amp;=a_0+\sum_{n=1}^{N}(a_n\cos nx+b_n\sin nx)\\
 0 &amp; (\text{if } n=\pm1,\pm2,\cdots)
 \end{cases}\]</span> Let us multiply <span class="math display">\[f(x)=\sum_{-N}^{N}c_ne^{inx}\]</span> by <span class="math inline">\(e^{-imx}\)</span>, where <span class="math inline">\(m\)</span>
 is an integer, and integrate the product <span class="math display">\[c_m=\frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{-N}^{N}c_ne^{inx}e^{-imx}dx\quad(|m|\leq N)\]</span></p></li>
-<li><p>Let <span class="math inline">\(\{\phi_n\}\quad(n=1,2,3,\cdots)\)</span> be a sequence of complex functions on <span class="math inline">\([a,b]\)</span>, such that <span class="math display">\[\int_{a}^{b}\phi_n(x)\overline{\phi_m(x)}dx=0\quad(n\ne m)\]</span> Then <span class="math inline">\(\{\phi_n\}\)</span> is said to be an <span style="color: red;"><strong>orthogonal system of functions</strong></span> on <span class="math inline">\([a,b]\)</span>. If <span class="math display">\[\int_{a}^{b}|\phi_n(x)|^2dx=1\]</span> for all <span class="math inline">\(n\)</span>, <span class="math inline">\(\{\phi_n\}\)</span> is said to be <span style="color: red;"><strong>orthonormal</strong></span>.</p></li>
+<li><p>Let <span class="math inline">\(\{\phi_n\}\quad(n=1,2,3,\cdots)\)</span> be a sequence of complex functions on <span class="math inline">\([a,b]\)</span>, such that <span class="math display">\[\int_{a}^{b}\phi_n(x)\overline{\phi_m(x)}dx=0\quad(n\ne m)\]</span> Then <span class="math inline">\(\{\phi_n\}\)</span> is said to be an <span style="color: red;"><strong>orthogonal system of functions</strong></span> on <span class="math inline">\([a,b]\)</span>. If <span class="math display">\[\int_{a}^{b}|\phi_n(x)|^2dx=1\]</span> for all <span class="math inline">\(n\)</span>, <span class="math inline">\(\{\phi_n\}\)</span> is said to be <span style="color: red;"><strong>orthonormal</strong></span>. Because <span class="math inline">\(|e^{inx}|=1\)</span> <span class="math display">\[\int_{-\pi}^{\pi}\Bigl|\frac{1}{\sqrt{2\pi}}e^{inx}\Bigr|^2dx=\frac{1}{2\pi}\int_{-\pi}^{\pi}|e^{inx}|^2dx=1\]</span> so the functions <span class="math inline">\(\frac{1}{\sqrt{2\pi}}e^{inx}\)</span> form an orthonormal system on <span class="math inline">\([-\pi,\pi]\)</span>.</p></li>
+<li><p>If <span class="math inline">\(\{\phi_n\}\)</span> is orthonormal on <span class="math inline">\([a,b]\)</span> and if <span class="math display">\[c_n=\int_{a}^{b}f(t)\overline{\phi_n(t)}dt\quad(n=1,2,3,\cdots)\]</span> we call <span class="math inline">\(c_n\)</span> the <span class="math inline">\(n^{th}\)</span> <span style="color: red;"><strong>Fourier coefficient</strong></span> of <span class="math inline">\(f\)</span> relative to <span class="math inline">\(\{\phi_n\}\)</span>. We call the series <span class="math display">\[f(x)\sim\sum_{1}^{\infty}c_n\phi_n(x)=\sum_{1}^{\infty}\Biggl(\int_{a}^{b}f(t)\overline{\phi_n(t)}dt\Biggr)\phi_n(x)\]</span> the <span style="color: red;"><strong>Fourier series</strong></span> of <span class="math inline">\(f\)</span> relative to <span class="math inline">\(\{\phi_n\}\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(\{\phi_n\}\)</span> be orthonormal on <span class="math inline">\([a,b]\)</span>. Let <span class="math display">\[s_n(x)=\sum_{m=1}^{n}c_m\phi_m(x)\]</span> be the <span class="math inline">\(n^{th}\)</span> partial sum of the Fourier series of <span class="math inline">\(f\)</span>, and suppose <span class="math display">\[t_n(x)=\sum_{m=1}^{n}\gamma_m\phi_m(x)\]</span> Then <span class="math display">\[\int_{a}^{b}|f-s_n|^2dx\leq\int_{a}^{b}|f-t_n|^2dx\]</span> and equality holds if and only if <span class="math display">\[\gamma_m=c_m\quad(m=1,\cdots,n)\]</span> That is to say <span class="math inline">\(s_n\)</span> gives the best possible mean square approximation to <span class="math inline">\(f\)</span>. Let <span class="math inline">\(\int\)</span> denote the integral over <span class="math inline">\([a,b]\)</span>, <span class="math inline">\(\sum\)</span> the sum from <span class="math inline">\(1\)</span> to <span class="math inline">\(n\)</span>. Then <span class="math display">\[\int f\overline{t}_n=\int f\sum\overline{\gamma}_m\overline{\phi}_m=\sum c_m\overline{\gamma}_m\]</span> by the definition of <span class="math inline">\(\{c_m\}\)</span>, since <span class="math inline">\(\{\phi_m\}\)</span> is orthonormal, so <span class="math display">\[\int|t_n|^2=\int t_n\overline{t}_n=\int\sum\gamma_m\phi_m\sum\overline{\gamma}_k\overline{\phi}_k=\sum|\gamma_m|^2\]</span> <span class="math display">\[\begin{align}
+\int|f-t_n|^2&amp;=\int|f|^2-\int f\overline{t}_n-\int\overline{f}t_n+\int|t_n|^2\\
+&amp;=\int|f|^2-\sum c_m\overline{\gamma}_m-\sum \overline{c}_m\gamma_m+\sum\gamma_m\overline{\gamma}_m\\
+&amp;=\int|f|^2+\sum (\gamma_m-c_m)\overline{\gamma}_m-\sum \overline{c}_m\gamma_m+\sum \overline{c}_mc_m-\sum \overline{c}_mc_m\\
+&amp;=\int|f|^2+\sum (\gamma_m-c_m)\overline{\gamma}_m-\sum (\gamma_m-c_m)\overline{c}_m-\sum \overline{c}_mc_m\\
+&amp;=\int|f|^2+\sum (\gamma_m-c_m)(\overline{\gamma}_m-\overline{c}_m)-\sum \overline{c}_mc_m\\
+&amp;=\int|f|^2-\sum|c_m|^2+\sum|\gamma_m-c_m|^2
+\end{align}\]</span> which is evidently minimized if and only if <span class="math display">\[\gamma_m=c_m\quad(m=1,\cdots,n)\]</span> when <span class="math inline">\(\gamma_m=c_m\)</span>, <span class="math display">\[\int_{a}^{b}|f(x)|^2\ge \sum_{m=1}^{n}|c_m|^2=\int_{a}^{b}|s_n(x)|^2dx\]</span> Since <span class="math inline">\(\int|f-t_n|^2\ge 0\)</span></p></li>
+<li></li>
 </ol>
 
     </div>
