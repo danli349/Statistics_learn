@@ -73,14 +73,16 @@
 <script src="../../../../rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
-<p>The Gamma function:
+<ol style="list-style-type: decimal">
+<li>The Gamma function:
 <span class="math display">\[\Gamma(s)=\int_{0}^{+\infty}t^{s-1}e^{-t}dt\quad \Bigl(=(s-1)! \quad s\in \mathbb Z^+\Bigr) (0&lt;s&lt;\infty)\]</span> Because <span class="math display">\[\begin{align}
 \Gamma(s+1)&amp;=\int_{0}^{+\infty}t^{s}e^{-t}dt\\
 &amp;=-\int_{0}^{+\infty}t^{s}d(e^{-t})\\
 &amp;=-\Biggl[t^{s}e^{-t}|_{0}^{\infty}-\int_{0}^{+\infty}st^{s-1}e^{-t}dt\Biggl]\\
 &amp;=-\Biggl[0-s\Gamma(s)\Biggl]\\
 &amp;=s\Gamma(s)
-\end{align}\]</span> and <span class="math display">\[\Gamma(1)=\int_{0}^{+\infty}t^{1-1}e^{-t}dt=\int_{0}^{+\infty}e^{-t}dt=1\]</span></p>
+\end{align}\]</span> and <span class="math display">\[\Gamma(1)=\int_{0}^{+\infty}t^{1-1}e^{-t}dt=\int_{0}^{+\infty}e^{-t}dt=1\]</span></li>
+</ol>
 <p>The product of two Gamma functions:
 <span class="math display">\[\begin{align}
 \Gamma(x)\Gamma(y)&amp;=\int_{0}^{+\infty}u^{x-1}e^{-u}du\int_{0}^{+\infty}v^{y-1}e^{-v}dv\\
@@ -118,18 +120,25 @@ and
 (\frac{m}{2})!,  &amp; \text{if $m$ is even} \\[2ex]
 (\frac{m}{2}-1)(\frac{m}{2}-2)...\frac{1}{2}\sqrt{\pi}, &amp; \text{if $m$ is odd}
 \end{cases}\]</span></p>
-<ol style="list-style-type: decimal">
-<li><p>The <span style="color: red;"><strong>Stirling’s formula</strong></span>: <span class="math display">\[\Gamma(x+1)\approx(\frac{x}{e})^x\sqrt{2\pi x}\]</span> when <span class="math inline">\(x\)</span> is large. <span class="math display">\[\Gamma(x+1)=\int_{0}^{+\infty}t^{x}e^{-t}dt=\int_{0}^{+\infty}(x(1+u))^{x}e^{-x(1+u)}d(x(1+u))\\
-=x^{x+1}e^{-x}\int_{-1}^{+\infty}(1+u)^{x}e^{-xu}du\\
-=x^{x+1}e^{-x}\int_{-1}^{+\infty}[(1+u)e^{-u}]^xdu,\\
-\{t=x(1+u), 0&lt;x, -1&lt;u&lt;+\infty\}\]</span></p></li>
+<ol start="2" style="list-style-type: decimal">
 <li><p>If <span class="math inline">\(p&gt;0\)</span>,<span class="math inline">\(q&gt;0\)</span> and <span class="math inline">\(\frac{1}{p}+\frac{1}{q}=\frac{p+q}{pq}=1\)</span>. Let <span class="math inline">\(u\ge 0\)</span> and <span class="math inline">\(v\ge 0\)</span>, then <span class="math display">\[uv\leq \frac{u^p}{p}+\frac{v^q}{q}=\frac{qu^p+pv^q}{pq}\]</span> <span class="math display">\[\Gamma(\frac{x}{p}+\frac{y}{q})\leq\Gamma(x)^{1/p}\Gamma(y)^{1/q}\]</span> which means <span class="math inline">\(\log\Gamma\)</span> is convex on <span class="math inline">\((0,\infty)\)</span>.</p></li>
 <li><p>If <span class="math inline">\(f\)</span> is a positive function on <span class="math inline">\((0,\infty)\)</span> such that (a) <span class="math inline">\(f(x+1)=xf(x)\)</span>, (b) <span class="math inline">\(f(1)=1\)</span>, (c) <span class="math inline">\(\log f\)</span> is convex, then <span class="math inline">\(f(x)=\Gamma(x)\)</span>. Put <span class="math inline">\(\varphi=\log f\)</span> and <span class="math inline">\(f=e^{\varphi}\)</span>. Because <span class="math inline">\(f(x+1)=xf(x)\)</span> then <span class="math display">\[e^{\varphi(x+1)}=xe^{\varphi(x)}\]</span> and <span class="math display">\[\varphi(x+1)=\log x+\varphi(x)\quad(0&lt;x&lt;\infty)\]</span> <span class="math display">\[\varphi(1)=\log f(1)=\log 1=0\]</span> and <span class="math inline">\(\varphi\)</span> is convex. Suppose <span class="math inline">\(0&lt;x&lt;1\)</span> and <span class="math inline">\(n\)</span> is a positive integer. <span class="math display">\[\varphi(n+1)=\varphi(n)+\log n=\varphi(n-1)+\log n+\log (n-1)=\log(n!)\]</span> Consider the difference quotients of <span class="math inline">\(\varphi\)</span> on the intervals <span class="math inline">\([n,n+1], [n+1,n+1+x],[n+1,n+2]\)</span>,
 <span class="math display">\[\varphi(n+1+x)-\varphi(n+1)=\log((n+x)!)-\log(n!)=\log\frac{(n+x)!}{n!}=\log(n+x)(n+x-1)\cdots(n+1)\\
 =\underset{\text{x terms}}{\underbrace{\log(n+x)+\log(n+x-1)+\cdots+\log(n+1)}}\]</span>
 Then <span class="math display">\[\log n\leq\frac{\varphi(n+1+x)-\varphi(n+1)}{x}\leq\log(n+1)\]</span> Because <span class="math display">\[\varphi(x+1)=\varphi(x)+\log x\quad(0&lt;x&lt;\infty)\]</span>
 <span class="math display">\[\varphi(x+1+1)=\varphi(x+1)+\log (x+1)=\varphi(x)+\log x+\log (x+1)=\varphi(x)+\log [x(x+1)]\]</span>
-<span class="math display">\[\varphi(x+1+n)=\varphi(x)+\log [x(x+1)\cdots(x+n)]\]</span> Thus $$$$</p></li>
+<span class="math display">\[\varphi(x+1+n)=\varphi(x)+\log [x(x+1)\cdots(x+n)]\]</span>
+Thus <span class="math display">\[\varphi(n+1+x)-\varphi(n+1)=\varphi(n+1+x)-\log(n!)\ge x\log n\]</span> <span class="math display">\[\varphi(n+1+x)=\varphi(x)+\log [x(x+1)\cdots(x+n)]\ge x\log n+\log(n!)\]</span>
+<span class="math display">\[\varphi(x)+\log [x(x+1)\cdots(x+n)]- x\log n-\log(n!)\ge0\]</span>
+and <span class="math display">\[\varphi(n+1+x)-\varphi(n+1)- x\log n=\varphi(x)+\log [x(x+1)\cdots(x+n)]-\log(n!)- x\log n\leq x\log(n+1)- x\log n=x\log(\frac{n+1}{n})\]</span> Then <span class="math display">\[0\leq\varphi(x)+\log [x(x+1)\cdots(x+n)]- x\log n-\log(n!)\le x\log(\frac{n+1}{n})\]</span> The last equation tends to <span class="math inline">\(0\)</span> as <span class="math inline">\(n\to \infty\)</span>. Hence <span class="math display">\[\varphi(x)=x\log n-\log(n!)-\log [x(x+1)\cdots(x+n)]=\log\Biggl[\frac{n!n^x}{x(x+1)\cdots(x+n)}\Biggr]\]</span> and <span class="math display">\[f(x)=\Gamma(x)=\lim_{n\to\infty}\frac{n!n^x}{x(x+1)\cdots(x+n)}\]</span> is determined.</p></li>
+<li><p>The <span style="color: red;"><strong>Stirling’s formula</strong></span>: <span class="math display">\[\lim_{x\to\infty}\frac{\Gamma(x+1)}{(\frac{x}{e})^x\sqrt{2\pi x}}=1\]</span>
+<span class="math display">\[\begin{align}
+\Gamma(x+1)&amp;=\int_{0}^{+\infty}t^{x}e^{-t}dt\\
+&amp;=\int_{0}^{+\infty}(x(1+u))^{x}e^{-x(1+u)}d(x(1+u))\\
+&amp;=x^{x+1}e^{-x}\int_{-1}^{+\infty}(1+u)^{x}e^{-xu}du\\
+&amp;=x^{x+1}e^{-x}\int_{-1}^{+\infty}[(1+u)e^{-u}]^xdu,\\
+&amp;\{t=x(1+u), 0&lt;x, -1&lt;u&lt;+\infty\}
+\end{align}\]</span></p></li>
 </ol>
 
     </div>
