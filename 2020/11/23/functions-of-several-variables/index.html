@@ -41,6 +41,8 @@
 
   <ul class="nav-links">
     
+    <li><a href="../../../../about/">about</a></li>
+    
     <li><a href="../../../../vitae/">CV</a></li>
     
     <li><a href="https://github.com/danli349">GitHub</a></li>
@@ -57,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Functions of several variables</h1>
@@ -87,7 +89,7 @@
 (D_1f_m)(\mathbf x)&amp;\cdots&amp;(D_nf_m)(\mathbf x)\\
 \end{bmatrix}\]</span></p></li>
 <li><p>For <span class="math inline">\(f\in L(R^n,R^1)\)</span>, the <span class="math inline">\(f&#39;(\mathbf x)\)</span> is a <span class="math inline">\((1\times n)\)</span> row matrix, which has <span class="math inline">\(D_jf(\mathbf x)\)</span> element in the <span class="math inline">\(j^{th}\)</span> column. We can define the <span style="color: red;"><em>gradient</em></span> of <span class="math inline">\(f\)</span> at <span class="math inline">\(\mathbf x\)</span> by <span class="math display">\[\underset{(n\times 1)}{(\nabla f)(\mathbf x)}=\sum_{j=1}^{n}(D_jf)(\mathbf x)\mathbf e_j\]</span> and if <span class="math inline">\(\mathbf x,\mathbf u\in R^n, |\mathbf u|=1, f\in L(R^n, R^1)\)</span> the limit <span class="math display">\[\lim_{t\to0}\frac{f(\mathbf x+t\mathbf u)-f(\mathbf x)}{t}=(\nabla f)(\mathbf x)\cdot\mathbf u\]</span> is called the <span style="color: red;"><em>directional derivative</em></span> of <span class="math inline">\(f\)</span> at <span class="math inline">\(\mathbf x\)</span>, in the direction of the unit vector <span class="math inline">\(\mathbf u\)</span> and can also be denoted as <span class="math inline">\(D_{\mathbf u}f(\mathbf x)\)</span>.</p></li>
-<li></li>
+<li><p>Suppose <span class="math inline">\(\mathbf f\)</span> maps a convex open set <span class="math inline">\(E\subset R^n\)</span> into <span class="math inline">\(R^m\)</span>, <span class="math inline">\(\mathbf f\)</span> is differentiable in <span class="math inline">\(E\)</span> and there is a real number <span class="math inline">\(M\)</span> such that <span class="math display">\[\lVert\mathbf f&#39;(\mathbf x)\rVert\leq M\]</span> for every <span class="math inline">\(\mathbf x\in E\)</span> Then <span class="math display">\[\lvert\mathbf f(\mathbf b)-\mathbf f(\mathbf a)\rvert\leq M\lvert\mathbf b-\mathbf a\rvert\]</span> for all <span class="math inline">\(\mathbf a,\mathbf b\in E\)</span>. Fix <span class="math inline">\(\mathbf a,\mathbf b\in E\)</span>, define <span class="math display">\[\gamma(t)=(1-t)\mathbf a+t\mathbf b\]</span> since <span class="math inline">\(E\)</span> is convex, <span class="math inline">\(\gamma(t)\in E\)</span> if <span class="math inline">\(t\in[0,1]\)</span>. Let <span class="math inline">\(\mathbf g(t)=\mathbf f(\gamma(t))\)</span> Then <span class="math display">\[\mathbf g&#39;(t)=\mathbf f&#39;(\gamma(t))\gamma&#39;(t)=\mathbf f&#39;(\gamma(t))(\mathbf b-\mathbf a)\]</span> so that <span class="math display">\[\lvert\mathbf g&#39;(t)\rvert\leq \lVert\mathbf f&#39;(\gamma(t))\rVert\lvert\mathbf b-\mathbf a\rvert\leq M\lvert\mathbf b-\mathbf a\rvert\]</span> for all <span class="math inline">\(t\in[0,1]\)</span>. Because there are some <span class="math inline">\(\lvert\mathbf g&#39;(t)\rvert\)</span> will large than the slope <span class="math inline">\(\frac{\lvert\mathbf g(1)-\mathbf g(0)\rvert}{1-0}\)</span>, so <span class="math display">\[\lvert\mathbf g(1)-\mathbf g(0)\rvert=\lvert\mathbf f(\mathbf b)-\mathbf f(\mathbf a)\rvert\leq M\lvert\mathbf b-\mathbf a\rvert\]</span></p></li>
 </ol>
 
     </div>
