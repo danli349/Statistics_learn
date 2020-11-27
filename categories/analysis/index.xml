@@ -6,7 +6,16 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Differential Forms</title>
+      <link>/2020/11/27/differential-forms/</link>
+      <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/27/differential-forms/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Functions of several variables</title>
       <link>/2020/11/23/functions-of-several-variables/</link>
