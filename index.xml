@@ -13,7 +13,7 @@
       <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/11/27/differential-forms/</guid>
-      <description></description>
+      <description>Suppose \(I^k\) is a k-cell in \(R^k\) consisting of all \[\mathbf x=(x_1,\cdots,x_k)\] such that \(a_i\leq x_i\leq b_i\quad(i=1,\cdots,k)\) and \(f\) is a real continuous function on \(I^k\). Put \(f=f_k\) and define \[f_{k-1}(x_1,\cdots,x_{k-1})=\int_{a_k}^{b_k}f_{k}(x_1,\cdots,x_{k-1},x_k)dx_k\] We repeat this process \(k\) steps and obtain a function, which is defined \[L(f)=\int_{I^k}f(\mathbf x)d\mathbf x\] or \[\int_{I^k}f\] If \(L&amp;#39;(f)\) is the result obtained by carrying out the \(K\) integration in some other order, then for every \(f\in\mathscr C(I^k), L(f)=L&amp;#39;(f)\).</description>
     </item>
     
     <item>
