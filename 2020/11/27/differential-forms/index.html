@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">Differential Forms</h1>
@@ -96,7 +96,19 @@
 \sin\theta\cos\phi&amp;r\cos\theta\cos\phi&amp;-r\sin\theta\sin\phi\\
 \sin\theta\sin\phi&amp;r\cos\theta\sin\phi&amp;r\sin\theta\cos\phi\\
 \cos\theta&amp;-r\sin\theta&amp;0\\
-\end{vmatrix}=r^2\sin\theta\]</span> Hence <span class="math display">\[\int_{\Phi}1\cdot dx\land dy\land dz=\int_{D}J_{\Phi}=\int_{0}^{1}\int_{0}^{\pi}\int_{0}^{2\pi}r^2\sin\theta  d\phi d\theta dr=2\pi\int_{0}^{1}\int_{0}^{\pi}r^2\sin\theta d\theta dr=\frac{4\pi}{3}\]</span> which is the volume of the sphere of radius <span class="math inline">\(1\)</span>.</p></li>
+\end{vmatrix}=r^2\sin\theta\]</span> Hence <span class="math display">\[\int_{\Phi}1\cdot dx\land dy\land dz=\int_{D}J_{\Phi}d\phi d\theta dr=\int_{0}^{1}\int_{0}^{\pi}\int_{0}^{2\pi}r^2\sin\theta  d\phi d\theta dr=2\pi\int_{0}^{1}\int_{0}^{\pi}r^2\sin\theta d\theta dr=\frac{4\pi}{3}\]</span> which is the volume of the sphere of radius <span class="math inline">\(1\)</span>.</p></li>
+<li><p>If <span class="math inline">\(i_1,\cdots,i_k\)</span> are integers such that <span class="math inline">\(1\leq i_1&lt;i_2&lt;\cdots&lt;i_k\leq n\)</span> and if <span class="math inline">\(I\)</span> is the ordered <span style="color: red;"><em>k-tuple</em></span> <span class="math inline">\(\{i_1,\cdots,i_k\}\)</span>, then we call <span class="math inline">\(I\)</span> an <span style="color: red;"><em>increasing k-index</em></span> and we use the notation <span class="math display">\[dx_I=dx_{i_1}\land\cdots\land dx_{i_k}\]</span> This forms <span class="math inline">\(dx_I\)</span> are so-called <span style="color: red;"><em>basic k-forms</em></span> in <span class="math inline">\(R^n\)</span>. There are precisely <span class="math display">\[{n \choose k}=\frac{n!}{k!(n-k)!}\]</span> basic k-forms in <span class="math inline">\(R^n\)</span>. Because each interchange of one pair in a k-form amounts to a multiplication by <span class="math inline">\(-1\)</span>, every k-form can be represented in terms of basic k-forms. If <span class="math inline">\((j_1,\cdots,j_n)\)</span> is an ordered n-tuple of integers, define the <span style="color: red;"><em>sequence of the n-tuple</em></span> <span class="math display">\[s(j_1,\cdots,j_n)=\prod_{p&lt;q}sgn(j_q-j_p)\]</span> where <span class="math inline">\(\text{sgn }x=1\)</span> if <span class="math inline">\(x&gt;0\)</span>,<span class="math inline">\(\text{sgn }x=-1\)</span> if <span class="math inline">\(x&lt;0\)</span>,<span class="math inline">\(\text{sgn }x=0\)</span> if <span class="math inline">\(x=0\)</span>. If every k-tuple in the k-form <span class="math display">\[\omega=\sum a_{i_1\cdots i_k}(\mathbf x)dx_{i_1}\land\cdots\land dx_{i_k}\]</span> is converted to an increasing k-index (multiplied by the sign of the sequence of the n-tuple), then we obtain the <span style="color: red;"><em>standard presentation</em></span> of the k-form <span class="math display">\[\omega=\sum_{I}b_I(\mathbf x)dx_I\]</span></p></li>
+<li><p>If a standard presentation k-form in an open set <span class="math inline">\(E\subset R^n\)</span> <span class="math display">\[\omega=\sum_{I}b_I(\mathbf x)dx_I=0\]</span> then <span class="math inline">\(b_I(\mathbf x)=0\)</span> for every increasing k-index <span class="math inline">\(I\)</span> and for every <span class="math inline">\(\mathbf x\in E\)</span>. Assume that <span class="math inline">\(b_J(\mathbf v)&gt;0\)</span> for some <span class="math inline">\(\mathbf v\in E\)</span> and for some increasing k-index <span class="math inline">\(J=\{j_1,\cdots,j_k\}\)</span>, since <span class="math inline">\(b_J\)</span> is continuous, there exists <span class="math inline">\(h&gt;0\)</span> such that <span class="math inline">\(b_J(\mathbf x)&gt;0\)</span> for all <span class="math inline">\(\mathbf x\in R^n\)</span> whose coordinates satisfy <span class="math inline">\(|x_i-v_i|\leq h\)</span>. Let <span class="math inline">\(D\)</span> be the k-cell in <span class="math inline">\(R^k\)</span> such that <span class="math inline">\(\mathbf u\in D\)</span> if and only if <span class="math inline">\(|u_r|\leq h\)</span> for <span class="math inline">\(r=1,\cdots,k\)</span>. Define <span class="math display">\[\Phi(\mathbf u)=\mathbf v+\sum_{r=1}^{k}u_r\mathbf e_{j_r}\quad(\mathbf u\in D)\]</span> and <span class="math display">\[\frac{\partial(x_{j_1},\cdots,x_{j_k})}{\partial(u_1,\cdots,u_k)}=\begin{vmatrix}
+\frac{\partial(x_{j_1})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(x_{j_1})}{\partial(u_k)}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial(x_{j_k})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(x_{j_k})}{\partial(u_k)}\\
+\end{vmatrix}=\begin{vmatrix}
+1&amp;\cdots&amp;0\\
+\vdots&amp;\ddots&amp;\vdots\\
+0&amp;\cdots&amp;1\\
+\end{vmatrix}=1\]</span> Thus <span class="math inline">\(\Phi\)</span> is a k-surface in <span class="math inline">\(E\)</span>, with parameter domain <span class="math inline">\(D\)</span>, and <span class="math inline">\(b_J(\Phi(\mathbf u))&gt;0\)</span> for every <span class="math inline">\(\mathbf u\in D\)</span> The k-surface <span class="math display">\[\omega(\Phi)=\int_{\Phi}\omega=\int_D\sum a_{i_1\cdots i_k}(\Phi(\mathbf u))\frac{\partial(x_{i_1},\cdots,x_{i_k})}{\partial(u_1,\cdots,u_k)}d\mathbf u\\
+=\int_D\sum a_{i_1\cdots i_k}(\Phi(\mathbf u))\cdot 1\cdot d\mathbf u=\int_{D}b_J(\Phi(\mathbf u))d\mathbf u&gt;0\]</span> since <span class="math inline">\(b_J(\Phi(\mathbf u))&gt;0\)</span>. It follows that <span class="math inline">\(\omega(\Phi)\ne 0\)</span>, which gives a contradiction.</p></li>
+<li></li>
 </ol>
 
     </div>
