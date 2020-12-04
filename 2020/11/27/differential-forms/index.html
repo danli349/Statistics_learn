@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">9 min read</span>
+    <span class="article-duration">11 min read</span>
     
 
     <h1 class="article-title">Differential Forms</h1>
@@ -121,7 +121,7 @@ d^2f&amp;=d\Biggl(\sum_{j=1}^{n}(D_jf)(\mathbf x)dx_j\Biggr)\\
 &amp;=\sum_{j=1}^{n}d(D_jf)(\mathbf x)dx_j\\
 &amp;=\sum_{i=1,j=1}^{n}(D_{ij}f)(\mathbf x)dx_i\land dx_j\\
 \end{align}\]</span> Since <span class="math inline">\(D_{ij}f=D_{ji}f\)</span> and <span class="math inline">\(dx_i\land dx_j=-dx_j\land dx_i\)</span> so <span class="math display">\[d^2\omega=(d^2f)\land dx_I=0\]</span></p></li>
-<li><p><strong>change of variables of differential forms</strong> Suppose <span class="math inline">\(E\)</span> is an open set <span class="math inline">\(R^n\)</span>, <span class="math inline">\(T\)</span> is a <span class="math inline">\(\mathscr C&#39;\)</span>-mapping of <span class="math inline">\(E\)</span> into an open set <span class="math inline">\(V\in R^m\)</span> and <span class="math inline">\(\omega\)</span> is k-form in <span class="math inline">\(V\)</span>, whose standard presentation is <span class="math display">\[\omega=\sum_{I}b_I(\mathbf y)dy_I\quad(\mathbf y\in V, \mathbf x\in E)\]</span> Let <span class="math inline">\((t_1,\cdots,t_m)\)</span> be the components of <span class="math inline">\(T\)</span>: If <span class="math display">\[\mathbf y=(y_1,\cdots,y_m)=T(\mathbf x)\]</span> Then <span class="math inline">\(y_i=t_i(\mathbf x)\)</span> <span class="math display">\[\underset{T:(m\times n)}{\begin{bmatrix}
+<li><p><strong>change of variables of differential forms</strong> Suppose <span class="math inline">\(E\)</span> is an open set <span class="math inline">\(R^n\)</span>, <span class="math inline">\(T\)</span> is a <span class="math inline">\(\mathscr C&#39;\)</span>-mapping of <span class="math inline">\(E\)</span> into an open set <span class="math inline">\(V\subset R^m\)</span> and <span class="math inline">\(\omega\)</span> is k-form in <span class="math inline">\(V\)</span>, whose standard presentation is <span class="math display">\[\omega=\sum_{I}b_I(\mathbf y)dy_I\quad(\mathbf y\in V, \mathbf x\in E)\]</span> Let <span class="math inline">\((t_1,\cdots,t_m)\)</span> be the components of <span class="math inline">\(T\)</span>: If <span class="math display">\[\mathbf y=(y_1,\cdots,y_m)=T(\mathbf x)\]</span> Then <span class="math inline">\(y_i=t_i(\mathbf x)\)</span> <span class="math display">\[\underset{T:(m\times n)}{\begin{bmatrix}
 t_1\\
 t_2\\
 \vdots\\
@@ -170,13 +170,71 @@ x_2\\
 x_n\\
 \end{bmatrix}}\]</span>
 It means that <span class="math display">\[\begin{align}
-d(f_T)&amp;=\sum_j^{n}(D_jf_T(\mathbf x))dx_j\\
-&amp;=\sum_j^n\sum_i^m(D_if(T(\mathbf x)))(D_jt_i(\mathbf x))dx_j\\
-&amp;=\sum_i^m(D_if(T(\mathbf x)))dt_i\\
+d(f_T)&amp;=\sum_{j=1}^{n}(D_jf_T(\mathbf x))dx_j\\
+&amp;=\sum_{j=1}^n\sum_{i=1}^m(D_if(T(\mathbf x)))(D_jt_i(\mathbf x))dx_j\\
+&amp;=\sum_{i=1}^m(D_if(T(\mathbf x)))dt_i\\
 &amp;=(df)_T\\
 \end{align}\]</span> If <span class="math inline">\(\omega=fdy_I\)</span> then <span class="math display">\[\omega_T=f_T(\mathbf x)(dy_I)_T\]</span> and <span class="math display">\[\begin{align}
 d(\omega_T)&amp;=d\Biggl(f_T(\mathbf x)(dy_I)_T\Biggr)\\
-&amp;=d(f_T)(dy_I)_T
+&amp;=d(f_T)\land(dy_I)_T+f_T\land d((dy_I)_T)\\
+&amp;=d(f_T)\land(dy_I)_T+f_T\land d(dt_I)\\
+&amp;=d(f_T)\land(dy_I)_T+f_T\land0\\
+&amp;=d(f_T)\land(dy_I)_T\\
+&amp;=(df)_T\land(dy_I)_T\\
+&amp;=\Bigl((df)\land(dy_I)\Bigr)_T\\
+&amp;=\Bigl(d\omega\Bigr)_T\quad(\omega=fdy_I)\\
+\end{align}\]</span></p></li>
+<li><p>Suppose <span class="math inline">\(T\)</span> is a <span class="math inline">\(\mathscr C&#39;\)</span>-mapping of an open set <span class="math inline">\(E\subset R^n\)</span> into an open set <span class="math inline">\(V\subset R^m\)</span>, <span class="math inline">\(S\)</span> is a <span class="math inline">\(\mathscr C&#39;\)</span>-mapping of <span class="math inline">\(V\)</span> into an open set <span class="math inline">\(W\subset R^p\)</span>, and <span class="math inline">\(\omega\)</span> is k-form in <span class="math inline">\(W\)</span>, so that <span class="math inline">\(\omega_S\)</span> is a k-form in <span class="math inline">\(V\)</span> and both <span class="math inline">\((\omega_S)_T\)</span> and <span class="math inline">\(\omega_{ST}\)</span> are k-forms in <span class="math inline">\(E\)</span> where <span class="math inline">\((ST)(\mathbf x)=S(T(\mathbf x))\)</span>. If both <span class="math inline">\(\omega\)</span> and <span class="math inline">\(\lambda\)</span> are forms in <span class="math inline">\(W\)</span>, then <span class="math display">\[((\omega\land\lambda)_S)_T=(\omega_S\land\lambda_S)_T=(\omega_S)_T\land(\lambda_S)_T\]</span> and <span class="math display">\[(\omega\land\lambda)_{ST}=\omega_{ST}\land\lambda_{ST}\]</span> Let <span class="math inline">\((t_1,\cdots,t_m)\)</span> be the components of <span class="math inline">\(T\)</span>, let <span class="math inline">\((s_1,\cdots,s_p)\)</span> be the components of <span class="math inline">\(S\)</span>, let <span class="math inline">\((r_1,\cdots,r_p)\)</span> be the components of <span class="math inline">\(ST\)</span> and denote the points of <span class="math inline">\(E,V,W\)</span> by <span class="math inline">\(\mathbf x, \mathbf y, \mathbf z\)</span> respectively. If <span class="math inline">\(\omega\)</span> is <span class="math inline">\(0\)</span>-form <span class="math display">\[\omega=dz_q,\quad(q=1,\cdots,p)\]</span> then <span class="math display">\[\omega_S=ds_q=\sum_{j}^{}(D_js_q(\mathbf y))dy_j\]</span> <span class="math display">\[\begin{align}
+(\omega_S)_T&amp;=(\sum_{j}^{}(D_js_q(\mathbf y))dy_j)_T\\
+&amp;=\sum_{j}^{}(D_js_q(T(\mathbf x)))dt_j\\
+&amp;=\sum_{j}^{}(D_js_q(T(\mathbf x)))\sum_{i}(D_it_j(\mathbf x))dx_i\\
+&amp;=\sum_{i}(D_ir_q(\mathbf x))dx_i\\
+&amp;=dr_q\\
+&amp;=\omega_{ST}
+\end{align}\]</span></p></li>
+<li><p>Suppose <span class="math inline">\(\omega\)</span> is a k-form in an open set <span class="math inline">\(E\subset R^n\)</span>, <span class="math inline">\(\Phi\)</span> is a k-surface in <span class="math inline">\(E\)</span>, with parameter domain <span class="math inline">\(D\subset R^k\)</span>, and <span class="math inline">\(\Delta\)</span> is the k-surface in <span class="math inline">\(R^k\)</span>, with parameter domain <span class="math inline">\(D\)</span>, defined by <span class="math inline">\(\Delta(\mathbf u)=\mathbf u\quad(\mathbf u\in D)\)</span>. If <span class="math display">\[\omega=a(\mathbf x)dx_{i_1}\land\cdots\land dx_{i_k}\]</span> then <span class="math display">\[\omega_{\Phi}=a(\Phi(\mathbf u))d\phi_{i_1}\land\cdots\land d\phi_{i_k}\]</span> where <span class="math inline">\((\phi_1,\cdots,\phi_n)\)</span> are components of <span class="math inline">\(\Phi\)</span>.
+<span class="math display">\[d\begin{bmatrix}
+\phi_{i_1}\\
+\vdots\\
+\phi_{i_p}\\
+\vdots\\
+\phi_{i_k}\\
+\end{bmatrix}\mathbf u=\underset{(k\times k)(p=1,\cdots,k)}{\underbrace{\begin{bmatrix}
+\frac{\partial(\phi_{i_1})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_1})}{\partial(u_k)}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial(\phi_{i_p})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_p})}{\partial(u_k)}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial(\phi_{i_k})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_k})}{\partial(u_k)}\\
+\end{bmatrix}}}\underset{(q=1,\cdots,k)}{\begin{bmatrix}
+du_1\\
+\vdots\\
+du_q\\
+\vdots\\
+du_k\\
+\end{bmatrix}}\]</span> Then <span class="math display">\[d\phi_{i_p}=\sum_{q=1}^{k}\frac{\partial(\phi_{i_p})}{\partial(u_q)}du_q\]</span> so that <span class="math display">\[\begin{align}
+d\phi_{i_1}\land\cdots\land d\phi_{i_k}&amp;=\Biggl(\sum_{q=1}^{k}\frac{\partial(\phi_{i_1})}{\partial(u_q)}du_q\Biggr)\land\cdots\land\Biggl(\sum_{q=1}^{k}\frac{\partial(\phi_{i_k})}{\partial(u_q)}du_q\Biggr)\\
+&amp;=\sum\frac{\partial(\phi_{i_1})}{\partial(u_{q_1})}\frac{\partial(\phi_{i_2})}{\partial(u_{q_2})}\cdots\frac{\partial(\phi_{i_k})}{\partial(u_{q_k})}du_{q_1}du_{q_2}\land\cdots\land du_{q_k}\\
+&amp;\Biggl[(q_1,\cdots,q_k)\text{ range independently over }(1,\cdots,k)\Biggr]\\
+&amp;=\sum\frac{\partial(\phi_{i_1})}{\partial(u_{q_1})}\frac{\partial(\phi_{i_2})}{\partial(u_{q_2})}\cdots\frac{\partial(\phi_{i_k})}{\partial(u_{q_k})}s(q_1,\cdots,q_k)du_{1}du_{2}\land\cdots\land du_{k}\\
+&amp;=det\begin{bmatrix}
+\frac{\partial(\phi_{i_1})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_1})}{\partial(u_k)}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial(\phi_{i_p})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_p})}{\partial(u_k)}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial(\phi_{i_k})}{\partial(u_1)}&amp;\cdots&amp;\frac{\partial(\phi_{i_k})}{\partial(u_k)}\\
+\end{bmatrix}du_{1}du_{2}\land\cdots\land du_{k}\\
+&amp;=\frac{\partial(x_{i_1},\cdots,x_{i_k})}{\partial(u_1,\cdots,u_k)}du_{1}du_{2}\land\cdots\land du_{k}\\
+&amp;=J(\mathbf u)du_{1}du_{2}\land\cdots\land du_{k}\\
+\end{align}\]</span> then <span class="math display">\[\omega_{\Phi}=a(\Phi(\mathbf u))d\phi_{i_1}\land\cdots\land d\phi_{i_k}=a(\Phi(\mathbf u))J(\mathbf u)du_{1}du_{2}\land\cdots\land du_{k}\]</span> Then <span class="math display">\[\begin{align}
+\int_{\Phi}\omega&amp;=\int_{\Phi}a(\mathbf x)d\mathbf x\\
+&amp;=\int_{D}a(\Phi(\mathbf u))J(\mathbf u)d\mathbf u\\
+&amp;=\int_{\Delta}a(\Phi(\mathbf u))J(\mathbf u)du_{1}\land\cdots\land du_{k}\\
+&amp;=\int_{\Delta}\omega_{\Phi}
+\end{align}\]</span></p></li>
+<li><p>Suppose <span class="math inline">\(T\)</span> is a <span class="math inline">\(\mathscr C&#39;\)</span>-mapping of an open set <span class="math inline">\(E\subset R^n\)</span> into an open set <span class="math inline">\(V\subset R^m\)</span>, <span class="math inline">\(\Phi\)</span> is a k-surface in <span class="math inline">\(E\)</span> and <span class="math inline">\(\omega\)</span> is a k-form in <span class="math inline">\(V\)</span>, let <span class="math inline">\(D\)</span> be the parameter domain of <span class="math inline">\(\Phi\)</span> and <span class="math inline">\(\Delta\)</span> is the k-surface in <span class="math inline">\(R^k\)</span>, with parameter domain <span class="math inline">\(D\)</span>, defined by <span class="math inline">\(\Delta(\mathbf u)=\mathbf u\quad(\mathbf u\in D)\)</span>. <span class="math display">\[\underset{\Phi}{E}(\subset R^n)\xrightarrow{T(\in \mathscr C&#39;)}\underset{\omega}{V}(\subset R^m)\]</span> Then <span class="math display">\[\begin{align}
+\int_{T\Phi}\omega&amp;=\int_{\Delta}\omega_{T\Phi}\\
+&amp;=\int_{\Delta}(\omega_T)_\Phi\\
+&amp;=\int_{\Phi}\omega_T\\
 \end{align}\]</span></p></li>
 </ol>
 
