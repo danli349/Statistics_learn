@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Affine simplexes and chains - A Hugo website</title>
+<meta property="og:title" content="Affine simplexes and chains - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Affine simplexes and chains</h1>
+
+    
+    <span class="article-date">2020-12-04</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li><p>A mapping <span class="math inline">\(\mathbf f\)</span> that carries a vector space <span class="math inline">\(X\)</span> into a vector space <span class="math inline">\(Y\)</span> is said to be <span style="color: red;"><em>affine</em></span> if <span class="math display">\[\mathbf f(\mathbf x)-\mathbf f(\mathbf 0)\]</span> is linear, or in other words <span class="math display">\[\mathbf f(\mathbf x)-\mathbf f(\mathbf 0)=A\mathbf x\quad A\in L(X,Y)\]</span> The <span style="color: red;"><em>standard simplex</em></span> <span class="math inline">\(Q^k\)</span> is defined to be the set of all <span class="math inline">\(\mathbf u\in R^k\)</span> of the form <span class="math display">\[\mathbf u=\sum_{i=1}^{k}a_i\mathbf e_i\]</span> where <span class="math inline">\(0\leq a_i, \sum a_i\leq 1, i=1,\cdots,k\)</span>. Assume that <span class="math inline">\(\mathbf p_0,\mathbf p_1,\cdots,\mathbf p_k\)</span> are points of <span class="math inline">\(R^n\)</span>, the <span style="color: red;"><em>oriented affine k-simplex</em></span> <span class="math display">\[\sigma=[\mathbf p_0,\mathbf p_1,\cdots,\mathbf p_k]\]</span> is defined to be the <strong>k-surface</strong> in <span class="math inline">\(R^n\)</span> with parameter domain <span class="math inline">\(Q^k\)</span> which is given by the affine mapping <span class="math display">\[\sigma(\mathbf u)=\sigma(a_1\mathbf e_1+\cdots+a_k\mathbf e_k)=\mathbf p_0+\sum_{i=1}^{k}a_i(\mathbf p_i-\mathbf p_0)\\
+=\mathbf p_0+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf p_1-\mathbf p_0\\
+\mathbf p_2-\mathbf p_0\\
+\vdots\\
+\mathbf p_k-\mathbf p_0\\
+\end{bmatrix}\\
+=\mathbf p_0+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+A\mathbf e_1\\
+A\mathbf e_2\\
+\vdots\\
+A\mathbf e_k\\
+\end{bmatrix}\]</span> <span class="math display">\[\sigma(\mathbf 0)=\mathbf p_0, \quad \sigma(\mathbf e_i)=\mathbf p_i\quad (\text{for }1\leq i\leq k)\]</span> and that <span class="math display">\[\sigma(\mathbf u)=\mathbf p_0+A\mathbf u\quad(\mathbf u\in Q^k)\]</span> where <span class="math inline">\(A\in L(R^k, R^n)\)</span> and <span class="math display">\[A\mathbf e_i=\mathbf p_i-\mathbf p_0\quad(1\leq i\leq k)\]</span> If <span class="math display">\[\overline\sigma=[\mathbf p_{i_0},\mathbf p_{i_1},\cdots,\mathbf p_{{i_k}}]\]</span> where <span class="math inline">\(\{i_0,i_1,\cdots,i_k\}\)</span> is a permutation of the ordered set <span class="math inline">\(\{0,1,\cdots,k\}\)</span>, we adopt the notation <span class="math display">\[\overline\sigma=s(i_0,i_1,\cdots,i_k)\sigma\]</span> thus <span class="math display">\[\overline\sigma=\pm\sigma\]</span> Do NOT write <span class="math inline">\(\overline\sigma=\sigma\)</span> unless they have the same sequence of vertices <span class="math inline">\(i_0=0, \cdots, i_k=k\)</span>.</p></li>
+<li><p>We write <span class="math display">\[\overline\sigma=\varepsilon\sigma\]</span> if <span class="math inline">\(\varepsilon=1\)</span> we say the two k-simplexes have <span style="color: red;"><em>same orientation</em></span>, if <span class="math inline">\(\varepsilon=-1\)</span>, we say the two k-simplexes have <span style="color: red;"><em>opposite orientations</em></span>. <span class="math display">\[\sigma(\mathbf u)=\sigma(\sum_{i=1}^{k}a_i\mathbf e_i)=\mathbf p_0+\sum_{i=1}^{k}a_i(\mathbf p_i-\mathbf p_0)=\mathbf p_0+A\sum_{i=1}^{k}a_i\mathbf e_i=\mathbf p_0+A\mathbf u\]</span> If <span class="math inline">\(A\)</span> is nonsingular and invertible, <span class="math inline">\(\sigma\)</span> is said to be <span style="color: red;"><em>positively oriented</em></span> if <span class="math inline">\(detA=Jacobian(\sigma)&gt;0\)</span>. If <span class="math inline">\(\sigma=\varepsilon\mathbf p_0\quad(\varepsilon=\pm1)\)</span> and if <span class="math inline">\(f\)</span> is a <span class="math inline">\(0\)</span>-form, we define <span class="math display">\[\int_{\sigma}f=\varepsilon f(p_0)\]</span></p></li>
+</ol>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

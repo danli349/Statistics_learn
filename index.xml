@@ -6,7 +6,16 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Affine simplexes and chains</title>
+      <link>/2020/12/04/affine-simplexes-and-chains/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/04/affine-simplexes-and-chains/</guid>
+      <description>A mapping \(\mathbf f\) that carries a vector space \(X\) into a vector space \(Y\) is said to be affine if \[\mathbf f(\mathbf x)-\mathbf f(\mathbf 0)\] is linear, or in other words \[\mathbf f(\mathbf x)-\mathbf f(\mathbf 0)=A\mathbf x\quad A\in L(X,Y)\] The standard simplex \(Q^k\) is defined to be the set of all \(\mathbf u\in R^k\) of the form \[\mathbf u=\sum_{i=1}^{k}a_i\mathbf e_i\] where \(0\leq a_i, \sum a_i\leq 1, i=1,\cdots,k\).</description>
+    </item>
+    
     <item>
       <title>Differential Forms</title>
       <link>/2020/11/27/differential-forms/</link>
