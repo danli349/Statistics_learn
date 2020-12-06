@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Affine simplexes and chains</h1>
@@ -93,7 +93,90 @@ A\mathbf e_2\\
 \vdots\\
 A\mathbf e_k\\
 \end{bmatrix}\]</span> <span class="math display">\[\sigma(\mathbf 0)=\mathbf p_0, \quad \sigma(\mathbf e_i)=\mathbf p_i\quad (\text{for }1\leq i\leq k)\]</span> and that <span class="math display">\[\sigma(\mathbf u)=\mathbf p_0+A\mathbf u\quad(\mathbf u\in Q^k)\]</span> where <span class="math inline">\(A\in L(R^k, R^n)\)</span> and <span class="math display">\[A\mathbf e_i=\mathbf p_i-\mathbf p_0\quad(1\leq i\leq k)\]</span> If <span class="math display">\[\overline\sigma=[\mathbf p_{i_0},\mathbf p_{i_1},\cdots,\mathbf p_{{i_k}}]\]</span> where <span class="math inline">\(\{i_0,i_1,\cdots,i_k\}\)</span> is a permutation of the ordered set <span class="math inline">\(\{0,1,\cdots,k\}\)</span>, we adopt the notation <span class="math display">\[\overline\sigma=s(i_0,i_1,\cdots,i_k)\sigma\]</span> thus <span class="math display">\[\overline\sigma=\pm\sigma\]</span> Do NOT write <span class="math inline">\(\overline\sigma=\sigma\)</span> unless they have the same sequence of vertices <span class="math inline">\(i_0=0, \cdots, i_k=k\)</span>.</p></li>
-<li><p>We write <span class="math display">\[\overline\sigma=\varepsilon\sigma\]</span> if <span class="math inline">\(\varepsilon=1\)</span> we say the two k-simplexes have <span style="color: red;"><em>same orientation</em></span>, if <span class="math inline">\(\varepsilon=-1\)</span>, we say the two k-simplexes have <span style="color: red;"><em>opposite orientations</em></span>. <span class="math display">\[\sigma(\mathbf u)=\sigma(\sum_{i=1}^{k}a_i\mathbf e_i)=\mathbf p_0+\sum_{i=1}^{k}a_i(\mathbf p_i-\mathbf p_0)=\mathbf p_0+A\sum_{i=1}^{k}a_i\mathbf e_i=\mathbf p_0+A\mathbf u\]</span> If <span class="math inline">\(A\)</span> is nonsingular and invertible, <span class="math inline">\(\sigma\)</span> is said to be <span style="color: red;"><em>positively oriented</em></span> if <span class="math inline">\(detA=Jacobian(\sigma)&gt;0\)</span>. If <span class="math inline">\(\sigma=\varepsilon\mathbf p_0\quad(\varepsilon=\pm1)\)</span> and if <span class="math inline">\(f\)</span> is a <span class="math inline">\(0\)</span>-form, we define <span class="math display">\[\int_{\sigma}f=\varepsilon f(p_0)\]</span></p></li>
+<li><p>We write <span class="math display">\[\overline\sigma=\varepsilon\sigma\]</span> if <span class="math inline">\(\varepsilon=1\)</span> we say the two k-simplexes have <span style="color: red;"><em>same orientation</em></span>, if <span class="math inline">\(\varepsilon=-1\)</span>, we say the two k-simplexes have <span style="color: red;"><em>opposite orientations</em></span>. <span class="math display">\[\sigma(\mathbf u)=\sigma(\sum_{i=1}^{k}a_i\mathbf e_i)=\mathbf p_0+\sum_{i=1}^{k}a_i(\mathbf p_i-\mathbf p_0)=\mathbf p_0+A\sum_{i=1}^{k}a_i\mathbf e_i=\mathbf p_0+A\mathbf u\]</span> If <span class="math inline">\(A\)</span> is nonsingular and invertible, <span class="math inline">\(\sigma\)</span> is said to be <span style="color: red;"><em>positively oriented</em></span> if <span class="math inline">\(detA=Jacobian(\sigma)&gt;0\)</span>. If <span class="math inline">\(\sigma=\varepsilon\mathbf p_0\quad(\varepsilon=\pm1)\)</span> and if <span class="math inline">\(f\)</span> is a <span class="math inline">\(0\)</span>-form (i.e., a real function), we define <span class="math display">\[\int_{\sigma}f=\varepsilon f(p_0)\]</span></p></li>
+<li><p>If <span class="math inline">\(\sigma\)</span> is a oriented rectilinear k-simplex in an open set <span class="math inline">\(E\subset R^n\)</span> and if <span class="math inline">\(\overline\sigma=\varepsilon\sigma\)</span>, if <span class="math inline">\(f\)</span> is a <span class="math inline">\(0\)</span>-form, then <span class="math display">\[\int_{\sigma}f=\varepsilon f(p_0)\]</span> by definition. If <span class="math inline">\(f\)</span> is a k-form <span class="math inline">\(k\ge1\)</span>, <span class="math inline">\(\sigma\)</span> is oriented k-simplex <span class="math display">\[\sigma=[\mathbf p_0,\mathbf p_1,\cdots,\mathbf p_k]\]</span> Suppose <span class="math inline">\(1\leq j\leq k\)</span> and <span class="math inline">\(\overline\sigma\)</span> is obtained from <span class="math inline">\(\sigma\)</span> by interchanging <span class="math inline">\(\mathbf p_0\)</span> and <span class="math inline">\(\mathbf p_j\)</span>, then <span class="math inline">\(\varepsilon=-1\)</span> and <span class="math display">\[\begin{align}
+\overline\sigma(\mathbf u)&amp;=\mathbf p_j+B\mathbf u\quad(\mathbf u\in Q^k)\\
+&amp;=\mathbf p_j+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf p_1-\mathbf p_j\\
+\vdots\\
+\mathbf p_{j-1}-\mathbf p_j\\
+\mathbf p_{0}-\mathbf p_j\\
+\mathbf p_{j+1}-\mathbf p_j\\
+\vdots\\
+\mathbf p_k-\mathbf p_j\\
+\end{bmatrix}\\
+&amp;=\mathbf p_j+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+B\mathbf e_1\\
+\vdots\\
+B\mathbf e_{j-1}\\
+B\mathbf e_{j}\\
+B\mathbf e_{j+1}\\
+\vdots\\
+B\mathbf e_k\\
+\end{bmatrix}
+\end{align}\]</span> where <span class="math inline">\(B\)</span> is the linear mapping of <span class="math inline">\(R^k\)</span> into <span class="math inline">\(R^n\)</span> defined by <span class="math inline">\(B\mathbf e_j=\mathbf p_0-\mathbf p_j\)</span>, <span class="math inline">\(B\mathbf e_i=\mathbf p_i-\mathbf p_j\)</span> if <span class="math inline">\(i\ne j\)</span>. Since <span class="math display">\[\sigma(\mathbf u)=\sigma(a_1\mathbf e_1+\cdots+a_k\mathbf e_k)=\mathbf p_0+\sum_{i=1}^{k}a_i(\mathbf p_i-\mathbf p_0)\\
+=\mathbf p_0+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf p_1-\mathbf p_0\\
+\mathbf p_2-\mathbf p_0\\
+\vdots\\
+\mathbf p_k-\mathbf p_0\\
+\end{bmatrix}\\
+=\mathbf p_0+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+A\mathbf e_1\\
+A\mathbf e_2\\
+\vdots\\
+A\mathbf e_k\\
+\end{bmatrix}\\
+=\mathbf p_0+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf x_1\\
+\mathbf x_2\\
+\vdots\\
+\mathbf x_k\\
+\end{bmatrix}\quad(\text{If we write }A\mathbf e_i=\mathbf x_i\quad(1\leq i\leq k))\]</span> The <span class="math display">\[\begin{align}
+\overline\sigma(\mathbf u)&amp;=\mathbf p_j+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf p_1-\mathbf p_j\\
+\vdots\\
+\mathbf p_{j-1}-\mathbf p_j\\
+\mathbf p_{0}-\mathbf p_j\\
+\mathbf p_{j+1}-\mathbf p_j\\
+\vdots\\
+\mathbf p_k-\mathbf p_j\\
+\end{bmatrix}\\
+&amp;=\mathbf p_j+\begin{bmatrix}
+a_1&amp;a_2&amp;\cdots&amp;a_k\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf x_1-\mathbf x_j\\
+\vdots\\
+\mathbf x_{j-1}-\mathbf x_j\\
+-\mathbf x_j\\
+\mathbf x_{j+1}-\mathbf x_j\\
+\vdots\\
+\mathbf x_k-\mathbf x_j\\
+\end{bmatrix}
+\end{align}\]</span> If we subtract the <span class="math inline">\(jth\)</span> component <span class="math inline">\(-\mathbf x_j\)</span> from each of the others, the Jacobians (determinants) of <span class="math display">\[\frac{\partial(x_{i_1},\cdots,x_{i_k})}{\partial(u_1,\cdots,u_k)}\]</span> remain the same and we will obtain component <span class="math display">\[\begin{bmatrix}
+\mathbf x_1\\
+\vdots\\
+\mathbf x_{j-1}\\
+-\mathbf x_j\\
+\mathbf x_{j+1}\\
+\vdots\\
+\mathbf x_k\\
+\end{bmatrix}\]</span> which differ from those of <span class="math inline">\(A\)</span> only in the sign of the <span class="math inline">\(j{th}\)</span> column. Hence <span class="math display">\[\omega(\overline\sigma)=\int_{\overline\sigma}\omega=\int_D\sum a_{i_1\cdots i_k}(\overline\sigma(\mathbf u))\varepsilon\frac{\partial(x_{i_1},\cdots,x_{i_k})}{\partial(u_1,\cdots,u_k)}d\mathbf u=\varepsilon\int_{\sigma}\omega\]</span> Suppose that <span class="math inline">\(0&lt;i&lt;j\leq k\)</span> and that <span class="math inline">\(\overline\sigma\)</span> is obtained from <span class="math inline">\(\sigma\)</span> by interchanging <span class="math inline">\(\mathbf p_i\)</span> and <span class="math inline">\(\mathbf p_j\)</span>. Then <span class="math display">\[\overline\sigma(\mathbf u)=\mathbf p_0+C\mathbf u\]</span> where <span class="math inline">\(C\)</span> has the same entries as <span class="math inline">\(A\)</span>. except that the <span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th entries have been interchanged. This implies that <span class="math display">\[\omega(\overline\sigma)=\int_{\overline\sigma}\omega=\int_D\sum a_{i_1\cdots i_k}(\overline\sigma(\mathbf u))\varepsilon\frac{\partial(x_{i_1},\cdots,x_{i_k})}{\partial(u_1,\cdots,u_k)}d\mathbf u=\varepsilon\int_{\sigma}\omega\]</span> with <span class="math inline">\(\varepsilon=-1\)</span>.</p></li>
+<li><p>An <span style="color: red;"><em>affine k-chain <span class="math inline">\(\Gamma\)</span></em></span> in an open set <span class="math inline">\(E\subset R^n\)</span> is a collection of finitely many <strong>oriented affine k-simplexes <span class="math inline">\(\sigma_1,\cdots,\sigma_r\)</span></strong> in <span class="math inline">\(E\)</span>. If <span class="math inline">\(\omega\)</span> is a k-form in <span class="math inline">\(E\)</span>, we define <span class="math display">\[\int_{\Gamma}\omega=\sum_{i=1}^{r}\int_{\sigma_i}\omega\]</span> If this equation holds for every k-form <span class="math inline">\(\omega\)</span> in <span class="math inline">\(E\)</span>, we can write <span class="math display">\[\Gamma=\sum_{i=1}^{r}\sigma_i\]</span></p></li>
+<li><p>For <span class="math inline">\(k\ge 1\)</span> the <span style="color: red;"><em>boundary</em></span> of the oriented affine k-simplex <span class="math inline">\(\sigma=[\mathbf p_0,\mathbf p_1,\cdots,\mathbf p_k]\)</span> is defined to be the sum of the affine <span class="math inline">\((k-1)\)</span>-chains with the <span class="math inline">\(j\)</span>th vertice deleted <span class="math display">\[\partial\sigma=\sum_{j=0}^{k}(-1)^j[\mathbf p_0,\cdots,\mathbf p_{j-1},\mathbf p_{j+1},\cdots,\mathbf p_k]\]</span> If <span class="math inline">\(\sigma=[\mathbf p_0,\mathbf p_1,\mathbf p_2]\)</span> then <span class="math display">\[\partial\sigma=[\mathbf p_1,\mathbf p_2]-[\mathbf p_0,\mathbf p_2]+[\mathbf p_0,\mathbf p_1]\]</span> For <span class="math inline">\(1\leq j\leq k\)</span>, the <span class="math inline">\((k-1)\)</span>-simplex <span class="math display">\[\sigma_j=[\mathbf p_0,\cdots,\mathbf p_{j-1},\mathbf p_{j+1},\cdots,\mathbf p_k]\]</span> has <span class="math inline">\(Q^{k-1}\)</span> as its parameter domain and that it is define by <span class="math display">\[\sigma_j(\mathbf u)=\mathbf p_0+B\mathbf u\quad(j=1,2,\cdots,k-1, \mathbf u\in Q^{k-1})\]</span> where <span class="math inline">\(B\)</span> is the linear mapping from <span class="math inline">\(R^{k-1}\)</span> to <span class="math inline">\(R^n\)</span>, its columns are determined by <span class="math display">\[B\mathbf e_i=\mathbf p_i-\mathbf p_0\quad(1\leq i\leq j-1)\]</span> <span class="math display">\[B\mathbf e_i=\mathbf p_{i+1}-\mathbf p_0\quad(j\leq i\leq k-1)\]</span> The simplex <span class="math display">\[\sigma_0=[\mathbf p_1,\mathbf p_2,\cdots,\mathbf p_k]\]</span> is given by mapping <span class="math display">\[\sigma_0(\mathbf u)=\mathbf p_1+B\mathbf u\]</span> where <span class="math inline">\(B\mathbf e_i=\mathbf p_{i+1}-\mathbf p_1\quad(1\leq i\leq k-1)\)</span></p></li>
+<li></li>
 </ol>
 
     </div>
