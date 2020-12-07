@@ -6,7 +6,16 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stokes&#39; theorem</title>
+      <link>/2020/12/07/stokes-theorem/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/07/stokes-theorem/</guid>
+      <description>If \(\Psi\) is a \(k\)-chain of class \(\mathscr C&amp;#39;&amp;#39;\) in an open set \(V\subset R^m\) and if \(\omega\) is a \((k-1)\)-form of class \(\mathscr C&amp;#39;\) in \(V\), then \[\int_{\Psi}d\omega=\int_{\partial\Psi}\omega\]</description>
+    </item>
+    
     <item>
       <title>Affine simplexes and chains</title>
       <link>/2020/12/04/affine-simplexes-and-chains/</link>
