@@ -13,7 +13,8 @@
       <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/12/07/stokes-theorem/</guid>
-      <description>If \(\Psi\) is a \(k\)-chain of class \(\mathscr C&amp;#39;&amp;#39;\) in an open set \(V\subset R^m\) and if \(\omega\) is a \((k-1)\)-form of class \(\mathscr C&amp;#39;\) in \(V\), then \[\int_{\Psi}d\omega=\int_{\partial\Psi}\omega\]</description>
+      <description>If \(\Psi\) is a \(k\)-chain of class \(\mathscr C&amp;#39;&amp;#39;\) in an open set \(V\subset R^m\) and if \(\omega\) is a \((k-1)\)-form of class \(\mathscr C&amp;#39;\) in \(V\), then \[\int_{\Psi}d\omega=\int_{\partial\Psi}\omega\]
+The case \(k=m=1\) is the fundamental theorem of calculus: If \(f\in \mathscr R\) on \([a,b]\) and if there is a differentiable function \(F\) on \([a,b]\) such that \(F&amp;#39;=f\), then \[\int_{a}^{b}f(x)dx=F(b)-F(a)\] Let \(\varepsilon&amp;gt;0\), choose a partition \(P=\{x_0,\cdots,x_n\}\) of \([a,b]\) so that \[U(P,f)-L(P,f)&amp;lt;\varepsilon\] let point \(t_i\in[x_{i-1},x_i]\) such that \[F(x_i)-F(x_{i-1})=f(t_i)\Delta x_i\] for \(i=1,\cdots,n\) Thus \[\sum_{i=1}^{n}f(t_i)\Delta x_i=F(b)-F(a)\] Then \[\Biggl|F(b)-F(a)-\int_{a}^{b}f(x)dx\Biggr|\leq \Biggl|F(b)-F(a)-\sum_{i=1}^{n}f(t_i)\Delta x_i\Biggr|+\Biggl|\sum_{i=1}^{n}f(t_i)\Delta x_i-\int_{a}^{b}f(x)dx\Biggr|&amp;lt;0+\varepsilon=\varepsilon\] Then then \[\int_{a}^{b}f(x)dx=F(b)-F(a)\]</description>
     </item>
     
     <item>
