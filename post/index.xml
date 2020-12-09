@@ -6,7 +6,17 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Closed forms and exact forms</title>
+      <link>/2020/12/08/closed-forms-and-exact-forms/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/08/closed-forms-and-exact-forms/</guid>
+      <description>Let \(\omega\) be a \(k\)-form in an open set \(E\subset R^n\). If there is a \((k-1)\)-form \(\lambda\) in \(E\) such that \(\omega=d\lambda\), then \(\omega\) is said to be exact in \(E\). If \(\omega\) is of class \(\mathscr C&amp;#39;\) and \(d\omega=0\), then \(\omega\) is said to be closed.
+If \(\omega\) is of class \(\mathscr C&amp;#39;&amp;#39;\) in \(E\), then \[d^2\omega=0\] For a \(0\)-form \(f\in\mathscr C&amp;#39;&amp;#39;(E)\) \[\begin{align}d^2f&amp;amp;=d\Biggl(\sum_{j=1}^{n}(D_jf)(\mathbf x)dx_j\Biggr)\\&amp;amp;=\sum_{j=1}^{n}d(D_jf)(\mathbf x)dx_j\\&amp;amp;=\sum_{i=1,j=1}^{n}(D_{ij}f)(\mathbf x)dx_i\land dx_j\\\end{align}\] Since \(D_{ij}f=D_{ji}f\) and \(dx_i\land dx_j=-dx_j\land dx_i\) so \[d^2\omega=(d^2f)\land dx_I=0\] Then every exact form of class \(\mathscr C&amp;#39;\) is closed.</description>
+    </item>
+    
     <item>
       <title>Stokes&#39; theorem</title>
       <link>/2020/12/07/stokes-theorem/</link>
