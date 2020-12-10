@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">7 min read</span>
+    <span class="article-duration">9 min read</span>
     
 
     <h1 class="article-title">Stokes&#39; theorem</h1>
@@ -185,6 +185,86 @@ plt.show()</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li><p><span style="color: red;"><em>Stokes’ Theorem</em></span> relates the circulation of a vector field around the boundary <span class="math inline">\(C\)</span> of an oriented surface <span class="math inline">\(D\)</span> in space to a surface integral over the surface <span class="math inline">\(D\)</span>. <strong>Piecewise smooth</strong> means that it is a finite union of smooth surfaces joining along smooth curves. Let <span class="math inline">\(D\)</span> be a piecewise smooth, oriented surface having a piecewise smooth boundary curve <span class="math inline">\(C\)</span>. Let <span class="math display">\[\mathbf F = M \mathbf i + N\mathbf j + P\mathbf k\]</span> be a vector field whose components have continuous first partial derivatives on an open region containing <span class="math inline">\(D\)</span>. Then the circulation of <span class="math inline">\(\mathbf F\)</span> around <span class="math inline">\(C\)</span> in the direction counterclockwise with respect to the surface’s unit normal vector <span class="math inline">\(\mathbf n\)</span> equals the integral of the curl vector field <span class="math inline">\(\nabla\times\mathbf F\)</span> over <span class="math inline">\(D\)</span>: <span class="math display">\[\oint_{C}\mathbf F\cdot d\mathbf r=\iint_{D}\nabla\times\mathbf F\cdot \mathbf ndS\]</span> The curl integral is independent of the surface and depends only on circulation along the boundary curve.</p></li>
 <li><p>If <span class="math inline">\(\mathbf F = M\mathbf i + N\mathbf j + P\mathbf k\)</span> is a vector field with continuous second partial derivatives, then <span class="math display">\[\text{div }(\text{curl }\mathbf F)=\nabla\cdot(\nabla\times\mathbf F)=0\]</span> because <span class="math inline">\(\nabla\times\mathbf F\)</span> is perpendicular to <span class="math inline">\(\nabla\)</span></p></li>
+<li><p>Every vector field <span class="math inline">\(\mathbf F = M\mathbf i + N\mathbf j + P\mathbf k\)</span> is associated a <span class="math inline">\(1\)</span>-form <span class="math display">\[\lambda_{\mathbf F}=M\mathbf i\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dx\\
+dy\\
+dz\\
+\end{bmatrix}+N\mathbf j\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dx\\
+dy\\
+dz\\
+\end{bmatrix}+P\mathbf k\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dx\\
+dy\\
+dz\\
+\end{bmatrix}\\
+=Mdx + Ndy + Pdz\]</span> and a <span class="math inline">\(2\)</span>-form <span class="math display">\[\omega_{\mathbf F}=M\mathbf i\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dydz\\
+dzdx\\
+dxdy\\
+\end{bmatrix}
++N\mathbf j\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dydz\\
+dzdx\\
+dxdy\\
+\end{bmatrix}
++P\mathbf k\begin{bmatrix}
+\mathbf i &amp;\mathbf j &amp;\mathbf k \\
+\end{bmatrix}\begin{bmatrix}
+dydz\\
+dzdx\\
+dxdy\\
+\end{bmatrix}\\
+=Mdy\land dz + Ndz\land dx + Pdx\land dy\]</span>
+If <span class="math inline">\(u\in \mathscr C&#39;(E)\)</span> is a real function in <span class="math inline">\(R^3\)</span>, then its <span style="color: red;"><em>gradient</em></span> <span class="math display">\[\nabla u=u\begin{bmatrix}
+\frac{\partial}{\partial x}&amp;
+\frac{\partial}{\partial y}&amp;
+\frac{\partial}{\partial z}\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf i \\
+\mathbf j\\
+\mathbf k \\
+\end{bmatrix}
+=\frac{\partial u}{\partial x}\mathbf i+\frac{\partial u}{\partial y}\mathbf j+\frac{\partial u}{\partial z}\mathbf k\]</span> is a vector field in <span class="math inline">\(E\)</span>. The <strong>curl of a gradient is <span class="math inline">\(\mathbf 0\)</span></strong> <span class="math display">\[\nabla\times(\nabla u)=\nabla\times\Bigl(\frac{\partial u}{\partial x}\mathbf i+\frac{\partial u}{\partial y}\mathbf j+\frac{\partial u}{\partial z}\mathbf k\Bigr)=\begin{vmatrix}
+\mathbf i&amp;\mathbf j&amp;\mathbf k\\
+\frac{\partial}{\partial x}&amp;\frac{\partial}{\partial y}&amp;\frac{\partial}{\partial z}\\
+\frac{\partial u}{\partial x}&amp;\frac{\partial u}{\partial y}&amp;\frac{\partial u}{\partial z}
+\end{vmatrix}=\mathbf 0\]</span></p></li>
+<li><p>If <span class="math inline">\(u\in \mathscr C&#39;(E)\)</span> is a real function in <span class="math inline">\(R^3\)</span>, and <span class="math display">\[du=\frac{\partial u}{\partial x}dx+\frac{\partial u}{\partial y}dy+\frac{\partial u}{\partial z}dz
+=\lambda_{\mathbf F}\]</span> then <span class="math display">\[\mathbf F=\frac{\partial u}{\partial x}\mathbf i+\frac{\partial u}{\partial y}\mathbf j+\frac{\partial u}{\partial z}\mathbf k\]</span> since <span class="math display">\[\nabla u=u\begin{bmatrix}
+\frac{\partial}{\partial x}&amp;
+\frac{\partial}{\partial y}&amp;
+\frac{\partial}{\partial z}\\
+\end{bmatrix}\begin{bmatrix}
+\mathbf i \\
+\mathbf j\\
+\mathbf k \\
+\end{bmatrix}
+=\frac{\partial u}{\partial x}\mathbf i+\frac{\partial u}{\partial y}\mathbf j+\frac{\partial u}{\partial z}\mathbf k\]</span> then <span class="math display">\[\mathbf F=\nabla u\]</span></p></li>
+<li><p>If <span class="math display">\[\begin{align}
+d\lambda_{\mathbf F}&amp;=d(Mdx + Ndy + Pdz)\\
+&amp;=\frac{\partial(Md x + Nd y + Pd z)}{\partial x}dx+\frac{\partial(Md x + Nd y + Pd z)}{\partial y}dy+\frac{\partial(Md x + Nd y + Pd z)}{\partial z}dz\\
+&amp;=\frac{\partial M}{\partial x}d^2x+\frac{\partial N}{\partial y}d^2y+\frac{\partial P}{\partial z}d^2z+\Bigl(-\frac{\partial N}{\partial x}+\frac{\partial M}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial P}{\partial y}+\frac{\partial N}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)dzdx\\
+&amp;=\Bigl(-\frac{\partial N}{\partial x}+\frac{\partial M}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial P}{\partial y}+\frac{\partial N}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)dzdx\\
+&amp;=0
+\end{align}\]</span> then <span class="math display">\[\frac{\partial N}{\partial x}=\frac{\partial M}{\partial y}, \frac{\partial P}{\partial y}=\frac{\partial N}{\partial z},\frac{\partial P}{\partial x}=\frac{\partial M}{\partial z}\]</span> then <span class="math display">\[\text{curl }\mathbf F=\nabla\times\mathbf F=\begin{vmatrix}
+\mathbf i&amp;\mathbf j&amp;\mathbf k\\
+\frac{\partial}{\partial x}&amp;\frac{\partial}{\partial y}&amp;\frac{\partial}{\partial z}\\
+M&amp;N&amp;P\\
+\end{vmatrix}\\
+=\Bigl(\frac{\partial P}{\partial y}-\frac{\partial N}{\partial z}\Bigr)\mathbf i-\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)\mathbf j+\Bigl(\frac{\partial N}{\partial x}-\frac{\partial M}{\partial y}\Bigr)\mathbf k=\mathbf 0\]</span></p></li>
+<li><p>If <span class="math inline">\(\mathbf G\in\mathscr C&#39;&#39;(E)\)</span> is a vector field, <span class="math display">\[\lambda_{\mathbf G}=G_1dx+G_2dy+G_3dz\]</span> <span class="math display">\[d\lambda_{\mathbf G}=d(G_1dx+G_2dy+G_3dz)=\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)dzdx\]</span> if a <span class="math inline">\(2\)</span>-form of vector field <span class="math inline">\(\mathbf F = M\mathbf i + N\mathbf j + P\mathbf k\)</span> <span class="math display">\[\omega_{\mathbf F}=Mdy\land dz + Ndz\land dx + Pdx\land dy=d\lambda_{\mathbf G}\\
+=\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)dzdx\]</span> then <span class="math display">\[\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)=P,\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)=M,\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)=N\]</span> and <span class="math display">\[\mathbf F=\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)\mathbf i+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)\mathbf j+\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)\mathbf k=\nabla\times\mathbf G\]</span></p></li>
 </ol>
 
     </div>
