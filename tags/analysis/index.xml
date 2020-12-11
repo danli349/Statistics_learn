@@ -6,7 +6,16 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lebesgue Theory</title>
+      <link>/2020/12/10/lebesgue-theory/</link>
+      <pubDate>Thu, 10 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/10/lebesgue-theory/</guid>
+      <description>A family \(\mathscr R\) of set is called a ring if \(A\in\mathscr R, B\in\mathscr R\) implies \[A\cup B\in\mathscr R,\quad A-B\in\mathscr R, \quad A\cap B=A-(A-B)\in\mathscr R\] A ring \(\mathscr R\) is called a \(\sigma\)-ring if \[\overset{\infty}{\underset{n=1}{\cup}}A_n\in\mathscr R\] whenever \(A_n\in\mathscr R(n=1,2,\cdots)\). And if \(\mathscr R\) is a \(\sigma\)-ring, \[\overset{\infty}{\underset{n=1}{\cap}}A_n=A_1-\overset{\infty}{\underset{n=1}{\cup}}(A_1-A_n)\in\mathscr R\]</description>
+    </item>
+    
     <item>
       <title>Closed forms and exact forms</title>
       <link>/2020/12/08/closed-forms-and-exact-forms/</link>

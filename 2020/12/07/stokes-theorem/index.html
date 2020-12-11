@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">9 min read</span>
+    <span class="article-duration">10 min read</span>
     
 
     <h1 class="article-title">Stokes&#39; theorem</h1>
@@ -225,7 +225,8 @@ dydz\\
 dzdx\\
 dxdy\\
 \end{bmatrix}\\
-=Mdy\land dz + Ndz\land dx + Pdx\land dy\]</span>
+=Mdy\land dz + Ndz\land dx + Pdx\land dy\]</span> Then <span class="math display">\[d\omega_{\mathbf F}=\frac{\partial M}{\partial x}dx\land dy\land dz+\frac{\partial N}{\partial x}dx\land dy\land dz+\frac{\partial P}{\partial x}dx\land dy\land dz\\
+=\Bigl(\frac{\partial M}{\partial x}+\frac{\partial N}{\partial x}+\frac{\partial P}{\partial x}\Bigr)dx\land dy\land dz=(\nabla\cdot\mathbf F)dV\]</span>
 If <span class="math inline">\(u\in \mathscr C&#39;(E)\)</span> is a real function in <span class="math inline">\(R^3\)</span>, then its <span style="color: red;"><em>gradient</em></span> <span class="math display">\[\nabla u=u\begin{bmatrix}
 \frac{\partial}{\partial x}&amp;
 \frac{\partial}{\partial y}&amp;
@@ -257,7 +258,7 @@ d\lambda_{\mathbf F}&amp;=d(Mdx + Ndy + Pdz)\\
 &amp;=\frac{\partial M}{\partial x}d^2x+\frac{\partial N}{\partial y}d^2y+\frac{\partial P}{\partial z}d^2z+\Bigl(-\frac{\partial N}{\partial x}+\frac{\partial M}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial P}{\partial y}+\frac{\partial N}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)dzdx\\
 &amp;=\Bigl(-\frac{\partial N}{\partial x}+\frac{\partial M}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial P}{\partial y}+\frac{\partial N}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)dzdx\\
 &amp;=0
-\end{align}\]</span> then <span class="math display">\[\frac{\partial N}{\partial x}=\frac{\partial M}{\partial y}, \frac{\partial P}{\partial y}=\frac{\partial N}{\partial z},\frac{\partial P}{\partial x}=\frac{\partial M}{\partial z}\]</span> then <span class="math display">\[\text{curl }\mathbf F=\nabla\times\mathbf F=\begin{vmatrix}
+\end{align}\]</span> (Here, <span class="math inline">\(dxdy\)</span> is positively oriented, which means <span class="math inline">\(\mathbf idx\times\mathbf j dy\)</span> with the direction of <span class="math inline">\(\mathbf k\)</span>, similarly <span class="math inline">\(dydz\)</span> and <span class="math inline">\(dzdx\)</span>) then <span class="math display">\[\frac{\partial N}{\partial x}=\frac{\partial M}{\partial y}, \frac{\partial P}{\partial y}=\frac{\partial N}{\partial z},\frac{\partial P}{\partial x}=\frac{\partial M}{\partial z}\]</span> then <span class="math display">\[\text{curl }\mathbf F=\nabla\times\mathbf F=\begin{vmatrix}
 \mathbf i&amp;\mathbf j&amp;\mathbf k\\
 \frac{\partial}{\partial x}&amp;\frac{\partial}{\partial y}&amp;\frac{\partial}{\partial z}\\
 M&amp;N&amp;P\\
@@ -265,6 +266,27 @@ M&amp;N&amp;P\\
 =\Bigl(\frac{\partial P}{\partial y}-\frac{\partial N}{\partial z}\Bigr)\mathbf i-\Bigl(\frac{\partial P}{\partial x}-\frac{\partial M}{\partial z}\Bigr)\mathbf j+\Bigl(\frac{\partial N}{\partial x}-\frac{\partial M}{\partial y}\Bigr)\mathbf k=\mathbf 0\]</span></p></li>
 <li><p>If <span class="math inline">\(\mathbf G\in\mathscr C&#39;&#39;(E)\)</span> is a vector field, <span class="math display">\[\lambda_{\mathbf G}=G_1dx+G_2dy+G_3dz\]</span> <span class="math display">\[d\lambda_{\mathbf G}=d(G_1dx+G_2dy+G_3dz)=\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)dzdx\]</span> if a <span class="math inline">\(2\)</span>-form of vector field <span class="math inline">\(\mathbf F = M\mathbf i + N\mathbf j + P\mathbf k\)</span> <span class="math display">\[\omega_{\mathbf F}=Mdy\land dz + Ndz\land dx + Pdx\land dy=d\lambda_{\mathbf G}\\
 =\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)dxdy+\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)dydz+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)dzdx\]</span> then <span class="math display">\[\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)=P,\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)=M,\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)=N\]</span> and <span class="math display">\[\mathbf F=\Bigl(-\frac{\partial G_3}{\partial y}+\frac{\partial G_2}{\partial z}\Bigr)\mathbf i+\Bigl(\frac{\partial G_3}{\partial x}-\frac{\partial G_1}{\partial z}\Bigr)\mathbf j+\Bigl(-\frac{\partial G_2}{\partial x}+\frac{\partial G_1}{\partial y}\Bigr)\mathbf k=\nabla\times\mathbf G\]</span></p></li>
+<li><p><strong>Integrals of 2-forms in <span class="math inline">\(R^3\)</span></strong> Let <span class="math inline">\(\Phi\)</span> be a 2-surface in <span class="math inline">\(E\subset R^3\)</span> of class <span class="math inline">\(\mathscr C&#39;\)</span>, with parameter domain <span class="math inline">\(D\subset R^2\)</span>. The Jacobian of the equation <span class="math inline">\((x,y,z)=\Phi(u,v)\)</span> is <span class="math display">\[\frac{\partial(x,y,z)}{\partial(u,v)}=\begin{vmatrix}
+1&amp;\frac{\partial(x)}{\partial(u)}&amp;\frac{\partial(x)}{\partial(v)}\\
+1&amp;\frac{\partial(y)}{\partial(u)}&amp;\frac{\partial(y)}{\partial(v)}\\
+1&amp;\frac{\partial(z)}{\partial(u)}&amp;\frac{\partial(z)}{\partial(v)}\\
+\end{vmatrix}\]</span> We associate each point <span class="math inline">\((u,v)\in D\)</span> the vector <span class="math display">\[\mathbf N(u,v)=\mathbf i\begin{vmatrix}
+\frac{\partial(y)}{\partial(u)}&amp;\frac{\partial(y)}{\partial(v)}\\
+\frac{\partial(z)}{\partial(u)}&amp;\frac{\partial(z)}{\partial(v)}\\
+\end{vmatrix}+\mathbf j\begin{vmatrix}
+\frac{\partial(z)}{\partial(u)}&amp;\frac{\partial(z)}{\partial(v)}\\
+\frac{\partial(x)}{\partial(u)}&amp;\frac{\partial(x)}{\partial(v)}\\
+\end{vmatrix}+\mathbf k\begin{vmatrix}
+\frac{\partial(x)}{\partial(u)}&amp;\frac{\partial(x)}{\partial(v)}\\
+\frac{\partial(y)}{\partial(u)}&amp;\frac{\partial(y)}{\partial(v)}\\
+\end{vmatrix}\\
+=\mathbf i\frac{\partial(y,z)}{\partial(u,v)}+\mathbf j\frac{\partial(z,x)}{\partial(u,v)}+\mathbf k\frac{\partial(x,y)}{\partial(u,v)}\]</span> If <span class="math inline">\(\mathbf F\)</span> is a vector field on <span class="math inline">\(E\)</span>, the area integral of <span class="math inline">\(\mathbf F\)</span> over <span class="math inline">\(\Phi\)</span> is defined to be <span class="math display">\[\begin{align}
+\int_{\Phi}\omega_{\mathbf F}&amp;=\int_{\Phi}(Mdy\land dz + Ndz\land dx + Pdx\land dy)\\
+&amp;=\int_{D}\Biggl[(M\circ\Phi)\frac{\partial(y,z)}{\partial(u,v)}+(N\circ\Phi)\frac{\partial(z,x)}{\partial(u,v)}+(P\circ\Phi)\frac{\partial(x,y)}{\partial(u,v)}\Biggr]dudv\\
+&amp;=\int_{D}\mathbf F(\Phi(u,v))\mathbf N(u,v) dudv\\
+&amp;=\int_{D}\mathbf F(\Phi(u,v))\cdot\mathbf n\lVert\mathbf N(u,v)\rVert dudv\\
+&amp;=\int_{\Phi}(\mathbf F\cdot\mathbf n)dA\\
+\end{align}\]</span> where we define <span class="math display">\[\mathbf n=\frac{\mathbf N(u,v)}{\lVert\mathbf N(u,v)\rVert}\]</span> <span class="math inline">\(dA\)</span> is the area in <span class="math inline">\(\Phi\)</span>, and <span class="math display">\[\omega_{\mathbf F}=Mdy\land dz + Ndz\land dx + Pdx\land dy\]</span></p></li>
 </ol>
 
     </div>
