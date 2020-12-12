@@ -13,7 +13,7 @@
       <pubDate>Thu, 10 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/12/10/lebesgue-theory/</guid>
-      <description>A family \(\mathscr R\) of set is called a ring if \(A\in\mathscr R, B\in\mathscr R\) implies \[A\cup B\in\mathscr R,\quad A-B\in\mathscr R, \quad A\cap B=A-(A-B)\in\mathscr R\] A ring \(\mathscr R\) is called a \(\sigma\)-ring if \[\overset{\infty}{\underset{n=1}{\cup}}A_n\in\mathscr R\] whenever \(A_n\in\mathscr R(n=1,2,\cdots)\). And if \(\mathscr R\) is a \(\sigma\)-ring, \[\overset{\infty}{\underset{n=1}{\cap}}A_n=A_1-\overset{\infty}{\underset{n=1}{\cup}}(A_1-A_n)\in\mathscr R\]</description>
+      <description>\(A\) and \(B\) are two sets, we write \(A-B\) for the set of all elements \(x\) such that \(x\in A, x\notin B\). A family \(\mathscr R\) of set is called a ring if \(A\in\mathscr R, B\in\mathscr R\) implies \[A\bigcup B\in\mathscr R,\quad A-B\in\mathscr R, \quad A\bigcap B=A-(A-B)\in\mathscr R\] A ring \(\mathscr R\) is called a \(\sigma\)-ring if \[\overset{\infty}{\underset{n=1}{\bigcup}}A_n\in\mathscr R\] whenever \(A_n\in\mathscr R(n=1,2,\cdots)\). And if \(\mathscr R\) is a \(\sigma\)-ring, \[\overset{\infty}{\underset{n=1}{\bigcap}}A_n=A_1-\overset{\infty}{\underset{n=1}{\bigcup}}(A_1-A_n)\in\mathscr R\]</description>
     </item>
     
     <item>
