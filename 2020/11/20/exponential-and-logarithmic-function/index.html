@@ -88,6 +88,10 @@
 \ge 1+1+\frac{1}{2!}(1-\frac{1}{n})+\cdots+\frac{1}{m!}(1-\frac{1}{n})(1-\frac{2}{n})\cdots(1-\frac{m-1}{n})\\
 \ge 1+1+\frac{1}{2!}+\cdots+\frac{1}{m!}\\
 =\sum_{k=0}^{m}\frac{1}{k!}\]</span> let <span class="math inline">\(n\to\infty\)</span>, keep <span class="math inline">\(m\)</span> fixed, we get <span class="math display">\[\lim_{n\to\infty}\text{inf}(1+\frac{1}{n})^n\ge \sum_{k=0}^{m}\frac{1}{k!}\]</span> when <span class="math inline">\(m\to\infty\)</span> <span class="math display">\[\lim_{n\to\infty}\text{inf}(1+\frac{1}{n})^n\ge e\]</span> Then <span class="math display">\[\lim_{n\to\infty}(1+\frac{1}{n})^n=e\]</span></p></li>
+<li><p>For fixed rational number <span class="math inline">\(z\)</span>, <span class="math display">\[\begin{align}
+\lim_{n\to\infty}(1+\frac{z}{n})^n&amp;=\Bigl[\lim_{n\to\infty}(1+\frac{1}{n/z})^{n/z}\Bigr]^{z}\\
+&amp;=e^z
+\end{align}\]</span></p></li>
 <li><p>The <span style="color: red;"><strong>Ratio Test</strong></span> for series convergent: The series <span class="math inline">\(\sum a_n\)</span> converges if <span class="math display">\[\lim_{n\to\infty}\text{sup}\Biggl|\frac{a_{n+1}}{a_n}\Biggr|&lt;1\]</span> and diverges if <span class="math display">\[\Biggl|\frac{a_{n+1}}{a_n}\Biggr|\ge1\]</span> for all <span class="math inline">\(n\ge n_0\)</span> where <span class="math inline">\(n_0\)</span> is some fixed integer. Let <span class="math display">\[\Biggl|\frac{a_{n+1}}{a_n}\Biggr|&lt;\beta&lt;1\]</span>
 <span class="math display">\[|a_{n+1}|&lt;|a_n|\beta\]</span> Then
 <span class="math display">\[|a_{n}|&lt;|a_N|\beta^{n-N}=(|a_N|\beta^{-N})\beta^{n}\quad(n&gt;N)\]</span> Because <span class="math inline">\(\sum\beta^n\)</span> converges, then <span class="math inline">\(\sum a_{n}\)</span> converges.</p></li>
@@ -96,6 +100,16 @@
 <span class="math display">\[E(0)=\sum_{n=0}^{\infty}\frac{0^n}{n!}=1\]</span>
 <span class="math display">\[E(1)=\sum_{n=0}^{\infty}\frac{1^n}{n!}=e\]</span>
 <span class="math display">\[E(p)=E(1+\cdots+1)=E(1)E(1)\cdots E(1)=e^p\quad(p&gt;0,p is rational)\]</span> <span class="math inline">\(E(x)\)</span> is called <span style="color: red;"><strong>exponential function</strong></span>.</p></li>
+<li><p>For fixed rational number <span class="math inline">\(z\)</span>, <span class="math display">\[\lim_{n\to\infty}(1+\frac{z}{n})^n=\sum_{n=0}^{\infty}\frac{z^n}{n!}\]</span></p></li>
+<li><p>Since <span class="math inline">\(exp(z)\ne0\)</span> <span class="math display">\[\begin{align}
+exp&#39;(z)&amp;=\lim_{h\to0}\frac{exp(z+h)-exp(z)}{h}\\
+&amp;=exp(z)\lim_{h\to0}\frac{exp(h)-1}{h}\\
+&amp;=exp(z)\lim_{h\to0}\frac{\sum_{n=0}^{\infty}\frac{h^n}{n!}-1}{h}\\
+&amp;=exp(z)\lim_{h\to0}\frac{\sum_{n=1}^{\infty}\frac{h^n}{n!}}{h}\\
+&amp;=exp(z)\lim_{h\to0}\sum_{n=1}^{\infty}\frac{h^{n-1}}{n!}\\
+&amp;=exp(z)\cdot1\\
+&amp;=exp(z)
+\end{align}\]</span></p></li>
 </ol>
 
     </div>
