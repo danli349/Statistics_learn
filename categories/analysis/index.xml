@@ -6,7 +6,25 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Integration</title>
+      <link>/2020/12/16/integration/</link>
+      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/16/integration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Measures</title>
+      <link>/2020/12/16/measures/</link>
+      <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/16/measures/</guid>
+      <description>The empty set is \(\varnothing\). A collection \(\tau\) of subsets of a set \(X\) is said to be a topology in \(X\) if \(\tau\) has the following properties: (i) \(\varnothing\in\tau, X\in\tau\). (ii) If \(V_i\in\tau, i=1,2,\cdots,n\), then \(V_1\cap V_2\cap \cdots\cap V_n\in\tau\). (iii) If \(\{V_a\}\) is an arbitrary collection of members of \(\tau\), then \(\bigcup_aV_a\in\tau\). If \(\tau\) is a topology in \(X\), then \(X\) is called a topological space, and the members of \(\tau\) are called the open sets in \(X\).</description>
+    </item>
+    
     <item>
       <title>Lebesgue Theory</title>
       <link>/2020/12/10/lebesgue-theory/</link>
