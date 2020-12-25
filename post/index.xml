@@ -13,9 +13,7 @@
       <pubDate>Tue, 22 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/12/22/positive-borel-measures/</guid>
-      <description>References:
-1. Rudin W. Real and complex analysis. Tata McGraw-hill education; 2006.
-</description>
+      <description>The support of a complex function \(f\) on a topological space \(X\) is the closure of the set \[\{x:f(x)\ne0\}\] The collection of all continuous complex functions on \(X\) whose support is compact is denoted by \(C_c(X)\), which is a vector space. The notation \[K\prec f\] means that \(K\) is a compact subset of \(X\), that \(f\in C_c(X),\;\;0\leq f(x)\leq 1\) for all \(x\in X\) and that \(f(x)=1\) for all \(x\in K\).</description>
     </item>
     
     <item>
