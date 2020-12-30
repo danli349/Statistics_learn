@@ -6,7 +6,18 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>L^p-Spaces</title>
+      <link>/2020/12/29/l-p-spaces/</link>
+      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/29/l-p-spaces/</guid>
+      <description>A real function \(\varphi\) defined on a segment \((a,b),\quad -\infty\leq a&amp;lt;b\leq \infty\), is called convex if the inequality \[\varphi((1-\lambda)x+\lambda y)\leq(1-\lambda)\varphi(x)+\lambda\varphi(y)\] or equivalently \[\frac{\varphi(t)-\varphi(s)}{t-s}\leq\frac{\varphi(u)-\varphi(t)}{u-t},\quad a&amp;lt;s&amp;lt;t&amp;lt;u&amp;lt;b\] holds whenever \(a&amp;lt;x,y&amp;lt;b,\quad 0\leq\lambda\leq1\). If \(x&amp;lt;t&amp;lt;y\), then the point \((t,\varphi(t))\) should lie below or on the connecting the points \((x,\varphi(x))\) and \((y,\varphi(y))\) in the plane.
+If \(\varphi\) is convex on \((a, b)\) then \(\varphi\) is continuous on \((a, b)\).
+Suppose \(a&amp;lt;s&amp;lt;x&amp;lt;y&amp;lt;t&amp;lt;b\), write \(S\) for the point \((s,\varphi(s))\) in the plane, and deal similarly with \(x\), \(y\), and \(t\).</description>
+    </item>
+    
     <item>
       <title>Positive Borel Measures</title>
       <link>/2020/12/22/positive-borel-measures/</link>

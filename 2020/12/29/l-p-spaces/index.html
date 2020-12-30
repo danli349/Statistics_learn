@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>L^p-Spaces - A Hugo website</title>
+<meta property="og:title" content="L^p-Spaces - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">L^p-Spaces</h1>
+
+    
+    <span class="article-date">2020-12-29</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li><p>A real function <span class="math inline">\(\varphi\)</span> defined on a segment <span class="math inline">\((a,b),\quad -\infty\leq a&lt;b\leq \infty\)</span>, is called <span style="color: red;"><strong>convex</strong></span> if the inequality <span class="math display">\[\varphi((1-\lambda)x+\lambda y)\leq(1-\lambda)\varphi(x)+\lambda\varphi(y)\]</span> or equivalently <span class="math display">\[\frac{\varphi(t)-\varphi(s)}{t-s}\leq\frac{\varphi(u)-\varphi(t)}{u-t},\quad a&lt;s&lt;t&lt;u&lt;b\]</span> holds whenever <span class="math inline">\(a&lt;x,y&lt;b,\quad 0\leq\lambda\leq1\)</span>. If <span class="math inline">\(x&lt;t&lt;y\)</span>, then the point <span class="math inline">\((t,\varphi(t))\)</span> should lie below or on the connecting the points <span class="math inline">\((x,\varphi(x))\)</span> and <span class="math inline">\((y,\varphi(y))\)</span> in the plane.</p></li>
+<li><p><strong>If <span class="math inline">\(\varphi\)</span> is convex on <span class="math inline">\((a, b)\)</span> then <span class="math inline">\(\varphi\)</span> is continuous on <span class="math inline">\((a, b)\)</span></strong>.<br />
+Suppose <span class="math inline">\(a&lt;s&lt;x&lt;y&lt;t&lt;b\)</span>, write <span class="math inline">\(S\)</span> for the point <span class="math inline">\((s,\varphi(s))\)</span> in the plane, and deal similarly with <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(t\)</span>. Then <span class="math inline">\(X\)</span> is on or below the line <span class="math inline">\(SY\)</span>, hence <span class="math inline">\(Y\)</span> is on or above the line <span class="math inline">\(SX\)</span>; also <span class="math inline">\(Y\)</span> is on or below <span class="math inline">\(XT\)</span>. As <span class="math inline">\(y\to x\)</span>, it follows that <span class="math inline">\(Y\to X\)</span> then <span class="math inline">\(\varphi(y)\to\varphi(x)\)</span>. Left-hand limits are handled in the same manner.</p></li>
+<li><p><span style="color: red;"><strong>Jensen’s Inequality</strong></span> <strong>For a convex function <span class="math inline">\(\varphi(x)\)</span>, the line through two points <span class="math inline">\((x_1,\varphi(x_1))\)</span> and <span class="math inline">\((x_2,\varphi(x_2))\)</span> is everywhere at least as large as <span class="math inline">\(\varphi(x)\)</span></strong>. Let <span class="math inline">\(\mu\)</span> be a positive measure on a <span class="math inline">\(\sigma-algebra\)</span> <span class="math inline">\(\mathfrak M\)</span> in a set <span class="math inline">\(\Omega\)</span>, so that <span class="math inline">\(\mu(\Omega)=1\)</span>. If <span class="math inline">\(f\)</span> is a real/unction in <span class="math inline">\(L^1(\mu)\)</span>, if <span class="math inline">\(a&lt;f(x)&lt;b,\quad x\in \Omega\)</span> and if <span class="math inline">\(\varphi\)</span> is convex on <span class="math inline">\((a,b)\)</span>, then <span class="math display">\[\varphi\Biggl(\int_{\Omega}fd\mu\Biggr)\leq\int_{\Omega}(\varphi\circ f)d\mu\]</span> or when <span class="math inline">\(f\)</span> is a probability density function of a random variable <span class="math inline">\(X\)</span>, then <span class="math display">\[\varphi(EX)\leq E\varphi(X)\]</span>
+Put <span class="math inline">\(t=\int_{\Omega}fd\mu\)</span>, then <span class="math inline">\(a&lt;t&lt;b\)</span>. If <span class="math inline">\(\beta\)</span> is the supremum of the quotients <span class="math display">\[\beta\ge\frac{\varphi(t)-\varphi(s)}{t-s},\quad a&lt;s&lt;t&lt;b\]</span> then <span class="math inline">\(\beta\)</span> is no larger than any of the quotients <span class="math display">\[\frac{\varphi(u)-\varphi(t)}{u-t},\quad a&lt;s&lt;t&lt;u&lt;b\]</span> It follows that <span class="math display">\[\varphi(s)+\beta(t-s)\ge\varphi(t)\quad(a&lt;s&lt;b)\]</span> <span class="math display">\[\varphi(s)-\varphi(t)-\beta(s-t)\ge0\quad(a&lt;s&lt;b)\]</span>
+<span class="math display">\[\varphi(f(x))-\varphi(t)-\beta(f(x)-t)\ge0\quad(a&lt;s&lt;b)\]</span> for every <span class="math inline">\(x\in \Omega\)</span>. Since <span class="math inline">\(\varphi\)</span> is continuous, <span class="math inline">\(\varphi\circ f\)</span> is measurable. If we integrate both sides of <span class="math inline">\(\varphi(f(x))-\varphi(t)-\beta(f(x)-t)\ge0\quad(a&lt;s&lt;b)\)</span> with respect to <span class="math inline">\(\mu\)</span>, <span class="math display">\[\varphi\Biggl(\int_{\Omega}fd\mu\Biggr)\leq\int_{\Omega}(\varphi\circ f)d\mu\]</span></p></li>
+</ol>
+<p><strong>BIBLIOGRAPHY</strong></p>
+<div id="refs" class="references">
+<div id="ref-rudin2006real">
+<p>1. Rudin W. Real and complex analysis. Tata McGraw-hill education; 2006.</p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
