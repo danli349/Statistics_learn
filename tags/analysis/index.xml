@@ -6,7 +6,21 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 31 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hilbert Space</title>
+      <link>/2020/12/31/hilbert-space/</link>
+      <pubDate>Thu, 31 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/31/hilbert-space/</guid>
+      <description>A complex vector space \(H\) is called an inner product space if to each ordered pair of vectors \(x,y\in H\) there is associated a complex number \((x,y)\), the so-called “inner product” of \(x\) and \(y\), such that the following rules hold:
+\((a)\) \((y,x)=\overline{(x,y)}\). (The bar denotes complex conjugation.)
+\((b)\) \((x+y,z)=(x,z)+(y,z),\quad x,y,z\in H\)
+\((c)\) \((ax,y)=a(x,y),\quad x,y\in H, a\text{ is a scalar}\)
+\((d)\) \((x,x)\ge0,\quad \forall x\in H\)
+\((e)\) \((x,x)=0\) only if \(x=0\).</description>
+    </item>
+    
     <item>
       <title>L^p-Spaces</title>
       <link>/2020/12/29/l-p-spaces/</link>

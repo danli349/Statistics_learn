@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Hilbert Space - A Hugo website</title>
+<meta property="og:title" content="Hilbert Space - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Hilbert Space</h1>
+
+    
+    <span class="article-date">2020-12-31</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li><p>A complex vector space <span class="math inline">\(H\)</span> is called an <span style="color: red;"><strong>inner product space</strong></span> if to each ordered pair of vectors <span class="math inline">\(x,y\in H\)</span> there is associated a complex number <span class="math inline">\((x,y)\)</span>, the so-called “inner product” of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, such that the following rules hold:<br />
+<span class="math inline">\((a)\)</span> <span class="math inline">\((y,x)=\overline{(x,y)}\)</span>. (The bar denotes complex conjugation.)<br />
+<span class="math inline">\((b)\)</span> <span class="math inline">\((x+y,z)=(x,z)+(y,z),\quad x,y,z\in H\)</span><br />
+<span class="math inline">\((c)\)</span> <span class="math inline">\((ax,y)=a(x,y),\quad x,y\in H, a\text{ is a scalar}\)</span><br />
+<span class="math inline">\((d)\)</span> <span class="math inline">\((x,x)\ge0,\quad \forall x\in H\)</span><br />
+<span class="math inline">\((e)\)</span> <span class="math inline">\((x,x)=0\)</span> only if <span class="math inline">\(x=0\)</span>.<br />
+<span class="math inline">\((f)\)</span> By <span class="math inline">\((d)\)</span>, we define <span class="math inline">\(\lVert x\rVert\)</span>, the <span style="color: red;"><strong>norm</strong></span> of the vector <span class="math inline">\(x\in H\)</span>, to be the non-negative square root of <span class="math inline">\((x,x)\)</span>. Thus <span class="math inline">\(\lVert x\rVert^2=(x,x)\)</span><br />
+And<br />
+<span class="math inline">\((b),(c)\)</span> may be combined into the statement: <span class="math inline">\(\forall x\in H\)</span>, the mapping <span class="math inline">\(x\to(x,y)\)</span> is a linear functional on <span class="math inline">\(H\)</span>.<br />
+<span class="math inline">\((a),(c)\)</span> show that <span class="math inline">\((x,ay)=\overline{a}(x,y)\)</span>.<br />
+<span class="math inline">\((a),(b)\)</span> imply the second distributive law: <span class="math display">\[(z,x+y)=(z,x)+(z,y)\]</span></p></li>
+<li><p>The <span style="color: red;"><strong>Schwarz Inequality</strong></span> <span class="math display">\[|(x,y)|\leq\lVert x\rVert\lVert y\rVert,\quad\forall x,y\in H\]</span><br />
+There is a complex number <span class="math inline">\(a\)</span> such that <span class="math inline">\(|a|=1\)</span> and <span class="math inline">\(a(y,x)=|(x,y)|\)</span>. For any real <span class="math inline">\(r\)</span>, we then have <span class="math display">\[(x-ray,x-ray)=(x,x)-ra(y,x)-r\bar{a}(x,y)+r^2(y,y)\]</span> The expression on the left is real and not negative. Hence <span class="math display">\[\lVert x\rVert^2-2r|(x,y)|+r^2\lVert y\rVert^2\ge0\]</span> for every real <span class="math inline">\(r\)</span>. If <span class="math inline">\(\lVert y\rVert^2=0\)</span>, we must have <span class="math inline">\(|(x,y)=0\)</span>, otherwise, <span class="math display">\[\lVert x\rVert^2-2r|(x,y)|+r^2\lVert y\rVert^2\ge0\]</span> is false for large positive <span class="math inline">\(r\)</span>. If <span class="math inline">\(\lVert y\rVert^2&gt;0\)</span>, take <span class="math display">\[r=\frac{|(x,y)|}{\lVert y\rVert^2}\]</span> and obtain <span class="math display">\[|(x,y)|^2\leq \lVert x\rVert^2\lVert y\rVert^2\]</span>.</p></li>
+<li><p>The <span style="color: red;"><strong>Triangle Inequality</strong></span> <span class="math display">\[\lVert x+y\rVert\leq\lVert x\rVert+\lVert y\rVert,\quad x,y\in H\]</span><br />
+By the Schwarz inequality, <span class="math display">\[\lVert x+y\rVert^2=(x+y,x+y)=(x,x)+(x,y)+(y,x)+(y,y)\\
+\leq \lVert x\rVert^2+2\lVert x\rVert\lVert y\rVert+\lVert y\rVert^2\\
+=(\lVert x\rVert+\lVert y\rVert)^2\]</span></p></li>
+<li><p>We define the distance between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> to be <span class="math inline">\(\lVert x-y\rVert\)</span>, thus <span class="math inline">\(H\)</span> is a metric space. If this metric space is complete, or if every Cauchy sequence converges in <span class="math inline">\(H\)</span>, then <span class="math inline">\(H\)</span> is called a <span style="color: red;"><strong>Hilbert space</strong></span>.</p></li>
+<li><p>If <span class="math inline">\((x,y)=0\)</span> for some <span class="math inline">\(x,y\in H\)</span>, we say that <span class="math inline">\(x\)</span> is <span style="color: red;"><strong>orthogonal</strong></span> to <span class="math inline">\(y\)</span>,and write <span class="math inline">\(x\perp y\)</span>. Since <span class="math inline">\((x,y)=0\)</span> implies <span class="math inline">\((y,x)=0\)</span>, the relation <span class="math inline">\(\perp\)</span> is symmetric.<br />
+Let <span class="math inline">\(x^{\perp}\)</span> denote the set of all <span class="math inline">\(y\in H\)</span> which are orthogonal to <span class="math inline">\(x\)</span>, and if <span class="math inline">\(M\)</span> is a subset of <span class="math inline">\(H\)</span> of <span class="math inline">\(H\)</span>, let <span class="math inline">\(M^{\perp}\)</span> be the set of all <span class="math inline">\(y\in H\)</span> which are orthogonal to every <span class="math inline">\(x\in M\)</span>.</p></li>
+</ol>
+<p><strong>BIBLIOGRAPHY</strong></p>
+<div id="refs" class="references">
+<div id="ref-rudin2006real">
+<p>1. Rudin W. Real and complex analysis. Tata McGraw-hill education; 2006.</p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
