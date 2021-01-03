@@ -13,9 +13,7 @@
       <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/01/02/trigonometric-series/</guid>
-      <description>Let \(T\) be the unit circle in the complex plane, i.e., the set of all complex numbers of absolute value \(1\). If \(F\) is any function on \(T\) and if \(f\) is defined on \(R^1\) by \[f(t)=F(e^{it})\] Then \(f\) is a periodic function of period \(2\pi\).BIBLIOGRAPHY
-1. Rudin W. Real and complex analysis. Tata McGraw-hill education; 2006.
-</description>
+      <description>Let \(T\) be the unit circle in the complex plane, i.e., the set of all complex numbers of absolute value \(1\). If \(F\) is any function on \(T\) and if \(f\) is defined on \(R^1\) by \[f(t)=F(e^{it})\] Then \(f\) is a periodic function of period \(2\pi\). Conversely, if \(f\) is a function on \(R^1\), with period \(2\pi\), then there is a function \(F\) on \(T\) such that \[f(t)=F(e^{it})\] holds.</description>
     </item>
     
     <item>
