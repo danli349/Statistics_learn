@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Banach space - A Hugo website</title>
+<meta property="og:title" content="Banach space - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">Banach space</h1>
+
+    
+    <span class="article-date">2021-01-03</span>
+    
+
+    <div class="article-content">
+      
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<ol style="list-style-type: decimal">
+<li>A complex vector space <span class="math inline">\(X\)</span> is said to be a <span style="color: red;"><strong>normed linear space</strong></span> if to each <span class="math inline">\(x\in X\)</span>, there is associated a nonnegative real number <span class="math inline">\(\lVert x\rVert\)</span>, called the <span style="color: red;"><strong>norm</strong></span> of <span class="math inline">\(x\)</span>, such that<br />
+</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(\lVert x+y\rVert\leq\lVert x\rVert+\lVert y\rVert\)</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(y\in X\)</span>,<br />
+</li>
+<li><span class="math inline">\(\lVert ax\rVert=|a|\lVert x\rVert\)</span> if <span class="math inline">\(x\in X\)</span> and <span class="math inline">\(a\)</span> is a scalar.<br />
+</li>
+<li><span class="math inline">\(\lVert x\rVert=0\)</span> implies <span class="math inline">\(x=0\)</span>.<br />
+Every normed linear space may be regarded as a metric space, the distance between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> being <span class="math inline">\(\lVert x-y\rVert\)</span>.<br />
+A <span style="color: red;"><strong>Banach space</strong></span> is a normed linear space which is <span style="color: red;"><strong>complete</strong></span> in the metric defined by its norm. For instance, every Hilbert space is a Banach space, so is every <span class="math inline">\(L^p(\mu)\)</span> normed by <span class="math inline">\(\lVert f\rVert_p\)</span> if <span class="math inline">\(1\leq p\leq\infty\)</span>, and so is <span class="math inline">\(C_0(X)\)</span> with the supremum norm.</li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Consider a linear transformation <span class="math inline">\(\Lambda\)</span> from a normed linear space <span class="math inline">\(X\)</span> into a normed linear space <span class="math inline">\(Y\)</span>, and define its <span style="color: red;"><strong>norm</strong></span> by <span class="math display">\[\lVert \Lambda\rVert=\sup\;\{\lVert \Lambda x\rVert:x\in X,\lVert x\rVert\leq1\}\]</span> If <span class="math inline">\(\lVert \Lambda\rVert&lt;\infty\)</span>, then <span class="math inline">\(\Lambda\)</span> is called a <span style="color: red;"><strong>bounded linear transformation</strong></span>.</p></li>
+<li><p>For a linear transformation <span class="math inline">\(\Lambda\)</span> of a normed linear space <span class="math inline">\(X\)</span> into a normed linear space <span class="math inline">\(Y\)</span>, each of the following three conditions implies the other two:</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(\Lambda\)</span> is bounded.<br />
+</li>
+<li><span class="math inline">\(\Lambda\)</span> is continuous.<br />
+</li>
+<li><span class="math inline">\(\Lambda\)</span> is continuous at one point of <span class="math inline">\(X\)</span>.<br />
+Since <span class="math inline">\(\lVert \Lambda(x_1-x_2)\rVert\leq\lVert \Lambda\rVert\lVert x_1-x_2\rVert\)</span>, it is clear that (a) implies (b), and (b) implies (c). Suppose <span class="math inline">\(\Lambda\)</span> is continuous at <span class="math inline">\(x_0\)</span>. To each <span class="math inline">\(\epsilon&gt;0\)</span> one can then find a <span class="math inline">\(\delta&gt;0\)</span> so that <span class="math inline">\(\lVert x-x_0\rVert&lt;\delta\)</span> implies <span class="math inline">\(\lVert \Lambda x-\Lambda x_0\rVert&lt;\delta\)</span>. In other words, <span class="math inline">\(\lVert x\rVert\leq\delta\)</span> implies <span class="math display">\[\lVert \Lambda (x_0+x)-\Lambda x_0\rVert&lt;\epsilon\]</span> But then the linearity of <span class="math inline">\(\Lambda\)</span> shows that <span class="math inline">\(\lVert\Lambda x\rVert&lt;\epsilon\)</span>. Hence <span class="math inline">\(\lVert\Lambda\rVert\leq\frac{\epsilon}{\delta}\)</span> and (c) implies (a).</li>
+</ol>
+<ol start="4" style="list-style-type: decimal">
+<li><p><span style="color: red;"><strong>Baire’s Theorem</strong></span> If <span class="math inline">\(X\)</span> is a complete metric space, the intersection of every countable collection of dense open subsets of <span class="math inline">\(X\)</span> is dense in <span class="math inline">\(X\)</span>. <span class="math inline">\(\Biggl(\)</span> A subset <span class="math inline">\(A\)</span> of a topological space <span class="math inline">\(X\)</span> is called dense (in <span class="math inline">\(X\)</span>) if every point <span class="math inline">\(x\)</span> in <span class="math inline">\(X\)</span> either belongs to <span class="math inline">\(A\)</span> or is a limit point of <span class="math inline">\(A\)</span>; that is, the closure of <span class="math inline">\(A\)</span> is constituting the whole set <span class="math inline">\(X\)</span>.<span class="math inline">\(\Biggl)\)</span><br />
+Suppose <span class="math inline">\(V_1,V_2,V_3,\cdots\)</span> are dense and open in <span class="math inline">\(X\)</span>. Let <span class="math inline">\(W\)</span> be any open set in <span class="math inline">\(X\)</span>. We have to show that <span class="math inline">\(\bigcap V_n\)</span> has a point in <span class="math inline">\(W\)</span> if <span class="math inline">\(W\ne\varnothing\)</span>. Let <span class="math inline">\(\rho\)</span> be the metric of <span class="math inline">\(X\)</span>; let us write <span class="math display">\[S(x,r)=\{y\in X:\rho(x,y)&lt;r\}\]</span> and let <span class="math inline">\(\overline{S}(x,r)\)</span> be the closure of <span class="math inline">\(S(x,r)\)</span>.<br />
+Since <span class="math inline">\(V_1\)</span> is dense, <span class="math inline">\(W\cap V_1\)</span> is a nonempty open set, and we can therefore find <span class="math inline">\(x_1\)</span> and <span class="math inline">\(r_1\)</span> such that <span class="math display">\[\overline{S}(x_1,r_1)\subset W\cap V_1,\quad 0&lt;r_1&lt;1\]</span><br />
+If <span class="math inline">\(n\ge2\)</span> and <span class="math inline">\(x_{n-1}\)</span> and <span class="math inline">\(r_{n-1}\)</span> are chosen, the denseness of <span class="math inline">\(V_n\)</span> shows that <span class="math inline">\(V_n\cap S(x_{n-1},r_{n-1})\)</span> is not empty and we can find <span class="math inline">\(x_n\)</span> and <span class="math inline">\(r_n\)</span> such that <span class="math display">\[\overline{S}(x_n,r_n)\subset V_n\cap S(x_{n-1},r_{n-1}),\quad 0&lt; r_n&lt;\frac{1}{n}\]</span><br />
+By induction, this process produces a sequence <span class="math inline">\(\{x_n\}\)</span> in <span class="math inline">\(X\)</span>. If <span class="math inline">\(i&gt;n\)</span> and <span class="math inline">\(j&gt;n\)</span>, the construction shows that <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span> both lie in <span class="math inline">\(S(x_n,r_n)\)</span>, so that <span class="math inline">\(\rho(x_i,x_j)&lt;2r_n&lt;2/n\)</span>, and hence <span class="math inline">\(\{x_n\}\)</span> is a Cauchy sequence. Since <span class="math inline">\(X\)</span> is complete, there is a point <span class="math inline">\(x\in X\)</span> such that <span class="math display">\[x=\lim_{n\to\infty}x_n\]</span><br />
+Since <span class="math inline">\(x_i\)</span> lies in the closed set <span class="math inline">\(\overline{S}(x_n,r_n)\)</span> if <span class="math inline">\(i&gt;n\)</span>, it follows that <span class="math inline">\(x\)</span> lies in each <span class="math inline">\(\overline{S}(x_n,r_n)\)</span> and <span class="math display">\[\overline{S}(x_n,r_n)\subset V_n\cap S(x_{n-1},r_{n-1}),\quad 0&lt; r_n&lt;\frac{1}{n}\]</span> shows that <span class="math inline">\(x\)</span> lies in each <span class="math inline">\(V_n\)</span>. By <span class="math display">\[\overline{S}(x_1,r_1)\subset W\cap V_1,\quad 0&lt;r_1&lt;1\]</span> <span class="math inline">\(x\in W\)</span>.<br />
+<strong>In a complete metric space, the intersection of any countable collection of dense <span class="math inline">\(G_{\delta}\)</span>’s is again a dense <span class="math inline">\(G_{\delta}\)</span></strong>. This follows from the theorem, since every <span class="math inline">\(G_{\delta}\)</span> is the intersection of a countable collection of open sets, and since the union of countably many countable sets is countable.</p></li>
+<li><p>Baire’s theorem is sometimes called the <span style="color: red;"><strong>Baire’s category Theorem</strong></span>.<br />
+Call a set <span class="math inline">\(E\subset X\)</span> <span style="color: red;"><strong>nowhere dense</strong></span> if its closure <span class="math inline">\(\overline{E}\)</span> contains no nonempty open subset of <span class="math inline">\(X\)</span>. Any countable union of nowhere dense sets is called a set of the <span style="color: red;"><strong>first category</strong></span>; all other subsets of <span class="math inline">\(X\)</span> are of the <span style="color: red;"><strong>second category</strong></span>.<br />
+<strong>Baire’s category Theorem</strong> is equivalent to the statement that <strong>no complete metric space is of the first category.</strong></p></li>
+<li><p>The <span style="color: red;"><strong>Banach-Steinhaus Theorem (uniform boundedness principle)</strong></span> Suppose <span class="math inline">\(X\)</span> is a Banach space, <span class="math inline">\(Y\)</span> is a normed linear space, and <span class="math inline">\(\{\Lambda_a\}\)</span> is a collection of bounded linear transformations of <span class="math inline">\(X\)</span> into <span class="math inline">\(Y\)</span>, where <span class="math inline">\(a\)</span> ranges over some index set <span class="math inline">\(A\)</span>. Then either there exists an <span class="math inline">\(M&lt;\infty\)</span> such that <span class="math display">\[\lVert \Lambda_a\rVert\leq M,\quad \forall a\in A\]</span> or <span class="math display">\[\sup_{a\in A}\lVert \Lambda_ax\rVert=\infty\]</span> for all <span class="math inline">\(x\)</span> belonging to some dense <span class="math inline">\(G_{\delta}\)</span> in <span class="math inline">\(X\)</span>.<br />
+In geometric terminology: <strong>Either there is a ball <span class="math inline">\(B\)</span> in <span class="math inline">\(Y\)</span> (with radius <span class="math inline">\(M\)</span> and center at <span class="math inline">\(0\)</span>) such that every <span class="math inline">\(\Lambda_a\)</span> maps the unit ball of <span class="math inline">\(X\)</span> into <span class="math inline">\(B\)</span>, or there exist <span class="math inline">\(x\in X\)</span> (in fact, a whole dense <span class="math inline">\(G_{\delta}\)</span> of them) such that no ball in <span class="math inline">\(Y\)</span> contains <span class="math inline">\(\Lambda_ax\)</span> for all <span class="math inline">\(a\)</span></strong>.</p></li>
+</ol>
+<p>For all <span class="math inline">\(y_1,y_2\in Y\)</span>, by the triangle inequality <span class="math display">\[\lVert y_1\rVert\leq\lVert y_1-y_2\rVert+\lVert y_2\rVert\]</span> <span class="math display">\[\lVert y_1\rVert-\lVert y_2\rVert\leq\lVert y_1-y_2\rVert\]</span> and if we interchange <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>, we see <span class="math display">\[|\lVert y_1\rVert-\lVert y_2\rVert|\leq\lVert y_1-y_2\rVert\]</span> Thus <span class="math inline">\(y\to\lVert y\rVert\)</span> is uniformly continuous mapping.<br />
+Since each <span class="math inline">\(\lVert \Lambda_a\rVert\)</span> is continuous and the norm of <span class="math inline">\(Y\)</span> is a continuous function on <span class="math inline">\(Y\)</span>, each function <span class="math inline">\(x\to\lVert \Lambda_ax\rVert\)</span> is continuous on <span class="math inline">\(X\)</span>. Hence <span class="math inline">\(\displaystyle\sup_{a\in A}\lVert \Lambda_ax\rVert\)</span> is lower semicontinuous.
+Let <span class="math display">\[V_n=\Bigl\{x:\sup_{a\in A}\lVert \Lambda_ax\rVert&gt;n\Bigr\},\quad(n=1,2,3,\cdots)\]</span> then each <span class="math inline">\(V_n\)</span> is open.<br />
+If one of these sets, say <span class="math inline">\(V_N\)</span>, fails to be dense in <span class="math inline">\(X\)</span>, then there exist a <span class="math inline">\(x_0\in X\)</span> and a <span class="math inline">\(r&gt;0\)</span> such that <span class="math inline">\(\lVert x\rVert\leq r\)</span> implies <span class="math inline">\(x_0+x\notin V_N\)</span>, this means that <span class="math display">\[\sup_{a\in A}\lVert \Lambda_a(x_0+x)\rVert\leq N\]</span> or <span class="math display">\[\lVert \Lambda_a(x_0+x)\rVert\leq N\]</span> for all <span class="math inline">\(a\in A\)</span> and all <span class="math inline">\(x\)</span> with <span class="math inline">\(\lVert x\rVert\leq r\)</span>. Since <span class="math inline">\(x=(x_0+x)-x_0\)</span>, then <span class="math display">\[\lVert \Lambda_ax\rVert=\lVert \Lambda_a\rVert\lVert x\rVert\leq\lVert \Lambda_a(x_0+x)\rVert+\lVert \Lambda_ax_0\rVert\leq2N\]</span> and then <span class="math display">\[\lVert \Lambda_a\rVert\leq \frac{2N}{r}\]</span> holds with <span class="math inline">\(M=\frac{2N}{r}\)</span><br />
+The other possibility is that every <span class="math inline">\(V_n\)</span> is dense in <span class="math inline">\(X\)</span>. In that case, by Baire’s theorem <span class="math inline">\(\bigcap V_n\)</span> is a dense <span class="math inline">\(G_{\delta}\)</span> in <span class="math inline">\(X\)</span>, and since <span class="math inline">\(\sup_{a\in A}\lVert \Lambda_ax\rVert=\infty\)</span> for every <span class="math inline">\(x\in \bigcap V_n\)</span>, the proof is complete.</p>
+<ol start="7" style="list-style-type: decimal">
+<li>The <span style="color: red;"><strong>Open Mapping Theorem</strong></span> Let <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> be the open unit balls</li>
+</ol>
+<p><strong>BIBLIOGRAPHY</strong></p>
+<div id="refs" class="references">
+<div id="ref-rudin2006real">
+<p>1. Rudin W. Real and complex analysis. Tata McGraw-hill education; 2006.</p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,7 +6,20 @@
     <description>Recent content in Analysis on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Banach space</title>
+      <link>/2021/01/03/banach-space/</link>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/03/banach-space/</guid>
+      <description>A complex vector space \(X\) is said to be a normed linear space if to each \(x\in X\), there is associated a nonnegative real number \(\lVert x\rVert\), called the norm of \(x\), such that
+\(\lVert x+y\rVert\leq\lVert x\rVert+\lVert y\rVert\) for all \(x\) and \(y\in X\),
+\(\lVert ax\rVert=|a|\lVert x\rVert\) if \(x\in X\) and \(a\) is a scalar.
+\(\lVert x\rVert=0\) implies \(x=0\).
+Every normed linear space may be regarded as a metric space, the distance between \(x\) and \(y\) being \(\lVert x-y\rVert\).</description>
+    </item>
+    
     <item>
       <title>Trigonometric Series</title>
       <link>/2021/01/02/trigonometric-series/</link>
