@@ -69,7 +69,19 @@ Suppose \(a&amp;lt;s&amp;lt;x&amp;lt;y&amp;lt;t&amp;lt;b\), write \(S\) for the 
       <pubDate>Wed, 16 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/12/16/measures/</guid>
-      <description>The empty set is \(\varnothing\). A collection \(\tau\) of subsets of a set \(X\) is said to be a topology in \(X\) if \(\tau\) has the following properties: (i) \(\varnothing\in\tau, X\in\tau\). (ii) If \(V_i\in\tau, i=1,2,\cdots,n\), then \(V_1\cap V_2\cap \cdots\cap V_n\in\tau\). (iii) If \(\{V_a\}\) is an arbitrary collection of members of \(\tau\), then \(\bigcup_aV_a\in\tau\). If \(\tau\) is a topology in \(X\), then \(X\) is called a topological space, and the members of \(\tau\) are called the open sets in \(X\).</description>
+      <description>拓扑含空全交并，
+开由开得即连续。
+西代含空全补并，
+开由可测即可测。
+开由博雷即博雷，
+可测博雷由西代。
+Topology contains empty, whole, intersection and union sets,
+continuous function maps onto open sets from open sets.
+\(\sigma-slgebra\) contains empty, whole, complement and union sets,
+measurable function maps onto open sets from measurable set.
+Borel mapping maps onto open sets from Borel sets,
+measurable function maps onto Borel sets from subset of \(\sigma-slgebra\).
+The empty set is \(\varnothing\). A collection \(\tau\) of subsets of a set \(X\) is said to be a topology in \(X\) if \(\tau\) has the following properties: (i) \(\varnothing\in\tau, X\in\tau\).</description>
     </item>
     
     <item>
