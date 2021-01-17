@@ -6,7 +6,18 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Topology</title>
+      <link>/2021/01/17/topology/</link>
+      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/17/topology/</guid>
+      <description>If \(X\) is a set, a basis for a topology on \(X\) is a collection \(\mathscr B\) of subsets of \(X\) (called basis elements) such that
+For each \(x \in X\), there is at least one basis element \(B\) containing \(x\).
+If \(x\) belongs to the intersection of two basis elements \(B_1\) and \(B_2\), then there is abasis element \(B_3\) containing \(x\) such that \(B_3 ⊂ B_1 ∩ B_2\).</description>
+    </item>
+    
     <item>
       <title>Banach space</title>
       <link>/2021/01/03/banach-space/</link>
