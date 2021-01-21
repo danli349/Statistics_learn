@@ -13,9 +13,7 @@
       <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/01/17/topology/</guid>
-      <description>If \(X\) is a set, a basis for a topology on \(X\) is a collection \(\mathscr B\) of subsets of \(X\) (called basis elements) such that
-For each \(x \in X\), there is at least one basis element \(B\) containing \(x\).
-If \(x\) belongs to the intersection of two basis elements \(B_1\) and \(B_2\), then there is abasis element \(B_3\) containing \(x\) such that \(B_3 ⊂ B_1 ∩ B_2\).</description>
+      <description>If \(X\) is a topological space with topology \(\mathscr T\), we say that a subset \(U\) of \(X\) is anopen set of \(X\) if \(U\) belongs to the collection \(\mathscr T\). Using this terminology, one can say that a topological space is a set \(X\) together with a collection of subsets of \(X\), called open sets, such that \(\varnothing\) and \(X\) are both open, and such that arbitrary unions and finite intersections of open sets are open.</description>
     </item>
     
     <item>
