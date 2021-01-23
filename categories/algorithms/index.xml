@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithms on A Hugo website</title>
+    <link>/categories/algorithms/</link>
+    <description>Recent content in Algorithms on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithms in SICP</title>
+      <link>/2021/01/22/algorithms-in-sicp/</link>
+      <pubDate>Fri, 22 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/22/algorithms-in-sicp/</guid>
+      <description>1. Building Abstractions with Procedures1.2 Procedures and the Processes They Generate1.2.1 Linear Recursion and Iteration1.3 Formulating Abstractions with Higher-Order Procedures1.3.1 Procedures as Arguments1. Building Abstractions with Procedures1.2 Procedures and the Processes They Generate1.2.1 Linear Recursion and Iteration# Recursive function to find factorialrecursive.factorial &amp;lt;- function(x) {if (x == 0) return (1)else return (x * recursive.</description>
+    </item>
+    
+  </channel>
+</rss>

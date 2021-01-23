@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>Algorithms in SICP - A Hugo website</title>
+<meta property="og:title" content="Algorithms in SICP - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Algorithms in SICP</h1>
+
+    
+    <span class="article-date">2021-01-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/01/22/algorithms-in-sicp/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#building-abstractions-with-procedures">1. Building Abstractions with Procedures</a>
+<ul>
+<li><a href="#procedures-and-the-processes-they-generate">1.2 Procedures and the Processes They Generate</a>
+<ul>
+<li><a href="#linear-recursion-and-iteration">1.2.1 Linear Recursion and Iteration</a></li>
+</ul></li>
+<li><a href="#formulating-abstractions-with-higher-order-procedures">1.3 Formulating Abstractions with Higher-Order Procedures</a>
+<ul>
+<li><a href="#procedures-as-arguments">1.3.1 Procedures as Arguments</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="building-abstractions-with-procedures" class="section level1">
+<h1>1. Building Abstractions with Procedures</h1>
+<div id="procedures-and-the-processes-they-generate" class="section level2">
+<h2>1.2 Procedures and the Processes They Generate</h2>
+<div id="linear-recursion-and-iteration" class="section level3">
+<h3>1.2.1 Linear Recursion and Iteration</h3>
+<pre class="r bg-success"><code># Recursive function to find factorial
+recursive.factorial &lt;- function(x) {
+if (x == 0)    return (1)
+else           return (x * recursive.factorial(x-1))
+}
+recursive.factorial(5)</code></pre>
+<pre><code>## [1] 120</code></pre>
+</div>
+</div>
+<div id="formulating-abstractions-with-higher-order-procedures" class="section level2">
+<h2>1.3 Formulating Abstractions with Higher-Order Procedures</h2>
+<div id="procedures-as-arguments" class="section level3">
+<h3>1.3.1 Procedures as Arguments</h3>
+<pre class="r bg-success"><code># Recursive function for new_sum and sum_cubes
+increase1 &lt;- function(x) {
+  return (x + 1)
+}
+cube &lt;- function(x) {
+  return (x*x*x)
+}
+new_sum &lt;- function(term, a, nextstep, b) {
+if (a&gt;b)    return (0)
+else           return (term(a)+
+                         new_sum(term, nextstep(a), nextstep, b))
+}
+
+sum_cubes &lt;- function(a,b) {
+  new_sum(cube, a, increase1, b)
+}
+sum_cubes(1,10)</code></pre>
+<pre><code>## [1] 3025</code></pre>
+<pre class="r bg-success"><code>sum_cubes(10,10)</code></pre>
+<pre><code>## [1] 1000</code></pre>
+<pre class="r bg-success"><code># Recursive function for sum_integers
+increase1 &lt;- function(x) {
+  return (x + 1)
+}
+identity &lt;- function(x) {
+  return (x)
+}
+new_sum &lt;- function(term, a, nextstep, b) {
+if (a&gt;b)    return (0)
+else           return (term(a)+
+                         new_sum(term, nextstep(a), nextstep, b))
+}
+
+sum_integers &lt;- function(a,b) {
+  new_sum(identity, a, increase1, b)
+}
+sum_integers(1,10)</code></pre>
+<pre><code>## [1] 55</code></pre>
+<pre class="r bg-success"><code>sum_integers(10,10)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>Since <span class="math display">\[\frac{\pi}{8}=\frac{1}{1\cdot3}+\frac{1}{5\cdot7}+\frac{1}{9\cdot11}+\cdots\]</span></p>
+<pre class="r bg-success"><code># Recursive function for pi-sum
+increase1 &lt;- function(x) {
+  return (x + 1)
+}
+identity &lt;- function(x) {
+  return (x)
+}
+new_sum &lt;- function(term, a, nextstep, b) {
+if (a&gt;b)    return (0)
+else           return (term(a)+
+                         new_sum(term, nextstep(a), nextstep, b))
+}
+
+sum_integers &lt;- function(a,b) {
+  new_sum(identity, a, increase1, b)
+}
+sum_integers(1,10)</code></pre>
+<pre><code>## [1] 55</code></pre>
+<pre class="r bg-success"><code>sum_integers(10,10)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p><strong>BIBLIOGRAPHY</strong></p>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-HaroldSICP" class="csl-entry">
+1. Abelson GJ Harold; Sussman. Structure and interpretation of computer programs. The MIT Press. ISBN 9780262510875; 1996.
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

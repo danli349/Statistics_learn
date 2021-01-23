@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithm on A Hugo website</title>
+    <link>/categories/algorithm/</link>
+    <description>Recent content in Algorithm on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 20 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithms in SICP using Racket</title>
+      <link>/2021/01/20/algorithms-in-sicp/</link>
+      <pubDate>Wed, 20 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/20/algorithms-in-sicp/</guid>
+      <description>;; Exercise 1.9#lang sicp(define (inc x) (+ x 1))(define (dec x) (- x 1));; recursive procedure and recursive process:(define (psum1 a b)(if (= a 0)b(inc (psum1 (dec a) b))));; substitution model for calculating (psum1 4 5):;; (psum1 4 5);; (inc (psum1 3 5));; (inc (inc (psum1 2 5)));; (inc (inc (inc (psum1 1 5))));; (inc (inc (inc (inc (psum1 0 5)))));; (inc (inc (inc (inc 5))));; (inc (inc (inc 6)));; (inc (inc 7));; (inc 8);; 9;; recursive procedure and iterative process:(define (psum2 a b)(if (= a 0)b(psum2 (dec a) (inc b))));; substitution model for calculating (psum2 4 5):(psum2 4 5)(psum2 3 6)(psum2 2 7)(psum2 1 8)(psum2 0 9)(psum2 3 9)9</description>
+    </item>
+    
+  </channel>
+</rss>
