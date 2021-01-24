@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">Algorithms in SICP</h1>
@@ -88,11 +88,15 @@
 <li><a href="#formulating-abstractions-with-higher-order-procedures">1.3 Formulating Abstractions with Higher-Order Procedures</a>
 <ul>
 <li><a href="#procedures-as-arguments">1.3.1 Procedures as Arguments</a></li>
+<li><a href="#constructing-procedures-using-lambda">1.3.2 Constructing Procedures Using <em>lambda</em></a></li>
+<li><a href="#procedures-as-general-methods">1.3.3 Procedures as General Methods</a></li>
+<li><a href="#procedures-as-returned-values">1.3.4 Procedures as Returned Values</a></li>
 </ul></li>
 </ul></li>
 </ul>
 </div>
 
+<p><a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html">The book</a></p>
 <div id="building-abstractions-with-procedures" class="section level1">
 <h1>1. Building Abstractions with Procedures</h1>
 <div id="procedures-and-the-processes-they-generate" class="section level2">
@@ -101,8 +105,8 @@
 <h3>1.2.1 Linear Recursion and Iteration</h3>
 <pre class="r bg-success"><code># Recursive function to find factorial
 recursive.factorial &lt;- function(x) {
-if (x == 0)    return (1)
-else           return (x * recursive.factorial(x-1))
+  if (x == 0)    return (1)
+  else           return (x * recursive.factorial(x-1))
 }
 recursive.factorial(5)</code></pre>
 <pre><code>## [1] 120</code></pre>
@@ -120,8 +124,8 @@ cube &lt;- function(x) {
   return (x*x*x)
 }
 new_sum &lt;- function(term, a, nextstep, b) {
-if (a&gt;b)    return (0)
-else           return (term(a)+
+  if (a&gt;b)    return (0)
+  else           return (term(a)+
                          new_sum(term, nextstep(a), nextstep, b))
 }
 
@@ -140,8 +144,8 @@ identity &lt;- function(x) {
   return (x)
 }
 new_sum &lt;- function(term, a, nextstep, b) {
-if (a&gt;b)    return (0)
-else           return (term(a)+
+  if (a&gt;b)    return (0)
+  else           return (term(a)+
                          new_sum(term, nextstep(a), nextstep, b))
 }
 
@@ -161,8 +165,8 @@ pi_term &lt;- function(x) {
   return (1.0/(x*(x+2)))
 }
 new_sum &lt;- function(term, a, nextstep, b) {
-if (a&gt;b)    return (0)
-else           return (term(a)+
+  if (a&gt;b)    return (0)
+  else           return (term(a)+
                          new_sum(term, nextstep(a), nextstep, b))
 }
 pi_sum &lt;- function(a, b) {
@@ -175,8 +179,8 @@ pi_sum(1,1000)</code></pre>
 <pre class="r bg-success"><code># Recursive function for pi-sum
 
 new_sum &lt;- function(term, a, nextstep, b) {
-if (a&gt;b)    return (0)
-else           return (term(a)+
+  if (a&gt;b)    return (0)
+  else           return (term(a)+
                          new_sum(term, nextstep(a), nextstep, b))
 }
 integral &lt;- function(f, a, b, dx) {
@@ -190,6 +194,116 @@ integral(cube, 0, 1, 0.01)</code></pre>
 <pre><code>## [1] 0.2499875</code></pre>
 <pre class="r bg-success"><code>integral(cube, 0, 1, 0.001)</code></pre>
 <pre><code>## [1] 0.2499999</code></pre>
+</div>
+<div id="constructing-procedures-using-lambda" class="section level3">
+<h3>1.3.2 Constructing Procedures Using <em>lambda</em></h3>
+<p>The lambda or anonymous functions in R have no identity, no name, and they will not live in the global environment.</p>
+<pre class="r bg-success"><code>(function(x)  x + 4 )(1)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r bg-success"><code>(function(x) (1.0/(x*(x+2))))(1)</code></pre>
+<pre><code>## [1] 0.3333333</code></pre>
+<p>Then the pi-sum procedure can be expressed without defining any auxiliary procedures as:</p>
+<pre class="r bg-success"><code>new_sum &lt;- function(term, a, nextstep, b) {
+  if (a&gt;b)    return (0)
+  else           return (term(a)+
+                         new_sum(term, nextstep(a), nextstep, b))
+}
+pi_sum &lt;- function(a, b) {
+  return (8*new_sum((function(x) (1.0/(x*(x+2)))), a, (function(x)  x + 4), b))
+}
+pi_sum(1,1000)</code></pre>
+<pre><code>## [1] 3.139593</code></pre>
+<p>We can write the integral procedure without having to define the auxiliary procedure <em>add-dx</em></p>
+<pre class="r bg-success"><code># Recursive function for pi-sum
+new_sum &lt;- function(term, a, nextstep, b) {
+  if (a&gt;b)    return (0)
+  else        return (term(a)+
+                         new_sum(term, nextstep(a), nextstep, b))
+}
+integral &lt;- function(f, a, b, dx) {
+  return (new_sum(f, (a+dx/2.0), function(x)(x + dx), b)*dx)
+}
+
+integral(cube, 0, 1, 0.01)</code></pre>
+<pre><code>## [1] 0.2499875</code></pre>
+<pre class="r bg-success"><code>integral(cube, 0, 1, 0.001)</code></pre>
+<pre><code>## [1] 0.2499999</code></pre>
+</div>
+<div id="procedures-as-general-methods" class="section level3">
+<h3>1.3.3 Procedures as General Methods</h3>
+<p>The <em>half-interval</em> method is a simple but powerful technique for finding roots of an equation <span class="math inline">\(f(x) = 0\)</span>, where <span class="math inline">\(f\)</span> is a continuous function. The idea is that, if we are given points <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> such that <span class="math inline">\(f (a) &lt; 0 &lt; f (b)\)</span>, then <span class="math inline">\(f\)</span> must have at least one zero between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. To locate a zero, let <span class="math inline">\(x\)</span> be the average of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, and compute <span class="math inline">\(f (x)\)</span>. If <span class="math inline">\(f (x) &gt; 0\)</span>, then <span class="math inline">\(f\)</span> must have a zero between <span class="math inline">\(a\)</span> and <span class="math inline">\(x\)</span>. If <span class="math inline">\(f (x) &lt; 0\)</span>, then <span class="math inline">\(f\)</span> must have a zero between <span class="math inline">\(x\)</span> and <span class="math inline">\(b\)</span>. Continuing in this way, we can identify smaller and smaller intervals on which <span class="math inline">\(f\)</span> must have a zero. Since the interval of uncertainty is reduced by half at each step of the process, the number of steps required grows as <span class="math inline">\(\Theta(log(L/T))\)</span>, where <span class="math inline">\(L\)</span> is the length of the original interval and <span class="math inline">\(T\)</span> is the error tolerance (that is, the size of the interval we will consider “small enough”).<br />
+The procedure checks to see which of the endpoints has a negative function value and which has a positive value, and calls the search procedure accordingly. If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error. Since <span class="math inline">\(\pi\)</span> is the root of <span class="math inline">\(\sin(x)=0,\quad 0&lt;x&lt;2\pi\)</span></p>
+<pre class="r bg-success"><code>search &lt;- function(f, neg_point, pos_point) {
+  midpoint &lt;- (neg_point + pos_point)/2.0
+  if(abs(neg_point-pos_point) &lt; 0.0001) return(midpoint)
+  else if (f(midpoint) &gt; 0)    return(search(f, neg_point, midpoint))
+  else if (f(midpoint) &lt; 0)   return(search(f, midpoint, pos_point))
+  else return(midpoint)
+}
+
+half_interval_method &lt;- function(f, a, b){
+  a_value &lt;- f(a)
+  b_value &lt;- f(b)
+  if (a_value &lt; 0 &amp;&amp; b_value &gt; 0)    return(search(f, a, b))
+  else if (a_value &gt; 0 &amp;&amp; b_value &lt; 0)    return(search(f, b, a))
+  else return(&quot;error: Function values are not of opposite sign&quot;)
+}
+
+half_interval_method(sin, 2.0, 4.0)</code></pre>
+<pre><code>## [1] 3.141571</code></pre>
+<pre class="r bg-success"><code>half_interval_method(sin, 3.5, 4.0)</code></pre>
+<pre><code>## [1] &quot;error: Function values are not of opposite sign&quot;</code></pre>
+<p>Using the half-interval method to search for a root of the equation <span class="math display">\[x^3-2x-3=0, quad 1&lt;x&lt;2\]</span></p>
+<pre class="r bg-success"><code>half_interval_method(function(x)(x^3-2*x-3), 1.0, 2.0)</code></pre>
+<pre><code>## [1] 1.89328</code></pre>
+<p>A number <span class="math inline">\(x\)</span> is called a <span style="color: red;"><strong>fixed point</strong></span> of a function <span class="math inline">\(f\)</span> if <span class="math inline">\(x\)</span> satisfies the equation <span class="math inline">\(f (x) = x\)</span>. we can devise a procedure <em>fixed-point</em> that takes as inputs a function and an initial guess and produces an approximation to a fixed point of the function. We apply the function repeatedly until we find two successive values whose difference is less than some prescribed tolerance:</p>
+<pre class="r bg-success"><code>tolerance &lt;- 0.00001
+fixed_point &lt;- function(f, first_guess) {
+  close_enough &lt;- function(v1, v2){
+    return(abs(v1-v2) &lt; tolerance)
+  }
+  tryguess &lt;- function(guess) {
+    nextvalue &lt;- f(guess)
+    if (close_enough(guess, nextvalue)) return(nextvalue)
+    else tryguess(nextvalue)
+  }
+  tryguess(first_guess)
+}
+fixed_point(cos, 1.0)</code></pre>
+<pre><code>## [1] 0.7390823</code></pre>
+<p>We can find a solution to the equation <span class="math display">\[y=\sin y+\cos y\]</span></p>
+<pre class="r bg-success"><code>fixed_point(function(y)(sin(y)+cos(y)), 1.0)</code></pre>
+<pre><code>## [1] 1.258732</code></pre>
+<p>We can formulate the square-root computation as a fixed-point search. If <span class="math inline">\(y=\sqrt{x}\)</span> then <span class="math inline">\(y^2=x\)</span> and <span class="math inline">\(y=x/y\)</span>, we can therefore try to compute square roots as</p>
+<pre class="r bg-success"><code>square_root &lt;- function(x){
+  fixed_point(function(y)(x/y), 1.0)
+}</code></pre>
+<p>Unfortunately, this fixed-point search does not converge. Consider an initial guess <span class="math inline">\(y_1\)</span>. The next guess is <span class="math inline">\(y_2 = x/y_1\)</span> and the next guess is <span class="math inline">\(y_3 =x/y_2 = x/(x/y_1) = y_1\)</span>. This results in an infinite loop in which the two guesses <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span> repeat over and over, oscillating about the answer. Since the answer is always between our guess <span class="math inline">\(y\)</span> and <span class="math inline">\(x/y\)</span>, we can make a new guess that is not as far from <span class="math inline">\(y\)</span> as <span class="math inline">\(x/y\)</span> by averaging <span class="math inline">\(y\)</span> with <span class="math inline">\(x/y\)</span>, so that the next guess after <span class="math inline">\(y\)</span> is <span class="math inline">\(\frac{1}{2} (y + x/y)\)</span> instead of <span class="math inline">\(x/y\)</span>. This approach of averaging successive approximations to a solution, a technique that we call <span style="color: red;"><strong>average damping</strong></span>, often aids the convergence of fixed-point searches.</p>
+<pre class="r bg-success"><code>square_root &lt;- function(x){
+  fixed_point(function(y)((y+x/y)/2.0), 1.0)
+}
+square_root(2)</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+</div>
+<div id="procedures-as-returned-values" class="section level3">
+<h3>1.3.4 Procedures as Returned Values</h3>
+<p>We can express the idea of average damping by means of the following procedure:</p>
+<pre class="r bg-success"><code>average_damp &lt;- function(f){
+  function(x)((x+f(x))/2.0)
+}
+square &lt;- function(x){
+  return(x^2)
+}
+(average_damp(square))(10)</code></pre>
+<pre><code>## [1] 55</code></pre>
+<p>Average-damp is a procedure that takes a procedure <span class="math inline">\(f\)</span> as its argument and returns a procedure (produced by the <em>lambda</em> function) as its value that, when applied to a number <span class="math inline">\(x\)</span>, produces the average of <span class="math inline">\(x\)</span> and <span class="math inline">\(f(x)\)</span>. Using average-damp, we can reformulate the square-root procedure as follows:</p>
+<pre class="r bg-success"><code>square_root &lt;- function(x){
+  fixed_point(average_damp(function(y)(x/y)), 1.0)
+}
+square_root(2)</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+<pre class="r bg-success"><code>square_root(3)</code></pre>
+<pre><code>## [1] 1.732051</code></pre>
 <p><strong>BIBLIOGRAPHY</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-HaroldSICP" class="csl-entry">
