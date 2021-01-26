@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">6 min read</span>
+    <span class="article-duration">9 min read</span>
     
 
     <h1 class="article-title">Algorithms in SICP</h1>
@@ -79,7 +79,7 @@
 
 <div id="TOC">
 <ul>
-<li><a href="#building-abstractions-with-procedures">1. Building Abstractions with Procedures</a>
+<li><a href="#building-abstractions-with-procedures">1 Building Abstractions with Procedures</a>
 <ul>
 <li><a href="#procedures-and-the-processes-they-generate">1.2 Procedures and the Processes They Generate</a>
 <ul>
@@ -93,12 +93,16 @@
 <li><a href="#procedures-as-returned-values">1.3.4 Procedures as Returned Values</a></li>
 </ul></li>
 </ul></li>
+<li><a href="#building-abstractions-with-data">2 Building Abstractions with Data</a>
+<ul>
+<li><a href="#introduction-to-data-abstraction">2.1 Introduction to Data Abstraction</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p><a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html">The book</a></p>
 <div id="building-abstractions-with-procedures" class="section level1">
-<h1>1. Building Abstractions with Procedures</h1>
+<h1>1 Building Abstractions with Procedures</h1>
 <div id="procedures-and-the-processes-they-generate" class="section level2">
 <h2>1.2 Procedures and the Processes They Generate</h2>
 <div id="linear-recursion-and-iteration" class="section level3">
@@ -304,11 +308,69 @@ square_root(2)</code></pre>
 <pre><code>## [1] 1.414214</code></pre>
 <pre class="r bg-success"><code>square_root(3)</code></pre>
 <pre><code>## [1] 1.732051</code></pre>
+<p>Notice that the cube root of <span class="math inline">\(x\)</span> is a fixed point of the function <span class="math inline">\(y \mapsto x/y^2\)</span>, so we can immediately generalize our square-root procedure to one that extracts cube roots:</p>
+<pre class="r bg-success"><code>cube_root &lt;- function(x){
+  fixed_point(average_damp(function(y)(x/(y^2))), 1.0)
+}
+cube_root(2)</code></pre>
+<pre><code>## [1] 1.259923</code></pre>
+<pre class="r bg-success"><code>cube_root(3)</code></pre>
+<pre><code>## [1] 1.442252</code></pre>
+<p><span style="color: red;"><strong>Newton’s method</strong></span> uses tangent lines of the graph of <span class="math inline">\(y = ƒ(x)\)</span> near the points where <span class="math inline">\(ƒ(x)=0\)</span> to estimate the solution. The goal of Newton’s method for estimating a solution of an equation <span class="math inline">\(ƒ(x) = 0\)</span> is to produce a sequence of approximations that approach the solution. The initial estimate, <span class="math inline">\(x_0\)</span>, may be found by just plain guessing. The method then uses the tangent to the curve <span class="math inline">\(y = ƒ(x)\)</span> at <span class="math inline">\((x_0, ƒ(x_0))\)</span> to approximate the curve, calling the point <span class="math inline">\(x_1\)</span> where the tangent meets the <span class="math inline">\(x\)</span>-axis. The number <span class="math inline">\(x_1\)</span> is usually a better approximation to the solution than is <span class="math inline">\(x_0\)</span>. The point <span class="math inline">\(x_2\)</span> where the tangent to the curve at <span class="math inline">\((x_1, ƒ(x_1))\)</span> crosses the <span class="math inline">\(x\)</span>-axis is the next approximation in the sequence. We continue on, using each approximation to generate the next, until we are close enough to the root to stop.<br />
+Given the approximation <span class="math inline">\(x_n\)</span>, the point-slope equation for the tangent to the curve at <span class="math inline">\((x_n,ƒ(x_n))\)</span> is <span class="math display">\[y = ƒ(x_n) + ƒ&#39;(x_n)(x - x_n)\]</span> We can find where it crosses the <span class="math inline">\(x\)</span>-axis by setting <span class="math inline">\(y=0\)</span>, <span class="math display">\[0 = ƒ(x_n) + ƒ&#39;(x_n)(x - x_n)\]</span> <span class="math display">\[x - x_n=-\frac{ƒ(x_n)}{ƒ&#39;(x_n)}\]</span> <span class="math display">\[x=x_n-\frac{ƒ(x_n)}{ƒ&#39;(x_n)}\]</span> This value of <span class="math inline">\(x\)</span> is the next approximation <span class="math inline">\(x_{n+1}\)</span>. Then a solution of the equation <span class="math inline">\(f(x)=0\)</span> is a fixed point of the function <span class="math display">\[x \mapsto x-\frac{f(x)}{f&#39;(x)}\]</span> Newton’s method is the use of the fixed-point method to approximate a solution of the equation by finding a fixed point of the function <span class="math display">\[x-\frac{f(x)}{f&#39;(x)}\]</span><br />
+We can express the idea of derivative (taking <span class="math inline">\(dx\)</span> to be, say, 0.00001) as the procedure:</p>
+<pre class="r bg-success"><code>dx &lt;- 0.00001
+deriv &lt;- function(f){
+  function(x)((f(x+dx)-f(x))/dx)
+}
+cube &lt;- function(x) {
+  return (x*x*x)
+}
+deriv(cube)(5)</code></pre>
+<pre><code>## [1] 75.00015</code></pre>
+<pre class="r bg-success"><code>(3*5^2)</code></pre>
+<pre><code>## [1] 75</code></pre>
+<p>Like average-damp, <em>deriv</em> is a procedure that takes a procedure as argument and returns a procedure as value. With the aid of deriv, we can express Newton’s method as a fixed-point process:</p>
+<pre class="r bg-success"><code>newton_transform &lt;- function(f){
+  function(x)(x-f(x)/deriv(f)(x))
+}
+newtons_method &lt;- function(f, guess){
+  fixed_point(newton_transform(f), guess)
+}</code></pre>
+<p>The <em>newtons-method</em> takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of <span class="math inline">\(x\)</span>, we can use Newton’s method to find a zero of the function <span class="math inline">\(y \mapsto y^2 - x\)</span> starting with an initial guess of <span class="math inline">\(1\)</span>. This provides yet another form of the square-root procedure:</p>
+<pre class="r bg-success"><code>square_root2 &lt;- function(x){
+  newtons_method(function(y)(y^2-x), 1.0)
+}
+square_root2(2)</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+<p>Since Newton’s method was itself expressed as a fixed-point process, we actually saw two ways to compute square roots as fixed points. Each method begins with a function and finds a fixed point of some transformation of the function. We can express this general idea itself as a procedure:</p>
+<pre class="r bg-success"><code>fixed_point_of_transform &lt;- function(f, transform, guess){
+  fixed_point(transform(f), guess)
+}</code></pre>
+<p>This very general procedure takes as its arguments a procedure <span class="math inline">\(f\)</span> that computes some function, a procedure that transforms <span class="math inline">\(f\)</span>, and an initial guess. The returned result is a fixed point of the transformed function.<br />
+The first square-root computation is a fixed point of the average-damped version of <span class="math inline">\(y \mapsto x/y\)</span>,</p>
+<pre class="r bg-success"><code>square_root3 &lt;- function(x){
+  fixed_point_of_transform(function(y)(x/y), average_damp, 1.0)
+}
+square_root3(2)</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+<p>The second square-root computation is a fixed point of the Newton transform of <span class="math inline">\(y \mapsto y^2-x\)</span>,</p>
+<pre class="r bg-success"><code>square_root4 &lt;- function(x){
+  fixed_point_of_transform(function(y)(y^2-x), newton_transform, 1.0)
+}
+square_root4(2)</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+</div>
+</div>
+</div>
+<div id="building-abstractions-with-data" class="section level1">
+<h1>2 Building Abstractions with Data</h1>
+<div id="introduction-to-data-abstraction" class="section level2">
+<h2>2.1 Introduction to Data Abstraction</h2>
 <p><strong>BIBLIOGRAPHY</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-HaroldSICP" class="csl-entry">
 1. Abelson GJ Harold; Sussman. Structure and interpretation of computer programs. The MIT Press. ISBN 9780262510875; 1996.
-</div>
 </div>
 </div>
 </div>
