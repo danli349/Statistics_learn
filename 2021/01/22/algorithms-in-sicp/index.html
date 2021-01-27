@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">10 min read</span>
+    <span class="article-duration">11 min read</span>
     
 
     <h1 class="article-title">Algorithms in SICP</h1>
@@ -388,17 +388,35 @@ square_root4(2)</code></pre>
 <pre class="racket bg-success"><code>(define x (cons 1 2))
 (define y (cons 3 4))
 (define z (cons x y))
+z
 (car z)
 (car (car z))
 (car (cdr z))</code></pre>
-<pre><code>## &#39;(1 . 2)
+<pre><code>## &#39;((1 . 2) 3 . 4)
+## &#39;(1 . 2)
 ## 1
 ## 3</code></pre>
 <p>Using R:</p>
 <pre class="r bg-success"><code>a &lt;- list(1, 2) 
 b &lt;- list(3, 4) 
 x &lt;- list(a,b) 
-car &lt;- function(x) x[[1]] 
+cons &lt;- function(a, b) list(a, b)
+cons(a,b)</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] 1
+## 
+## [[1]][[2]]
+## [1] 2
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 3
+## 
+## [[2]][[2]]
+## [1] 4</code></pre>
+<pre class="r bg-success"><code>car &lt;- function(x) x[[1]] 
 cdr &lt;- function(x) x[[2]]
 car(car(x))</code></pre>
 <pre><code>## [1] 1</code></pre>
@@ -408,6 +426,24 @@ car(car(x))</code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r bg-success"><code>cdr(cdr(x))</code></pre>
 <pre><code>## [1] 4</code></pre>
+<p>Representing rational numbers</p>
+<pre class="r bg-success"><code>make_rat &lt;- function(a, b) cons(a,b)
+numer &lt;- function(x) car(x)
+denom &lt;- function(x) cdr(x)
+print_rat &lt;- function(x){
+  paste0(numer(x),&quot;/&quot;,denom(x))
+}
+x &lt;- make_rat(1,2)
+print_rat(x)</code></pre>
+<pre><code>## [1] &quot;1/2&quot;</code></pre>
+<p>Since <span class="math display">\[\frac{n_1}{d_1}+\frac{n_2}{d_2}=\frac{n_1d_2+n_2d_1}{d_1d_2}\]</span></p>
+<pre class="r bg-success"><code>one_half &lt;- make_rat(1,2)
+one_third &lt;- make_rat(1,3)
+add_rat &lt;- function(x, y){
+  make_rat(numer(x)*denom(y)+numer(y)*denom(x), denom(x)*denom(y))
+}
+print_rat(add_rat(one_half, one_third))</code></pre>
+<pre><code>## [1] &quot;5/6&quot;</code></pre>
 <p><strong>BIBLIOGRAPHY</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-HaroldSICP" class="csl-entry">
