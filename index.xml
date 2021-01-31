@@ -6,14 +6,24 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Single cell RNA-seq data analysis using Markov Affinity-Based Graph Imputation</title>
+      <link>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</link>
+      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</guid>
+      <description>Loading data:Running MAGICLoading data:import numpy as npimport pandas as pdimport matplotlibimport matplotlib.pyplot as pltimport scipy.sparse as spRunning MAGICReferences
+1. Van Dijk D, Sharma R, Nainys J, Yim K, Kathail P, Carr AJ, et al. Recovering gene interactions from single-cell data using data diffusion. Cell. 2018;174:716–29.</description>
+    </item>
+    
     <item>
       <title>Algorithms in SICP</title>
       <link>/2021/01/22/algorithms-in-sicp/</link>
       <pubDate>Fri, 22 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/01/22/algorithms-in-sicp/</guid>
-      <description>1 Building Abstractions with Procedures1.2 Procedures and the Processes They Generate1.2.1 Linear Recursion and Iteration1.3 Formulating Abstractions with Higher-Order Procedures1.3.1 Procedures as Arguments1.3.2 Constructing Procedures Using lambda1.3.3 Procedures as General Methods1.3.4 Procedures as Returned Values2 Building Abstractions with Data2.1 Introduction to Data Abstraction2.1.1 Example: Arithmetic Operations for Rational NumbersThe book</description>
+      <description>1 Building Abstractions with Procedures1.2 Procedures and the Processes They Generate1.2.1 Linear Recursion and Iteration1.3 Formulating Abstractions with Higher-Order Procedures1.3.1 Procedures as Arguments1.3.2 Constructing Procedures Using lambda1.3.3 Procedures as General Methods1.3.4 Procedures as Returned Values2 Building Abstractions with Data2.1 Introduction to Data Abstraction2.1.1 Example: Arithmetic Operations for Rational Numbers2.</description>
     </item>
     
     <item>

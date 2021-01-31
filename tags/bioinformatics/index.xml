@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bioinformatics on A Hugo website</title>
+    <link>/tags/bioinformatics/</link>
+    <description>Recent content in Bioinformatics on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/bioinformatics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Single cell RNA-seq data analysis using Markov Affinity-Based Graph Imputation</title>
+      <link>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</link>
+      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</guid>
+      <description>Loading data:Running MAGICLoading data:import numpy as npimport pandas as pdimport matplotlibimport matplotlib.pyplot as pltimport scipy.sparse as spRunning MAGICReferences
+1. Van Dijk D, Sharma R, Nainys J, Yim K, Kathail P, Carr AJ, et al. Recovering gene interactions from single-cell data using data diffusion. Cell. 2018;174:716–29.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">11 min read</span>
+    <span class="article-duration">12 min read</span>
     
 
     <h1 class="article-title">Algorithms in SICP</h1>
@@ -98,6 +98,10 @@
 <li><a href="#introduction-to-data-abstraction">2.1 Introduction to Data Abstraction</a>
 <ul>
 <li><a href="#example-arithmetic-operations-for-rational-numbers">2.1.1 Example: Arithmetic Operations for Rational Numbers</a></li>
+</ul></li>
+<li><a href="#hierarchical-data-and-the-closure-property">2.2 Hierarchical Data and the Closure Property</a>
+<ul>
+<li><a href="#representing-sequences-list">2.2.1 Representing Sequences: list</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -400,23 +404,11 @@ z
 <pre class="r bg-success"><code>a &lt;- list(1, 2) 
 b &lt;- list(3, 4) 
 x &lt;- list(a,b) 
-cons &lt;- function(a, b) list(a, b)
-cons(a,b)</code></pre>
-<pre><code>## [[1]]
-## [[1]][[1]]
-## [1] 1
-## 
-## [[1]][[2]]
-## [1] 2
-## 
-## 
-## [[2]]
-## [[2]][[1]]
-## [1] 3
-## 
-## [[2]][[2]]
-## [1] 4</code></pre>
-<pre class="r bg-success"><code>car &lt;- function(x) x[[1]] 
+cons &lt;- function(a, b) {
+  list &lt;- list(a, b)
+}
+cons(a,b)
+car &lt;- function(x) x[[1]] 
 cdr &lt;- function(x) x[[2]]
 car(car(x))</code></pre>
 <pre><code>## [1] 1</code></pre>
@@ -444,6 +436,108 @@ add_rat &lt;- function(x, y){
 }
 print_rat(add_rat(one_half, one_third))</code></pre>
 <pre><code>## [1] &quot;5/6&quot;</code></pre>
+<p>We also can only use procedures for the data construct:</p>
+<pre class="racket bg-success"><code>(define (cons x y)
+  (define (dispatch m)
+    (cond ((= m 0) x)
+      ((= m 1) y)
+      (else (error &quot;Argument not 0 or 1: CONS&quot; m))))
+dispatch)
+(define (car z) (z 0))
+(define (cdr z) (z 1))
+((cons 8 9) 0)
+((cons 8 9) 1)
+(car(cons 8 9))
+(cdr(cons 8 9))</code></pre>
+<pre><code>## 8
+## 9
+## 8
+## 9</code></pre>
+<pre class="r bg-success"><code>cons2 &lt;- function(x, y){
+  dispatch &lt;- function(m){
+    if(m==0) x
+    else if(m==1) y
+      else (&quot;error: Argument not 0 or 1&quot;)
+  }
+  dispatch
+}
+car2 &lt;- function(z) z(0) 
+cdr2 &lt;- function(z) z(1)
+cons2(4,5)(1)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r bg-success"><code>cons2(4,5)(2)</code></pre>
+<pre><code>## [1] &quot;error: Argument not 0 or 1&quot;</code></pre>
+<pre class="r bg-success"><code>car2(cons2(4,5))</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r bg-success"><code>cdr2(cons2(4,5))</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+</div>
+<div id="hierarchical-data-and-the-closure-property" class="section level2">
+<h2>2.2 Hierarchical Data and the Closure Property</h2>
+<p>In Racket:</p>
+<pre class="racket bg-success"><code>(cons (cons 1 2) (cons 3 4))</code></pre>
+<pre><code>## &#39;((1 . 2) 3 . 4)</code></pre>
+<p>In R:</p>
+<pre class="r bg-success"><code>cons((cons(1, 2)), (cons(3, 4)))
+z &lt;- cons((cons(1, 2)), (cons(3, 4)))
+car(z)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2</code></pre>
+<pre class="r bg-success"><code>car(car(z))</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r bg-success"><code>y &lt;- cons((cons(1, (cons(2, 3)))), 4)
+car(y)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 2
+## 
+## [[2]][[2]]
+## [1] 3</code></pre>
+<div id="representing-sequences-list" class="section level3">
+<h3>2.2.1 Representing Sequences: list</h3>
+<p>List is is equivalent to a sequence of nested constructions (which is different with list in R):</p>
+<pre class="racket bg-success"><code>(cons 1 (cons 2 (cons 3 (cons 4 null)) ))
+(list 1 2 3 4)
+(define one-through-four (list 1 2 3 4))
+one-through-four
+(car one-through-four)
+(cdr one-through-four)
+(cons 10 one-through-four)</code></pre>
+<pre><code>## &#39;(1 2 3 4)
+## &#39;(1 2 3 4)
+## &#39;(1 2 3 4)
+## 1
+## &#39;(2 3 4)
+## &#39;(10 1 2 3 4)</code></pre>
+<pre class="r bg-success"><code>cons &lt;- function(x, y) {
+  list &lt;- list(x, y)
+}
+z &lt;- cons(1, cons(2, cons(3, 4)))
+cdr(z)</code></pre>
+<pre><code>## [[1]]
+## [1] 2
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 3
+## 
+## [[2]][[2]]
+## [1] 4</code></pre>
+<pre class="r bg-success"><code>cdr(cdr(z))</code></pre>
+<pre><code>## [[1]]
+## [1] 3
+## 
+## [[2]]
+## [1] 4</code></pre>
+<pre class="r bg-success"><code>cdr(cdr(cdr(z)))</code></pre>
+<pre><code>## [1] 4</code></pre>
 <p><strong>BIBLIOGRAPHY</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-HaroldSICP" class="csl-entry">
