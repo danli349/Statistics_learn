@@ -107,6 +107,13 @@
 </ul>
 </div>
 
+<pre class="r bg-success"><code>knitr::knit_engines$set(Racket = function(options) {
+  code &lt;- paste(options$code, collapse = &#39;\n&#39;)
+  out  &lt;- system2(
+    &#39;Racket&#39;,  c(&#39;-e&#39;, shQuote(code)), stdout = TRUE
+  )
+  knitr::engine_output(options, code, out)
+})</code></pre>
 <p><a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html">The book</a></p>
 <div id="building-abstractions-with-procedures" class="section level1">
 <h1>1 Building Abstractions with Procedures</h1>
@@ -408,8 +415,10 @@ cons &lt;- function(a, b) {
   list &lt;- list(a, b)
 }
 cons(a,b)
-car &lt;- function(x) x[[1]] 
-cdr &lt;- function(x) x[[2]]
+length(x)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r bg-success"><code>car &lt;- function(x) x[[1]] 
+cdr &lt;- function(x) x[[2:length(x)]]
 car(car(x))</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r bg-success"><code>cdr(car(x))</code></pre>
@@ -502,7 +511,7 @@ car(y)</code></pre>
 ## [1] 3</code></pre>
 <div id="representing-sequences-list" class="section level3">
 <h3>2.2.1 Representing Sequences: list</h3>
-<p>List is is equivalent to a sequence of nested constructions (which is different with list in R):</p>
+<p>List is equivalent to a sequence of nested constructions (which is different with list in R):</p>
 <pre class="racket bg-success"><code>(cons 1 (cons 2 (cons 3 (cons 4 null)) ))
 (list 1 2 3 4)
 (define one-through-four (list 1 2 3 4))
