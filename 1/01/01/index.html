@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title> - A Hugo website</title>
+<meta property="og:title" content=" - A Hugo website">
+
+
+  <link href='../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../" class="nav-logo">
+    <img src="../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../about/">about</a></li>
+    
+    <li><a href="../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title"></h1>
+
+    
+    <span class="article-date">0001-01-01</span>
+    
+
+    <div class="article-content">
+      <hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">import</span> scanpy <span style="color:#f92672">as</span> sc
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># !mkdir data</span>
+<span style="color:#75715e"># !wget http://cf.10xgenomics.com/samples/cell-exp/1.1.0/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz -O data/pbmc3k_filtered_gene_bc_matrices.tar.gz</span>
+<span style="color:#75715e"># !cd data; tar -xzf pbmc3k_filtered_gene_bc_matrices.tar.gz</span>
+<span style="color:#75715e"># !mkdir write</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>verbosity <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>             <span style="color:#75715e"># verbosity: errors (0), warnings (1), info (2), hints (3)</span>
+sc<span style="color:#f92672">.</span>logging<span style="color:#f92672">.</span>print_header()
+sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>set_figure_params(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>, facecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;white&#39;</span>)
+</code></pre></div><pre><code>scanpy==1.6.1 anndata==0.7.5 umap==0.4.6 numpy==1.19.2 scipy==1.5.2 pandas==1.2.1 scikit-learn==0.23.2 statsmodels==0.12.1 python-igraph==0.8.3 leidenalg==0.8.3
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">results_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;write/pbmc3k.h5ad&#39;</span>  <span style="color:#75715e"># the file that will store the analysis results</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> sc<span style="color:#f92672">.</span>read_10x_mtx(
+    <span style="color:#e6db74">&#39;filtered_gene_bc_matrices/hg19/&#39;</span>,  <span style="color:#75715e"># the directory with the `.mtx` file</span>
+    var_names<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gene_symbols&#39;</span>,                <span style="color:#75715e"># use gene symbols for the variable names (variables-axis index)</span>
+    cache<span style="color:#f92672">=</span>True)                              <span style="color:#75715e"># write a cache file for faster subsequent reading</span>
+</code></pre></div><pre><code>... writing an h5ad cache file to speedup reading next time
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>var_names_make_unique()  <span style="color:#75715e"># this is unnecessary if using `var_names=&#39;gene_ids&#39;` in `sc.read_10x_mtx`</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>obs
+</code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>highest_expr_genes(adata, n_top<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, )
+</code></pre></div><pre><code>normalizing counts per cell
+    finished (0:00:00)
+</code></pre>
+<p><img src="scanpy_files/scanpy_7_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>filter_cells(adata, min_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
+sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>filter_genes(adata, min_cells<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+</code></pre></div><pre><code>filtered out 19024 genes that are detected in less than 3 cells
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>var[<span style="color:#e6db74">&#39;mt&#39;</span>] <span style="color:#f92672">=</span> adata<span style="color:#f92672">.</span>var_names<span style="color:#f92672">.</span>str<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#39;MT-&#39;</span>)  <span style="color:#75715e"># annotate the group of mitochondrial genes as &#39;mt&#39;</span>
+sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>calculate_qc_metrics(adata, qc_vars<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;mt&#39;</span>], percent_top<span style="color:#f92672">=</span>None, log1p<span style="color:#f92672">=</span>False, inplace<span style="color:#f92672">=</span>True)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>violin(adata, [<span style="color:#e6db74">&#39;n_genes_by_counts&#39;</span>, <span style="color:#e6db74">&#39;total_counts&#39;</span>, <span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>],
+             jitter<span style="color:#f92672">=</span><span style="color:#ae81ff">0.4</span>, multi_panel<span style="color:#f92672">=</span>True)
+</code></pre></div><pre><code>/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
+  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
+</code></pre>
+<p><img src="scanpy_files/scanpy_10_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>scatter(adata, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;total_counts&#39;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>)
+sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>scatter(adata, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;total_counts&#39;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;n_genes_by_counts&#39;</span>)
+</code></pre></div><p><img src="scanpy_files/scanpy_11_0.png" alt="png"></p>
+<p><img src="scanpy_files/scanpy_11_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> adata[adata<span style="color:#f92672">.</span>obs<span style="color:#f92672">.</span>n_genes_by_counts <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2500</span>, :]
+adata <span style="color:#f92672">=</span> adata[adata<span style="color:#f92672">.</span>obs<span style="color:#f92672">.</span>pct_counts_mt <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>, :]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>normalize_total(adata, target_sum<span style="color:#f92672">=</span><span style="color:#ae81ff">1e4</span>)
+</code></pre></div><pre><code>normalizing counts per cell
+    finished (0:00:00)
+
+
+/home/dan/miniconda3/lib/python3.8/site-packages/scanpy/preprocessing/_normalization.py:138: UserWarning: Revieved a view of an AnnData. Making a copy.
+  view_to_actual(adata)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>log1p(adata)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>highly_variable_genes(adata, min_mean<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0125</span>, max_mean<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, min_disp<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+</code></pre></div><pre><code>extracting highly variable genes
+    finished (0:00:00)
+--&gt; added
+    'highly_variable', boolean vector (adata.var)
+    'means', float vector (adata.var)
+    'dispersions', float vector (adata.var)
+    'dispersions_norm', float vector (adata.var)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>highly_variable_genes(adata)
+</code></pre></div><p><img src="scanpy_files/scanpy_16_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>raw <span style="color:#f92672">=</span> adata
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> adata[:, adata<span style="color:#f92672">.</span>var<span style="color:#f92672">.</span>highly_variable]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>regress_out(adata, [<span style="color:#e6db74">&#39;total_counts&#39;</span>, <span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>])
+</code></pre></div><pre><code>regressing out ['total_counts', 'pct_counts_mt']
+    sparse input is densified and may lead to high memory use
+    finished (0:00:08)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>scale(adata, max_value<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>pca(adata, svd_solver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;arpack&#39;</span>)
+</code></pre></div><pre><code>computing PCA
+    on highly variable genes
+    with n_comps=50
+    finished (0:00:00)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>pca(adata, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;CST3&#39;</span>)
+</code></pre></div><p><img src="scanpy_files/scanpy_22_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>pca_variance_ratio(adata, log<span style="color:#f92672">=</span>True)
+</code></pre></div><p><img src="scanpy_files/scanpy_23_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata
+</code></pre></div><pre><code>AnnData object with n_obs × n_vars = 2638 × 1838
+    obs: 'n_genes', 'n_genes_by_counts', 'total_counts', 'total_counts_mt', 'pct_counts_mt'
+    var: 'gene_ids', 'n_cells', 'mt', 'n_cells_by_counts', 'mean_counts', 'pct_dropout_by_counts', 'total_counts', 'highly_variable', 'means', 'dispersions', 'dispersions_norm', 'mean', 'std'
+    uns: 'log1p', 'hvg', 'pca'
+    obsm: 'X_pca'
+    varm: 'PCs'
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>neighbors(adata, n_neighbors<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, n_pcs<span style="color:#f92672">=</span><span style="color:#ae81ff">40</span>)
+</code></pre></div><pre><code>computing neighbors
+    using 'X_pca' with n_pcs = 40
+    finished: added to `.uns['neighbors']`
+    `.obsp['distances']`, distances for each pair of neighbors
+    `.obsp['connectivities']`, weighted adjacency matrix (0:00:01)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>umap(adata)
+</code></pre></div><pre><code>computing UMAP
+    finished: added
+    'X_umap', UMAP coordinates (adata.obsm) (0:00:03)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>])
+</code></pre></div><p><img src="scanpy_files/scanpy_28_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>], use_raw<span style="color:#f92672">=</span>False)
+</code></pre></div><p><img src="scanpy_files/scanpy_29_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>leiden(adata)
+</code></pre></div><pre><code>running Leiden clustering
+    finished: found 8 clusters and added
+    'leiden', the cluster labels (adata.obs, categorical) (0:00:00)
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;leiden&#39;</span>, <span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>])
+</code></pre></div><p><img src="scanpy_files/scanpy_31_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;t-test&#39;</span>)
+sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
+</code></pre></div><pre><code>ranking genes
+    finished: added to `.uns['rank_genes_groups']`
+    'names', sorted np.recarray to be indexed by group ids
+    'scores', sorted np.recarray to be indexed by group ids
+    'logfoldchanges', sorted np.recarray to be indexed by group ids
+    'pvals', sorted np.recarray to be indexed by group ids
+    'pvals_adj', sorted np.recarray to be indexed by group ids (0:00:00)
+</code></pre>
+<p><img src="scanpy_files/scanpy_33_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>verbosity <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>  <span style="color:#75715e"># reduce the verbosity</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;wilcoxon&#39;</span>)
+sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
+</code></pre></div><pre><code>ranking genes
+    finished (0:00:03)
+</code></pre>
+<p><img src="scanpy_files/scanpy_35_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;logreg&#39;</span>)
+sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
+</code></pre></div><pre><code>ranking genes
+    finished (0:00:05)
+
+
+/home/dan/miniconda3/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:762: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+</code></pre>
+<p><img src="scanpy_files/scanpy_37_2.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">marker_genes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;IL7R&#39;</span>, <span style="color:#e6db74">&#39;CD79A&#39;</span>, <span style="color:#e6db74">&#39;MS4A1&#39;</span>, <span style="color:#e6db74">&#39;CD8A&#39;</span>, <span style="color:#e6db74">&#39;CD8B&#39;</span>, <span style="color:#e6db74">&#39;LYZ&#39;</span>, <span style="color:#e6db74">&#39;CD14&#39;</span>,
+                <span style="color:#e6db74">&#39;LGALS3&#39;</span>, <span style="color:#e6db74">&#39;S100A8&#39;</span>, <span style="color:#e6db74">&#39;GNLY&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;KLRB1&#39;</span>,
+                <span style="color:#e6db74">&#39;FCGR3A&#39;</span>, <span style="color:#e6db74">&#39;MS4A7&#39;</span>, <span style="color:#e6db74">&#39;FCER1A&#39;</span>, <span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> sc<span style="color:#f92672">.</span>read(results_file)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pd<span style="color:#f92672">.</span>DataFrame(adata<span style="color:#f92672">.</span>uns[<span style="color:#e6db74">&#39;rank_genes_groups&#39;</span>][<span style="color:#e6db74">&#39;names&#39;</span>])<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">5</span>)
+</code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">result <span style="color:#f92672">=</span> adata<span style="color:#f92672">.</span>uns[<span style="color:#e6db74">&#39;rank_genes_groups&#39;</span>]
+groups <span style="color:#f92672">=</span> result[<span style="color:#e6db74">&#39;names&#39;</span>]<span style="color:#f92672">.</span>dtype<span style="color:#f92672">.</span>names
+pd<span style="color:#f92672">.</span>DataFrame(
+    {group <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;_&#39;</span> <span style="color:#f92672">+</span> key[:<span style="color:#ae81ff">1</span>]: result[key][group]
+    <span style="color:#66d9ef">for</span> group <span style="color:#f92672">in</span> groups <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;names&#39;</span>, <span style="color:#e6db74">&#39;pvals&#39;</span>]})<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">5</span>)
+</code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, groups<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;0&#39;</span>], reference<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;wilcoxon&#39;</span>)
+sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, groups<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;0&#39;</span>], n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>)
+</code></pre></div><pre><code>ranking genes
+    finished (0:00:01)
+</code></pre>
+<p><img src="scanpy_files/scanpy_42_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups_violin(adata, groups<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0&#39;</span>, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)
+</code></pre></div><p><img src="scanpy_files/scanpy_43_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups_violin(adata, groups<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0&#39;</span>, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)
+</code></pre></div><p><img src="scanpy_files/scanpy_44_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>violin(adata, [<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>], groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>)
+</code></pre></div><pre><code>/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+</code></pre>
+<p><img src="scanpy_files/scanpy_45_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_cluster_names <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74">&#39;CD4 T&#39;</span>, <span style="color:#e6db74">&#39;CD14 Monocytes&#39;</span>,
+    <span style="color:#e6db74">&#39;B&#39;</span>, <span style="color:#e6db74">&#39;CD8 T&#39;</span>,
+    <span style="color:#e6db74">&#39;NK&#39;</span>, <span style="color:#e6db74">&#39;FCGR3A Monocytes&#39;</span>,
+    <span style="color:#e6db74">&#39;Dendritic&#39;</span>, <span style="color:#e6db74">&#39;Megakaryocytes&#39;</span>]
+adata<span style="color:#f92672">.</span>rename_categories(<span style="color:#e6db74">&#39;leiden&#39;</span>, new_cluster_names)
+</code></pre></div><pre><code>Omitting rank_genes_groups/names as old categories do not match.
+Omitting rank_genes_groups/scores as old categories do not match.
+Omitting rank_genes_groups/pvals as old categories do not match.
+Omitting rank_genes_groups/pvals_adj as old categories do not match.
+Omitting rank_genes_groups/logfoldchanges as old categories do not match.
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>, legend_loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;on data&#39;</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>, frameon<span style="color:#f92672">=</span>False, save<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;.pdf&#39;</span>)
+</code></pre></div><pre><code>WARNING: saving figure to file figures/umap.pdf
+</code></pre>
+<p><img src="scanpy_files/scanpy_47_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>dotplot(adata, marker_genes, groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>);
+</code></pre></div><p><img src="scanpy_files/scanpy_48_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>stacked_violin(adata, marker_genes, groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">90</span>);
+</code></pre></div><p><img src="scanpy_files/scanpy_49_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file, compression<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gzip&#39;</span>)  <span style="color:#75715e"># `compression=&#39;gzip&#39;` saves disk space, but slows down writing and subsequent reading</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>raw<span style="color:#f92672">.</span>to_adata()<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;./data/write/pbmc3k_withoutX.h5ad&#39;</span>)
+</code></pre></div>
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
