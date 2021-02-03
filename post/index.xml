@@ -22,8 +22,7 @@
       <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</guid>
-      <description>Loading data:Running MAGICLoading data:import numpy as npimport pandas as pdimport matplotlibimport matplotlib.pyplot as pltimport scipy.sparse as spRunning MAGICReferences
-1. Van Dijk D, Sharma R, Nainys J, Yim K, Kathail P, Carr AJ, et al. Recovering gene interactions from single-cell data using data diffusion. Cell. 2018;174:716–29.</description>
+      <description>import magicimport pandas as pdimport matplotlib.pyplot as pltX = pd.read_csv(&amp;quot;test_data.csv&amp;quot;)X.shape(500, 197)magic_operator = magic.MAGIC()X_magic = magic_operator.fit_transform(X, genes=[&amp;#39;VIM&amp;#39;, &amp;#39;CDH1&amp;#39;, &amp;#39;ZEB1&amp;#39;])X_magic.shapeCalculating MAGIC...Running MAGIC on 500 cells and 197 genes.Calculating graph and diffusion operator...Calculating PCA...Calculated PCA in 0.02 seconds.Calculating KNN search...Calculated KNN search in 0.04 seconds.Calculating affinities...Calculated affinities in 0.03 seconds.Calculated graph and diffusion operator in 0.</description>
     </item>
     
     <item>

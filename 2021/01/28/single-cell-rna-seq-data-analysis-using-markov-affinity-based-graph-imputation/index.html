@@ -77,29 +77,73 @@
       
 <script src="../../../../2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/index_files/header-attrs/header-attrs.js"></script>
 
-<div id="TOC">
-<ul>
-<li><a href="#loading-data">Loading data:</a></li>
-<li><a href="#running-magic">Running MAGIC</a></li>
-</ul>
-</div>
 
-<div id="loading-data" class="section level1">
-<h1>Loading data:</h1>
-<pre class="python bg-success"><code>import numpy as np
+<pre class="python"><code>import magic
 import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
-import scipy.sparse as sp
-</code></pre>
+import matplotlib.pyplot as plt</code></pre>
+<pre class="python"><code>X = pd.read_csv(&quot;test_data.csv&quot;)
+X.shape</code></pre>
+<pre><code>(500, 197)</code></pre>
+<pre class="python"><code>magic_operator = magic.MAGIC()
+X_magic = magic_operator.fit_transform(X, genes=[&#39;VIM&#39;, &#39;CDH1&#39;, &#39;ZEB1&#39;])
+X_magic.shape</code></pre>
+<pre><code>Calculating MAGIC...
+  Running MAGIC on 500 cells and 197 genes.
+  Calculating graph and diffusion operator...
+    Calculating PCA...
+    Calculated PCA in 0.02 seconds.
+    Calculating KNN search...
+    Calculated KNN search in 0.04 seconds.
+    Calculating affinities...
+    Calculated affinities in 0.03 seconds.
+  Calculated graph and diffusion operator in 0.09 seconds.
+  Calculating imputation...
+Calculated MAGIC in 0.10 seconds.
+
+
+
+
+
+
+(500, 3)</code></pre>
+<pre class="python"><code>magic_operator.set_params(t=7, a=15, k=5, knn_dist=&#39;euclidean&#39;, n_jobs=1, n_pca=100, random_state=None, verbose=1)
+X_magic = magic_operator.transform(genes=[&#39;VIM&#39;, &#39;CDH1&#39;, &#39;ZEB1&#39;])
+X_magic.shape</code></pre>
+<pre><code>Running MAGIC on 500 cells and 197 genes.
+Calculating graph and diffusion operator...
+  Calculating PCA...
+  Calculated PCA in 0.01 seconds.
+  Calculating KNN search...
+  Calculated KNN search in 0.03 seconds.
+  Calculating affinities...
+  Calculated affinities in 0.03 seconds.
+Calculated graph and diffusion operator in 0.08 seconds.
+Calculating imputation...
+
+
+
+
+
+(500, 3)</code></pre>
+<pre class="python"><code>X_magic = magic_operator.transform(genes=&quot;all_genes&quot;)
+X_magic.shape</code></pre>
+<pre><code>Calculating imputation...
+
+
+
+
+
+(500, 197)</code></pre>
+<pre class="python"><code>plt.scatter(X_magic[&#39;VIM&#39;], X_magic[&#39;CDH1&#39;],c=X_magic[&#39;ZEB1&#39;], s=1, cmap=&#39;inferno&#39;)</code></pre>
+<pre><code>&lt;matplotlib.collections.PathCollection at 0x7fc92b0eafa0&gt;</code></pre>
+<div class="figure">
+<img src="magic_files/magic_5_1.png" alt="" />
+<p class="caption">png</p>
 </div>
-<div id="running-magic" class="section level1">
-<h1>Running MAGIC</h1>
 <p><strong>References</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-van2018recovering" class="csl-entry">
 1. Van Dijk D, Sharma R, Nainys J, Yim K, Kathail P, Carr AJ, et al. Recovering gene interactions from single-cell data using data diffusion. Cell. 2018;174:716–29.
-</div>
 </div>
 </div>
 
