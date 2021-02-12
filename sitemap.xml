@@ -4,11 +4,51 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-02-03T00:00:00+00:00</lastmod>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/regression/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/statistics/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/c/</loc>
+    <lastmod>2021-02-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/c/</loc>
+    <lastmod>2021-02-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2021/02/03/c/</loc>
     <lastmod>2021-02-03T00:00:00+00:00</lastmod>
   </url>
   
@@ -28,17 +68,7 @@
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2021-01-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/2021/01/28/single-cell-rna-seq-data-analysis-using-markov-affinity-based-graph-imputation/</loc>
-    <lastmod>2021-01-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2021-01-28T00:00:00+00:00</lastmod>
   </url>
   
@@ -243,11 +273,6 @@
   </url>
   
   <url>
-    <loc>/categories/statistics/</loc>
-    <lastmod>2020-09-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/2020/09/11/the-multivariate-normal-density/</loc>
     <lastmod>2020-09-11T00:00:00+00:00</lastmod>
   </url>
@@ -274,11 +299,6 @@
   
   <url>
     <loc>/2020/09/05/covariance-and-correlation-coefficient/</loc>
-    <lastmod>2020-09-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/regression/</loc>
     <lastmod>2020-09-05T00:00:00+00:00</lastmod>
   </url>
   

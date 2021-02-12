@@ -6,7 +6,16 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 12 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ESL chapter 2 Overview of Supervised Learning</title>
+      <link>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</guid>
+      <description>\(\S\) Supervised Learning\(\S\) 2.3. Two Simple Approaches to Prediction: Least Squares and Nearest Neighbors\(\S\) 2.3.3 From Least Squares to Nearest Neighbors\(\S\) 2.3.1. Linear Models and Least SquaresLinear ModelsHow to fit the model: Least squaresLinear model in a classification contextWhere the data came from?\(\S\) 2.3.2 Nearest-Neighbor MethodsDo not satisfy with the training resultsEffective number of parametersDo not appreciate the training errors\(\S\) 2.</description>
+    </item>
+    
     <item>
       <title>The Multivariate Normal Density</title>
       <link>/2020/09/11/the-multivariate-normal-density/</link>

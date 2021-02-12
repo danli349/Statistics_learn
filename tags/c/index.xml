@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C on A Hugo website</title>
+    <link>/tags/c/</link>
+    <description>Recent content in C on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 03 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/c/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C</title>
+      <link>/2021/02/03/c/</link>
+      <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/03/c/</guid>
+      <description>Chapter 1 - A Tutorial IntroductionChapter 1 - A Tutorial IntroductionReferences
+1. Kernighan BW, Ritchie DM. The c programming language. 2006.</description>
+    </item>
+    
+  </channel>
+</rss>

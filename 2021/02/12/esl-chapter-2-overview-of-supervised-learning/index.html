@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>ESL chapter 2 Overview of Supervised Learning - A Hugo website</title>
+<meta property="og:title" content="ESL chapter 2 Overview of Supervised Learning - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">63 min read</span>
+    
+
+    <h1 class="article-title">ESL chapter 2 Overview of Supervised Learning</h1>
+
+    
+    <span class="article-date">2021-02-12</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/02/12/esl-chapter-2-overview-of-supervised-learning/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#s-supervised-learning"><span class="math inline">\(\S\)</span> Supervised Learning</a></li>
+<li><a href="#s-2.3.-two-simple-approaches-to-prediction-least-squares-and-nearest-neighbors"><span class="math inline">\(\S\)</span> 2.3. Two Simple Approaches to Prediction: Least Squares and Nearest Neighbors</a>
+<ul>
+<li><a href="#s-2.3.3-from-least-squares-to-nearest-neighbors"><span class="math inline">\(\S\)</span> 2.3.3 From Least Squares to Nearest Neighbors</a></li>
+<li><a href="#s-2.3.1.-linear-models-and-least-squares"><span class="math inline">\(\S\)</span> 2.3.1. Linear Models and Least Squares</a>
+<ul>
+<li><a href="#linear-models">Linear Models</a></li>
+<li><a href="#how-to-fit-the-model-least-squares">How to fit the model: Least squares</a></li>
+<li><a href="#linear-model-in-a-classification-context">Linear model in a classification context</a></li>
+<li><a href="#where-the-data-came-from">Where the data came from?</a></li>
+</ul></li>
+<li><a href="#s-2.3.2-nearest-neighbor-methods"><span class="math inline">\(\S\)</span> 2.3.2 Nearest-Neighbor Methods</a>
+<ul>
+<li><a href="#do-not-satisfy-with-the-training-results">Do not satisfy with the training results</a></li>
+<li><a href="#effective-number-of-parameters">Effective number of parameters</a></li>
+<li><a href="#do-not-appreciate-the-training-errors">Do not appreciate the training errors</a></li>
+</ul></li>
+<li><a href="#s-2.3.3.-from-least-squares-to-nearest-neighbors"><span class="math inline">\(\S\)</span> 2.3.3. From Least Squares to Nearest Neighbors</a></li>
+</ul></li>
+<li><a href="#s-2.4.-statistical-decision-theory"><span class="math inline">\(\S\)</span> 2.4. Statistical Decision Theory</a>
+<ul>
+<li><a href="#definitions">Definitions</a></li>
+<li><a href="#conclusions-first">Conclusions first</a></li>
+<li><a href="#the-light-and-shadows-of-knn">The light and shadows of kNN</a></li>
+<li><a href="#model-based-approach-for-linear-regression">Model-based approach for linear regression</a></li>
+<li><a href="#knn-vs.-least-squares">kNN vs. least squares</a></li>
+<li><a href="#additive-models-brief-on-modern-techniques">Additive models (Brief on modern techniques)</a></li>
+<li><a href="#are-we-happy-with-l_2-loss-yes-so-far.">Are we happy with <span class="math inline">\(L_2\)</span> loss? Yes, so far.</a></li>
+<li><a href="#bayes-classifier-for-a-categorical-output-with-0-1-loss-function">Bayes classifier: For a categorical output with 0-1 loss function</a></li>
+<li><a href="#knn-and-bayes-classifier">KNN and Bayes classifier</a></li>
+<li><a href="#from-two-class-to-k-class">From two-class to <span class="math inline">\(K\)</span>-class</a></li>
+</ul></li>
+<li><a href="#s-2.5.-local-methods-in-high-dimensions"><span class="math inline">\(\S\)</span> 2.5. Local Methods in High Dimensions</a>
+<ul>
+<li><a href="#the-curse-of-dimensionality-bellman-1961">The curse of dimensionality (Bellman, 1961)</a></li>
+<li><a href="#the-first-example-unit-hypercube">The first example: Unit hypercube</a></li>
+<li><a href="#the-second-example-unit-ball">The second example: Unit ball</a></li>
+<li><a href="#the-third-example-sampling-density">The third example: Sampling density</a></li>
+<li><a href="#the-fourth-example-bias-variance-decomposition">The fourth example: Bias-variance decomposition</a></li>
+<li><a href="#what-good-about-the-linear-model">What good about the linear model?</a></li>
+<li><a href="#epe-comparison-1nn-vs.-least-squares">EPE comparison: 1NN vs. least squares</a></li>
+</ul></li>
+<li><a href="#s-2.6.-statistical-models-supervised-learning-and-function-approximation"><span class="math inline">\(\S\)</span> 2.6. Statistical Models, Supervised Learning and Function Approximation</a>
+<ul>
+<li><a href="#review">Review</a></li>
+<li><a href="#s-2.6.1.-a-statistical-model-for-the-joint-distribution-textprxy"><span class="math inline">\(\S\)</span> 2.6.1. A Statistical Model for the Joint Distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span></a>
+<ul>
+<li><a href="#the-additive-error-model">The additive error model</a></li>
+<li><a href="#the-i.i.d.-assumption">The i.i.d. assumption</a></li>
+<li><a href="#for-qualitative-outputs">For qualitative outputs</a></li>
+</ul></li>
+<li><a href="#s-2.6.2.-supervised-learning"><span class="math inline">\(\S\)</span> 2.6.2. Supervised Learning</a></li>
+<li><a href="#s-2.6.3.-function-approximation"><span class="math inline">\(\S\)</span> 2.6.3. Function Approximation</a>
+<ul>
+<li><a href="#associated-parameters-and-basis-expansions">Associated parameters and basis expansions</a></li>
+<li><a href="#least-squares-again">Least squares again</a></li>
+<li><a href="#maximum-likelihood-estimation">Maximum likelihood estimation</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#s-2.7.-structured-regression-models"><span class="math inline">\(\S\)</span> 2.7. Structured Regression Models</a>
+<ul>
+<li><a href="#review-motivation">Review &amp; motivation</a></li>
+<li><a href="#s-2.7.1.-difficulty-of-the-problem"><span class="math inline">\(\S\)</span> 2.7.1. Difficulty of the Problem</a>
+<ul>
+<li><a href="#necessity-limit-of-the-restriction">Necessity &amp; limit of the restriction</a></li>
+<li><a href="#complexity">Complexity</a></li>
+<li><a href="#metric">Metric</a></li>
+<li><a href="#curse-of-dimensionality">Curse of dimensionality</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#s-2.8.-classes-of-restricted-estimators"><span class="math inline">\(\S\)</span> 2.8. Classes of Restricted Estimators</a>
+<ul>
+<li><a href="#s-2.8.1.-roughness-penalty-and-bayesian-methods"><span class="math inline">\(\S\)</span> 2.8.1. Roughness Penalty and Bayesian Methods</a>
+<ul>
+<li><a href="#various-penalties">Various penalties</a></li>
+<li><a href="#connection-with-bayesian-framework">Connection with Bayesian framework</a></li>
+</ul></li>
+<li><a href="#s-2.8.2.-kernel-methods-and-local-regression"><span class="math inline">\(\S\)</span> 2.8.2. Kernel Methods and Local Regression</a>
+<ul>
+<li><a href="#formulation">Formulation</a></li>
+<li><a href="#association-between-kernel-methods-and-knn">Association between kernel methods and kNN</a></li>
+</ul></li>
+<li><a href="#s-2.8.3.-basis-functions-and-dictionary-methods"><span class="math inline">\(\S\)</span> 2.8.3. Basis functions and Dictionary Methods</a>
+<ul>
+<li><a href="#linear-expansion">Linear expansion</a></li>
+<li><a href="#radial-basis-functions">Radial basis functions</a></li>
+<li><a href="#neural-networks">Neural networks</a></li>
+<li><a href="#dictionary">Dictionary</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#s-2.9.-model-selection-and-the-bias-variance-tradeoff"><span class="math inline">\(\S\)</span> 2.9. Model Selection and the Bias-Variance Tradeoff</a>
+<ul>
+<li><a href="#review-1">Review</a></li>
+<li><a href="#the-bias-variance-tradeoff-for-the-knn">The bias-variance tradeoff for the kNN</a></li>
+<li><a href="#interpretation-implication">Interpretation &amp; implication</a></li>
+</ul></li>
+<li><a href="#s-exercises"><span class="math inline">\(\S\)</span> Exercises</a>
+<ul>
+<li><a href="#ex.-2.1-target-coding">Ex. 2.1 (target coding)</a></li>
+<li><a href="#ex.-2.2-the-oracle-revealed">Ex. 2.2 (the oracle revealed)</a></li>
+<li><a href="#ex.-2.3-the-median-distance-to-the-origin">Ex. 2.3 (the median distance to the origin)</a></li>
+<li><a href="#ex.-2.4-projections-at-x-are-distributed-as-normal-n0-1">Ex. 2.4 (projections a^T x are distributed as normal N(0, 1))</a></li>
+<li><a href="#ex.-2.5-the-expected-prediction-error-under-least-squares">Ex. 2.5 (the expected prediction error under least squares)</a></li>
+<li><a href="#ex.-2.6-repeated-measurements">Ex. 2.6 (repeated measurements)</a></li>
+<li><a href="#ex.-2.7-forms-for-linear-regression-and-k-nearest-neighbor-regression">Ex. 2.7 (forms for linear regression and k-nearest neighbor regression)</a></li>
+<li><a href="#ex.-2.8-classifying-2s-and-3s">Ex. 2.8 (classifying 2’s and 3’s)</a></li>
+<li><a href="#ex.-2.9-the-average-training-error-is-smaller-than-the-testing-error">Ex. 2.9 (the average training error is smaller than the testing error)</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="s-supervised-learning" class="section level1">
+<h1><span class="math inline">\(\S\)</span> Supervised Learning</h1>
+</div>
+<div id="s-2.3.-two-simple-approaches-to-prediction-least-squares-and-nearest-neighbors" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.3. Two Simple Approaches to Prediction: Least Squares and Nearest Neighbors</h1>
+<p>In this section we develop two simple but powerful prediction methods: The linear model fit by least squares and the <span class="math inline">\(k\)</span>-nearest-neighbor (kNN) prediction rule.</p>
+<p>The linear model makes huge assumptions about structure and yields stable but possibly inaccurate predictions. The method of kNN makes very mild structural assumptions: Its predictions are often accurate but can be unstable.</p>
+<div id="s-2.3.3-from-least-squares-to-nearest-neighbors" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.3.3 From Least Squares to Nearest Neighbors</h2>
+<p>The linear decision boundary from least squares is very smooth, and apparently stable to fit. It does appear to rely heavily on the assumption that a linear decision boundary is appropriate. In language we will develop shortly, it has low variance and potentially high bias.</p>
+<p>On the other hand, the <span class="math inline">\(k\)</span>-nearest-neighbor procedures do not appear to rely on any stringent assumptions about the underlying data, and can adapt to any situation. However, any particular subregion of the decision boundary depends on a handful of input points and their particular positions, and is thus wiggly and unstable—high variance and low bias.</p>
+<p>Let’s expose the oracle first! The data is generated with following steps:
+1. Generate 10 means <span class="math inline">\(m_k\)</span> from a bivariate Gaussian for each class</p>
+<p><span class="math display">\[\begin{equation}
+  m_k \sim \begin{cases}
+  N((1,0)^T, \mathbf{I}) &amp; \text{ for BLUE}, \\
+  N((0,1)^T, \mathbf{I}) &amp; \text{ for ORANGE}
+  \end{cases}
+  \end{equation}\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>For each class, we generate 100 observations as follows:</li>
+<li>Pick an <span class="math inline">\(m_k\)</span> at random with probability 1/10</li>
+<li>Generate <span class="math inline">\(x_i \sim N(m_k, \mathbf{I}/5)\)</span></li>
+</ol>
+<pre class="python"><code>%matplotlib inline
+import random
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<pre class="python"><code>np.eye(2)</code></pre>
+<pre><code>array([[1., 0.],
+       [0., 1.]])</code></pre>
+<pre class="python"><code># define a function generate_data(sample_size)
+def generate_data(sample_size:int)-&gt;tuple:
+    # Parameters for mean distributions
+    mean_blue = [1, 0]
+    mean_orange = [0, 1]
+    mean_cov = np.eye(2)
+    mean_size = 10
+    
+    # Additional parameters for blue and orange distributions
+    sample_cov = np.eye(2)/5
+    
+    # Generate mean components for blue and orange (10 means for each)
+    sample_blue_mean = np.random.multivariate_normal(mean_blue, mean_cov, mean_size)
+    sample_orange_mean = np.random.multivariate_normal(mean_orange, mean_cov, mean_size)
+    
+    # Generate (n=sample_size) blue points
+    sample_blue = np.array([
+        np.random.multivariate_normal(sample_blue_mean[random.randint(0, 9)],
+                                      sample_cov)
+        for _ in range(sample_size)
+    ])
+    # Generate (n=sample_size) 0
+    y_blue = [0 for _ in range(sample_size)]
+
+    # Generate (n=sample_size) orange points
+    sample_orange = np.array([
+        np.random.multivariate_normal(sample_orange_mean[random.randint(0, 9)],
+                                      sample_cov)
+        for _ in range(sample_size)
+    ])
+    # Generate (n=sample_size) 1
+    y_orange = [1 for _ in range(sample_size)]
+
+    data_x = np.concatenate((sample_blue, sample_orange), axis=0)
+    data_y = np.concatenate((y_blue, y_orange))
+    return data_x, data_y</code></pre>
+<pre class="python"><code>len(sample_blue)</code></pre>
+<pre><code>100</code></pre>
+<pre class="python"><code>len(data_x)</code></pre>
+<pre><code>200</code></pre>
+<pre class="python"><code>len(data_y)</code></pre>
+<pre><code>200</code></pre>
+<pre class="python"><code>sample_size = 100
+data_x, data_y = generate_data(sample_size)
+sample_blue = data_x[data_y == 0, :]
+sample_orange = data_x[data_y == 1, :]</code></pre>
+<pre class="python"><code># Plot
+fig = plt.figure(figsize=(15, 15))
+ax1 = fig.add_subplot(2, 2, 1)
+
+ax1.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;)
+ax1.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;)
+ax1.set_title(&#39;0/1 Response&#39;)
+plt.show()
+
+plot_x_min, plot_x_max = ax1.get_xlim()
+plot_y_min, plot_y_max = ax1.get_ylim()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_10_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="s-2.3.1.-linear-models-and-least-squares" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.3.1. Linear Models and Least Squares</h2>
+<blockquote>
+<p>The linear model has been a mainstay of statistics for the past 30 years and remains one of our most important tools.</p>
+</blockquote>
+<div id="linear-models" class="section level3">
+<h3>Linear Models</h3>
+<p>Given a vector of inputs <span class="math inline">\(X^T = (X_1, \cdots, X_p)\)</span>, we predict the output <span class="math inline">\(Y\)</span> via the model</p>
+<p><span class="math display">\[\begin{equation}
+\hat{Y} = \hat{\beta}_0 + \sum^p_{j=1}X_j\hat{\beta}_j = X^T\hat{\beta}=
+\begin{bmatrix}
+1&amp;X_1&amp;X_2&amp;\cdots&amp;X_p
+\end{bmatrix}\begin{bmatrix}
+\hat{\beta}_0\\
+\hat{\beta}_1\\
+\vdots\\
+\hat{\beta}_p\\
+\end{bmatrix}
+\end{equation}\]</span></p>
+<p>where the constant variable 1 in <span class="math inline">\(X^T = (1, X_1, \cdots, X_p)\)</span> and <span class="math inline">\(\hat{\beta}^T = (\beta_0, \beta_1, \cdots, \beta_p)\)</span>. The term <span class="math inline">\(\hat\beta_0\)</span> is the intercept, a.k.a. the <em>bias</em> in machine learning.</p>
+<p>Here we are modeling a single output, so <span class="math inline">\(\hat{Y}\)</span> is a scalar; in general <span class="math inline">\(\hat{Y}\)</span> can be a <span class="math inline">\(K\)</span>-vector, in which case <span class="math inline">\(\beta\)</span> would be a <span class="math inline">\(p \times K\)</span> matrix of coefficients.</p>
+<p>In the <span class="math inline">\((p+1)\)</span>-dimensional input-output space, <span class="math inline">\((X, \hat{Y})\)</span> represents a hyperplane. If the constant is included in <span class="math inline">\(X\)</span>, then the hyperplane includes the origin and is a subspace; if not, is is an affine set cutting the <span class="math inline">\(Y\)</span>-axis at the point <span class="math inline">\((0, \hat\beta_0)\)</span>. From now on we assume that the intercept is included in <span class="math inline">\(\hat\beta\)</span>.</p>
+<p>Viewed as a function over the <span class="math inline">\(p\)</span>-dimensional input space,</p>
+<p><span class="math display">\[\begin{equation}
+f(X) = X^T\beta
+\end{equation}\]</span></p>
+<p>is linear, and the gradient <span class="math inline">\(f&#39;(X) = \beta\)</span> is a vector in input space that points in the steepest uphill direction.</p>
+</div>
+<div id="how-to-fit-the-model-least-squares" class="section level3">
+<h3>How to fit the model: Least squares</h3>
+<p>Least squares pick the coefficients <span class="math inline">\(\beta\)</span> to minimize the residual sum of squares</p>
+<p><span class="math display">\[\begin{equation}
+RSS(\beta) = \sum^N_{i=1}(y_i - x_i^T\beta)^2 = (\mathbf{y} - \mathbf{X}\beta)^T(\mathbf{y} - \mathbf{X}\beta)\\
+=(\mathbf{y}^T - \beta^T\mathbf{X}^T)(\mathbf{y} - \mathbf{X}\beta)\\
+=\mathbf{y}^T\mathbf{y}-\mathbf{y}^T\mathbf{X}\beta-\beta^T\mathbf{X}^T\mathbf{y}+\beta^T\mathbf{X}^T\mathbf{X}\beta,
+\end{equation}\]</span></p>
+<p>since <span class="math inline">\(\mathbf{y}^T\mathbf{X}\beta\)</span> is a scalar quantity, thus <span class="math inline">\(\mathbf{y}^T\mathbf{X}\beta = (\mathbf{y}^T\mathbf{X}\beta)^T=\beta^T\mathbf{X}^T\mathbf{y}\)</span> Then</p>
+<p><span class="math display">\[\begin{equation}
+RSS(\beta) = \mathbf{y}^T\mathbf{y}-\beta^T\mathbf{X}^T\mathbf{y}-\beta^T\mathbf{X}^T\mathbf{y}+\beta^T\mathbf{X}^T\mathbf{X}\beta\\
+= \mathbf{y}^T\mathbf{y}-2\beta^T\mathbf{X}^T\mathbf{y}+\beta^T\mathbf{X}^T\mathbf{X}\beta
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\mathbf{X}\)</span> is an <span class="math inline">\(N \times p\)</span> matrix with each row an input vector, and <span class="math inline">\(\mathbf{y}\)</span> is an <span class="math inline">\(N\)</span>-vector of outputs in the training set.</p>
+<p><span class="math inline">\(RSS(\beta)\)</span> is a quadratic function of the parameters, and hence its minimum always exists, but may not be unique.</p>
+<p>Differentiating w.r.t. <span class="math inline">\(\beta\)</span> we get the <em>normal equations</em></p>
+<p><span class="math display">\[\begin{equation}
+\frac{\partial{RSS}}{\partial{\beta}}=-2\mathbf{X}^T\mathbf{y}+2\mathbf{X}^T\mathbf{X}\beta
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\mathbf{X}^T(\mathbf{y} - \mathbf{X}\beta) = 0.
+\end{equation}\]</span></p>
+<p>If <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> is nonsingular, then the unique solution is given by</p>
+<p><span class="math display">\[\begin{equation}
+\hat{\beta} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y},
+\end{equation}\]</span></p>
+<p>and the <em>fitted value</em> at the <span class="math inline">\(i\)</span>th input <span class="math inline">\(x_i\)</span> is</p>
+<p><span class="math display">\[\begin{equation}
+\hat{y}_i = \hat{y}(x_i) = x_i^T\hat{\beta}.
+\end{equation}\]</span></p>
+<p>At an arbitrary input <span class="math inline">\(x_0\)</span> the prediction is</p>
+<p><span class="math display">\[\begin{equation}
+\hat{y}(x_0) = x_0^T \hat\beta.
+\end{equation}\]</span></p>
+<p>The entire fitted surface is characterized by the <span class="math inline">\(p\)</span> parameters. Intuitively, it seems that we do not need a very large data set to fit such a model.</p>
+<pre class="python"><code># Linear regression
+mat_x = np.hstack((np.ones((sample_size*2, 1)), data_x))
+mat_xt = np.transpose(mat_x)
+vec_y = data_y
+
+# Solve (X^T*X)b = X^T*y for b
+ols_beta = np.linalg.solve(np.matmul(mat_xt, mat_x), np.matmul(mat_xt, vec_y))
+
+print(&#39;=== Estimated Coefficients for OLS ===&#39;)
+print(&#39;beta0:&#39;, ols_beta[0], &#39;(constant)&#39;)
+print(&#39;beta1:&#39;, ols_beta[1])
+print(&#39;beta2:&#39;, ols_beta[2])</code></pre>
+<pre><code>=== Estimated Coefficients for OLS ===
+beta0: 0.4409182185615338 (constant)
+beta1: -0.09141131859617739
+beta2: 0.20146884857094918</code></pre>
+<pre class="python"><code>len(mat_x)</code></pre>
+<pre><code>200</code></pre>
+</div>
+<div id="linear-model-in-a-classification-context" class="section level3">
+<h3>Linear model in a classification context</h3>
+<p>FIGURE 2.1 shows a scatterplot of training data on a pair of inputs <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>.
+* The output class variable <span class="math inline">\(G\)</span> has the values <span class="math inline">\(\textsf{BLUE}\)</span> or <span class="math inline">\(\textsf{ORANGE}\)</span>.
+* There are 100 points in each of the two classes.
+* The linear regression model was fit to these data, with the response <span class="math inline">\(Y\)</span> coded as <span class="math inline">\(0\)</span> for <span class="math inline">\(\textsf{BLUE}\)</span> and <span class="math inline">\(1\)</span> for <span class="math inline">\(\textsf{ORANGE}\)</span>.</p>
+<p>The fitted value <span class="math inline">\(\hat{Y}\)</span> are converted to a fitted class variable <span class="math inline">\(\hat{G}\)</span> according to the rule</p>
+<p><span class="math display">\[\begin{equation}
+\hat{G} = \begin{cases}
+1 &amp; \text{ (ORANGE) } &amp; \text{ if } \hat{Y} \gt 0.5,\\
+0 &amp; \text{ (BLUE) } &amp; \text{ if } \hat{Y} \le 0.5.
+\end{cases}
+\end{equation}\]</span></p>
+<p>And the two predicted classes are separated by the <em>decision boundary</em> <span class="math inline">\(\{x: x^T\hat{\beta} = 0.5\}\)</span>, which in linear.</p>
+<blockquote>
+<p>The decision boundary is <span class="math inline">\(\hat{y}=0.5\)</span> then
+<span class="math inline">\(\hat{y} = X^T\hat{\beta} = \begin{bmatrix} 1&amp;x&amp;y\\ \end{bmatrix}\begin{bmatrix} \hat{\beta_0}\\ \hat{\beta_1}\\ \hat{\beta_2}\\ \end{bmatrix}= \hat{\beta_0} + \hat{\beta_1}x + \hat{\beta_2}y = 0.5\)</span></p>
+</blockquote>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.1. A classification example in 2D.&quot;&quot;&quot;
+# Plot for OLS
+ax2 = fig.add_subplot(2, 2, 2)
+
+ax2.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;, color=&#39;C0&#39;)
+ax2.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;)
+
+# OLS line for y_hat = X^T\beta_hat = 0.5
+ols_line_y_min = (.5 - ols_beta[0] - plot_x_min*ols_beta[1])/ols_beta[2]
+ols_line_y_max = (.5 - ols_beta[0] - plot_x_max*ols_beta[1])/ols_beta[2]
+ax2.plot([plot_x_min, plot_x_max], [ols_line_y_min, ols_line_y_max], color=&#39;black&#39;)
+
+# https://matplotlib.org/examples/pylab_examples/fill_between_demo.html
+ax2.fill_between([plot_x_min, plot_x_max], plot_y_min, [ols_line_y_min, ols_line_y_max],
+                facecolor=&#39;blue&#39;, alpha=.2)
+ax2.fill_between([plot_x_min, plot_x_max], [ols_line_y_min, ols_line_y_max], plot_y_max,
+                facecolor=&#39;orange&#39;, alpha=.2)
+ax2.set_title(&#39;Linear Regression of 0/1 Response&#39;)
+ax2.set_xlim((plot_x_min, plot_x_max))
+ax2.set_ylim((plot_y_min, plot_y_max))
+fig</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_17_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>ols_line_y_min</code></pre>
+<pre><code>-0.6629370145399807</code></pre>
+<pre class="python"><code>ols_line_y_max</code></pre>
+<pre><code>2.321034034948018</code></pre>
+</div>
+<div id="where-the-data-came-from" class="section level3">
+<h3>Where the data came from?</h3>
+<p>We see that for these data there are several misclassifications on both sides of the decision boundary. Perhaps our linear model is too rigid – or are such errors unavoidable? Remember that these are errors on the training data itself, and we have not said where the constructed came from (although this notebook already exposed the oracle). Consider the two possible scenarios:
+* <span class="math inline">\(\text{Scenario 1}\)</span>: The training data in each class were generated from bivariate Gaussian distributions with uncorrelated components and different means.
+* <span class="math inline">\(\text{Scenario 2}\)</span>: The training data in each class came from a mixture of 10 low-variance Gaussian distributions, with individual means themselves distributed as Gaussian.</p>
+<p>A mixture of Gaussians is best described in terms of the generative model.
+* One first generates a discrete variable that determines which of the component Gaussians to use,
+* and then generates an observation from the chosen density.</p>
+<p>In the case of one Gaussian per class, we will see in Chapter 4 that a linear decision boundary is the best one can do, and that our estimate is almost optimal. The region of overlap is inevitable, and future data to be predicted will be plagued by this overlap as well.</p>
+</div>
+</div>
+<div id="s-2.3.2-nearest-neighbor-methods" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.3.2 Nearest-Neighbor Methods</h2>
+<p>Now we look at another classification and regression procedure that is in some sense at the opposite end of the spectrum to the linear model, and far better suited to the second scenario.</p>
+<blockquote>
+<p>Nearest-neighbor methods use those observations in the training set <span class="math inline">\(\mathcal{T}\)</span> closest in input space to <span class="math inline">\(x\)</span> to form <span class="math inline">\(\hat{Y}\)</span>.</p>
+</blockquote>
+<p>The kNN fit for <span class="math inline">\(\hat{Y}\)</span> is defined as follows:</p>
+<p><span class="math display">\[\begin{equation}
+\hat{Y}(x) = \frac{1}{k}\sum_{x_i\in N_k(x)} y_i,
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(N_k(x)\)</span> is the neighborhood of <span class="math inline">\(x\)</span> defined by the <span class="math inline">\(k\)</span> closest points <span class="math inline">\(x_i\)</span> in the training sample. Closeness implies a metric, which for the moment we assume is Euclidean distance.</p>
+<blockquote>
+<p>So, in other words, we find the <span class="math inline">\(k\)</span> observations with <span class="math inline">\(x_i\)</span> closest to <span class="math inline">\(x\)</span> in input space, and average their responses.</p>
+</blockquote>
+<p>In FIGURE 2.2 we use the same training data, and use 15NN averaging of the binary coded response as the method of fitting. Thus <span class="math inline">\(\hat{Y}\)</span> is the proportion of <span class="math inline">\(\textsf{ORANGE}\)</span>s in the neighborhood, and so assigning class <span class="math inline">\(\text{ORANGE}\)</span> to <span class="math inline">\(\hat{G}\)</span> if <span class="math inline">\(\hat{Y} &gt; 0.5\)</span> amounts to a majority vote in the neighborhood.</p>
+<p>We see that the decision boundaries that separate the <span class="math inline">\(\textsf{BLUE}\)</span> from the <span class="math inline">\(\textsf{ORANGE}\)</span> regions are far more irregular, and respond to local clusters where one class dominates.</p>
+<pre class="python"><code># K-nearest neighbors
+def knn(k: int, point, data_x, data_y) -&gt; float:
+    if not isinstance(point, np.ndarray):
+        point = np.array(point)
+    distances = [(sum((x - point)**2), y) for x, y in zip(data_x, data_y)]
+    distances.sort()
+    return sum(y for _, y in distances[:k])/k</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.2. 15-nearest-neighbor method&quot;&quot;&quot;
+# Compute KNN for k = 15
+knn_grid = np.array([(i, j)
+                     for i in np.arange(plot_x_min, plot_x_max, .1)
+                     for j in np.arange(plot_y_min, plot_y_max, .1)])
+
+# knn15_result contains the x coordinate，y coordinate of point(x,y) and knn value
+knn15_result = np.array([
+    (i, j, knn(15, (i, j), data_x, vec_y))
+    for i, j in knn_grid
+])
+
+# Plot for KNN with k = 15
+
+knn15_blue = np.array([
+    (i, j)
+    for i, j, knn15 in knn15_result
+    if knn15 &lt; .5
+])
+knn15_orange = np.array([
+    (i, j)
+    for i, j, knn15 in knn15_result
+    if knn15 &gt; .5
+])
+ax3 = fig.add_subplot(2, 2, 3)
+# KNN areas
+ax3.plot(knn15_blue[:, 0], knn15_blue[:, 1], &#39;o&#39;, alpha=.2)
+ax3.plot(knn15_orange[:, 0], knn15_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;, alpha=.2)
+# Original data
+ax3.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;, color=&#39;C0&#39;)
+ax3.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;)
+ax3.set_title(&#39;15-Nearest Neighbor Classifier&#39;)
+fig</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_23_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>knn_grid</code></pre>
+<pre><code>array([[-2.10742982, -2.75163406],
+       [-2.10742982, -2.65163406],
+       [-2.10742982, -2.55163406],
+       ...,
+       [ 4.39257018,  3.34836594],
+       [ 4.39257018,  3.44836594],
+       [ 4.39257018,  3.54836594]])</code></pre>
+<pre class="python"><code>knn15_result</code></pre>
+<pre><code>array([[-2.10742982, -2.75163406,  0.33333333],
+       [-2.10742982, -2.65163406,  0.4       ],
+       [-2.10742982, -2.55163406,  0.4       ],
+       ...,
+       [ 4.39257018,  3.34836594,  0.46666667],
+       [ 4.39257018,  3.44836594,  0.53333333],
+       [ 4.39257018,  3.54836594,  0.53333333]])</code></pre>
+<p>FIGURE 2.3 shows the results for 1NN classification: $ is assigned the value <span class="math inline">\(y_l\)</span> of the closest point <span class="math inline">\(x_l\)</span> to <span class="math inline">\(x\)</span> in the training data. In this case the regions of classification can be computed relatively easily, and correspond to a <em>Voronoi tessellation</em> of the training data.</p>
+<p>The decision boundary is even more irregular than before.</p>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.3. 1-nearest-neighbor method&quot;&quot;&quot;
+# Compute KNN for k = 1
+knn1_result = np.array([
+    (i, j, knn(1, (i, j), data_x, vec_y))
+    for i, j in knn_grid
+])
+
+knn1_blue = np.array([
+    (i, j)
+    for i, j, knn1 in knn1_result
+    if knn1 &lt; .5
+])
+knn1_orange = np.array([
+    (i, j)
+    for i, j, knn1 in knn1_result
+    if knn1 &gt; .5
+])
+
+# Plot for KNN with k = 1
+ax4 = fig.add_subplot(2, 2, 4)
+# KNN areas
+ax4.plot(knn1_blue[:, 0], knn1_blue[:, 1], &#39;o&#39;, alpha=.2)
+ax4.plot(knn1_orange[:, 0], knn1_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;, alpha=.2)
+# Original data
+ax4.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;, color=&#39;C0&#39;)
+ax4.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;orange&#39;)
+ax4.set_title(&#39;1-Nearest Neighbor Classifier&#39;)
+fig</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_27_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The method of kNN averaging is defined in exactly the same way for regression of a quantitative output <span class="math inline">\(Y\)</span>, although <span class="math inline">\(k=1\)</span> would be an unlikely choice.</p>
+<div id="do-not-satisfy-with-the-training-results" class="section level3">
+<h3>Do not satisfy with the training results</h3>
+<p>With 15NN, We see that far fewer training observations are misclassfied than the linear model fit. This should not give us too much comfort, though, since using 1NN <em>none</em> of the training data are misclassified.</p>
+<p>A little thought suggests that for kNN fits, the error on the training data should be approximately an increasing function of <span class="math inline">\(k\)</span>, and will always be 0 for <span class="math inline">\(k=1\)</span>.</p>
+<p>An independent test set would give us a more satisfactory means for comparing the different methods.</p>
+</div>
+<div id="effective-number-of-parameters" class="section level3">
+<h3>Effective number of parameters</h3>
+<p>It appears that kNN fits have a single parameter, the number of neighbors <span class="math inline">\(k\)</span>, compared to the <span class="math inline">\(p\)</span> parameters in least-squares fit. Although this is the case, we will see that the <em>effective</em> number of parameters of kNN is <span class="math inline">\(N/k\)</span> and is generally bigger than <span class="math inline">\(p\)</span>, and decreases with increasing <span class="math inline">\(k\)</span>.</p>
+<p>To get an idea of why, note that if the neighborhoods were nonoverlapping, there would be <span class="math inline">\(N/k\)</span> neighborhoods and we fit one parameter (a mean) in each neighborhood.</p>
+</div>
+<div id="do-not-appreciate-the-training-errors" class="section level3">
+<h3>Do not appreciate the training errors</h3>
+<p>It is also clear that we cannot use sum-of-squared errors on the training set as a criterion for picking <span class="math inline">\(k\)</span>, since we would always pick <span class="math inline">\(k=1\)</span>! It would seem that kNN methods would be more appropriate for the mixture Scenario 2, while for Scenario 1 the decision boundaries for kNN would be unnecessarily noisy.</p>
+</div>
+</div>
+<div id="s-2.3.3.-from-least-squares-to-nearest-neighbors" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.3.3. From Least Squares to Nearest Neighbors</h2>
+<p>A large subset of the most popular techniques in use today are variants of these two simple procedures. In facti 1NN, the simplest of all, captures a large percentage of the market for low-dimensional problems.</p>
+<p>The following list describes some ways in which these simple procedures have been enhanced:
+* Kernel methods use weights that decrease smoothly to zero with distance from the target point, rather than the effectve 0/1 weights used by kNN.
+* In high-dimensional spaces the distance kernels are modified to emphasize some variable more than others.
+* Local regression fits linear models by locally weighted least squares, rather than fitting constants locally.
+* Linear models fit to a basis expansion of the original inputs allow arbitrarilly complex models.
+* Projection pursuit and neural network models consist of sums of nonlinearly transfromed linear models.</p>
+</div>
+</div>
+<div id="s-2.4.-statistical-decision-theory" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.4. Statistical Decision Theory</h1>
+<p>In this section we develop a small amount of theory that provides a framework for developing models. We first consider the case of a quantitative output, and place outselves in the world of random variables nad probability spaces.</p>
+<div id="definitions" class="section level3">
+<h3>Definitions</h3>
+<p>Let
+* <span class="math inline">\(X\in\mathbb{R}^p\)</span> denote a real valued random input vector, and
+* <span class="math inline">\(Y\in\mathbb{R}\)</span> a real valued random output variable,
+* with joint distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span>.</p>
+<p>We seek a function <span class="math inline">\(f(X)\)</span> for predicting <span class="math inline">\(Y\)</span> given values of the input <span class="math inline">\(X\)</span>.</p>
+<div id="loss" class="section level4">
+<h4>Loss</h4>
+<p>This Theory requires a <em>loss function</em> <span class="math inline">\(L(Y, f(X))\)</span> for penalizing errors in prediction, and by for the most common and convenient is <em>squared error loss</em>:</p>
+<p><span class="math display">\[\begin{equation}
+L(Y, f(X)) = (Y-f(X))^2.
+\end{equation}\]</span></p>
+</div>
+<div id="expected-prediction-error" class="section level4">
+<h4>Expected prediction error</h4>
+<p>This leads us to a criterion for choosing <span class="math inline">\(f\)</span> the expected (squared) prediction error:</p>
+<p><span class="math display">\[\begin{align}
+\text{EPE}(f) &amp;= \text{E}(Y-f(X))^2\\
+&amp;= \int\left(y-f(x)\right)^2\text{Pr}(dx,dy)\\
+&amp;= \int\left(y-f(x)\right)^2p(x,y)dxdy\\
+&amp;= \int_x\int_y\left(y-f(x)\right)^2p(x,y)dxdy\\
+&amp;= \int_x\int_y\left(y-f(x)\right)^2p(y|x)p(x)dxdy\\
+&amp;= \int_x\Biggl(\int_y\left(y-f(x)\right)^2p(y|x)dy\Biggr)p(x)dx\\
+&amp;= \int_x\Biggl(E_{Y|X}([Y-f(X)]^2|X=x)\Biggr)p(x)dx\\
+&amp;= E_XE_{Y|X}([Y-f(X)]^2|X=x),
+\end{align}\]</span></p>
+<p>By conditioning on <span class="math inline">\(X\)</span>, we can write EPE as</p>
+<p><span class="math display">\[\begin{equation}
+\text{EPE}(f) = \text{E}_X\text{E}_{Y|X}\left(\left[Y-f(X)\right]^2|X=x\right)
+\end{equation}\]</span></p>
+<p>and we see that it suffices to minimize EPE pointwise:</p>
+<p><span class="math display">\[\begin{equation}
+f(x) = \arg\min_c\text{E}_{Y|X}\left(\left[Y-c\right]^2|X=x\right)
+\end{equation}\]</span></p>
+<p>Where <span class="math inline">\(argmin\)</span> is argument of the minimum. The simplest example is <span class="math inline">\(argmin_xf(x)\)</span> is the value of <span class="math inline">\(x\)</span> for which <span class="math inline">\(f(x)\)</span> attains it’s minimum.</p>
+<p>Since
+<span class="math display">\[\begin{align}
+E(E(X|Y))&amp;=\int E(X|Y=y)f_Y(y)dy\\
+&amp;=\iint xf_{X|Y}(x|y)dxf_Y(y)dy\\
+&amp;=\iint xf_{X|Y}(x|y)f_Y(y)dxdy\\
+&amp;=\iint xf_{XY}(x,y)dxdy\\
+&amp;=\int x\Bigl(\int f_{XY}(x,y)dy\Bigr)dx\\
+&amp;=\int xf_X(x)dx\\
+&amp;=E(X)
+\end{align}\]</span>
+and then
+<span class="math display">\[\begin{align}
+E\Bigl((Y-f(X))^2|X\Bigr)&amp;=E\Biggl(\Bigl([Y-E(Y|X)]+[E(Y|X)-f(X)]\Bigr)^2|X\Biggr)\\
+&amp;=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)+E\Biggl(\Bigl([E(Y|X)-f(X)]\Bigr)^2|X\Biggr)+2E\Biggl(\Bigl([Y-E(Y|X)][E(Y|X)-f(X)]\Bigr)|X\Biggr)\\
+&amp;=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)+E\Biggl(\Bigl([E(Y|X)-f(X)]\Bigr)^2|X\Biggr)+2\Biggl(\Bigl([E(Y|X)-f(X)]\Bigr)E\Bigl([Y-E(Y|X)]\Bigr)|X\Biggr)\\
+&amp;(\text{since } [E(Y|X)-f(X)] \text{ is constant given } X)\\
+&amp;\text{and since }E\Bigl([Y-E(Y|X)]\Bigr)=E(Y)-E(E(Y|X))=E(Y)-E(Y)=0\\
+&amp;=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)+E\Biggl(\Bigl([E(Y|X)-f(X)]\Bigr)^2|X\Biggr)\\
+&amp;\ge E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)
+\end{align}\]</span></p>
+<p>When <span class="math inline">\(E(Y|X)-f(X)=0\\ E\Bigl((Y-f(X))^2|X\Bigr)=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)\)</span>
+#### Regression function
+The solution is the conditional expectation a.k.a. the <em>regression</em> function:</p>
+<p><span class="math display">\[\begin{equation}
+f(x) = \text{E}\left(Y|X=x\right)
+\end{equation}\]</span></p>
+<blockquote>
+<p>Thus the best prediction of <span class="math inline">\(Y\)</span> at any point <span class="math inline">\(X=x\)</span> is the conditional mean, when best is measured by average squared error.</p>
+</blockquote>
+</div>
+</div>
+<div id="conclusions-first" class="section level3">
+<h3>Conclusions first</h3>
+<p>Both KNN and least squares will end up approximating conditional expectations by averages. But they differ dramatically in terms of model assumptions:
+* Least squares assumes <span class="math inline">\(f(x)\)</span> is well approximated by a globally linear function.
+* <span class="math inline">\(k\)</span>-nearest neighbors assumes <span class="math inline">\(f(x)\)</span> is well approximated by a locally constant function.
+Although the latter seems more palatable, we will see below that we may pay a price for this flexibility.</p>
+</div>
+<div id="the-light-and-shadows-of-knn" class="section level3">
+<h3>The light and shadows of kNN</h3>
+<p>The kNN attempts to directly implement this recipe using the training data:</p>
+<p><span class="math display">\[\begin{equation}
+\hat{f}(x) = \text{Ave}\left(y_i|x_i\in N_k(x)\right),
+\end{equation}\]</span></p>
+<p>where
+* “<span class="math inline">\(\text{Ave}\)</span>” denotes average, and
+* <span class="math inline">\(N_k(x)\)</span> is the neighborhood containing the <span class="math inline">\(k\)</span> points in <span class="math inline">\(\mathcal{T}\)</span> closest to <span class="math inline">\(x\)</span>.</p>
+<p>Two approximations are happening here:
+* Expectation is approximated by averaging over sample data;
+* conditioning at a point is relaxed to conditioning on some region “close” to the target point.</p>
+<p>For large training sample size <span class="math inline">\(N\)</span>, the points in the neighborhood are likely to be close to <span class="math inline">\(x\)</span>, and as <span class="math inline">\(k\)</span> gets large the average will get more stable. In fact, under mild regularity conditions on the joint probability distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span>, one can show that</p>
+<p><span class="math display">\[\begin{equation}
+\hat{f}(x)\rightarrow\text{E}(Y|X=x)\text{ as }N,k\rightarrow\infty\text{ s.t. }k/N\rightarrow0
+\end{equation}\]</span></p>
+<div id="isnt-it-perfect" class="section level4">
+<h4>Isn’t it perfect?</h4>
+<p>In light of this, why look further, since it seems we have a universal approximator?
+* We often do not have very large samples.<br />
+Linear models can usually get a more stable estimate than kNN, provided the structured model is appropriate (although such knowledge has to be learned from the data as well).
+* Curse of dimensionality.<br />
+As the dimension <span class="math inline">\(p\)</span> gets large, so does the metric size of the <span class="math inline">\(k\)</span>-nearest neighborhood. So settling for kNN as a surrogate for conditioning will fail us miserably.<br />
+The convergence above still holds, but the <em>rate</em> of convergence decreases as the dimension increases.</p>
+</div>
+</div>
+<div id="model-based-approach-for-linear-regression" class="section level3">
+<h3>Model-based approach for linear regression</h3>
+<p>How does linear regression fit into this framework? The simplest explanation is that one assumes that the regression function <span class="math inline">\(f(x)\)</span> is approximately linear in its arguments:</p>
+<p><span class="math display">\[\begin{equation}
+f(x)\approx x^T\beta.
+\end{equation}\]</span></p>
+<p>This is a model-based approach – we specify a model for the regression function.</p>
+<p>Plugging this linear model for <span class="math inline">\(f(x)\)</span> into EPE and differentiating, we can solve for <span class="math inline">\(\beta\)</span> theoretically:</p>
+<p><span class="math display">\[\begin{equation}
+EPE(\beta)=\int(y-x^T\beta)^2P(dx,dy)
+\end{equation}\]</span></p>
+<p>Then
+<span class="math display">\[\begin{equation}
+\frac{\partial{EPE}}{\partial{\beta}}=\int2(y-x^T\beta)(-1)xP(dx,dy)\\
+=-2\int(y-x^T\beta)xP(dx,dy)\\
+\text{since } y-x^T\beta \text{ are scalars }\\
+=-2\int(yx-xx^T\beta)P(dx,dy)\\
+\end{equation}\]</span></p>
+<p>Let
+<span class="math display">\[\begin{equation}
+\frac{\partial{EPE}}{\partial{\beta}}=0
+\end{equation}\]</span>
+Then
+<span class="math display">\[\begin{equation}
+\int(yx-xx^T\beta)P(dx,dy)=E(yx)-E(xx^T\beta)=E(yx)- E(xx^T)\beta=0
+\end{equation}\]</span>
+Then
+<span class="math display">\[\begin{equation}
+\beta = E(xx^T)^{-1}E(yx)
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\beta = \left[\text{E}\left(XX^T\right)\right]^{-1}\text{E}(XY)
+\end{equation}\]</span></p>
+<p>Note we have <em>not</em> conditioned on <span class="math inline">\(X\)</span>; rather we have used out knowledge of the functional relationship to <em>pool</em> over values of <span class="math inline">\(X\)</span>. The least squares solution</p>
+<p><span class="math display">\[\begin{equation}
+\hat\beta = \left( \mathbf{X}^T \mathbf{X} \right)^{-1} \mathbf{X}^T \mathbf{y}
+\end{equation}\]</span></p>
+<p>amounts to replacing the expectation in the theoretical solution by averages over the training data.</p>
+</div>
+<div id="knn-vs.-least-squares" class="section level3">
+<h3>kNN vs. least squares</h3>
+<p>So both kNN and least squares end up approximating conditional expectations by averages. But they differ dramatically in terms of model assumptions:
+* Least squares assumes <span class="math inline">\(f(x)\)</span> is well approximated by a globally linear function.
+* kNN assumes <span class="math inline">\(f(x)\)</span> is well approximated by a locally constant function.</p>
+<p>Although the latter seems more palatable, we have already seen that we may pay a price for this flexibility.</p>
+</div>
+<div id="additive-models-brief-on-modern-techniques" class="section level3">
+<h3>Additive models (Brief on modern techniques)</h3>
+<p>Many of the more modern techniques described in this book are model based, although far more flexible than the rigid linear model.</p>
+<p>For example, additive models assume that</p>
+<p><span class="math display">\[\begin{equation}
+f(X) = \sum_{j=1}^p f_j(X_j).
+\end{equation}\]</span></p>
+<p>This retains the additivity of the linear model, but each coordinate function <span class="math inline">\(f_j\)</span> is arbitrary. It turns out that the optimal estimate for the additive model uses techniques such as kNN to approximate <em>univariate</em> conditional expectations <em>simultaneously</em> for each of the coordinate functions.</p>
+<p>Thus the problems of estimating a conditional expectation in high dimensions are swept away in this case by imposing some (often unrealistic) model assumptions, in this case additivity.</p>
+</div>
+<div id="are-we-happy-with-l_2-loss-yes-so-far." class="section level3">
+<h3>Are we happy with <span class="math inline">\(L_2\)</span> loss? Yes, so far.</h3>
+<p>If we replace the <span class="math inline">\(L_2\)</span> loss function with the <span class="math inline">\(L_1\)</span>:</p>
+<p><span class="math display">\[\begin{equation}
+E\left| Y - f(X) \right|,
+\end{equation}\]</span></p>
+<p>the solution in this case is the conditional median,</p>
+<p><span class="math display">\[\begin{equation}
+\hat{f}(x) = \text{median}(Y|X=x),
+\end{equation}\]</span></p>
+<p>which is a different measure of location, and its estimates are more robust than those for the conditional mean.</p>
+<p><span class="math inline">\(L_1\)</span> criteria have discontinuities in their derivatives, which have hindered their widespread use. Other more resistant loss functions will be mentioned in later chapters, but squared error is analytically convenient and the most popular.</p>
+</div>
+<div id="bayes-classifier-for-a-categorical-output-with-0-1-loss-function" class="section level3">
+<h3>Bayes classifier: For a categorical output with 0-1 loss function</h3>
+<p>The same paradigm works when the output is a categorical variale <span class="math inline">\(G\)</span>, except we need a different loss function for penalizing prediction errors. An estimate <span class="math inline">\(\hat{G}\)</span> will assume values in <span class="math inline">\(\mathcal{G}\)</span>, the set of possible classes.</p>
+<p>Our loss function can be represented by <span class="math inline">\(K\times K\)</span> matrix <span class="math inline">\(\mathbf{L}\)</span>, where <span class="math inline">\(K=\text{card}(\mathcal{G})\)</span>. <span class="math inline">\(\mathbf{L}\)</span> will be zero on the diagonal and nonnegative elsewhere, representing the price paid for misclassifying <span class="math inline">\(\mathcal{G}_k\)</span> as <span class="math inline">\(\mathcal{G}_l\)</span>;</p>
+<p><span class="math display">\[\begin{equation}
+\mathbf{L} = \begin{bmatrix}
+0 &amp; L(\mathcal{G}_1, \mathcal{G}_2) &amp; \cdots &amp; L(\mathcal{G}_1, \mathcal{G}_K) \\
+L(\mathcal{G}_2, \mathcal{G}_1) &amp; 0 &amp; \cdots &amp; L(\mathcal{G}_2, \mathcal{G}_K) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+L(\mathcal{G}_K, \mathcal{G}_1) &amp; L(\mathcal{G}_K, \mathcal{G}_2) &amp; \cdots &amp; 0
+\end{bmatrix}
+\end{equation}\]</span></p>
+<p>The expected prediction error is</p>
+<p><span class="math display">\[\begin{equation}
+\text{EPE} = \text{E}\left[L(G, \hat{G}(X)\right],
+\end{equation}\]</span></p>
+<p>where the expectation is taken w.r.t. the joint distribution <span class="math inline">\(\text{Pr}(G, X)\)</span>.</p>
+<p>Again we condition, and can write EPE as</p>
+<p><span class="math display">\[\begin{equation}
+\text{EPE} = \text{E}_X\sum^K_{k=1}L\left(\mathcal{G}_k, \hat{G}(X)\right)\text{Pr}\left(\mathcal{G}_k|X\right)
+\end{equation}\]</span></p>
+<p>and again it suffices to minimize EPE pointwise:</p>
+<p><span class="math display">\[\begin{equation}
+\hat{G}(x) = \arg\min_{g\in\mathcal{G}}\sum^K_{k=1} L\left(\mathcal{G}_k,g\right)\text{Pr}\left(\mathcal{G}_k|X=x\right)
+\end{equation}\]</span></p>
+<div id="loss-for-bayes-classifier" class="section level4">
+<h4>0-1 loss for Bayes classifier</h4>
+<p>Most often we use the <em>zero-one</em> loss function, where all misclassifications are charged a single unit, i.e.,</p>
+<p><span class="math display">\[\begin{equation}
+L(k,l) = \begin{cases}
+0\text{ if }k = l,\\
+1\text{ otherwise}.
+\end{cases}
+\end{equation}\]</span></p>
+<p>With the 0-1 loss function this simplifies to</p>
+<p><span class="math display">\[\begin{align}
+\hat{G}(x) &amp;= \arg\min_{g\in\mathcal{G}} \left[1 - \text{Pr}(g|X=x)\right]\\
+&amp;= \mathcal{G}_k \text{ if Pr}\left(\mathcal{G}_k|X=x\right) = \max_{g\in\mathcal{G}}\text{Pr}(g|X=x)
+\end{align}\]</span></p>
+<p>This reasonable solution is known as the <em>Bayes classifier</em>, and says that we classify to the most probable class, using the conditional (discrete) distribution <span class="math inline">\(\text{Pr}(G|X)\)</span>. FIGURE 2.5 shows the Bayes-optimal decision boundary for our simulation example. The error rate of the Bayes classifier is called the <em>Bayes rate</em>.</p>
+<pre class="python"><code>%matplotlib inline
+import random
+import numpy as np
+import scipy
+import scipy.stats
+import matplotlib.pyplot as plt</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.5. The optimal Bayes decision boundary for the simulation example.
+Since the generating density is known for each class, this decision boundary can be
+calculated exactly.&quot;&quot;&quot;
+sample_size = 100
+# Parameters for mean distributions
+mean_blue = [1, 0]
+mean_orange = [0, 1]
+mean_cov = np.eye(2)
+mean_size = 10
+
+# Additional parameters for blue and orange distributions
+sample_cov = np.eye(2)/5
+
+# Generate mean components for blue and orange (10 means for each)
+sample_blue_mean = np.random.multivariate_normal(mean_blue, mean_cov, mean_size)
+sample_orange_mean = np.random.multivariate_normal(mean_orange, mean_cov, mean_size)
+
+# Generate blue points
+sample_blue = np.array([
+    np.random.multivariate_normal(sample_blue_mean[random.randint(0, 9)], sample_cov)
+    for _ in range(sample_size)
+])
+y_blue = np.zeros(sample_size)
+
+# Generate orange points
+sample_orange = np.array([
+    np.random.multivariate_normal(sample_orange_mean[random.randint(0, 9)], sample_cov)
+    for _ in range(sample_size)
+])
+y_orange = np.ones(sample_size)
+
+data_x = np.concatenate((sample_blue, sample_orange), axis=0)
+data_y = np.concatenate((y_blue, y_orange)) </code></pre>
+<pre class="python"><code>def density_blue(arr:np.ndarray)-&gt;np.ndarray:
+    densities = np.array([
+        scipy.stats.multivariate_normal.pdf(arr, mean=m, cov=mean_cov)
+        for m in sample_blue_mean
+    ])
+    return densities.mean(axis=0)
+
+
+def density_orange(arr:np.ndarray)-&gt;np.ndarray:
+    densities = np.array([
+        scipy.stats.multivariate_normal.pdf(arr, mean=m, cov=mean_cov)
+        for m in sample_orange_mean
+    ])
+    return densities.mean(axis=0)</code></pre>
+<pre class="python"><code>min_x = data_x.min(axis=0)
+max_x = data_x.max(axis=0)
+print(min_x, max_x)
+arr = np.array([(i, j)
+                   for i in np.linspace(min_x[0]-.1, max_x[0]+.1, 100)
+                   for j in np.linspace(min_x[1]-.1, max_x[1]+.1, 100)])
+proba_blue = density_blue(arr)
+proba_orange = density_orange(arr)</code></pre>
+<pre><code>[-2.53219024 -2.30121419] [2.50789865 2.91277445]</code></pre>
+<pre class="python"><code>arr</code></pre>
+<pre><code>array([[-2.63219024, -2.40121419],
+       [-2.63219024, -2.34652744],
+       [-2.63219024, -2.29184069],
+       ...,
+       [ 2.60789865,  2.90340094],
+       [ 2.60789865,  2.9580877 ],
+       [ 2.60789865,  3.01277445]])</code></pre>
+<pre class="python"><code># Plot
+fig = plt.figure(1)
+ax = fig.add_subplot(1, 1, 1)
+# Original data
+ax.plot(sample_blue[:, 0], sample_blue[:, 1], &#39;o&#39;, color=&#39;C0&#39;)
+ax.plot(sample_orange[:, 0], sample_orange[:, 1], &#39;o&#39;, color=&#39;C1&#39;)
+# Bayes classifier
+mask_blue = proba_blue &gt; proba_orange
+mask_orange = ~mask_blue
+ax.plot(arr[mask_blue, 0], arr[mask_blue, 1], &#39;o&#39;,
+        markersize=2, color=&#39;C0&#39;, alpha=.2)
+ax.plot(arr[mask_orange, 0], arr[mask_orange, 1], &#39;o&#39;,
+        markersize=2, color=&#39;C1&#39;, alpha=.2)
+ax.set_title(&#39;Bayes Optimal Classifier&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_47_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+</div>
+<div id="knn-and-bayes-classifier" class="section level3">
+<h3>KNN and Bayes classifier</h3>
+<p>Again we see that the kNN classifier directly approximates this solution – a majority vote in a nearest neighborhood amounts to exactly this, except that
+* conditional probability at a point is relaxed to conditional probability within a neighborhood of a point,
+* and probabilities are estimated by training-sample proportions.</p>
+</div>
+<div id="from-two-class-to-k-class" class="section level3">
+<h3>From two-class to <span class="math inline">\(K\)</span>-class</h3>
+<p>Suppose for a two-class problem we had taken the dummy-variable approach and coded <span class="math inline">\(G\)</span> via a binary <span class="math inline">\(Y\)</span>, followed by squared error loss estimation. Then</p>
+<p><span class="math display">\[\begin{equation}
+\hat{f}(X) = \text{E}(Y|X) = \text{Pr}(G=\mathcal{G}_1|X)
+\end{equation}\]</span></p>
+<p>if <span class="math inline">\(\mathcal{G}_1\)</span> corresponded to <span class="math inline">\(Y=1\)</span>.</p>
+<p>Likewise for a <span class="math inline">\(K\)</span>-class problem,</p>
+<p><span class="math display">\[\begin{equation}
+\text{E}(Y_k|X) = \text{Pr}(G=\mathcal{G}_k|X).
+\end{equation}\]</span></p>
+<blockquote>
+<p>This shows that our dummy-variable regression procedure, followed by classification to the largest fitted value, is another way of representing the Bayes classifier.</p>
+</blockquote>
+<p>Although this theory is exact, in practice problems can occur, depending on the regression model used. For example, when linear regression is used, <span class="math inline">\(\hat{f}(X)\)</span> need not be positive, and we might be suspicious about using it as an estimate of a probability. We will discuss a variety of approaches to modeling <span class="math inline">\(\text{Pr}(G|X)\)</span> in Chapter 4.</p>
+</div>
+</div>
+<div id="s-2.5.-local-methods-in-high-dimensions" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.5. Local Methods in High Dimensions</h1>
+<p>We have examined two learning techniques for prediction so far;
+* the stable but biased linear model and
+* the less stable but apparently less biased class of kNN estimates.</p>
+<p>It would seem that with a reasonably large set of training data, we could always approximate the theoretically optimal conditional expectation by kNN averaging, since we should be able to find a fairly large neighborhood of observations close to any <span class="math inline">\(x\)</span> and average them.</p>
+<div id="the-curse-of-dimensionality-bellman-1961" class="section level3">
+<h3>The curse of dimensionality (Bellman, 1961)</h3>
+<p>This approach and our intuition breaks down in high dimensions, and the phenomenon is commonly referred to as the <em>curse of dimensionality</em> (Bellman, 1961). There are many manifestations of this problem, and we will examine a few here.</p>
+</div>
+<div id="the-first-example-unit-hypercube" class="section level3">
+<h3>The first example: Unit hypercube</h3>
+<p>Consider the nearest-neighbor procedure for inputs uniformly distributed in a p-dimensional unit hypercube. Suppose we send out a hypercubical neighborhood about a target point to capture a fraction <span class="math inline">\(r\)</span> of the observations. Since this corresponds to a fraction <span class="math inline">\(r\)</span> of the unit volume, the expected edge length will be</p>
+<p><span class="math display">\[\begin{equation}
+e_p(r) = r^{1/p}.
+\end{equation}\]</span></p>
+<p>Note that <span class="math inline">\(e_{10}(.01) = 0.63\)</span> and <span class="math inline">\(e_{10}(.1) = .80\)</span>, while the entire range for each input is only 1.0. Soto capture 1% or 10% of the data to form a local average, we must cover 63% or 80% of the range of each input variable. Such neighborhoods are no longer “local.”</p>
+<p>Reducing <span class="math inline">\(r\)</span> dramatically does not help much either, since the fewer observations we average, the higher is the variance of our fit.</p>
+<pre class="python"><code>%matplotlib inline
+import math
+import random
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.6. (right panel) The unit hypercube example&quot;&quot;&quot;
+fraction_of_volume = np.arange(0, 1, 0.001)
+edge_length_p1 = fraction_of_volume
+edge_length_p2 = fraction_of_volume**.5
+edge_length_p3 = fraction_of_volume**(1/3)
+edge_length_p10 = fraction_of_volume**.1
+
+fig1 = plt.figure(1)
+ax11 = fig1.add_subplot(1, 1, 1)
+ax11.plot(fraction_of_volume, edge_length_p10, label=&#39;p=10&#39;)
+ax11.plot(fraction_of_volume, edge_length_p3, label=&#39;p=3&#39;)
+ax11.plot(fraction_of_volume, edge_length_p2, label=&#39;p=2&#39;)
+ax11.plot(fraction_of_volume, edge_length_p1, label=&#39;p=1&#39;)
+ax11.set_xlabel(&#39;Fraction of Volume&#39;)
+ax11.set_ylabel(&#39;Distance&#39;)
+ax11.legend()
+ax11.plot([.1, .1], [0, 1], &#39;--&#39;, color=&#39;C0&#39;, alpha=.5)
+ax11.plot([.3, .3], [0, 1], &#39;--&#39;, color=&#39;C0&#39;, alpha=.5)
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_53_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="the-second-example-unit-ball" class="section level3">
+<h3>The second example: Unit ball</h3>
+<p>In high dimensions all sample points are close to an edge of the sample.</p>
+<p>Consider <span class="math inline">\(N\)</span> data points uniformly distributed in a <span class="math inline">\(p\)</span>-dimensional unit ball centered at the origin. And consider a nearest-neighbor estimate at the origin. The median distance from the orign to the closest data point is given by the expression (Exercise 2.3)</p>
+<p><span class="math display">\[\begin{equation}
+d(p,N) = \left(1-\frac{1}{2}^{1/N}\right)^{1/p}.
+\end{equation}\]</span></p>
+<p>A more complicated expression exists for the mean distance to the closest point.</p>
+<p>For <span class="math inline">\(N=500, p=10\)</span>, <span class="math inline">\(d(p,N)\approx0.52\)</span>, more than half way to the boundary. Hence most data points are close to the boundary of the sample space than to any other data point.</p>
+<p>Why is this a problem? Prediction is much more difficult near the edges of the training sample. One must extrapolate from neighboring sample points rather than interpolate between them.</p>
+</div>
+<div id="the-third-example-sampling-density" class="section level3">
+<h3>The third example: Sampling density</h3>
+<p>Another manifestiation of the curse is that the sampling density is proportional to <span class="math inline">\(N^{1/p}\)</span>.</p>
+<p>If <span class="math inline">\(N_1=100\)</span> represents a dense sample for a single input problem, then <span class="math inline">\(N_{10}=100^{10}\)</span> is the sample size required for the same sampling density with 10 inputs. Thus in high dimensions all feasible training samples sparsely populate the input space.</p>
+</div>
+<div id="the-fourth-example-bias-variance-decomposition" class="section level3">
+<h3>The fourth example: Bias-variance decomposition</h3>
+<p>Let us construct another uniform example. Suppose
+* we have 1000 training examples <span class="math inline">\(x_i\)</span> generated uniformly on <span class="math inline">\([-1,1]^p\)</span>, and
+* the true relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is</p>
+<p><span class="math display">\[\begin{equation}
+  Y = f(X) = e^{-8\|X\|^2},
+  \end{equation}\]</span></p>
+<p>without any measurement error.
+* We use the 1NN rule to predict <span class="math inline">\(y_0\)</span> at the test-point <span class="math inline">\(x_0=0\)</span>.</p>
+<p>Denote the training set by <span class="math inline">\(\mathcal{T}\)</span>. We can compute the expected prediction error at <span class="math inline">\(x_0\)</span> for our procedure, averaging over all such samples of size 1000. Since the problem is deterministic, this is the mean squared error (MSE) for estimating <span class="math inline">\(f(0)\)</span>.</p>
+<p><span class="math display">\[\begin{align}
+\text{MSE}(x_0) &amp;= \text{E}_\mathcal{T}\left[f(x_0)-\hat{y}_0\right]^2 \\
+&amp;= \text{E}_\mathcal{T}\left[f(x_0) -\text{E}_\mathcal{T}(\hat{y}_0) + \text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0\right]^2 \\
+&amp;= \text{E}_\mathcal{T}\left[\hat{y}_0 - \text{E}_\mathcal{T}(\hat{y}_0)\right]^2 + \left[\text{E}_\mathcal{T}(\hat{y}_0)-f(x_0)\right]^2 + 2\left[\text{E}_\mathcal{T}(\hat{y}_0)-f(x_0)\right]\text{E}_\mathcal{T}\left[\hat{y}_0 - \text{E}_\mathcal{T}(\hat{y}_0)\right]\\
+&amp;= \text{E}_\mathcal{T}\left[\hat{y}_0 - \text{E}_\mathcal{T}(\hat{y}_0)\right]^2 + \left[\text{E}_\mathcal{T}(\hat{y}_0)-f(x_0)\right]^2 \\
+&amp;= \text{Var}_\mathcal{T}(\hat{y}_0) + \text{Bias}^2(\hat{y}_0)
+\end{align}\]</span></p>
+<p>We have broken down the MSE into two components that will become familiar as we proceed: Variance and squared bias. Such a decomposition is always possible and often useful, and is known as the <em>bias-variance decomposition</em>.</p>
+<p>FIGURE 2.7 illustrates the setup. Unless the nearest neighbor is at 0, <span class="math inline">\(\hat{y}\)</span> will be biased downward. The variance is due to the sampling variance of the 1NN.</p>
+<pre class="python"><code>np.array([random.uniform(-1, 1) for _ in range(100)])</code></pre>
+<pre><code>array([ 0.52362402, -0.94160915,  0.76358392, -0.92365576, -0.30958527,
+        0.41281719, -0.7303279 , -0.91000641,  0.45042398,  0.65164906,
+        0.6156556 ,  0.43792673,  0.60248841, -0.83713385, -0.26846477,
+        0.35379219, -0.5860781 , -0.84750126,  0.15911063,  0.63183339,
+        0.47572948,  0.23940263, -0.13400333, -0.6860668 ,  0.22164816,
+        0.64684125, -0.47198284, -0.92006244, -0.24139513, -0.85121428,
+       -0.98214255,  0.87564502, -0.96080989, -0.88877688,  0.94252343,
+       -0.03999984, -0.17849397,  0.90958777,  0.06223157, -0.47722939,
+        0.80215919, -0.43945665, -0.59054645,  0.69098503,  0.8374996 ,
+       -0.01377477, -0.7367969 , -0.08373888,  0.97429187,  0.66285725,
+       -0.10196032,  0.52860923,  0.00819558, -0.28304599,  0.73095748,
+        0.26700299, -0.53518844, -0.43642706, -0.47041087, -0.41063947,
+       -0.63719431,  0.59294264, -0.61269841,  0.22890798,  0.90696006,
+       -0.11469428,  0.54643137,  0.09056606,  0.62173869, -0.63675044,
+       -0.9171507 ,  0.71368708, -0.53387976, -0.98530483,  0.44847328,
+        0.39126753, -0.42727058, -0.26641845, -0.36734638, -0.81923262,
+        0.60957656,  0.34521713,  0.4844742 , -0.95246551,  0.48442516,
+        0.30898226, -0.69295518,  0.75276877, -0.88029808,  0.97490338,
+        0.51909274, -0.89696155,  0.07237896,  0.30061967,  0.77811674,
+        0.32136716, -0.96534051, -0.98091785,  0.71521181,  0.0677101 ])</code></pre>
+<pre class="python"><code> np.array([
+     [random.uniform(-1, 1) for _ in range(2)] for _ in range(10)])</code></pre>
+<pre><code>array([[-0.48601796, -0.44968368],
+       [-0.77970785,  0.89003972],
+       [-0.79092711,  0.61238668],
+       [ 0.67055626,  0.44152098],
+       [ 0.66777796, -0.89992495],
+       [-0.5107149 ,  0.13814159],
+       [-0.48246821, -0.55975761],
+       [ 0.51114079,  0.9236153 ],
+       [-0.43424228,  0.7123616 ],
+       [-0.57744428,  0.47452944]])</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.7. (bottom panels) Bias-variance decomposition example.
+Given the dimension p, 100 simulations are done and the following steps are
+taken for each simulation.
+1. Generate data of size 1000 from [-1, 1]^p
+2. Grap the nearest neighbor x of 0 and calculate the distance, i.e., norm
+3. Calculate y=f(x) and the variance and the squared bias for simulation
+of size 100.
+&quot;&quot;&quot;
+import math
+def generate_data(p: int, n: int) -&gt;np.ndarray:
+    if p == 1:
+        return np.array([random.uniform(-1, 1) for _ in range(n)])
+    return np.array([
+        [random.uniform(-1, 1) for _ in range(p)]
+        for _ in range(n)
+    ])
+
+
+def f(p: int, x: np.ndarray) -&gt;float:
+    if p == 1:
+        return math.exp(-8*(x**2))
+    return math.exp(-8*sum(xi*xi for xi in x))
+
+# np.linalg.norm to return one of eight different matrix norms, or one of an infinite number of vector norms
+# ord=2 is the Order of the norm
+# axis=1 it specifies the axis of x along which to compute the vector norms, 0 for columns; 1 for rows.
+def simulate(p: int, nsample:int, nsim: int) -&gt;dict:
+    res = {&#39;average_distance&#39;: 0}
+    sum_y = 0
+    sum_y_square = 0
+    for _ in range(nsim):
+        data = generate_data(p, nsample)
+        if p == 1:
+            data_norm = np.abs(data)
+        else:
+            data_norm = np.linalg.norm(data, ord=2, axis=1)
+        nearest_index = data_norm.argmin()
+        nearest_x, nearest_distance = data[nearest_index], data_norm[nearest_index]
+        nearest_y = f(p, nearest_x)
+        sum_y += nearest_y
+        sum_y_square += nearest_y*nearest_y
+        res[&#39;average_distance&#39;] += nearest_distance
+    average_y = sum_y/nsim
+    res[&#39;average_distance&#39;] /= nsim
+    res[&#39;variance&#39;] = sum_y_square/nsim - average_y*average_y
+    res[&#39;squared_bias&#39;] = (1-average_y)*(1-average_y)
+    return res</code></pre>
+<pre class="python"><code>nsim = 100
+data = {p: simulate(p, 1000, nsim) for p in range(1, 11)}
+dimension = list(data.keys())
+average_distance = [d[&#39;average_distance&#39;] for p, d in data.items()]
+variance = np.array([d[&#39;variance&#39;] for p, d in data.items()])
+squared_bias = np.array([d[&#39;squared_bias&#39;] for p, d in data.items()])
+mse = variance + squared_bias
+
+fig2 = plt.figure(2, figsize=(10, 5))
+ax21 = fig2.add_subplot(1, 2, 1)
+ax21.set_title(&#39;Distance to 1-NN vs. Dimension&#39;)
+ax21.plot(dimension, average_distance, &#39;ro--&#39;)
+ax21.set_xlabel(&#39;Dimension&#39;)
+ax21.set_ylabel(&#39;Average Distance to Nearest Neighbor&#39;)
+
+ax22 = fig2.add_subplot(1, 2, 2)
+ax22.set_title(&#39;MSE vs. Dimension&#39;)
+ax22.plot(dimension, mse, &#39;o-&#39;, label=&#39;MSE&#39;)
+ax22.plot(dimension, variance, &#39;o-&#39;, label=&#39;Variance&#39;)
+ax22.plot(dimension, squared_bias, &#39;o-&#39;, label=&#39;Squared Bias&#39;)
+ax22.set_xlabel(&#39;Dimension&#39;)
+ax22.set_ylabel(&#39;MSE&#39;)
+ax22.legend()
+plt.savefig(&quot;savefig.pdf&quot;, dpi=300, facecolor=&#39;w&#39;, edgecolor=&#39;w&#39;,
+        orientation=&#39;portrait&#39;, papertype=&#39;letter&#39;, format=&#39;pdf&#39;,
+        transparent=False, bbox_inches=None, pad_inches=0.1,
+        metadata=None)
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_60_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The Frobenius norm is given by:</p>
+<p><span class="math inline">\(||A||_F = [\sum_{i,j} abs(a_{i,j})^2]^{1/2}\)</span></p>
+<pre class="python"><code>#plot the target function (no noise)
+
+import matplotlib.pyplot as plt
+import math
+import random
+import numpy as np
+
+def f(p: int, x: np.ndarray) -&gt;float:
+    if p == 1:
+        return math.exp(-8*(x**2))
+    return math.exp(-8*sum(xi*xi for xi in x))
+x_cords = np.linspace(-1.0, 1.0, 201)
+y_cords = [f(1, x) for x in x_cords]
+
+#The training point (10% of total) is indicated by the blue tick mark.
+fig9 = plt.figure(1, figsize=(6, 6))
+ax91 = fig9.add_subplot(1, 1, 1)
+ax91.plot(x_cords, y_cords, &#39;g&#39;)
+ax91.plot([0,0],[-0.05,1.05], color=&quot;0&quot;, linewidth=1)
+ax91.plot([0.2,0.2],[f(1,0.2),1], &quot;b--&quot;, linewidth=0.5)
+ax91.plot([0.0,0.2],[1,1], &quot;b--&quot;, linewidth=0.5)
+ax91.set_title(&#39;1-NN in One Dimension&#39;)
+ax91.set_xlabel(&#39;X&#39;)
+ax91.set_ylabel(&#39;f(X)&#39;)
+ax91.margins(0,0)
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_62_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>In low dimensions and with <span class="math inline">\(N = 1000\)</span>, the nearest neighbor is very close to <span class="math inline">\(0\)</span>, and so both the bias and variance are small. As the dimension increases, the nearest neighbor tends to stray further from the target point, and both bias and variance are incurred. By <span class="math inline">\(p = 10\)</span>, for more than <span class="math inline">\(99\%\)</span> of the samples the nearest neighbor is a distance greater than <span class="math inline">\(0.5\)</span> from the origin.</p>
+<p>Thus as <span class="math inline">\(p\)</span> increases, the estimate tends to be 0 more often than not, and hence the MSE levels off at 1.0, as does the bias, and the variance starts dropping (an artifact of this example).</p>
+<p>Although this is a highly contrived example, similar phenomena occur more generally. The complexity of functions of many variables can grow exponentially with the dimension, and if we wish to be able to estimate such functions with the same accuracy as functions in low dimension, then we need the size of our training set to grow exponentially as well. In this example, the function is a complex interaction of all <span class="math inline">\(p\)</span> variables involved.</p>
+<p>The dependence of the bias term on distance depends on the truch, and it need not always dominate with 1NN. For example, if the function always involves only a few dimensions as in FIGURE 2.8, then the variance can dominate instead.</p>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.8. The variance-dominating example.&quot;&quot;&quot;
+
+#plot the target function (no noise)
+import matplotlib.pyplot as plt
+import math
+
+def f2(p: int, x: np.ndarray) -&gt;float:
+    if p == 1:
+        return (x+1)**3/2
+    return (x[0]+1)**3/2
+
+x_cords = np.linspace(-1.0, 1.0, 201)
+y_cords = [f2(1, x) for x in x_cords]
+
+
+#The training point (10% of total) is indicated by the blue tick mark.
+fig8 = plt.figure(2, figsize=(12, 6))
+ax81 = fig8.add_subplot(1, 2, 1)
+ax81.plot(x_cords, y_cords, &#39;skyblue&#39;)
+ax81.plot([0,0],[-0.05,4.05], color=&quot;0&quot;, linewidth=1)
+ax81.plot([0,0.2],[f2(1,0),f2(1,0)], &quot;b--&quot;, linewidth=0.5)
+ax81.plot([0.2,0.2],[f2(1, 0), f2(1, 0.2)], &quot;b--&quot;, linewidth=0.5)
+ax81.set_title(&#39;1-NN in One Dimension&#39;)
+ax81.set_xlabel(&#39;X&#39;)
+ax81.set_ylabel(&#39;f(X)&#39;)
+ax81.margins(0,0)
+
+def generate_data(p: int, n: int) -&gt;np.ndarray:
+    if p == 1:
+        return np.array([random.uniform(-1, 1) for _ in range(n)])
+    return np.array([
+        [random.uniform(-1, 1) for _ in range(p)]
+        for _ in range(n)
+    ])
+
+def simulate(p: int, nsample:int, nsim: int) -&gt;dict:
+    res = {&#39;average_distance&#39;: 0}
+    sum_y = 0
+    sum_y_square = 0
+    for _ in range(nsim):
+        data = generate_data(p, nsample)
+        if p == 1:
+            data_norm = np.abs(data)
+        else:
+            data_norm = np.linalg.norm(data, ord=2, axis=1)
+        nearest_index = data_norm.argmin()
+        nearest_x, nearest_distance = data[nearest_index], data_norm[nearest_index]
+        nearest_y = f2(p, nearest_x)
+        sum_y += nearest_y
+        sum_y_square += nearest_y*nearest_y
+        res[&#39;average_distance&#39;] += nearest_distance
+    average_y = sum_y/nsim
+    res[&#39;average_distance&#39;] /= nsim
+    res[&#39;variance&#39;] = sum_y_square/nsim - average_y*average_y
+    res[&#39;squared_bias&#39;] = (f2(1,0)-average_y)*(f2(1,0)-average_y)
+    return res
+
+nsim = 100
+data = {p: simulate(p, 1000, nsim) for p in range(1, 11)}
+dimension = list(data.keys())
+average_distance = [d[&#39;average_distance&#39;] for p, d in data.items()]
+variance = np.array([d[&#39;variance&#39;] for p, d in data.items()])
+squared_bias = np.array([d[&#39;squared_bias&#39;] for p, d in data.items()])
+mse = variance + squared_bias
+
+ax82 = fig8.add_subplot(1, 2, 2)
+ax82.set_title(&#39;MSE vs. Dimension&#39;)
+ax82.plot(dimension, mse, &#39;o-&#39;, label=&#39;MSE&#39;)
+ax82.plot(dimension, variance, &#39;o-&#39;, label=&#39;Variance&#39;)
+ax82.plot(dimension, squared_bias, &#39;o-&#39;, label=&#39;Squared Bias&#39;)
+ax82.set_xlabel(&#39;Dimension&#39;)
+ax82.set_ylabel(&#39;MSE&#39;)
+ax82.legend()
+
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_64_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="what-good-about-the-linear-model" class="section level3">
+<h3>What good about the linear model?</h3>
+<blockquote>
+<p>By imposing some heavy restrictions on the class of models being fitted, we can avoid the curse of dimensionality.</p>
+</blockquote>
+<p>Suppose the relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> is linear,</p>
+<p><span class="math display">\[\begin{equation}
+Y=X^T\beta+\epsilon,
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\epsilon\sim N(0,\sigma^2)\)</span>.</p>
+<p>We fit the model by least squares to the training data.</p>
+<p><span class="math display">\[\begin{equation}
+\hat{\beta}=(X^TX)^{-1}X^Ty=(X^TX)^{-1}X^T(X\beta+\epsilon)\\
+=\beta+(X^TX)^{-1}X^T\epsilon
+\end{equation}\]</span></p>
+<p>For an arbitrary test point <span class="math inline">\(x_0\)</span>, we have <span class="math inline">\(\hat{y_0} = x_0^T \hat\beta\)</span>,
+<span class="math display">\[\begin{equation}
+\hat{y}_0=x_0^T\hat{\beta}=x_0^T\beta+x_0^T(X^TX)^{-1}X^T\epsilon\\
+=x_0^T\beta+(X(X^TX)^{-1}x_0)^T\epsilon\\
+=x_0^T \beta + \sum_{i=1}^N l_i(x_0) \epsilon_i,
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(l_i(x_0)\)</span> is the <span class="math inline">\(i\)</span>th element of <span class="math inline">\(\mathbf{X}\left( \mathbf{X}^T \mathbf{X} \right)^{-1} x_0\)</span>.</p>
+<p>Since under this model the least squares estimates are unbiased, we find that the expected (squared) prediction error at <span class="math inline">\(x_0\)</span>:
+Since
+<span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[y_0-x_0^T\beta]=\text{E}_{y_0|x_0}[y_0-x_0^T\beta]\text{E}_\mathcal{T}=0\text{E}_\mathcal{T}=0
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[y_0-x_0^T\beta]^2=\text{Var}(y_0|x_0)=\sigma^2
+\end{equation}\]</span>
+And
+<span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]=\text{E}_{y_0|x_0}0=0
+\end{equation}\]</span></p>
+<p>And since the expectation of the length <span class="math inline">\(N\)</span> vector <span class="math inline">\(\epsilon\)</span> is zero.</p>
+<p><span class="math display">\[\begin{equation}
+\text{E}_\mathcal{T}(\hat{y}_0)-x_0^T\beta=\text{E}_\mathcal{T}(x_0^T\beta+(X(X^TX)^{-1}x_0)^T\epsilon)-x_0^T\beta\\
+=\text{E}_\mathcal{T}(X(X^TX)^{-1}x_0)^T\epsilon=0
+\end{equation}\]</span></p>
+<p>And
+<span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\Biggl([y_0-x_0^T\beta][\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]\Biggr)=[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]\text{E}_{y_0|x_0}[y_0-x_0^T\beta]=0
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{align}
+\text{EPE}(x_0) &amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\left(y_0-\hat{y}_0\right)^2 \\
+&amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\Biggl([y_0-x_0^T\beta]+[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]+[x_0^T\beta-\text{E}_\mathcal{T}(\hat{y}_0)]\Biggr)^2 \\
+&amp;= \text{Var}(y_0|x_0) + \text{E}_\mathcal{T} \left(\hat{y}_0 - \text{E}_\mathcal{T}\hat{y}_0\right)^2 + \left(\text{E}_\mathcal{T}\hat{y}_0 - x_0^T\beta\right)^2 \\
+&amp;= \text{Var}(y_0|x_0) + \text{Var}_\mathcal{T}(\hat{y}_0) + \text{Bias}^2(\hat{y}_0) \\
+&amp;= \text{Var}(y_0|x_0) + \text{Var}_\mathcal{T}(\hat{y}_0) + 0 \\
+&amp;= \sigma^2 + \text{E}_\mathcal{T}x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\sigma^2.
+\end{align}\]</span></p>
+<p>Note that
+1. An additional variance <span class="math inline">\(\sigma^2\)</span> is incurred, since our target is not deterministic.
+2. There is no bias, and the variance depends on <span class="math inline">\(x_0\)</span>.</p>
+<p>If
+* <span class="math inline">\(N\)</span> is large,
+* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
+* <span class="math inline">\(\text{E}(X)=0\)</span>,</p>
+<p>then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\rightarrow N\text{Cov}(X)\)</span> and</p>
+<p><span class="math display">\[\begin{align}
+\text{E}_{x_0}\text{EPE}(x_0) &amp;\sim \text{E}_{x_0}x_0^T\text{Cov}(X)^{-1}x_0\sigma^2/N + \sigma^2 \\
+&amp;= \text{E}_{x_0}\Bigl[\text{trace}(x_0^T\text{Cov}(X)^{-1}x_0)\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \text{E}_{x_0}\Bigl[\text{trace}(\text{Cov}(X)^{-1}x_0x_0^T)\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \Bigl[\text{trace}(\text{Cov}(X)^{-1}\text{Cov}(x_0))\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \text{trace}\left(\text{Cov}(X)^{-1}\text{Cov}(x_0)\right)\sigma^2/N + \sigma^2 \\
+&amp;= \text{trace}(I_p)\sigma^2/N + \sigma^2 \\
+&amp;= \sigma^2(p/N)+\sigma^2.
+\end{align}\]</span></p>
+<p>The expected EPE increases linearly as a function of <span class="math inline">\(p\)</span>, with slope <span class="math inline">\(\sigma^2/N\)</span>. If <span class="math inline">\(N\)</span> is large and/or <span class="math inline">\(\sigma^2\)</span> is small, this growth is variance is negligible (0 in the deterministic case).</p>
+<p>By imposing some heavy restrictions on the class of models being fitted, we have avoided the curse of dimensionality. Some of the technical details are derived in Exercise 2.5.</p>
+</div>
+<div id="epe-comparison-1nn-vs.-least-squares" class="section level3">
+<h3>EPE comparison: 1NN vs. least squares</h3>
+<p>FIGURE 2.9 compares 1NN vs. least squares in two situations, both of which have the form</p>
+<p><span class="math display">\[\begin{equation}
+Y = f(X) + \epsilon,
+\end{equation}\]</span></p>
+<ul>
+<li><span class="math inline">\(X\)</span> uniform as before,</li>
+<li><span class="math inline">\(\epsilon \sim N(0,1)\)</span>,</li>
+<li><span class="math inline">\(N=500\)</span>.</li>
+</ul>
+<p>For the orange curve, <span class="math inline">\(f(x) = x_1\)</span> is linear in the first coordinate, for the blue curve, <span class="math inline">\(f(x) = \frac{1}{2}(x_1+1)^3\)</span> is cubic as in the figure.</p>
+<pre class="python"><code>np.random.uniform(-1, 1, size=(10, 3))[:, 0]</code></pre>
+<pre><code>array([-0.61759521,  0.59642885,  0.52856294, -0.51102936,  0.7582173 ,
+        0.37392417,  0.04149905,  0.38397366,  0.85792946, -0.58157994])</code></pre>
+<pre class="python"><code># Cut the dimension using [:, :dim]
+np.random.uniform(-1, 1, size=(10, 3))[:, :2]</code></pre>
+<pre><code>array([[ 0.01719569,  0.8104598 ],
+       [-0.7992207 , -0.1717739 ],
+       [ 0.45592493, -0.80862509],
+       [ 0.94327868, -0.63571168],
+       [-0.61028311,  0.4234042 ],
+       [-0.33729951, -0.40925221],
+       [ 0.31626791, -0.45314239],
+       [-0.02476081, -0.01779324],
+       [ 0.75235307, -0.3562242 ],
+       [-0.07984536, -0.76341629]])</code></pre>
+<pre class="python"><code>(np.random.uniform(-1, 1, size=(10, 3))[:, :2])*(np.random.uniform(-1, 1, size=(10, 3))[:, :2])</code></pre>
+<pre><code>array([[-0.00848305, -0.14429979],
+       [ 0.08565318, -0.71950832],
+       [ 0.1717854 , -0.34590402],
+       [ 0.03021633, -0.48307884],
+       [ 0.77018078,  0.02259718],
+       [ 0.10105322, -0.42038542],
+       [ 0.18740025, -0.1727471 ],
+       [-0.06960062,  0.02860003],
+       [-0.35619697, -0.0278165 ],
+       [-0.33956579,  0.00973043]])</code></pre>
+<pre class="python"><code># use np.hstack to combine the columns
+np.hstack((np.ones((10, 1)), np.random.uniform(-1, 1, size=(10, 3))[:, :2]))</code></pre>
+<pre><code>array([[ 1.        ,  0.10496641,  0.26744231],
+       [ 1.        , -0.21702965,  0.50820341],
+       [ 1.        ,  0.42527179,  0.75056226],
+       [ 1.        ,  0.61792228,  0.9076206 ],
+       [ 1.        , -0.52970636, -0.66967477],
+       [ 1.        ,  0.46928742,  0.52278373],
+       [ 1.        ,  0.49645549,  0.42786775],
+       [ 1.        , -0.97161169,  0.62793184],
+       [ 1.        , -0.62037455, -0.75072864],
+       [ 1.        ,  0.93673585, -0.89934708]])</code></pre>
+<pre class="python"><code># generate random errors with default (mean=0,std=1) distribution
+np.random.randn(100).mean()</code></pre>
+<pre><code>-0.08955780990662486</code></pre>
+<pre class="python"><code>np.random.randn(100).std()</code></pre>
+<pre><code>1.0511418057538773</code></pre>
+<pre class="python"><code>np.array([1] + [0]*3)</code></pre>
+<pre><code>array([1, 0, 0, 0])</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;FIGURE 2.9. Relative EPE (at x_0 = 0) ratio for 1NN vs. least squares&quot;&quot;&quot;
+size_simulation = 10000
+size_train = 500
+p = 10
+
+list_epe_ols_linear = []
+list_epe_1nn_linear = []
+list_epe_ols_cubic = []
+list_epe_1nn_cubic = []
+
+for _ in range(size_simulation):
+    epe_linear = []
+    # Generate data
+    train_x = np.random.uniform(-1, 1, size=(size_train, p))
+    # train_y_linear is the first column of train_x (X_1)
+    train_y_linear = train_x[:, 0]
+    train_y_cubic = ((train_x[:, 0]+1)**3)/2
+    train_error = np.random.randn(size_train)
+    train_ye_linear = train_y_linear + train_error
+    train_ye_cubic = train_y_cubic + train_error
+    
+    epe_ols_linear = []
+    epe_1nn_linear = []
+    epe_ols_cubic = []
+    epe_1nn_cubic = []
+    for dim in range(1, p+1):
+        # Cut the dimension
+        partial_x = train_x[:, :dim]
+        partial_1x = np.hstack((np.ones((size_train, 1)), partial_x))
+        
+        obs_y_linear = np.random.randn(1)
+        obs_y_cubic = .5 + np.random.randn(1)
+
+        # Least squares for linear f
+        xx = partial_1x.T @ partial_1x
+        xy_linear = partial_1x.T @ train_ye_linear
+        xxxy_linear = np.linalg.solve(xx, xy_linear)
+        hat_ols = np.array([1] + [0]*dim) @ xxxy_linear
+        epe_ols_linear.append((hat_ols-obs_y_linear)**2)
+
+        # 1NN for linear f
+        mat_norm = (partial_x*partial_x).sum(axis=1)
+        nn = mat_norm.argmin()
+        hat_1nn = train_ye_linear[nn]
+        epe_1nn_linear.append((hat_1nn-obs_y_linear)**2)
+        
+        # Least squares for cubic f
+        xy_cubic = partial_1x.T @ train_ye_cubic
+        xxxy_cubic = np.linalg.solve(xx, xy_cubic)
+        hat_ols = np.array([1] + [0]*dim) @ xxxy_cubic
+        epe_ols_cubic.append((hat_ols-obs_y_cubic)**2)
+        
+        # 1NN for cubic f
+        hat_1nn = train_ye_cubic[nn]
+        epe_1nn_cubic.append((hat_1nn-obs_y_cubic)**2)
+
+    list_epe_ols_linear.append(epe_ols_linear)
+    list_epe_1nn_linear.append(epe_1nn_linear)
+    list_epe_ols_cubic.append(epe_ols_cubic)
+    list_epe_1nn_cubic.append(epe_1nn_cubic)
+
+arr_epe_ols_linear = np.array(list_epe_ols_linear)
+arr_epe_1nn_linear = np.array(list_epe_1nn_linear)
+arr_epe_ols_cubic = np.array(list_epe_ols_cubic)
+arr_epe_1nn_cubic = np.array(list_epe_1nn_cubic)
+
+# Compute EPE, finally
+epe_ols_linear = arr_epe_ols_linear.mean(axis=0)
+epe_1nn_linear = arr_epe_1nn_linear.mean(axis=0)
+epe_ols_cubic = arr_epe_ols_cubic.mean(axis=0)
+epe_1nn_cubic = arr_epe_1nn_cubic.mean(axis=0)
+
+# Plot
+plot_x = list(range(1, p+1))
+fig4 = plt.figure(4)
+ax41 = fig4.add_subplot(1, 1, 1)
+ax41.plot(plot_x, epe_1nn_linear/epe_ols_linear, &#39;-o&#39;,
+          color=&#39;C1&#39;, label=&#39;Linear&#39;)
+ax41.plot(plot_x, epe_1nn_cubic/epe_ols_cubic, &#39;-o&#39;,
+          color=&#39;C0&#39;, label=&#39;Cubic&#39;)
+ax41.legend()
+ax41.set_xlabel(&#39;Dimension&#39;)
+ax41.set_ylabel(&#39;EPE Ratio&#39;)
+ax41.set_title(&#39;Expected Prediction Error of 1NN vs. OLS&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="2-Overview-of-Supervised-Learning_files/2-Overview-of-Supervised-Learning_74_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># list_epe_ols_linear is 10000 X 10 list
+len(list_epe_ols_linear)</code></pre>
+<pre><code>10000</code></pre>
+<pre class="python"><code># arr_epe_ols_linear is 10000 X 10 array
+len(arr_epe_ols_linear)</code></pre>
+<pre><code>10000</code></pre>
+<pre class="python"><code>epe_ols_linear</code></pre>
+<pre><code>array([[0.98240917],
+       [0.97851524],
+       [1.01285594],
+       [1.00377149],
+       [0.99835949],
+       [1.00265193],
+       [1.00174265],
+       [0.99765609],
+       [1.02053042],
+       [1.00488109]])</code></pre>
+<div id="linear-case" class="section level4">
+<h4>Linear case</h4>
+<p>Shown is the relative EPE of 1NN to least squares, which appears to start at around 2 for the linear case.</p>
+<p>Least squares is unbiased in this case, and as discussed above the EPE is slightly above <span class="math inline">\(\sigma^2 = 1\)</span>.</p>
+<p>The EPE for 1NN is always above 2, since the variance of <span class="math inline">\(\hat{f}(x_0)\)</span> in this case is at least <span class="math inline">\(\sigma^2\)</span>, and the ratio increases with dimension as the nearest neighbor strays from the target point.</p>
+</div>
+<div id="cubic-case" class="section level4">
+<h4>Cubic case</h4>
+<p>For the cubic case, least squares is biased, which moderates the ratio.</p>
+<p>Clearly we could manufacture examples where the bias of least squares would dominate the variance, and the 1NN would come out the winner.</p>
+<blockquote>
+<p>By relying on rigid assumptions, the linear model has no bias at all and negligible variance, while the error in 1-nearest neighbor is substantially larger. However, if the assumptions are wrong, all bets are off and the 1-nearest neighbor may dominate. We will see that there is a whole spectrum of models between the rigid linear models and the extremely flexible 1-nearest-neighbor models, each with their own assumptions and biases, which have been proposed specifically to avoid the exponential growth in complexity of functions in high dimensions by drawing heavily on these assumptions.</p>
+</blockquote>
+<p>Before we delve more deeply, let us elaborate a bit on the concept of <em>statistical models</em> and see how they fit into the prediction framework.</p>
+</div>
+</div>
+</div>
+<div id="s-2.6.-statistical-models-supervised-learning-and-function-approximation" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.6. Statistical Models, Supervised Learning and Function Approximation</h1>
+<div id="review" class="section level3">
+<h3>Review</h3>
+<p>Our goal is to find a useful approximation <span class="math inline">\(\hat{f}(x)\)</span> to <span class="math inline">\(f(x)\)</span> that underlies the predictive relationship between the inputs and outputs.</p>
+<p>In the theoretical setting of <span class="math inline">\(\S\)</span> 2.4, we saw that
+1. for a quantitative response, squared error loss lead us to the regression function</p>
+<p><span class="math display">\[\begin{equation}
+  f(x) = \text{E}(Y|X=x).
+  \end{equation}\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>The kNNs can be viewed as direct estimates of this conditional expectation,</li>
+<li>but kNNs can fail at least two ways:</li>
+</ol>
+<ul>
+<li>If the dimension of the input space is high, the nearest neighbors need not be close to the target point, and can result in large errors,</li>
+<li>if special structure is known to exist, this can be used to reduce both the bias and the variance of the estimates.</li>
+</ul>
+<blockquote>
+<p>We anticipate using other classes of models for <span class="math inline">\(f(x)\)</span>, in many cases specifically designed to overcome the dimensionality problems, and here we discuss a framework for incorporating them into the prediction problem.</p>
+</blockquote>
+</div>
+<div id="s-2.6.1.-a-statistical-model-for-the-joint-distribution-textprxy" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.6.1. A Statistical Model for the Joint Distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span></h2>
+<div id="the-additive-error-model" class="section level3">
+<h3>The additive error model</h3>
+<p>Suppose in fact that our data arose from a statistical model</p>
+<p><span class="math display">\[\begin{equation}
+Y = f(X) + \epsilon,
+\end{equation}\]</span></p>
+<p>where the random error <span class="math inline">\(\epsilon\)</span> has <span class="math inline">\(\text{E}(\epsilon)=0\)</span> and is independent of <span class="math inline">\(X\)</span>.</p>
+<p>Note that for this model,</p>
+<p><span class="math display">\[\begin{equation}
+f(x)=\text{E}(Y|X=x),
+\end{equation}\]</span></p>
+<p>and in fact the conditional distribution <span class="math inline">\(\text{Pr}(Y|X)\)</span> depends on <span class="math inline">\(X\)</span> only through the conditional mean <span class="math inline">\(f(x)\)</span>.</p>
+<p>The additive error model is a useful approximation to the truth. For most systems the input-output pairs <span class="math inline">\((X,Y)\)</span> will not have a deterministic relationship <span class="math inline">\(Y=f(X)\)</span>. Generally there will be other unmeasured variables that also contribute to <span class="math inline">\(Y\)</span>, including measurement error.</p>
+<p>The additive model assumes that we can capture all these departures from a deterministic relationship via the error <span class="math inline">\(\epsilon\)</span>.</p>
+<div id="where-the-deterministic-rules" class="section level4">
+<h4>Where the deterministic rules</h4>
+<p>For some problems a deterministic relationship does hold. Many of the classification problems studied in machine learning are of this form, where the response surface can be thought of as a colored map defined in <span class="math inline">\(\mathbb{R}^p\)</span>.</p>
+<p>The training data consist of colored examples from the map <span class="math inline">\(\{x_i,g_i\}\)</span>, and the goal is to be able to color any point. Here the function is deterministic, and the randomness enters through the <span class="math inline">\(x\)</span> location of the training points.</p>
+<p>For the moment we will not pursue such problems, but will see that they can be handled by techniques appropriate for the error-based models.</p>
+</div>
+</div>
+<div id="the-i.i.d.-assumption" class="section level3">
+<h3>The i.i.d. assumption</h3>
+<p>The assumption in the above additive error model that the errors are i.i.d. is not strictly necessary, but seems to be the back of our mind when we average squared errors uniformly in our EPE criterion.</p>
+<p>With such a model it becomes natural to use least squares as a data criterion for model estimation as in the linear model</p>
+<p><span class="math display">\[\begin{equation}
+\hat{Y} = \hat\beta_0 + \sum_{j=1}^p X_j \hat\beta_j.
+\end{equation}\]</span></p>
+<p>Simple modifications can be made to avoid the independence assumption; e.g., we can have</p>
+<p><span class="math display">\[\begin{equation}
+\text{Var}(Y|X=x)=\sigma(x),
+\end{equation}\]</span></p>
+<p>and now both the mean and variance depend on <span class="math inline">\(X\)</span>.</p>
+<p>In general <span class="math inline">\(\text{Pr}(Y|X)\)</span> can depend on X in complicated ways, but the additive error model precludes these.</p>
+</div>
+<div id="for-qualitative-outputs" class="section level3">
+<h3>For qualitative outputs</h3>
+<p>So far we have concentrated on the quantitative response.</p>
+<p>Additive error models are typically not used for qualitative outputs <span class="math inline">\(G\)</span>; in this case the target function <span class="math inline">\(p(X)\)</span> <em>is</em> the conditional density <span class="math inline">\(\text{Pr}(G|X)\)</span>, and this is modeled directly.</p>
+<p>For example, for two-class data, it is often reasonable to assume that the data arise from independent binary trials, with the probability of one particular outcome being <span class="math inline">\(p(X)\)</span>, and the other <span class="math inline">\(1 − p(X)\)</span>. Thus if <span class="math inline">\(Y\)</span> is the 0–1 coded version of <span class="math inline">\(G\)</span>, then
+<span class="math display">\[\begin{equation}
+\text{E}(Y |X = x) = p(x),
+\end{equation}\]</span></p>
+<p>but the variance depends on <span class="math inline">\(x\)</span> as well: <span class="math inline">\(\text{Var}(Y |X = x) = p(x)\left(1 − p(x)\right)\)</span>.</p>
+</div>
+</div>
+<div id="s-2.6.2.-supervised-learning" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.6.2. Supervised Learning</h2>
+<p>Before we launch into more statistically oriented jargon, we present the function-fitting paradigm from a machine learning point of view.</p>
+<p>Suppose for simplicity the additive error model</p>
+<p><span class="math display">\[\begin{equation}
+Y = f(X) + \epsilon
+\end{equation}\]</span></p>
+<p>is a reasonable assumption.</p>
+<p>Supervised learning attempts to learn <span class="math inline">\(f\)</span> by example through a <em>teacher</em>. One observes the system under study, both the inputs and outputs, and assembles a <em>training</em> set of observations</p>
+<p><span class="math display">\[\begin{equation}
+\mathcal{T} = \left\{ (x_i, y_i) : i = 1, \cdots, N \right\}.
+\end{equation}\]</span></p>
+<p>The observed input values to the system <span class="math inline">\(x_i\)</span> are also fed into an artificial system, known as a learning algorithm (usually a computer program), which also produces outputs <span class="math inline">\(\hat{f}(x_i)\)</span> in response to the inputs.</p>
+<p>The learning algorithm has the property that it can modify its input/output relationship <span class="math inline">\(\hat{f}\)</span> in response to differences <span class="math inline">\(y_i − \hat{f}(x_i)\)</span> between the original and generated outputs. This process is known as <em>learning by example</em>. Upon completion of the learning process the hope is that the artificial and real outputs will be close enough to be useful for all sets of inputs likely to be encountered in practice.</p>
+<p>This learning paradigm has been the motivation for research into the supervised learning problem in the fields of machine learning (with analogies to human reasoning) and neural networks (with biological analogies to the brain). The approach taken in applied mathematics and statistics has been from the perspective of function approximation and estimation.</p>
+</div>
+<div id="s-2.6.3.-function-approximation" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.6.3. Function Approximation</h2>
+<p>Here
+* the data pairs <span class="math inline">\(\{x_i, y_i\}\)</span> are viewed as points in a <span class="math inline">\((p+1)\)</span>-dimensional Euclidean space.
+* The function <span class="math inline">\(f(x)\)</span> has domain eqaul to the <span class="math inline">\(p\)</span>-dimensional input subspace (or <span class="math inline">\(\mathbb{R}^p\)</span> for convenience), and
+* <span class="math inline">\(f\)</span> is related to the data via a model such as <span class="math inline">\(y_i=f(x_i)+\epsilon\)</span>.</p>
+<p>The goal is to obtain a useful approximation to <span class="math inline">\(f(x)\)</span> for all <span class="math inline">\(x\)</span> in some region of <span class="math inline">\(\mathbb{R}^p\)</span>, given the representations in <span class="math inline">\(\mathcal{T}\)</span>.</p>
+<blockquote>
+<p>Although somewhat less glamorous than the learning paradigm, treating supervised learning as a problem in function approximation encourages the geometrical concepts of Euclidean spaces and mathematical concepts of probabilsitic inference to be applied to the problem. This is the approach taken in this book.</p>
+</blockquote>
+<div id="associated-parameters-and-basis-expansions" class="section level3">
+<h3>Associated parameters and basis expansions</h3>
+<p>Many of the approximations we will encounter have associated a set of parameters <span class="math inline">\(\theta\)</span> that can be modified to suit the data at hand. For example, the linear model</p>
+<p><span class="math display">\[\begin{equation}
+f(x) = x^T\beta
+\end{equation}\]</span></p>
+<p>has <span class="math inline">\(\theta=\beta\)</span>.</p>
+<p>Another class of useful approximators can be expressed as <em>linear basis expansions</em>
+<span class="math display">\[\begin{equation}
+f_\theta(x) = \sum_{k=1}^K h_k(x)\theta_k,
+\end{equation}\]</span>
+where the <span class="math inline">\(h_k\)</span> are a suitable set of functions or transformations of the input vector <span class="math inline">\(x\)</span>. Traditional examples are polynomial and trigonometric expansions, where for example <span class="math inline">\(h_k\)</span> might be <span class="math inline">\(x_1^2\)</span>, <span class="math inline">\(x_1x_2^2\)</span>, <span class="math inline">\(\text{cos}(x_1)\)</span> and so on.</p>
+<p>We also encounter nonlinear expansions, such as the sigmoid transformation common to neural network models,
+<span class="math display">\[\begin{equation}
+h_k(x) = \frac{1}{1+\text{exp}(-x^T\beta_k)}.
+\end{equation}\]</span></p>
+</div>
+<div id="least-squares-again" class="section level3">
+<h3>Least squares again</h3>
+<p>We can use least squares to estimate the parameters <span class="math inline">\(\theta\)</span> in <span class="math inline">\(f_\theta\)</span> as we did for the linear model, by minimizing the residual sum-of-squares
+<span class="math display">\[\begin{equation}
+\text{RSS}(\theta) = \sum_{i=1}^N\left(y_i-f_\theta(x_i)\right)^2
+\end{equation}\]</span>
+as a function of <span class="math inline">\(\theta\)</span>. This seems a reasonable criterion for an additive error model.</p>
+<p>In terms of function approximation, we imagine our parametrized function as a surface in <span class="math inline">\(p+1\)</span> space, and what we observe are noisy realizations from it. This is easy to visualize when <span class="math inline">\(p=2\)</span> and the vertical coordinate in the output <span class="math inline">\(y\)</span>, as in FIGURE 2.10. The noise is in the output coordinate, so we find the set of parameters such that the fitted surface gets as close to the observed points as possible, where close is measured by the sum of squared vertical errors in <span class="math inline">\(\text{RSS}(\theta)\)</span>.</p>
+<p>For the linear model we get a simple closed form solution to the minimization problem. This is also true for the basis function methods, if the basis functions themselves do not have any hidden parameters. Otherwise the solution requires either iterative methods or numerical optimization.</p>
+<p>While least squares is generally very convenient, it is not the only criterion used and in some cases would not make much sense. A more general principle for estimation is <em>maximum likelihood estimation</em>.</p>
+</div>
+<div id="maximum-likelihood-estimation" class="section level3">
+<h3>Maximum likelihood estimation</h3>
+<p>Suppose we have a random sample <span class="math inline">\(y_i, i=1,\cdots,N\)</span> from a density <span class="math inline">\(\text{Pr}_\theta(y)\)</span> indexed by some parameters <span class="math inline">\(\theta\)</span>. The log-probability of the observed sample is</p>
+<p><span class="math display">\[\begin{equation}
+L(\theta) = \sum_{i=1}^N\log\text{Pr}_\theta(y_i).
+\end{equation}\]</span></p>
+<blockquote>
+<p>The principle of maximum likelihood assumes that the most reasonable values for <span class="math inline">\(\theta\)</span> are those for which the probability of the observed sample is largest.</p>
+</blockquote>
+<div id="least-squares-ml-with-gaussian-errors" class="section level4">
+<h4>Least squares = ML with Gaussian errors</h4>
+<p>Least squares for the additive error model <span class="math inline">\(Y = f_\theta(X) + \epsilon\)</span>, with <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span>, is equivalent to maximum likelihood using the conditional likelihood</p>
+<p><span class="math display">\[\begin{equation}
+\text{Pr}(Y|X,\theta) = N(f_\theta(X), \sigma^2).
+\end{equation}\]</span></p>
+<p>So although the additional assumption of normality seems more restrictive, the results are the same. The log-likelihood of the data is</p>
+<p><span class="math display">\[\begin{equation}
+L(\theta) = -\frac{N}{2}\log(2\pi) - N\log\sigma - \frac{1}{2\sigma^2} \sum_{i=1}^N \left( y_i - f_\theta(x_i) \right)^2,
+\end{equation}\]</span></p>
+<p>and the only term involving <span class="math inline">\(\theta\)</span> is the last, which is <span class="math inline">\(\text{RSS}(\theta)\)</span> up to a scalar negative multiplier.</p>
+</div>
+<div id="multinomial-likelihood-for-a-qualitative-output-g" class="section level4">
+<h4>Multinomial likelihood for a qualitative output <span class="math inline">\(G\)</span></h4>
+<p>A more interesting example is the multinomial likelihood for the regression function <span class="math inline">\(\text{Pr}(G|X)\)</span> for a qualitative output <span class="math inline">\(G\)</span>.</p>
+<p>Suppose we have a model</p>
+<p><span class="math display">\[\begin{equation}
+\text{Pr}(G=\mathcal{G}_k|X=x) = p_{k,\theta}(x), k=1,\cdots,K
+\end{equation}\]</span></p>
+<p>for the conditional density of each class given <span class="math inline">\(X\)</span>, indexed by the parameter vector <span class="math inline">\(\theta\)</span>. Then the log-likelihood (also referred to as the cross-entropy) is</p>
+<p><span class="math display">\[\begin{equation}
+L(\theta) = \sum_{i=1}^N\log p_{g_i,\theta}(x_i),
+\end{equation}\]</span></p>
+<p>and when maximized it delivers values of <span class="math inline">\(\theta\)</span> that best conform with the data in the likelihood sense.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="s-2.7.-structured-regression-models" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.7. Structured Regression Models</h1>
+<div id="review-motivation" class="section level3">
+<h3>Review &amp; motivation</h3>
+<p>We have seen that although nearest-neighbor and other local methods focus directly on estimating the function at a point, they face problems in high dimensions. They may also be inappropriate even in low dimensions in cases where more structured approaches can make more efficient use of the data.</p>
+<p>This section introduces classes of such structured approaches. Before we proceed, though, we discuss further the need for such classes.</p>
+</div>
+<div id="s-2.7.1.-difficulty-of-the-problem" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.7.1. Difficulty of the Problem</h2>
+<p>Consider the RSS criterion for an arbitrary function <span class="math inline">\(f\)</span>,</p>
+<p><span class="math display">\[\begin{equation}
+\text{RSS}(f) = \sum_{i=1}^N \left( y_i - f(x_i) \right)^2.
+\end{equation}\]</span></p>
+<p>Minimizing the RSS leads to infinitely many solutions: Any function <span class="math inline">\(\hat{f}\)</span> passing through the training points <span class="math inline">\((x_i,y_i)\)</span> is a solution. Any particular solution chosen might be a poor predictor at test points different from the training points.</p>
+<p>If there are multiple observation pairs <span class="math inline">\((x_i,y_{il})\)</span>, <span class="math inline">\(l=1,\cdots,N_i\)</span>, at each value of <span class="math inline">\(x_i\)</span>, the risk is limited. In this case, the solution pass through the average values of the <span class="math inline">\(y_{il}\)</span> at each <span class="math inline">\(x_i\)</span> (Exercise 2.6). The situation is similar to the one we have already visited in <span class="math inline">\(\S\)</span> 2.4; indeed, the above RSS is the finite sample version of the expected prediction error</p>
+<p><span class="math display">\[\begin{equation}
+\text{EPE}(f) = \text{E}\left( Y - f(X) \right)^2 = \int \left( y - f(x) \right)^2 \text{Pr}(dx, dy).
+\end{equation}\]</span></p>
+<div id="necessity-limit-of-the-restriction" class="section level3">
+<h3>Necessity &amp; limit of the restriction</h3>
+<p>If the sample size <span class="math inline">\(N\)</span> were sufficiently large such that repeats were guaranteed and densely arranged, it would seem that these solutions might all tend to the limiting conditional expectation.</p>
+<p>In order to obtain useful results for finite <span class="math inline">\(N\)</span>, we must restrict the eligible solution to the RSS to a smaller set of functions.</p>
+<blockquote>
+<p>How to decide on the nature of the restrictions is based on considerations outside of the data.</p>
+</blockquote>
+<p>These restrictions are somtimes
+* encoded via the parametric representation of <span class="math inline">\(f_\theta\)</span>, or
+* may be built into the learning method itself, either implicitly or explicitly.</p>
+<blockquote>
+<p>These restricted classes of solutions are the major topic of this book.</p>
+</blockquote>
+<p>One thing should be clear, though.</p>
+<blockquote>
+<p>Any restrictions imposed on <span class="math inline">\(f\)</span> that lead to a unique solution to RSS do not really remove the ambiguity caused by the multiplicity of solutions. There are infinitely many possible restrictions, each leading to a unique solution, so the abmiguity has simply been transferred to the choice of constraint.</p>
+</blockquote>
+</div>
+<div id="complexity" class="section level3">
+<h3>Complexity</h3>
+<p>In general the constraints imposed by most learning methods can be described as <em>complexity</em> restrictions of one kind or another.</p>
+<blockquote>
+<p>This usually means some kind of regular behavior in small neighborhoods of the input space.</p>
+</blockquote>
+<p>That is, for all input points <span class="math inline">\(x\)</span> sufficiently close to each other in some metric, <span class="math inline">\(\hat{f}\)</span> exhibits some special structure such as
+* nearly constant,
+* linear or
+* low-order polynomial behavior.</p>
+<p>The estimator is then obtained by averaging or polynomial fitting in that neighborhood.</p>
+<p>The strength of the constraint is dictated by the neighborhood size.</p>
+<blockquote>
+<p>The larger the size, the stronger the constraint, and the more sensitive the solution is to the particular choice of constraint.</p>
+</blockquote>
+<p>For example,
+* local constant fits in infinitesimally small neighborhoods is no constraints at all;
+* local linear fits in very large neighborhoods is almost a globally llinear model, and is very restrictive.</p>
+</div>
+<div id="metric" class="section level3">
+<h3>Metric</h3>
+<p>The nature of the constraint depends on the metric used.</p>
+<p>Some methods, such as kernel and local regression and tree-based methods, directly specify the metric and size of the neighborhood. The kNN methods discussed so far are based on the assumption that locally the function is constant; close to a target input <span class="math inline">\(x_0\)</span>, the function does not change much, and so close outputs can be averagedd to produce <span class="math inline">\(\hat{f}(x_0)\)</span>.</p>
+<p>Other methods such as splines, neural networks and basis-function methods implicitly define neighborhoods of local behavior. In <span class="math inline">\(\S\)</span> 5.4.1 we discuss the concept of an <em>equivalent kernel</em>, which describes this local dependence for any method linear in the outputs. These equivalent kernels in many cases look just like the explicitly defined weighting kernels discussed above – peaked at the target point and falling smoothly away from it.</p>
+</div>
+<div id="curse-of-dimensionality" class="section level3">
+<h3>Curse of dimensionality</h3>
+<p>One fact should be clear by now. Any method that attempts to produce locally varying functions in small isotopic neighborhoods will run into problems in high dimensions – again the curse of dimensionality.</p>
+<p>And conversely, all methods that overcome the dimensionality problems have an associated – and often implicit or adaptive – metric for measuring neighborhoods, which basically does not allow the neighborhood to be simultaneously small in all directions.</p>
+</div>
+</div>
+</div>
+<div id="s-2.8.-classes-of-restricted-estimators" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.8. Classes of Restricted Estimators</h1>
+<p>The variety of nonparametric regression techniques or learning methods fall into a number of different classes depending on the nature of the restrictions imposed. These classes are not distinct, and indeed some methods fall in several classes.</p>
+<p>Each of the classes has associated with it one or more parameters, sometimes appropriately called <em>smoonthing</em> parameters, that control the effective size of the local neighborhood.</p>
+<p>Here we describe three broad classes.</p>
+<div id="s-2.8.1.-roughness-penalty-and-bayesian-methods" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.8.1. Roughness Penalty and Bayesian Methods</h2>
+<p>Here the class of functions is controlled by explicitly penalizing <span class="math inline">\(\text{RSS}(f)\)</span> with a roughness penalty <span class="math inline">\(J\)</span></p>
+<p><span class="math display">\[\begin{equation}
+\text{PRSS}(f;\lambda) = \text{RSS}(f) + \lambda J(f),
+\end{equation}\]</span></p>
+<p>where the user-selected functional <span class="math inline">\(J(f)\)</span> will be large for functions <span class="math inline">\(f\)</span> that vary too rapidly over small regions of input space.</p>
+<div id="cubic-smoothing-spline" class="section level4">
+<h4>Cubic smoothing spline</h4>
+<p>For example, the popular <em>cubic smoothing spline</em> for one-dimensional inputs is the solution to the penalized least-squares criterion</p>
+<p><span class="math display">\[\begin{equation}
+\text{PRSS}(f;\lambda) = \sum_{i=1}^N \left(y_i-f(x_i)\right)^2 + \lambda\int\left[f&#39;&#39;(x)\right]^2 dx.
+\end{equation}\]</span></p>
+<p>This roughness penalty controls large values of the second derivative of <span class="math inline">\(f\)</span>, and the amount penalty is dictated by <span class="math inline">\(\lambda \ge 0\)</span>. For <span class="math inline">\(\lambda =0\)</span> no penalty is imposed, and any interpolating will do, while for <span class="math inline">\(\lambda = \infty\)</span> only functions linear in <span class="math inline">\(x\)</span> are permitted.</p>
+</div>
+<div id="various-penalties" class="section level3">
+<h3>Various penalties</h3>
+<p>Penalty functionals <span class="math inline">\(J\)</span> can be constructed for functions in any dimension, and special versions can be created to impose special structure. For example, additive penalties</p>
+<p><span class="math display">\[\begin{equation}
+J(f) = \sum_{j=1}^p J(f_j)
+\end{equation}\]</span></p>
+<p>are used in conjunction with additive functions <span class="math inline">\(f(X) = \sum_{j=1}^p f_j(X_j)\)</span> to create additive models with smooth coordinate functions.</p>
+<p>Similarly, <em>projection pursuit regression</em> models have</p>
+<p><span class="math display">\[\begin{equation}
+f(X) = \sum_{m=1}^M g_m(\alpha_m^T X)
+\end{equation}\]</span></p>
+<p>for adaptively chosen direction <span class="math inline">\(\alpha_m\)</span>, and the functions <span class="math inline">\(g_m\)</span> can each have an associated roughness penalty.</p>
+</div>
+<div id="connection-with-bayesian-framework" class="section level3">
+<h3>Connection with Bayesian framework</h3>
+<p>Penalty function, or <em>regularization</em> methods, express our prior belief that the type of functions we seek exhibits a certain type of smooth behavior, and indeed can usually be cast in a Bayesian framework.
+* The penalty <span class="math inline">\(J\)</span> corresponds to a log-prior, and
+* <span class="math inline">\(\text{PRSS}(f;\lambda)\)</span> the log-posterior distribution, and
+* minimizing <span class="math inline">\(\text{PRSS}\)</span> amounts to finding the posterior mode.</p>
+<p>We discuss roughness-penalty approaches in Chapter 5 and the Bayesian paradigm in Chapter 8.</p>
+</div>
+</div>
+<div id="s-2.8.2.-kernel-methods-and-local-regression" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.8.2. Kernel Methods and Local Regression</h2>
+<p>These methods can be thought of as explicitly providing estimates of the regression function or conditional expectation by specifying the nature of the local neighborhood, and of the class of regular functions fitted locally.</p>
+<p>The local neighborhood is specified by a <em>kernel function</em> <span class="math inline">\(K_\lambda(x_0, x)\)</span> which assigns weights to points <span class="math inline">\(x\)</span> in a region around <span class="math inline">\(x_0\)</span> (FIGURE 6.1). For example, the Gaussian kernel has a weight function based on the Gaussian density function</p>
+<p><span class="math display">\[\begin{equation}
+K_\lambda(x_0, x) = \frac{1}{\lambda}\exp\left(-\frac{\|x-x_0\|^2}{2\lambda}\right),
+\end{equation}\]</span></p>
+<p>and assigns weights to points that die exponentially with their squared Euclidean distance from <span class="math inline">\(x_0\)</span>. The parameter <span class="math inline">\(\lambda\)</span> corresponds to the variance of the Gaussian density, and controls the width of the neighborhood.</p>
+<p>The simplest form of kernel estimate is the Nadaraya-Watson weighted average</p>
+<p><span class="math display">\[\begin{equation}
+\hat{f}(x_0) = \frac{\sum_{i=1}^N K_\lambda(x_0, x_i)y_i}{\sum_{i=1}^N K_\lambda(x_0, x_i)}.
+\end{equation}\]</span></p>
+<div id="formulation" class="section level3">
+<h3>Formulation</h3>
+<p>In general, we can define a local regression estimate of <span class="math inline">\(f(x_0)\)</span> as <span class="math inline">\(f_{\hat{\theta}}(x_0)\)</span>, where <span class="math inline">\(\hat{\theta}\)</span> minimizes</p>
+<p><span class="math display">\[\begin{equation}
+\text{RSS}(f_\theta,x_0) = \sum_{i=1}^N K_\lambda(x_0, x_i)\left(y_i -f_\theta(x_i)\right)^2,
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(f_\theta\)</span> is some parameterized function, such as a low-order polynomial. Some examples are:
+* <span class="math inline">\(f_\theta(x) = \theta_0\)</span>, the constant function; this results in the Nadaraya-Watson estimate.
+* <span class="math inline">\(f_\theta(x) = \theta_0+\theta_1 x\)</span> gives the popular local linear regression model.</p>
+</div>
+<div id="association-between-kernel-methods-and-knn" class="section level3">
+<h3>Association between kernel methods and kNN</h3>
+<p>Nearest-neighbor methods can be thought of as kernel methods having a more data-dependent metric. Indeed, the metric for kNN is</p>
+<p><span class="math display">\[\begin{equation}
+K_k(x,x_0) = I\left(\|x-x_0\| \le \|x_{(k)}-x_0\|\right),
+\end{equation}\]</span></p>
+<p>where
+* <span class="math inline">\(x_{(k)}\)</span> is the training observation ranked <span class="math inline">\(k\)</span>th in distance from <span class="math inline">\(x_0\)</span>, and
+* <span class="math inline">\(I(S)\)</span> is the indicator of the set <span class="math inline">\(S\)</span>.</p>
+<p>These methods of course need to be modified in high dimensions, to avoid the curse of dimensionality.</p>
+<p>Various adaptations are discussed in Chapter 6.</p>
+</div>
+</div>
+<div id="s-2.8.3.-basis-functions-and-dictionary-methods" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 2.8.3. Basis functions and Dictionary Methods</h2>
+<p>This class of methods includes the familiar linear and polynomial expansions, but more importantly a wide variety of more flexible models.</p>
+<div id="linear-expansion" class="section level3">
+<h3>Linear expansion</h3>
+<p>The model for <span class="math inline">\(f\)</span> is a linear expansion of basis functions</p>
+<p><span class="math display">\[\begin{equation}
+f_\theta(x) = \sum_{m=1}^M\theta_m h_m(x),
+\end{equation}\]</span></p>
+<p>where each of the <span class="math inline">\(h_m\)</span> is a function of the input <span class="math inline">\(x\)</span>, and the term linear here refers to the action of the parameter <span class="math inline">\(\theta\)</span>.</p>
+<p>This class covers a wide variety of methods.</p>
+<p>In some cases the sequence of basis functions is prescribed, such as a basis for polynomials in <span class="math inline">\(x\)</span> of total degree <span class="math inline">\(M\)</span>.</p>
+<div id="splines" class="section level4">
+<h4>Splines</h4>
+<p>For 1D <span class="math inline">\(x\)</span>, polynomial splines of degree <span class="math inline">\(K\)</span> can be represented by an appropriate sequence of <span class="math inline">\(M\)</span> spline basis functions, determined in turn by <span class="math inline">\(M-K-1\)</span> <em>knots</em>. These produce functions that are piecewise polynomials of degree <span class="math inline">\(K\)</span> between the knots, and joined up with continuity of degree <span class="math inline">\(K-1\)</span> at the knots.</p>
+</div>
+<div id="linear-splines" class="section level4">
+<h4>Linear splines</h4>
+<p>As an example consider linear splines, or piecewise linear functions. One intuitively satisfying basis consist of the functions</p>
+<p><span class="math display">\[\begin{align}
+b_1(x) &amp;= 1, \\
+b_2(x) &amp;= x, \\
+b_{m+2}(x) &amp;= (x - t_m)_+, m=1,\cdots,M-2,
+\end{align}\]</span></p>
+<p>where
+* <span class="math inline">\(t_m\)</span> is the <span class="math inline">\(m\)</span>th knot, and
+* <span class="math inline">\(z_+\)</span> denotes positive part.</p>
+<p>Tensor products of spline bases can be used for inputs with dimensions larger than one (<span class="math inline">\(\S\)</span> 5.2, and the CART/MARS model in Chapter 9).</p>
+<p>The parameter <span class="math inline">\(M\)</span> controls the degree of the polynomial or the number of knots in the case of splines.</p>
+</div>
+</div>
+<div id="radial-basis-functions" class="section level3">
+<h3>Radial basis functions</h3>
+<p><em>Radial basis functions</em> are symmetric <span class="math inline">\(p\)</span>-dimensional kernels located at particular centroids,</p>
+<p><span class="math display">\[\begin{equation}
+f_\theta(x) = \sum_{m=1}^M K_{\lambda_m}(\mu_m,x) \theta_m,
+\end{equation}\]</span></p>
+<p>e.g., the Gaussian kernel <span class="math inline">\(K_\lambda(\mu,x)=e^{-\|x-\mu\|^2/2\lambda}\)</span> is popular.</p>
+<p>Radial basis functions have centroids <span class="math inline">\(\mu_m\)</span> and scales <span class="math inline">\(\lambda_m\)</span> that have to be determined. The spline basis functions have knots. In general we would like the data to dictate them as well.</p>
+<blockquote>
+<p>Including these as parameters changes the regression problem from a straightforward linear problem to a combinatorially hard nonlinear problem.</p>
+</blockquote>
+<p>In practice, shortcuts such as greedy algorithms or two stage processes are used (<span class="math inline">\(\S\)</span> 6.7).</p>
+</div>
+<div id="neural-networks" class="section level3">
+<h3>Neural networks</h3>
+<p>A single-layer feed-forward neural network model with linear output weights can be thought of as an adaptive basis function method.</p>
+<p>The model has the form</p>
+<p><span class="math display">\[\begin{equation}
+f_\theta(x) = \sum_{m=1}^M \beta_m \sigma(\alpha_m^T x + b_m),
+\end{equation}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[\begin{equation}
+\sigma(x) = \frac{1}{1+e^{-x}}
+\end{equation}\]</span></p>
+<p>is known as the <em>activation</em> function.</p>
+<p>Here, as in the projection pursuit model, the directions <span class="math inline">\(\alpha_m\)</span> and the <em>bias</em> term <span class="math inline">\(b_m\)</span> have to be determined, and their estimation is the meat of the computation (Chapter 11).</p>
+</div>
+<div id="dictionary" class="section level3">
+<h3>Dictionary</h3>
+<p>These adaptively chosen basis function methods are a.k.a. <em>dictionary</em> methods, where one has available a possibly infinite set or dictionary <span class="math inline">\(\mathcal{D}\)</span> of candidate basis functions from which to choose, and models are built up by employing some kind of search mechanism.</p>
+</div>
+</div>
+</div>
+<div id="s-2.9.-model-selection-and-the-bias-variance-tradeoff" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 2.9. Model Selection and the Bias-Variance Tradeoff</h1>
+<div id="review-1" class="section level3">
+<h3>Review</h3>
+<p>All the Models described so far have a <em>smoothing</em> or <em>complexity</em> parameter that has to be determined:
+* The multiplier of the penalty term;
+* the width of the kernel;
+* or the number of basis functions.</p>
+<p>In the case of the smoothing spline, the parameter <span class="math inline">\(\lambda\)</span> indexes models ranging from a straight line fit to the interpolating model.</p>
+<p>Similarly a local degree-<span class="math inline">\(m\)</span> polynomial model ranges between a degree-<span class="math inline">\(m\)</span> global polynomial when the window size is infinitely large, to an interpolating fit when the window size shrinks to zero.</p>
+<p>This means that we cannot use residual sum-of-squares on the training data to determine these parameters as well, since we would always pick those that gave interpolating fits and hence zero residuals. Such a model is unlikely to predict future data well at all.</p>
+</div>
+<div id="the-bias-variance-tradeoff-for-the-knn" class="section level3">
+<h3>The bias-variance tradeoff for the kNN</h3>
+<p>The kNN regression fit <span class="math inline">\(\hat{f}_k(x_0)\)</span> usefully illustrates the competing forces that affect the predictive ability of such approximations.</p>
+<p>Suppose
+* the data arise from a model <span class="math inline">\(Y=f(X)+\epsilon\)</span>, with <span class="math inline">\(\text{E}(\epsilon)=0\)</span> and <span class="math inline">\(\text{Var}(\epsilon)=\sigma^2\)</span>;
+* for simplicity here the values of <span class="math inline">\(x_i\)</span> in the sample are fixed in advance (nonrandom).</p>
+<p>The expected prediction error at <span class="math inline">\(x_0\)</span>, a.k.a. <em>test</em> or <em>generalization</em> error, can be decomposed:</p>
+<p><span class="math display">\[\begin{align}
+\text{EPE}_k(x_0) &amp;= \text{E}\left[(Y-\hat{f}_k(x_0))^2|X=x_0\right] \\
+&amp;= \text{E}\left[(Y -f(x_0) + f(x_0) -\hat{f}_k(x_0))^2|X=x_0\right] \\
+&amp;= \text{E}(\epsilon^2) + 2\text{E}\left[\epsilon(f(x_0) -\hat{f}_k(x_0))|X=x_0\right] + \text{E}\left[\left(f(x_0)-\hat{f}_k(x_0)\right)^2|X=x_0\right] \\
+&amp;= \sigma^2 + 0+ \left[\text{Bias}^2(\hat{f}_k(x_0))+\text{Var}_\mathcal{T}(\hat{f}_k(x_0))\right] \\
+&amp;= \sigma^2 + \left(f(x_0) - \frac{1}{k}\sum_{l=1}^k f(x_{(l)})\right)^2 + \frac{\sigma^2}{k}
+\end{align}\]</span>,</p>
+<p>where subscripts in parentheses <span class="math inline">\((l)\)</span> indicate the sequence of nearest neighbors to <span class="math inline">\(x_0\)</span>.</p>
+<p>There are three terms in this expression.</p>
+<div id="irreducible-error" class="section level4">
+<h4>Irreducible error</h4>
+<p>The first term <span class="math inline">\(\sigma^2\)</span> is the <em>irreducible</em> error – the variance of the new test target – and is beyond our control, even if we know the true <span class="math inline">\(f(x_0)\)</span>.</p>
+<p>The second and third terms are under our control, and make up the <em>mean squared error</em> of <span class="math inline">\(\hat{f}_k(x_0)\)</span> in estimateing <span class="math inline">\(f(x_0)\)</span>, which is broken down into a bias component and a variance component.</p>
+</div>
+<div id="bias" class="section level4">
+<h4>Bias</h4>
+<p>The bias term is the squared difference between the true mean <span class="math inline">\(f(x_0)\)</span> and the expected value of the estimate, i.e.,</p>
+<p><span class="math display">\[\begin{equation}
+\left[ \text{E}_\mathcal{T} \left( \hat{f}_k(x_0) \right) - f(x_0) \right]^2,
+\end{equation}\]</span></p>
+<p>where the expectation averages the randomness in the training data.</p>
+<p>This term will most likely increase with <span class="math inline">\(k\)</span>, if the true function is reasonably smooth. For small <span class="math inline">\(k\)</span> the few closest neighbors will have values <span class="math inline">\(f(x_{(l)})\)</span> close to <span class="math inline">\(f(x_0)\)</span>, so their average should be close to <span class="math inline">\(f(x_0)\)</span>. As <span class="math inline">\(k\)</span> grows, the neighbors are further away, and then anything can happen.</p>
+</div>
+<div id="variance" class="section level4">
+<h4>Variance</h4>
+<p>The variance term is simply the variance of an average here, and decreases as the inverse of <span class="math inline">\(k\)</span>.</p>
+</div>
+<div id="finally-the-tradeoff" class="section level4">
+<h4>Finally, the tradeoff</h4>
+<p>So as <span class="math inline">\(k\)</span> varies, there is a <em>bias-variance tradeoff</em>.</p>
+<p>More generally, as the <em>model complexity</em> of our procedure is increased, the variance tends to increase and the squared bias tends to decrease, vice versa. For kNN, the model complexity is controlled by <span class="math inline">\(k\)</span>.</p>
+<p>Typically we would like to choose our model complexity to trade bias off with variance in such a way as to minimize the test error. An obvious estimate of test error is <em>training error</em></p>
+<p><span class="math display">\[\begin{equation}
+\frac{1}{N} \sum_i (y_i \hat{y}_i)^2.
+\end{equation}\]</span></p>
+<p>Unfortunately training error is not a good estimate of test error, as it does not properly account for model complexity.</p>
+</div>
+</div>
+<div id="interpretation-implication" class="section level3">
+<h3>Interpretation &amp; implication</h3>
+<p>FIGURE 2.11 shows the typical behavior of the test and training error, as model complexity is varied.</p>
+<blockquote>
+<p>The training error tends to decrease whenever we increase the model complexity, i.e., whenever we fit the data harder.</p>
+</blockquote>
+<p>However with too much fitting, the model adapts itself too closely to the training data, and will not generalize well (i.e., have large test error). In that case the predictions <span class="math inline">\(\hat{f}(x_0)\)</span> will have large variance, as reflected in the above EPE expression.</p>
+<p>In contrast, if the model is not complex enough, it will <em>underfit</em> and may have large mias, again resulting in poor generalization. In Chapter 7 we discuss methods for estimating the test error of a prediction method, and hence estimating the optimal amount of model complexity fir a given prediction method and training set.</p>
+</div>
+</div>
+<div id="s-exercises" class="section level1">
+<h1><span class="math inline">\(\S\)</span> Exercises</h1>
+<div id="ex.-2.1-target-coding" class="section level2">
+<h2>Ex. 2.1 (target coding)</h2>
+<p>Suppose each of <span class="math inline">\(K\)</span>-classes has an associated target <span class="math inline">\(t_k\)</span>, which is a vector of all zeros, except a one in the <span class="math inline">\(k\)</span>th position. Show that classifying to
+the largest element of <span class="math inline">\(\hat{y}\)</span> amounts to choosing the closest target, <span class="math inline">\(\text{min}_k||t_k − \hat{y}||\)</span>, if the elements of <span class="math inline">\(\hat{y}\)</span> sum to one.</p>
+<p>We have some input data <span class="math inline">\(x\)</span>. Some algorithm assigns to <span class="math inline">\(x\)</span> the probability <span class="math inline">\(y_k\)</span> that <span class="math inline">\(x\)</span> is a member of the <span class="math inline">\(k\)</span>-th class. This would explain why the sum of the <span class="math inline">\(y_k\)</span> is equal to one.
+For each <span class="math inline">\(k\)</span> with <span class="math inline">\(1 \leq k \leq K\)</span>, let <span class="math inline">\(t_k\)</span> be the <span class="math inline">\(K\)</span>-dimensional vector that has <span class="math inline">\(1\)</span> in the <span class="math inline">\(k\)</span>-th position and <span class="math inline">\(0\)</span> elsewhere.
+<span class="math display">\[\begin{align}
+\text{argmin}_k||y-t_k||&amp;=\text{argmin}_k||y-t_k||^2\\
+&amp;=\text{argmin}_k\sum_{i=1}^{K}(y_i-(t_k)_i)^2\\
+&amp;=\text{argmin}_k\sum_{i=1}^{K}\Bigl(y_i^2-2y_i(t_k)_i+(t_k)_i^2\bigr)\\
+&amp;=\text{argmin}_k\sum_{i=1}^{K}\Bigl(-2y_i(t_k)_i+(t_k)_i^2\bigr)\\
+\end{align}\]</span>
+Since <span class="math inline">\(\sum_{i=1}^{K}y_i^2\)</span> is the same for all classes <span class="math inline">\(k\)</span>. For each <span class="math inline">\(k\)</span>, the sum <span class="math inline">\(\sum_{i=1}^{K}(t_k)_i^2=1\)</span>. Also <span class="math inline">\(\sum_{i=1}^{K}y_i(t_k)_i=y_k\)</span>. This means that<br />
+<span class="math display">\[\begin{align}
+\text{argmin}_k||y-t_k||&amp;=\text{argmin}_k(-2y_k+1)\\
+&amp;=\text{argmin}_k(-2y_k)\\
+&amp;=\text{argmax}_k(y_k)\\
+\end{align}\]</span>
+Then, for any <span class="math inline">\(K\)</span>-dimensional vector <span class="math inline">\(y\)</span>, the <span class="math inline">\(k\)</span> for which <span class="math inline">\(y_k\)</span> is largest coincides with the <span class="math inline">\(k\)</span> for which <span class="math inline">\(t_k\)</span> is nearest to <span class="math inline">\(y\)</span>.</p>
+</div>
+<div id="ex.-2.2-the-oracle-revealed" class="section level2">
+<h2>Ex. 2.2 (the oracle revealed)</h2>
+<p>Show how to compute the Bayes decision boundary for the simulation example
+in Figure 2.5.</p>
+<p>The simulation draws <span class="math inline">\(10\)</span> “blue” centering points <span class="math inline">\(p_1, \cdots, p_{10} \in \mathbb{R}^2\)</span> from <span class="math inline">\(N\Biggl(\begin{bmatrix} 1\\ 0\\ \end{bmatrix}, I_2\Biggr)\)</span> and <span class="math inline">\(10\)</span> “orange” centering points <span class="math inline">\(q_1, \cdots, q_{10} \in \mathbb{R}^2\)</span> from <span class="math inline">\(N\Biggl(\begin{bmatrix} 0\\ 1\\ \end{bmatrix}, I_2\Biggr)\)</span>. The multivariate Gaussian densities:</p>
+<p><span class="math display">\[f_X(\mathbf x)=\frac{1}{(2\pi)^{p/2}|\mathbf\Sigma|^{1/2}}e^{-\frac{1}{2}(\mathbf x-\boldsymbol \mu)^T(\mathbf\Sigma)^{-1}(\mathbf x-\boldsymbol \mu)}\]</span></p>
+<p>The <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(\mathbf \Sigma\)</span> is the variance–covariance matrix of <span class="math inline">\(\mathbf X\)</span>.</p>
+<p>The covariance matrix <span class="math display">\[\mathbf \Sigma=\begin{bmatrix}
+\sigma_{11}&amp;\sigma_{12}\\
+\sigma_{12}&amp;\sigma_{22}
+\end{bmatrix}
+\]</span> <span class="math display">\[\mathbf \Sigma^{-1}=\frac{1}{\sigma_{11}\sigma_{22}-\sigma_{12}^2}\begin{bmatrix}
+\sigma_{22}&amp;-\sigma_{12}\\
+-\sigma_{12}&amp;\sigma_{11}
+\end{bmatrix}
+\]</span></p>
+<p>The formula for the Bayes decision boundary is given by equating posterior probabilities. We get an equation in the unknown <span class="math inline">\(z \in \mathbb R^2\)</span>, giving a curve in the plane:<br />
+<span class="math display">\[\begin{equation}
+P(\text{blue})\exp(-\sum_{i=1}^{10}\lVert p_i-z\lVert ^2/2)=P(\text{orange)})\exp(-\sum_{j=1}^{10}\lVert q_j-z\lVert ^2/2)
+\end{equation}\]</span></p>
+<p>In this solution, the boundary is given as the equation of equality between the two probabilities, with the <span class="math inline">\(p_i\)</span> and <span class="math inline">\(q_j\)</span> constant and fixed by previously performed sampling. Each time one re-samples the <span class="math inline">\(p_i\)</span> and <span class="math inline">\(q_j\)</span> , one obtains a different Bayes decision boundary. Note that if the prior probabilities are equal (as they seem to be in this example) we have
+<span class="math display">\[P(\text{blue})=P(\text{orange)})=\frac{1}{2}\]</span>
+and they also cancel.</p>
+</div>
+<div id="ex.-2.3-the-median-distance-to-the-origin" class="section level2">
+<h2>Ex. 2.3 (the median distance to the origin)</h2>
+<p>Consider <span class="math inline">\(N\)</span> data points uniformly distributed in a <span class="math inline">\(p\)</span>-dimensional unit ball centered at the origin. Suppose we consider a nearest-neighbor estimate at the origin. The median distance from the origin to the closest data point is given by the expression<br />
+<span class="math display">\[d(p,N)=\Bigl(1-\frac{1}{2}^{1/N}\Bigr)^{1/p}\]</span></p>
+<p>We derive the distribution function (CDF) for the Euclidean distance (denoted by <span class="math inline">\(y\)</span>) from the origin to the closest point of <span class="math inline">\(n\)</span> points <span class="math inline">\(x_i\)</span> where each point <span class="math inline">\(x_i\)</span> is drawn uniformly from a <span class="math inline">\(p\)</span>-dimensional unit ball centered at the origin. The distribution function of <span class="math inline">\(y=\lVert x_i\rVert\)</span> is the ratio of the volume of a ball of radius <span class="math inline">\(y\)</span> and the volume of a ball of radius one. This ratio is <span class="math inline">\(y^p\)</span> and so <span class="math inline">\(F(y)=y^p\)</span>. The distribution function for <span class="math inline">\(y\)</span> is then <span class="math inline">\(f(y)=F&#39;(y)=py^{p-1}\)</span>.</p>
+<p>Given <span class="math inline">\(N\)</span> such vectors <span class="math inline">\(\{x_i\}_{i=1}^N\)</span> the distribution function for the smallest radius <span class="math inline">\(Y_1\)</span> (from all of them) is given by <span class="math display">\[F_{Y_1}(y)=1-(1-F(y))^N=1-(1-y^p)^N\]</span>
+The median distance for <span class="math inline">\(Y_1\)</span> is found by solving for <span class="math inline">\(y\)</span> in <span class="math display">\[\frac{1}{2}=F_{Y_1}(y)\]</span> This gives <span class="math display">\[y=\Bigl(1-\frac{1}{2}^{1/N}\Bigr)^{1/p}=d_{median}(p,N)\]</span>.</p>
+<p>The density function for <span class="math inline">\(Y_1\)</span> is given by the derivative of the distribution function <span class="math inline">\(F_{Y_1}(y)\)</span>:</p>
+<p><span class="math display">\[f_{Y_1}(y)=N(1-y^p)^{N-1}(py^{p-1})=pN(1-y^p)^{N-1}y^{p-1}\]</span></p>
+<p>Then the mean distance to the closest of these <span class="math inline">\(N\)</span> points is given by</p>
+<p><span class="math display">\[d_{\text{mean}}(p,N)\equiv \int_{0}^{1}yf_{Y_1}(y)dy=pN\int_{0}^{1}(1-y^p)^{N-1}y^pdy\\
+=N\int_{0}^{1}(1-t)^{N-1}ydt\quad(t=y^p)\\
+=N\int_{0}^{1}(1-t)^{N-1}t^{1/p}dt\\
+=NB(N,\frac{1}{p}+1)\]</span></p>
+<p>The Beta function is:</p>
+<p><span class="math display">\[B(x,y)=\int_{t=0}^{t=1}t^{(x-1)}(1-t)^{(y-1)}dt,\quad (x&gt;0 ;\quad y&gt;0)\]</span></p>
+</div>
+<div id="ex.-2.4-projections-at-x-are-distributed-as-normal-n0-1" class="section level2">
+<h2>Ex. 2.4 (projections a^T x are distributed as normal N(0, 1))</h2>
+<p>The edge effect problem discussed on page 23 is not peculiar to
+uniform sampling from bounded domains. Consider inputs drawn from a
+spherical multinormal distribution <span class="math inline">\(X \sim N(0, I_p)\)</span>. The squared distance
+from any sample point to the origin has a <span class="math inline">\(\chi^2_p\)</span> distribution with mean <span class="math inline">\(p\)</span>. Consider a prediction point <span class="math inline">\(x_0\)</span> drawn from this distribution, and let <span class="math display">\[a = x_0/\lVert x_0\rVert\]</span> be an associated unit vector. Let <span class="math inline">\(z_i = a^Tx_i\)</span> be the projection of each of the training points on this direction.</p>
+<p>Show that the <span class="math inline">\(z_i\)</span> are distributed <span class="math inline">\(N(0, 1)\)</span> with expected squared distance
+from the origin <span class="math inline">\(1\)</span>, while the target point has expected squared distance <span class="math inline">\(p\)</span>
+from the origin.</p>
+<p>Hence for <span class="math inline">\(p = 10\)</span>, a randomly drawn test point is about <span class="math inline">\(3.1\)</span> standard deviations from the origin, while all the training points are on average
+one standard deviation along direction <span class="math inline">\(a\)</span>. So most prediction points see
+themselves as lying on the edge of the training set.</p>
+<p>The main point is that <span class="math inline">\(\sum\lVert x_i\rVert^2\)</span> is invariant under the orthogonal group. As a consequence the standard normal distribution exists on any finite dimensional inner product space (by fixing an orthonormal basis). Further, if <span class="math inline">\(\mathbb R^p\)</span> is written as the orthogonal sum of two vector
+subspaces, then the product of standard normal distributions on each of the subspaces gives the standard normal distribution on <span class="math inline">\(\mathbb R^p\)</span>.</p>
+</div>
+<div id="ex.-2.5-the-expected-prediction-error-under-least-squares" class="section level2">
+<h2>Ex. 2.5 (the expected prediction error under least squares)</h2>
+<ol style="list-style-type: lower-alpha">
+<li><p>Derive equation (2.27). The last line makes use of (3.8) through a
+conditioning argument.</p></li>
+<li><p>Derive equation (2.28), making use of the cyclic property of the trace
+operator <span class="math inline">\([\text{trace}(AB) = \text{trace}(BA)]\)</span>, and its linearity (which allows us to interchange the order of trace and expectation).</p></li>
+</ol>
+<p>(a):
+equation (2.27)
+<span class="math display">\[\begin{align}
+\text{EPE}(x_0) &amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\left(y_0-\hat{y}_0\right)^2 \\
+&amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\Biggl([y_0-x_0^T\beta]+[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]+[x_0^T\beta-\text{E}_\mathcal{T}(\hat{y}_0)]\Biggr)^2 \\
+\end{align}\]</span></p>
+<p>Since
+<span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[y_0-x_0^T\beta]=\text{E}_{y_0|x_0}[y_0-x_0^T\beta]\text{E}_\mathcal{T}=0\text{E}_\mathcal{T}=0
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[y_0-x_0^T\beta]^2=\text{Var}(y_0|x_0)=\sigma^2
+\end{equation}\]</span>
+And
+<span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\text{E}_\mathcal{T}[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]=\text{E}_{y_0|x_0}0=0
+\end{equation}\]</span></p>
+<p>And since the expectation of the length <span class="math inline">\(N\)</span> vector <span class="math inline">\(\epsilon\)</span> is zero.</p>
+<p><span class="math display">\[\begin{equation}
+\text{E}_\mathcal{T}(\hat{y}_0)-x_0^T\beta=\text{E}_\mathcal{T}(x_0^T\beta+(X(X^TX)^{-1}x_0)^T\epsilon)-x_0^T\beta\\
+=\text{E}_\mathcal{T}(X(X^TX)^{-1}x_0)^T\epsilon=0
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\text{E}_{y_0|x_0}\Biggl([y_0-x_0^T\beta][\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]\Biggr)=[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]\text{E}_{y_0|x_0}[y_0-x_0^T\beta]=0
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{align}
+\text{EPE}(x_0) &amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\left(y_0-\hat{y}_0\right)^2 \\
+&amp;= \text{E}_{y_0|x_0}\text{E}_\mathcal{T}\Biggl([y_0-x_0^T\beta]+[\text{E}_\mathcal{T}(\hat{y}_0)-\hat{y}_0]+[x_0^T\beta-\text{E}_\mathcal{T}(\hat{y}_0)]\Biggr)^2 \\
+&amp;= \text{Var}(y_0|x_0) + \text{E}_{y_0|x_0}\text{E}_\mathcal{T} \left(\hat{y}_0 - \text{E}_\mathcal{T}\hat{y}_0\right)^2 \\
+&amp;= \text{Var}(y_0|x_0) + \text{Var}_\mathcal{T}(\hat{y}_0) \\
+&amp;= \sigma^2 + \text{E}_\mathcal{T}x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\sigma^2.
+\end{align}\]</span></p>
+<p>(b):</p>
+<p>equation (2.28)Note that
+1. An additional variance <span class="math inline">\(\sigma^2\)</span> is incurred, since our target is not deterministic.
+2. There is no bias, and the variance depends on <span class="math inline">\(x_0\)</span>.</p>
+<p>If
+* <span class="math inline">\(N\)</span> is large,
+* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
+* <span class="math inline">\(\text{E}(X)=0\)</span>,
+If
+* <span class="math inline">\(N\)</span> is large,
+* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
+* <span class="math inline">\(\text{E}(X)=0\)</span>,
+then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\rightarrow N\text{Cov}(X)\)</span> and</p>
+<p><span class="math display">\[\begin{align}
+\text{E}_{x_0}\text{EPE}(x_0) &amp;\sim \text{E}_{x_0}x_0^T\text{Cov}(X)^{-1}x_0\sigma^2/N + \sigma^2 \\
+&amp;= \text{E}_{x_0}\Bigl[\text{trace}(x_0^T\text{Cov}(X)^{-1}x_0)\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \text{E}_{x_0}\Bigl[\text{trace}(\text{Cov}(X)^{-1}x_0x_0^T)\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \Bigl[\text{trace}(\text{Cov}(X)^{-1}\text{Cov}(x_0))\Bigr]\sigma^2/N + \sigma^2 \\
+&amp;= \text{trace}\left(\text{Cov}(X)^{-1}\text{Cov}(x_0)\right)\sigma^2/N + \sigma^2 \\
+&amp;= \text{trace}(I_p)\sigma^2/N + \sigma^2 \\
+&amp;= \sigma^2(p/N)+\sigma^2.
+\end{align}\]</span></p>
+<p>The expected EPE increases linearly as a function of <span class="math inline">\(p\)</span>, with slope <span class="math inline">\(\sigma^2/N\)</span>. If <span class="math inline">\(N\)</span> is large and/or <span class="math inline">\(\sigma^2\)</span> is small, this growth is variance is negligible (0 in the deterministic case).</p>
+</div>
+<div id="ex.-2.6-repeated-measurements" class="section level2">
+<h2>Ex. 2.6 (repeated measurements)</h2>
+<p>Consider a regression problem with inputs <span class="math inline">\(x_i\)</span> and outputs <span class="math inline">\(y_i\)</span>, and a
+parameterized model <span class="math inline">\(f_\theta(x)\)</span> to be fit by least squares. Show that if there are observations with tied or identical values of <span class="math inline">\(x\)</span>, then the fit can be obtained from a reduced weighted least squares problem.</p>
+<p>To search for parameter <span class="math inline">\(\theta\)</span> using least squares one seeks to minimize:
+<span class="math display">\[\text{RSS}(\theta)=\sum_{k=1}^{N}(y_k-f_{\theta}(x_k))^2\]</span>
+If there are repeated independent variables <span class="math inline">\(x_i\)</span> then this prescription is
+equivalent to a weighted least squares problem.</p>
+<p>Let <span class="math inline">\(N_u\)</span> be the number of unique inputs <span class="math inline">\(x\)</span>, that is, the number of distinct inputs after discarding duplicates. Assume that if the <span class="math inline">\(i^{th}\)</span> unique <span class="math inline">\(x\)</span> value gives rise to <span class="math inline">\(n_i\)</span> potentially different <span class="math inline">\(y\)</span> values. With this notation we can write the RSS(θ) above as:
+<span class="math display">\[\begin{align}
+\text{RSS}(\theta)&amp;=\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}(y_{ij}-f_{\theta}(x_i))^2\\
+&amp;=\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}(y_{ij}^2-2y_{ij}f_{\theta}(x_i)+f_{\theta}(x_i)^2)\\
+&amp;=\sum_{i=1}^{N_u}n_i\Biggl(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2\frac{1}{n_i}f_{\theta}(x_i)\sum_{j=1}^{n_i}y_{ij}+f_{\theta}(x_i)^2\Biggr)
+\end{align}\]</span>
+Let’s define <span class="math inline">\(\bar{y}_i=\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}\)</span> which is the average of all responses <span class="math inline">\(y\)</span> resulting from the same input <span class="math inline">\(x_i\)</span>.
+<span class="math display">\[\text{RSS}(\theta)=\sum_{i=1}^{N_u}n_i\Biggl(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2\frac{1}{n_i}f_{\theta}(x_i)\sum_{j=1}^{n_i}y_{ij}+f_{\theta}(x_i)^2\Biggr)\\
+=\sum_{i=1}^{N_u}n_i\Biggl(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2+\bar{y}_i^2-\bar{y}_i^2-2\frac{1}{n_i}f_{\theta}(x_i)\sum_{j=1}^{n_i}y_{ij}+f_{\theta}(x_i)^2\Biggr)\\
+=\sum_{i=1}^{N_u}n_i\Biggl(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2+\bar{y}_i^2-\bar{y}_i^2-2f_{\theta}(x_i)\bar{y}_i+f_{\theta}(x_i)^2\Biggr)\\
+=\sum_{i=1}^{N_u}n_i\Biggl(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-\bar{y}_i^2+\Bigl(\bar{y}_i-f_{\theta}(x_i)\Bigr)^2\Biggr)\\
+=\sum_{i=1}^{N_u}n_i\Bigl(\bar{y}_i-f_{\theta}(x_i)\Bigr)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}n_i\bar{y}_i^2\]</span></p>
+<p>Once the measurements are received the sample points <span class="math inline">\(y\)</span> are fixed and do not change. Thus the minimization of <span class="math inline">\(\text{RSS}(\theta)\)</span> is minimization of <span class="math display">\[\sum_{i=1}^{N_u}n_i\Bigl(\bar{y}_i-f_{\theta}(x_i)\Bigr)^2\]</span> which is a weighted least squares since each repeated input vector <span class="math inline">\(x_i\)</span> is
+to fit the value of <span class="math inline">\(\bar{y}_i\)</span> (the average of output values) and each residual error is weighted by how many times the measurement of <span class="math inline">\(x_i\)</span> was taken. It is a reduced problem since the number of points we are working with is now <span class="math inline">\(N_u &lt; N\)</span>.</p>
+</div>
+<div id="ex.-2.7-forms-for-linear-regression-and-k-nearest-neighbor-regression" class="section level2">
+<h2>Ex. 2.7 (forms for linear regression and k-nearest neighbor regression)</h2>
+<p>Suppose we have a sample of <span class="math inline">\(N\)</span> pairs <span class="math inline">\(x_i\)</span>, <span class="math inline">\(y_i\)</span> drawn i.i.d. (
+Independent and identically distributed) from the
+distribution characterized as follows:</p>
+<p><span class="math display">\[\begin{align}
+&amp;x_i\sim h(x), \text{ the design density}\\
+&amp;y_i=f(x_i)+\epsilon_i,  f \text{ is the regression function}\\
+&amp;\epsilon_i\sim(0,\sigma^2) (\text{mean zero, variance} \sigma^2)
+\end{align}\]</span></p>
+<p>We construct an estimator for <span class="math inline">\(f\)</span> linear in the <span class="math inline">\(y_i\)</span>,
+<span class="math display">\[\hat{f}(x_0)=\sum_{i=1}^{N}\ell_i(x_0;X)y_i\]</span>
+where the weights <span class="math inline">\(\ell_i(x_0;X)\)</span> do not depend on the <span class="math inline">\(y_i\)</span>, but do depend on the entire training sequence of <span class="math inline">\(x_i\)</span>, denoted here by <span class="math inline">\(X\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Show that linear regression and <span class="math inline">\(k\)</span>-nearest-neighbor regression are members
+of this class of estimators. Describe explicitly the weights <span class="math inline">\(\ell_i(x_0;X)\)</span>
+in each of these cases.</p></li>
+<li><p>Decompose the conditional mean-squared error <span class="math display">\[\text{E}_{Y|X}(f(x_0)-\hat{f}(x_0))^2\]</span> into a conditional squared bias and a conditional variance component. Like <span class="math inline">\(X, Y\)</span> represents the entire training sequence of <span class="math inline">\(y_i\)</span>.</p></li>
+<li><p>Decompose the (unconditional) mean-squared error <span class="math display">\[\text{E}_{Y,X}(f(x_0)-\hat{f}(x_0))^2\]</span> into a squared bias and a variance component.</p></li>
+<li><p>Establish a relationship between the squared biases and variances in
+the above two cases.</p></li>
+<li><p>In the case of simple linear regression where there is only
+one response <span class="math inline">\(y\)</span> and one predictor <span class="math inline">\(x\)</span>. Then the standard definitions of <span class="math inline">\(y\)</span> and <span class="math inline">\(X\)</span> state that <span class="math display">\[y^T=(y_1,\cdots,y_n)\]</span> and <span class="math display">\[X^T=\begin{bmatrix}
+1&amp;\cdots&amp;1\\
+x_1&amp;\cdots&amp;x_n
+\end{bmatrix}\]</span></p></li>
+</ol>
+<p>For linear regression we have <span class="math display">\[\hat{\beta}=(X^TX)^{-1}X^Ty\]</span> and set <span class="math display">\[\hat{f}(x_0)=\begin{bmatrix}
+1 &amp; x_0
+\end{bmatrix}\hat{\beta}=\begin{bmatrix}
+1 &amp; x_0
+\end{bmatrix}(X^TX)^{-1}X^Ty\]</span> Then for <span class="math display">\[\hat{f}(x_0)=\sum_{i=1}^{N}\ell_i(x_0;X)y_i\]</span> the weight
+<span class="math display">\[\ell_i(x_0;X)=\begin{bmatrix}
+1 &amp; x_0
+\end{bmatrix}(X^TX)^{-1}\begin{bmatrix}
+1 \\
+x_i
+\end{bmatrix}\]</span> for each <span class="math inline">\(i\)</span> with <span class="math inline">\(1 \leq i \leq n\)</span>.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Decompose the conditional mean-squared error <span class="math display">\[\text{E}_{Y|X}(f(x_0)-\hat{f}(x_0))^2\]</span> into a conditional squared bias and a conditional variance component. Like <span class="math inline">\(X, Y\)</span> represents the entire training sequence of <span class="math inline">\(y_i\)</span>.</li>
+</ol>
+<p>Here <span class="math inline">\(X\)</span> is fixed, and <span class="math inline">\(Y\)</span> varies. Also <span class="math inline">\(x_0\)</span> and <span class="math inline">\(f(x_0)\)</span> are fixed. So the conditional mean-squared error
+<span class="math display">\[\begin{align}
+\text{E}_{Y|X}\Bigl(f(x_0)-\hat{f}(x_0)\Bigr)^2&amp;=(f(x_0))^2-2f(x_0)\text{E}_{Y|X}\Bigl(\hat{f}(x_0)\Bigr)+\text{E}_{Y|X}\Bigl((\hat{f}(x_0))^2\Bigr)\\
+&amp;=\Bigl(f(x_0)-\text{E}_{Y|X}\Bigl(\hat{f}(x_0)\Bigr)\Bigr)^2-\Bigl[\text{E}_{Y|X}\Bigl(\hat{f}(x_0)\Bigr)\Bigr]^2+\text{E}_{Y|X}\Bigl((\hat{f}(x_0))^2\Bigr)\\
+&amp;=(\text{bias})^2+\text{Var}(\hat{f}(x_0))
+\end{align}\]</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Decompose the (unconditional) mean-squared error <span class="math display">\[\text{E}_{Y,X}(f(x_0)-\hat{f}(x_0))^2\]</span> into a squared bias and a variance component.</li>
+</ol>
+<p><span class="math inline">\(x_0\)</span> and <span class="math inline">\(f(x_0)\)</span> are constant.
+<span class="math display">\[\begin{align}
+\text{E}_{Y,X}(f(x_0)-\hat{f}(x_0))^2&amp;=f(x_0)^2-2f(x_0)\text{E}_{Y,X}\hat{f}(x_0)+\text{E}_{Y,X}\Bigl((\hat{f}(x_0))^2\Bigr)\\
+&amp;=\Bigl(f(x_0)-\text{E}_{Y,X}\hat{f}(x_0)\Bigr)^2+\text{E}_{Y,X}\Bigl((\hat{f}(x_0))^2\Bigr)-\Bigl(\text{E}_{Y,X}\hat{f}(x_0)\Bigr)^2\\
+&amp;=(\text{bias})^2+\text{Var}(\hat{f}(x_0))
+\end{align}\]</span></p>
+</div>
+<div id="ex.-2.8-classifying-2s-and-3s" class="section level2">
+<h2>Ex. 2.8 (classifying 2’s and 3’s)</h2>
+<p>Compare the classification performance of linear regression and <span class="math inline">\(k\)</span>–
+nearest neighbor classification on the <em>zipcode data</em>. In particular, consider
+only the 2’s and 3’s, and <span class="math inline">\(k = 1, 3, 5, 7\)</span> and <span class="math inline">\(15\)</span>. Show both the training and
+test error for each choice. The zipcode data are available from the book
+website www-stat.stanford.edu/ElemStatLearn.</p>
+<pre class="python"><code>%load_ext rpy2.ipython</code></pre>
+<pre><code>The rpy2.ipython extension is already loaded. To reload it, use:
+  %reload_ext rpy2.ipython</code></pre>
+<pre class="r"><code>%%R
+#Reading the train and test files for independent and dependent variables
+#Train file as input
+X &lt;- as.matrix(read.table(gzfile(&quot;./zipcode/zip.train.gz&quot;)))
+y2or3 &lt;- which(X[, 1] == 2 | X[, 1] == 3)
+X.train &lt;- X[y2or3, -1]
+y.train &lt;- X[y2or3, 1] == 3
+
+#Test file as input
+X &lt;- as.matrix(read.table(gzfile(&quot;./zipcode/zip.test.gz&quot;)))
+y2or3 &lt;- which(X[, 1] == 2 | X[, 1] == 3)
+X.test &lt;- X[y2or3, -1]
+y.test &lt;- X[y2or3, 1] == 3</code></pre>
+</div>
+<div id="ex.-2.9-the-average-training-error-is-smaller-than-the-testing-error" class="section level2">
+<h2>Ex. 2.9 (the average training error is smaller than the testing error)</h2>
+<p>Consider a linear regression model with <span class="math inline">\(p\)</span> parameters, fit by least
+squares to a set of training data <span class="math inline">\((x_1, y_1), \cdots , (x_N, y_N)\)</span> drawn at random from a population. Let <span class="math inline">\(\hat{\beta}\)</span> be the least squares estimate. Suppose we have some test data <span class="math inline">\((\tilde{x}_1, \tilde{y}_1), \cdots , (\tilde{x}_M, \tilde{y}_M)\)</span> drawn at random from the same population as the training data. If <span class="math display">\[R_{tr}(\beta) = \frac{1}{N}\sum_{1}^{N}(y_i-\beta^Tx_i)^2\]</span> and <span class="math display">\[R_{te}(\beta) = \frac{1}{M}\sum_{1}^{M}(\tilde{y}_i-\beta^T\tilde{x}_i)^2\]</span>
+prove that <span class="math display">\[E[R_{tr}(\hat{\beta})]\leq E[R_{te}(\hat{\beta})]\]</span>
+where the expectations are over all that is random in each expression.</p>
+<p>The expectation of the test term <span class="math display">\[\frac{1}{M}\sum(\tilde{y}_i-\hat{\beta}^Tx_i)^2\]</span> is equal to the expectation of <span class="math display">\[(\tilde{y}_1-\hat{\beta}^Tx_1)^2\]</span>, and is therefore independent of <span class="math inline">\(M\)</span>. We take <span class="math inline">\(M = N\)</span>, and then decrease the test expression on replacing <span class="math inline">\(\hat{\beta}\)</span> with a value of <span class="math inline">\(\beta\)</span> that minimizes the expression. Now the expectations of the two terms are equal. This proves the result. Note that we may have to use the Moore-Penrose pseudo-inverse of <span class="math inline">\(X^TX\)</span>, if the rank of <span class="math inline">\(X\)</span> is less than <span class="math inline">\(p\)</span>. This is not a continuous function of <span class="math inline">\(X\)</span>, but it is measurable, which is all we need.</p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-friedman2001elements" class="csl-entry">
+1. Friedman J, Hastie T, Tibshirani R, others. The elements of statistical learning. Springer series in statistics New York; 2001.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,14 +6,33 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 12 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ESL chapter 2 Overview of Supervised Learning</title>
+      <link>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</guid>
+      <description>\(\S\) Supervised Learning\(\S\) 2.3. Two Simple Approaches to Prediction: Least Squares and Nearest Neighbors\(\S\) 2.3.3 From Least Squares to Nearest Neighbors\(\S\) 2.3.1. Linear Models and Least SquaresLinear ModelsHow to fit the model: Least squaresLinear model in a classification contextWhere the data came from?\(\S\) 2.3.2 Nearest-Neighbor MethodsDo not satisfy with the training resultsEffective number of parametersDo not appreciate the training errors\(\S\) 2.</description>
+    </item>
+    
+    <item>
+      <title>C</title>
+      <link>/2021/02/03/c/</link>
+      <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/03/c/</guid>
+      <description>Chapter 1 - A Tutorial IntroductionChapter 1 - A Tutorial IntroductionReferences
+1. Kernighan BW, Ritchie DM. The c programming language. 2006.</description>
+    </item>
+    
     <item>
       <title>Single cell data analysis using scanpy</title>
       <link>/2021/02/03/single-cell-data-analysis-using-scanpy/</link>
       <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/02/03/single-cell-data-analysis-using-scanpy/</guid>
-      <description>import numpy as np import pandas as pd import scanpy as sc # !mkdir data # !wget http://cf.10xgenomics.com/samples/cell-exp/1.1.0/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz -O data/pbmc3k_filtered_gene_bc_matrices.tar.gz # !cd data; tar -xzf pbmc3k_filtered_gene_bc_matrices.tar.gz # !mkdir write sc.settings.verbosity = 3 # verbosity: errors (0), warnings (1), info (2), hints (3) sc.logging.print_header() sc.settings.set_figure_params(dpi=80, facecolor=&amp;#39;white&amp;#39;) scanpy==1.6.1 anndata==0.7.5 umap==0.4.6 numpy==1.19.2 scipy==1.5.2 pandas==1.2.1 scikit-learn==0.23.2 statsmodels==0.12.1 python-igraph==0.8.3 leidenalg==0.8.3 results_file = &amp;#39;write/pbmc3k.h5ad&amp;#39; # the file that will store the analysis results adata = sc.</description>
+      <description>import numpy as npimport pandas as pdimport scanpy as sc# !mkdir data# !wget http://cf.10xgenomics.com/samples/cell-exp/1.1.0/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz -O data/pbmc3k_filtered_gene_bc_matrices.tar.gz# !cd data; tar -xzf pbmc3k_filtered_gene_bc_matrices.tar.gz# !mkdir writesc.settings.verbosity = 3 # verbosity: errors (0), warnings (1), info (2), hints (3)sc.logging.print_header()sc.settings.set_figure_params(dpi=80, facecolor=&amp;#39;white&amp;#39;)scanpy==1.6.1 anndata==0.7.5 umap==0.4.6 numpy==1.19.2 scipy==1.5.2 pandas==1.2.1 scikit-learn==0.23.2 statsmodels==0.12.1 python-igraph==0.8.3 leidenalg==0.8.3results_file = &amp;#39;write/pbmc3k.h5ad&amp;#39; # the file that will store the analysis resultsadata = sc.</description>
     </item>
     
     <item>

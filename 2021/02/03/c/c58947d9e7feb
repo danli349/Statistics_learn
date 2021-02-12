@@ -1,0 +1,3 @@
+void square(double *x) {
+  *x = *x * *x;
+}
