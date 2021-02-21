@@ -419,9 +419,11 @@ fig</code></pre>
 <p>We see that for these data there are several misclassifications on both sides of the decision boundary. Perhaps our linear model is too rigid – or are such errors unavoidable? Remember that these are errors on the training data itself, and we have not said where the constructed came from (although this notebook already exposed the oracle). Consider the two possible scenarios:
 * <span class="math inline">\(\text{Scenario 1}\)</span>: The training data in each class were generated from bivariate Gaussian distributions with uncorrelated components and different means.
 * <span class="math inline">\(\text{Scenario 2}\)</span>: The training data in each class came from a mixture of 10 low-variance Gaussian distributions, with individual means themselves distributed as Gaussian.</p>
-<p>A mixture of Gaussians is best described in terms of the generative model.
-* One first generates a discrete variable that determines which of the component Gaussians to use,
-* and then generates an observation from the chosen density.</p>
+<p>A mixture of Gaussians is best described in terms of the generative model.</p>
+<ul>
+<li>One first generates a discrete variable that determines which of the component Gaussians to use,</li>
+<li>and then generates an observation from the chosen density.</li>
+</ul>
 <p>In the case of one Gaussian per class, we will see in Chapter 4 that a linear decision boundary is the best one can do, and that our estimate is almost optimal. The region of overlap is inevitable, and future data to be predicted will be plagued by this overlap as well.</p>
 </div>
 </div>
@@ -555,12 +557,14 @@ fig</code></pre>
 <div id="s-2.3.3.-from-least-squares-to-nearest-neighbors" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 2.3.3. From Least Squares to Nearest Neighbors</h2>
 <p>A large subset of the most popular techniques in use today are variants of these two simple procedures. In facti 1NN, the simplest of all, captures a large percentage of the market for low-dimensional problems.</p>
-<p>The following list describes some ways in which these simple procedures have been enhanced:
-* Kernel methods use weights that decrease smoothly to zero with distance from the target point, rather than the effectve 0/1 weights used by kNN.
-* In high-dimensional spaces the distance kernels are modified to emphasize some variable more than others.
-* Local regression fits linear models by locally weighted least squares, rather than fitting constants locally.
-* Linear models fit to a basis expansion of the original inputs allow arbitrarilly complex models.
-* Projection pursuit and neural network models consist of sums of nonlinearly transfromed linear models.</p>
+<p>The following list describes some ways in which these simple procedures have been enhanced:</p>
+<ul>
+<li>Kernel methods use weights that decrease smoothly to zero with distance from the target point, rather than the effectve 0/1 weights used by kNN.</li>
+<li>In high-dimensional spaces the distance kernels are modified to emphasize some variable more than others.</li>
+<li>Local regression fits linear models by locally weighted least squares, rather than fitting constants locally.</li>
+<li>Linear models fit to a basis expansion of the original inputs allow arbitrarilly complex models.</li>
+<li>Projection pursuit and neural network models consist of sums of nonlinearly transfromed linear models.</li>
+</ul>
 </div>
 </div>
 <div id="s-2.4.-statistical-decision-theory" class="section level1">
@@ -568,10 +572,12 @@ fig</code></pre>
 <p>In this section we develop a small amount of theory that provides a framework for developing models. We first consider the case of a quantitative output, and place outselves in the world of random variables nad probability spaces.</p>
 <div id="definitions" class="section level3">
 <h3>Definitions</h3>
-<p>Let
-* <span class="math inline">\(X\in\mathbb{R}^p\)</span> denote a real valued random input vector, and
-* <span class="math inline">\(Y\in\mathbb{R}\)</span> a real valued random output variable,
-* with joint distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span>.</p>
+<p>Let</p>
+<ul>
+<li><span class="math inline">\(X\in\mathbb{R}^p\)</span> denote a real valued random input vector, and</li>
+<li><span class="math inline">\(Y\in\mathbb{R}\)</span> a real valued random output variable,</li>
+<li>with joint distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span>.</li>
+</ul>
 <p>We seek a function <span class="math inline">\(f(X)\)</span> for predicting <span class="math inline">\(Y\)</span> given values of the input <span class="math inline">\(X\)</span>.</p>
 <div id="loss" class="section level4">
 <h4>Loss</h4>
@@ -622,9 +628,11 @@ E\Bigl((Y-f(X))^2|X\Bigr)&amp;=E\Biggl(\Bigl([Y-E(Y|X)]+[E(Y|X)-f(X)]\Bigr)^2|X\
 &amp;=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)+E\Biggl(\Bigl([E(Y|X)-f(X)]\Bigr)^2|X\Biggr)\\
 &amp;\ge E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)
 \end{align}\]</span></p>
-<p>When <span class="math inline">\(E(Y|X)-f(X)=0\\ E\Bigl((Y-f(X))^2|X\Bigr)=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)\)</span>
-#### Regression function
-The solution is the conditional expectation a.k.a. the <em>regression</em> function:</p>
+<p>When <span class="math inline">\(E(Y|X)-f(X)=0\\ E\Bigl((Y-f(X))^2|X\Bigr)=E\Biggl(\Bigl([Y-E(Y|X)]\Bigr)^2|X\Biggr)\)</span></p>
+</div>
+<div id="regression-function" class="section level4">
+<h4>Regression function</h4>
+<p>The solution is the conditional expectation a.k.a. the <em>regression</em> function:</p>
 <p><span class="math display">\[\begin{equation}
 f(x) = \text{E}\left(Y|X=x\right)
 \end{equation}\]</span></p>
@@ -646,24 +654,30 @@ Although the latter seems more palatable, we will see below that we may pay a pr
 <p><span class="math display">\[\begin{equation}
 \hat{f}(x) = \text{Ave}\left(y_i|x_i\in N_k(x)\right),
 \end{equation}\]</span></p>
-<p>where
-* “<span class="math inline">\(\text{Ave}\)</span>” denotes average, and
-* <span class="math inline">\(N_k(x)\)</span> is the neighborhood containing the <span class="math inline">\(k\)</span> points in <span class="math inline">\(\mathcal{T}\)</span> closest to <span class="math inline">\(x\)</span>.</p>
-<p>Two approximations are happening here:
-* Expectation is approximated by averaging over sample data;
-* conditioning at a point is relaxed to conditioning on some region “close” to the target point.</p>
+<p>where</p>
+<ul>
+<li>“<span class="math inline">\(\text{Ave}\)</span>” denotes average, and</li>
+<li><span class="math inline">\(N_k(x)\)</span> is the neighborhood containing the <span class="math inline">\(k\)</span> points in <span class="math inline">\(\mathcal{T}\)</span> closest to <span class="math inline">\(x\)</span>.</li>
+</ul>
+<p>Two approximations are happening here:</p>
+<ul>
+<li>Expectation is approximated by averaging over sample data;</li>
+<li>conditioning at a point is relaxed to conditioning on some region “close” to the target point.</li>
+</ul>
 <p>For large training sample size <span class="math inline">\(N\)</span>, the points in the neighborhood are likely to be close to <span class="math inline">\(x\)</span>, and as <span class="math inline">\(k\)</span> gets large the average will get more stable. In fact, under mild regularity conditions on the joint probability distribution <span class="math inline">\(\text{Pr}(X,Y)\)</span>, one can show that</p>
 <p><span class="math display">\[\begin{equation}
 \hat{f}(x)\rightarrow\text{E}(Y|X=x)\text{ as }N,k\rightarrow\infty\text{ s.t. }k/N\rightarrow0
 \end{equation}\]</span></p>
 <div id="isnt-it-perfect" class="section level4">
 <h4>Isn’t it perfect?</h4>
-<p>In light of this, why look further, since it seems we have a universal approximator?
-* We often do not have very large samples.<br />
-Linear models can usually get a more stable estimate than kNN, provided the structured model is appropriate (although such knowledge has to be learned from the data as well).
-* Curse of dimensionality.<br />
+<p>In light of this, why look further, since it seems we have a universal approximator?</p>
+<ul>
+<li>We often do not have very large samples.<br />
+Linear models can usually get a more stable estimate than kNN, provided the structured model is appropriate (although such knowledge has to be learned from the data as well).</li>
+<li>Curse of dimensionality.<br />
 As the dimension <span class="math inline">\(p\)</span> gets large, so does the metric size of the <span class="math inline">\(k\)</span>-nearest neighborhood. So settling for kNN as a surrogate for conditioning will fail us miserably.<br />
-The convergence above still holds, but the <em>rate</em> of convergence decreases as the dimension increases.</p>
+The convergence above still holds, but the <em>rate</em> of convergence decreases as the dimension increases.</li>
+</ul>
 </div>
 </div>
 <div id="model-based-approach-for-linear-regression" class="section level3">
@@ -707,9 +721,11 @@ Then
 </div>
 <div id="knn-vs.-least-squares" class="section level3">
 <h3>kNN vs. least squares</h3>
-<p>So both kNN and least squares end up approximating conditional expectations by averages. But they differ dramatically in terms of model assumptions:
-* Least squares assumes <span class="math inline">\(f(x)\)</span> is well approximated by a globally linear function.
-* kNN assumes <span class="math inline">\(f(x)\)</span> is well approximated by a locally constant function.</p>
+<p>So both kNN and least squares end up approximating conditional expectations by averages. But they differ dramatically in terms of model assumptions:</p>
+<ul>
+<li>Least squares assumes <span class="math inline">\(f(x)\)</span> is well approximated by a globally linear function.</li>
+<li>kNN assumes <span class="math inline">\(f(x)\)</span> is well approximated by a locally constant function.</li>
+</ul>
 <p>Although the latter seems more palatable, we have already seen that we may pay a price for this flexibility.</p>
 </div>
 <div id="additive-models-brief-on-modern-techniques" class="section level3">
@@ -868,9 +884,11 @@ plt.show()</code></pre>
 </div>
 <div id="knn-and-bayes-classifier" class="section level3">
 <h3>KNN and Bayes classifier</h3>
-<p>Again we see that the kNN classifier directly approximates this solution – a majority vote in a nearest neighborhood amounts to exactly this, except that
-* conditional probability at a point is relaxed to conditional probability within a neighborhood of a point,
-* and probabilities are estimated by training-sample proportions.</p>
+<p>Again we see that the kNN classifier directly approximates this solution – a majority vote in a nearest neighborhood amounts to exactly this, except that</p>
+<ul>
+<li>conditional probability at a point is relaxed to conditional probability within a neighborhood of a point,</li>
+<li>and probabilities are estimated by training-sample proportions.</li>
+</ul>
 </div>
 <div id="from-two-class-to-k-class" class="section level3">
 <h3>From two-class to <span class="math inline">\(K\)</span>-class</h3>
@@ -891,9 +909,11 @@ plt.show()</code></pre>
 </div>
 <div id="s-2.5.-local-methods-in-high-dimensions" class="section level1">
 <h1><span class="math inline">\(\S\)</span> 2.5. Local Methods in High Dimensions</h1>
-<p>We have examined two learning techniques for prediction so far;
-* the stable but biased linear model and
-* the less stable but apparently less biased class of kNN estimates.</p>
+<p>We have examined two learning techniques for prediction so far;</p>
+<ul>
+<li>the stable but biased linear model and</li>
+<li>the less stable but apparently less biased class of kNN estimates.</li>
+</ul>
 <p>It would seem that with a reasonably large set of training data, we could always approximate the theoretically optimal conditional expectation by kNN averaging, since we should be able to find a fairly large neighborhood of observations close to any <span class="math inline">\(x\)</span> and average them.</p>
 <div id="the-curse-of-dimensionality-bellman-1961" class="section level3">
 <h3>The curse of dimensionality (Bellman, 1961)</h3>
@@ -954,14 +974,16 @@ d(p,N) = \left(1-\frac{1}{2}^{1/N}\right)^{1/p}.
 </div>
 <div id="the-fourth-example-bias-variance-decomposition" class="section level3">
 <h3>The fourth example: Bias-variance decomposition</h3>
-<p>Let us construct another uniform example. Suppose
-* we have 1000 training examples <span class="math inline">\(x_i\)</span> generated uniformly on <span class="math inline">\([-1,1]^p\)</span>, and
-* the true relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is</p>
+<p>Let us construct another uniform example. Suppose</p>
+<ul>
+<li><p>we have 1000 training examples <span class="math inline">\(x_i\)</span> generated uniformly on <span class="math inline">\([-1,1]^p\)</span>, and</p></li>
+<li><p>the true relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is</p>
 <p><span class="math display">\[\begin{equation}
-  Y = f(X) = e^{-8\|X\|^2},
-  \end{equation}\]</span></p>
-<p>without any measurement error.
-* We use the 1NN rule to predict <span class="math inline">\(y_0\)</span> at the test-point <span class="math inline">\(x_0=0\)</span>.</p>
+Y = f(X) = e^{-8\|X\|^2},
+\end{equation}\]</span></p>
+<p>without any measurement error.</p></li>
+<li><p>We use the 1NN rule to predict <span class="math inline">\(y_0\)</span> at the test-point <span class="math inline">\(x_0=0\)</span>.</p></li>
+</ul>
 <p>Denote the training set by <span class="math inline">\(\mathcal{T}\)</span>. We can compute the expected prediction error at <span class="math inline">\(x_0\)</span> for our procedure, averaging over all such samples of size 1000. Since the problem is deterministic, this is the mean squared error (MSE) for estimating <span class="math inline">\(f(0)\)</span>.</p>
 <p><span class="math display">\[\begin{align}
 \text{MSE}(x_0) &amp;= \text{E}_\mathcal{T}\left[f(x_0)-\hat{y}_0\right]^2 \\
@@ -1254,10 +1276,12 @@ And
 <p>Note that
 1. An additional variance <span class="math inline">\(\sigma^2\)</span> is incurred, since our target is not deterministic.
 2. There is no bias, and the variance depends on <span class="math inline">\(x_0\)</span>.</p>
-<p>If
-* <span class="math inline">\(N\)</span> is large,
-* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
-* <span class="math inline">\(\text{E}(X)=0\)</span>,</p>
+<p>If</p>
+<ul>
+<li><span class="math inline">\(N\)</span> is large,</li>
+<li><span class="math inline">\(\mathcal{T}\)</span> were selected at random, and</li>
+<li><span class="math inline">\(\text{E}(X)=0\)</span>,</li>
+</ul>
 <p>then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\rightarrow N\text{Cov}(X)\)</span> and</p>
 <p><span class="math display">\[\begin{align}
 \text{E}_{x_0}\text{EPE}(x_0) &amp;\sim \text{E}_{x_0}x_0^T\text{Cov}(X)^{-1}x_0\sigma^2/N + \sigma^2 \\
@@ -1539,10 +1563,12 @@ Y = f(X) + \epsilon
 </div>
 <div id="s-2.6.3.-function-approximation" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 2.6.3. Function Approximation</h2>
-<p>Here
-* the data pairs <span class="math inline">\(\{x_i, y_i\}\)</span> are viewed as points in a <span class="math inline">\((p+1)\)</span>-dimensional Euclidean space.
-* The function <span class="math inline">\(f(x)\)</span> has domain eqaul to the <span class="math inline">\(p\)</span>-dimensional input subspace (or <span class="math inline">\(\mathbb{R}^p\)</span> for convenience), and
-* <span class="math inline">\(f\)</span> is related to the data via a model such as <span class="math inline">\(y_i=f(x_i)+\epsilon\)</span>.</p>
+<p>Here</p>
+<ul>
+<li>the data pairs <span class="math inline">\(\{x_i, y_i\}\)</span> are viewed as points in a <span class="math inline">\((p+1)\)</span>-dimensional Euclidean space.</li>
+<li>The function <span class="math inline">\(f(x)\)</span> has domain eqaul to the <span class="math inline">\(p\)</span>-dimensional input subspace (or <span class="math inline">\(\mathbb{R}^p\)</span> for convenience), and</li>
+<li><span class="math inline">\(f\)</span> is related to the data via a model such as <span class="math inline">\(y_i=f(x_i)+\epsilon\)</span>.</li>
+</ul>
 <p>The goal is to obtain a useful approximation to <span class="math inline">\(f(x)\)</span> for all <span class="math inline">\(x\)</span> in some region of <span class="math inline">\(\mathbb{R}^p\)</span>, given the representations in <span class="math inline">\(\mathcal{T}\)</span>.</p>
 <blockquote>
 <p>Although somewhat less glamorous than the learning paradigm, treating supervised learning as a problem in function approximation encourages the geometrical concepts of Euclidean spaces and mathematical concepts of probabilsitic inference to be applied to the problem. This is the approach taken in this book.</p>
@@ -1654,18 +1680,22 @@ L(\theta) = \sum_{i=1}^N\log p_{g_i,\theta}(x_i),
 <blockquote>
 <p>This usually means some kind of regular behavior in small neighborhoods of the input space.</p>
 </blockquote>
-<p>That is, for all input points <span class="math inline">\(x\)</span> sufficiently close to each other in some metric, <span class="math inline">\(\hat{f}\)</span> exhibits some special structure such as
-* nearly constant,
-* linear or
-* low-order polynomial behavior.</p>
+<p>That is, for all input points <span class="math inline">\(x\)</span> sufficiently close to each other in some metric, <span class="math inline">\(\hat{f}\)</span> exhibits some special structure such as</p>
+<ul>
+<li>nearly constant,</li>
+<li>linear or</li>
+<li>low-order polynomial behavior.</li>
+</ul>
 <p>The estimator is then obtained by averaging or polynomial fitting in that neighborhood.</p>
 <p>The strength of the constraint is dictated by the neighborhood size.</p>
 <blockquote>
 <p>The larger the size, the stronger the constraint, and the more sensitive the solution is to the particular choice of constraint.</p>
 </blockquote>
-<p>For example,
-* local constant fits in infinitesimally small neighborhoods is no constraints at all;
-* local linear fits in very large neighborhoods is almost a globally llinear model, and is very restrictive.</p>
+<p>For example,</p>
+<ul>
+<li>local constant fits in infinitesimally small neighborhoods is no constraints at all;</li>
+<li>local linear fits in very large neighborhoods is almost a globally llinear model, and is very restrictive.</li>
+</ul>
 </div>
 <div id="metric" class="section level3">
 <h3>Metric</h3>
@@ -1740,9 +1770,11 @@ K_\lambda(x_0, x) = \frac{1}{\lambda}\exp\left(-\frac{\|x-x_0\|^2}{2\lambda}\rig
 <p><span class="math display">\[\begin{equation}
 \text{RSS}(f_\theta,x_0) = \sum_{i=1}^N K_\lambda(x_0, x_i)\left(y_i -f_\theta(x_i)\right)^2,
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(f_\theta\)</span> is some parameterized function, such as a low-order polynomial. Some examples are:
-* <span class="math inline">\(f_\theta(x) = \theta_0\)</span>, the constant function; this results in the Nadaraya-Watson estimate.
-* <span class="math inline">\(f_\theta(x) = \theta_0+\theta_1 x\)</span> gives the popular local linear regression model.</p>
+<p>where <span class="math inline">\(f_\theta\)</span> is some parameterized function, such as a low-order polynomial. Some examples are:</p>
+<ul>
+<li><span class="math inline">\(f_\theta(x) = \theta_0\)</span>, the constant function; this results in the Nadaraya-Watson estimate.</li>
+<li><span class="math inline">\(f_\theta(x) = \theta_0+\theta_1 x\)</span> gives the popular local linear regression model.</li>
+</ul>
 </div>
 <div id="association-between-kernel-methods-and-knn" class="section level3">
 <h3>Association between kernel methods and kNN</h3>
@@ -1750,9 +1782,11 @@ K_\lambda(x_0, x) = \frac{1}{\lambda}\exp\left(-\frac{\|x-x_0\|^2}{2\lambda}\rig
 <p><span class="math display">\[\begin{equation}
 K_k(x,x_0) = I\left(\|x-x_0\| \le \|x_{(k)}-x_0\|\right),
 \end{equation}\]</span></p>
-<p>where
-* <span class="math inline">\(x_{(k)}\)</span> is the training observation ranked <span class="math inline">\(k\)</span>th in distance from <span class="math inline">\(x_0\)</span>, and
-* <span class="math inline">\(I(S)\)</span> is the indicator of the set <span class="math inline">\(S\)</span>.</p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(x_{(k)}\)</span> is the training observation ranked <span class="math inline">\(k\)</span>th in distance from <span class="math inline">\(x_0\)</span>, and</li>
+<li><span class="math inline">\(I(S)\)</span> is the indicator of the set <span class="math inline">\(S\)</span>.</li>
+</ul>
 <p>These methods of course need to be modified in high dimensions, to avoid the curse of dimensionality.</p>
 <p>Various adaptations are discussed in Chapter 6.</p>
 </div>
@@ -1781,9 +1815,11 @@ b_1(x) &amp;= 1, \\
 b_2(x) &amp;= x, \\
 b_{m+2}(x) &amp;= (x - t_m)_+, m=1,\cdots,M-2,
 \end{align}\]</span></p>
-<p>where
-* <span class="math inline">\(t_m\)</span> is the <span class="math inline">\(m\)</span>th knot, and
-* <span class="math inline">\(z_+\)</span> denotes positive part.</p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(t_m\)</span> is the <span class="math inline">\(m\)</span>th knot, and</li>
+<li><span class="math inline">\(z_+\)</span> denotes positive part.</li>
+</ul>
 <p>Tensor products of spline bases can be used for inputs with dimensions larger than one (<span class="math inline">\(\S\)</span> 5.2, and the CART/MARS model in Chapter 9).</p>
 <p>The parameter <span class="math inline">\(M\)</span> controls the degree of the polynomial or the number of knots in the case of splines.</p>
 </div>
@@ -2014,15 +2050,17 @@ And
 <p>equation (2.28)Note that
 1. An additional variance <span class="math inline">\(\sigma^2\)</span> is incurred, since our target is not deterministic.
 2. There is no bias, and the variance depends on <span class="math inline">\(x_0\)</span>.</p>
-<p>If
-* <span class="math inline">\(N\)</span> is large,
-* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
-* <span class="math inline">\(\text{E}(X)=0\)</span>,
-If
-* <span class="math inline">\(N\)</span> is large,
-* <span class="math inline">\(\mathcal{T}\)</span> were selected at random, and
-* <span class="math inline">\(\text{E}(X)=0\)</span>,
-then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\rightarrow N\text{Cov}(X)\)</span> and</p>
+<p>If</p>
+<ul>
+<li><p><span class="math inline">\(N\)</span> is large,</p></li>
+<li><p><span class="math inline">\(\mathcal{T}\)</span> were selected at random, and</p></li>
+<li><p><span class="math inline">\(\text{E}(X)=0\)</span>,
+If</p></li>
+<li><p><span class="math inline">\(N\)</span> is large,</p></li>
+<li><p><span class="math inline">\(\mathcal{T}\)</span> were selected at random, and</p></li>
+<li><p><span class="math inline">\(\text{E}(X)=0\)</span>,
+then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\rightarrow N\text{Cov}(X)\)</span> and</p></li>
+</ul>
 <p><span class="math display">\[\begin{align}
 \text{E}_{x_0}\text{EPE}(x_0) &amp;\sim \text{E}_{x_0}x_0^T\text{Cov}(X)^{-1}x_0\sigma^2/N + \sigma^2 \\
 &amp;= \text{E}_{x_0}\Bigl[\text{trace}(x_0^T\text{Cov}(X)^{-1}x_0)\Bigr]\sigma^2/N + \sigma^2 \\
