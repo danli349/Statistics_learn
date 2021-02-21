@@ -1825,10 +1825,12 @@ f_\theta(x) = \sum_{m=1}^M \beta_m \sigma(\alpha_m^T x + b_m),
 <h1><span class="math inline">\(\S\)</span> 2.9. Model Selection and the Bias-Variance Tradeoff</h1>
 <div id="review-1" class="section level3">
 <h3>Review</h3>
-<p>All the Models described so far have a <em>smoothing</em> or <em>complexity</em> parameter that has to be determined:
-* The multiplier of the penalty term;
-* the width of the kernel;
-* or the number of basis functions.</p>
+<p>All the Models described so far have a <em>smoothing</em> or <em>complexity</em> parameter that has to be determined:</p>
+<ul>
+<li>The multiplier of the penalty term;</li>
+<li>the width of the kernel;</li>
+<li>or the number of basis functions.</li>
+</ul>
 <p>In the case of the smoothing spline, the parameter <span class="math inline">\(\lambda\)</span> indexes models ranging from a straight line fit to the interpolating model.</p>
 <p>Similarly a local degree-<span class="math inline">\(m\)</span> polynomial model ranges between a degree-<span class="math inline">\(m\)</span> global polynomial when the window size is infinitely large, to an interpolating fit when the window size shrinks to zero.</p>
 <p>This means that we cannot use residual sum-of-squares on the training data to determine these parameters as well, since we would always pick those that gave interpolating fits and hence zero residuals. Such a model is unlikely to predict future data well at all.</p>
@@ -1836,9 +1838,11 @@ f_\theta(x) = \sum_{m=1}^M \beta_m \sigma(\alpha_m^T x + b_m),
 <div id="the-bias-variance-tradeoff-for-the-knn" class="section level3">
 <h3>The bias-variance tradeoff for the kNN</h3>
 <p>The kNN regression fit <span class="math inline">\(\hat{f}_k(x_0)\)</span> usefully illustrates the competing forces that affect the predictive ability of such approximations.</p>
-<p>Suppose
-* the data arise from a model <span class="math inline">\(Y=f(X)+\epsilon\)</span>, with <span class="math inline">\(\text{E}(\epsilon)=0\)</span> and <span class="math inline">\(\text{Var}(\epsilon)=\sigma^2\)</span>;
-* for simplicity here the values of <span class="math inline">\(x_i\)</span> in the sample are fixed in advance (nonrandom).</p>
+<p>Suppose</p>
+<ul>
+<li>the data arise from a model <span class="math inline">\(Y=f(X)+\epsilon\)</span>, with <span class="math inline">\(\text{E}(\epsilon)=0\)</span> and <span class="math inline">\(\text{Var}(\epsilon)=\sigma^2\)</span>;</li>
+<li>for simplicity here the values of <span class="math inline">\(x_i\)</span> in the sample are fixed in advance (nonrandom).</li>
+</ul>
 <p>The expected prediction error at <span class="math inline">\(x_0\)</span>, a.k.a. <em>test</em> or <em>generalization</em> error, can be decomposed:</p>
 <p><span class="math display">\[\begin{align}
 \text{EPE}_k(x_0) &amp;= \text{E}\left[(Y-\hat{f}_k(x_0))^2|X=x_0\right] \\
