@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ESL chapter 3 Linear Methods for Regression</title>
+      <link>/2021/02/24/esl-chapter-3-linear-methods-for-regression/</link>
+      <pubDate>Wed, 24 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/24/esl-chapter-3-linear-methods-for-regression/</guid>
+      <description>Chapter 3. Linear Methods for Regression\(\S\) 3.1. Introduction\(\S\) 3.2. Linear Regression Models and Least SquaresThe linear modelLeast squares fitSolution of least squaresGeometrical representation of the least squares estimateSampling properties of \(\hat{\beta}\)Inference and hypothesis testingConfidence intervals\(\S\) 3.2.1. Example: Prostate Cancer\(\S\) 3.2.2. The Gauss-Markov TheoremThe statement of the theoremImplications of the Gauss-Markov theoremRelation between prediction accuracy and MSE\(\S\) 3.</description>
+    </item>
+    
     <item>
       <title>ESL chapter 2 Overview of Supervised Learning</title>
       <link>/2021/02/12/esl-chapter-2-overview-of-supervised-learning/</link>
