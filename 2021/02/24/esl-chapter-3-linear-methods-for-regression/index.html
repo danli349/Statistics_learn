@@ -150,7 +150,10 @@
 </ul></li>
 <li><a href="#s-3.5.-methods-using-derived-input-directions"><span class="math inline">\(\S\)</span> 3.5. Methods Using Derived Input Directions</a>
 <ul>
-<li><a href="#s-3.5.1.-principal-components-regression"><span class="math inline">\(\S\)</span> 3.5.1. Principal Components Regression</a></li>
+<li><a href="#s-3.5.1.-principal-components-regression"><span class="math inline">\(\S\)</span> 3.5.1. Principal Components Regression</a>
+<ul>
+<li><a href="#comparison-with-ridge-regression">Comparison with ridge regression</a></li>
+</ul></li>
 <li><a href="#s-3.5.2.-partial-least-squares"><span class="math inline">\(\S\)</span> 3.5.2. Partial Least Squares</a>
 <ul>
 <li><a href="#algorithm-3.3.-partial-least-squares.">Algorithm 3.3. Partial least squares.</a></li>
@@ -2137,10 +2140,12 @@ Y=X\beta+\epsilon.
 r_i &amp;= y_i - x_i\hat\beta, \\
 \mathbf{r} &amp;= \mathbf{y} - \mathbf{x}\hat\beta,
 \end{align}\]</span></p>
-<p>where
-* <span class="math inline">\(\mathbf{y}=(y_1,\cdots,y_N)^T\)</span>,
-* <span class="math inline">\(\mathbf{x}=(x_1,\cdots,x_N)^T\)</span> and
-* <span class="math inline">\(\langle\cdot,\cdot\rangle\)</span> denotes the dot product notation.</p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\mathbf{y}=(y_1,\cdots,y_N)^T\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}=(x_1,\cdots,x_N)^T\)</span> and</li>
+<li><span class="math inline">\(\langle\cdot,\cdot\rangle\)</span> denotes the dot product notation.</li>
+</ul>
 <p>As we will see,</p>
 <blockquote>
 <p>this simple univariate regression provides the building block for multiple linear regression.</p>
@@ -3972,9 +3977,11 @@ plt.ylabel(&#39;BIC&#39;)</code></pre>
 <div id="forward-stepwise-selection" class="section level3">
 <h3>Forward-stepwise selection</h3>
 <p><em>Forward-stepwise selection</em> starts with the intercept, and the sequentially adds into the model the predictor that most improves the fit. Clever updating algorithms can exploit the QR decomposition for the current fit to rapidly establish the next candidate. Like best-subset regression, the subset size <span class="math inline">\(k\)</span> must be determined.</p>
-<p>Forward-stepwise selection is a <em>greedy algorithm</em>, producing a nested sequence of models. In this sense it might seem sub-optimal compared to best-subset selection. However, there are several reasons why it might be preferred:
-* Computational; we can always compute the forward stepwise sequence (even when <span class="math inline">\(p \gg N\)</span>).
-* Statistical;forward stepwise is a more constrained search than the best subset selection, and will have lower variance, but perhaps more bias.</p>
+<p>Forward-stepwise selection is a <em>greedy algorithm</em>, producing a nested sequence of models. In this sense it might seem sub-optimal compared to best-subset selection. However, there are several reasons why it might be preferred:</p>
+<ul>
+<li>Computational; we can always compute the forward stepwise sequence (even when <span class="math inline">\(p \gg N\)</span>).</li>
+<li>Statistical;forward stepwise is a more constrained search than the best subset selection, and will have lower variance, but perhaps more bias.</li>
+</ul>
 </div>
 <div id="backward-stepwise-selction" class="section level3">
 <h3>Backward-stepwise selction</h3>
@@ -5672,14 +5679,17 @@ While this approximation works reasonably well anywhere in the lasso path, for e
 \hat\beta^{\text{pcr}}(M) = \sum_{m=1}^M \hat\theta_m v_m.
 \end{equation}\]</span></p>
 <p>As with ridge regression, PCR depends on the scaling of the inputs, so typically we first standardized them.</p>
-<p>lambdas### Comparison with ridge regression</p>
+<div id="comparison-with-ridge-regression" class="section level3">
+<h3>Comparison with ridge regression</h3>
 <p>If <span class="math inline">\(M=p\)</span>, since the columns of <span class="math inline">\(\mathbf{Z} = \mathbf{UD}\)</span> span the <span class="math inline">\(\text{col}(\mathbf{X})\)</span>,</p>
 <p><span class="math display">\[\begin{equation}
 \hat\beta^{\text{pcr}}(p) = \hat\beta^{\text{ls}}.
 \end{equation}\]</span></p>
-<p>For <span class="math inline">\(M&lt;p\)</span> we get a reduced regression and we see that PCR is very similar to ridge regression: both operate via the principal components of the input matrix.
-* Ridge regression shrinks the coefficients of the principal components (FIGURE 3.17), shrinking more depending on the size of the corresponding eigenvalue;
-* PCR discards the <span class="math inline">\(p-M\)</span> smallest eigenvalue components. FIGURE 3.17 illustrates this.</p>
+<p>For <span class="math inline">\(M&lt;p\)</span> we get a reduced regression and we see that PCR is very similar to ridge regression: both operate via the principal components of the input matrix.</p>
+<ul>
+<li>Ridge regression shrinks the coefficients of the principal components (FIGURE 3.17), shrinking more depending on the size of the corresponding eigenvalue;</li>
+<li>PCR discards the <span class="math inline">\(p-M\)</span> smallest eigenvalue components. FIGURE 3.17 illustrates this.</li>
+</ul>
 <pre class="python"><code>import scipy
 import scipy.stats
 import pandas as pd
@@ -5765,6 +5775,7 @@ plt.show()</code></pre>
 </div>
 <p>FIGURE 3.17. Ridge regression shrinks the regression coefficients of the prin-
 cipal components, using shrinkage factors <span class="math inline">\(d_j^2 /(d_j^2 + \lambda)\)</span> as in (3.47). Principal component regression truncates them. Shown are the shrinkage and truncation patterns corresponding to Figure 3.7, as a function of the principal component index.</p>
+</div>
 </div>
 <div id="s-3.5.2.-partial-least-squares" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.5.2. Partial Least Squares</h2>
@@ -6156,7 +6167,7 @@ F_{p_1−p_0,N−p_1−1}=\frac{\left(\text{RSS}_0-\text{RSS}_1\right)/\left(p_1
 where <span class="math inline">\(\text{RSS}_1\)</span> is the residual sum-of-squares for the least squares fit of the bigger model with <span class="math inline">\(p_1+1\)</span> parameters, and <span class="math inline">\(\text{RSS}_0\)</span> the same for the nested smaller model with <span class="math inline">\(p_0+1\)</span> parameters, having <span class="math inline">\(p_1−p_0\)</span> parameters constrained to be zero. The <span class="math inline">\(F\)</span> statistic measures the change in residual sum-of-squares per additional parameter in the bigger model, and it is normalized by an estimate of <span class="math inline">\(\sigma^2\)</span>. Under the Gaussian assumptions, and the null hypothesis that the smaller model is correct, the <span class="math inline">\(F\)</span> statistic will have a <span class="math inline">\(F_{p_1−p_0,N−p_1−1}\)</span> distribution.</p>
 <p>The <span class="math inline">\(Z-score\)</span>
 <span class="math display">\[z_j=\frac{\hat{\beta}_j}{\hat{\sigma}\sqrt{v_j}}\]</span> where <span class="math inline">\(v_j\)</span> is the <span class="math inline">\(j\)</span>th diagonal element of <span class="math inline">\((\mathbf X^T\mathbf X)^{−1}\)</span>. Under the null hypothesis
-that <span class="math inline">\(\beta_j = 0\)</span>, <span class="math inline">\(z_j\)</span> is distributed as <span class="math inline">\(t_{N−p−1}\)</span> (a <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(N − p − 1\)</span> degrees of freedom), and hence a large (absolute) value of <span class="math inline">\(zj\)</span> will lead to rejection of this null hypothesis.</p>
+that <span class="math inline">\(\beta_j = 0\)</span>, <span class="math inline">\(z_j\)</span> is distributed as <span class="math inline">\(t_{N−p−1}\)</span> (a <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(N − p − 1\)</span> degrees of freedom), and hence a large (absolute) value of <span class="math inline">\(z_j\)</span> will lead to rejection of this null hypothesis.</p>
 <p>Since once <span class="math inline">\(\beta\)</span> is estimated we can compute <span class="math inline">\(\sigma^2\)</span>:
 <span class="math display">\[\hat{\sigma}^2=\frac{1}{N-p-1}\sum_{i=1}^{N}(y_i-\hat{y}_i)^2=\frac{1}{N-p-1}\sum_{i=1}^{N}(y_i-x_i^T\beta)^2=\frac{\text{RSS}_1}{N-p-1}\]</span>
 In addition, by just deleting one variable from our regression the difference in degrees of freedom between the two models is one i.e. <span class="math inline">\(p_1 − p_0 = 1\)</span>. Thus the <span class="math inline">\(F\)</span>-statistic when we delete the <span class="math inline">\(j\)</span>th term from the base model simplifies to
