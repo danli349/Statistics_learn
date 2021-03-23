@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">117 min read</span>
+    <span class="article-duration">122 min read</span>
     
 
     <h1 class="article-title">ESL chapter 3 Linear Methods for Regression</h1>
@@ -162,6 +162,20 @@
 </ul></li>
 </ul></li>
 <li><a href="#s-3.6.-discussion-a-comparison-of-the-selection-and-shrinkage-methods"><span class="math inline">\(\S\)</span> 3.6. Discussion: A Comparison of the Selection and Shrinkage Methods</a></li>
+<li><a href="#s-3.7-multiple-outcome-shrinkage-and-selection"><span class="math inline">\(\S\)</span> 3.7 Multiple Outcome Shrinkage and Selection</a></li>
+<li><a href="#s-3.8-more-on-the-lasso-and-related-path-algorithms"><span class="math inline">\(\S\)</span> 3.8 More on the Lasso and Related Path Algorithms</a>
+<ul>
+<li><a href="#s-3.8.1-incremental-forward-stagewise-regression"><span class="math inline">\(\S\)</span> 3.8.1 Incremental Forward Stagewise Regression</a>
+<ul>
+<li><a href="#algorithm-3.4-incremental-forward-stagewise-regressionfs_varepsilon.">Algorithm 3.4 Incremental Forward Stagewise Regression—<span class="math inline">\(FS_{\varepsilon}\)</span>.</a></li>
+</ul></li>
+<li><a href="#s-3.8.2-piecewise-linear-path-algorithms"><span class="math inline">\(\S\)</span> 3.8.2 Piecewise-Linear Path Algorithms</a></li>
+<li><a href="#s-3.8.3-the-dantzig-selector"><span class="math inline">\(\S\)</span> 3.8.3 The Dantzig Selector</a></li>
+<li><a href="#s-3.8.4-the-grouped-lasso"><span class="math inline">\(\S\)</span> 3.8.4 The Grouped Lasso</a></li>
+<li><a href="#s-3.8.5-further-properties-of-the-lasso"><span class="math inline">\(\S\)</span> 3.8.5 Further Properties of the Lasso</a></li>
+<li><a href="#s-3.8.6-pathwise-coordinate-optimization"><span class="math inline">\(\S\)</span> 3.8.6 Pathwise Coordinate Optimization</a></li>
+</ul></li>
+<li><a href="#s-3.9-computational-considerations"><span class="math inline">\(\S\)</span> 3.9 Computational Considerations</a></li>
 <li><a href="#s-exercises"><span class="math inline">\(\S\)</span> Exercises</a>
 <ul>
 <li><a href="#s-ex.-3.1-the-f-statistic-is-equivalent-to-the-square-of-the-z-score"><span class="math inline">\(\S\)</span> Ex. 3.1 (the F-statistic is equivalent to the square of the Z-score)</a></li>
@@ -5141,7 +5155,15 @@ print( sqrt( var( ( XTesting[,p+1] - yPredict )^2 )/NTest ), digit=3 ) </code></
 <h2><span class="math inline">\(\S\)</span> 3.4.3. Discussion: Subset Selection, Ridge Regression, and the Lasso</h2>
 <div id="explicit-solutions-in-the-ideal-situation" class="section level3">
 <h3>Explicit solutions in the ideal situation</h3>
-<p>In the case of an orthonormal input matrix <span class="math inline">\(\mathbf{X}\)</span>, the three procecures have explicit solutions as below. <span class="math inline">\(M\)</span> and <span class="math inline">\(\lambda\)</span> are constants chosen by the corresponding techniques; sign denotes the sign of its argument (±1), and <span class="math inline">\(x_+\)</span> denotes “positive part” of <span class="math inline">\(x\)</span>. Below the table, estimators are shown by broken red lines. The <span class="math inline">\(45^\circ\)</span> line in gray shows the unrestricted estimate for reference.</p>
+<p>TABLE 3.4. In the case of an orthonormal input matrix <span class="math inline">\(\mathbf{X}\)</span>, the three procecures have explicit solutions as below. <span class="math inline">\(M\)</span> and <span class="math inline">\(\lambda\)</span> are constants chosen by the corresponding techniques; sign denotes the sign of its argument (±1), and <span class="math inline">\(x_+\)</span> denotes “positive part” of <span class="math inline">\(x\)</span>. Below the table, estimators are shown by broken red lines. The <span class="math inline">\(45^\circ\)</span> line in gray shows the unrestricted estimate for reference.</p>
+<p><span class="math display">\[\begin{array}{l}
+\text{Estimator} &amp; \text{Formula}\\
+\hline
+\text{Best subset (size M)} &amp;\hat{\beta}_j\cdot\mathbf I(\lvert\hat{\beta}_j\rvert\ge\lvert\hat{\beta}_{(M)}\rvert)\\
+\text{Ridge} &amp; \hat{\beta}_j\big/(1+\lambda)\\
+\text{Lasso} &amp; \text{sign}(\hat{\beta}_j)(\lvert\hat{\beta}_j\rvert-\lambda)_+\\
+\hline
+\end{array}\]</span></p>
 <ul>
 <li>Best subset (size <span class="math inline">\(M\)</span>) drops all variables with coefficients smaller than the <span class="math inline">\(M\)</span>th largest; this is a form of “hard-thresholding.”<br />
 <span class="math display">\[\begin{equation}
@@ -5793,7 +5815,7 @@ Set
 <li><p>For <span class="math inline">\(m = 1,2,\cdots,p\)</span></p></li>
 </ol>
 <ul>
-<li><span class="math inline">\(\mathbf{z}_m = \sum_{j=1}^p \hat\rho_{mj}\mathbf{x}_j^{(m-1)}\)</span>, where <span class="math inline">\(\hat\rho_{mj} = \langle \mathbf{x}_j^{(m-1)},\mathbf{y}\rangle\)</span>.</li>
+<li><span class="math inline">\(\mathbf{z}_m = \sum_{j=1}^p \hat\varphi_{mj}\mathbf{x}_j^{(m-1)}\)</span>, where <span class="math inline">\(\hat\varphi_{mj} = \langle \mathbf{x}_j^{(m-1)},\mathbf{y}\rangle\)</span>.</li>
 <li><span class="math inline">\(\hat\theta_m = \langle\mathbf{z}_m,\mathbf{y}\rangle \big/ \langle\mathbf{z}_m,\mathbf{z}_m\rangle\)</span>.</li>
 <li><span class="math inline">\(\hat{\mathbf{y}}^{(m)} = \hat{\mathbf{y}}^{(m-1)} + \hat\theta_m \mathbf{z}_m\)</span>.</li>
 <li>Orthogonalize each <span class="math inline">\(\mathbf{x}_j^{(m-1)}\)</span> w.r.t. <span class="math inline">\(\mathbf{z}_m\)</span>:<br />
@@ -5810,16 +5832,20 @@ These linear coefficients can be recovered from the sequence of PLS transformati
 </div>
 <div id="gist-of-the-pls-algorithm" class="section level3">
 <h3>Gist of the PLS algorithm</h3>
-<p>PLS begins by computing the weights</p>
-<p><span class="math display">\[\begin{equation}
-\hat\rho_{1j} = \langle \mathbf{x}_j,\mathbf{y} \rangle, \text{ for each } j,
-\end{equation}\]</span>
+<p>PLS begins by computing the weights
+<span class="math display">\[
+\begin{equation}
+\hat\varphi_{1j} = \langle \mathbf{x}_j,\mathbf{y} \rangle, \text{ for each } j,
+\end{equation}
+\]</span>
 which are in fact the univariate regression coefficients, since <span class="math inline">\(\mathbf{x}_j\)</span> are standardized (only for the first step <span class="math inline">\(m=1\)</span>).</p>
-<p>From this we construct derived input</p>
-<p><span class="math display">\[\begin{equation}
-\mathbf{z}_1 = \sum_j \hat\rho_{1j}\mathbf{x}_j,
-\end{equation}\]</span></p>
-<p>which is the first PLS direction. Hence in the construction of each <span class="math inline">\(\mathbf{z}_m\)</span>, the inputs are weighted by the strength of their univariate effect on <span class="math inline">\(\mathbf{y}\)</span>.</p>
+<p>From this we construct derived input
+<span class="math display">\[
+\begin{equation}
+\mathbf{z}_1 = \sum_j \hat\varphi_{1j}\mathbf{x}_j,
+\end{equation}
+\]</span>
+which is the first PLS direction. Hence in the construction of each <span class="math inline">\(\mathbf{z}_m\)</span>, the inputs are weighted by the strength of their univariate effect on <span class="math inline">\(\mathbf{y}\)</span>.</p>
 <p>The outcome <span class="math inline">\(\mathbf{y}\)</span> is regressed on <span class="math inline">\(\mathbf{z}_1\)</span> giving coefficient <span class="math inline">\(\hat\theta_1\)</span>, and then we orthogonalize <span class="math inline">\(\mathbf{x}_1,\cdots,\mathbf{x}_p\)</span> w.r.t. <span class="math inline">\(\mathbf{z}_1\)</span>.</p>
 <p>We continue this process, until <span class="math inline">\(M\le p\)</span> directions have been obtained. In this manner, PLS produces a sequence of derived, orthogonal inputs or directions <span class="math inline">\(\mathbf{z}_1,\cdots,\mathbf{z}_M\)</span>.</p>
 <ul>
@@ -5833,19 +5859,23 @@ which are in fact the univariate regression coefficients, since <span class="mat
 <p>PLS seeks direction that have high variance <em>and</em> have high correlation with the response, in contrast to PCR with keys only on high variance (Stone and Brooks, 1990; Frank and Friedman, 1993).</p>
 </blockquote>
 <p>Since it uses the response <span class="math inline">\(\mathbf{y}\)</span> to construct its directions, its solution path is a nonlinear function of <span class="math inline">\(\mathbf{y}\)</span>.</p>
-<p>In particular, the <span class="math inline">\(m\)</span>th principal component direction <span class="math inline">\(v_m\)</span> solves:</p>
-<p><span class="math display">\[\begin{equation}
+<p>In particular, the <span class="math inline">\(m\)</span>th principal component direction <span class="math inline">\(v_m\)</span> solves:
+<span class="math display">\[
+\begin{equation}
 \max_\alpha \text{Var}(\mathbf{X}\alpha)\\
-\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S} v_l = 0 \text{ for } l = 1,\cdots, m-1,
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\mathbf{S}\)</span> is the sample covariance matrix of the <span class="math inline">\(\mathbf{x}_j\)</span>. The condition <span class="math inline">\(\alpha^T\mathbf{S} v_l= 0\)</span> ensures that <span class="math inline">\(\mathbf{z}_m = \mathbf{X}\alpha\)</span> is uncorrelated with all the previous linear combinations <span class="math inline">\(\mathbf{z}_l = \mathbf{X} v_l\)</span>.</p>
-<p>The <span class="math inline">\(m\)</span>th PLS direction <span class="math inline">\(\hat\rho_m\)</span> solves:</p>
-<p><span class="math display">\[\begin{equation}
+\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S} v_l = 0, \text{ for } l = 1,\cdots, m-1,
+\end{equation}
+\]</span>
+where <span class="math inline">\(\mathbf{S}\)</span> is the sample covariance matrix of the <span class="math inline">\(\mathbf{x}_j\)</span>. The condition <span class="math inline">\(\alpha^T\mathbf{S} v_l= 0\)</span> ensures that <span class="math inline">\(\mathbf{z}_m = \mathbf{X}\alpha\)</span> is uncorrelated with all the previous linear combinations <span class="math inline">\(\mathbf{z}_l = \mathbf{X} v_l\)</span>.</p>
+<p>The <span class="math inline">\(m\)</span>th PLS direction <span class="math inline">\(\hat\varphi_m\)</span> solves:
+<span class="math display">\[
+\begin{equation}
 \max_\alpha \text{Corr}^2(\mathbf{y},\mathbf{S}\alpha)\text{Var}(\mathbf{X}\alpha)\\
-\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S}\hat\rho_l = 0 \text{ for } l=1,\cdots, m-1.
-\end{equation}\]</span></p>
-<p>Further analysis reveals that the variance aspect tends to dominate, and so PLS behaves much like ridge regression and PCR. We discuss further in the next section.</p>
-<p>If the input matrix <span class="math inline">\(\mathbf{X}\)</span> is orthogonal, then PLS finds the least squares estimates after the first <span class="math inline">\(m=1\)</span> step, and subsequent steps have no effect since the <span class="math inline">\(\hat\rho_{mj} = 0\)</span> for <span class="math inline">\(m&gt;1\)</span> (Exercise 3.14).</p>
+\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S}\hat\varphi_l = 0 \text{ for } l=1,\cdots, m-1.
+\end{equation}
+\]</span>
+Further analysis reveals that the variance aspect tends to dominate, and so PLS behaves much like ridge regression and PCR. We discuss further in the next section.</p>
+<p>If the input matrix <span class="math inline">\(\mathbf{X}\)</span> is orthogonal, then PLS finds the least squares estimates after the first <span class="math inline">\(m=1\)</span> step, and subsequent steps have no effect since the <span class="math inline">\(\hat\varphi_{mj} = 0\)</span> for <span class="math inline">\(m&gt;1\)</span> (Exercise 3.14).</p>
 <p>It can be also shown that the sequence of PLS coefficients for <span class="math inline">\(m=1,2,\cdots,p\)</span> represents the conjugate gradient sequence for computing the least squares solutions (Exercise 3.18).</p>
 </div>
 </div>
@@ -6154,6 +6184,75 @@ Dim.7   0.3025817         3.025817                    94.48342
 Dim.8   0.2744700         2.744700                    97.22812
 Dim.9   0.1552169         1.552169                    98.78029
 Dim.10  0.1219710         1.219710                   100.00000</code></pre>
+</div>
+<div id="s-3.7-multiple-outcome-shrinkage-and-selection" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 3.7 Multiple Outcome Shrinkage and Selection</h1>
+<p>To apply selection and shrinkage methods in the multiple output case, one could apply a univariate technique individually to each outcome or simultaneously to all outcomes. With ridge regression, for example, we could
+apply formula <span class="math display">\[
+\begin{align}
+\hat\beta^{\text{ridge}} &amp;= \left( \mathbf{X}^T\mathbf{X} + \lambda\mathbf{I} \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=(\mathbf V\mathbf D^2\mathbf V^T+\lambda\mathbf{V}\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=(\mathbf V(\mathbf D^2+\lambda\mathbf{I})\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}^{-T}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+\end{align}
+\]</span> to each of the <span class="math inline">\(K\)</span> columns of the outcome matrix <span class="math inline">\(Y\)</span> , using possibly different parameters <span class="math inline">\(\lambda\)</span>, or apply it to all columns using the same value of <span class="math inline">\(\lambda\)</span>. The former strategy would allow different amounts of
+regularization to be applied to different outcomes but require estimation of <span class="math inline">\(k\)</span> separate regularization parameters <span class="math inline">\(\lambda_1, \cdots, \lambda_k\)</span>, while the latter would permit all <span class="math inline">\(k\)</span> outputs to be used in estimating the sole regularization parameter <span class="math inline">\(\lambda\)</span>.</p>
+<p>Other more sophisticated shrinkage and selection strategies that exploit correlations in the different responses can be helpful in the multiple output case. Suppose for example that among the outputs we have <span class="math display">\[\begin{align}
+Y_k&amp;=f(X)+\varepsilon_k\\
+Y_{\ell}&amp;=f(X)+\varepsilon_{\ell}\\
+\end{align}\]</span> which share the same structural part <span class="math inline">\(f(X)\)</span> in their models. It is clear in this case that we should pool our observations on <span class="math inline">\(Y_k\)</span> and <span class="math inline">\(Y_{\ell}\)</span> to estimate the common <span class="math inline">\(f\)</span>.</p>
+<p>Combining responses is at the heart of canonical correlation analysis (CCA), a data reduction technique developed for the multiple output case. Similar to PCA, CCA finds a sequence of uncorrelated linear combinations
+<span class="math inline">\(Xv_m, m = 1, \cdots,M\)</span> of the <span class="math inline">\(x_j\)</span>, and a corresponding sequence of uncorrelated linear combinations <span class="math inline">\(Yu_m\)</span> of the responses <span class="math inline">\(y_k\)</span>, such that the correlations <span class="math display">\[\text{Corr}^2(Yu_m, Xv_m)\]</span> are successively maximized. Note that at most <span class="math inline">\(M = min(K, p)\)</span> directions can be found. The leading canonical response variates are those linear combinations (derived responses) best predicted by the <span class="math inline">\(x_j\)</span>; in contrast, the trailing canonical variates can be poorly predicted by the <span class="math inline">\(x_j\)</span> , and are candidates for being dropped. The CCA solution is computed using a generalized SVD of the sample cross-covariance matrix <span class="math inline">\(Y^TX/N\)</span> (assuming <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> are centered; Exercise 3.20).</p>
+<p>Reduced-rank regression (Izenman, 1975; van der Merwe and Zidek, 1980) formalizes this approach in terms of a regression model that explicitly pools information. Given an error covariance <span class="math inline">\(\text{Cov}(\varepsilon) = \Sigma\)</span>, we solve the following restricted multivariate regression problem: <span class="math display">\[\hat{\mathbf B}^{rr}(m)=\underset{\text{rank}(\mathbf B)=m}{\text{argmin}}\sum_{i=1}^{N}\left(y_i-\mathbf B^Tx_i\right)^T\Sigma^{-1}\left(y_i-\mathbf B^Tx_i\right)\]</span> With <span class="math inline">\(\Sigma\)</span> replaced by the estimate <span class="math inline">\(Y^TY/N\)</span>, one can show (Exercise 3.21) that the solution is given by a CCA of <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span>: <span class="math display">\[\hat{\mathbf B}^{rr}(m)=\hat{\mathbf B}\mathbf U_m\mathbf U_m^-\]</span> where <span class="math inline">\(\mathbf U_m\)</span> is the <span class="math inline">\(K\times m\)</span> sub-matrix of <span class="math inline">\(\mathbf U\)</span> consisting of the first <span class="math inline">\(m\)</span> columns, and <span class="math inline">\(\mathbf U\)</span> is the <span class="math inline">\(K\times M\)</span> matrix of left canonical vectors <span class="math inline">\(u_1, u_2, \cdots, u_M\)</span>. <span class="math inline">\(U_m^-\)</span> is its generalized inverse. Writing the solution as
+<span class="math display">\[\hat{\mathbf B}^{rr}(M)=\left(\mathbf X^T\mathbf X\right)^{-1}\mathbf X^T\mathbf Y\mathbf U_m\mathbf U_m^-\]</span> we see that reduced-rank regression performs a linear regression on the pooled response matrix <span class="math inline">\(\mathbf Y\mathbf U_m\)</span>, and then maps the coefficients (and hence the fits as well) back to the original response space. The reduced-rank fits are given by
+<span class="math display">\[\begin{align}
+\hat{\mathbf Y}^{rr}(m)&amp;=\mathbf X\left(\mathbf X^T\mathbf X\right)^{-1}\mathbf X^T\mathbf Y\mathbf U_m\mathbf U_m^-\\
+&amp;=\mathbf H\mathbf Y\mathbf P_m
+\end{align}\]</span> where <span class="math inline">\(\mathbf P_m\)</span> is the rank-<span class="math inline">\(m\)</span> CCA response projection operator. Although a better estimate of <span class="math inline">\(\Sigma\)</span> would be <span class="math display">\[\left(\mathbf Y-\mathbf X\hat{\mathbf B}\right)^T\left(\mathbf Y-\mathbf X\hat{\mathbf B}\right)\big/(N-pK)\]</span> one can show that the solution remains the same (Exercise 3.22).</p>
+<p>Reduced-rank regression borrows strength among responses by truncating the CCA. Breiman and Friedman (1997) explored with some success shrinkage of the canonical variates between <span class="math inline">\(\mathbf X\)</span> and <span class="math inline">\(\mathbf Y\)</span>, a smooth version of
+reduced rank regression. Their proposal has the form <span class="math display">\[\hat{\mathbf B}^{\text{c+w}}=\hat{\mathbf B}\mathbf U\mathbf\Lambda\mathbf U^-\]</span> where <span class="math inline">\(\mathbf\Lambda\)</span> is a diagonal shrinkage matrix (the “<span class="math inline">\(c+w\)</span>” stands for “Curds
+and Whey,” the name they gave to their procedure). Based on optimal prediction in the population setting, they show that <span class="math inline">\(\mathbf\Lambda\)</span> has diagonal entries <span class="math display">\[\lambda_m=\frac{c_m^2}{c_m^2+\frac{p}{N}(1-c_m^2)},m=1,\cdots,M\]</span> where <span class="math inline">\(c_m\)</span> is the <span class="math inline">\(m\)</span>th canonical correlation coefficient. Note that as the ratio of the number of input variables to sample size <span class="math inline">\(p/N\)</span> gets small, the shrinkage
+factors approach <span class="math inline">\(1\)</span>. Breiman and Friedman (1997) proposed modified versions of <span class="math inline">\(\mathbf\Lambda\)</span> based on training data and cross-validation, but the general form is the same. Here the fitted response has the form <span class="math display">\[\begin{align}
+\hat{\mathbf Y}^{\text{c+w}}=\mathbf X\left(\mathbf X^T\mathbf X\right)^{-1}\mathbf X^T\mathbf Y\mathbf U_m\mathbf U_m^-=\mathbf H\mathbf Y\mathbf S^{c+w}
+\end{align}\]</span> where <span class="math inline">\(\mathbf S^{c+w}=\mathbf U\mathbf\Lambda\mathbf U^{-1}\)</span> is the response shrinkage operator.</p>
+<p>Breiman and Friedman (1997) also suggested shrinking in both the <span class="math inline">\(\mathbf Y\)</span> space and <span class="math inline">\(\mathbf X\)</span> space. This leads to hybrid shrinkage models of the form <span class="math display">\[\hat{\mathbf Y}^{\text{ridge,c+w}}=\mathbf A_{\lambda}\mathbf Y\mathbf S^{\text{c+w}}\]</span> where <span class="math display">\[\mathbf A_{\lambda}=\mathbf X\left(\mathbf X^T\mathbf X+\lambda\mathbf I\right)^{-1}\mathbf X^T\]</span> is the ridge regression shrinkage operator.</p>
+</div>
+<div id="s-3.8-more-on-the-lasso-and-related-path-algorithms" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 3.8 More on the Lasso and Related Path Algorithms</h1>
+<div id="s-3.8.1-incremental-forward-stagewise-regression" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.1 Incremental Forward Stagewise Regression</h2>
+<p>Here we present another LAR-like algorithm, this time focused on <strong>Incremental forward stagewise regression</strong>. Interestingly, efforts to understand a flexible nonlinear regression procedure (boosting) led to a new algorithm for linear models (LAR).</p>
+<div id="algorithm-3.4-incremental-forward-stagewise-regressionfs_varepsilon." class="section level3">
+<h3>Algorithm 3.4 Incremental Forward Stagewise Regression—<span class="math inline">\(FS_{\varepsilon}\)</span>.</h3>
+<ol style="list-style-type: decimal">
+<li><p>Start with the residual <span class="math inline">\(r\)</span> equal to <span class="math inline">\(y\)</span> and <span class="math inline">\(\beta_1, \beta_2, \cdots, \beta_p = 0\)</span>. All the predictors are standardized to have mean zero and unit norm.</p></li>
+<li><p>Find the predictor <span class="math inline">\(x_j\)</span> most correlated with <span class="math inline">\(r\)</span></p></li>
+<li><p>Update <span class="math inline">\(\beta_j \gets \beta_j + \delta_j\)</span> , where <span class="math display">\[\delta_j=\varepsilon\cdot\text{sign}[\langle x_j , r\rangle]\]</span> and <span class="math inline">\(\varepsilon &gt; 0\)</span> is a small step size, and set <span class="math display">\[r \gets r − \delta_jx_j\]</span>.</p></li>
+<li><p>Repeat steps 2 and 3 many times, until the residuals are uncorrelated with all the predictors.</p></li>
+</ol>
+<p>If <span class="math display">\[\delta_j=\langle x_j , r\rangle\]</span> (the least-squares
+coefficient of the residual on <span class="math inline">\(j\)</span>th predictor), then this is exactly the usual forward stagewise procedure (FS) outlined in Section 3.3.3.</p>
+</div>
+</div>
+<div id="s-3.8.2-piecewise-linear-path-algorithms" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.2 Piecewise-Linear Path Algorithms</h2>
+</div>
+<div id="s-3.8.3-the-dantzig-selector" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.3 The Dantzig Selector</h2>
+</div>
+<div id="s-3.8.4-the-grouped-lasso" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.4 The Grouped Lasso</h2>
+</div>
+<div id="s-3.8.5-further-properties-of-the-lasso" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.5 Further Properties of the Lasso</h2>
+</div>
+<div id="s-3.8.6-pathwise-coordinate-optimization" class="section level2">
+<h2><span class="math inline">\(\S\)</span> 3.8.6 Pathwise Coordinate Optimization</h2>
+</div>
+</div>
+<div id="s-3.9-computational-considerations" class="section level1">
+<h1><span class="math inline">\(\S\)</span> 3.9 Computational Considerations</h1>
 </div>
 <div id="s-exercises" class="section level1">
 <h1><span class="math inline">\(\S\)</span> Exercises</h1>
