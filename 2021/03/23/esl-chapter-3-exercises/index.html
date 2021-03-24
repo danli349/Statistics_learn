@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>ESL chapter 3 exercises - A Hugo website</title>
+<meta property="og:title" content="ESL chapter 3 exercises - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">53 min read</span>
+    
+
+    <h1 class="article-title">ESL chapter 3 exercises</h1>
+
+    
+    <span class="article-date">2021-03-23</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/03/23/esl-chapter-3-exercises/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#ex.-3.9-using-the-qr-decomposition-for-fast-forward-stepwise-selection">Ex. 3.9 (using the QR decomposition for fast forward-stepwise selection)</a></li>
+<li><a href="#ex.-3.10-using-the-z-scores-for-fast-backwards-stepwise-regression">Ex. 3.10 (using the z-scores for fast backwards stepwise regression)</a></li>
+<li><a href="#ex.-3.11-multivariate-linear-regression-with-different-sigma_i">Ex. 3.11 (multivariate linear regression with different <span class="math inline">\(\Sigma_i\)</span>)</a></li>
+<li><a href="#ex.-3.12-ordinary-least-squares-to-implement-ridge-regression">Ex. 3.12 (ordinary least squares to implement ridge regression)</a></li>
+<li><a href="#ex.-3.13-principal-component-regression">Ex. 3.13 (principal component regression)</a></li>
+<li><a href="#ex.-3.14-when-the-inputs-are-orthogonal-pls-stops-after-m-1-step">Ex. 3.14 (when the inputs are orthogonal PLS stops after m = 1 step)</a></li>
+<li><a href="#ex.-3.15-pls-seeks-directions-that-have-high-variance-and-high-correlation">Ex. 3.15 (PLS seeks directions that have high variance and high correlation)</a>
+<ul>
+<li><a href="#relation-to-the-optimization-problem">Relation to the optimization problem</a></li>
+</ul></li>
+<li><a href="#ex.-3.16-explicit-expressions-for-hatbeta_j-when-the-features-are-orthonormal">Ex. 3.16 (explicit expressions for <span class="math inline">\(\hat\beta_j\)</span> when the features are orthonormal)</a></li>
+<li><a href="#ex.-3.17-linear-methods-on-the-spam-data-set">Ex. 3.17 (linear methods on the spam data set)</a>
+<ul>
+<li><a href="#ols">OLS:</a></li>
+<li><a href="#runs-ridge-regression-on-the-spam-data-set">Runs ridge regression on the SPAM data set:</a></li>
+<li><a href="#the-lasso">The lasso</a></li>
+<li><a href="#principal-component-regression-pcr">principal component regression (PCR)</a></li>
+<li><a href="#partial-least-squares-regression-pls">partial least squares regression (PLS)</a></li>
+</ul></li>
+<li><a href="#ex.-3.18-conjugate-gradient-methods">Ex. 3.18 (conjugate gradient methods)</a></li>
+<li><a href="#ex.-3.19-increasing-norm-with-decreasing-lambda">Ex. 3.19 (increasing norm with decreasing <span class="math inline">\(\lambda\)</span>)</a></li>
+<li><a href="#ex.-3.20">Ex. 3.20</a></li>
+<li><a href="#ex.-3.21">Ex. 3.21</a></li>
+<li><a href="#ex.-3.22">Ex. 3.22</a></li>
+<li><a href="#ex.-3.23-xtx1xtr-keeps-the-correlations-tied-and-decreasing">Ex. 3.23 (<span class="math inline">\((X^TX)^{−1}X^Tr\)</span> keeps the correlations tied and decreasing)</a></li>
+<li><a href="#ex.-3.24-lar-directions.">Ex. 3.24 LAR directions.</a></li>
+<li><a href="#ex.-3.25-lar-look-ahead.">Ex. 3.25 LAR look-ahead.</a></li>
+<li><a href="#ex.-3.26-forward-stepwise-regression-vs.-lar">Ex. 3.26 (forward stepwise regression vs. LAR)</a></li>
+<li><a href="#ex.-3.27-lasso-and-lar">Ex. 3.27 Lasso and LAR</a></li>
+<li><a href="#ex.-3.28">Ex. 3.28</a></li>
+<li><a href="#ex.-3.29">Ex. 3.29</a></li>
+<li><a href="#ex.-3.30-solving-the-elastic-net-optimization-problem-with-the-lasso">Ex. 3.30 (solving the elastic net optimization problem with the lasso)</a></li>
+</ul>
+</div>
+
+<div id="ex.-3.9-using-the-qr-decomposition-for-fast-forward-stepwise-selection" class="section level1">
+<h1>Ex. 3.9 (using the QR decomposition for fast forward-stepwise selection)</h1>
+<p>Forward stepwise regression. Suppose we have the <span class="math inline">\(QR\)</span> decomposition
+for the <span class="math inline">\(N\times q\)</span> matrix <span class="math inline">\(X_1\)</span> in a multiple regression problem with response <span class="math inline">\(y\)</span>, and we have an additional <span class="math inline">\(p−q\)</span> predictors in the matrix <span class="math inline">\(X_2\)</span>. Denote the current residual by <span class="math inline">\(r\)</span>. We wish to establish which one of these additional variables will reduce the residual-sum-of squares the most when included with those in <span class="math inline">\(X_1\)</span>. Describe an efficient procedure for doing this.</p>
+<p>Since <span class="math display">\[\underset{N\times q}{X_1}=\underset{N\times N}{Q}\underset{N\times q}{R}\]</span>, If <span class="math inline">\(N\ge q\)</span>, <span class="math display">\[\underset{N\times q}{X_1}=\underset{N\times N}{Q}\underset{N\times q}{R}=\begin{bmatrix}
+\underset{N\times q}{Q_1} &amp; \underset{N\times (N-q)}{Q_2}
+\end{bmatrix}\begin{bmatrix}
+\underset{q\times N}{R_1} \\
+\underset{(N-q)\times N}{\mathbf 0}
+\end{bmatrix}=\begin{bmatrix}
+\underset{N\times q}{Q_1} &amp; \underset{N\times (N-q)}{Q_2}
+\end{bmatrix}\begin{bmatrix}
+\underset{q\times q}{R_2} &amp; \underset{q\times (N-q)}{\mathbf 0}\\
+\underset{(N-q)\times q}{\mathbf 0} &amp; \underset{(N-q)\times (N-q)}{\mathbf 0}\\
+\end{bmatrix}\]</span> where <span class="math inline">\(Q_1\)</span> and <span class="math inline">\(Q_2\)</span> both have orthogonal columns. Each column of <span class="math inline">\(X_1\)</span> is <span class="math display">\[x_j=Qr_j\]</span>. <span class="math display">\[\hat{y}=X_1(X_1^TX_1)^{-1}X_1^Ty=QR(R^TQ^TQR)^{-1}R^TQ^Ty\\
+=Q_1R_2R_2^{-1}R_2^{-T}R_2^TQ_1^Ty=Q_1Q_1^Ty\]</span>
+Let the <span class="math inline">\(i\)</span>-th column is <span class="math inline">\(Q\)</span> is <span class="math inline">\(q_i,\quad (1\le i\le q)\)</span>, then <span class="math inline">\((q_1,\cdots,q_q)\)</span> is an orthonormal basis of <span class="math inline">\(Q\)</span> or <span class="math inline">\(Q_1\)</span>, then the best estimator is <span class="math display">\[\underset{i}{\text{argmax }}(q_i^Ty)q_i\]</span></p>
+</div>
+<div id="ex.-3.10-using-the-z-scores-for-fast-backwards-stepwise-regression" class="section level1">
+<h1>Ex. 3.10 (using the z-scores for fast backwards stepwise regression)</h1>
+<p>Backward stepwise regression. Suppose we have the multiple regression fit of <span class="math inline">\(y\)</span> on <span class="math inline">\(X\)</span>, along with the standard errors and Z-scores as in Table 3.2. We wish to establish which variable, when dropped, will increase the residual sum-of-squares the least. How would you do this?</p>
+<p>The F statistic,
+<span class="math display">\[
+F_{p_1−p_0,N−p_1−1}=\frac{\left(\text{RSS}_0-\text{RSS}_1\right)/\left(p_1-p_0\right)}{\text{RSS}_1/\left(N-p_1-1\right)}
+\]</span>
+where <span class="math inline">\(\text{RSS}_1\)</span> is the residual sum-of-squares for the least squares fit of the bigger model with <span class="math inline">\(p_1+1\)</span> parameters, and <span class="math inline">\(\text{RSS}_0\)</span> the same for the nested smaller model with <span class="math inline">\(p_0+1\)</span> parameters, having <span class="math inline">\(p_1−p_0\)</span> parameters constrained to be zero. The <span class="math inline">\(F\)</span> statistic measures the change in residual sum-of-squares per additional parameter in the bigger model, and it is normalized by an estimate of <span class="math inline">\(\sigma^2\)</span>. Under the Gaussian assumptions, and the null hypothesis that the smaller model is correct, the <span class="math inline">\(F\)</span> statistic will have a <span class="math inline">\(F_{p_1−p_0,N−p_1−1}\)</span> distribution.</p>
+<p>The <span class="math inline">\(Z-score\)</span>
+<span class="math display">\[z_j=\frac{\hat{\beta}_j}{\hat{\sigma}\sqrt{v_{jj}}}\]</span> where <span class="math inline">\(v_{jj}\)</span> is the <span class="math inline">\(j\)</span>th diagonal element of <span class="math inline">\((\mathbf X^T\mathbf X)^{−1}\)</span>. Under the null hypothesis
+that <span class="math inline">\(\beta_j = 0\)</span>, <span class="math inline">\(z_j\)</span> is distributed as <span class="math inline">\(t_{N−p−1}\)</span> (a <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(N − p − 1\)</span> degrees of freedom), and hence a large (absolute) value of <span class="math inline">\(z_j\)</span> will lead to rejection of this null hypothesis.</p>
+<p>Since once <span class="math inline">\(\beta\)</span> is estimated we can compute <span class="math inline">\(\sigma^2\)</span>:
+<span class="math display">\[\hat{\sigma}^2=\frac{1}{N-p-1}\sum_{i=1}^{N}(y_i-\hat{y}_i)^2=\frac{1}{N-p-1}\sum_{i=1}^{N}(y_i-x_i^T\beta)^2=\frac{\text{RSS}_1}{N-p-1}\]</span>
+In addition, by just deleting one variable from our regression the difference in degrees of freedom between the two models is one i.e. <span class="math inline">\(p_1 − p_0 = 1\)</span>. Thus the <span class="math inline">\(F\)</span>-statistic when we delete the <span class="math inline">\(j\)</span>th term from the base model simplifies to
+<span class="math display">\[F_{1,N−p_1−1}=\frac{\left(\text{RSS}_j-\text{RSS}_1\right)}{\text{RSS}_1/\left(N-p_1-1\right)}=\frac{\left(\text{RSS}_j-\text{RSS}_1\right)}{\hat{\sigma}^2}\]</span></p>
+<p>Since <span class="math display">\[\text{RSS}_j-\text{RSS}_1=\left(\mathbf{y&#39;}-\mathbf{X&#39;}\left(\mathbf{X&#39;}^T\mathbf{X&#39;}\right)^{-1}\mathbf{X&#39;}^T\mathbf{y&#39;}\right)^T\left(\mathbf{y&#39;}-\mathbf{X&#39;}\left(\mathbf{X&#39;}^T\mathbf{X&#39;}\right)^{-1}\mathbf{X&#39;}^T\mathbf{y&#39;}\right)-\left(\mathbf{y}-\mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}\right)^T\left(\mathbf{y}-\mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}\right)\]</span> Where <span class="math inline">\(\mathbf{X&#39;}\)</span> is <span class="math inline">\(\mathbf{X}\)</span> with <span class="math inline">\(j\)</span>th column deleted and <span class="math inline">\(\mathbf{y&#39;}\)</span> is <span class="math inline">\(\mathbf{y}\)</span> with <span class="math inline">\(j\)</span>th element deleted.</p>
+<p>Since that <span class="math inline">\(X^TX(X^TX)^{−1} = I_{p+1}\)</span>. Let <span class="math inline">\(u_j\)</span> be the <span class="math inline">\(jth\)</span> column of <span class="math inline">\(X(X^TX)^{−1}\)</span>. Using the <span class="math inline">\(v_{ij}\)</span> notation
+to denote the elements of the matrix <span class="math inline">\((X^TX)^{−1}\)</span> established above, we have <span class="math display">\[u_j=\sum_{r=1}^{p+1}x_rv_{rj}\]</span> and <span class="math display">\[\lVert u_j\rVert^2=u_j^Tu_j=\sum_{r=1}^{p+1}v_{rj}x_r^Tu_j=\sum_{r=1}^{p+1}v_{rj}x_r^Tu_j=v_{jj}\]</span> Then <span class="math display">\[\lVert z_j\rVert^2=\frac{\lVert u_j\rVert^2}{v_{jj}^2}=\frac{1}{v_{jj}}\]</span> Now <span class="math display">\[\frac{z_j}{\lVert z_j\rVert}\]</span> is a unit vector orthogonal to <span class="math inline">\(x_1, \cdots , x_{j−1}, x_{j+1}, \cdots , x_{p+1}\)</span>. So <span class="math display">\[\text{RSS}_j-\text{RSS}_1=\left&lt;y,\frac{z_j}{\lVert z_j\rVert}\right&gt;^2=\left(\frac{&lt;y,z_j&gt;}{&lt;z_j,z_j&gt;}\right)^2\lVert z_j\rVert^2=\hat{\beta}_j^2/v_{jj}\]</span> and <span class="math display">\[F_{1,N−p_1−1}=\frac{\left(\text{RSS}_j-\text{RSS}_1\right)}{\text{RSS}_1/\left(N-p_1-1\right)}=\frac{\left(\text{RSS}_j-\text{RSS}_1\right)}{\hat{\sigma}^2}=\frac{\hat{\beta}_j^2}{\hat{\sigma}^2v_{jj}}=z_j^2\]</span></p>
+</div>
+<div id="ex.-3.11-multivariate-linear-regression-with-different-sigma_i" class="section level1">
+<h1>Ex. 3.11 (multivariate linear regression with different <span class="math inline">\(\Sigma_i\)</span>)</h1>
+<p>Show that the solution to the multivariate linear regression problem (3.40) is given by (3.39). What happens if the covariance matrices
+<span class="math inline">\(\mathbf\Sigma_i\)</span> are different for each observation?</p>
+<p><span class="math display">\[\begin{align}
+\text{RSS}(\mathbf{B}) &amp;= \sum_{k=1}^K \sum_{i=1}^N \left( y_{ik} - f_k(x_i) \right)^2 \\
+&amp;= \text{trace}\left( (\mathbf{Y}-\mathbf{XB})^T(\mathbf{Y}-\mathbf{XB}) \right)
+\end{align}\quad(Equation\;\;3.38)\]</span>
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{B}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{Y}.
+\end{equation}\quad(Equation\;\;3.39)\]</span>
+<span class="math display">\[\begin{equation}
+\text{RSS}(\mathbf{B};\mathbf{\Sigma}) = \sum_{i=1}^N (y_i-f(x_i))^T \mathbf{\Sigma}^{-1} (y_i-f(x_i))
+\end{equation} \quad(Equation\;\;3.40)\]</span></p>
+<p>With <span class="math inline">\(N\)</span> training cases we can write the model in matrix notation
+<span class="math display">\[
+\begin{equation}
+\mathbf{Y}=\mathbf{XB}+\mathbf{E},
+\end{equation}
+\]</span>
+where</p>
+<ul>
+<li><span class="math inline">\(\mathbf{Y}\)</span> is <span class="math inline">\(N\times K\)</span> with <span class="math inline">\(ik\)</span> entry <span class="math inline">\(y_{ik}\)</span>,</li>
+<li><span class="math inline">\(\mathbf{X}\)</span> is <span class="math inline">\(N\times(p+1)\)</span> input matrix,</li>
+<li><span class="math inline">\(\mathbf{B}\)</span> is <span class="math inline">\((p+1)\times K\)</span> parameter matrix,</li>
+<li><span class="math inline">\(\mathbf{E}\)</span> is <span class="math inline">\(N\times K\)</span> error matrix.</li>
+</ul>
+<p>A straightforward generalization of the univariate loss function is
+<span class="math display">\[
+\begin{align}
+\text{RSS}(\mathbf{B}) &amp;= \sum_{k=1}^K \sum_{i=1}^N \left( y_{ik} - f_k(x_i) \right)^2 \\
+&amp;= \text{trace}\left( (\mathbf{Y}-\mathbf{XB})^T(\mathbf{Y}-\mathbf{XB}) \right)
+\end{align}\]</span></p>
+<p>The least squares estimates have exactly the same form as before
+<span class="math display">\[
+\begin{equation}
+\hat{\mathbf{B}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{Y}.
+\end{equation} \quad(Equation\;\;3.39)\]</span></p>
+<p>If the errors <span class="math inline">\(\epsilon = (\epsilon_1,\cdots,\epsilon_K)\)</span> are correlated with <span class="math inline">\(\text{Cov}(\epsilon)=\mathbf{\Sigma}\)</span>, then the multivariate weighted criterion
+<span class="math display">\[
+\begin{equation}
+\text{RSS}(\mathbf{B};\mathbf{\Sigma}) = \sum_{i=1}^N (y_i-f(x_i))^T \mathbf{\Sigma}^{-1} (y_i-f(x_i))
+\end{equation} \quad(Equation\;\;3.40)\]</span></p>
+<p>if the covariance matrices
+<span class="math inline">\(\mathbf\Sigma_i\)</span> are different for each observation <span class="math display">\[
+\begin{equation}
+\text{RSS}(\mathbf{B}) = \sum_{i=1}^N (y_i-f(x_i))^T \mathbf{\Sigma_i}^{-1} (y_i-f(x_i))
+\end{equation}\]</span></p>
+</div>
+<div id="ex.-3.12-ordinary-least-squares-to-implement-ridge-regression" class="section level1">
+<h1>Ex. 3.12 (ordinary least squares to implement ridge regression)</h1>
+<p>Show that the ridge regression estimates can be obtained by
+ordinary least squares regression on an augmented data set. We augment
+the centered matrix <span class="math inline">\(X\)</span> with <span class="math inline">\(p\)</span> additional rows <span class="math inline">\(\sqrt{\lambda}\mathbf I\)</span>, and augment <span class="math inline">\(y\)</span> with <span class="math inline">\(p\)</span> zeros. By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients toward zero. This is related to the idea of hints due to Abu-Mostafa (1995), where model constraints are implemented by adding artificial data examples that satisfy them.</p>
+<p>Consider the input centered data matrix <span class="math inline">\(\mathbf X\)</span> (of size <span class="math inline">\(p\times p\)</span>) and the output data vector <span class="math inline">\(\mathbf Y\)</span> both appended (to produce the new variables <span class="math inline">\(\hat{\mathbf X}\)</span> and <span class="math inline">\(\hat{\mathbf Y}\)</span> ) as follows <span class="math display">\[\hat{\mathbf X}=\begin{bmatrix}
+\underset{p\times p}{\mathbf X}\\
+\sqrt{\lambda}\underset{p\times p}{\mathbf I}\\
+\end{bmatrix}\]</span> and <span class="math display">\[\hat{\mathbf Y}=\begin{bmatrix}
+\underset{p\times 1}{\mathbf Y}\\
+\underset{p\times 1}{\mathbf 0}\\
+\end{bmatrix}\]</span> The the classic least squares solution to this new problem is given by <span class="math display">\[
+\begin{align}
+\hat{\mathbf{\beta^{ls}}} &amp;= \left(\mathbf{\hat X}^T\mathbf{\hat X}\right)^{-1}\mathbf{\hat X}^T\mathbf{\hat Y}\\
+&amp;=\left(\begin{bmatrix}
+\underset{p\times p}{\mathbf X}^T&amp;\sqrt{\lambda}\underset{p\times p}{\mathbf I}^T\\
+\end{bmatrix}\begin{bmatrix}
+\underset{p\times p}{\mathbf X}\\
+\sqrt{\lambda}\underset{p\times p}{\mathbf I}\\
+\end{bmatrix}\right)^{-1}\begin{bmatrix}
+\underset{p\times p}{\mathbf X}^T&amp;\sqrt{\lambda}\underset{p\times p}{\mathbf I}^T\\
+\end{bmatrix}\begin{bmatrix}
+\underset{p\times 1}{\mathbf Y}\\
+\underset{p\times 1}{\mathbf 0}\\
+\end{bmatrix}\\
+&amp;=\left(\mathbf X^T\mathbf X+\lambda\mathbf I\right)^{-1}\left(\mathbf X^T\mathbf Y\right)
+\end{align}
+\]</span> This expression we recognize as the solution to the regularized least squares proving the equivalence.</p>
+</div>
+<div id="ex.-3.13-principal-component-regression" class="section level1">
+<h1>Ex. 3.13 (principal component regression)</h1>
+<p>Derive the expression (3.62), and show that <span class="math display">\[\hat{\beta}^{pcr}(p)=\hat{β}^{ls}\]</span></p>
+<p>The linear combinations <span class="math inline">\(Z_m\)</span> used in principal component regression (PCR) are the principal components. PCR forms the derived input columns
+<span class="math display">\[
+\begin{equation}
+\mathbf{z}_m = \mathbf{X} v_m,
+\end{equation}
+\]</span>
+and then regress <span class="math inline">\(\mathbf{y}\)</span> on <span class="math inline">\(\mathbf{z}_1,\mathbf{z}_2,\cdots,\mathbf{z}_M\)</span> for some <span class="math inline">\(M\le p\)</span>. Since the <span class="math inline">\(\mathbf{z}_m\)</span> are orthogonal, this regression is just a sum of univariate regressions:
+<span class="math display">\[
+\begin{equation}
+\hat{\mathbf{y}}_{(M)}^{\text{pcr}} = \bar{y}\mathbf{1} + \sum_{m=1}^M \hat\theta_m \mathbf{z}_m = \bar{y}\mathbf{1} + \mathbf{X}\mathbf{V}_M\hat{\mathbf{\theta}}=\bar{y}\mathbf{1} + \mathbf{X}\sum_{m=1}^M\hat\theta_mv_m,
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(\hat\theta_m = \langle\mathbf{z}_m,\mathbf{y}\rangle \big/ \langle\mathbf{z}_m,\mathbf{z}_m\rangle\)</span>. We can see from the last equality that, since the <span class="math inline">\(\mathbf{z}_m\)</span> are each linear combinations of the original <span class="math inline">\(\mathbf{x}_j\)</span>, we can express the solution in terms of coefficients of the <span class="math inline">\(\mathbf{x}_j\)</span>. <span class="math display">\[\begin{bmatrix}
+\mathbf 1 &amp;\mathbf X 
+\end{bmatrix}\]</span> and
+<span class="math display">\[
+\begin{equation}
+\hat\beta^{\text{pcr}}(M) = \begin{bmatrix}
+\bar{y}\\
+\sum_{m=1}^M \hat\theta_m v_m
+\end{bmatrix}
+\end{equation}  \quad(Equation\;\;3.62)
+\]</span></p>
+<p>For multiple linear regression models the estimated regression coefficients in the vector <span class="math inline">\(\hat{\beta}\)</span> can be split into two parts a scalar <span class="math inline">\(\hat\beta_0\)</span> and a <span class="math inline">\(p \times 1\)</span> vector <span class="math inline">\(\hat\beta^∗\)</span> as <span class="math display">\[\hat{\beta}=\begin{bmatrix}
+\hat\beta_0\\
+\hat\beta^∗ 
+\end{bmatrix}\]</span> In addition the coefficient <span class="math inline">\(\hat\beta_0\)</span> can be shown to be related to <span class="math inline">\(\hat\beta^∗\)</span> as<span class="math display">\[\hat\beta_0=\bar{y}-\hat\beta^∗\bar{x}\]</span> and since <span class="math display">\[\begin{bmatrix}
+\bar{y}\\
+\sum_{m=1}^M \hat\theta_m v_m
+\end{bmatrix}=\begin{bmatrix}
+\hat\beta_0\\
+\hat\beta^∗ 
+\end{bmatrix}\]</span> then <span class="math inline">\(\hat\beta_0=\bar{y}\)</span> and <span class="math inline">\(\bar{x}=0\)</span>, which means in in principal component regression, the input predictor variables are standardized.</p>
+<p>To evaluate <span class="math inline">\(\hat\beta^{\text{pcr}}(M)\)</span> when <span class="math inline">\(M = p\)</span>, recall that in principal component regression the vectors <span class="math inline">\(v_m\)</span> are from the <span class="math inline">\(SVD\)</span> decomposition of the matrix <span class="math inline">\(X\)</span> given by <span class="math inline">\(X = UDV^T\)</span>. This later expression is equivalent to <span class="math inline">\(XV = UD\)</span> from which we get <span class="math display">\[
+\begin{align}
+Xv_1&amp;=d_1u_1\\
+Xv_2&amp;=d_2u_2\\
+\vdots\\
+Xv_p&amp;=d_pu_p\\
+\end{align}\]</span>
+Since the vectors <span class="math inline">\(z_m\)</span> are given by <span class="math inline">\(z_m = Xv_m\)</span> for <span class="math inline">\(1 \le m \le M \le p\)</span>, by the above we have the vectors <span class="math inline">\(z_m\)</span> in terms of the vectors <span class="math inline">\(u_m\)</span> as <span class="math inline">\(z_m = d_mu_m\)</span>. Since for this problem we are to show that when <span class="math inline">\(M = p\)</span> the estimate <span class="math inline">\(\hat\beta^{\text{pcr}}(M)\)</span> above becomes the least squares estimate <span class="math inline">\(\hat\beta^{\text{ls}}\)</span> When <span class="math inline">\(\lambda = 0\)</span> the ridge regression estimate for <span class="math inline">\(\beta\)</span> is equal to the least
+squares estimate (when <span class="math inline">\(\lambda = 0\)</span> we have no <span class="math inline">\(\lambda\lVert\beta\rVert_2^2\)</span> ridge penalty term) we can use Equation <span class="math display">\[
+\begin{align}
+\hat\beta^{\text{ridge}} &amp;= \left( \mathbf{X}^T\mathbf{X} + \lambda\mathbf{I} \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=(\mathbf V\mathbf D^2\mathbf V^T+\lambda\mathbf{V}\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=(\mathbf V(\mathbf D^2+\lambda\mathbf{I})\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}^{-T}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+\end{align}
+\]</span>
+to obtain <span class="math display">\[\hat\beta^{\text{ls}}=\hat\beta^{\text{ridge}}(\lambda=0)=\mathbf{V}\mathbf D^{-2}\mathbf D\mathbf U^T\mathbf{y}\\=\mathbf{V}\mathbf D^{-1}\mathbf U^T\mathbf{y}\]</span>
+Since <span class="math display">\[\hat\beta^{\text{pcr}}(p)=\sum_{m=1}^M\hat\theta_mv_m=\mathbf{V}\begin{bmatrix}
+\hat\theta_1\\
+\hat\theta_2\\
+\vdots\\
+\hat\theta_p
+\end{bmatrix}=\mathbf{V}\begin{bmatrix}
+\langle\mathbf{z}_1,\mathbf{y}\rangle \big/ \langle\mathbf{z}_1,\mathbf{z}_1\rangle\\
+\langle\mathbf{z}_2,\mathbf{y}\rangle \big/ \langle\mathbf{z}_2,\mathbf{z}_2\rangle\\
+\vdots\\
+\langle\mathbf{z}_p,\mathbf{y}\rangle \big/ \langle\mathbf{z}_p,\mathbf{z}_p\rangle
+\end{bmatrix}\]</span> and since <span class="math inline">\(z_m = d_mu_m\)</span> we have <span class="math display">\[\langle\mathbf{z}_m,\mathbf{z}_m\rangle=d_m^2\langle\mathbf{u}_m,\mathbf{u}_m\rangle=d_m^2\]</span> since the vectors <span class="math inline">\(u_m\)</span> are assumed to be orthonormal. Also <span class="math inline">\(\langle\mathbf{z}_m,\mathbf{y}\rangle = d_m \langle\mathbf{u}_m,\mathbf{y}\rangle\)</span>, so the estimate for <span class="math display">\[\hat\beta^{\text{pcr}}(p)=\mathbf{V}\begin{bmatrix}
+\langle\mathbf{z}_1,\mathbf{y}\rangle \big/ \langle\mathbf{z}_1,\mathbf{z}_1\rangle\\
+\langle\mathbf{z}_2,\mathbf{y}\rangle \big/ \langle\mathbf{z}_2,\mathbf{z}_2\rangle\\
+\vdots\\
+\langle\mathbf{z}_p,\mathbf{y}\rangle \big/ \langle\mathbf{z}_p,\mathbf{z}_p\rangle
+\end{bmatrix}=\mathbf{V}\begin{bmatrix}
+\langle\mathbf{u}_1,\mathbf{y}\rangle \big/ d_1\\
+\langle\mathbf{u}_1,\mathbf{y}\rangle \big/ d_1\\
+\vdots\\
+\langle\mathbf{u}_1,\mathbf{y}\rangle \big/ d_1\\
+\end{bmatrix}=\mathbf{V}\mathbf D^{-1}\mathbf U^T\mathbf{y}\\
+=\hat\beta^{\text{ls}}=\hat\beta^{\text{ridge}}(\lambda=0)\]</span></p>
+</div>
+<div id="ex.-3.14-when-the-inputs-are-orthogonal-pls-stops-after-m-1-step" class="section level1">
+<h1>Ex. 3.14 (when the inputs are orthogonal PLS stops after m = 1 step)</h1>
+<p>Show that in the orthogonal case, <span class="math inline">\(\text{PLS}\)</span> stops after <span class="math inline">\(m = 1\)</span> steps, because subsequent <span class="math inline">\(\hat{\varphi}_{mj}\)</span> in step 2 in Algorithm 3.3 are zero.</p>
+<p>Algorithm 3.3 Partial Least Squares:</p>
+<ol style="list-style-type: decimal">
+<li><p>Standardize each <span class="math inline">\(x_j\)</span> to have mean zero and variance one. Set <span class="math inline">\(\hat y^{(0)} =\bar{y}\mathbf 1\)</span>, and <span class="math inline">\(x^{(0)}_j = x_j , j = 1, \cdots, p\)</span>.</p></li>
+<li><p>For <span class="math inline">\(m=1,2,\cdots,p\)</span></p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math display">\[z_m=\sum_{j=1}^{p}\hat\varphi_{mj}x_j^{(m-1)}\]</span> where <span class="math display">\[\hat\varphi_{mj}=\langle x_j^{(m-1)}, y\rangle\]</span></p></li>
+<li><p><span class="math display">\[\hat\theta_m=\langle z_m, y\rangle\big/\langle z_m, z_m\rangle\]</span></p></li>
+<li><p><span class="math display">\[\hat{y}^{(m)}=\hat{y}^{(m-1)}+\hat\theta_mz_m\]</span></p></li>
+<li><p>Orthogonalize each <span class="math inline">\(x_j^{(m-1)}\)</span> with respect to <span class="math display">\[z_m:x_j^{(m)}=x_j^{(m-1)}-\left[\langle z_m, x_j^{(m-1)}\rangle\big/\langle z_m, z_m\rangle\right]z_m, j=1,2,\cdots,p\]</span></p></li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li>Output the sequence of fitted vectors <span class="math inline">\(\{\hat y^{(m)}\}_1^p\)</span>. Since the <span class="math inline">\(\{z_{\ell}\}_1^m\)</span> are linear in the original <span class="math inline">\(x_j\)</span>, so is <span class="math inline">\(\hat y^{(m)} = X\hat{\beta}^{\text{pls}}(m)\)</span>. These linear coefficients can be recovered from the sequence of <span class="math inline">\(\text{PLS}\)</span> transformations.</li>
+</ol>
+<p>In Algorithm 3.3 on partial least squares (PLS) if on any given step <span class="math inline">\(m\)</span> we compute that <span class="math display">\[\hat\varphi_{mj} =\langle x_j^{(m-1)}, y\rangle= 0\]</span> for all <span class="math inline">\(j\)</span> then all <span class="math display">\[z_m=\sum_{j=1}^{p}\hat\varphi_{mj}x_j^{(m-1)}=0\]</span> it follows that the algorithm must stop.
+If the <span class="math inline">\(x_j\)</span>’s are orthogonal, we have</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math display">\[z_1=\sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}\]</span> where <span class="math display">\[\hat\varphi_{1j}=\langle x_j^{(0)}, y\rangle\]</span></p></li>
+<li><p><span class="math display">\[\hat\theta_1=\langle z_1, y\rangle\big/\langle z_1, z_1\rangle\]</span> Since <span class="math display">\[\begin{align}
+\langle z_1, z_1\rangle&amp;=\left\langle \sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}, \sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}\right\rangle\\
+&amp;=\sum_{j=1}^{p}\sum_{j&#39;=1}^{p}\hat\varphi_{1j}\hat\varphi_{1j&#39;}\left\langle x_j^{(0)},x_{j&#39;}^{(0)}\right\rangle\\
+&amp;=\sum_{j=1}^{p}\hat\varphi_{1j}^2\\
+\end{align}\]</span> since the vectors <span class="math inline">\(x_j^{(0)}\)</span> are orthogonal. <span class="math display">\[\langle z_1, y\rangle=\left\langle \sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}, y\right\rangle=\sum_{j=1}^{p}\hat\varphi_{1j}\left\langle x_j^{(0)}, y\right\rangle=\sum_{j=1}^{p}\hat\varphi_{1j}^2\]</span> and thus we have <span class="math display">\[\hat\theta_1=\langle z_1, y\rangle\big/\langle z_1, z_1\rangle=1\]</span></p></li>
+<li><p><span class="math display">\[\hat{y}^{(1)}=\hat{y}^{(0)}+\hat\theta_1z_1=\hat{y}^{(0)}+z_1=\hat{y}^{(0)}+\sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}\]</span></p></li>
+<li><p>Orthogonalize each <span class="math inline">\(x_j^{(1)}, j=1,2,\cdots,p\)</span> with respect to <span class="math display">\[z_1:x_j^{(1)}=x_j^{(0)}-\left[\langle z_1, x_j^{(0)}\rangle\big/\langle z_1, z_1\rangle\right]z_1\]</span> Since the vectors <span class="math inline">\(x^{(0)}_j\)</span> are orthogonal <span class="math display">\[\langle z_1, x_k^{(0)}\rangle=\sum_{j=1}^{p}\hat\varphi_{1j}\langle x_j^{(0)}, x_k^{(0)}\rangle=\hat\varphi_{1k}\]</span> then <span class="math display">\[\begin{align}
+x_j^{(1)}&amp;=x_j^{(0)}-\left[\langle z_1, x_j^{(0)}\rangle\big/\langle z_1, z_1\rangle\right]z_1\\
+&amp;=x_j^{(0)}-\left[\hat\varphi_{1j}\big/\sum_{j=1}^{p}\hat\varphi_{1j}^2\right]\sum_{j=1}^{p}\hat\varphi_{1j}x_j^{(0)}\\
+\end{align}\]</span> Having finished the first loop of Algorithm 3.3 we let <span class="math inline">\(m = 2\)</span> and compute <span class="math inline">\(\hat\varphi_{2j}\)</span> to get <span class="math display">\[\hat\varphi_{2j}=\langle x_j^{(1)}, y\rangle=\langle x_j^{(0)}, y\rangle-\left[\hat\varphi_{1j}\big/\sum_{j=1}^{p}\hat\varphi_{1j}^2\right]\sum_{j=1}^{p}\hat\varphi_{1j}^2\\
+=\hat\varphi_{1j}-\hat\varphi_{1j}=0\]</span></p></li>
+</ol>
+</div>
+<div id="ex.-3.15-pls-seeks-directions-that-have-high-variance-and-high-correlation" class="section level1">
+<h1>Ex. 3.15 (PLS seeks directions that have high variance and high correlation)</h1>
+<p>Verify expression (3.64), and hence show that the partial least squares directions are a compromise between the ordinary regression coefficient and the principal component directions.</p>
+<p>PLS begins by computing the weights
+<span class="math display">\[
+\begin{equation}
+\hat\varphi_{1j} = \langle \mathbf{x}_j,\mathbf{y} \rangle, \text{ for each } j,
+\end{equation}
+\]</span>
+which are in fact the univariate regression coefficients, since <span class="math inline">\(\mathbf{x}_j\)</span> are standardized (only for the first step <span class="math inline">\(m=1\)</span>).</p>
+<p>From this we construct derived input
+<span class="math display">\[
+\begin{equation}
+\mathbf{z}_1 = \sum_j \hat\varphi_{1j}\mathbf{x}_j,
+\end{equation}
+\]</span>
+which is the first PLS direction. Hence in the construction of each <span class="math inline">\(\mathbf{z}_m\)</span>, the inputs are weighted by the strength of their univariate effect on <span class="math inline">\(\mathbf{y}\)</span>.</p>
+<p>The outcome <span class="math inline">\(\mathbf{y}\)</span> is regressed on <span class="math inline">\(\mathbf{z}_1\)</span> giving coefficient <span class="math inline">\(\hat\theta_1\)</span>, and then we orthogonalize <span class="math inline">\(\mathbf{x}_1,\cdots,\mathbf{x}_p\)</span> w.r.t. <span class="math inline">\(\mathbf{z}_1\)</span>.</p>
+<p>We continue this process, until <span class="math inline">\(M\le p\)</span> directions have been obtained. In this manner, PLS produces a sequence of derived, orthogonal inputs or directions <span class="math inline">\(\mathbf{z}_1,\cdots,\mathbf{z}_M\)</span>.</p>
+<ul>
+<li>As with PCR, if <span class="math inline">\(M=p\)</span>, then <span class="math inline">\(\hat\beta^{\text{pls}} = \hat\beta^{\text{ls}}\)</span>.</li>
+<li>Using <span class="math inline">\(M&lt;p\)</span> directions produces a reduced regression.</li>
+</ul>
+<div id="relation-to-the-optimization-problem" class="section level3">
+<h3>Relation to the optimization problem</h3>
+<blockquote>
+<p>PLS seeks direction that have high variance <em>and</em> have high correlation with the response, in contrast to PCR with keys only on high variance (Stone and Brooks, 1990; Frank and Friedman, 1993).
+Since it uses the response <span class="math inline">\(\mathbf{y}\)</span> to construct its directions, its solution path is a nonlinear function of <span class="math inline">\(\mathbf{y}\)</span>.</p>
+</blockquote>
+<p>In particular, the <span class="math inline">\(m\)</span>th principal component direction <span class="math inline">\(v_m\)</span> solves:
+<span class="math display">\[
+\begin{equation}
+\max_\alpha \text{Var}(\mathbf{X}\alpha)\\
+\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S} v_l = 0 \text{ for } l = 1,\cdots, m-1,
+\end{equation}
+\]</span>
+where <span class="math inline">\(\mathbf{S}\)</span> is the sample covariance matrix of the <span class="math inline">\(\mathbf{x}_j\)</span>. The condition <span class="math inline">\(\alpha^T\mathbf{S} v_l= 0\)</span> ensures that <span class="math inline">\(\mathbf{z}_m = \mathbf{X}\alpha\)</span> is uncorrelated with all the previous linear combinations <span class="math inline">\(\mathbf{z}_l = \mathbf{X} v_l\)</span>.</p>
+<p>The <span class="math inline">\(m\)</span>th PLS direction <span class="math inline">\(\hat\varphi_m\)</span> solves:
+<span class="math display">\[
+\begin{equation}
+\max_\alpha \text{Corr}^2(\mathbf{y},\mathbf{S}\alpha)\text{Var}(\mathbf{X}\alpha)\\
+\text{subject to } \|\alpha\| = 1, \alpha^T\mathbf{S}\hat\varphi_l = 0, \text{ for } l=1,\cdots, m-1.
+\end{equation}  \quad (3.64)
+\]</span></p>
+</div>
+</div>
+<div id="ex.-3.16-explicit-expressions-for-hatbeta_j-when-the-features-are-orthonormal" class="section level1">
+<h1>Ex. 3.16 (explicit expressions for <span class="math inline">\(\hat\beta_j\)</span> when the features are orthonormal)</h1>
+<p>Derive the entries in Table 3.4, the explicit forms for estimators in the orthogonal case.</p>
+<p>TABLE 3.4. Estimators of <span class="math inline">\(\beta_j\)</span> in the case of orthonormal columns of <span class="math inline">\(\mathbf X\)</span>. <span class="math inline">\(M\)</span> and <span class="math inline">\(\lambda\)</span>
+are constants chosen by the corresponding techniques; sign denotes the sign of its argument (<span class="math inline">\(\pm 1\)</span>), and <span class="math inline">\(x_+\)</span> denotes “positive part” of <span class="math inline">\(x\)</span>. Below the table, estimators are shown by broken red lines. The <span class="math inline">\(45^\circ\)</span> line in gray shows the unrestricted estimate for reference.</p>
+<p><span class="math display">\[\begin{array}{l}
+\text{Estimator} &amp; \text{Formula}\\
+\hline
+\text{Best subset (size M)} &amp;\hat{\beta}_j\cdot I(\lvert\hat{\beta}_j\rvert\ge\lvert\hat{\beta}_{(M)}\rvert)\\
+\text{Ridge} &amp; \hat{\beta}_j\big/(1+\lambda)\\
+\text{Lasso} &amp; \text{sign}(\hat{\beta}_j)(\lvert\hat{\beta}_j\rvert-\lambda)_+\\
+\hline
+\end{array}\]</span>
+When the predictors are orthonormal <span class="math inline">\(X^TX = I\)</span> and the ordinary least squared estimate of <span class="math inline">\(\beta\)</span> is given by <span class="math display">\[\hat\beta=X^TY\]</span></p>
+<p>In best-subset selection we will take the top <span class="math inline">\(M\)</span> predictors that result in the smallest residual
+sum of squares. Since the columns of <span class="math inline">\(X\)</span> are orthonormal we can construct a basis for <span class="math inline">\(\mathbb R^N\)</span> by using the first <span class="math inline">\(p\)</span> columns of <span class="math inline">\(X\)</span> and then extending these with <span class="math inline">\(N −p\)</span> linearly independent
+additional orthonormal vectors. The Gram-Schmidt procedure guarantees that we can do this. Thus in this extended basis we can write <span class="math inline">\(y\)</span> as <span class="math display">\[y=\sum_{j=1}^{p}\hat\beta_jx_j+\sum_{j=p+1}^{N}\gamma_j\tilde{x}_j\]</span>
+where <span class="math inline">\(\hat\beta_j\)</span> equal the components of <span class="math inline">\(\hat\beta\)</span> in <span class="math display">\[\hat\beta=X^TY\]</span> <span class="math inline">\(\tilde{x}_j\)</span> are the extended basis vectors required to span <span class="math inline">\(\mathbb R^N\)</span>, and <span class="math inline">\(\gamma_j\)</span> are the coefficients of <span class="math inline">\(y\)</span> with respect to these extended basis vectors. Then if we seek to approximate <span class="math inline">\(y\)</span> with a subset of size <span class="math inline">\(M\)</span> as in best subset selection, <span class="math inline">\(\hat y\)</span> can be written as
+<span class="math display">\[\hat y=\sum_{j=1}^{p}I_j\hat\beta_jx_j\]</span> with <span class="math inline">\(I_j=1\)</span> if we keep the predictor <span class="math inline">\(x_j\)</span> and zero otherwise. Now since all the vectors <span class="math inline">\(x_j\)</span> and <span class="math inline">\(\tilde{x}_j\)</span> are orthonormal we have
+<span class="math display">\[\begin{align}
+\lVert y-\hat y\rVert_2^2&amp;=\lVert y-X\hat\beta\rVert_2^2\\
+&amp;=\left\lVert \sum_{j=1}^{p}\hat\beta_jx_j+\sum_{j=p+1}^{N}\gamma_j\tilde{x}_j-X\hat\beta\right\rVert_2^2\\
+&amp;=\left\lVert \sum_{j=1}^{p}\hat\beta_j(\mathbf 1-I_j)x_j+\sum_{j=p+1}^{N}\gamma_j\tilde{x}_j\right\rVert_2^2\\
+&amp;=\sum_{j=1}^{p}\hat\beta_j^2(\mathbf 1-I_j)^2\left\lVert x_j\right\rVert_2^2+\sum_{j=p+1}^{N}\gamma_j^2\left\lVert\tilde{x}_j\right\rVert_2^2\\
+&amp;=\sum_{j=1}^{p}\hat\beta_j^2(\mathbf 1-I_j)^2+\sum_{j=p+1}^{N}\gamma_j^2\\
+\end{align}\]</span></p>
+<p>Thus to minimize <span class="math inline">\(\lVert y-\hat y\rVert_2^2\)</span> we would pick the <span class="math inline">\(M\)</span> values of <span class="math inline">\(I_j\)</span> to be equal to one that have the largest <span class="math inline">\(\beta_j^2\)</span> values. This is equivalent to sorting the values <span class="math inline">\(\lvert\hat\beta_j\rvert\)</span> and picking the indices of
+the largest <span class="math inline">\(M\)</span> of these to have <span class="math inline">\(I_j = 1\)</span>. All other indices <span class="math inline">\(j\)</span> would be taken to have <span class="math inline">\(I_j = 0\)</span>. Using an indicator function this is equivalent to the expression <span class="math display">\[\hat\beta_j^{\text{best subset}}=\hat\beta_j\cdot I\left( \lvert\hat\beta_j\rvert \ge \lvert\hat\beta_{(M)}\rvert \right)\]</span></p>
+<ul>
+<li>Best subset (size <span class="math inline">\(M\)</span>) drops all variables with coefficients smaller than the <span class="math inline">\(M\)</span>th largest; this is a form of “hard-thresholding”.</li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+\hat\beta_j\cdot I\left( \lvert\hat\beta_j\rvert \ge \lvert\hat\beta_{(M)}\rvert \right)
+\end{equation}\]</span></p>
+<p>For ridge regression, since <span class="math inline">\(X\)</span> has orthonormal columns we have <span class="math display">\[\begin{align}
+\hat\beta^{\text{ridge}}&amp;= \left( \mathbf{X}^T\mathbf{X} + \lambda I \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=\left( I + \lambda I \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=\frac{\mathbf{X}^T\mathbf{y}}{1+\lambda}\\
+&amp;=\frac{\hat\beta^{\text{ls}}}{1+\lambda}
+\end{align}\]</span>
+* Ridge does a proportional shrinkage.</p>
+<p><span class="math display">\[\begin{equation}
+\frac{\hat\beta_j}{1+\lambda}
+\end{equation}\]</span></p>
+<p>The lasso estimate is defined by
+<span class="math display">\[\begin{equation}
+\hat\beta^{\text{lasso}} = \arg\min_\beta \left\lbrace \frac{1}{2}\sum_{i=1}^N \left( y_i-\beta_0-\sum_{j=1}^p x_{ij}\beta_j \right)^2 + \lambda\sum_{j=1}^p |\beta_j| \right\rbrace,
+\end{equation}\]</span>
+For the lasso regression procedure we pick the values of <span class="math inline">\(\beta_j\)</span> to minimize
+<span class="math display">\[\text{RSS}(\beta)=\frac{1}{2}(y-X\beta)^T(y-X\beta)+\lambda\sum_{j=1}^{p}\lvert \beta_j\rvert\]</span> Expanding <span class="math inline">\(\hat y\)</span> as
+<span class="math display">\[\hat y = \sum_{j=1}^{p} \beta_jx_j\]</span> and with <span class="math display">\[y=\sum_{j=1}^{p}\hat\beta_jx_j+\sum_{j=p+1}^{N}\gamma_j\tilde{x}_j\]</span> we have that <span class="math inline">\(\text{RSS}(\beta)\)</span> in this case becomes <span class="math display">\[\begin{align}
+\text{RSS}(\beta)&amp;=\frac{1}{2}\left\lVert \sum_{j=1}^{p}(\hat\beta_j-\beta_j)x_j+\sum_{j=p+1}^{N}\gamma_j\tilde{x}_j\right\rVert_2^2+\lambda\sum_{j=1}^{p}\lvert \beta_j\rvert\\
+&amp;=\frac{1}{2}\sum_{j=1}^{p}(\hat\beta_j-\beta_j)^2+\frac{1}{2}\sum_{j=p+1}^{N}\gamma_j^2+\lambda\sum_{j=1}^{p}\lvert \beta_j\rvert\\
+&amp;=\frac{1}{2}\sum_{j=1}^{p}\left[(\hat\beta_j-\beta_j)^2+2\lambda\lvert \beta_j\rvert\right]+\sum_{j=p+1}^{N}\gamma_j^2
+\end{align}\]</span> We can minimize this expression for each value of <span class="math inline">\(\beta_j\)</span> for <span class="math inline">\(1 \le j \le p\)</span> independently. Thus our vector problem becomes that of solving <span class="math inline">\(p\)</span> scalar minimization problems all of which look like
+<span class="math display">\[\beta^*=\text{argmin}_{\beta}\left[(\hat\beta-\beta)^2+2\lambda\lvert \beta\rvert\right]\]</span> Then the objective function we want to minimize is <span class="math display">\[
+F(\beta)=\begin{cases}
+(\hat\beta-\beta)^2-2\lambda\beta &amp;\text{ when } \beta&lt;0\\[2ex]
+(\hat\beta-\beta)^2+2\lambda\beta &amp;\text{ when } \beta&gt;0\\
+\end{cases}
+\]</span> where <span class="math inline">\(\hat\beta\)</span> is the least squares estimate.</p>
+<p>To find the minimum of this function take the derivative with respect to <span class="math inline">\(\beta\)</span> and set the result equal to zero and solve for <span class="math inline">\(\beta\)</span>. We find the derivative of <span class="math inline">\(F(\beta)\)</span> given by <span class="math display">\[
+F&#39;(\beta)=\begin{cases}
+2(\beta-\hat\beta)-2\lambda &amp;\text{ when } \beta&lt;0\\[2ex]
+2(\beta-\hat\beta)+2\lambda &amp;\text{ when } \beta&gt;0\\
+\end{cases}
+\]</span> When we set <span class="math inline">\(F&#39;(\beta)\)</span> equal to zero we get two possible solutions for <span class="math inline">\(\beta\)</span> given by
+<span class="math display">\[\begin{cases}
+\beta=+\lambda+\hat\beta &amp;\text{ when } \beta&lt;0\\[2ex]
+\beta=-\lambda+\hat\beta &amp;\text{ when } \beta&gt;0\\[2ex]
+\end{cases}\]</span></p>
+<ul>
+<li>Lasso translates each coefficient by a constant factor <span class="math inline">\(\lambda\)</span>, truncating at zero. This is called “soft-thresholding”.</li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+\text{sign}\left( \hat\beta_j \right)\left( \lvert\hat\beta_j\rvert - \lambda \right)_+
+\end{equation}\]</span></p>
+<p>In this expression <span class="math inline">\(\hat\beta\)</span> and <span class="math inline">\(\lambda\)</span> are assumed fixed.</p>
+<pre class="python"><code>%load_ext rpy2.ipython</code></pre>
+<pre class="r"><code>%%R
+xx = seq(-15,+15,length=1000) # the range of beta&#39;s to sample 
+
+# the specific parameters:
+betaHat = -5.0
+lambda  = 1.0
+
+plot( xx, ( xx - betaHat )^2 + 2*lambda*abs(xx) )
+
+
+
+betaHat = -1.0
+lambda  = 5.0
+
+
+plot( xx, ( xx - betaHat )^2 + 2*lambda*abs(xx) )
+
+
+
+
+betaHat = 5.0
+lambda  = 1.0
+
+
+plot( xx, ( xx - betaHat )^2 + 2*lambda*abs(xx) )
+
+
+
+
+
+betaHat = 1.0
+lambda  = 5.0
+
+
+plot( xx, ( xx - betaHat )^2 + 2*lambda*abs(xx) )
+</code></pre>
+<div class="figure">
+<img src="exercises_files/exercises_4_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_4_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_4_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_4_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="ex.-3.17-linear-methods-on-the-spam-data-set" class="section level1">
+<h1>Ex. 3.17 (linear methods on the spam data set)</h1>
+<p>Repeat the analysis of Table 3.3 on the spam data discussed in Chapter 1.</p>
+<pre class="r"><code>%%R
+load_spam_data &lt;- function(trainingScale=TRUE,responseScale=TRUE){ 
+
+  X      = read.table(&quot;../../data/Spam/spam.data.txt&quot;)
+  tt     = read.table(&quot;../../data/Spam/spam.traintest.txt&quot;)
+
+  # separate into training/testing sets
+
+  XTraining = subset( X, tt==0 )
+  p = dim(XTraining)[2]-1
+  
+  XTesting  = subset( X, tt==1 ) 
+
+  #
+  # Sometime data is processed and stored in a certain order.  When doing cross validation
+  # on such data sets we don&#39;t want to bias our results if we grab the first or the last samples.
+  # Thus we randomize the order of the rows in the Training data frame to make sure that each
+  # cross validation training/testing set is as random as possible.
+  # 
+  if( FALSE ){
+    nSamples = dim(XTraining)[1] 
+    inds = sample( 1:nSamples, nSamples )
+    XTraining = XTraining[inds,]
+  }
+
+  #
+  # In reality we have to estimate everything based on the training data only
+  # Thus here we estimate the predictor statistics using the training set
+  # and then scale the testing set by the same statistics
+  # 
+  if( trainingScale ){
+    X = XTraining 
+    if( responseScale ){
+      meanV58 = mean(X$V58) 
+      v58 = X$V58 - meanV58 
+    }else{
+      v58 = X$V58 
+    }
+    X$V58 = NULL
+    X = scale(X, TRUE, TRUE)
+    means = attr(X,&quot;scaled:center&quot;)
+    stds = attr(X,&quot;scaled:scale&quot;)
+    Xf = data.frame(X)
+    Xf$V58 = v58
+    XTraining = Xf
+
+    # scale the testing predictors by the same amounts:
+    # 
+    DCVTest  = XTesting
+    if( responseScale ){
+      v58Test = DCVTest$V58 - meanV58
+    }else{
+      v58Test = DCVTest$V58 # in physical units (not mean adjusted)
+    }
+    DCVTest$V58 = NULL 
+    DCVTest  = t( apply( DCVTest, 1, &#39;-&#39;, means ) ) 
+    DCVTest  = t( apply( DCVTest, 1, &#39;/&#39;, stds ) ) 
+    DCVTestb = cbind( DCVTest, v58Test ) # append back on the response
+    DCVTestf = data.frame( DCVTestb ) # a data frame containing all scaled variables of interest
+    names(DCVTestf)[p+1] = &quot;V58&quot; # fix the name of the response
+    XTesting = DCVTestf
+  }
+
+  # Many algorithms wont do well if the data is presented all of one class and
+  # then all of another class thus we permute our data frames :
+  #
+  XTraining = XTraining[sample(nrow(XTraining)),]
+  XTesting  = XTesting[sample(nrow(XTesting)),]
+
+  # Read in the list of s(pam)words (and delete garbage characters):
+  # 
+  spam_words = read.table(&quot;../../data/Spam/spambase.names&quot;,skip=33,sep=&quot;:&quot;,comment.char=&quot;|&quot;,stringsAsFactors=F)
+  spam_words = spam_words[[1]]
+  for( si in 1:length(spam_words) ){
+    spam_words[si] = sub( &quot;word_freq_&quot;, &quot;&quot;, spam_words[si] )
+    spam_words[si] = sub( &quot;char_freq_&quot;, &quot;&quot;, spam_words[si] )
+  }
+
+  return( list( XTraining, XTesting, spam_words ) ) 
+}
+</code></pre>
+<div id="ols" class="section level3">
+<h3>OLS:</h3>
+<pre class="r"><code>%%R
+res = load_spam_data(trainingScale=TRUE,responseScale=FALSE)
+XTraining = res[[1]]
+XTesting = res[[2]] 
+
+nrow = dim( XTraining )[1]
+p = dim( XTraining )[2] - 1 # the last column is the response 
+
+D = XTraining[,1:p] # get the predictor data
+
+# Append a column of ones:
+# 
+Dp = cbind( matrix(1,nrow,1), as.matrix( D ) )
+
+response = XTraining[,p+1]
+
+library(MASS)
+
+betaHat = ginv( t(Dp) %*% Dp ) %*% t(Dp) %*% as.matrix(response)
+
+# this is basically the first column in Table 3.2:
+#
+
+
+# make predictions based on these estimated beta coefficients:
+#
+yhat = Dp %*% betaHat 
+
+# estimate the variance:
+# 
+sigmaHat = sum( ( response - yhat )^2 ) / ( nrow - p - 1 )
+
+# calculate the covariance of betaHat:
+#
+covarBetaHat = sigmaHat * ginv( t(Dp) %*% Dp ) 
+
+# calulate the standard deviations of betahat:
+#
+stdBetaHat = sqrt(diag(covarBetaHat))
+
+# this is basically the second column in Table 3.2:
+#
+
+
+# compute the z-scores:
+#
+z = betaHat / stdBetaHat 
+
+# this is basically the third column in Table 3.2:
+#
+
+
+
+cbind(data.frame(`beta estimates` = betaHat), data.frame(`beta standard errors` = as.matrix(stdBetaHat)), data.frame(`beta z-scores` = z))
+
+# display the results we get : 
+F = data.frame( Term=c(&quot;Intercept&quot;,names(XTraining)[1:p]), Coefficients=betaHat, Std_Error=stdBetaHat, Z_Score=z )
+library(xtable)
+xtable( F, caption=&quot;Table of OLS coefficients for the SPAM data set&quot;, digits=2 ) 
+
+# Run this full linear model on the Testing data so that we can fill in the two
+# lower spots in the &quot;LS&quot; column in Table 3.2
+#
+pdt = cbind( matrix(1,dim(XTesting)[1],1), as.matrix( XTesting[,1:p] ) ) %*% betaHat 
+responseTest = XTesting[,p+1]
+NTest = length(responseTest)
+mErr = mean( (responseTest - pdt)^2 )
+print( mErr ) 
+sErr = sqrt( var( (responseTest - pdt)^2 )/NTest ) 
+print( sErr )</code></pre>
+<pre><code>[1] 0.1212304
+            [,1]
+[1,] 0.007212358</code></pre>
+</div>
+<div id="runs-ridge-regression-on-the-spam-data-set" class="section level3">
+<h3>Runs ridge regression on the SPAM data set:</h3>
+<pre class="r"><code>%%R
+cv_Ridge &lt;- function( lambda, D, numberOfCV ){
+  #
+  # Does Cross Validation of the Ridge Regression Linear Model specified by the formula &quot;form&quot;
+  #
+  # Input:
+  #   lambda = multiplier of the penatly term 
+  #   D = training data frame where the last column is the response variable
+  #   numberOfCV = number of cross validations to do
+  #
+  # Output:
+  #   MSPE = vector of length numberOfCV with components mean square prediction errors
+  #          extracted from each of the numberOfCV test data sets
+  
+  library(MASS) # needed for ginv
+
+  nSamples = dim( D )[1]
+  p        = dim( D )[2] - 1 # the last column is the response 
+  
+  # needed for the cross vaildation (CV) loops:
+  # 
+  nCVTest    = round( nSamples*(1/numberOfCV) ) # each CV run will have this many test points
+  nCVTrain   = nSamples-nCVTest # each CV run will have this many training points 
+
+  for (cvi in 1:numberOfCV) {
+
+    testInds = (cvi-1)*nCVTest + 1:nCVTest # this may attempt to access sample indexes &gt; nSamples 
+    testInds = intersect( testInds, 1:nSamples ) # so we restrict this list here
+    DCVTest  = D[testInds,1:(p+1)] # get the predictor + response testing data
+
+    # select this cross validation&#39;s section of data from all the training data:
+    # 
+    trainInds = setdiff( 1:nSamples, testInds ) 
+    DCV       = D[trainInds,1:(p+1)] # get the predictor + response training data
+
+    # Get the response and delete it from the data frame
+    # 
+    responseName        = names(DCV)[p+1] # get the actual string name from the data frame 
+    response            = DCV[,p+1] 
+    DCV[[responseName]] = NULL
+
+    # For ridge-regression we begin by standardizing the predictors and demeaning the response
+    #
+    # Note that one can get the centering value (the mean) with the command attr(DCV,&#39;scaled:center&#39;)
+    #                   and the scaling value (the sample standard deviation) with the command attr(DCV,&#39;scaled:scale&#39;)
+    # 
+    DCV          = scale( DCV )
+    responseMean = mean( response )
+    response     = response - responseMean 
+    DCVb         = cbind( DCV, response ) # append back on the response 
+    DCVf         = data.frame( DCVb ) # a data frame containing all scaled variables of interest 
+
+    # extract the centering and scaling information:
+    #
+    means = attr(DCV,&quot;scaled:center&quot;)
+    stds  = attr(DCV,&quot;scaled:scale&quot;)
+
+    # apply the computed scaling based on the training data to the testing data:
+    #
+    responseTest            = DCVTest[,p+1] - responseMean   # mean adjust
+    DCVTest[[responseName]] = NULL 
+    DCVTest                 = t( apply( DCVTest, 1, &#39;-&#39;, means ) )                                             
+    DCVTest                 = t( apply( DCVTest, 1, &#39;/&#39;, stds ) )                                              
+    DCVTestb                = cbind( DCVTest, responseTest ) # append back on the response                     
+    DCVTestf                = data.frame( DCVTestb )         # a data frame containing all scaled variables of interest
+    names(DCVTestf)[p+1]    = responseName                   # fix the name of the response
+
+    # fit this linear model and compute the expected prediction error (EPE) using these features (this just estimates the mean in this case):
+    #
+    DM      = as.matrix(DCV)
+    M       = ginv( t(DM) %*% DM + lambda*diag(p) ) %*% t(DM)
+    betaHat = M %*% as.matrix(DCVf[,p+1])
+
+    DTest   = as.matrix(DCVTest)
+    pdt     = DTest %*% betaHat # get demeaned predictions on the test set
+    #pdt     = pdt + responseMean # add back in the mean if we want the response in physical units (not mean adjusted)
+
+    if( cvi==1 ){
+      predmat = pdt
+      y       = responseTest
+    }else{
+      predmat = c( predmat, pdt )
+      y       = c( y, responseTest )
+    }
+
+  } # endfor cvi loop
+  
+  # this code is modeled after the code in &quot;glmnet/cvelnet.R&quot;
+  #
+  N = length(y)
+  cvraw = ( y - predmat )^2
+  cvm   = mean(cvraw)
+  cvsd  = sqrt( var(cvraw)/N )
+  l = list( cvraw=cvraw, cvm=cvm, cvsd=cvsd, name=&quot;Mean Squared Error&quot; )
+
+  return(l) 
+}
+one_standard_error_rule &lt;- function(complexityParam,cvResults){
+  #
+  # Input:
+  #   complexityParam = the sampled complexity parameter (duplicate cross vaidation results expected)
+  #   cvResults = matrix where
+  #               each column is a different value of the complexity parameter (with complexity increasing from left to right) ...
+  #               each row    is the square prediction error (SPE) of a different cross validation sample i.e. ( y_i - \hat{y}_i )^2 
+  #
+  # Output:
+  #   optCP = the optimal complexity parameter
+ 
+  N = dim(cvResults)[1]
+
+  # compute the complexity based mean and standard deviations:
+  means = apply(cvResults,2,mean)
+  stds  = sqrt( apply(cvResults,2,var)/N ) 
+
+  # find the smallest espe:
+  minIndex = which.min( means )
+  
+  # compute the confidence interval around this point:
+  #cip = 1 - 2*pnorm(-1)
+  #ciw   &lt;- qt(cip/2, n) * stdev / sqrt(n)
+  ciw = stds[minIndex] 
+
+  # add a width of one std to the min point:
+  maxUncertInMin = means[minIndex] + 0.5*ciw
+
+  # find the mean that is nearest to this value and that is a SIMPLER model than the minimum mean model: 
+  complexityIndex = which.min( abs( means[1:minIndex] - maxUncertInMin ) ) 
+  complexityValue = complexityParam[complexityIndex]
+  
+  # package everything to send out:
+  res = list(complexityValue,complexityIndex,maxUncertInMin, means,stds)
+
+  return(res)
+}
+df_ridge &lt;- function(lambda,X){ 
+  #
+  # R code to compute the degress of freedom for ridge regression.
+  # This is formula 3.50 in the book.
+  #
+  # Input:
+  #   lambda: the penalty term coefficent 
+  #   X the data matrix 
+  #
+  # Output:
+  #
+  # dof: the degrees of freedom.
+ 
+
+  library(MASS) # needed for ginv
+
+  XTX = t(X) %*% X
+  pprime = dim(XTX)[1] 
+
+  Hlambda = X %*% ginv( XTX + lambda * diag(pprime) ) %*% t(X)
+    
+  dof = sum( diag( Hlambda ) )
+
+  return(dof)
+  
+}
+
+opt_lambda_ridge &lt;- function(X,multiple=1){ 
+  #
+  # Returns the &quot;optimal&quot; set of lambda for nice looking ridge regression plots. 
+  #
+  # Input:
+  #
+  #   X = matrix or data frame of features (do not prepend a constant of ones)
+  #
+  # Output:
+  #   lambdas = vector of optimal lambda (choosen to make the degrees_of_freedom(lambda)
+  #             equal to equal to the integers 1:p
+  #
+  #   Notes: these values of lambda are selected to solve (equation 3.50 for various values of dof)
+  #
+  #   dof = \sum_{i=1}^p \frac{ d_j^2 }{ d_j^2 + \lambda } 
+
+  s  = svd( X )
+  dj = s$d       # the diagional elements d_j.  Note that dj[1] is the largest value, while dj[end] is the smallest 
+  p  = dim( X )[2]
+
+  # Do degrees_of_freedom=p first (this is the value for lambda when the degrees of freedom is *p*)
+  lambdas = 0 
+
+  # Do all other values for the degrees_of_freedom next:
+  # 
+  kRange  = seq(p-1,1,by=(-1/multiple) )
+  for( ki in 1:length(kRange) ){ 
+    # solve for lambda in (via newton iterations):
+    #   k = \sum_{i=1}^p \frac{ d_j^2 }{ d_j^2 + \lambda }
+    #
+    k = kRange[ki]
+    
+    # intialGuess at the root    
+    if( ki==1 ){
+      xn = 0.0
+    }else{
+      xn = xnp1 # use the oldest previously computed root 
+    }
+    
+    f    =   sum( dj^2 / ( dj^2 + xn ) ) - k # do the first update by hand
+    fp   = - sum( dj^2 / ( dj^2 + xn )^2 ) 
+    xnp1 = xn - f/fp 
+    
+    while( abs(xn - xnp1)/abs(xn) &gt; 10^(-3) ){
+      xn   = xnp1
+      f    =   sum( dj^2 / ( dj^2 + xn ) ) - k 
+      fp   = - sum( dj^2 / ( dj^2 + xn )^2 ) 
+      xnp1 = xn - f/fp       
+    }
+
+    lambdas = c(lambdas,xnp1)
+  }
+  # flip the order of the lambdas:
+  lambdas = lambdas[ rev(1:length(lambdas)) ]
+  return(lambdas)
+}
+
+PD2 &lt;- load_spam_data(trainingScale=FALSE,responseScale=FALSE)
+
+XTraining = PD2[[1]]
+XTesting  = PD2[[2]]
+
+p        = dim(XTraining)[2]-1 # the last column is the response 
+nSamples = dim(XTraining)[1]
+
+# Do ridge-regression cross validation (large lambda values =&gt; small degrees of freedom):
+#
+allLambdas      = opt_lambda_ridge( XTraining[,1:p], multiple=2 ) 
+numberOfLambdas = length( allLambdas ) 
+
+for( li in 1:numberOfLambdas ){
+  
+  res = cv_Ridge(allLambdas[li],XTraining,numberOfCV=10)
+  
+  # To get a *single* value for the degrees of freedom use the call on the entire training data set
+  # We could also take the mean/median of this computed from the cross validation samples 
+  # 
+  dof = df_ridge(allLambdas[li],as.matrix(XTraining[,1:p]))
+    
+  if( li==1 ){
+    complexityParam = dof 
+    cvResults       = res$cvraw
+  }else{
+    complexityParam = cbind( complexityParam, dof )  # will be sorted from largest value of dof to smallest valued dof 
+    cvResults       = cbind( cvResults, res$cvraw )  # each column is a different value of the complexity parameter ...
+                                                     # each row    is a different cross validation sample ...
+  }
+}
+
+# flip the order of the results: 
+inds            = rev( 1:numberOfLambdas )
+allLambdas      = allLambdas[ inds ] 
+complexityParam = complexityParam[ inds ] 
+cvResults       = cvResults[ , inds ]
+
+# group all cvResults by lambda (the complexity parameter) and compute statistics:
+#
+OSE           = one_standard_error_rule( complexityParam, cvResults )
+complexVValue = OSE[[1]]
+complexIndex  = OSE[[2]] 
+oseHValue     = OSE[[3]]
+means         = OSE[[4]] # as a function of model complexity  
+stds          = OSE[[5]] # as a function of model complexity
+
+library(gplots) # plotCI, plotmeans found here, xlim=c(0,8), ylim=c(0.3,1.8)
+
+
+plotCI( x=complexityParam, y=means, uiw=0.5*stds,
+        col=&quot;black&quot;, barcol=&quot;blue&quot;, lwd=1, type=&quot;l&quot;, 
+        xlab=&quot;degrees of freedom&quot;, ylab=&quot;expected squared prediction error (ESPE)&quot; )
+abline( h=oseHValue, lty=2 ) 
+abline( v=complexVValue, lty=2 ) 
+
+# pick the best model, retrain over the entire data set, and predict on the testing data set:
+#
+bestLambda = allLambdas[ complexIndex ]
+
+DCV  = XTraining
+#
+#
+responseName        = names(DCV)[p+1]  # get the response and delete it from the data frame 
+response            = DCV[,p+1]
+DCV[[responseName]] = NULL
+
+# Standardize the predictors and demean the response
+#
+# Note that one can get the centering value (the mean) with the command attr(DCV,&#39;scaled:center&#39;)
+#                   and the scaling value (the sample standard deviation) with the command attr(DCV,&#39;scaled:scale&#39;)
+# 
+DCV          = scale( DCV )
+responseMean = mean( response )
+response     = response - responseMean 
+DCVb         = cbind( DCV, response ) # append back on the response 
+DCVf         = data.frame( DCVb ) # a data frame containing all scaled variables of interest 
+# extract the centering and scaling information:
+#
+means = attr(DCV,&quot;scaled:center&quot;)
+stds  = attr(DCV,&quot;scaled:scale&quot;)
+
+# apply the computed scaling based on the training data to the testing data:
+#
+DCVTest                 = XTesting
+responseTest            = DCVTest[,p+1] - responseMean # in demeaned units (not mean adjusted)
+DCVTest[[responseName]] = NULL
+DCVTest                 = t( apply( DCVTest, 1, &#39;-&#39;, means ) ) 
+DCVTest                 = t( apply( DCVTest, 1, &#39;/&#39;, stds ) ) 
+DCVTestb                = cbind( DCVTest, responseTest  ) # append back on the response
+DCVTestf                = data.frame( DCVTestb ) # a data frame containing all scaled variables of interest
+names(DCVTestf)[p+1]    = responseName # fix the name of the response
+
+# fit this linear model and compute the expected prediction error (EPE) using these features (this just estimates the mean in this case):
+#
+DM      = as.matrix(DCV)
+M       = ginv( t(DM) %*% DM + bestLambda*diag(p) ) %*% t(DM)
+betaHat = M %*% as.matrix(DCVf[,p+1])
+
+print( responseMean, digits=4 )
+print( betaHat, digits=3 ) 
+
+DTest = as.matrix(DCVTest)
+pdt = DTest %*% betaHat # get predictions on the test set
+#pdt  = pdt + responseMean # add back in the mean.  Now in physical units (not mean adjusted)
+mErr = mean( (responseTest - pdt)^2 )
+print( mErr )
+NTest = length(responseTest)
+sErr = sqrt( var( (responseTest - pdt)^2 )/NTest ) 
+print( sErr )</code></pre>
+<pre><code>R[write to console]: 
+Attaching package: ‘gplots’
+
+
+R[write to console]: The following object is masked from ‘package:stats’:
+
+    lowess
+
+
+
+
+[1] 0.3974
+           [,1]
+ [1,] -0.012063
+ [2,] -0.018186
+ [3,]  0.024423
+ [4,]  0.017785
+ [5,]  0.048324
+ [6,]  0.035094
+ [7,]  0.082626
+ [8,]  0.038886
+ [9,]  0.012246
+[10,]  0.010097
+[11,]  0.008338
+[12,] -0.022603
+[13,]  0.000821
+[14,]  0.005473
+[15,]  0.008723
+[16,]  0.080193
+[17,]  0.025889
+[18,]  0.025022
+[19,]  0.033607
+[20,]  0.020922
+[21,]  0.063838
+[22,]  0.046940
+[23,]  0.058275
+[24,]  0.041145
+[25,] -0.041553
+[26,] -0.013468
+[27,] -0.036863
+[28,] -0.013823
+[29,] -0.002609
+[30,] -0.022522
+[31,] -0.004602
+[32,]  0.033556
+[33,] -0.017971
+[34,] -0.023728
+[35,] -0.009010
+[36,]  0.016002
+[37,] -0.009944
+[38,] -0.012490
+[39,] -0.017749
+[40,]  0.023000
+[41,] -0.001821
+[42,] -0.025790
+[43,] -0.012405
+[44,] -0.020960
+[45,] -0.039588
+[46,] -0.034961
+[47,] -0.009396
+[48,] -0.018026
+[49,] -0.030376
+[50,] -0.027790
+[51,] -0.004496
+[52,]  0.041522
+[53,]  0.061850
+[54,]  0.012561
+[55,]  0.005090
+[56,]  0.021765
+[57,]  0.038060
+[1] 0.1212304
+            [,1]
+[1,] 0.007212358</code></pre>
+<div class="figure">
+<img src="exercises_files/exercises_10_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="the-lasso" class="section level3">
+<h3>The lasso</h3>
+<pre class="r"><code>%%R
+PD = load_spam_data(trainingScale=TRUE,responseScale=TRUE) # read in unscaled data 
+XTraining = PD[[1]]
+XTesting = PD[[2]]
+
+p        = dim(XTraining)[2]-1 # the last column is the response 
+nSamples = dim(XTraining)[1] 
+
+library(glmnet)
+
+# alpha = 1 =&gt; lasso
+fit = glmnet( as.matrix( XTraining[,1:p] ), XTraining[,p+1], family=&quot;gaussian&quot;, alpha=1 )
+
+# alpha = 0 =&gt; ridge
+#fit = glmnet( as.matrix( XTraining[,1:p] ), XTraining[,p+1], family=&quot;gaussian&quot;, alpha=0 )
+
+#postscript(&quot;../../WriteUp/Graphics/Chapter3/spam_lasso_beta_paths.eps&quot;, onefile=FALSE, horizontal=FALSE)
+plot(fit)
+#dev.off()
+
+# do crossvalidation to get the optimal value of lambda 
+cvob = cv.glmnet( as.matrix( XTraining[,1:p] ), XTraining[,p+1], family=&quot;gaussian&quot;, alpha=1 )
+
+#postscript(&quot;../../WriteUp/Graphics/Chapter3/spam_lasso.eps&quot;, onefile=FALSE, horizontal=FALSE)
+plot( cvob )
+#dev.off() 
+
+# get the optimal value of lambda: 
+lambdaOptimal = cvob$lambda.1se
+
+# refit with this opimal value of lambda:
+fitOpt = glmnet( as.matrix( XTraining[,1:p] ), XTraining[,p+1], family=&quot;gaussian&quot;, lambda=lambdaOptimal, alpha=1 )
+print( coef(fitOpt), digit=3 )
+
+# predict the testing data using this value of lambda: 
+yPredict = predict( fit, newx=as.matrix(XTesting[,1:p]), s=lambdaOptimal )
+NTest = dim(XTesting[,1:p])[1]
+print( mean( ( XTesting[,p+1] - yPredict )^2 ), digit=3 ) 
+print( sqrt( var( ( XTesting[,p+1] - yPredict )^2 )/NTest ), digit=3 ) 
+
+</code></pre>
+<pre><code>R[write to console]: Loading required package: Matrix
+
+R[write to console]: Loaded glmnet 4.1-1
+
+
+
+58 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+                      s0
+(Intercept)     4.69e-16
+V1          .           
+V2          .           
+V3              1.60e-02
+V4              2.10e-03
+V5              3.88e-02
+V6              3.08e-02
+V7              8.27e-02
+V8              3.07e-02
+V9              1.11e-02
+V10         .           
+V11             1.98e-03
+V12         .           
+V13         .           
+V14         .           
+V15             4.26e-03
+V16             7.94e-02
+V17             2.32e-02
+V18             1.76e-02
+V19             2.99e-02
+V20             1.66e-02
+V21             7.37e-02
+V22             2.50e-02
+V23             6.02e-02
+V24             3.22e-02
+V25            -3.55e-02
+V26            -1.38e-02
+V27            -1.69e-02
+V28            -2.85e-03
+V29         .           
+V30         .           
+V31         .           
+V32         .           
+V33            -4.85e-03
+V34         .           
+V35         .           
+V36         .           
+V37            -8.83e-03
+V38         .           
+V39            -1.03e-02
+V40         .           
+V41         .           
+V42            -1.54e-02
+V43            -2.42e-03
+V44            -3.66e-03
+V45            -2.29e-02
+V46            -1.87e-02
+V47         .           
+V48            -9.88e-04
+V49            -2.55e-03
+V50         .           
+V51         .           
+V52             3.22e-02
+V53             5.71e-02
+V54         .           
+V55         .           
+V56             1.19e-03
+V57             4.10e-02
+[1] 0.126
+        1
+1 0.00708</code></pre>
+<div class="figure">
+<img src="exercises_files/exercises_12_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_12_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="principal-component-regression-pcr" class="section level3">
+<h3>principal component regression (PCR)</h3>
+<pre class="r"><code>%%R
+require(pls)
+set.seed (1000)
+
+PD = load_spam_data(trainingScale=TRUE,responseScale=TRUE) # read in unscaled data 
+
+XTraining = PD[[1]]
+XTesting = PD[[2]]
+
+p        = dim(XTraining)[2]-1 # the last column is the response 
+nSamples = dim(XTraining)[1] 
+
+pcr_model &lt;- pcr(V58~., data = XTraining, scale = FALSE, validation = &quot;CV&quot;)
+summary(pcr_model)
+# Plot the root mean squared error
+validationplot(pcr_model)
+# Plot the cross validation MSE
+validationplot(pcr_model, val.type=&quot;MSEP&quot;)
+# Plot the R2
+validationplot(pcr_model, val.type = &quot;R2&quot;)
+
+#You can plot the predicted vs measured values using the predplot function as below
+predplot(pcr_model)
+
+#while the regression coefficients can be plotted using the coefplot function
+coefplot(pcr_model)
+
+set.seed(777)
+yPredict&lt;-predict(pcr_model,as.matrix(XTesting[,1:p]),ncomp=20)
+
+NTest = dim(XTesting[,1:p])[1]
+print( mean( ( XTesting[,p+1] - yPredict )^2 ), digit=3 ) 
+print( sqrt( var( ( XTesting[,p+1] - yPredict )^2 )/NTest ), digit=3 ) 
+</code></pre>
+<pre><code>R[write to console]: Loading required package: pls
+
+R[write to console]: 
+Attaching package: ‘pls’
+
+
+R[write to console]: The following object is masked from ‘package:stats’:
+
+    loadings
+
+
+
+
+Data:   X dimension: 3065 57 
+    Y dimension: 3065 1
+Fit method: svdpc
+Number of components considered: 57
+
+VALIDATION: RMSEP
+Cross-validated using 10 random segments.
+       (Intercept)  1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+CV          0.4895   0.4687   0.3519   0.3490   0.3486   0.3470   0.3461
+adjCV       0.4895   0.4688   0.3511   0.3488   0.3490   0.3469   0.3461
+       7 comps  8 comps  9 comps  10 comps  11 comps  12 comps  13 comps
+CV      0.3448   0.3429   0.3412    0.3403    0.3394    0.3383    0.3376
+adjCV   0.3451   0.3423   0.3406    0.3408    0.3393    0.3391    0.3387
+       14 comps  15 comps  16 comps  17 comps  18 comps  19 comps  20 comps
+CV       0.3362    0.3356    0.3339    0.3328    0.3326    0.3318    0.3314
+adjCV    0.3340    0.3332    0.3326    0.3323    0.3326    0.3300    0.3299
+       21 comps  22 comps  23 comps  24 comps  25 comps  26 comps  27 comps
+CV       0.3309    0.3306    0.3306    0.3305    0.3308    0.3302    0.3298
+adjCV    0.3293    0.3294    0.3298    0.3299    0.3302    0.3305    0.3298
+       28 comps  29 comps  30 comps  31 comps  32 comps  33 comps  34 comps
+CV       0.3288    0.3287    0.3286    0.3281    0.3279    0.3283    0.3277
+adjCV    0.3286    0.3289    0.3289    0.3282    0.3283    0.3283    0.3272
+       35 comps  36 comps  37 comps  38 comps  39 comps  40 comps  41 comps
+CV       0.3279    0.3274    0.3278    0.3279    0.3271    0.3281    0.3282
+adjCV    0.3276    0.3272    0.3278    0.3274    0.3266    0.3278    0.3281
+       42 comps  43 comps  44 comps  45 comps  46 comps  47 comps  48 comps
+CV       0.3277    0.3255    0.3267    0.3277    0.3277    0.3287    0.3293
+adjCV    0.3279    0.3253    0.3260    0.3272    0.3272    0.3281    0.3287
+       49 comps  50 comps  51 comps  52 comps  53 comps  54 comps  55 comps
+CV       0.3294    0.3292    0.3292    0.3290    0.3294    0.3295    0.3297
+adjCV    0.3287    0.3286    0.3287    0.3283    0.3288    0.3289    0.3290
+       56 comps  57 comps
+CV       0.3313    0.3314
+adjCV    0.3305    0.3306
+
+TRAINING: % variance explained
+     1 comps  2 comps  3 comps  4 comps  5 comps  6 comps  7 comps  8 comps
+X     11.932    17.76    21.39    24.23    27.01    29.67    32.14    34.60
+V58    8.719    47.40    48.93    48.98    49.56    49.88    50.09    50.72
+     9 comps  10 comps  11 comps  12 comps  13 comps  14 comps  15 comps
+X      36.93     39.20     41.41     43.42     45.41     47.37     49.29
+V58    51.29     51.39     51.90     51.91     52.05     53.28     53.54
+     16 comps  17 comps  18 comps  19 comps  20 comps  21 comps  22 comps
+X       51.16     52.98     54.78     56.55     58.32     60.06     61.79
+V58     53.74     53.78     53.81     54.49     54.51     54.74     54.82
+     23 comps  24 comps  25 comps  26 comps  27 comps  28 comps  29 comps
+X       63.48     65.14     66.78     68.38     69.95     71.52     73.05
+V58     54.83     54.86     54.95     54.96     55.13     55.32     55.32
+     30 comps  31 comps  32 comps  33 comps  34 comps  35 comps  36 comps
+X       74.54     75.97     77.40     78.78     80.12     81.44     82.74
+V58     55.50     55.72     55.79     56.01     56.23     56.24     56.35
+     37 comps  38 comps  39 comps  40 comps  41 comps  42 comps  43 comps
+X       84.02     85.26     86.47     87.66     88.83     89.96     91.02
+V58     56.39     56.56     56.69     56.69     56.77     56.81     57.23
+     44 comps  45 comps  46 comps  47 comps  48 comps  49 comps  50 comps
+X       92.07     93.06     94.04     94.96     95.81     96.55     97.27
+V58     57.45     57.46     57.51     57.57     57.57     57.58     57.61
+     51 comps  52 comps  53 comps  54 comps  55 comps  56 comps  57 comps
+X       97.86     98.42     98.97     99.38     99.73    100.00    100.00
+V58     57.63     57.67     57.68     57.69     57.70     57.71     57.71
+[1] 0.124
+[1] 0.00633</code></pre>
+<div class="figure">
+<img src="exercises_files/exercises_14_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_14_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_14_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_14_5.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_14_6.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="partial-least-squares-regression-pls" class="section level3">
+<h3>partial least squares regression (PLS)</h3>
+<pre class="r"><code>%%R
+require(pls)
+set.seed (1000)
+
+PD = load_spam_data(trainingScale=TRUE,responseScale=TRUE) # read in unscaled data 
+
+XTraining = PD[[1]]
+XTesting = PD[[2]]
+
+p        = dim(XTraining)[2]-1 # the last column is the response 
+nSamples = dim(XTraining)[1] 
+
+plsr_model &lt;- plsr(V58~., data = XTraining, scale = FALSE, validation = &quot;CV&quot;)
+summary(plsr_model)
+# Plot the root mean squared error
+validationplot(plsr_model)
+# Plot the cross validation MSE
+validationplot(plsr_model, val.type=&quot;MSEP&quot;)
+# Plot the R2
+validationplot(plsr_model, val.type = &quot;R2&quot;)
+
+#You can plot the predicted vs measured values using the predplot function as below
+predplot(plsr_model)
+
+#while the regression coefficients can be plotted using the coefplot function
+coefplot(plsr_model)
+
+set.seed(777)
+yPredict&lt;-predict(plsr_model,as.matrix(XTesting[,1:p]),ncomp=4)
+
+NTest = dim(XTesting[,1:p])[1]
+print( mean( ( XTesting[,p+1] - yPredict )^2 ), digit=3 ) 
+print( sqrt( var( ( XTesting[,p+1] - yPredict )^2 )/NTest ), digit=3 )</code></pre>
+<pre><code>Data:   X dimension: 3065 57 
+    Y dimension: 3065 1
+Fit method: kernelpls
+Number of components considered: 57
+
+VALIDATION: RMSEP
+Cross-validated using 10 random segments.
+       (Intercept)  1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+CV          0.4895   0.3558   0.3309   0.3267   0.3284   0.3296   0.3303
+adjCV       0.4895   0.3557   0.3309   0.3263   0.3279   0.3289   0.3296
+       7 comps  8 comps  9 comps  10 comps  11 comps  12 comps  13 comps
+CV      0.3307   0.3311   0.3312    0.3312    0.3313    0.3313    0.3313
+adjCV   0.3299   0.3303   0.3304    0.3304    0.3304    0.3305    0.3305
+       14 comps  15 comps  16 comps  17 comps  18 comps  19 comps  20 comps
+CV       0.3313    0.3313    0.3313    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3305    0.3305    0.3305    0.3306    0.3306    0.3306    0.3306
+       21 comps  22 comps  23 comps  24 comps  25 comps  26 comps  27 comps
+CV       0.3314    0.3314    0.3314    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306
+       28 comps  29 comps  30 comps  31 comps  32 comps  33 comps  34 comps
+CV       0.3314    0.3314    0.3314    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306
+       35 comps  36 comps  37 comps  38 comps  39 comps  40 comps  41 comps
+CV       0.3314    0.3314    0.3314    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306
+       42 comps  43 comps  44 comps  45 comps  46 comps  47 comps  48 comps
+CV       0.3314    0.3314    0.3314    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306
+       49 comps  50 comps  51 comps  52 comps  53 comps  54 comps  55 comps
+CV       0.3314    0.3314    0.3314    0.3314    0.3314    0.3314    0.3314
+adjCV    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306    0.3306
+       56 comps  57 comps
+CV       0.3314    0.3314
+adjCV    0.3306    0.3306
+
+TRAINING: % variance explained
+     1 comps  2 comps  3 comps  4 comps  5 comps  6 comps  7 comps  8 comps
+X      8.668    17.38    19.94    22.60    24.80    26.64    28.11    29.74
+V58   47.367    54.82    57.36    57.63    57.69    57.70    57.70    57.70
+     9 comps  10 comps  11 comps  12 comps  13 comps  14 comps  15 comps
+X      31.23     32.56     34.18     35.81     37.28     38.87     40.34
+V58    57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     16 comps  17 comps  18 comps  19 comps  20 comps  21 comps  22 comps
+X       41.85     43.10     44.22     45.78     47.25     48.53     49.74
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     23 comps  24 comps  25 comps  26 comps  27 comps  28 comps  29 comps
+X       51.24     52.90     54.18     55.49     57.19     58.58     59.95
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     30 comps  31 comps  32 comps  33 comps  34 comps  35 comps  36 comps
+X       61.25     62.53     63.74     64.95     66.33     67.65     69.00
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     37 comps  38 comps  39 comps  40 comps  41 comps  42 comps  43 comps
+X       70.50     72.02     73.58     74.98     76.48     77.90     79.31
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     44 comps  45 comps  46 comps  47 comps  48 comps  49 comps  50 comps
+X       80.65     82.00     83.50     84.94     86.48     88.05     89.63
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+     51 comps  52 comps  53 comps  54 comps  55 comps  56 comps  57 comps
+X       91.21     92.79     94.37     95.94     97.52     99.10    100.68
+V58     57.71     57.71     57.71     57.71     57.71     57.71     57.71
+[1] 0.121
+[1] 0.00748</code></pre>
+<div class="figure">
+<img src="exercises_files/exercises_16_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_16_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_16_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_16_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="exercises_files/exercises_16_5.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+</div>
+<div id="ex.-3.18-conjugate-gradient-methods" class="section level1">
+<h1>Ex. 3.18 (conjugate gradient methods)</h1>
+<p>Read about conjugate gradient algorithms (Murray et al., 1981, for example), and establish a connection between these algorithms and partial least squares.</p>
+<p>The conjugate gradient method is an algorithm that can be adapted to find the minimum of nonlinear functions. It also provides a way to solve certain linear algebraic equations
+of the type <span class="math inline">\(Ax = b\)</span> by formulating them as a minimization problem. Since the least squares solution <span class="math inline">\(\hat\beta\)</span> is given by the solution of a quadratic minimization problem given by
+<span class="math display">\[\hat\beta=\text{argmin}_{\beta}\text{RSS}(\beta)=\text{argmin}_{\beta}(y-X\beta)^T(y-X\beta)\]</span> which has the explicit solution given by the normal equations or
+<span class="math display">\[(X^TX)\beta=X^Ty\]</span>
+One obvious way to use the conjugate gradient algorithm to derive refined estimates of <span class="math inline">\(\hat\beta\)</span> the least squared solution is to use this algorithm to solve the normal Equations <span class="math display">\[(X^TX)\beta=X^Ty\]</span> Thus after finishing each iteration of the conjugate gradient algorithm we have a new approximate value of <span class="math inline">\(\hat\beta(m)\)</span> for <span class="math inline">\(m = 1, 2, \cdots, p\)</span> and when <span class="math inline">\(m = p\)</span> this estimate <span class="math inline">\(\hat\beta(p)\)</span> corresponds to the least squares solution. The value of <span class="math inline">\(m\)</span> is a model selection parameter and can be selected by
+cross validation.</p>
+</div>
+<div id="ex.-3.19-increasing-norm-with-decreasing-lambda" class="section level1">
+<h1>Ex. 3.19 (increasing norm with decreasing <span class="math inline">\(\lambda\)</span>)</h1>
+<p>Show that <span class="math display">\[\lVert \hat{\beta}^{\text{ridge}}\rVert\]</span> increases as its tuning parameter <span class="math inline">\(\lambda\to 0\)</span>. Does the same property hold for the lasso and partial least squares estimates? For the latter, consider the “tuning parameter” to be the successive steps in the algorithm.
+Since <span class="math display">\[
+\begin{align}
+\hat\beta^{\text{ridge}} &amp;= \left( \mathbf{X}^T\mathbf{X} + \lambda\mathbf{I} \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=(\mathbf V\mathbf D^2\mathbf V^T+\lambda\mathbf{V}\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=(\mathbf V(\mathbf D^2+\lambda\mathbf{I})\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}^{-T}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+\end{align}
+\]</span> then <span class="math display">\[\begin{align}
+\lVert \hat{\beta}^{\text{ridge}}\rVert_2^2&amp;=\left(\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\right)^T\left(\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\right)\\
+&amp;=y^T\mathbf U\mathbf D(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf{V}^T\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\left(\mathbf U^T\mathbf y\right)^T\left(\mathbf D(\mathbf D^2+\lambda\mathbf{I})^{-2}\mathbf D\right)\left(\mathbf U^T\mathbf y\right)
+\end{align}\]</span>
+The matrix in the middle of the above is a diagonal matrix with elements <span class="math display">\[\frac{d_j^2}{(d_j^2+\lambda)^2}\]</span> Thus <span class="math display">\[\lVert \hat{\beta}^{\text{ridge}}\rVert_2^2=\sum_{i=1}^{p}\frac{d_j^2\left(\mathbf U^T\mathbf y\right)_j^2}{(d_j^2+\lambda)^2}\]</span> where <span class="math inline">\(\left(\mathbf U^T\mathbf y\right)_j\)</span> is the <span class="math inline">\(j\)</span>th component of the vector <span class="math inline">\(\mathbf U^T\mathbf y\)</span>. As <span class="math inline">\(\lambda\to 0\)</span>, the fraction <span class="math display">\[\frac{d_j^2}{(d_j^2+\lambda)^2}\]</span> increases, and because <span class="math inline">\(\lVert \hat{\beta}^{\text{ridge}}\rVert_2^2\)</span> is made up of sum of such terms, it too must increase.</p>
+<p>To determine if the same properties hold For the lasso, note that in both ridge-regression and the lasso can be represented as the minimization problem
+<span class="math display">\[
+\begin{equation}
+\hat\beta = \arg\min_\beta \left\lbrace \frac{1}{2}\sum_{i=1}^N \left( y_i-\beta_0-\sum_{j=1}^p x_{ij}\beta_j \right)^2 + \lambda\sum_{j=1}^p |\beta_j|^q \right\rbrace,
+\end{equation}\]</span>
+When <span class="math inline">\(q = 1\)</span> we have the lasso and when <span class="math inline">\(q = 2\)</span> we have ridge-regression. This form of the problem is equivalent to the Lagrangian from.<br />
+Because as <span class="math inline">\(\lambda\to 0\)</span> the value of <span class="math inline">\(\sum\lvert\beta_j\rvert^q\)</span> needs to increase to have the product <span class="math inline">\(\lambda\sum\lvert\beta_j\rvert^q\)</span> stay constant and have the same error minimum value. Thus there is an
+inverse relationship between <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(t\)</span>, where <span class="math inline">\(\sum\lvert\beta_j\rvert^q\le t\)</span> in the two problem formulations, in that as <span class="math inline">\(\lambda\)</span> decreases <span class="math inline">\(t\)</span> increases and vice versa. Thus the same behavior of <span class="math inline">\(t\)</span> and
+<span class="math inline">\(\sum\lvert\beta_j\rvert^q\)</span> with decreasing <span class="math inline">\(\lambda\)</span> will
+show itself in the lasso.</p>
+</div>
+<div id="ex.-3.20" class="section level1">
+<h1>Ex. 3.20</h1>
+<p>Consider the canonical-correlation problem (3.67). Show that the leading pair of canonical variates <span class="math inline">\(u_1\)</span> and <span class="math inline">\(v_1\)</span> solve the problem max
+<span class="math display">\[\underset{v^T(\mathbf X^T\mathbf X)v=1}{\underset{u^T(\mathbf Y^T\mathbf Y)u=1}{\text{max}}}u^T(\mathbf Y^T\mathbf X)v \quad(3.86)\]</span>
+a generalized SVD problem. Show that the solution is given by <span class="math display">\[u_1 = (\mathbf Y^T\mathbf Y)^{-\frac{1}{2}}u_1^*\]</span> and <span class="math display">\[v_1 = (\mathbf X^T\mathbf X)^{-\frac{1}{2}}v_1^*\]</span> where <span class="math inline">\(u_1^∗\)</span> and <span class="math inline">\(v_1^*\)</span> are the leading left and right singular vectors in <span class="math display">\[(\mathbf Y^T\mathbf Y)^{-\frac{1}{2}}(\mathbf Y^T\mathbf X)(\mathbf X^T\mathbf X)^{-\frac{1}{2}}= \mathbf {U^*}\mathbf {D^*}\mathbf {V^*}^T \quad (3.87)\]</span>
+Show that the entire sequence <span class="math display">\[u_m, v_m, m = 1, \cdots ,\text{min}(K, p)\]</span> is also given by (3.87).</p>
+</div>
+<div id="ex.-3.21" class="section level1">
+<h1>Ex. 3.21</h1>
+<p>Show that the solution to the reduced-rank regression problem (3.68), with <span class="math inline">\(\mathbf\Sigma\)</span> estimated by <span class="math inline">\(\mathbf Y^T\mathbf Y/N\)</span>, is given by (3.69). Hint: Transform <span class="math inline">\(\mathbf Y\)</span> to <span class="math inline">\(\mathbf Y^* = \mathbf Y\mathbf\Sigma^{-\frac{1}{2}}\)</span>, and solved in terms of the canonical vectors <span class="math inline">\(u_m^*\)</span>. Show that <span class="math inline">\(\mathbf U_m = \mathbf\Sigma^{-\frac{1}{2}}\mathbf U_m^*\)</span>, and a generalized inverse is <span class="math display">\[\mathbf U_m^-={\mathbf U_m^*}^T\mathbf\Sigma^{-\frac{1}{2}}\]</span>.</p>
+</div>
+<div id="ex.-3.22" class="section level1">
+<h1>Ex. 3.22</h1>
+<p>Show that the solution in Exercise 3.21 does not change if <span class="math inline">\(\mathbf\Sigma\)</span> is estimated by the more natural quantity
+<span class="math display">\[(\mathbf Y −\mathbf X\hat{\mathbf B})^T (\mathbf Y −\mathbf X\hat{\mathbf B})/(N − pK)\]</span>.</p>
+</div>
+<div id="ex.-3.23-xtx1xtr-keeps-the-correlations-tied-and-decreasing" class="section level1">
+<h1>Ex. 3.23 (<span class="math inline">\((X^TX)^{−1}X^Tr\)</span> keeps the correlations tied and decreasing)</h1>
+<p>Consider a regression problem with all variables and response having mean zero and standard deviation one. Suppose also that each variable has identical absolute correlation with the response:
+<span class="math display">\[\frac{1}{N} \left\lvert\langle \mathbf x_j , \mathbf y\rangle\right\rvert = \lambda, j = 1, \cdots, p\]</span>
+Let <span class="math inline">\(\hat{\beta}\)</span> be the least-squares coefficient of <span class="math inline">\(y\)</span> on <span class="math inline">\(\mathbf X\)</span>, and let <span class="math inline">\(\mathbf u(\alpha) = \alpha \mathbf X\hat{\beta}\)</span> for <span class="math inline">\(\alpha \in [0, 1]\)</span> be the vector that moves a fraction <span class="math inline">\(\alpha\)</span> toward the least squares fit <span class="math inline">\(\mathbf u\)</span>. Let RSS be the residual sum-of-squares from the full least squares fit.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Show that <span class="math display">\[\frac{1}{N}\left\lvert\langle \mathbf x_j , \mathbf y − \mathbf u(\alpha)\rangle\right\rvert = (1 − \alpha)\lambda, \quad j = 1, \cdots , p\]</span> and hence the correlations of each <span class="math inline">\(\mathbf x_j\)</span> with the residuals remain equal in magnitude as we progress toward <span class="math inline">\(\mathbf u\)</span>.</li>
+</ol>
+<p>Since <span class="math display">\[\frac{1}{N}\left\lvert\langle \mathbf x_j , \mathbf y − \mathbf u(\alpha)\rangle\right\rvert\]</span> is the absolute value of the <span class="math inline">\(j\)</span>th component of <span class="math display">\[\begin{align}
+\frac{1}{N}\mathbf X^T\left(\mathbf y − \mathbf u(\alpha)\right)&amp;=\frac{1}{N}\mathbf X^T\left(\mathbf y − \alpha\mathbf X\left(\mathbf X^T\mathbf X\right)^{-1}\mathbf X^T\mathbf y\right)\\
+&amp;=\frac{1}{N}\left(\mathbf X^T\mathbf y − \alpha\mathbf X^T\mathbf y\right)\\
+&amp;=\frac{1}{N}\left(1 − \alpha\right)\mathbf X^T\mathbf y\\
+\end{align}\]</span> since the absolute value of each element of <span class="math inline">\(\mathbf X^T\mathbf y\)</span> is equal to <span class="math inline">\(N\lambda\)</span> we have from the above that <span class="math display">\[\left\lvert\frac{1}{N}\mathbf X^T\left(\mathbf y − \mathbf u(\alpha)\right)\right\rvert=\left(1 − \alpha\right)\lambda\]</span> or the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf X\)</span> is <span class="math display">\[\frac{1}{N}\left\lvert\langle \mathbf x_j , \mathbf y − \mathbf u(\alpha)\rangle\right\rvert=(1 − \alpha)\lambda, \quad j = 1, \cdots , p\]</span> In words, the magnitude of the projections of <span class="math inline">\(x_j\)</span> onto the residual <span class="math inline">\(\mathbf y − \mathbf u(\alpha)= \mathbf y − \alpha\mathbf X \hat\beta\)</span> is the same for every value of <span class="math inline">\(j\)</span>.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Show that these correlations are all equal to
+<span class="math display">\[ \lambda(\alpha) = \frac{(1 − \alpha)}{(1 − \alpha)^2 + \frac{\alpha(2−\alpha)}{N}\cdot RSS} \cdot λ\]</span>
+and hence they decrease monotonically to zero.</li>
+</ol>
+<p>Since all variables having mean zero and standard deviation one, then <span class="math inline">\(\left\langle \mathbf x_j ,\mathbf x_j\right\rangle=N\sigma^2=N\)</span>. The correlations (not covariances) would be given by <span class="math display">\[
+\lambda(\alpha) = \frac{\frac{1}{N}\left\langle \mathbf x_j , \mathbf y − \mathbf u(\alpha)\right\rangle}{\left(\frac{\left\langle \mathbf x_j ,\mathbf x_j\right\rangle}{N}\right)^{1/2}\left(\frac{\left\langle \mathbf y − \mathbf u(\alpha),\mathbf y − \mathbf u(\alpha)\right\rangle}{N}\right)^{1/2}}=\frac{(1 − \alpha)\lambda}{\left(\frac{\left\langle \mathbf y − \mathbf u(\alpha),\mathbf y − \mathbf u(\alpha)\right\rangle}{N}\right)^{1/2}}\]</span> Since the normal equations for linear regression <span class="math display">\[\mathbf X^T\mathbf X\hat\beta=\mathbf X^T\mathbf y\]</span> then <span class="math display">\[\begin{align}
+\left\langle \mathbf y − \alpha\mathbf X\hat\beta,\mathbf y − \alpha\mathbf X\hat\beta\right\rangle&amp;=\mathbf y^T\mathbf y-\alpha\mathbf y^T\mathbf X\hat\beta-\alpha\hat\beta^T\mathbf X^T\mathbf y+\alpha^2\hat\beta^T\left(\mathbf X^T\mathbf X\hat\beta\right)\\
+&amp;=\mathbf y^T\mathbf y-\alpha\mathbf y^T\mathbf X\hat\beta-\alpha\hat\beta^T\mathbf X^T\mathbf y+\alpha^2\hat\beta^T\left(\mathbf X^T\mathbf y\right)\\
+&amp;=\mathbf y^T\mathbf y-2\alpha\mathbf y^T\mathbf X\hat\beta+\alpha^2\hat\beta^T\left(\mathbf X^T\mathbf y\right)\\
+&amp;=\mathbf y^T\mathbf y+\alpha(\alpha-2)\mathbf y^T\mathbf X\hat\beta\\
+\end{align}\]</span> If <span class="math inline">\(\alpha=1\)</span>, then <span class="math display">\[\left\langle \mathbf y − \mathbf X\hat\beta,\mathbf y − \mathbf X\hat\beta\right\rangle=\text{RSS}=\mathbf y^T\mathbf y-\mathbf y^T\mathbf X\hat\beta\]</span> so <span class="math display">\[\mathbf y^T\mathbf X\hat\beta=\mathbf y^T\mathbf y-\text{RSS}\]</span> then we have <span class="math display">\[\begin{align}
+\left\langle \mathbf y − \alpha\mathbf X\hat\beta,\mathbf y − \alpha\mathbf X\hat\beta\right\rangle&amp;=\mathbf y^T\mathbf y-2\alpha\mathbf y^T\mathbf X\hat\beta+\alpha^2\hat\beta^T\left(\mathbf X^T\mathbf y\right)\\
+&amp;=\mathbf y^T\mathbf y - 2\alpha\left(\mathbf y^T\mathbf y-\text{RSS}\right)+\alpha^2\left(\mathbf y^T\mathbf y-\text{RSS}\right)\\
+&amp;=(1-\alpha)^2\mathbf y^T\mathbf y+\alpha(2-\alpha)\cdot\text{RSS}
+\end{align}\]</span> As <span class="math inline">\(\mathbf y\)</span> has a mean zero and a standard deviation of one means that <span class="math display">\[\mathbf y^T\mathbf y=N\]</span> so <span class="math display">\[\left\langle \mathbf y − \alpha\mathbf X\hat\beta,\mathbf y − \alpha\mathbf X\hat\beta\right\rangle=N(1-\alpha)^2+\alpha(2-\alpha)\cdot\text{RSS}\]</span>
+The correlation is <span class="math display">\[\begin{align}
+\lambda(\alpha) &amp;= \frac{\frac{1}{N}\left\langle \mathbf x_j , \mathbf y − \mathbf u(\alpha)\right\rangle}{\left(\frac{\left\langle \mathbf x_j ,\mathbf x_j\right\rangle}{N}\right)^{1/2}\left(\frac{\left\langle \mathbf y − \mathbf u(\alpha),\mathbf y − \mathbf u(\alpha)\right\rangle}{N}\right)^{1/2}}\\
+&amp;=\frac{(1 − \alpha)\lambda}{\left(\frac{\left\langle \mathbf y − \mathbf u(\alpha),\mathbf y − \mathbf u(\alpha)\right\rangle}{N}\right)^{1/2}}\\
+&amp;=\frac{(1 − \alpha)\lambda}{\left(\frac{N(1-\alpha)^2+\alpha(2-\alpha)\cdot\text{RSS}}{N}\right)^{1/2}}\\
+\end{align}\]</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Use these results to show that the LAR algorithm in Section 3.4.4 keeps the correlations tied and monotonically decreasing, as claimed in (3.55).</li>
+</ol>
+<p>When <span class="math inline">\(\alpha=0\)</span> we have <span class="math inline">\(\lambda(0) = \lambda\)</span>, when <span class="math inline">\(\alpha=1\)</span> we have that <span class="math inline">\(\lambda(1) = 0\)</span>, where all correlations are tied and decrease from <span class="math inline">\(\lambda\)</span> to zero as <span class="math inline">\(\alpha\)</span> moves from 0 to 1.</p>
+</div>
+<div id="ex.-3.24-lar-directions." class="section level1">
+<h1>Ex. 3.24 LAR directions.</h1>
+<p>Using the notation around equation (3.55) on page 74, show that the LAR direction makes an equal angle with each of
+the predictors in <span class="math inline">\(A_k\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\mathcal{A}_k\)</span> is the active set of variables at the beginning of the <span class="math inline">\(k\)</span>th step,</li>
+<li><span class="math inline">\(\beta_{\mathcal{A}_k}\)</span> is the coefficient vector for these variables at this step.
+There will be <span class="math inline">\(k-1\)</span> nonzero values, and the one just entered will be zero. If <span class="math inline">\(\mathbf{r}_k = \mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}\)</span> is the current residual, then the direction for this step is</li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+\delta_k = \left( \mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k} \right)^{-1}\mathbf{X}_{\mathcal{A}_k}^T \mathbf{r}_k \quad (3.55)\\
+=\left(\mathbf{V}\mathbf D^2\mathbf{V}^T\right)^{-1}\mathbf{V}\mathbf D\mathbf U^T\mathbf{r}_k\\
+=\mathbf{V}^{-T}\mathbf D^{-2}\mathbf D\mathbf U^T\mathbf{r}_k
+\end{equation}\]</span> and the LAR direction vector <span class="math inline">\(\mathbf u_k\)</span> is <span class="math display">\[\mathbf u_k=\mathbf{X}_{\mathcal{A}_k}\delta_k\]</span> then <span class="math display">\[\begin{align}
+\mathbf{X}_{\mathcal{A}_k}^T\mathbf u_k&amp;=\mathbf{X}_{\mathcal{A}_k}^T\left(\mathbf{X}_{\mathcal{A}_k}\delta_k\right)\\
+&amp;=\mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k}\left(\mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k}\right)^{-1}\mathbf{X}_{\mathcal{A}_k}^T\mathbf{r}_k\\
+&amp;=\mathbf{X}_{\mathcal{A}_k}^T\mathbf{r}_k
+\end{align}\]</span></p>
+<p>Since the cosign of the angle of <span class="math inline">\(\mathbf u_k\)</span> with each predictor <span class="math inline">\(\mathbf x_j\)</span> in <span class="math inline">\(\mathcal{A}_k\)</span> is given by
+<span class="math display">\[\frac{\mathbf x_j^T\mathbf u_k}{\lVert\mathbf x_j\rVert\lVert\mathbf u_k\rVert}=\frac{\mathbf x_j^T\mathbf u_k}{\lVert\mathbf u_k\rVert}\]</span> each element of the vector <span class="math inline">\(\mathbf{X}_{\mathcal{A}_k}^T\mathbf u_k\)</span> corresponds to a cosign of an angle between a predictor <span class="math inline">\(\mathbf x_j\)</span> and the vector <span class="math inline">\(\mathbf u_k\)</span>. Since the procedure for LAR adds the predictor <span class="math inline">\(\mathbf x_j&#39;\)</span> when the absolute value of <span class="math inline">\(\mathbf x_j&#39;^T\mathbf r\)</span> equals that of <span class="math inline">\(\mathbf x_j^T\mathbf r\)</span> for all predictors <span class="math inline">\(\mathbf x_j\)</span> in <span class="math inline">\(\mathcal{A}_k\)</span>, the direction <span class="math inline">\(\mathbf u_k\)</span> makes an equal angle with all predictors in <span class="math inline">\(\mathcal{A}_k\)</span>.</p>
+</div>
+<div id="ex.-3.25-lar-look-ahead." class="section level1">
+<h1>Ex. 3.25 LAR look-ahead.</h1>
+<p>Starting at the beginning of the <span class="math inline">\(k\)</span>-th step of the LAR algorithm, derive expressions to identify the next variable to enter the active set at step <span class="math inline">\(k+1\)</span>, and the value of <span class="math inline">\(\alpha\)</span> at which this occurs (using the notation around equation (3.55) on page 74).</p>
+<p>Algorithm 3.2. Least Angle Regression</p>
+<ol style="list-style-type: decimal">
+<li><p>Standardize the predictors to have mean zero and unit norm.<br />
+Start with the residual <span class="math inline">\(r = y - \bar{y}\)</span>,and coefficients <span class="math inline">\(\beta_0 = \beta_1 = \cdots = \beta_p = 0\)</span>. Since with all <span class="math inline">\(\beta_j = 0\)</span> and standardized predictors the constant coefficient <span class="math inline">\(\beta_0=\bar{y}\)</span>.</p></li>
+<li><p>Set <span class="math inline">\(k = 1\)</span> and begin start the <span class="math inline">\(k\)</span>-th step. Since all values of <span class="math inline">\(\beta_j\)</span> are zero the first residual is <span class="math inline">\(r_1 = y - \bar{y}\)</span>. Find the predictor <span class="math inline">\(x_j\)</span> that is most correlated with this residual <span class="math inline">\(r_1\)</span>. Then as we begin this <span class="math inline">\(k = 1\)</span> step we have the active step given by <span class="math inline">\(A_1 = \{x_j\}\)</span> and the active
+coefficients given by <span class="math inline">\(\beta_{A_1} = [0]\)</span>.</p></li>
+<li><p>Move <span class="math inline">\(\beta_j\)</span> from <span class="math inline">\(0\)</span> towards its least-squares coefficient <span class="math display">\[\delta_1=\left(X_{A_1}^TX_{A_1}\right)^{-1}X_{A_1}^Tr_1=\frac{x_j^Tr_1}{x_j^Tx_j}=x_j^T r_1\]</span>
+until some other competitor <span class="math inline">\(x_k\)</span> has as much correlation with the current residual as does <span class="math inline">\(x_j\)</span>.
+The path taken by the elements in <span class="math inline">\(\beta_{A_1}\)</span> can be parameterized by <span class="math display">\[\beta_{A_1}(\alpha)\equiv\beta_{A_1}+\alpha\delta_1=0+\alpha x_j^T r_1=(x_j^T r_1)\alpha,\quad(0\leq\alpha\leq1)\]</span>
+This path of the coefficients <span class="math inline">\(\beta_{A_1}(\alpha)\)</span> will produce a path of fitted values given by <span class="math display">\[\hat{f}_1(\alpha)=X_{A_1}\beta_{A_1}(\alpha)=(x_j^T r_1)\alpha x_j\]</span> and a residual of <span class="math display">\[r(\alpha)=y-\bar{y}-\hat{f}_1(\alpha)=y-\bar{y}-(x_j^T r_1)\alpha x_j=r_1-(x_j^T r_1)\alpha x_j\]</span>
+Now at this point <span class="math inline">\(x_j\)</span> itself has a correlation with this residual as <span class="math inline">\(\alpha\)</span> varies given by <span class="math display">\[x_j^T(r_1-(x_j^T r_1)\alpha x_j)=x_j^Tr_1-(x_j^T r_1)\alpha=(1-\alpha)x_j^T r_1\]</span></p></li>
+<li><p>Move <span class="math inline">\(\beta_j\)</span> and <span class="math inline">\(\beta_k\)</span> in the direction defined by their joint least squares coefficient of the current residual on <span class="math inline">\((x_j,x_k)\)</span>, until some other competitor <span class="math inline">\(x_l\)</span> has as much correlation with the current residual.</p></li>
+<li><p>Continue in this way until all <span class="math inline">\(p\)</span> predictors have been entered. After <span class="math inline">\(\min(N-1,p)\)</span> steps, we arrive at the full least-squares solution.</p></li>
+</ol>
+<p>The termination condition in step 5 requires some explanation. If <span class="math inline">\(p &gt; N-1\)</span>, the LAR algorithm reaches a zero residual solution after <span class="math inline">\(N-1\)</span> steps (the <span class="math inline">\(-1\)</span> is because we have centered the data).</p>
+<ul>
+<li><span class="math inline">\(\mathcal{A}_k\)</span> is the active set of variables at the beginning of the <span class="math inline">\(k\)</span>th step,</li>
+<li><span class="math inline">\(\beta_{\mathcal{A}_k}\)</span> is the coefficient vector for these variables at this step.
+There will be <span class="math inline">\(k-1\)</span> nonzero values, and the one just entered will be zero. If <span class="math inline">\(\mathbf{r}_k = \mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}\)</span> is the current residual, then the direction for this step is</li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+\delta_k = \left( \mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k} \right)^{-1}\mathbf{X}_{\mathcal{A}_k}^T \mathbf{r}_k \quad (3.55)\\
+=\left(\mathbf{V}\mathbf D^2\mathbf{V}^T\right)^{-1}\mathbf{V}\mathbf D\mathbf U^T\mathbf{r}_k\\
+=\mathbf{V}^{-T}\mathbf D^{-2}\mathbf D\mathbf U^T\mathbf{r}_k
+\end{equation}\]</span></p>
+<p>At step <span class="math inline">\(k\)</span> we have <span class="math inline">\(k\)</span> predictors in the model (the elements in <span class="math inline">\(\mathcal{A}_k\)</span>) with an initial coefficient vector <span class="math inline">\(\beta_{\mathcal{A}_k}\)</span>. In that coefficient vector, one element will be zero corresponding to the predictor
+we just added to our model. We will smoothly update the coefficients of our model until we decide to add the next predictor. We update the coefficients according to
+<span class="math display">\[\beta_{\mathcal{A}_k}(\alpha)=\beta_{\mathcal{A}_k}+\alpha\delta_k\]</span> with <span class="math inline">\(\alpha\)</span> sliding between <span class="math inline">\(\alpha=0\)</span> and <span class="math inline">\(\alpha=1\)</span>, and with <span class="math inline">\(\delta_k\)</span> is the least-angle direction at step <span class="math inline">\(k\)</span> given by <span class="math display">\[\begin{equation}
+\delta_k = \left( \mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k} \right)^{-1}\mathbf{X}_{\mathcal{A}_k}^T \mathbf{r}_k
+\end{equation}\]</span> The residuals for each <span class="math inline">\(\alpha\)</span> are then given by <span class="math display">\[\mathbf{r}_{k+1}(\alpha) = \mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}(\alpha)\]</span> From Exercise 3.23 the magnitude of the correlation between the predictors in <span class="math inline">\(\mathcal{A}_k\)</span> and the above residual <span class="math inline">\(\mathbf{r}_{k+1}(\alpha)\)</span> is constant and decreases as <span class="math inline">\(\alpha\)</span> moves from zero to one. The signed correlation with a predictor <span class="math inline">\(x_a\)</span> in the active set is
+<span class="math display">\[x_a^T\mathbf{r}_{k+1}(\alpha)\]</span>. Notionally we will increase <span class="math inline">\(\alpha\)</span> from zero to one and “stop” with a value of <span class="math inline">\(\alpha^*\)</span> where <span class="math inline">\(0 &lt; \alpha^* &lt; 1\)</span> when the new residual given by <span class="math display">\[\begin{align}
+\mathbf{r}_{k+1}(\alpha) &amp;= \mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}(\alpha)\\
+&amp;=\mathbf{y} - \mathbf{X}_{\mathcal{A}_k}(\beta_{\mathcal{A}_k}+\alpha\delta_k)\\
+&amp;=\mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}-\alpha\mathbf{X}_{\mathcal{A}_k}\delta_k\\
+&amp;=\mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}-\alpha\mathbf{X}_{\mathcal{A}_k}\left( \mathbf{X}_{\mathcal{A}_k}^T\mathbf{X}_{\mathcal{A}_k} \right)^{-1}\mathbf{X}_{\mathcal{A}_k}^T \mathbf{r}_k\\
+\end{align}\]</span> has the same absolute correlation with one of the predictors not in the active set.</p>
+<p>A different way to describe this is the following. As we change <span class="math inline">\(\alpha\)</span> from zero to one <span class="math inline">\(\alpha\approx 0\)</span> the absolute correlation of <span class="math inline">\(\mathbf{r}_{k+1}(\alpha)\)</span> with all of the predictors in <span class="math inline">\(\mathcal{A}_k\)</span> will be the same.</p>
+<p>For all predictors not in <span class="math inline">\(\mathcal{A}_k\)</span> the absolute correlation will be less than this constant value. If
+<span class="math inline">\(x_b\)</span> is a predictor not in <span class="math inline">\(\mathcal{A}_k\)</span> then this means that <span class="math display">\[\left|x_b^T \mathbf{r}_{k+1}(\alpha)\right| &lt; \left|x_a^T\mathbf{r}_{k+1}(\alpha)\right|, \quad \forall b \notin \mathcal{A}_k;\quad a \in \mathcal{A}_k\]</span> We “stop” at the value of <span class="math inline">\(\alpha = \alpha^∗\)</span> when one of the predictors not in <span class="math inline">\(\mathcal{A}_k\)</span> has an absolute correlation equal to the value <span class="math inline">\(|x_a^T\mathbf{r}_{k+1}(\alpha^∗)|\)</span>. The variable <span class="math inline">\(x_b\)</span> that has this largest absolute correlation will be the next variable added to form the set <span class="math inline">\(\mathcal{A}_{k+1}\)</span> and the process continued.</p>
+<p>What we want to do is determine which variable next enters the active set (to form <span class="math inline">\(\mathcal{A}_{k+1}\)</span>) and what the value of <span class="math inline">\(\alpha^∗\)</span> is where that happens.</p>
+<p>Let <span class="math inline">\(x_a\)</span> be any of the predictors in the active set <span class="math inline">\(\mathcal{A}_{k}\)</span> and <span class="math inline">\(x_b\)</span> be one of the <span class="math inline">\(p−k\)</span> predictors not in the set <span class="math inline">\(\mathcal{A}_{k}\)</span>. Then from the discussion above and Exercise 3.23 the magnitude of the correlation between <span class="math inline">\(x_a\)</span> and <span class="math inline">\(\mathbf{r}_{k+1}(\alpha)\)</span> will be the same for
+all predictors <span class="math inline">\(x_a\)</span> in the active set <span class="math inline">\(\mathcal{A}_{k}\)</span>. This means that <span class="math display">\[\begin{align}
+x_a^T\mathbf{r}_{k+1}(\alpha)&amp;=x_a^T\left(\mathbf{y} - \mathbf{X}_{\mathcal{A}_k}\beta_{\mathcal{A}_k}-\alpha\mathbf{X}_{\mathcal{A}_k}\delta_k\right)\\
+&amp;=x_a^T\mathbf{r}_{k}-\alpha x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k
+\end{align}\]</span> will have the same magnitude for all <span class="math inline">\(a \in \mathcal{A}_{k}\)</span>.</p>
+<p>Next consider the correlation of <span class="math inline">\(x_b\)</span> with
+<span class="math inline">\(\mathbf{r}_{k+1}(\alpha)\)</span>. In the same was as above we will find <span class="math display">\[\begin{align}
+x_b^T\mathbf{r}_{k+1}(\alpha)
+&amp;=x_b^T\mathbf{r}_{k}-\alpha x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k
+\end{align}\]</span>
+We now consider what would need to be true if the predictor <span class="math inline">\(x_b\)</span> was to be the next predictor added. If it was the next one added then we would have <span class="math display">\[\left|x_a^T\mathbf{r}_{k}-\alpha x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|=\underset{b}{\max}\left|x_b^T\mathbf{r}_{k}-\alpha x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|\]</span> Another way to say this is that <span class="math inline">\(x_b\)</span> would be the predictor with the largest absolute correlation among all of the predictors not in <span class="math inline">\(\mathcal{A}_{k}\)</span>. We will now turn this procedure around and ask the question if predictor <span class="math inline">\(x_b\)</span> was to be the next one added what would be the value of <span class="math inline">\(\alpha\)</span>. In this case we would need to have <span class="math display">\[\left|x_a^T\mathbf{r}_{k}-\alpha x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|=\left|x_b^T\mathbf{r}_{k}-\alpha x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|\]</span> Now depending on the sign of <span class="math inline">\(x_a^T\mathbf{r}_{k}-\alpha x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k\)</span> and <span class="math inline">\(x_b^T\mathbf{r}_{k}-\alpha x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k\)</span> we can consider the different possible values for the absolute values and would find that either <span class="math display">\[\alpha=\frac{x_b^T\mathbf{r}_{k}-x_a^T\mathbf{r}_{k}}{x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k-x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k}\]</span> or <span class="math display">\[\alpha=\frac{x_b^T\mathbf{r}_{k}+x_a^T\mathbf{r}_{k}}{x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k+x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k}\]</span></p>
+<p>Here <span class="math inline">\(x_a\)</span> is any predictor in <span class="math inline">\(\mathbf{X}_{\mathcal{A}_k}\)</span> (they will all have the same correlations with the residuals)
+and everything on the right-hand-side is known at this step. Only one of these expressions will give a value for <span class="math inline">\(\alpha\)</span> that is in the range <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>. Lets call this value <span class="math inline">\(\alpha_b\)</span> as it depends on the <span class="math inline">\(b\)</span>th predictor. The steps of the algorithm are then clear. We compute <span class="math inline">\(\alpha_b\)</span> for all of
+the <span class="math inline">\(b\)</span> predictors not in <span class="math inline">\(\mathcal{A}_k\)</span>. Given that value of <span class="math inline">\(\alpha = \alpha_b\)</span> we can compute the right-hand-side
+of Equation <span class="math display">\[\left|x_a^T\mathbf{r}_{k}-\alpha x_a^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|=\underset{b}{\max}\left|x_b^T\mathbf{r}_{k}-\alpha x_b^T\mathbf{X}_{\mathcal{A}_k}\delta_k\right|\]</span> and select the value of <span class="math inline">\(b\)</span> that gives the largest correlation. This will be the next variable added and the corresponding <span class="math inline">\(\alpha\)</span> at which it occurs.</p>
+</div>
+<div id="ex.-3.26-forward-stepwise-regression-vs.-lar" class="section level1">
+<h1>Ex. 3.26 (forward stepwise regression vs. LAR)</h1>
+<p>Forward stepwise regression enters the variable at each step that most reduces the residual sum-of-squares. LAR adjusts variables that have the most (absolute) correlation with the current residuals. Show that these two entry criteria are not necessarily the same. [Hint: let <span class="math inline">\(\mathbf x_{j\cdot A}\)</span> be the <span class="math inline">\(j\)</span>th variable, linearly adjusted for all the variables currently in the model. Show that the first criterion amounts to identifying the <span class="math inline">\(j\)</span> for which <span class="math inline">\(\text{Cor}(\mathbf x_{j\cdot A}, \mathbf r)\)</span> is largest in magnitude.</p>
+</div>
+<div id="ex.-3.27-lasso-and-lar" class="section level1">
+<h1>Ex. 3.27 Lasso and LAR</h1>
+<p>Consider the lasso problem in Lagrange multiplier form: with <span class="math display">\[L(\beta) = \frac{1}{2}\sum_{i}(y_i-\sum_{j}x_{ij}\beta_j)^2\]</span> we minimize
+<span class="math display">\[L(\beta) + \lambda\sum_{j}|\beta_j|=L(\beta) + \lambda\sum_{j}\left(\beta_j^++\beta_j^-\right) \quad (3.88)\]</span> for fixed <span class="math inline">\(\lambda&gt;0\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Setting <span class="math inline">\(\beta_j = \beta_j^+-\beta_j^-\)</span> with <span class="math inline">\(\beta_j^+, \beta_j^-\ge 0\)</span>, expression (3.88) becomes <span class="math inline">\(L(\beta) + \lambda\sum_{j}(\beta_j^++\beta_j^-)\)</span>. Show that the <strong>Lagrange dual function</strong> is <span class="math display">\[L(\beta) + \lambda\sum_{j}(\beta_j^++\beta_j^-)-\sum_{j}\lambda_j^+\beta_j^+-\sum_{j}\lambda_j^-\beta_j^-\quad\quad(3.89)\]</span> and Two of the <strong>Karush-Kuhn-Tucker (KKT)</strong> conditions are obtained by taking the derivatives of the above objective function with respect to <span class="math inline">\(\beta_j^+\)</span> and <span class="math inline">\(\beta_j^-\)</span> and setting the results equal to zero. This for <span class="math inline">\(\beta_j^+\)</span> gives <span class="math display">\[\nabla L(\beta)_j + \lambda − \lambda_j^+ =0\\\]</span> and for <span class="math inline">\(\beta_j^-\)</span> gives <span class="math display">\[-\nabla L(\beta)_j + \lambda − \lambda_j^- =0\]</span></li>
+</ol>
+<p>The other two KKT conditions are the <strong>complementary slackness conditions</strong> which in this case take the form
+<span class="math display">\[\begin{align}
+\lambda_j^+\beta_j^+&amp;=0\\
+\lambda_j^-\beta_j^-&amp;=0\\
+\end{align}\]</span> along with the non-negativity constraints on the parameters and all the Lagrange multipliers.
+then the Karush–Kuhn–Tucker optimality conditions are
+<span class="math display">\[\begin{align}
+\nabla L(\beta)_j + \lambda − \lambda_j^+ &amp;=0\\
+-\nabla L(\beta)_j + \lambda − \lambda_j^- &amp;=0\\
+\lambda_j^+\beta_j^+&amp;=0\\
+\lambda_j^-\beta_j^-&amp;=0\\
+\end{align}\]</span></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Show that <span class="math inline">\(|\nabla L(\beta)_j| \leq \lambda ; \quad\forall j\)</span>, and that the <strong>KKT conditions</strong> imply one of the following three scenarios:
+<span class="math display">\[\begin{align}
+\lambda = 0 &amp;\Rightarrow \nabla L(\beta)_j= 0 \forall j\\
+\beta_j^+ &gt; 0, \lambda &gt; 0 &amp;\Rightarrow \lambda_j^+ = 0, \nabla L(\beta)_j = −\lambda &lt; 0, \beta_j^− = 0\\
+\beta_j^− &gt; 0, \lambda &gt; 0 &amp;\Rightarrow \lambda_j^−= 0, \nabla L(\beta)_j = \lambda &gt; 0, \beta_j^+ = 0\\
+\end{align}\]</span>
+Hence show that for any “active” predictor having <span class="math inline">\(\beta_j\ne 0\)</span>, we must have <span class="math inline">\(\nabla L(\beta)_j = −\lambda\)</span> if <span class="math inline">\(\beta_j &gt; 0\)</span>, and <span class="math inline">\(\nabla L(\beta)_j = \lambda\)</span> if <span class="math inline">\(\beta_j &lt; 0\)</span>. Assuming the predictors are standardized, relate <span class="math inline">\(\lambda\)</span> to the correlation between the <span class="math inline">\(j\)</span>th predictor and the current residuals.</li>
+</ol>
+<p>Summing the first two KKT equations gives <span class="math display">\[\lambda_j^++\lambda_j^-=2\lambda\ge0\]</span> Taking the differences of the same two equations we get <span class="math display">\[\lambda_j^--\lambda_j^+=2\nabla L(\beta)_j\]</span><br />
+Taking the absolute value of this gives
+<span class="math display">\[|\nabla L(\beta)_j|=\frac{1}{2}|\lambda_j^--\lambda_j^+|\le\frac{1}{2}(\lambda_j^-+\lambda_j^+)=\lambda\]</span></p>
+<p>Now if <span class="math inline">\(\lambda=0\)</span> then we see that <span class="math inline">\(|\nabla L(\beta)_j| \le 0\)</span> so <span class="math inline">\(\nabla L(\beta)_j=0\)</span>. Another way to argue this is to note that when <span class="math inline">\(\lambda=0\)</span> then the Lasso problem reduces to ordinary least squares which is minimized by enforcing that the partial derivative of <span class="math inline">\(L\)</span> w.r.t any <span class="math inline">\(\beta_j\)</span> are zero.</p>
+<p>If <span class="math inline">\(\lambda&gt;0\)</span> then assuming that <span class="math inline">\(β_j^+\ne 0\)</span>, then from the complementary slackness conditions
+<span class="math display">\[\begin{align}
+\lambda_j^+\beta_j^+&amp;=0\\
+\lambda_j^-\beta_j^-&amp;=0\\
+\end{align}\]</span> we know that <span class="math inline">\(\lambda_j^+= 0\)</span>. Combined with Equation <span class="math display">\[\nabla L(\beta)_j + \lambda − \lambda_j^+ =0\\\]</span> we get, <span class="math inline">\(∇L(β)j = −λ &lt; 0\)</span>. Plug this into the Equation <span class="math display">\[-\nabla L(\beta)_j + \lambda − \lambda_j^- =0\]</span> we get <span class="math inline">\(λ_j^- = 2λ &gt; 0\)</span> so finally using Equation <span class="math inline">\(\lambda_j^-\beta_j^-=0\)</span> we get
+<span class="math inline">\(\beta_j^-=0\)</span>.</p>
+<p>If <span class="math inline">\(\lambda&gt;0\)</span> but now <span class="math inline">\(\beta_j^-\ne0\)</span>, then from the complementary slackness conditions Equation <span class="math inline">\(\lambda_j^-\beta_j^-=0\)</span> we know that <span class="math inline">\(\lambda_j^- = 0\)</span>. Combined with Equation <span class="math display">\[-\nabla L(\beta)_j + \lambda − \lambda_j^- =0\]</span> we get, <span class="math display">\[\nabla L(\beta)_j = \lambda&gt;0\]</span>. Plug this into the Equation <span class="math display">\[\nabla L(\beta)_j + \lambda − \lambda_j^+ =0\]</span> we get <span class="math inline">\(\lambda_j^+=2\lambda&gt;0\)</span> so finally using Equation <span class="math inline">\(\lambda_j^+\beta_j^+=0\)</span> we get <span class="math inline">\(\beta_j^+=0\)</span>.
+Thus in the above we have shown that <span class="math display">\[\nabla L(\beta)_j = -\lambda\cdot\text{sign}(\beta_j)\]</span></p>
+<p>Next from the expression given for <span class="math inline">\(L(\beta)\)</span> we have that <span class="math display">\[\nabla L(\beta)_j =-x_j^T(y-X\beta)=-\lambda\cdot\text{sign}(\beta_j)\]</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Suppose that the set of active predictors is unchanged for <span class="math inline">\(\lambda_0 \ge \lambda \ge \lambda_1\)</span>. Show that there is a vector <span class="math inline">\(\gamma_0\)</span> such that <span class="math display">\[\hat{\beta}(\lambda) = \hat{\beta}(\lambda_0) − (\lambda − \lambda_0)\gamma_0 \quad (3.90)\]</span>
+Thus the lasso solution path is linear as <span class="math inline">\(\lambda\)</span> ranges from <span class="math inline">\(\lambda_0\)</span> to <span class="math inline">\(\lambda_1\)</span> (Efron et al., 2004; Rosset and Zhu, 2007).</li>
+</ol>
+</div>
+<div id="ex.-3.28" class="section level1">
+<h1>Ex. 3.28</h1>
+<p>Suppose for a given <span class="math inline">\(t\)</span> in (3.51), the fitted lasso coefficient for variable <span class="math inline">\(X_j\)</span> is <span class="math inline">\(\hat{\beta}_j = a\)</span>. Suppose we augment our set of variables with an identical copy <span class="math inline">\(X_j^* = X_j\)</span>. Characterize the effect of this exact collinearity by describing the set of solutions for <span class="math inline">\(\hat{\beta}_j\)</span> and <span class="math inline">\(\hat{\beta}_j^*\)</span>, using the same value of <span class="math inline">\(t\)</span>.</p>
+<p><span class="math display">\[
+\begin{equation}
+\hat\beta^{\text{lasso}} = \arg\min_\beta \sum_{i=1}^N \left( y_i-\beta_0-\sum_{j=1}^p x_{ij}\beta_j \right)^2 \text{ subject to } \sum_{j=1}^p |\beta_j| \le t,\quad (3.51)
+\end{equation}\]</span></p>
+<p>Define the new, augmented observation matrix as two copies of <span class="math inline">\(X\)</span> concatenated as <span class="math inline">\(X^{\text{new}} =[X,X]\)</span>. The new coefficient vector is then as <span class="math inline">\((\beta^{\text{new}})^T = (\beta_1^T, \beta_2^T)^T\)</span>. With this notation <span class="math display">\[X^{\text{new}}\beta^{\text{new}}=[X,X]\beta^{\text{new}}=X\beta_1+X\beta_2=X(\beta_1+\beta_2)\]</span> The Lagrange multiplier expression (that we minimize) for the Lasso optimization is <span class="math display">\[\begin{align}
+L&amp;=\left\lVert y-X^{\text{new}}\beta^{\text{new}}\right\rVert^2+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}\rvert+\sum_{j=1}^{p}\lvert\beta_{2j}\rvert\right)\\
+&amp;=\left\lVert y-X(\beta_1+\beta_2)\right\rVert^2+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}\rvert+\sum_{j=1}^{p}\lvert\beta_{2j}\rvert\right)\\
+&amp;=\left\lVert y-X(\beta_1+\beta_2)\right\rVert^2+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}+\beta_{2j}\rvert\right)-\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}+\beta_{2j}\rvert\right)+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}\rvert+\sum_{j=1}^{p}\lvert\beta_{2j}\rvert\right)\\
+\end{align}\]</span> Note that the first two terms represent the same minimization problem for the original lasso (before we provided duplicate features) and that because <span class="math display">\[\lvert\beta_{1j}+\beta_{2j}\rvert\le\lvert\beta_{1j}\rvert+\lvert\beta_{2j}\rvert\]</span> the <span class="math display">\[-\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}+\beta_{2j}\rvert\right)+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}\rvert+\sum_{j=1}^{p}\lvert\beta_{2j}\rvert\right)=\lambda\left(\sum_{j=1}^{p}\left(\lvert\beta_{1j}\rvert+\lvert\beta_{2j}\rvert-\lvert\beta_{1j}+\beta_{2j}\rvert\right)\right)\]</span> term is positive or zero. It will be zero if <span class="math inline">\(\beta_{1j}\)</span> and <span class="math inline">\(\beta_{2j}\)</span> are either both positive or both negative.</p>
+<p>We know that the minimum of the first two terms <span class="math display">\[\left\lVert y-X(\beta_1+\beta_2)\right\rVert^2+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}+\beta_{2j}\rvert\right)\]</span> of this objective function happens for the solution <span class="math inline">\(\beta_{1} +\beta_{2} = \hat\beta = a\)</span> as mentioned in the problem. As the <span class="math display">\[-\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}+\beta_{2j}\rvert\right)+\lambda\left(\sum_{j=1}^{p}\lvert\beta_{1j}\rvert+\sum_{j=1}^{p}\lvert\beta_{2j}\rvert\right)=\lambda\left(\sum_{j=1}^{p}\left(\lvert\beta_{1j}\rvert+\lvert\beta_{2j}\rvert-\lvert\beta_{1j}+\beta_{2j}\rvert\right)\right)\]</span> term is guaranteed to be positive (thus increasing the objective value) if <span class="math inline">\(\beta_{1j}\)</span> and <span class="math inline">\(\beta_{2j}\)</span> have different signs, and the solution set for <span class="math inline">\(\beta_{1}\)</span> and <span class="math inline">\(\beta_{2}\)</span> to this problem must satisfy <span class="math display">\[\beta_{1} +\beta_{2} = \hat\beta = a\]</span> and the components of <span class="math inline">\(\beta_{1}\)</span> and <span class="math inline">\(\beta_{2}\)</span> must have the same sign.</p>
+</div>
+<div id="ex.-3.29" class="section level1">
+<h1>Ex. 3.29</h1>
+<p>Suppose we run a ridge regression with parameter <span class="math inline">\(\lambda\)</span> on a single variable <span class="math inline">\(X\)</span>, and get coefficient <span class="math inline">\(a\)</span>. We now include an exact copy <span class="math inline">\(X^∗ = X\)</span>, and refit our ridge regression. Show that both coefficients are identical, and derive their value. Show in general that if <span class="math inline">\(m\)</span> copies of a variable <span class="math inline">\(X_j\)</span> are included in a ridge regression, their coefficients are all the same.</p>
+<p>The ridge regression optimization selects <span class="math inline">\(\beta\)</span> to minimize <span class="math display">\[\lVert y-\beta X\rVert^2+\lambda\lVert\beta\rVert^2\]</span> The minimum of this objective function is given by <span class="math display">\[
+\begin{align}
+\hat\beta^{\text{ridge}} &amp;= \left( \mathbf{X}^T\mathbf{X} + \lambda\mathbf{I} \right)^{-1}\mathbf{X}^T\mathbf{y}\\
+&amp;=(\mathbf V\mathbf D^2\mathbf V^T+\lambda\mathbf{V}\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=(\mathbf V(\mathbf D^2+\lambda\mathbf{I})\mathbf{V}^T)^{-1}\mathbf V\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}^{-T}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+&amp;=\mathbf{V}(\mathbf D^2+\lambda\mathbf{I})^{-1}\mathbf D\mathbf U^T\mathbf{y}\\
+\end{align}
+\]</span>
+In this problem, we are assuming that <span class="math inline">\(X \in \mathbb R^{n\times1}\)</span>. That is, there is only one feature <span class="math inline">\(p = 1\)</span>. In this case <span class="math inline">\(X^TX\)</span> is a scalar and the inverse is a scalar and we get
+<span class="math display">\[\beta=\frac{X^Ty}{X^TX+\lambda}\]</span> When we augment our inputs to include a duplicate predictor a second time the optimization problem we seek to solve is to find the minimum of <span class="math display">\[\lVert y-\beta_1 X-\beta_2 X\rVert^2+\lambda\lVert\beta_1\rVert^2+\lambda\lVert\beta_2\rVert^2\]</span> As <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are scalars the above is the same as <span class="math display">\[\sum_{i=1}^{n}\left(y_i-x_i\beta_1-x_i\beta_2\right)^2+\lambda\beta_1^2+\lambda\beta_2^2\]</span> The first order conditions for this objective function are <span class="math display">\[2\sum_{i=1}^{n}\left(y_i-x_i\beta_1-x_i\beta_2\right)(-x_i)+2\lambda\beta_1=0\]</span>
+<span class="math display">\[2\sum_{i=1}^{n}\left(y_i-x_i\beta_1-x_i\beta_2\right)(-x_i)+2\lambda\beta_2=0\]</span> or back in matrix/vector form <span class="math display">\[X^T\left(y-X\beta_1-X\beta_2\right)-\lambda\beta_1=0\]</span>
+<span class="math display">\[X^T\left(y-X\beta_1-X\beta_2\right)-\lambda\beta_2=0\]</span> and <span class="math display">\[\left(X^TX+\lambda\right)\beta_1+X^TX\beta_2=X^Ty\]</span>
+<span class="math display">\[X^TX\beta_1+\left(X^TX+\lambda\right)\beta_2=X^Ty\]</span> Or
+<span class="math display">\[\begin{bmatrix}
+\left(X^TX+\lambda\right)&amp;X^TX\\
+X^TX&amp;\left(X^TX+\lambda\right)
+\end{bmatrix}\begin{bmatrix}
+\beta_1\\
+\beta_2
+\end{bmatrix}=\begin{bmatrix}
+X^Ty\\
+X^Ty
+\end{bmatrix}\]</span>
+This is a system of two equations and two unknowns and has a solution given by (using Cramer’s rule) <span class="math display">\[\beta_1=\frac{\begin{vmatrix}
+X^Ty&amp;X^TX\\
+X^Ty&amp;\left(X^TX+\lambda\right)
+\end{vmatrix}}{\begin{vmatrix}
+\left(X^TX+\lambda\right)&amp;X^TX\\
+X^TX&amp;\left(X^TX+\lambda\right)
+\end{vmatrix}}\]</span> and <span class="math display">\[\beta_2=\frac{\begin{vmatrix}
+\left(X^TX+\lambda\right)&amp;X^Ty\\
+X^TX&amp;X^Ty
+\end{vmatrix}}{\begin{vmatrix}
+\left(X^TX+\lambda\right)&amp;X^TX\\
+X^TX&amp;\left(X^TX+\lambda\right)
+\end{vmatrix}}\]</span> then <span class="math display">\[\begin{bmatrix}
+\beta_1\\
+\beta_2
+\end{bmatrix}=\frac{X^Ty}{2X^TX+\lambda}\begin{bmatrix}
+1\\
+1\\
+\end{bmatrix}\]</span> Notice that <span class="math inline">\(\beta_1 = \beta_2\)</span>. We could have derived this result if we notice that exchanging <span class="math inline">\(\beta_1 ↔ \beta_2\)</span> leaves the system unchanged. This means that we know (before we solve the system) that
+the solution must satisfy <span class="math inline">\(\beta_1 = \beta_2\)</span>.</p>
+<p>For <span class="math inline">\(m\)</span> copies of the original predictor <span class="math inline">\(X\)</span> the optimization problem we have is to minimize <span class="math display">\[\left(y-X\sum_{j=1}^{m}\beta_j\right)^T\left(y-X\sum_{j=1}^{m}\beta_j\right)+\lambda\sum_{j=1}^{m}\beta_j^2\]</span> One of the first order conditions for this optimization is found by taking the derivative of the above with respect to <span class="math inline">\(\beta_k\)</span> for <span class="math inline">\(1 \le k \le m\)</span> and setting the result equal to zero. <span class="math display">\[-X^T\left(y-X\sum_{j=1}^{m}\beta_j\right)-\left(y-X\sum_{j=1}^{m}\beta_j\right)^TX+2\lambda\beta_k=0\]</span> or <span class="math display">\[2X^TX\sum_{j=1}^{m}\beta_j-2X^Ty+2\lambda\beta_k=0\]</span> or <span class="math display">\[X^TX\sum_{j=1}^{m}\beta_j+\lambda\beta_k=X^Ty\]</span> This means that the values of <span class="math inline">\(\beta_k\)</span> are all equal for <span class="math inline">\(1 ≤ k ≤ m\)</span> and then <span class="math display">\[mX^TX\beta_k+\lambda\beta_k=X^Ty\]</span> or <span class="math display">\[\beta_k=\frac{X^Ty}{mX^TX+\lambda},\quad (1\le k\le m)\]</span></p>
+</div>
+<div id="ex.-3.30-solving-the-elastic-net-optimization-problem-with-the-lasso" class="section level1">
+<h1>Ex. 3.30 (solving the elastic net optimization problem with the lasso)</h1>
+<p>Consider the elastic-net optimization problem:
+<span class="math display">\[\underset{\beta}{\text{min}} \lVert y − X\beta\rVert^2 + \lambda \left[\alpha\lVert \beta\rVert_2^2 + (1 − \alpha)\lVert \beta\rVert_1\right] \quad (3.91)\]</span>
+Show how one can turn this into a lasso problem, using an augmented version of <span class="math inline">\(X\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>if we augment <span class="math inline">\(X\)</span> with a multiple of the <span class="math inline">\(p \times p\)</span> identity to get <span class="math display">\[\tilde{X}=\begin{bmatrix}
+X\\
+\gamma I
+\end{bmatrix}\]</span> then <span class="math display">\[\tilde{X}\beta=\begin{bmatrix}
+X\beta\\
+\gamma \beta
+\end{bmatrix}\]</span> If we next augment <span class="math inline">\(y\)</span> with <span class="math inline">\(p\)</span> zero values as <span class="math display">\[\tilde{y}=\begin{bmatrix}
+y\\
+0\\
+\end{bmatrix}\]</span> Then we have <span class="math display">\[\left\lVert\tilde y-\tilde X\beta\right\rVert_2^2=\left\lVert\begin{bmatrix}y-X\beta\\
+-\gamma \beta\\
+\end{bmatrix}\right\rVert_2^2=\left\lVert y-X\beta\right\rVert_2^2+\gamma^2\left\lVert\beta\right\rVert_2^2\]</span></p>
+<p>Now in the this augmented space a lasso problem for <span class="math inline">\(\beta\)</span> is <span class="math display">\[\begin{align}
+\hat\beta&amp;=\underset{\beta}{\text{argmin}}\left(\left\lVert\tilde y-\tilde X\beta\right\rVert_2^2+\tilde\lambda\left\lVert\beta\right\rVert_1\right)\\
+&amp;=\underset{\beta}{\text{argmin}}\left(\left\lVert y-X\beta\right\rVert_2^2+\gamma^2\left\lVert\beta\right\rVert_2^2+\tilde\lambda\left\lVert\beta\right\rVert_1\right)\\
+&amp;=\underset{\beta}{\text{argmin}}\left(\left\lVert y-X\beta\right\rVert_2^2+\lambda\alpha\left\lVert\beta\right\rVert_2^2+\lambda(1-\alpha)\left\lVert\beta\right\rVert_1\right)\\
+\end{align}\]</span> where we set <span class="math inline">\(\gamma=\sqrt{\lambda \alpha}\)</span> and <span class="math inline">\(\tilde\lambda=\lambda(1-\alpha)\)</span></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

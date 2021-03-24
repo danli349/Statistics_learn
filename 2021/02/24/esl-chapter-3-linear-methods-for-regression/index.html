@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">122 min read</span>
+    <span class="article-duration">124 min read</span>
     
 
     <h1 class="article-title">ESL chapter 3 Linear Methods for Regression</h1>
@@ -168,6 +168,7 @@
 <li><a href="#s-3.8.1-incremental-forward-stagewise-regression"><span class="math inline">\(\S\)</span> 3.8.1 Incremental Forward Stagewise Regression</a>
 <ul>
 <li><a href="#algorithm-3.4-incremental-forward-stagewise-regressionfs_varepsilon.">Algorithm 3.4 Incremental Forward Stagewise Regression—<span class="math inline">\(FS_{\varepsilon}\)</span>.</a></li>
+<li><a href="#algorithm-3.2b-least-angle-regression-fs_0-modification.">Algorithm 3.2b Least Angle Regression: <span class="math inline">\(FS_0\)</span> Modification.</a></li>
 </ul></li>
 <li><a href="#s-3.8.2-piecewise-linear-path-algorithms"><span class="math inline">\(\S\)</span> 3.8.2 Piecewise-Linear Path Algorithms</a></li>
 <li><a href="#s-3.8.3-the-dantzig-selector"><span class="math inline">\(\S\)</span> 3.8.3 The Dantzig Selector</a></li>
@@ -175,7 +176,6 @@
 <li><a href="#s-3.8.5-further-properties-of-the-lasso"><span class="math inline">\(\S\)</span> 3.8.5 Further Properties of the Lasso</a></li>
 <li><a href="#s-3.8.6-pathwise-coordinate-optimization"><span class="math inline">\(\S\)</span> 3.8.6 Pathwise Coordinate Optimization</a></li>
 </ul></li>
-<li><a href="#s-3.9-computational-considerations"><span class="math inline">\(\S\)</span> 3.9 Computational Considerations</a></li>
 <li><a href="#s-exercises"><span class="math inline">\(\S\)</span> Exercises</a>
 <ul>
 <li><a href="#s-ex.-3.1-the-f-statistic-is-equivalent-to-the-square-of-the-z-score"><span class="math inline">\(\S\)</span> Ex. 3.1 (the F-statistic is equivalent to the square of the Z-score)</a></li>
@@ -2117,13 +2117,13 @@ b
 \]</span>
 then, using <span style="color: red;"><strong>Cramer’s rule</strong></span>
 <span class="math display">\[\begin{align}
-b&amp;=\frac{\begin{bmatrix}
+b&amp;=\frac{\begin{vmatrix}
 \displaystyle\sum_{i=1}^{n}x_i &amp; \displaystyle\sum_{i=1}^{n}x_iy_i\\
 n &amp; \displaystyle\sum_{i=1}^{n}y_i\\
-\end{bmatrix}}{\begin{bmatrix}
+\end{vmatrix}}{\begin{vmatrix}
 \displaystyle\sum_{i=1}^{n}x_i &amp; \displaystyle\sum_{i=1}^{n}x_i^2\\
 n &amp; \displaystyle\sum_{i=1}^{n}x_i\\
-\end{bmatrix}}\\
+\end{vmatrix}}\\
 &amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)-n(\displaystyle\sum_{i=1}^{n}x_iy_i)}{(\displaystyle\sum_{i=1}^{n}x_i)^2-n\displaystyle\sum_{i=1}^{n}x_i^2}\\
 &amp;=\frac{n(\displaystyle\sum_{i=1}^{n}x_iy_i)-(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{n\displaystyle\sum_{i=1}^{n}x_i^2-(\displaystyle\sum_{i=1}^{n}x_i)^2}\\
 &amp;=\frac{(\displaystyle\sum_{i=1}^{n}x_iy_i)-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)(\displaystyle\sum_{i=1}^{n}y_i)}{\displaystyle\sum_{i=1}^{n}x_i^2-\frac{1}{n}(\displaystyle\sum_{i=1}^{n}x_i)^2}\\
@@ -6233,16 +6233,34 @@ factors approach <span class="math inline">\(1\)</span>. Breiman and Friedman (1
 </ol>
 <p>If <span class="math display">\[\delta_j=\langle x_j , r\rangle\]</span> (the least-squares
 coefficient of the residual on <span class="math inline">\(j\)</span>th predictor), then this is exactly the usual forward stagewise procedure (FS) outlined in Section 3.3.3.</p>
+<p>Efron originally thought that the LAR Algorithm 3.2 was an implementation of <span class="math inline">\(FS_0\)</span>, allowing each tied predictor a chance to update their coefficients in a balanced way, while remaining tied in correlation. However, he then realized that the LAR least-squares fit amongst the tied predictors can result in coefficients moving in the opposite direction to their correlation, which cannot happen in Algorithm 3.4. The following modification of
+the LAR algorithm implements <span class="math inline">\(FS_0\)</span>:</p>
+</div>
+<div id="algorithm-3.2b-least-angle-regression-fs_0-modification." class="section level3">
+<h3>Algorithm 3.2b Least Angle Regression: <span class="math inline">\(FS_0\)</span> Modification.</h3>
+<ol start="4" style="list-style-type: decimal">
+<li>Find the new direction by solving the constrained least squares problem <span class="math display">\[\underset{b}{\text{min}}\lVert r-X_Ab\rVert_2^2\text{ subject to } b_js_j\ge 0,j\in A\]</span> where <span class="math inline">\(s_j\)</span> is the sign of <span class="math inline">\(\langle x_j, r\rangle\)</span>. The modification amounts to a non-negative least squares fit, keeping the signs of the coefficients the same as those of the correlations.</li>
+</ol>
 </div>
 </div>
 <div id="s-3.8.2-piecewise-linear-path-algorithms" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.8.2 Piecewise-Linear Path Algorithms</h2>
+<p>The least angle regression procedure exploits the piecewise linear nature of the lasso solution paths. It has led to similar “path algorithms” for other regularized problems. Suppose we solve <span class="math display">\[\hat\beta(\lambda)=\underset{{\beta}}{\text{argmin}}\left[R(\beta)+\lambda J(\beta)\right]\]</span> with <span class="math display">\[R(\beta)=\sum_{i=1}^{N}L\left(y_i,\beta_0+\sum_{j=1}^{p}x_{ij}\beta_j\right)\]</span> where both the loss function <span class="math inline">\(L\)</span> and the penalty function <span class="math inline">\(J\)</span> are convex. Then the following are sufficient conditions for the solution path <span class="math inline">\(\hat\beta(\lambda)\)</span> to be piecewise linear (Rosset and Zhu, 2007):</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(R\)</span> is quadratic or piecewise-quadratic as a function of <span class="math inline">\(\beta\)</span>, and</p></li>
+<li><p><span class="math inline">\(J\)</span> is piecewise linear in <span class="math inline">\(\beta\)</span>.</p></li>
+</ol>
 </div>
 <div id="s-3.8.3-the-dantzig-selector" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.8.3 The Dantzig Selector</h2>
+<p>The <strong>Dantzig selector (DS)</strong>. <span class="math display">\[\underset{\beta}{\text{min}}\lVert \beta\rVert_1\text{ subject to }\lVert \mathbf X^T(\mathbf y-\mathbf X\beta)\rVert_{\infty}\le s\]</span> It can be written equivalently as <span class="math display">\[\underset{\beta}{\text{min}}\lVert \mathbf X^T(\mathbf y-\mathbf X\beta)\rVert_{\infty}\text{ subject to }\lVert \beta\rVert_1\le t\]</span> Here <span class="math inline">\(\lVert \cdot\rVert_{\infty}\)</span> denotes the <span class="math inline">\(L_{\infty}\)</span> norm, the maximum absolute value of the components of the vector. In this form it resembles the lasso, replacing squared error loss by the maximum absolute value of its gradient. Note
+that as <span class="math inline">\(t\)</span> gets large, both procedures yield the least squares solution if <span class="math inline">\(N &gt; p\)</span>. If <span class="math inline">\(N \le p\)</span>, they both yield the least squares solution with minimum <span class="math inline">\(L_1\)</span> norm. However for smaller values of <span class="math inline">\(t\)</span>, the DS procedure produces a
+different path of solutions than the lasso.</p>
 </div>
 <div id="s-3.8.4-the-grouped-lasso" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.8.4 The Grouped Lasso</h2>
+<p>In some problems, the predictors belong to pre-defined groups; for example genes that belong to the same biological pathway, or collections of indicator (dummy) variables for representing the levels of a categorical predictor. In this situation it may be desirable to shrink and select the members of a group together. The <strong>grouped lasso</strong> is one way to achieve this.</p>
+<p>Suppose that the <span class="math inline">\(p\)</span> predictors are divided into <span class="math inline">\(L\)</span> groups, with <span class="math inline">\(p_{\ell}\)</span> the number in group <span class="math inline">\(\ell\)</span>. For ease of notation, we use a matrix <span class="math inline">\(\mathbf X_{\ell}\)</span> to represent the predictors corresponding to the <span class="math inline">\(\ell\)</span>th group, with corresponding coefficient vector <span class="math inline">\(\beta_{\ell}\)</span>. The grouped-lasso minimizes the convex criterion <span class="math display">\[\underset{\beta\in\mathbb R^p}{\text{min}}\left(\left\lVert \mathbf y-\beta_0\mathbf 1-\sum_{\ell=1}^{L}\mathbf X_{\ell}\beta_{\ell}\right\rVert_2^2+\lambda\sum_{\ell=1}^{L}\sqrt{p_{\ell}}\left\lVert\beta_{\ell}\right\rVert_2\right)\]</span> where the <span class="math inline">\(\sqrt{p_{\ell}}\)</span> terms accounts for the varying group sizes, and <span class="math inline">\(\lVert\cdot\rVert_2\)</span> is the Euclidean norm (not squared). Since the Euclidean norm of a vector <span class="math inline">\(\beta_{\ell}\)</span> is zero only if all of its components are zero, this procedure encourages sparsity at both the group and individual levels. That is, for some values of <span class="math inline">\(\lambda\)</span>, an entire group of predictors may drop out of the model.</p>
 </div>
 <div id="s-3.8.5-further-properties-of-the-lasso" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.8.5 Further Properties of the Lasso</h2>
@@ -6250,9 +6268,6 @@ coefficient of the residual on <span class="math inline">\(j\)</span>th predicto
 <div id="s-3.8.6-pathwise-coordinate-optimization" class="section level2">
 <h2><span class="math inline">\(\S\)</span> 3.8.6 Pathwise Coordinate Optimization</h2>
 </div>
-</div>
-<div id="s-3.9-computational-considerations" class="section level1">
-<h1><span class="math inline">\(\S\)</span> 3.9 Computational Considerations</h1>
 </div>
 <div id="s-exercises" class="section level1">
 <h1><span class="math inline">\(\S\)</span> Exercises</h1>

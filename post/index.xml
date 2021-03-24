@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ESL chapter 3 exercises</title>
+      <link>/2021/03/23/esl-chapter-3-exercises/</link>
+      <pubDate>Tue, 23 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/03/23/esl-chapter-3-exercises/</guid>
+      <description>Ex. 3.9 (using the QR decomposition for fast forward-stepwise selection)Ex. 3.10 (using the z-scores for fast backwards stepwise regression)Ex. 3.11 (multivariate linear regression with different \(\Sigma_i\))Ex. 3.12 (ordinary least squares to implement ridge regression)Ex. 3.13 (principal component regression)Ex. 3.14 (when the inputs are orthogonal PLS stops after m = 1 step)Ex. 3.15 (PLS seeks directions that have high variance and high correlation)Relation to the optimization problemEx.</description>
+    </item>
+    
     <item>
       <title>ESL chapter 3 Linear Methods for Regression</title>
       <link>/2021/02/24/esl-chapter-3-linear-methods-for-regression/</link>
