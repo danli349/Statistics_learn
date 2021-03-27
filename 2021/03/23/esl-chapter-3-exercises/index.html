@@ -111,9 +111,11 @@
 <li><a href="#ex.-3.28">Ex. 3.28</a></li>
 <li><a href="#ex.-3.29">Ex. 3.29</a></li>
 <li><a href="#ex.-3.30-solving-the-elastic-net-optimization-problem-with-the-lasso">Ex. 3.30 (solving the elastic net optimization problem with the lasso)</a></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
+<pre class="r"><code>options(width = 300)</code></pre>
 <div id="ex.-3.9-using-the-qr-decomposition-for-fast-forward-stepwise-selection" class="section level1">
 <h1>Ex. 3.9 (using the QR decomposition for fast forward-stepwise selection)</h1>
 <p>Forward stepwise regression. Suppose we have the <span class="math inline">\(QR\)</span> decomposition
@@ -415,7 +417,7 @@ where <span class="math inline">\(\hat\beta_j\)</span> equal the components of <
 <p>Thus to minimize <span class="math inline">\(\lVert y-\hat y\rVert_2^2\)</span> we would pick the <span class="math inline">\(M\)</span> values of <span class="math inline">\(I_j\)</span> to be equal to one that have the largest <span class="math inline">\(\beta_j^2\)</span> values. This is equivalent to sorting the values <span class="math inline">\(\lvert\hat\beta_j\rvert\)</span> and picking the indices of
 the largest <span class="math inline">\(M\)</span> of these to have <span class="math inline">\(I_j = 1\)</span>. All other indices <span class="math inline">\(j\)</span> would be taken to have <span class="math inline">\(I_j = 0\)</span>. Using an indicator function this is equivalent to the expression <span class="math display">\[\hat\beta_j^{\text{best subset}}=\hat\beta_j\cdot I\left( \lvert\hat\beta_j\rvert \ge \lvert\hat\beta_{(M)}\rvert \right)\]</span></p>
 <ul>
-<li>Best subset (size <span class="math inline">\(M\)</span>) drops all variables with coefficients smaller than the <span class="math inline">\(M\)</span>th largest; this is a form of “hard-thresholding”.</li>
+<li>Best subset (size <span class="math inline">\(M\)</span>) drops all variables with coefficients smaller than the <span class="math inline">\(M\)</span>th largest; this is a form of “hard-thresholding.”</li>
 </ul>
 <p><span class="math display">\[\begin{equation}
 \hat\beta_j\cdot I\left( \lvert\hat\beta_j\rvert \ge \lvert\hat\beta_{(M)}\rvert \right)
@@ -458,7 +460,7 @@ F&#39;(\beta)=\begin{cases}
 \beta=-\lambda+\hat\beta &amp;\text{ when } \beta&gt;0\\[2ex]
 \end{cases}\]</span></p>
 <ul>
-<li>Lasso translates each coefficient by a constant factor <span class="math inline">\(\lambda\)</span>, truncating at zero. This is called “soft-thresholding”.</li>
+<li>Lasso translates each coefficient by a constant factor <span class="math inline">\(\lambda\)</span>, truncating at zero. This is called “soft-thresholding.”</li>
 </ul>
 <p><span class="math display">\[\begin{equation}
 \text{sign}\left( \hat\beta_j \right)\left( \lvert\hat\beta_j\rvert - \lambda \right)_+
@@ -1766,6 +1768,14 @@ y\\
 &amp;=\underset{\beta}{\text{argmin}}\left(\left\lVert y-X\beta\right\rVert_2^2+\gamma^2\left\lVert\beta\right\rVert_2^2+\tilde\lambda\left\lVert\beta\right\rVert_1\right)\\
 &amp;=\underset{\beta}{\text{argmin}}\left(\left\lVert y-X\beta\right\rVert_2^2+\lambda\alpha\left\lVert\beta\right\rVert_2^2+\lambda(1-\alpha)\left\lVert\beta\right\rVert_1\right)\\
 \end{align}\]</span> where we set <span class="math inline">\(\gamma=\sqrt{\lambda \alpha}\)</span> and <span class="math inline">\(\tilde\lambda=\lambda(1-\alpha)\)</span></p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-friedman2001elements" class="csl-entry">
+1. Friedman J, Hastie T, Tibshirani R, others. The elements of statistical learning. Springer series in statistics New York; 2009.
+</div>
+</div>
 </div>
 
     </div>
