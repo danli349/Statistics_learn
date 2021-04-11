@@ -6,7 +6,25 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter03 Random Variables</title>
+      <link>/2021/04/11/aos-chapter03-random-variables/</link>
+      <pubDate>Sun, 11 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/11/aos-chapter03-random-variables/</guid>
+      <description>3. Random Variables3.1 Introduction3.2 Distribution Functions and Probability Functions3.3 Some Important Discrete Random Variables3.4 Some Important Continuous Random Variables3.5 Bivariate Distributions3.6 Marginal Distributions3.7 Independent Random Variables3.8 Conditional Distributions3.9 Multivariate Distributions and IID Samples3.10 Two Important Multivariate Distributions3.11 Transformations of Random Variables3.12 Transformation of Several Random Variables3.13 Technical Appendix3.14 ExercisesReferences3.</description>
+    </item>
+    
+    <item>
+      <title>AOS chapter02 Probability</title>
+      <link>/2021/04/09/aos-chapter02-probability/</link>
+      <pubDate>Fri, 09 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/09/aos-chapter02-probability/</guid>
+      <description>2. Probability2.2 Sample Spaces and Events2.3 Probability2.4 Probability on Finite Sample Spaces2.5 Independent Events2.6 Conditional Probability2.7 Bayes’ Theorem2.9 Technical Appendix2.10 ExercisesReferences2. Probability2.2 Sample Spaces and EventsThe sample space \(\Omega\) is the set of possible outcomes of an experiment. Points \(\omega\) in \(\Omega\) are called sample outcomes or realizations. Events are subsets of \(\Omega\).</description>
+    </item>
+    
     <item>
       <title>ESL chapter 4 Linear Methods for Classification</title>
       <link>/2021/04/03/esl-chapter-4-linear-methods-for-classification/</link>

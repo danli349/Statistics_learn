@@ -6,7 +6,16 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter03 Random Variables</title>
+      <link>/2021/04/11/aos-chapter03-random-variables/</link>
+      <pubDate>Sun, 11 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/11/aos-chapter03-random-variables/</guid>
+      <description>3. Random Variables3.1 Introduction3.2 Distribution Functions and Probability Functions3.3 Some Important Discrete Random Variables3.4 Some Important Continuous Random Variables3.5 Bivariate Distributions3.6 Marginal Distributions3.7 Independent Random Variables3.8 Conditional Distributions3.9 Multivariate Distributions and IID Samples3.10 Two Important Multivariate Distributions3.11 Transformations of Random Variables3.12 Transformation of Several Random Variables3.13 Technical Appendix3.14 ExercisesReferences3.</description>
+    </item>
+    
     <item>
       <title>The Multivariate Normal Density</title>
       <link>/2020/09/11/the-multivariate-normal-density/</link>

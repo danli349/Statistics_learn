@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter03 Random Variables - A Hugo website</title>
+<meta property="og:title" content="AOS chapter03 Random Variables - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">42 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter03 Random Variables</h1>
+
+    
+    <span class="article-date">2021-04-11</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/11/aos-chapter03-random-variables/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#random-variables">3. Random Variables</a>
+<ul>
+<li><a href="#introduction">3.1 Introduction</a></li>
+<li><a href="#distribution-functions-and-probability-functions">3.2 Distribution Functions and Probability Functions</a></li>
+<li><a href="#some-important-discrete-random-variables">3.3 Some Important Discrete Random Variables</a></li>
+<li><a href="#some-important-continuous-random-variables">3.4 Some Important Continuous Random Variables</a></li>
+<li><a href="#bivariate-distributions">3.5 Bivariate Distributions</a></li>
+<li><a href="#marginal-distributions">3.6 Marginal Distributions</a></li>
+<li><a href="#independent-random-variables">3.7 Independent Random Variables</a></li>
+<li><a href="#conditional-distributions">3.8 Conditional Distributions</a></li>
+<li><a href="#multivariate-distributions-and-iid-samples">3.9 Multivariate Distributions and IID Samples</a></li>
+<li><a href="#two-important-multivariate-distributions">3.10 Two Important Multivariate Distributions</a></li>
+<li><a href="#transformations-of-random-variables">3.11 Transformations of Random Variables</a></li>
+<li><a href="#transformation-of-several-random-variables">3.12 Transformation of Several Random Variables</a></li>
+<li><a href="#technical-appendix">3.13 Technical Appendix</a></li>
+<li><a href="#exercises">3.14 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="random-variables" class="section level2">
+<h2>3. Random Variables</h2>
+<div id="introduction" class="section level3">
+<h3>3.1 Introduction</h3>
+<p>A <strong>random variable</strong> is a mapping <span class="math inline">\(X : \Omega \rightarrow \mathbb{R}\)</span> that assigns a real number <span class="math inline">\(X(\omega)\)</span> to each outcome <span class="math inline">\(\omega\)</span>.</p>
+<p><em>Technically, a random variable must be measurable. See the technical appendix for details.</em></p>
+<p>Given a random variable <span class="math inline">\(X\)</span> and a subset <span class="math inline">\(A\)</span> of the real line, define <span class="math inline">\(X^{-1}(A) = \{ \omega \in \Omega : X(\omega) \in A \}\)</span> and let</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(X \in A) = \mathbb{P}(X^{-1}(A)) &amp;= \mathbb{P}(\{ \omega \in \Omega; X(\omega) \in A \}) \\
+\mathbb{P}(X = x) = \mathbb{P}(X^{-1}(x)) &amp;= \mathbb{P}(\{ \omega \in \Omega; X(\omega) = x \} )
+\end{align}
+\]</span></p>
+<p><span class="math inline">\(X\)</span> denotes a random variable and <span class="math inline">\(x\)</span> denotes a possible value of <span class="math inline">\(X\)</span>.</p>
+</div>
+<div id="distribution-functions-and-probability-functions" class="section level3">
+<h3>3.2 Distribution Functions and Probability Functions</h3>
+<p>The <strong>cumulative distribution function</strong>, CDF, <span class="math inline">\(F_X : \mathbb{R} \rightarrow [0, 1]\)</span> of a random variable <span class="math inline">\(X\)</span> is defined by</p>
+<p><span class="math display">\[ F_X(x) = \mathbb{P}(X \leq x) \]</span></p>
+<p>The following result shows that the CDF completely determines the distribution of a random variable.</p>
+<p><strong>Theorem 3.7</strong>. Let <span class="math inline">\(X\)</span> have CDF <span class="math inline">\(F\)</span> and let <span class="math inline">\(Y\)</span> have CDF <span class="math inline">\(G\)</span>. If <span class="math inline">\(F(x) = G(x)\)</span> for all <span class="math inline">\(x\)</span> then <span class="math inline">\(\mathbb{P}(X \in A) = \mathbb{P}(Y \in A)\)</span> for all <span class="math inline">\(A\)</span>.</p>
+<p><em>Technically, we only have that <span class="math inline">\(\mathbb{P}(X \in A) = \mathbb{P}(Y \in A)\)</span> for every measurable event <span class="math inline">\(A\)</span>.</em></p>
+<p><strong>Theorem 3.8</strong>. A function <span class="math inline">\(F\)</span> mapping the real line to <span class="math inline">\([0, 1]\)</span> is a CDF for some probability measure <span class="math inline">\(\mathbb{P}\)</span> if and only if if satisfies the following three conditions:</p>
+<ul>
+<li><span class="math inline">\(F\)</span> is non-decreasing, i.e. <span class="math inline">\(x_1 &lt; x_2\)</span> implies that <span class="math inline">\(F(x_1) \leq F(x_2)\)</span>.</li>
+<li><span class="math inline">\(F\)</span> is normalized: <span class="math inline">\(\lim_{n \rightarrow -\infty} F(x) = 0\)</span> and <span class="math inline">\(\lim_{n \rightarrow +\infty} F(x) = 1\)</span>.</li>
+<li><span class="math inline">\(F\)</span> is right-continuous, i.e. <span class="math inline">\(F(x) = F(x^+)\)</span> for all <span class="math inline">\(x\)</span>, where</li>
+</ul>
+<p><span class="math display">\[ F(x^+) = \lim_{y \rightarrow x, y &gt; x} F(y) \]</span></p>
+<p><strong>Proof</strong>. Suppose that <span class="math inline">\(F\)</span> is a CDF. Let us show that <span class="math inline">\(F\)</span> is right-continuous. Let <span class="math inline">\(x\)</span> be a real number and let <span class="math inline">\(y_1, y_2, \dots\)</span> be a sequence of real numbers such that <span class="math inline">\(y_1 &gt; y_2 &gt; \dots\)</span> and <span class="math inline">\(\lim_i y_i = x\)</span>. Let <span class="math inline">\(A_i = (-\infty, y_i]\)</span> and let <span class="math inline">\(A = (-\infty, x]\)</span>. Note that <span class="math inline">\(A = \cap_{i=1}^\infty A_i\)</span> and also note that <span class="math inline">\(A_1 \supset A_2 \supset \cdots\)</span>. Because the events are monotone, <span class="math inline">\(\lim_i \mathbb{P}(A_i) = \mathbb{P}(\cap_i A_i)\)</span>. Thus,</p>
+<p><span class="math display">\[ F(x) = \mathbb{P}(A) = \mathbb{P}(\cap_i A_i) = \lim_i \mathbb{P}(A_i) = \lim_i F(y_i) = F(x^+) \]</span></p>
+<p>Showing that <span class="math inline">\(F\)</span> is non-decreasing and is normalized is similar. Proving the other direction, that is that <span class="math inline">\(F\)</span> is non-decreasing, normalized, and right-continuous then it is a CDF for some random variable, uses some deep tools in analysis.</p>
+<p><span class="math inline">\(X\)</span> is <strong>discrete</strong> if it takes countably many values</p>
+<p><span class="math display">\[ \{ x_1, x_2, \dots \} \]</span></p>
+<p>We define the <strong>probability density function</strong> or <strong>probability mass function</strong> for <span class="math inline">\(X\)</span> by</p>
+<p><span class="math display">\[ f_X(x) = \mathbb{P}(X = x) \]</span></p>
+<p><em>A set is countable if it is finite or if it can be put in a one-to-one correspondence with the integers.</em></p>
+<p>Thus, <span class="math inline">\(f_X(x) \geq 0\)</span> for all <span class="math inline">\(x \in \mathbb{R}\)</span> and <span class="math inline">\(\sum_i f_X(x_i) = 1\)</span>. The CDF of <span class="math inline">\(X\)</span> is related to the PDF by</p>
+<p><span class="math display">\[ F_X(x) = \mathbb{P}(X \leq x) = \sum_{x_i \leq x} f_X(x_i) \]</span></p>
+<p>Sometimes we write <span class="math inline">\(f_X\)</span> and <span class="math inline">\(F_X\)</span> simply as <span class="math inline">\(f\)</span> and <span class="math inline">\(F\)</span>.</p>
+<p>A random variable <span class="math inline">\(X\)</span> is <strong>continuous</strong> if there exists a function <span class="math inline">\(f_X\)</span> such that <span class="math inline">\(f_X(x) \geq 0\)</span> for all <span class="math inline">\(x\)</span>, <span class="math inline">\(\int_{-\infty}^\infty f_X(x) dx = 1\)</span>, and for every <span class="math inline">\(a \leq b\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(a &lt; X &lt; b) = \int_a^b f_X(x) dx \]</span></p>
+<p>The function <span class="math inline">\(f_X\)</span> is called the <strong>probability density function</strong>. We have that</p>
+<p><span class="math display">\[ F_X(x) = \int_{-\infty}^x f_X(t) dt \]</span></p>
+<p>and <span class="math inline">\(f_X(x) = F&#39;_X(x)\)</span> at all points <span class="math inline">\(x\)</span> at which <span class="math inline">\(F_X\)</span> is differentiable.</p>
+<p>Sometimes we shall write <span class="math inline">\(\int f(x) dx\)</span> or simply <span class="math inline">\(\int f\)</span> to mean <span class="math inline">\(\int_{-\infty}^\infty f(x) dx\)</span>.</p>
+<p><strong>Warning</strong>: Note that if <span class="math inline">\(X\)</span> is continuous then <span class="math inline">\(\mathbb{P}(X = x) = 0\)</span> for every <span class="math inline">\(x\)</span>. We only have <span class="math inline">\(f(x) = \mathbb{P}(X = x)\)</span> for discrete random variables; we get probabilities from a PDF by integrating.</p>
+<p><strong>Lemma 3.15</strong>. Let <span class="math inline">\(F\)</span> be the CDF for a random variable <span class="math inline">\(X\)</span>. Then:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbb{P}(X = x) = F(x) - F(x^-)\)</span> where <span class="math inline">\(F(x^-) = \lim_{y \uparrow x} F(y)\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(x &lt; X \leq y) = F(y) - F(x)\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(X &gt; x) = 1 - F(x)\)</span></p></li>
+<li><p>If <span class="math inline">\(X\)</span> is continuous then</p>
+<p><span class="math display">\[ \mathbb{P}(a &lt; X &lt; b) = \mathbb{P}(a \leq X &lt; b) = \mathbb{P}(a &lt; X \leq b) = \mathbb{P}(a \leq X \leq b) \]</span></p></li>
+</ul>
+<p>It is also useful to define the inverse CDF (or quantile function).</p>
+<p>Let <span class="math inline">\(X\)</span> be a random variable with CDF <span class="math inline">\(F\)</span>. The <strong>inverse CDF</strong> or <strong>quantile function</strong> is defined by</p>
+<p><span class="math display">\[ F^{-1}(q) = \inf \{ x : F(x) \leq q \} \]</span></p>
+<p>for <span class="math inline">\(q \in [0, 1]\)</span>. If <span class="math inline">\(F\)</span> is strictly increasing and continuous then <span class="math inline">\(F^{-1}(q)\)</span> is the unique real number <span class="math inline">\(x\)</span> such that <span class="math inline">\(F(x) = q\)</span>.</p>
+<p>We call <span class="math inline">\(F^{-1}(1/4)\)</span> the first quartile, <span class="math inline">\(F^{-1}(1/2)\)</span> the median (or second quartile), and <span class="math inline">\(F^{-1}(3/4)\)</span> the third quartile.</p>
+<p>Two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>equal in distribution</strong> – written <span class="math inline">\(X \overset{d}= Y\)</span> – if <span class="math inline">\(F_X(x) = F_Y(x)\)</span> for all <span class="math inline">\(x\)</span>. This does not mean that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are equal. Rather, it means that probability statements about <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> will be the same.</p>
+</div>
+<div id="some-important-discrete-random-variables" class="section level3">
+<h3>3.3 Some Important Discrete Random Variables</h3>
+<p><strong>Warning about notation</strong>: It is traditional to write <span class="math inline">\(X \sim F\)</span> to indicate that <span class="math inline">\(X\)</span> has distribution <span class="math inline">\(F\)</span>. This is an unfortunate notation since the symbol <span class="math inline">\(\sim\)</span> is also used to denote an approximation. The notation is so pervasive we are stuck with it.</p>
+<p><em>.. and we use <span class="math inline">\(A \approx B\)</span> to denote approximation. The LaTeX macros hint at this common usage: <code>\sim</code> for <span class="math inline">\(\sim\)</span>, and <code>\approx</code> for <span class="math inline">\(\approx\)</span>.</em></p>
+<div id="the-point-mass-distribution" class="section level4">
+<h4>The Point Mass Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a point mass distribution at <span class="math inline">\(a\)</span>, written <span class="math inline">\(X \sim \delta_a\)</span>, if <span class="math inline">\(\mathbb{P}(X = a) = 1\)</span>, in which case</p>
+<p><span class="math display">\[ F(x) = \begin{cases}
+0 &amp;\text{if } x &lt; a \\
+1 &amp;\text{if } x \geq a
+\end{cases} \]</span></p>
+<p>The probability mass function is <span class="math inline">\(f(x) = I(x = a)\)</span>, which takes value 1 if <span class="math inline">\(x = a\)</span> and 0 otherwise.</p>
+</div>
+<div id="the-discrete-uniform-distribution" class="section level4">
+<h4>The Discrete Uniform Distribution</h4>
+<p>Let <span class="math inline">\(k &gt; 1\)</span> be a given integer. Suppose that <span class="math inline">\(X\)</span> has probability mass function given by</p>
+<p><span class="math display">\[ f(x) = \begin{cases}
+1/k &amp;\text{for } x = 1, \dots, k \\
+0 &amp;\text{otherwise}
+\end{cases} \]</span></p>
+<p>We say that <span class="math inline">\(X\)</span> has a uniform distribution on <span class="math inline">\(\{ 1, \dots, k \}\)</span>.</p>
+</div>
+<div id="the-bernoulli-distribution" class="section level4">
+<h4>The Bernoulli Distribution</h4>
+<p>Let <span class="math inline">\(X\)</span> represent a coin flip. Then <span class="math inline">\(\mathbb{P}(X = 1) = p\)</span> and <span class="math inline">\(\mathbb{P}(X = 0) = 1 - p\)</span> for some <span class="math inline">\(p \in [0, 1]\)</span>. We say that <span class="math inline">\(X\)</span> has a Bernoulli distribution, written <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. The probability mass function is <span class="math inline">\(f(x) = p^x (1 - p)^{1 - x}\)</span> for <span class="math inline">\(x \in \{ 0, 1 \}\)</span>.</p>
+</div>
+<div id="the-binomial-distribution" class="section level4">
+<h4>The Binomial Distribution</h4>
+<p>Suppose we have a coin which falls heads with probability <span class="math inline">\(p\)</span> for some <span class="math inline">\(0 \leq p \leq 1\)</span>. Flip the coin <span class="math inline">\(n\)</span> times and let <span class="math inline">\(X\)</span> be the number of heads. Assume that the tosses are independent. Let <span class="math inline">\(f(x) = \mathbb{P}(X = x)\)</span> be the mass function. It can be shown that</p>
+<p><span class="math display">\[ f(x) = \begin{cases}
+\binom{n}{x} p^x (1 - p)^{n - x} &amp;\text{for } x= 0, \dots, n \\
+0 &amp;\text{otherwise}
+\end{cases} \]</span></p>
+<p>A random variable with this mass function is called a Binomial random variable, and we write <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>. If <span class="math inline">\(X_1 \sim \text{Binomial}(n, p_1)\)</span> and <span class="math inline">\(X_2 \sim \text{Binomial}(n, p_2)\)</span> then <span class="math inline">\(X_1 + X_2 \sim \text{Bimomial}(n, p_1 + p_2)\)</span>.</p>
+<p>Note that <span class="math inline">\(X\)</span> is a random variable, <span class="math inline">\(x\)</span> denotes a particular value of the random variable, and <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span> are <strong>parameters</strong>, that is, fixed real numbers.</p>
+</div>
+<div id="the-geometric-distribution" class="section level4">
+<h4>The Geometric Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a geometric distribution with parameter <span class="math inline">\(p \in (0, 1)\)</span>, written <span class="math inline">\(X \sim \text{Geom}(p)\)</span>, if</p>
+<p><span class="math display">\[\mathbb{P}(X = k) = p(1 - p)^{k - 1}, \quad k \geq 1\]</span></p>
+<p>We have that</p>
+<p><span class="math display">\[ \sum_{k=1}^\infty \mathbb{P}(X = k) = p \sum_{k=1}^\infty (1 - p)^k = \frac{p}{1 - (1 - p)} = 1 \]</span></p>
+<p>Think of <span class="math inline">\(X\)</span> as the number of flips needed until the first heads when flipping a coin.</p>
+</div>
+<div id="the-poisson-distribution" class="section level4">
+<h4>The Poisson Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a Poisson distribution with parameter <span class="math inline">\(\lambda\)</span>, written <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = e^{-\lambda} \frac{\lambda^x}{x!}, \quad x \geq 0 \]</span></p>
+<p>Note that</p>
+<p><span class="math display">\[ \sum_{x=0}^\infty f(x) = e^{-\lambda} \sum_{x=0}^\infty \frac{\lambda^x}{x!} = e^{-\lambda} e^\lambda = 1 \]</span></p>
+<p>The Poisson distribution is often used as a model for counts of rare events like radioactive decay and traffic accidents. If <span class="math inline">\(X_1 \sim \text{Poisson}(n, \lambda_1)\)</span> and <span class="math inline">\(X_2 \sim \text{Poisson}(n, \lambda_2)\)</span> then <span class="math inline">\(X_1 + X_2 \sim \text{Poisson}(n, \lambda_1 + \lambda_2)\)</span>.</p>
+<p><strong>Warning</strong>: We defined random variables to be mappings from a sample space <span class="math inline">\(\Omega\)</span> to <span class="math inline">\(\mathbb{R}\)</span> but we did not mention sample space in any of the distributions above. Let’s construct a sample space explicitly for a Bernoulli random variable. Let <span class="math inline">\(\Omega = [0, 1]\)</span>, and define <span class="math inline">\(\mathbb{P}\)</span> to satisfy <span class="math inline">\(\mathbb{P}([a, b]) = b - a\)</span> for <span class="math inline">\(0 \leq a \leq b \leq 1\)</span>. Fix <span class="math inline">\(p \in [0, 1]\)</span> and define</p>
+<p><span class="math display">\[ X(\omega) = \begin{cases}
+1 &amp;\text{if }\omega \leq p \\
+0 &amp;\text{if }\omega &gt; p
+\end{cases} \]</span></p>
+<p>Then <span class="math inline">\(\mathbb{P}(X = 1) = \mathbb{P}(\omega \leq p) = \mathbb{P}([0, p]) = p\)</span> and <span class="math inline">\(\mathbb{P}(X = 0) = 1 - p\)</span>. Thus, <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. We could do this for all of the distributions defined above. In practice, we think of a random variable like a random number but formally it is a mapping defined on some sample space.</p>
+</div>
+</div>
+<div id="some-important-continuous-random-variables" class="section level3">
+<h3>3.4 Some Important Continuous Random Variables</h3>
+<div id="the-uniform-distribution" class="section level4">
+<h4>The Uniform Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a uniform distribution with parameters <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, written <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = \begin{cases}
+\frac{1}{b - a} &amp;\text{for } x \in [a, b] \\
+0 &amp;\text{otherwise}
+\end{cases}\]</span></p>
+<p>where <span class="math inline">\(a &lt; b\)</span>. The CDF is</p>
+<p><span class="math display">\[ F(x) = \begin{cases}
+0 &amp;\text{if } x &lt; a \\
+\frac{x - a}{b - a} &amp;\text{if } x \in [a, b] \\
+1 &amp;\text{if } x &gt; b
+\end{cases} \]</span></p>
+</div>
+<div id="normal-gaussian" class="section level4">
+<h4>Normal (Gaussian)</h4>
+<p><span class="math inline">\(X\)</span> has a Normal (or Gaussian) distribution with parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, denoted by <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left( \frac{x - \mu}{\sigma} \right)^2\right\}, \quad x \in \mathbb{R} \]</span></p>
+<p>where <span class="math inline">\(\mu \in \mathbb{R}\)</span> and <span class="math inline">\(\sigma &gt; 0\)</span>. Later we shall see that <span class="math inline">\(\mu\)</span> is the “center” (or mean) of the distribution and that <span class="math inline">\(\sigma\)</span> is the “spread” (or standard deviation) of the distribution. The Normal plays an important role in probability and statistics. Many phenomena have approximately Normal distributions. Later, we shall see that the distribution of a sum of random variables can be approximated by a Normal distribution (the central limit theorem).</p>
+<p>We say that <span class="math inline">\(X\)</span> has a <strong>standard Normal distribution</strong> if <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma = 1\)</span>. Tradition dictates that a standard Normal random variable is denoted by <span class="math inline">\(Z\)</span>. The PDF and the CDF of a standard Normal are denoted by <span class="math inline">\(\phi(z)\)</span> and <span class="math inline">\(\Phi(z)\)</span>. The PDF is plotted below.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+xx = np.arange(-5, 5, step=0.01)
+
+plt.figure(figsize=(12, 8))
+plt.plot(xx, norm.pdf(xx, loc=0, scale=1))
+plt.title(&#39;Standard Normal PDF&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_29_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>There is no closed-form expression for <span class="math inline">\(\Phi\)</span>. Here are some useful facts:</p>
+<ul>
+<li><p>If <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span> then <span class="math inline">\(Z = (X - \mu) / \sigma \sim N(0, 1)\)</span></p></li>
+<li><p>If <span class="math inline">\(Z \sim N(0, 1)\)</span> then <span class="math inline">\(X = \mu + \sigma Z \sim N(\mu, \sigma^2)\)</span></p></li>
+<li><p>If <span class="math inline">\(X_i \sim N(\mu_i, \sigma_i^2)\)</span>, <span class="math inline">\(i = 1, \dots, n\)</span> are independent then</p>
+<p><span class="math display">\[ \sum_{i=1}^n X_i \sim N \left(\sum_{i=1}^n \mu_u, \sum_{i=1}^n \sigma_i^2 \right) \]</span></p></li>
+</ul>
+<p>It follows from the first fact that if <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span> then</p>
+<p><span class="math display">\[ \mathbb{P}(a &lt; X &lt; b) = \mathbb{P}\left( \frac{a - \mu}{\sigma} &lt; Z &lt; \frac{b - \mu}{\sigma} \right) 
+= \Phi \left( \frac{b - \mu}{\sigma} \right) - \Phi \left( \frac{a - \mu}{\sigma} \right) \]</span></p>
+<p>Thus we can compute any probabilities we want as long as we can compute the CDF <span class="math inline">\(\Phi(z)\)</span> of the standard Normal. All statistical and computing packages will compute <span class="math inline">\(\Phi(z)\)</span> and <span class="math inline">\(\Phi^{-1}(q)\)</span>.</p>
+</div>
+<div id="exponential-distribution" class="section level4">
+<h4>Exponential Distribution</h4>
+<p><span class="math inline">\(X\)</span> has an exponential distribution with parameter <span class="math inline">\(\beta\)</span>, denoted by <span class="math inline">\(X \sim \text{Exp}(\beta)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\beta} e^{-x / \beta}, \quad x &gt; 0 \]</span></p>
+<p>where <span class="math inline">\(\beta &gt; 0\)</span>. The exponential distribution is used to model the lifetimes of electronic components and the waiting times between rare events.</p>
+</div>
+<div id="gamma-distribution" class="section level4">
+<h4>Gamma Distribution</h4>
+<p>For <span class="math inline">\(\alpha &gt; 0\)</span>, the <strong>Gamma function</strong> is defined by <span class="math inline">\(\Gamma(\alpha) = \int_0^\infty y^{\alpha - 1} e^{-y} dy\)</span>. <span class="math inline">\(X\)</span> has a Gamma distribution with parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, denoted by <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\beta^\alpha \Gamma(\alpha)} x^{\alpha - 1} e^{-x / \beta}, \quad x &gt; 0 \]</span></p>
+<p>where <span class="math inline">\(\alpha, \beta &gt; 0\)</span>. The exponential distribution is just a <span class="math inline">\(\text{Gamma}(1, \beta)\)</span> distribution. If <span class="math inline">\(X_i \sim \text{Gamma}(\alpha_i, \beta)\)</span> are independent, then <span class="math inline">\(\sum_{i=1}^n X_i \sim \text{Gamma}\left( \sum_{i=1}^n \alpha_i, \beta \right)\)</span>.</p>
+</div>
+<div id="beta-distribution" class="section level4">
+<h4>Beta Distribution</h4>
+<p><span class="math inline">\(X\)</span> has Beta distribution with parameters <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 0\)</span>, denoted by <span class="math inline">\(X \sim \text{Beta}(\alpha, \beta)\)</span>, if</p>
+<p><span class="math display">\[ f(x) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}, \quad 0 &lt; x &lt; 1\]</span></p>
+</div>
+<div id="t-and-cauchy-distribution" class="section level4">
+<h4><span class="math inline">\(t\)</span> and Cauchy Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(\nu\)</span> degrees of freedom – written <span class="math inline">\(X \sim t_\nu\)</span> – if</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\sqrt{\nu \pi}} \frac{\Gamma\left( \frac{\nu + 1}{2} \right)}{\Gamma\left( \frac{\nu}{2} \right)} \frac{1}{\left(1 + \frac{x^2}{\nu} \right)^{(\nu + 1) / 2}} \]</span></p>
+<p>The <span class="math inline">\(t\)</span> distribution is similar to a Normal but it has thicker tails. In fact, the Normal corresponds to a <span class="math inline">\(t\)</span> with <span class="math inline">\(\nu = \infty\)</span>. The Cauchy distribution is a special case of the <span class="math inline">\(t\)</span> distribution corresponding to <span class="math inline">\(\nu = 1\)</span>. The density is</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\pi (1 + x^2)} \]</span></p>
+</div>
+<div id="the-chi2-distribution" class="section level4">
+<h4>The <span class="math inline">\(\chi^2\)</span> Distribution</h4>
+<p><span class="math inline">\(X\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(p\)</span> degrees of freedom – written <span class="math inline">\(X \sim \chi_p^2\)</span> – if</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\Gamma\left(\frac{p}{2}\right) 2^{\frac{p}{2}}} x^{\frac{p}{2} - 1} e^{-\frac{x}{2}}, \quad x &gt; 0 \]</span></p>
+<p>If <span class="math inline">\(Z_1, Z_2, \dots\)</span> are independent standard Normal random variables then <span class="math inline">\(\sum_{i=1}^p Z_i^2 \sim \chi_p^2\)</span>.</p>
+</div>
+</div>
+<div id="bivariate-distributions" class="section level3">
+<h3>3.5 Bivariate Distributions</h3>
+<p>Given a pair of discrete random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, define the <strong>joint mass function</strong> by <span class="math inline">\(f(x, y) = \mathbb{P}(X = x \text{ and } Y = y)\)</span>. From now on, we write <span class="math inline">\(\mathbb{P}(X = x \text{ and } Y = y)\)</span> as <span class="math inline">\(\mathbb{P}(X = x, Y = y)\)</span>. We write <span class="math inline">\(f\)</span> as <span class="math inline">\(f_{X, Y}\)</span> when we want to be more explicit.</p>
+<p>In the continuous case, we call a function <span class="math inline">\(f(x, y)\)</span> a PDF for the random variables <span class="math inline">\((X, Y)\)</span> if:</p>
+<ul>
+<li><span class="math inline">\(f(x, y) \geq 0\)</span> for all <span class="math inline">\((x, y)\)</span></li>
+<li>$ <em>{-}^</em>{-}^f(x, y) ; dx dy = 1$</li>
+<li>For any set <span class="math inline">\(A \subset \mathbb{R} \times \mathbb{R}\)</span>, <span class="math inline">\(\mathbb{P}((X, Y) \in A) = \int \int_A f(x, y) \; dx dy\)</span></li>
+</ul>
+<p>In the continuous or discrete case, we define the joint CDF as $ F_{X, Y}(x, y) = (X x, Y y) $.</p>
+</div>
+<div id="marginal-distributions" class="section level3">
+<h3>3.6 Marginal Distributions</h3>
+<p>If <span class="math inline">\((X, Y)\)</span> have joint distribution with mass function <span class="math inline">\(f_{X, Y}\)</span>, then the <strong>marginal mass function</strong> for <span class="math inline">\(X\)</span> is defined by</p>
+<p><span class="math display">\[ f_X(x) = \mathbb{P}(X = x) = \sum_y \mathbb{P}(X = x, Y = y) = \sum_y f(x, y) \]</span></p>
+<p>and the <strong>marginal mass function</strong> for <span class="math inline">\(Y\)</span> is defined by</p>
+<p><span class="math display">\[ f_Y(y) = \mathbb{P}(Y = y) = \sum_x \mathbb{P}(X = x, Y = y) = \sum_x f(x, y) \]</span></p>
+<p>For continuous random variables, the marginal densities are</p>
+<p><span class="math display">\[ f_X(x) = \int f(x, y) \; dy \quad \text{and} \quad f_Y(y) = \int f(x, y) \; dx \]</span></p>
+<p>The corresponding marginal CDFs are denoted by <span class="math inline">\(F_X\)</span> and <span class="math inline">\(F_Y\)</span>.</p>
+</div>
+<div id="independent-random-variables" class="section level3">
+<h3>3.7 Independent Random Variables</h3>
+<p>Two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>independent</strong> if, for every <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(X \in A, Y \in B) = \mathbb{P}(X \in A) \mathbb{P}(Y \in B) \]</span></p>
+<p>We write <span class="math inline">\(X \text{ ⫫ } Y\)</span>.</p>
+<p>In principle, to check whether <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent we need to check the equation above for all subsets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>. Fortunately, we have the following result which we state for continuous random variables though it is true for discrete random variables too.</p>
+<p><strong>Theorem 3.30</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have joint PDF <span class="math inline">\(f_{X, Y}\)</span>. Then <span class="math inline">\(X \text{ ⫫ } Y\)</span> if and only if <span class="math inline">\(f_{X, Y}(x, y) = f_X(x) f_Y(y)\)</span> for all values <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p><em>The statement is not rigorous because the density is defined only up to sets of measure 0.</em></p>
+<p>The following result is helpful for verifying independence.</p>
+<p><strong>Theorem 3.33</strong>. Suppose that the range of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is a (possibly infinite) rectangle. If <span class="math inline">\(f(x, y) = g(x) h(y)\)</span> for some functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> (not necessarily probability density functions) then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+</div>
+<div id="conditional-distributions" class="section level3">
+<h3>3.8 Conditional Distributions</h3>
+<p>The <strong>conditional probability mass function</strong> is</p>
+<p><span class="math display">\[ f_{X | Y}(x | y) = \mathbb{P}(X = x | Y = y) = \frac{\mathbb{P}(X = x, Y = y)}{\mathbb{P}(Y = y)} = \frac{f_{X, Y}(x, y)}{f_Y(y)} \]</span></p>
+<p>if <span class="math inline">\(f_Y(y) &gt; 0\)</span>.</p>
+<p>For continuous random variables, the <strong>conditional probability density function</strong> is</p>
+<p><span class="math display">\[ f_{X | Y}(x | y) = \frac{f_{X, Y}(x, y)}{f_Y(y)} \]</span></p>
+<p>assuming that <span class="math inline">\(f_Y(y) &gt; 0\)</span>. Then,</p>
+<p><span class="math display">\[ \mathbb{P}(X \in A | Y = y) = \int_A f_{X | Y}(x | y) \; dx \]</span></p>
+<p><em>We are treading in deep water here. When we compute <span class="math inline">\(\mathbb{P}(X \in A | Y = y)\)</span> in the continuous case we are conditioning on the event <span class="math inline">\(\mathbb{P}(Y = y)\)</span> which has probability 0. We avoid this problem by defining things in terms of the PDF. The fact that this leads to a well-defined theory is proved in more advanced courses. We simply take it as a definition.</em></p>
+</div>
+<div id="multivariate-distributions-and-iid-samples" class="section level3">
+<h3>3.9 Multivariate Distributions and IID Samples</h3>
+<p>Let <span class="math inline">\(X = (X_1, \dots, X_n)\)</span> where the <span class="math inline">\(X_i\)</span>’s are random variables. We call <span class="math inline">\(X\)</span> a <strong>random vector</strong>. Let <span class="math inline">\(f(x_1, \dots, x_n)\)</span> denote the PDF. It is possible to define their marginals, conditionals, etc. much the same way as in the bivariate case. We say that <span class="math inline">\(X_1, \dots, X_n\)</span> are independent if, for every <span class="math inline">\(A_1, \dots, A_n\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(X_1 \in A_1, \dots, X_n \in A_n) = \prod_{i=1}^n \mathbb{P}(X_i \in A_i) \]</span></p>
+<p>It suffices to check that <span class="math inline">\(f(x_1, \dots, x_n) = \prod_{i=1}^n f_{X_i}(x_i)\)</span>. If <span class="math inline">\(X_1, \dots, X_n\)</span> are independent and each has the same marginal distribution with density <span class="math inline">\(f\)</span>, we say that <span class="math inline">\(X_1, \dots, X_n\)</span> are IID (independent and identically distributed). We shall write this as <span class="math inline">\(X_1, \dots, X_n \sim f\)</span> or, in terms of the CDF, <span class="math inline">\(X_1, \dots, X_n \sim F\)</span>. This means that <span class="math inline">\(X_1, \dots, X_n\)</span> are independent draws from the same distribution. We also call <span class="math inline">\(X_1, \dots, X_n\)</span> a <strong>random sample</strong> from <span class="math inline">\(F\)</span>.</p>
+</div>
+<div id="two-important-multivariate-distributions" class="section level3">
+<h3>3.10 Two Important Multivariate Distributions</h3>
+<div id="multinomial-distribution" class="section level4">
+<h4>Multinomial Distribution</h4>
+<p>The multivariate version of the Binomial is called a Multinomial. Consider drawing a ball from an urn which has balls of <span class="math inline">\(k\)</span> different colors. Let <span class="math inline">\(p = (p_1, \dots, p_k)\)</span> where <span class="math inline">\(p_j \geq 0\)</span> and <span class="math inline">\(\sum_{j=1}^k p_j = 1\)</span> and suppose that <span class="math inline">\(p_j\)</span> is the probability of drawing a ball of color <span class="math inline">\(j\)</span>. Draw <span class="math inline">\(n\)</span> times (independent draws with replacement) and let <span class="math inline">\(X = (X_1, \dots, X_k)\)</span>, where <span class="math inline">\(X_j\)</span> is the number of times that color <span class="math inline">\(j\)</span> appears. Hence, <span class="math inline">\(n = \sum_{j=1}^k X_j\)</span>. We say that <span class="math inline">\(X\)</span> has a Multinomial distribution with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>, written <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span>. The probability function is</p>
+<p><span class="math display">\[ f(x) = \binom{n}{x_1 \cdots x_k} p_1^{x_1} \cdots p_k^{x_k} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \binom{n}{x_1 \cdots x_k} = \frac{n!}{x_1! \cdots x_k!} \]</span></p>
+<p><strong>Lemma 3.41</strong>. Suppose that <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> where <span class="math inline">\(X = (X_1, \dots, X_k)\)</span> and <span class="math inline">\(p = (p_1, \dots, p_k)\)</span>. The marginal distribution of <span class="math inline">\(X_j\)</span> is <span class="math inline">\(\text{Binomial}(n, p_j)\)</span>.</p>
+</div>
+<div id="multivariate-normal" class="section level4">
+<h4>Multivariate Normal</h4>
+<p>The univariate Normal had two parameters, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>. In the multivariate vector, <span class="math inline">\(\mu\)</span> is a vector and <span class="math inline">\(\sigma\)</span> is replaced by a matrix <span class="math inline">\(\Sigma\)</span>. To begin, let</p>
+<p><span class="math display">\[ Z = \begin{pmatrix}
+Z_1 \\
+\vdots \\
+Z_k
+\end{pmatrix}\]</span></p>
+<p>where <span class="math inline">\(Z_1, \dots, Z_k \sim N(0, 1)\)</span> are independent. The density of <span class="math inline">\(Z\)</span> is</p>
+<p><span class="math display">\[ f(z) = \prod_{i=1}^k f(z_i) 
+= \frac{1}{(2 \pi)^{k/2}} \exp \left\{ -\frac{1}{2} \sum_{j=1}^k z_j^2 \right\} 
+= \frac{1}{(2 \pi)^{k/2}} \exp \left\{ -\frac{1}{2} z^T z \right\} 
+\]</span></p>
+<p>We say that <span class="math inline">\(Z\)</span> has a standard multivariate Normal distribution, written <span class="math inline">\(Z \sim N(0, I)\)</span> where it is understood that <span class="math inline">\(0\)</span> represents a vector of <span class="math inline">\(k\)</span> zeroes and <span class="math inline">\(I\)</span> is the <span class="math inline">\(k \times k\)</span> identity matrix.</p>
+<p>More generally, a vector <span class="math inline">\(X\)</span> has multivariate Normal distribution, denoted by <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>, if it has density</p>
+<p><span class="math display">\[ f(x; \mu, \Sigma) = \frac{1}{(2 \pi)^{k/2} \text{det}(\Sigma)^{1/2}} \exp \left\{ - \frac{1}{2} (x - \mu)^T \Sigma^{-1} (x - \mu) \right\} \]</span></p>
+<p>where <span class="math inline">\(\text{det}(\cdot)\)</span> denotes the determinant of a matrix, <span class="math inline">\(\mu\)</span> is a vector of length <span class="math inline">\(k\)</span>, and <span class="math inline">\(\Sigma\)</span> is a <span class="math inline">\(k \times k\)</span> symmetric, positive definite matrix. Setting <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\Sigma = I\)</span> gives back the standard Normal.</p>
+<p><em>A matrix <span class="math inline">\(\Sigma\)</span> is positive definite if, for all non-zero vectors <span class="math inline">\(x\)</span>, <span class="math inline">\(x^T \Sigma x &gt; 0\)</span>.</em></p>
+<p>Since <span class="math inline">\(\Sigma\)</span> is symmetric and positive definite, it can be shown that there exists a matrix <span class="math inline">\(\Sigma^{1/2}\)</span> – called the square root of <span class="math inline">\(\Sigma\)</span> – with the following properties:</p>
+<ul>
+<li><span class="math inline">\(\Sigma^{1/2}\)</span> is symmetric</li>
+<li><span class="math inline">\(\Sigma = \Sigma^{1/2} \Sigma^{1/2}\)</span></li>
+<li><span class="math inline">\(\Sigma^{1/2}\Sigma^{-1/2} = \Sigma^{-1/2}\Sigma^{1/2} = I\)</span>, where <span class="math inline">\(\Sigma^{1/2} = \left(\Sigma^{1/2}\right)^{-1}\)</span></li>
+</ul>
+<p><strong>Theorem 3.42</strong>. If <span class="math inline">\(Z \sim N(0, I)\)</span> and <span class="math inline">\(X = \mu + \Sigma^{1/2} Z\)</span> then <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>. Conversely, if <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>, then <span class="math inline">\(\Sigma^{-1/2}(X - \mu) \sim N(0, I)\)</span>.</p>
+<p>Suppose we partition a random Normal vector <span class="math inline">\(X\)</span> as <span class="math inline">\(X = (X_a, X_b)\)</span>, and we similarly partition</p>
+<p><span class="math display">\[ \mu = \begin{pmatrix}\mu_a &amp; \mu_b \end{pmatrix} 
+\quad
+\Sigma = \begin{pmatrix}
+\Sigma_{aa} &amp; \Sigma_{ab} \\
+\Sigma_{ba} &amp; \Sigma_{bb}
+\end{pmatrix} \]</span></p>
+<p><strong>Theorem 3.43</strong>. Let <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>. Then:</p>
+<ol style="list-style-type: decimal">
+<li><p>The marginal distribution of <span class="math inline">\(X_a\)</span> is <span class="math inline">\(X_a \sim N(\mu_a, \Sigma_{aa})\)</span>.</p></li>
+<li><p>The conditional distribution of <span class="math inline">\(X_b\)</span> given <span class="math inline">\(X_a = x_a\)</span> is</p>
+<p><span class="math display">\[  X_b | X_a = x_a \sim N \left( \mu_b + \Sigma_{ba}\Sigma_{aa}^{-1}(x_a - \mu_a), \Sigma_{bb} - \Sigma_{ba} \Sigma_{aa}^{-1} \Sigma_{ab} \right) \]</span></p></li>
+<li><p>If <span class="math inline">\(a\)</span> is a vector then <span class="math inline">\(a^T X \sim N(a^T \mu, a^T \Sigma a)\)</span></p></li>
+<li><p><span class="math inline">\(V = (X - \mu)^T \Sigma^{-1} (X - \mu) \sim \chi_k^2\)</span></p></li>
+</ol>
+</div>
+</div>
+<div id="transformations-of-random-variables" class="section level3">
+<h3>3.11 Transformations of Random Variables</h3>
+<p>Suppose that <span class="math inline">\(X\)</span> is a random variable with PDF <span class="math inline">\(f_X\)</span> and CDF <span class="math inline">\(F_X\)</span>. Let <span class="math inline">\(Y = r(X)\)</span> be a function of <span class="math inline">\(X\)</span>, such as <span class="math inline">\(Y = X^2\)</span> or <span class="math inline">\(Y = e^X\)</span>. We call <span class="math inline">\(Y = r(X)\)</span> a transformation of <span class="math inline">\(X\)</span>. How do we compute the PDF and the CDF of <span class="math inline">\(Y\)</span>? In the discrete case, the answer is easy. The mass function of <span class="math inline">\(Y\)</span> is given by</p>
+<p><span class="math display">\[ f_Y(y) = \mathbb{P}(Y = y) = \mathbb{P}(r(X) = y) = \mathbb{P}(\{x; r(x) = y\}) = \mathbb{P}(X \in r^{-1}(y)) \]</span></p>
+<p>The continuous case is harder. There are 3 steps for finding <span class="math inline">\(f_Y\)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><p>For each <span class="math inline">\(y\)</span>, find the set <span class="math inline">\(A_y = \{ x : r(x) \leq y \}\)</span>.</p></li>
+<li><p>Find the CDF</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(r(X) \leq y) = \mathbb{P}(\{x ; r(x) \leq y \}) = \int_{A_y} f_X(x) dx \]</span></p></li>
+<li><p>The PDF is <span class="math inline">\(f_Y(y) = F&#39;_Y(y)\)</span>.</p></li>
+</ol>
+<p>When <span class="math inline">\(r\)</span> is strictly monotone increasing or strictly monotone decreasing then <span class="math inline">\(r\)</span> has an inverse <span class="math inline">\(s = r^{-1}\)</span> and in this case one can show that</p>
+<p><span class="math display">\[ f_Y(y) = f_X(s(y)) \;\Bigg| \frac{ds(y)}{dy} \Bigg|\]</span></p>
+</div>
+<div id="transformation-of-several-random-variables" class="section level3">
+<h3>3.12 Transformation of Several Random Variables</h3>
+<p>In some cases we are interested in the transformation of several random variables. For example, if <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are given random variables, we might want to know the distribution of <span class="math inline">\(X / Y\)</span>, <span class="math inline">\(X + Y\)</span>, <span class="math inline">\(\max \{ X, Y \}\)</span> or <span class="math inline">\(\min \{ X, Y \}\)</span>. Let <span class="math inline">\(Z = r(X, Y)\)</span>. The steps for finding <span class="math inline">\(f_Z\)</span> are the same as before:</p>
+<ol style="list-style-type: decimal">
+<li>For each <span class="math inline">\(z\)</span>, find the set <span class="math inline">\(A_z = \{ (x, y) : r(x, y) \leq z \}\)</span>.</li>
+<li>Find the CDF</li>
+</ol>
+<p><span class="math display">\[ F_Z(z) = \mathbb{P}(Z \leq z) = \mathbb{P}(r(X, Y) \leq z) = \mathbb{P}(\{ (x, y) : r(x, y) \leq z \})
+  = \int \int_{A_z} f_{X, Y}(x, y) \; dx dy 
+  \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Find <span class="math inline">\(f_Z(z) = F&#39;_Z(z)\)</span>.</li>
+</ol>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>3.13 Technical Appendix</h3>
+<p>Recall that a probability measure <span class="math inline">\(\mathbb{P}\)</span> is defined on a <span class="math inline">\(\sigma\)</span>-field <span class="math inline">\(\mathcal{A}\)</span> of a sample space <span class="math inline">\(\Omega\)</span>. A random variable <span class="math inline">\(X\)</span> is <strong>measurable</strong> map <span class="math inline">\(X : \Omega \rightarrow \mathbb{R}\)</span>. Measurable means that, for every <span class="math inline">\(x\)</span>, ${ : X() x }  $.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>3.14 Exercises</h3>
+<p><strong>Exercise 3.14.1</strong>. Show that</p>
+<p><span class="math display">\[ \mathbb{P}(X = x) = F(x^+) - F(x^-) \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ F(x_2) - F(x_1) = \mathbb{P}(X \leq x_2) - \mathbb{P}(X \leq x_1) \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>By definition, <span class="math inline">\(F(x_2) = \mathbb{P}(X \leq x_2)\)</span> and <span class="math inline">\(F(x_1) = \mathbb{P}(X \leq x_1)\)</span>, so the second equation is immediate.</p>
+<p>Also by definition,</p>
+<p><span class="math display">\[ F(x^+) = \lim_{y \rightarrow x, y &gt; x} F(y) = \lim_{y \rightarrow x, y &gt; x} \mathbb{P}(X \leq y) 
+= \mathbb{P}(\exists y : X \leq y, y &gt; x) 
+= \mathbb{P}(X \leq x) \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ F(x^-) = \lim_{y \rightarrow x, y &lt; x} F(y) = \lim_{y \rightarrow x, y &gt; x} \mathbb{P}(X \leq y) 
+= \mathbb{P}(\exists y : X \leq y, y &lt; x)
+= \mathbb{P}(X &lt; x)
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ F(x^+) - F(x^-) = \mathbb{P}(X \leq x) - \mathbb{P}(X &lt; x) = \mathbb{P}(X(\omega) \in \{x : X(\omega) \leq x \} - \{x: X(\omega) &lt; x \}) = \mathbb{P}(X = x)\]</span></p>
+<p><strong>Exercise 3.14.2</strong>. Let <span class="math inline">\(X\)</span> be such that <span class="math inline">\(\mathbb{P}(X = 2) = \mathbb{P}(X = 3) = 1/10\)</span> and <span class="math inline">\(\mathbb{P}(X = 5) = 8/10\)</span>. Plot the CDF <span class="math inline">\(F\)</span>. Use <span class="math inline">\(F\)</span> to find <span class="math inline">\(\mathbb{P}(2 &lt; X \leq 4.8)\)</span> and <span class="math inline">\(\mathbb{P}(2 \leq X \leq 4.8)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+# Draw horizontal lines
+for xmin, xmax, y in [(0, 2, 0), (2, 3, 1/10), (3, 5, 2/10), (5, 10, 1)]:
+    plt.hlines(y, xmin, xmax, color=&#39;C0&#39;, linestyle=&#39;solid&#39;)
+    
+# Draw vertical lines
+for ymin, ymax, x in [(0, 1/10, 2), (1/10, 2/10, 3), (2/10, 1, 5)]:
+    plt.vlines(x, ymin, ymax, color=&#39;C0&#39;, linestyle=&#39;dashed&#39;)
+    
+# Mark open intervals
+plt.scatter([2, 3, 5], [0, 1/10, 2/10], color=&#39;C0&#39;, facecolor=&#39;white&#39;, zorder=10, linewidth=2)
+
+# Mark close intervals
+plt.scatter([2, 3, 5], [1/10, 2/10, 1], color=&#39;C0&#39;, facecolor=&#39;C0&#39;, zorder=10, linewidth=2)
+
+plt.xlabel(&#39;x&#39;)
+plt.ylabel(&#39;F(x)&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_75_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><span class="math display">\[
+\mathbb{P}(2 &lt; X \leq 4.8) = F(4.8) - F(2) = 0.2 - 0.1 = 0.1
+\quad \text{ and } \quad
+\mathbb{P}(2 \leq X \leq 4.8) = F(4.8) - F(2^{-}) = 0.2 - 0 = 0.2
+\]</span></p>
+<p><strong>Exercise 3.14.3</strong>. Prove Lemma 3.15.</p>
+<p>Let <span class="math inline">\(F\)</span> be the CDF for a random variable <span class="math inline">\(X\)</span>. Then:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbb{P}(X = x) = F(x) - F(x^-)\)</span> where <span class="math inline">\(F(x^-) = \lim_{y \to x} F(y)\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(x &lt; X \leq y) = F(y) - F(x)\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(X &gt; x) = 1 - F(x)\)</span></p></li>
+<li><p>If <span class="math inline">\(X\)</span> is continuous then</p>
+<p><span class="math display">\[ \mathbb{P}(a &lt; X &lt; b) = \mathbb{P}(a \leq X &lt; b) = \mathbb{P}(a &lt; X \leq b) = \mathbb{P}(a \leq X \leq b) \]</span></p></li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<p>Proof of first statement:</p>
+<p><span class="math display">\[ F(x) - F(x^{-}) = \mathbb{P}(X \leq x) - \mathbb{P}(X &lt; x) = \mathbb{P}(\{\omega : X(\omega) \leq x\} - \{\omega : X(\omega) &lt; x\}) = \mathbb{P}(X = x)\]</span></p>
+<p>Proof of second statement:</p>
+<p><span class="math display">\[ \mathbb{P}(x &lt; X \leq y) = \mathbb{P}(\{\omega : X(\omega) \leq y\} - \{\omega : X(\omega) \leq x\}) = \mathbb{P}(X \leq y) - \mathbb{P}(X \leq x) = F(y) - F(x) \]</span></p>
+<p>Proof of third statement:</p>
+<p><span class="math display">\[ \mathbb{P}(X &gt; x) = \mathbb{P}(\{\omega: X(\omega) &gt; x\}) = \mathbb{P}(\{\omega: X(\omega) \leq x\}^c) = 1 - \mathbb{P}(X \leq x) = 1 - F(x) \]</span></p>
+<p>Proof of fourth statement:</p>
+<p>If <span class="math inline">\(F\)</span> is continuous, then <span class="math inline">\(\mathbb{P}(X = a) = \mathbb{P}(X = b) = 0\)</span>, and so</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(a &lt; X \leq b) &amp;= \mathbb{P}(a &lt; X &lt; b) + \mathbb{P}(X = b) = \mathbb{P}(a &lt; X &lt; b) \\
+\mathbb{P}(a \leq X &lt; b) &amp;= \mathbb{P}(X = a) + \mathbb{P}(a &lt; X &lt; b) = \mathbb{P}(a &lt; X &lt; b) \\
+\mathbb{P}(a \leq X \leq b) &amp;= \mathbb{P}(X = a) + \mathbb{P}(a &lt; X &lt; b) + \mathbb{P}(X = b) = \mathbb{P}(a &lt; X &lt; b)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 3.14.4</strong>. Let <span class="math inline">\(X\)</span> have probability density function</p>
+<p><span class="math display">\[ f_X(x) = \begin{cases}
+1/4 &amp;\text{if } 0 &lt; x &lt; 1 \\
+3/8 &amp;\text{if } 3 &lt; x &lt; 5 \\
+0   &amp;\text{otherwise}
+\end{cases} \]</span></p>
+<p><strong>(a)</strong> Find the cumulative distribution function of <span class="math inline">\(X\)</span>.</p>
+<p><strong>(b)</strong> Let <span class="math inline">\(Y = 1 / X\)</span>. Find the probability density function <span class="math inline">\(f_Y(y)\)</span> for <span class="math inline">\(Y\)</span>. Hint: Consider three cases, <span class="math inline">\(\frac{1}{5} \leq y \leq \frac{1}{3}\)</span>, <span class="math inline">\(\frac{1}{3} \leq y \leq 1\)</span>, and <span class="math inline">\(y \geq 1\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p><span class="math display">\[ 
+F_X(x) = \begin{cases}
+0 &amp;\text{if } x \leq 0 \\
+\frac{x}{4} &amp;\text{if } 0 &lt; x &lt; 1 \\
+\frac{1}{4} &amp;\text{if } 1 \leq x &lt; 3 \\
+\frac{1}{4} + \frac{3(x - 3)}{8} &amp;\text{if } 3 \leq x &lt; 5 \\
+1 &amp;\text{if } x \geq 5
+\end{cases} 
+\]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+# Draw horizontal lines
+for xmin, xmax, y in [(-2, 0, 0), (1, 3, 1/4), (5, 7, 1)]:
+    plt.hlines(y, xmin, xmax, color=&#39;C0&#39;, linestyle=&#39;solid&#39;)
+    
+# Draw diagonal lines
+for x1, y1, x2, y2 in [(0, 0, 1, 1/4), (3, 1/4, 5, 1)]:
+    plt.plot([x1, x2], [y1, y2], color=&#39;C0&#39;)
+    
+plt.xlabel(r&#39;$x$&#39;)
+plt.ylabel(r&#39;$F(x)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_81_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong></p>
+<p><span class="math inline">\(\mathbb{P}(X &gt; 0) = 1\)</span>, so <span class="math inline">\(\mathbb{P}(Y &gt; 0) = 1\)</span>. For <span class="math inline">\(y &gt; 0\)</span>, we have:</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}\left(\frac{1}{X} \leq y\right) = \mathbb{P}\left(X \geq \frac{1}{y}\right) = 1 - F_X\left(\frac{1}{y} \right) \]</span></p>
+<p>so</p>
+<p><span class="math display">\[ F_Y(y) = \begin{cases}
+0 &amp;\text{if } y \leq \frac{1}{5} \\
+\frac{15}{8} - \frac{3}{8y} &amp;\text{if } \frac{1}{5} &lt; y \leq \frac{1}{3} \\
+\frac{3}{4} &amp;\text{if } \frac{1}{3} &lt; y \leq 1 \\
+1 - \frac{1}{4y} &amp;\text{if } y &gt; 1
+\end{cases} \]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+# Draw horizontal lines
+for xmin, xmax, y in [(-2, 1/5, 0), (1/3, 1, 3/4)]:
+    plt.hlines(y, xmin, xmax, color=&#39;C0&#39;)
+
+    
+# Draw increasing segments
+yy = np.arange(1/5, 1/3, step=0.001)
+plt.plot(yy, 15/8 - 3/(8 * yy), color=&#39;C0&#39;)
+
+yy = np.arange(1, 8, step=0.01)
+plt.plot(yy, 1 - 1/(4*yy), color=&#39;C0&#39;)
+    
+plt.xlabel(r&#39;$y$&#39;)
+plt.ylabel(r&#39;$F_Y(y)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_83_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The probability density function is <span class="math inline">\(f_y(y) = F&#39;_Y(y)\)</span>, so</p>
+<p><span class="math display">\[ f_Y(y) = \begin{cases}
+0  &amp;\text{if } y \leq \frac{1}{5} \\
+\frac{3}{8y^2} &amp;\text{if } \frac{1}{5} &lt; y \leq \frac{1}{3} \\
+0 &amp;\text{if } \frac{1}{3} &lt; y \leq 1 \\
+\frac{1}{4y^2} &amp;\text{if } y &gt; 1
+\end{cases}\]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+def f_Y(y):
+    return np.where(y &lt;= 1/5, 0, np.where(y &lt;= 1/3, 3/(8 * (y**2)), np.where(y &lt;= 1, 0, 1/(4 * (y**2)))))
+
+plt.figure(figsize=(12, 8))
+
+yy = np.arange(-1, 3, step=0.001)
+plt.plot(yy, f_Y(yy), color=&#39;C0&#39;)
+    
+plt.xlabel(r&#39;$y$&#39;)
+plt.ylabel(r&#39;$f_Y(y)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_85_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 3.14.5</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be discrete random variables. Show that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent if and only if <span class="math inline">\(f_{X, Y}(x, y) = f_X(x) f_Y(y)\)</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p><strong>Solution</strong>. If <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span> take values that have probability mass 0, then trivially <span class="math inline">\(f_{X, Y}(x, y) = 0\)</span> and <span class="math inline">\(f_X(x) f_Y(y) = 0\)</span>, so we only need to consider <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with positive probability mass.</p>
+<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, then <span class="math inline">\(\mathbb{P}(X \in A, Y \in B) = \mathbb{P}(X \in A)\mathbb{P}(Y \in B)\)</span> for all events <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>. In particular, this is true for <span class="math inline">\(A = \{x\}\)</span> and <span class="math inline">\(B = \{ y \}\)</span> for all <span class="math inline">\(x, y\)</span>, proving the implication in one direction.</p>
+<p>In the other direction, we have</p>
+<p><span class="math display">\[ \mathbb{P}(X \in A, Y \in B) = \sum_{x \in A} \sum_{y \in B} f_{X, Y}(x, y) \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ 
+\mathbb{P}(X \in A) = \sum_{x \in A} f_X(x)
+\quad \text{and} \quad
+\mathbb{P}(Y \in B) = \sum_{y \in B} f_Y(y)
+\]</span></p>
+<p>so <span class="math inline">\(f_{X, Y}(x, y) = f_X(x) f_Y(y)\)</span> for all <span class="math inline">\(x, y\)</span> implies that for all <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(X \in A) \mathbb{P}(Y \in B) = \left( \sum_{x \in A} f_X(x) \right) \left( \sum_{y \in B} f_Y(y) \right)
+= \sum_{x \in A} \sum_{y \in B} f_X(x) f_Y(y) = \sum_{x \in A} \sum_{y \in B} f_{X, Y}(x, y) = \mathbb{P}(X \in A, Y \in B) \]</span></p>
+<p>so <span class="math inline">\(X, Y\)</span> are independent, proving the implication in the other direction.</p>
+<p><strong>Exercise 3.14.6</strong>. Let <span class="math inline">\(X\)</span> have distribution <span class="math inline">\(F\)</span> and density function <span class="math inline">\(f\)</span> and let <span class="math inline">\(A\)</span> be a subset of the real line. Let <span class="math inline">\(I_A(x)\)</span> be the indicator function for <span class="math inline">\(A\)</span>:</p>
+<p><span class="math display">\[
+I_A(x) = \begin{cases}
+1 &amp;\text{if } x \in A \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Let <span class="math inline">\(Y = I_A(X)\)</span>. Find an expression for the cumulative distribution function of <span class="math inline">\(Y\)</span>. (Hint: first find the mass function for <span class="math inline">\(Y\)</span>.)</p>
+<p><strong>Solution</strong>. Note that <span class="math inline">\(I_A\)</span> can only return values 0 or 1, so <span class="math inline">\(Y\)</span> is a discrete variable with non-zero probability mass only at values 0 and 1.</p>
+<p>But $(Y = 1) = (x A) = _A f_X(x) dx $, so the PDF for <span class="math inline">\(Y\)</span> is:</p>
+<p><span class="math display">\[ f_Y(y) = \begin{cases}
+\int_A f_X(x) dx &amp;\text{if } y = 1 \\
+1 - \int_A f_X(x) dx &amp;\text{if } y = 0 \\
+0 &amp;\text{otherwise}
+\end{cases} \]</span></p>
+<p>and so the CDF of <span class="math inline">\(Y\)</span> is:</p>
+<p><span class="math display">\[
+F_Y(y) = \begin{cases}
+0 &amp;\text{if } y &lt; 0 \\
+1 - \int_A f_X(x) dx &amp;\text{if } 0 \leq y &lt; 1 \\
+1 &amp;\text{if } y \geq 1
+\end{cases}
+\]</span></p>
+<p><strong>Exercise 3.14.7</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be independent and suppose that each has a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. Let <span class="math inline">\(Z = \min \{ X, Y \}\)</span>. Find the density <span class="math inline">\(f_Z(z)\)</span> for <span class="math inline">\(Z\)</span>. Hint: it might be easier to first find <span class="math inline">\(\mathbb{P}(Z &gt; z)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[1 - F_Z(z) = \mathbb{P}(Z &gt; z) = \mathbb{P}(X &gt; z, Y &gt; z) = (1 - F_X(z)) (1 - F_Y(z)) \]</span></p>
+<p>But <span class="math inline">\(F_X\)</span> and <span class="math inline">\(F_Y\)</span> are both the CDF of the <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution, so</p>
+<p><span class="math display">\[ F_X(x) = \begin{cases}
+0 &amp;\text{if } x \leq 0 \\
+x &amp;\text{if } 0 &lt; x \leq 1 \\
+1 &amp;\text{if } x &gt; 1
+\end{cases} \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ F_Z(z) = \begin{cases}
+0 &amp;\text{if } z \leq 0 \\
+2z - z^2 &amp;\text{if } 0 &lt; z \leq 1 \\
+1 &amp;\text{if } z &gt; 1
+\end{cases} \]</span></p>
+<p>and the PDF is <span class="math inline">\(f_Z(z) = F&#39;_Z(z)\)</span>:</p>
+<p><span class="math display">\[ f_Z(z) = \begin{cases}
+0 &amp;\text{if } z \leq 0 \\
+2 - 2z &amp;\text{if } 0 &lt; z &lt; 1 \\
+0 &amp;\text{if } z &gt; 1
+\end{cases} \]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+def f_Z(z):
+    return np.where(z &lt;= 0, 0, np.where(z &gt;= 1, 0, 2 - 2 * z))
+
+plt.figure(figsize=(12, 8))
+
+zz = np.arange(-0.5, 1.5, step=0.01)
+plt.plot(zz, f_Z(zz), color=&#39;C0&#39;)
+    
+plt.xlabel(r&#39;$z$&#39;)
+plt.ylabel(r&#39;$f_Z(z)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_92_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 3.14.8</strong>. Let <span class="math inline">\(X\)</span> have CDF <span class="math inline">\(F\)</span>. Find the CDF of <span class="math inline">\(X^+ = \max \{0, X\}\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[ F_{X^+}(x) = \mathbb{P}(X^+ \leq x) = \mathbb{P}(0 &lt; x, X &lt; x) = I(0 &lt; x) F_X(x) \]</span></p>
+<p><strong>Exercise 3.14.9</strong>. Let <span class="math inline">\(X \sim \text{Exp}(\beta)\)</span>. Find <span class="math inline">\(F(x)\)</span> and <span class="math inline">\(F^{-1}(q)\)</span>.</p>
+<p><strong>Solution</strong>. Let’s start from the definition for the PDF of the exponential distribution:</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\beta} e^{-x / \beta}, \quad x &gt; 0 \]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[ F(x) = \int_{-\infty}^x f(t) dt = \int_{-\infty}^x \frac{1}{\beta} e^{-t / \beta} dt = \frac{1}{\beta} \beta \left( 1 - e^{-x / \beta} \right) = 1 - e^{-x / \beta} \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ q = 1 - e^{-F^{-1}(q) / \beta} \Longrightarrow F^{-1}(q) = -\beta \log (1 - q) \]</span></p>
+<p><strong>Exercise 3.14.10</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be independent. Show that <span class="math inline">\(g(X)\)</span> is independent of <span class="math inline">\(h(Y)\)</span> where <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> are functions.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(g^{-1}(A) = \{ x : g(x) \in A \}\)</span> and <span class="math inline">\(h^{-1}(B) = \{ y : h(y) \in B \}\)</span>. We have:</p>
+<p><span class="math display">\[\mathbb{P}(g(X) \in A, h(Y) \in B) = \mathbb{P}(X \in g^{-1}(A), Y \in h^{-1}(B)) = \mathbb{P}(X \in g^{-1}(A)) \mathbb{P}(Y \in h^{-1}(B)) = \mathbb{P}(g(X) \in A) \mathbb{P}(h(Y) \in B)\]</span></p>
+<p><strong>Exercise 34.14.11</strong>. Suppose we toss a coin once and let <span class="math inline">\(p\)</span> be the probability of heads. Let <span class="math inline">\(X\)</span> denote the number of heads and <span class="math inline">\(Y\)</span> denote the number of tails.</p>
+<p><strong>(a)</strong> Prove that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are dependent.</p>
+<p><strong>(b)</strong> Let <span class="math inline">\(N \sim \text{Poisson}(\lambda)\)</span> and suppose that we toss a coin <span class="math inline">\(N\)</span> times. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be the number of heads and tails. Show that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> The joint probability mass function is:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc}
+f_{X, Y} &amp; Y = 0 &amp; Y = 1 \\
+\hline
+X = 0 &amp; 0 &amp; 1 - p\\
+X = 1 &amp; p &amp; 0
+\end{array}
+\]</span></p>
+<p>In particular, <span class="math inline">\(f_{X, Y}(1, 0) = p\)</span> and <span class="math inline">\(f_X(1) f_Y(0) = p^2\)</span>, so the events are dependent unless <span class="math inline">\(p \in \{0, 1\}\)</span>.</p>
+<p><strong>(b)</strong> The joint probability mass function is:</p>
+<p><span class="math display">\[ \mathbb{P}(X = x, Y = y) = \mathbb{P}(N = x + y, X = x) = \frac{\lambda^{x+y}e^{-\lambda}}{(x + y)!} \binom{x + y}{x} p^x (1-p)^y  = e^{-\lambda} \left(\frac{\lambda^x}{x!} p^x \right) \left(\frac{\lambda^y}{y!} (1 - p)^y\right) = g(x) h(y)\]</span></p>
+<p>where $g(x) = e^{-}  p^x $, $h(y) =  (1 - p)^y $. The result then follows from theorem 3.33.</p>
+<p><strong>Exercise 3.14.12</strong>. Prove theorem 3.33.</p>
+<p>Suppose that the range of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is a (possibly infinite) rectangle. If <span class="math inline">\(f(x, y) = g(x) h(y)\)</span> for some functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> (not necessarily probability density functions) then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+<p><strong>Solution</strong>.</p>
+<p>Given that <span class="math inline">\(F\)</span> is the joint probability density function of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, then the marginal distributions for <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are</p>
+<p><span class="math display">\[ f_X(x) = \int f(x, y) dy = \int g(x) h(y) dy = g(x) \int h(y) dy = H g(x) \quad \text{ for some constant } H \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ f_Y(y) = \int f(x, y) dx = \int g(x) h(y) dx = h(y) \int g(x) dx = G h(y) \quad \text{ for some constant } G \]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[ f_X(x) f_Y(y) = HG g(x) h(y) = HG f(x, y) \]</span></p>
+<p>Integrating over <span class="math inline">\(x\)</span>, and fixing <span class="math inline">\(y = y_0\)</span> with non-zero probability density,</p>
+<p><span class="math display">\[ \int f_X(x) f_Y(y_0) dx = HG \int f(x, y_0) dx \Longrightarrow f_Y(y_0) = HG f_Y(y_0) \Longrightarrow HG = 1 \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ f_X(x) f_Y(y) = f(x, y) \]</span></p>
+<p>therefore <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
+<p><strong>Exercise 3.14.13</strong>. Let <span class="math inline">\(X \sim N(0, 1)\)</span> and let <span class="math inline">\(Y = e^X\)</span>.</p>
+<p><strong>(a)</strong> Find the PDF for <span class="math inline">\(Y\)</span>. Plot it.</p>
+<p><strong>(b) (Computer Experiment)</strong> Generate a vector <span class="math inline">\(x = (x_1, \dots, x_{10,000})\)</span> consisting of 10,000 random standard Normals. Let <span class="math inline">\(y = (y_1, \dots, y_{10,000})\)</span> where <span class="math inline">\(y_i = e^{x_i}\)</span>. Draw a histogram of <span class="math inline">\(y\)</span> and compare it to the PDF you found in part (a).</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p>Assuming <span class="math inline">\(y &gt; 0\)</span>,</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(X \leq \log y) = \Phi(\log y) \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ f_Y(y) = \frac{d}{dy} \Phi(\log y) = \frac{d \Phi(\log y)}{d \log y} \frac{d \log y}{dy} = \frac{\phi(\log(y))}{y} \]</span></p>
+<p>And, of course, <span class="math inline">\(Y\)</span> can never take a negative value, so</p>
+<p><span class="math display">\[ f_Y(y) = \begin{cases}
+\frac{\phi(\log(y))}{y} &amp;\text{if } y &gt; 0 \\
+0 &amp;\text{otherwise}
+\end{cases} \]</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+yy = np.arange(0.01, 5, step=0.01)
+
+def f_Y(y):
+    return norm.pdf(np.log(y)) / y
+
+plt.figure(figsize=(12, 8))
+plt.plot(yy, f_Y(yy))
+plt.xlabel(r&#39;$y$&#39;)
+plt.ylabel(r&#39;$f_Y(y)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_106_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong></p>
+<pre class="python"><code>np.random.seed(0)
+
+N = 10000
+X = norm.rvs(size=N)
+Y = np.exp(X)
+
+plt.figure(figsize=(12, 8))
+plt.hist(Y, bins=200, density=True, label=&#39;histogram&#39;, histtype=&#39;step&#39;)
+plt.plot(yy, f_Y(yy), label=&#39;true density&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.xlim(0, 5)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_108_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 3.14.14</strong>. Let <span class="math inline">\((X, Y)\)</span> be uniformly distributed on the unit disc <span class="math inline">\(\{ (x, y) : x^2 + y^2 \leq 1 \}\)</span>. Let <span class="math inline">\(R = \sqrt{X^2 + Y^2}\)</span>. Find the CDF and the PDF of <span class="math inline">\(R\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Assuming <span class="math inline">\(r &gt; 0\)</span>,</p>
+<p><span class="math display">\[ F_R(r) = \mathbb{P}(R \leq r) = \mathbb{P}(X^2 + Y^2 \leq r^2) = \int \int_{x^2 + y^2 \leq r^2} f(x, y) dx dy \]</span></p>
+<p>is proportional to the area of a disc of radius <span class="math inline">\(r\)</span>. Since <span class="math inline">\(F_R(1) = 1\)</span>, we have that the CDF is</p>
+<p><span class="math display">\[ 
+F_R(r) = \begin{cases}
+0 &amp;\text{if } r \leq 0 \\
+r^2 &amp;\text{if } 0 &lt; r \leq 1 \\
+1 &amp;\text{if } r &gt; 1
+\end{cases}
+\]</span></p>
+<p>and the PDF is <span class="math inline">\(f_R(r) = F&#39;_R(r)\)</span>:</p>
+<p><span class="math display">\[
+f_R(r) = \begin{cases}
+0 &amp;\text{if } r \leq 0 \\
+2r &amp;\text{if } 0 &lt; r \leq 1 \\
+0 &amp;\text{if } r &gt; 1
+\end{cases}
+\]</span></p>
+<p><strong>Exercise 3.14.15 (A universal random number generator)</strong>. Let <span class="math inline">\(X\)</span> have a continuous, strictly increasing CDF. Let <span class="math inline">\(Y = F(X)\)</span>. Find the density of <span class="math inline">\(Y\)</span>. This is called the probability integral transformation. Now let <span class="math inline">\(U \sim \text{Uniform}(0, 1)\)</span> and let <span class="math inline">\(X = F^{-1}(U)\)</span>. Show that <span class="math inline">\(X \sim F\)</span>. Now write a program that takes <span class="math inline">\(\text{Uniform}(0, 1)\)</span> random variables and generates random variables from a <span class="math inline">\(\text{Exp}(\beta)\)</span> distribution.</p>
+<p><strong>Solution</strong>.</p>
+<p>For <span class="math inline">\(0 \leq y \leq 1\)</span>, the CDF of <span class="math inline">\(Y\)</span> is</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(F(X) \leq y) = \mathbb{P}(X \leq F^{-1}(y)) = F(F^{-1}(y)) = y\]</span></p>
+<p>and so <span class="math inline">\(Y \sim \text{Uniform}(0, 1)\)</span>.</p>
+<p>For <span class="math inline">\(0 \leq q \leq 1\)</span>,</p>
+<p><span class="math display">\[ F_X(q) = \mathbb{P}(X \leq q) = \mathbb{P}(F(X) \leq F(q)) = \mathbb{P}(U \leq F(q)) = F(q) \]</span></p>
+<p>and so <span class="math inline">\(X \sim F\)</span>.</p>
+<p>To create a generator for <span class="math inline">\(\text{Exp}(\beta)\)</span>, let <span class="math inline">\(F\)</span> be the CDF for this distribution,</p>
+<p><span class="math display">\[ F(x) = 1 - e^{-x/\beta} \quad F^{-1}(q) = - \beta \log (1 - q) \]</span></p>
+<pre class="python"><code>import numpy as np
+
+def inv_F(beta):
+    def inv_f_impl(q):
+        return -beta * np.log(1 - q)
+    return inv_f_impl</code></pre>
+<pre class="python"><code>np.random.seed(0)
+
+N = 100000
+U = np.random.uniform(low=0, high=1, size=N)
+
+X = {}
+for beta in [0.1, 1.0, 10.0]:
+    X[beta] = inv_F(beta)(U)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+from scipy.stats import expon
+
+plt.figure(figsize=(12, 8))
+
+for i, beta in enumerate([0.1, 1.0, 10]):
+    ax = plt.subplot(3, 1, (i + 1))
+    ax.hist(X[beta], density=True, bins=100, histtype=&#39;step&#39;, label=&#39;simulation histogram&#39;)
+    xx = np.arange(beta * 0.01, 5 * beta, step=beta * 0.01)
+    ax.plot(xx, expon.pdf(xx, scale=beta), label=&#39;true PDF&#39;)
+    ax.set_xlim(-beta * 0.1, 5 * beta)
+    ax.legend(loc=&#39;upper right&#39;)
+    ax.set_title(&#39;beta = &#39; + str(beta))
+    
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_115_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 3.14.16</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span> and <span class="math inline">\(Y \sim \text{Poisson}(\mu)\)</span> and assume that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent. Show that the distribution of <span class="math inline">\(X\)</span> given that <span class="math inline">\(X + Y = n\)</span> is <span class="math inline">\(\text{Binomial}(n, \pi)\)</span> where <span class="math inline">\(\pi = \lambda / (\lambda + \mu)\)</span>.</p>
+<p>Hint 1: You may use the following fact: If <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span> and <span class="math inline">\(Y \sim \text{Poisson}(\mu)\)</span>, and <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, then <span class="math inline">\(X + Y \sim \text{Poisson}(\mu + \lambda)\)</span>.</p>
+<p>Hint 2: Note that <span class="math inline">\(\{X = x, X + Y = n\} = \{X = x, Y = n - x \}\)</span></p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(X = x | X + Y = n) &amp;= \frac{\mathbb{P}(X = x, X + Y = n)}{\mathbb{P}(X + Y = n)} \\
+&amp;= \frac{\mathbb{P}(X = x, Y = n - x)}{\mathbb{P}(X + Y = n)} \\
+&amp;= \frac{\mathbb{P}(X = x) \mathbb{P}(Y = n - x)}{\mathbb{P}(X + Y = n)} \\
+&amp;= \frac{\frac{\lambda^x e^{-\lambda}}{x!} \frac{\mu^{n - x} e^{-\mu}}{(n - x)!} }{\frac{(\lambda + \mu)^n e^{-(\lambda + \mu)}}{n!}} \\
+&amp;= \frac{n!}{x! (n - x)!} \frac{\lambda^x \mu^{n - x}}{(\lambda + \mu)^n} \\
+&amp;= \binom{n}{x} \left( \frac{\lambda}{\lambda + \mu} \right)^x \left( \frac{\mu}{\lambda + \mu}\right)^{n - x} \\
+&amp;= \binom{n}{x} \pi^x (1 - \pi)^{n - x}
+\end{align}
+\]</span></p>
+<p>and so the result follows.</p>
+<p><strong>Exercise 3.14.17</strong>. Let</p>
+<p><span class="math display">\[
+f_{X, Y}(x, y) = \begin{cases}
+c(x + y^2) &amp;\text{if } 0 \leq x \leq 1 \text{ and }  0 \leq y \leq 1 \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Find <span class="math inline">\(\mathbb{P}\left( X &lt; \frac{1}{2} | Y = \frac{1}{2} \right)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The conditional density <span class="math inline">\(f_{X | Y}(x | y)\)</span> is:</p>
+<p><span class="math display">\[ f_{X|Y}(x | y) = \frac{f_{X, Y}(x, y)}{f_Y(y)} = \frac{f_{X, Y}(x, y)}{\int f_{X, Y}(t, y) dt}
+= \frac{ c(x + y^2) }{\int_0^1 c(t + y^2) dt} =  \frac{ x + y^2 }{\int_0^1 t + y^2 dt} = \frac{x + y^2}{\frac{1}{2} + y^2} \]</span></p>
+<p>In particular, when <span class="math inline">\(y = 1/2\)</span>,</p>
+<p><span class="math display">\[f_{X|Y}(x | 1/2) = \frac{4x + 1}{3}\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{P}\left( X &lt; x \;\Bigg|\; Y = \frac{1}{2} \right) = \int_0^x \frac{4t + 1}{3} dt = \frac{2x^2 + x}{3} \]</span></p>
+<p>so</p>
+<p><span class="math display">\[ \mathbb{P}\left( X &lt; \frac{1}{2} \;\Bigg|\; Y = \frac{1}{2} \right) = \frac{1}{3} \]</span></p>
+<p><strong>Exercie 3.14.18</strong>. Let <span class="math inline">\(X \sim N(3, 16)\)</span>. Solve the following using the Normal table and using a computer package.</p>
+<p><strong>(a)</strong> Find <span class="math inline">\(\mathbb{P}(X &lt; 7)\)</span>.</p>
+<p><strong>(b)</strong> Find <span class="math inline">\(\mathbb{P}(X &gt; -2)\)</span>.</p>
+<p><strong>(c)</strong> Find <span class="math inline">\(x\)</span> such that <span class="math inline">\(\mathbb{P}(X &gt; x) = .05\)</span>.</p>
+<p><strong>(d)</strong> Find <span class="math inline">\(\mathbb{P}(0 \leq X &lt; 4)\)</span>.</p>
+<p><strong>(e)</strong> Find <span class="math inline">\(x\)</span> such that <span class="math inline">\(\mathbb{P}(|X| &gt; |x|) = .05\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Rather than using tables, we will express these in terms of a standard Normal, and use “computer packages” to compute the expression based both on the original Normal and the standard Normal.</p>
+<p><strong>(a)</strong> <span class="math inline">\(\mathbb{P}(X &lt; 7) = \mathbb{P}\left(\frac{X - 3}{16} &lt; \frac{7 - 3}{16} \right) = \mathbb{P}\left(Z &lt; \frac{1}{4} \right) = \Phi\left( \frac{1}{4} \right)\)</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+print(&#39;%.4f&#39; % norm.cdf(1/4))
+print(&#39;%.4f&#39; % norm.cdf(7, loc=3, scale=16))</code></pre>
+<pre><code>0.5987
+0.5987</code></pre>
+<p><strong>(b)</strong> $(X &gt; -2) = ( &gt;  ) = (Z &lt; - ) = 1 - ( - ) $</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+print(&#39;%.4f&#39; % (1 - norm.cdf(-5/16)))
+print(&#39;%.4f&#39; % (1 - norm.cdf(-2, loc=3, scale=16)))</code></pre>
+<pre><code>0.6227
+0.6227</code></pre>
+<p><strong>(c)</strong> <span class="math inline">\(\mathbb{P}(X &gt; x) = .05 \Longleftrightarrow 1 - F_X(x) = .05 \Longleftrightarrow F_X(x) = .95 \Longleftrightarrow x = F_X^{-1}(.95)\)</span></p>
+<p>or: $(X &gt; x) = .05
+( &gt; ) = .05
+ - () = .05
+ = ^{-1}(.95)
+x = 16 ^{-1}(.95) + 3
+$</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+print(&#39;%.4f&#39; % norm.ppf(.95, loc=3, scale=16))
+print(&#39;%.4f&#39; % (16 * norm.ppf(.95) + 3))</code></pre>
+<pre><code>29.3177
+29.3177</code></pre>
+<p><strong>(d)</strong> <span class="math inline">\(\mathbb{P}(0 \leq X &lt; 4) = F_X(4) - F_X(0)\)</span></p>
+<p>or <span class="math inline">\(\mathbb{P}(0 \leq X &lt; 4) = \mathbb{P}\left(\frac{0 - 3}{16} &lt; Z &lt; \frac{4 - 3}{16} \right) = \Phi\left( \frac{1}{16} \right) - \Phi\left( \frac{-3}{16} \right)\)</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+print(&#39;%.4f&#39; % (norm.cdf(4, loc=3, scale=16) - norm.cdf(0, loc=3, scale=16)))
+print(&#39;%.4f&#39; % (norm.cdf(1/16) - norm.cdf(-3/16)))</code></pre>
+<pre><code>0.0993
+0.0993</code></pre>
+<p><strong>(e)</strong> <span class="math inline">\(\mathbb{P}(|X| &gt; |x|) = .05\)</span></p>
+<p>For a constant <span class="math inline">\(c \geq 0\)</span>, we have</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(|X| &gt; c) &amp;= 1 - \mathbb{P}(|X| &lt; c) = 1 - \mathbb{P}(-c &lt; X &lt; -c) \\
+&amp;= 1 - \mathbb{P}\left( -\frac{c - 3}{16} &lt; Z &lt; \frac{c - 3}{16} \right)\\
+&amp;= 1 - \Phi\left( \frac{c - 3}{16} \right) + \Phi\left( -\frac{c - 3}{16} \right) \\
+&amp;= 2 - 2 \Phi\left( \frac{c - 3}{16} \right) = 2 - 2 F_X(c)
+\end{align}
+\]</span></p>
+<p>So we can solve the original equation:</p>
+<p><span class="math display">\[ 2 - 2 F_X(c) = .05 \Longleftrightarrow c = F_X^{-1}(0.975) \]</span></p>
+<p>or</p>
+<p><span class="math display">\[ 2 - 2 \Phi\left( \frac{c - 3}{16} \right) = .05 \Longleftrightarrow c = 16 \Phi^{-1}(0.975) + 3 \]</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+print(&#39;%.4f&#39; % (norm.ppf(0.975, loc=3, scale=16)))
+print(&#39;%.4f&#39; % (16 * norm.ppf(0.975) + 3))</code></pre>
+<pre><code>34.3594
+34.3594</code></pre>
+<p><strong>Exercise 3.14.19</strong>. Prove formula (3.11).</p>
+<p>Given <span class="math inline">\(Y = r(X)\)</span>, when <span class="math inline">\(r\)</span> is strictly monotone increasing or strictly monotone decreasing then <span class="math inline">\(r\)</span> has an inverse <span class="math inline">\(s = r^{-1}\)</span> and in this case one can show that</p>
+<p><span class="math display">\[ f_Y(y) = f_X(s(y)) \;\Bigg| \frac{ds(y)}{dy} \Bigg|\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>Assume <span class="math inline">\(r\)</span> is strictly monotone increasing. Then $  &gt; 0$, and the CDF of <span class="math inline">\(Y\)</span> is</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(r(X) \leq y) = \mathbb{P}(X \leq s(y)) = F_X(s(y)) \]</span></p>
+<p>Derivating over <span class="math inline">\(y\)</span>,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\frac{d}{dy} F_y(y) &amp;= \frac{d F_X(s(y))}{d s(y)} \frac{d s(y)}{dy} \\
+f_Y(y) &amp;= f_X(s(y)) \frac{d s(y)}{dy}
+\end{align}
+\]</span></p>
+<p>For the case when <span class="math inline">\(r\)</span> is strictly monotone decreasing, $  &lt; 0$, and the CDF of <span class="math inline">\(Y\)</span> is</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(r(X) \leq y) = \mathbb{P}(X \geq s(y)) = 1 - F_X(s(y)) \]</span></p>
+<p>Derivating over <span class="math inline">\(y\)</span>,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\frac{d}{dy} F_y(y) &amp;= \frac{d -F_X(s(y))}{d s(y)} \frac{d s(y)}{dy} \\
+f_Y(y) &amp;= -f_X(s(y)) \frac{d s(y)}{dy}
+\end{align}
+\]</span></p>
+<p>and the result follows.</p>
+<p><strong>Exercise 3.14.20</strong>. Let <span class="math inline">\(X, Y \sim \text{Uniform}(0, 1)\)</span> be independent. Find the PDF for <span class="math inline">\(X - Y\)</span> and <span class="math inline">\(X / Y\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The joint density of <span class="math inline">\(X, Y\)</span> is</p>
+<p><span class="math display">\[ 
+f(x, y) = \begin{cases}
+1 &amp;\text{if } 0 \leq x \leq 1, 0 \leq y \leq 1 \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Let <span class="math inline">\(A = X - Y\)</span>. The CDF of <span class="math inline">\(A\)</span> is calculated over the area <span class="math inline">\(A_a = \{ (x, y) : x - y \leq a \}\)</span>:</p>
+<p><span class="math display">\[ F_A(a) = \mathbb{P}(X + Y \leq a) = \int_{A_a} f(x, y)\; dx dy \]</span></p>
+<ul>
+<li><p>If <span class="math inline">\(0 \leq a \leq 1\)</span>, the area is consists of all points in the unit square, othe than the triangle at points <span class="math inline">\((a, 0), (1, 0), (1, 1 - a)\)</span>. Then,</p>
+<p><span class="math display">\[ F_A(a) = 1 - \frac{(1 - a)^2}{2} \]</span></p></li>
+<li><p>If <span class="math inline">\(-1 \leq a \leq 0\)</span>, the area consists of only the points in the triangle <span class="math inline">\((0, 1), (1 + a, 1), (0, -a)\)</span>. Then,</p>
+<p><span class="math display">\[ F_A(a) = \frac{(1 + a)^2}{2} \]</span></p></li>
+</ul>
+<p>Therefore, the PDF is <span class="math inline">\(f_A(a) = F&#39;_A(a)\)</span>, or</p>
+<p><span class="math display">\[ 
+f_A(a) = \begin{cases}
+1 + a &amp;\text{if } -1 &lt; a \leq 0 \\
+1 - a &amp;\text{if } 0 &lt; a \leq 1 \\
+0 &amp;\text{otherwise}
+\end{cases} 
+\]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(8, 4))
+
+ax = plt.subplot(1, 2, 1)
+a = 1/3
+x = [0, a, 1, 1, 0]
+y = [0, 0, 1 - a, 1, 1]
+ax.fill(x, y)
+ax.set_xlim(-0.5, 1.5)
+ax.set_ylim(-0.5, 1.5)
+ax.set_title(&#39;a = 1/3&#39;)
+
+ax = plt.subplot(1, 2, 2)
+a = -1/3
+x = [0, 1+a, 0]
+y = [1, 1, -a]
+ax.fill(x, y)
+ax.set_xlim(-0.5, 1.5)
+ax.set_ylim(-0.5, 1.5)
+ax.set_title(&#39;a = -1/3&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_136_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Let <span class="math inline">\(B = X/Y\)</span>. The CDF of <span class="math inline">\(B\)</span> is calculated over the area <span class="math inline">\(B_b = \left\{ (x, y) : \frac{x}{y} \leq b \right\}\)</span>.</p>
+<p><span class="math display">\[ F_B(a) = \mathbb{P}\left(\frac{X}{Y} \leq b\right) = \int_{B_b} f(x, y)\; dx dy \]</span></p>
+<ul>
+<li><p>If <span class="math inline">\(0 &lt; b \leq 1\)</span>, the relevant area is a triangle with points <span class="math inline">\((0, 0), (1, 0), (1, b)\)</span>. Then,</p>
+<p><span class="math display">\[ F_B(b) = \frac{b}{2} \]</span></p></li>
+<li><p>If <span class="math inline">\(b &gt; 1\)</span>, the relevant area is the unit square minus the triangle with points <span class="math inline">\((0, 0), (0, 1), (1/b, 1)\)</span>. Then,</p>
+<p><span class="math display">\[ F_B(b) = 1 - \frac{1}{2b} \]</span></p></li>
+</ul>
+<p>Therefore, the PDF is <span class="math inline">\(f_B(b) = F&#39;_B(b)\)</span>, or</p>
+<p><span class="math display">\[ 
+f_A(a) = \begin{cases}
+\frac{1}{2} &amp;\text{if } 0 &lt; b \leq 1 \\
+\frac{1}{2b^2} &amp;\text{if } b &gt; 1 \\
+0 &amp;\text{otherwise}
+\end{cases} 
+\]</span></p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(8, 4))
+
+ax = plt.subplot(1, 2, 1)
+b = 1/3
+x = [0, 1, 1]
+y = [0, 0, b]
+ax.fill(x, y)
+ax.set_xlim(-0.5, 1.5)
+ax.set_ylim(-0.5, 1.5)
+ax.set_title(&#39;b = 1/3&#39;)
+
+ax = plt.subplot(1, 2, 2)
+b = 3
+x = [0, 1, 1, 0, 1/b]
+y = [0, 0, 1, 1, 1]
+ax.fill(x, y)
+ax.set_xlim(-0.5, 1.5)
+ax.set_ylim(-0.5, 1.5)
+ax.set_title(&#39;b = 3&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2003%20-%20Random%20Variables_files/Chapter%2003%20-%20Random%20Variables_138_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 3.14.21</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Exp}(\beta)\)</span> be IID. Let <span class="math inline">\(Y = \max \{ X_1, \dots, X_n \}\)</span>. Find the PDF of <span class="math inline">\(Y\)</span>. Hint: <span class="math inline">\(Y \leq y\)</span> if and only if <span class="math inline">\(X_i \leq y\)</span> for <span class="math inline">\(i = 1, \dots, n\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[ \mathbb{P}(Y \leq y) = \mathbb{P}(\forall i, X_i \leq y) = \prod_i \mathbb{P}(X_i \leq y) = \prod_i \left(1 - e^{-y/\beta}\right) = (1 - e^{-y/\beta})^n \]</span></p>
+<p>and so the PDF is <span class="math inline">\(f_Y(y) = F&#39;_Y(y)\)</span>:</p>
+<p><span class="math display">\[ f_Y(y) = \frac{d (1 - e^{-y/\beta})^n}{dy} = \frac{n}{\beta} e^{-x/\beta} (1 - e^{-x/\beta})^{n-1}\]</span></p>
+<p><strong>Exercise 3.14.22</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables. Suppose that <span class="math inline">\(\mathbb{E}(Y | X) = X\)</span>. Show that <span class="math inline">\(\text{Cov}(X, Y) = \mathbb{V}(X)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The covariance is:</p>
+<p><span class="math display">\[ \text{Cov}(X, Y) = \mathbb{E}(XY) - \mathbb{E}(X) \mathbb{E}(Y) \]</span></p>
+<p>and the variance is</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 \]</span></p>
+<p>We aim to prove that both of those expressions have the same value when <span class="math inline">\(\mathbb{E}(Y | X) = X\)</span>.</p>
+<p>Taking the expectaion on <span class="math inline">\(\mathbb{E}(Y | X)\)</span> we get:</p>
+<p><span class="math display">\[ \mathbb{E}(\mathbb{E}(Y | X)) = \int \mathbb{E}(Y = y | X) f_Y(y) \; dy = \int y f_Y(y) = \mathbb{E}(Y) \]</span></p>
+<p>so taking the expectation on both sides of <span class="math inline">\(\mathbb{E}(Y | X) = X\)</span> gives us <span class="math inline">\(\mathbb{E}(Y) = \mathbb{E}(X)\)</span>.</p>
+<p>Now, we have</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(XY) &amp;= \int \mathbb{E}(XY | X = x) f_X(x) dx \\
+&amp;= \int \mathbb{E}(xY | X = x) f_X(x) dx \\
+&amp;= \int x \mathbb{E}(Y | X = x) f_X(x) dx \\
+&amp;= \int x^2 f_X(x) dx \\
+&amp;= \mathbb{E}(X^2)
+\end{align}
+\]</span></p>
+<p>Using <span class="math inline">\(\mathbb{E}(X^2) = \mathbb{E}(XY)\)</span> and <span class="math inline">\(\mathbb{E}(Y) = \mathbb{E}(X)\)</span>, we get the desired result.</p>
+<p><strong>Exercise 3.14.23</strong>. Let <span class="math inline">\(X \sim \text{Uniform}(0, 1)\)</span>. Let <span class="math inline">\(0 &lt; a &lt; b &lt; 1\)</span>. Let</p>
+<p><span class="math display">\[
+Y = \begin{cases}
+1 &amp;\text{if } 0 &lt; x &lt; b \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p>and let</p>
+<p><span class="math display">\[
+Z = \begin{cases}
+1 &amp;\text{if } a &lt; x &lt; 1 \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p><strong>(a)</strong> Are <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> independent? Why / Why not?</p>
+<p><strong>(b)</strong> Find <span class="math inline">\(\mathbb{E}(Y | Z)\)</span>. Hint: what values <span class="math inline">\(z\)</span> can <span class="math inline">\(Z\)</span> take? Now find <span class="math inline">\(\mathbb{E}(Y | Z = z)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> The joint probability mass function for <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> is:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc}
+ &amp; Z = 0 &amp; Z = 1 \\
+\hline
+Y = 0 &amp; 0 &amp; 1 - b \\
+Y = 1 &amp; a &amp; b - a
+\end{array}
+\]</span></p>
+<p>These are not independent; in particular,</p>
+<p><span class="math display">\[ \mathbb{P}(Y = 1, Z = 1) = b - a \neq \mathbb{P}(Y = 1) \mathbb{P}(Z = 1) = b(1 - a) \]</span></p>
+<p>since the equality would only hold if <span class="math inline">\(b = 0\)</span> or <span class="math inline">\(a = 0\)</span>, and the inequality precludes both of these.</p>
+<p><strong>(b)</strong> We have:</p>
+<p><span class="math display">\[ \mathbb{E}(Y | Z = 0) = \frac{\sum_y y f(y, 0)}{f_Z(0)} = \frac{f(1, 0)}{a} = 1 \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{E}(Y | Z = 1) = \frac{\sum_y y f(y, 1)}{f_Z(1)} = \frac{f(1, 1)}{1 - a} = \frac{b - a}{1 - a} \]</span></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

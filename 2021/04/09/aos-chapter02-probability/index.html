@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter02 Probability - A Hugo website</title>
+<meta property="og:title" content="AOS chapter02 Probability - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">27 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter02 Probability</h1>
+
+    
+    <span class="article-date">2021-04-09</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/09/aos-chapter02-probability/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#probability">2. Probability</a>
+<ul>
+<li><a href="#sample-spaces-and-events">2.2 Sample Spaces and Events</a></li>
+<li><a href="#probability-1">2.3 Probability</a></li>
+<li><a href="#probability-on-finite-sample-spaces">2.4 Probability on Finite Sample Spaces</a></li>
+<li><a href="#independent-events">2.5 Independent Events</a></li>
+<li><a href="#conditional-probability">2.6 Conditional Probability</a></li>
+<li><a href="#bayes-theorem">2.7 Bayes’ Theorem</a></li>
+<li><a href="#technical-appendix">2.9 Technical Appendix</a></li>
+<li><a href="#exercises">2.10 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="probability" class="section level2">
+<h2>2. Probability</h2>
+<div id="sample-spaces-and-events" class="section level3">
+<h3>2.2 Sample Spaces and Events</h3>
+<p>The <strong>sample space</strong> <span class="math inline">\(\Omega\)</span> is the set of possible outcomes of an experiment. Points <span class="math inline">\(\omega\)</span> in <span class="math inline">\(\Omega\)</span> are called <strong>sample outcomes</strong> or <strong>realizations</strong>. <strong>Events</strong> are subsets of <span class="math inline">\(\Omega\)</span>.</p>
+<p>Given an event <span class="math inline">\(A\)</span>, let <span class="math inline">\(A^c = \{ \omega \in \Omega : \text{not } (\omega \in A) \}\)</span> denote the complement of <span class="math inline">\(A\)</span>. The complement of <span class="math inline">\(\Omega\)</span> is the empty set <span class="math inline">\(\varnothing\)</span>. The union of events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> is defined as <span class="math inline">\(A \cup B = \{ \omega \in \Omega : \omega \in A \text{ or } \omega \in B \}\)</span>. If <span class="math inline">\(A_1, A_2, \dots\)</span> is a sequence of sets, then</p>
+<p><span class="math display">\[ \cup_{i=1}^\infty A_i = \left\{ \omega \in \Omega : \omega \in A_i \text{ for some } i \right\}\]</span></p>
+<p>The intersection of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> is <span class="math inline">\(A \cap B = \{ \omega \in \Omega : \omega \in A \text{ and } \omega \in B \}\)</span>. If <span class="math inline">\(A_1, A_2, \dots\)</span> is a sequence of sets then</p>
+<p><span class="math display">\[ \cap_{i=1}^\infty A_i = \left\{ \omega \in \Omega : \omega \in A_i \text{ for all } i \right\}\]</span></p>
+<p>Let <span class="math inline">\(A - B = \left\{ \omega \in \Omega : \omega \in A \text{ and not } (\omega \in B) \right\}\)</span>. If every element of <span class="math inline">\(A\)</span> is contained in <span class="math inline">\(B\)</span> we write <span class="math inline">\(A \subset B\)</span> or <span class="math inline">\(B \supset A\)</span>. If <span class="math inline">\(A\)</span> is a finite set, let <span class="math inline">\(|A|\)</span> denote the number of elements in <span class="math inline">\(A\)</span>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>notation</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\Omega\)</span></td>
+<td>sample space</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\omega\)</span></td>
+<td>outcome</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A\)</span></td>
+<td>event (subset of <span class="math inline">\(\Omega\)</span>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\vert A \vert\)</span></td>
+<td>number of elements in <span class="math inline">\(A\)</span> (if finite)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A^c\)</span></td>
+<td>complement of <span class="math inline">\(A\)</span> (not <span class="math inline">\(A\)</span>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A \cup B\)</span></td>
+<td>union (<span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span>)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A \cap B\)</span> or <span class="math inline">\(AB\)</span></td>
+<td>intersection (<span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A - B\)</span></td>
+<td>set difference (points in <span class="math inline">\(A\)</span> but not in <span class="math inline">\(B\)</span>)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A \subset B\)</span></td>
+<td>set inclusion (<span class="math inline">\(A\)</span> is a subset of or equal to <span class="math inline">\(B\)</span>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\varnothing\)</span></td>
+<td>null event (always false)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Omega\)</span></td>
+<td>true event (always true)</td>
+</tr>
+</tbody>
+</table>
+<p>We say that <span class="math inline">\(A_1, A_2, \dots\)</span> are <strong>disjoint</strong> or <strong>mutually exclusive</strong> if <span class="math inline">\(A_i \cap A_j = \varnothing\)</span> whenever <span class="math inline">\(i \neq j\)</span>. A <strong>partition</strong> of <span class="math inline">\(\Omega\)</span> is a sequence of disjoint sets <span class="math inline">\(A_1, A_2, \dots\)</span> such that <span class="math inline">\(\cup_{i=1}^\infty A_i = \Omega\)</span>. Given an event <span class="math inline">\(A\)</span>, define the <strong>indicator function of <span class="math inline">\(A\)</span></strong> by</p>
+<p><span class="math display">\[ I_A(\omega) = I(\omega \in A) = \begin{cases}
+1 &amp;\text{if } \omega \in A \\
+0 &amp;\text{otherwise}
+\end{cases}\]</span></p>
+<p>A sequence of sets <span class="math inline">\(A_1, A_2, \dots\)</span> is <strong>monotone increasing</strong> if <span class="math inline">\(A_1 \subset A_2 \subset \dots\)</span>, and we define <span class="math inline">\(\lim_{n \rightarrow \infty} A_n = \cup_{i=1}^\infty A_i\)</span>. A sequence of sets <span class="math inline">\(A_1, A_2, \dots\)</span> is <strong>monotone decreasing</strong> if <span class="math inline">\(A_1 \supset A_2 \supset \dots\)</span> and then we define <span class="math inline">\(\lim_{n \rightarrow \infty} A_n = \cap_{i=1}^n A_i\)</span>. In either case, we will write <span class="math inline">\(A_n \rightarrow A\)</span>.</p>
+</div>
+<div id="probability-1" class="section level3">
+<h3>2.3 Probability</h3>
+<p>A function <span class="math inline">\(\mathbb{P}\)</span> that assign a real number <span class="math inline">\(\mathbb{P}(A)\)</span> to each event <span class="math inline">\(A\)</span> is a <strong>probability distribution</strong> or a <strong>probability measure</strong> if it satisfies the following three axioms:</p>
+<ul>
+<li><strong>Axiom 1</strong>: <span class="math inline">\(\mathbb{P}(A) \geq 0\)</span> for every <span class="math inline">\(A\)</span></li>
+<li><strong>Axiom 2</strong>: <span class="math inline">\(\mathbb{P}(\Omega) = 1\)</span></li>
+<li><strong>Axiom 3</strong>: If <span class="math inline">\(A_1, A_2, \dots\)</span> are disjoint then</li>
+</ul>
+<p><span class="math display">\[ \mathbb{P} \left( \cup_{i=1}^\infty A_i \right) = \sum_{i=1}^\infty \mathbb{P}(A_i) \]</span></p>
+<p>A few properties that can be derived from the axioms:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{P}(\varnothing) = 0\)</span></li>
+<li><span class="math inline">\(A \subset B \Rightarrow \mathbb{P}(A) \leq \mathbb{P}(B)\)</span></li>
+<li><span class="math inline">\(0 \leq \mathbb{P}(A) \leq 1\)</span></li>
+<li><span class="math inline">\(\mathbb{P}\left(A^c\right) = 1 - \mathbb{P}(A)\)</span></li>
+<li><span class="math inline">\(A \cap B = \varnothing \Rightarrow \mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B)\)</span></li>
+</ul>
+<p><strong>Lemma 2.6</strong>. For any events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span class="math inline">\(\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb(B) - \mathbb{P}(AB)\)</span>.</p>
+<p><strong>Proof</strong>.</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(A \cup B) &amp;= \mathbb{P}\left( (AB^c) \cup (AB) \cup (A^cB) \right) \\
+&amp;= \mathbb{P}(AB^c) + \mathbb{P}(AB) + \mathbb{P}(A^cB) \\
+&amp;= \mathbb{P}(AB^c) + \mathbb{P}(AB) + \mathbb{P}(A^cB) + \mathbb{P}(AB) - \mathbb{P}(AB) \\
+&amp;= \mathbb{P}((AB^c) \cup (AB)) + \mathbb{P}((A^cB) \cup (AB)) - \mathbb{P}(AB) \\
+&amp;= \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(AB)
+\end{align}
+\]</span></p>
+<p><strong>Theorem 2.8 (Continuity of Probabilities)</strong>. If <span class="math inline">\(A_n \rightarrow A\)</span> then <span class="math inline">\(\mathbb{P}(A_n) \rightarrow \mathbb{P}(A)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong>Proof</strong>. Suppose that <span class="math inline">\(A_n\)</span> is monotone increasing, <span class="math inline">\(A_1 \subset A_2 \subset \dots\)</span>. Let <span class="math inline">\(B_1 = A_1\)</span>, and <span class="math inline">\(B_{n+1} = A_{n+1} - A_n\)</span> for <span class="math inline">\(n &gt; 1\)</span>. The <span class="math inline">\(B_i\)</span>’s are disjoint by construction, and <span class="math inline">\(A_n = \cup_{i=1}^n A_i = \cup_{i=1}^n B_i\)</span> for all <span class="math inline">\(n\)</span>. From axiom 3,</p>
+<p><span class="math display">\[ \mathbb{P}(A_n) = \mathbb{P}\left( \cup_{i=1}^n B_i \right)  = \sum_{i=1}^n \mathbb{P}(B_i) \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P}(A_n) = \lim_{n \rightarrow \infty} \sum_{i=1}^n \mathbb{P}(B_n) = \sum_{i=1}^\infty \mathbb{P}(B_n) = \mathbb{P}\left( \cup_{i=1}^\infty B_i \right) = \mathbb{P}(A) \]</span></p>
+</div>
+<div id="probability-on-finite-sample-spaces" class="section level3">
+<h3>2.4 Probability on Finite Sample Spaces</h3>
+<p>If <span class="math inline">\(\Omega\)</span> is finite and each outcome is equally likely, then</p>
+<p><span class="math display">\[ \mathbb{P}(A) = \frac{|A|}{|\Omega|} \]</span></p>
+<p>which is called the <strong>uniform probability distribution</strong>.</p>
+<p>We will need a few facts from counting theory later.</p>
+<ul>
+<li><p>Given <span class="math inline">\(n\)</span> objects, the number of way or ordering these objects is <span class="math inline">\(n! = n \cdot (n - 1) \cdot (n - 2) \cdots 3 \cdot 2 \cdot 1\)</span>. We define <span class="math inline">\(0! = 1\)</span>.</p></li>
+<li><p>We define</p>
+<p><span class="math display">\[ \binom{n}{k} = \frac{n!}{k! (n - k)!} \]</span></p>
+<p>read “n choose k,” which is the number of different ways of choosing <span class="math inline">\(k\)</span> objects from <span class="math inline">\(n\)</span>.</p></li>
+<li><p>Note that choosing a subset <span class="math inline">\(k\)</span> objects can be mapped to choosing the complement set of <span class="math inline">\(n - k\)</span> objects, so</p>
+<p><span class="math display">\[ \binom{n}{k} = \binom{n}{n - k} \]</span></p>
+<p>and that there is only one way of choosing the empty set, so</p>
+<p><span class="math display">\[ \binom{n}{0} = \binom{n}{n} = 1\]</span></p></li>
+</ul>
+</div>
+<div id="independent-events" class="section level3">
+<h3>2.5 Independent Events</h3>
+<ul>
+<li><p>Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if</p>
+<p><span class="math display">\[ \mathbb{P}(AB) = \mathbb{P}(A) \mathbb{P}(B) \]</span></p>
+<p>and we write <span class="math inline">\(A \text{ ⫫ } B\)</span>. A set of events <span class="math inline">\(\{ A_i : i \in I \}\)</span> is independent if</p>
+<p><span class="math display">\[ \mathbb{P} \left( \cap_{i \in J} A_i \right) = \prod_{i \in J} \mathbb{P}(A_i) \]</span></p>
+<p>for every finite subset <span class="math inline">\(J\)</span> of <span class="math inline">\(I\)</span>.</p></li>
+<li><p>Independence is sometimes assumed and sometimes derived.</p></li>
+<li><p>Disjoint events with positive probability are not independent.</p></li>
+</ul>
+</div>
+<div id="conditional-probability" class="section level3">
+<h3>2.6 Conditional Probability</h3>
+<ul>
+<li><p>If <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span> then the <strong>conditional probability</strong> of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> is</p>
+<p><span class="math display">\[ \mathbb{P}(A | B) = \frac{\mathbb{P}(AB)}{\mathbb{P}(B)} \]</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(\cdot | B)\)</span> satisfies the axioms of probability, for fixed <span class="math inline">\(B\)</span>. In general, <span class="math inline">\(\mathbb{P}(A | \cdot)\)</span> does <strong>not</strong> satisfies the axioms of probability for fixed <span class="math inline">\(A\)</span>.</p></li>
+<li><p>In general, <span class="math inline">\(\mathbb{P}(B | A) \neq \mathbb{P}(A | B)\)</span>.</p></li>
+<li><p><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent if and only if <span class="math inline">\(\mathbb{P}(A | B) = \mathbb{P}(A)\)</span>.</p></li>
+</ul>
+</div>
+<div id="bayes-theorem" class="section level3">
+<h3>2.7 Bayes’ Theorem</h3>
+<p><strong>Theorem 2.15 (The Law of Total Probability)</strong>. Let <span class="math inline">\(A_1, \dots, A_k\)</span> be a partition of <span class="math inline">\(\Omega\)</span>. Then, for any event <span class="math inline">\(B\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(B) = \sum_{i=1}^k \mathbb{P}(B | A_i) \mathbb{P}(A_i) \]</span></p>
+<p><strong>Proof</strong>. Let <span class="math inline">\(C_j = BA_j\)</span>. Note that the <span class="math inline">\(C_j\)</span>’s are disjoint and that <span class="math inline">\(B = \cup_{i=1}^k C_j\)</span>. Hence</p>
+<p><span class="math display">\[ \mathbb{P}(B) = \sum_j \mathbb{P}(C_j)  = \sum_j \mathbb{P}(BA_j) = \sum_j \mathbb{P}(B | A_j) \mathbb{P}(A_j) \]</span></p>
+<p><strong>Theorem 2.16 (Bayes’ Theorem)</strong>. Let <span class="math inline">\(A_1, \dots, A_k\)</span> be a partition of <span class="math inline">\(\Omega\)</span> such that <span class="math inline">\(\mathbb{P}(A_i) &gt; 0\)</span> for each <span class="math inline">\(i\)</span>. If <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>, then, for each <span class="math inline">\(i = 1, \dots, k\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(A_i | B) = \frac{\mathbb{P}(B | A_i) \mathbb{P}(A_i)}{\sum_j \mathbb{P}(B | A_j) \mathbb{P}(A_j)} \]</span></p>
+<p>We call <span class="math inline">\(\mathbb{P}(A_i)\)</span> the <strong>prior probability</strong> of <span class="math inline">\(A_i\)</span> and <span class="math inline">\(\mathbb{P}(A_i | B)\)</span> the <strong>posterior probability</strong> of <span class="math inline">\(A_i\)</span>.</p>
+<p><strong>Proof</strong>. We apply the definition of conditional probability twice, followed by the law of total probability:</p>
+<p><span class="math display">\[ \mathbb{P}(A_i | B) = \frac{\mathbb{P}(A_i B) }{\mathbb{P}(B)} = \frac{\mathbb{P}(B | A_i) \mathbb{P}(A_i)}{\mathbb{P}(B)} = \frac{\mathbb{P}(B | A_i) \mathbb{P}(A_i)}{\sum_j \mathbb{P}(B | A_j) \mathbb{P}(A_j)}\]</span></p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>2.9 Technical Appendix</h3>
+<p>Generally, it is not feasible to assign probabilities to all the subsets of a sample space <span class="math inline">\(\Omega\)</span>. Instead, one restricts attention to a set of events called a <strong><span class="math inline">\(\sigma\)</span>-algebra</strong> or a <strong><span class="math inline">\(\sigma\)</span>-field</strong>, which is a class <span class="math inline">\(\mathcal{A}\)</span> that satisfies:</p>
+<ul>
+<li><span class="math inline">\(\varnothing \in \mathcal{A}\)</span></li>
+<li>If <span class="math inline">\(A_1, A_2, \dots \in \mathcal{A}\)</span>, then <span class="math inline">\(\cup_{i=1}^\infty A_i \in \mathcal{A}\)</span></li>
+<li><span class="math inline">\(A \in \mathcal{A}\)</span> implies that <span class="math inline">\(A^c \in \mathcal{A}\)</span></li>
+</ul>
+<p>The sets in <span class="math inline">\(\mathcal{A}\)</span> are said to be <strong>measurable</strong>. We call <span class="math inline">\((\Omega, \mathcal{A})\)</span> a <strong>measurable space</strong>. If <span class="math inline">\(\mathbb{P}\)</span> is a probability measure defined in <span class="math inline">\(\mathcal{A}\)</span> then <span class="math inline">\((\Omega, \mathcal{A}, \mathbb{P})\)</span> is a <strong>probability space</strong>. When <span class="math inline">\(\Omega\)</span> is the real line, we take <span class="math inline">\(\mathcal{A}\)</span> to be the smallest <span class="math inline">\(\sigma\)</span>-field that contains all off the open sets, which is called the <strong>Borel <span class="math inline">\(\sigma\)</span>-field</strong>.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>2.10 Exercises</h3>
+<p><strong>Exercise 2.10.1</strong>. Fill in the details in the proof of Theorem 2.8. Also, prove the monotone decreasing case.</p>
+<p>If <span class="math inline">\(A_n \rightarrow A\)</span> then <span class="math inline">\(\mathbb{P}(A_n) \rightarrow \mathbb{P}(A)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Suppose that <span class="math inline">\(A_n\)</span> is monotone increasing, <span class="math inline">\(A_1 \subset A_2 \subset \dots\)</span>. Let <span class="math inline">\(B_1 = A_1\)</span>, and <span class="math inline">\(B_{i+1} = A_{i+1} - A_i\)</span> for <span class="math inline">\(i &gt; 1\)</span>.</p>
+<p>The <span class="math inline">\(B_i\)</span>’s are disjoint by construction: assuming without loss of generality <span class="math inline">\(i &lt; j\)</span>, <span class="math inline">\(\omega \in B_i \cap B_j\)</span> implies that <span class="math inline">\(\omega\)</span> is in <span class="math inline">\(A_j\)</span>, <span class="math inline">\(A_i\)</span>, but not in <span class="math inline">\(A_{j - 1}\)</span>, <span class="math inline">\(A_{i - 1}\)</span>, where <span class="math inline">\(A_0 = \varnothing\)</span>. In particular, this means that <span class="math inline">\(\omega \in A_{i}\)</span> but not <span class="math inline">\(\omega \in A_{j - 1}\)</span>. Since <span class="math inline">\(A_i \subset A_{j - 1}\)</span>, this implies that no such <span class="math inline">\(\omega\)</span> can satisfy those properties, and so <span class="math inline">\(B_i\)</span> and <span class="math inline">\(B_j\)</span> are disjoint.</p>
+<p>Note that <span class="math inline">\(A_n = \cup_{i=1}^n A_i = \cup_{i=1}^n B_i\)</span> for all <span class="math inline">\(n\)</span>:</p>
+<p><span class="math display">\[ \cup_{i=1}^n B_i = \cup_{i=1}^n (A_i - A_{i - 1}) \subset \cup_{i=1}^n A_i = A_n \]</span></p>
+<p>Also note that <span class="math inline">\(A_n \subset \cup_{i=1}^n B_i\)</span>, since, if <span class="math inline">\(f(\omega) = \min \{ k : \omega \in A_k \}\)</span>, then <span class="math inline">\(\omega \in B_{f(\omega)}\)</span>, so all elements of <span class="math inline">\(A_n\)</span> are in some <span class="math inline">\(B_k\)</span>.</p>
+<p>The proof follows as given; from axiom 3,</p>
+<p><span class="math display">\[ \mathbb{P}(A_n) = \mathbb{P}\left( \cup_{i=1}^n B_i \right) = \sum_{i=1}^n \mathbb{P}(B_i) \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P}(A_n) = \lim_{n \rightarrow \infty} \sum_{i=1}^n \mathbb{P}(B_n) = \sum_{i=1}^\infty \mathbb{P}(B_n) = \mathbb{P}\left( \cup_{i=1}^\infty B_i \right) = \mathbb{P}(A) \]</span></p>
+<p>The monotone decreasing case can be obtained by looking at the complementary series <span class="math inline">\(A_1^c, A_2^c, \dots\)</span>,which is monotone increasing. We get</p>
+<p><span class="math display">\[ 
+\begin{align}
+\lim_{n \rightarrow \infty} \mathbb{P}(A_n^c) &amp;= \mathbb{P}(A^c) \\
+\lim_{n \rightarrow \infty} 1 - \mathbb{P}(A_n^c) &amp;= 1 - \mathbb{P}(A^c) \\
+\lim_{n \rightarrow \infty} \mathbb{P}(A_n) &amp;= \mathbb{P}(A)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 2.10.2</strong>. Prove the statements in equation (2.1).</p>
+<ul>
+<li><span class="math inline">\(\mathbb{P}(\varnothing) = 0\)</span></li>
+<li><span class="math inline">\(A \subset B \Rightarrow \mathbb{P}(A) \leq \mathbb{P}(B)\)</span></li>
+<li><span class="math inline">\(0 \leq \mathbb{P}(A) \leq 1\)</span></li>
+<li><span class="math inline">\(\mathbb{P}\left(A^c\right) = 1 - \mathbb{P}(A)\)</span></li>
+<li><span class="math inline">\(A \cap B = \varnothing \Rightarrow \mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B)\)</span></li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<ul>
+<li><p>By partitioning the event space <span class="math inline">\(\Omega\)</span> into disjoint partitions <span class="math inline">\((\Omega, \varnothing)\)</span> we get</p>
+<p><span class="math display">\[ \mathbb{P}(\Omega) + \mathbb{P}(\varnothing) = \mathbb{P}(\Omega) \Rightarrow \mathbb{P}(\varnothing) = 0 \]</span></p></li>
+<li><p>Assuming <span class="math inline">\(A \subset B\)</span> and partitioning <span class="math inline">\(B\)</span> as <span class="math inline">\((A, B - A)\)</span>, we get</p>
+<p><span class="math display">\[ \mathbb{P}(A) + \mathbb{P}(B - A) = \mathbb{P}(B) \Rightarrow \mathbb{P}(A) \leq \mathbb{P}(B) \]</span></p></li>
+<li><p><span class="math inline">\(\mathbb{P}(A) \geq 0\)</span> from axiom 1. By partitioning <span class="math inline">\(\Omega\)</span> as <span class="math inline">\((A, A^c)\)</span>, we get</p>
+<p><span class="math display">\[ \mathbb{P}(A) + \mathbb{P}(A^c) = \mathbb{P}(\Omega) = 1 \Rightarrow \mathbb{P}(A) \leq 1 \]</span></p></li>
+<li><p>By partitioning <span class="math inline">\(\Omega\)</span> as <span class="math inline">\((A, A^c)\)</span>, we get</p>
+<p><span class="math display">\[ \mathbb{P}(A) + \mathbb{P}(A^c) = \mathbb{P}(\Omega) = 1 \Rightarrow \mathbb{P}(A) = 1 - \mathbb{P}(A^c) \]</span></p></li>
+<li><p>Assuming <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> are disjoint, we partition <span class="math inline">\(A \cup B\)</span> in <span class="math inline">\((A, B)\)</span> and get:</p>
+<p><span class="math display">\[ \mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) \]</span></p></li>
+</ul>
+<p><strong>Exercise 2.10.3</strong>. Let <span class="math inline">\(\Omega\)</span> be a sample space and let <span class="math inline">\(A_1, A_2, \dots\)</span> be events. Define <span class="math inline">\(B_n = \cup_{i=n}^\infty A_i\)</span> and <span class="math inline">\(C_n = \cap_{i=n}^\infty A_i\)</span></p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(B_1 \supset B_2 \supset \cdots\)</span> and <span class="math inline">\(C_1 \subset C_2 \subset \cdots\)</span>.</p>
+<p><strong>(b)</strong> Show that <span class="math inline">\(\omega \in \cap_{n = 1}^\infty B_n\)</span> if and only if <span class="math inline">\(\omega\)</span> belongs to an infinite number of the events <span class="math inline">\(A_1, A_2, \dots\)</span>.</p>
+<p><strong>(c)</strong> Show that <span class="math inline">\(\omega \in \cup_{n = 1}^\infty C_n\)</span> if and only if <span class="math inline">\(\omega\)</span> belongs to all of the events <span class="math inline">\(A_1, A_2, \dots\)</span> except possibly a finite number of those events.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> By construction, <span class="math inline">\(B_{n+1} = A_n \cup B_n\)</span> and so <span class="math inline">\(B_{n + 1} \supset B_n\)</span>. Similarly, <span class="math inline">\(C_{n+1} = A_n \cap C_n\)</span> and so <span class="math inline">\(C_{n + 1} \subset C_n\)</span>.</p>
+<p><strong>(b)</strong></p>
+<ul>
+<li><p>Assume <span class="math inline">\(\omega\)</span> belongs to an infinite number of the events, <span class="math inline">\(\omega \in A_j\)</span> for <span class="math inline">\(j \in J(\omega)\)</span>. Then, for every <span class="math inline">\(n\)</span>, there is a <span class="math inline">\(m \geq n\)</span> such that <span class="math inline">\(m \in J(\omega)\)</span>, and so <span class="math inline">\(\omega \in B_n\)</span> for every <span class="math inline">\(n\)</span>. This implies that <span class="math inline">\(\omega \in \cap_{n = 1}^\infty B_n\)</span>.</p></li>
+<li><p>Assume that <span class="math inline">\(\omega \in \cap_{n = 1}^\infty B_n\)</span>. Then, for every <span class="math inline">\(n\)</span>, <span class="math inline">\(\omega \in B_n\)</span>, so for every <span class="math inline">\(n\)</span> there is a <span class="math inline">\(m \geq n\)</span> such that <span class="math inline">\(\omega \in A_m\)</span>. This implies there is an infinite number of such events <span class="math inline">\(A_m\)</span>.</p></li>
+</ul>
+<p><strong>(c)</strong></p>
+<p>Let’s prove the contrapositive.</p>
+<ul>
+<li>Assume that <span class="math inline">\(\omega\)</span> does not belong to an infinite number of events <span class="math inline">\(A_i\)</span>. Then, for every <span class="math inline">\(n\)</span>, there is a <span class="math inline">\(m \geq\)</span> such that <span class="math inline">\(\omega \in A_m^c\)</span>, and so <span class="math inline">\(\omega\)</span> is not in <span class="math inline">\(C_n\)</span>. Since <span class="math inline">\(\omega\)</span> is not in none of the <span class="math inline">\(C_n\)</span>’s, it is not in the union of all <span class="math inline">\(C_n\)</span>’s either.</li>
+<li>Assume that <span class="math inline">\(\omega\)</span> is not in the union of all <span class="math inline">\(C_n\)</span>. This implies that <span class="math inline">\(\omega\)</span> is is not in any event <span class="math inline">\(C_n\)</span>. This implies that, for every <span class="math inline">\(n\)</span>, there is a <span class="math inline">\(m \geq n\)</span> such that <span class="math inline">\(\omega\)</span> is not in <span class="math inline">\(A_m\)</span>. This implies that there is an infinite number of such events <span class="math inline">\(A_m\)</span>.</li>
+</ul>
+<p><strong>Exercise 2.10.4</strong>. Let <span class="math inline">\(\{ A_i : i \in I \}\)</span> be a collection of events where <span class="math inline">\(I\)</span> is an arbitrary index set. Show that</p>
+<p><span class="math display">\[ \
+\left( \cup_{i \in I} A_i \right)^c = \cap_{i \in I} A_i^c 
+\quad \text{and} \quad
+\left( \cap_{i \in I} A_i \right)^c = \cup_{i \in I} A_i^c 
+\]</span></p>
+<p>Hint: First prove this for <span class="math inline">\(I = \{1, \dots, n\}\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We can prove the result directly by noting that every outcome <span class="math inline">\(\omega\)</span> belongs to or does not belong to both sides of each equality:</p>
+<p><span class="math display">\[ 
+\begin{align}
+&amp; \omega \in \left( \cup_{i \in I} A_i \right)^c \\
+\Longleftrightarrow&amp; \; \text{not }\left( \omega \in \cup_{i \in I} A_i  \right) \\
+\Longleftrightarrow&amp; \; \forall i \in I, \text{not} \left( \omega \in A_i \right) \\
+\Longleftrightarrow&amp; \; \forall i \in I, \omega \in A_i^c \\
+\Longleftrightarrow&amp; \; \omega \in \cap_{i \in I} A_i^c
+\end{align}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \omega \in \left( \cap_{i \in I} A_i \right)^c  \\
+\Longleftrightarrow&amp;\; \text{not }\left( \omega \in \cap_{i \in I} A_i  \right) \\
+\Longleftrightarrow&amp;\; \text{not } \left( \forall i \in I, \omega \in A_i \right) \\
+\Longleftrightarrow&amp;\; \exists i \in I, \text{not } \omega \in A_i \\
+\Longleftrightarrow&amp;\; \exists i \in I, \omega \in A_i^c \\
+\Longleftrightarrow&amp;\; \omega \in \cup_{i \in I} A_i^c 
+\end{align}
+\]</span></p>
+<p><strong>Exercise 2.10.5</strong>. Suppose we toss a fair coin until we get exactly two heads. Describe the sample space <span class="math inline">\(S\)</span>. What is the probability that exactly <span class="math inline">\(k\)</span> tosses are required?</p>
+<p><strong>Solution</strong>. The sample space is a set of coin toss results sequences containing two heads, and ending in heads:</p>
+<p><span class="math display">\[ S = \left\{ (r_1, \dots, r_k) : r_i \in \left\{ \text{head}, \text{tails} \right\} , 
+\Big| \left\{ r_j = \text{head} \right\} \Big|= 2, r_k = \text{head} \right\} \]</span></p>
+<p>The probability of requiring exactly <span class="math inline">\(k\)</span> tosses is 0 if <span class="math inline">\(k &lt; 2\)</span>, as there are no such sequences in the event space.</p>
+<p>The probability of stopping after <span class="math inline">\(k\)</span> tosses is the probability of obtaining exactly 1 head in the first <span class="math inline">\(k - 1\)</span> tosses, in a procedure that would not stop after any number of tosses, followed by the probability of getting a head in the <span class="math inline">\(k\)</span>-th toss. This value is</p>
+<p><span class="math display">\[ \left((k-1) \left(\frac{1}{2}\right)^{k - 1} \right) \left(\frac{1}{2}\right) = \frac{k - 1}{2^k}\]</span></p>
+<p>Note that, besides this combinatorial argument, we can verify that these probabilities do indeed add up to 1:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{1}{1 - x} &amp;= \sum_{k = 0}^\infty x^k \\
+\frac{d}{dx} \frac{1}{1 - x} &amp;= \sum_{k = 0}^\infty \frac{d}{dx} x^k \\
+\frac{1}{(1 - x)^2} &amp;= \sum_{k = 0}^\infty k x^{k - 1} \\
+\frac{x}{(1 - x)^2} &amp;= \sum_{k = 0}^\infty k x^k 
+\end{align}
+\]</span></p>
+<p>so, for <span class="math inline">\(x = 1/2\)</span>, <span class="math inline">\(\sum_{k = 0}^\infty 2^{-k} k = 2\)</span>, and so</p>
+<p><span class="math display">\[ \sum_{k = 0}^\infty \frac{k}{2^{k + 1}} = 1 \]</span></p>
+<p><strong>Exercise 2.10.6</strong>. Let <span class="math inline">\(\Omega = \{1, 2, \dots\}\)</span>. Prove that there does not exist a uniform distribution on <span class="math inline">\(\Omega\)</span>, i.e. if <span class="math inline">\(\mathbb{P}(A) =\mathbb{P}(B)\)</span> whenever <span class="math inline">\(|A| = |B|\)</span> then <span class="math inline">\(\mathbb{P}\)</span> cannot satisfy the axioms of probability.</p>
+<p><strong>Solution</strong>. Assume that such a distribution exists, and let <span class="math inline">\(\mathbb{P}(\{1\}) = p\)</span>. Since the distribution is uniform, the probability associated with any set of size 1 is <span class="math inline">\(p\)</span>, and the probability associated with any set of size <span class="math inline">\(n\)</span> is <span class="math inline">\(np\)</span>.</p>
+<ul>
+<li><p>If <span class="math inline">\(p &gt; 0\)</span>, then a finite set <span class="math inline">\(A\)</span> of size <span class="math inline">\(|A| = \lceil 2 / p \rceil\)</span> would have probability value <span class="math inline">\(\mathbb{P}(A) = \lceil 2 / p \rceil p \geq (2 / p) p = 2\)</span>, which is greater than <span class="math inline">\(1\)</span> – a contradiction.</p></li>
+<li><p>If <span class="math inline">\(p = 0\)</span>, then any finite set <span class="math inline">\(A\)</span> must have <span class="math inline">\(\mathbb{P}(A) = 0\)</span>. But then <span class="math inline">\(\mathbb{P}(\Omega) = \sum_i \mathbb{P}(\{ i \}) = \sum_i 0 = 0\)</span>, instead of <span class="math inline">\(1\)</span> – a contradiction.</p></li>
+</ul>
+<p><strong>Exercise 2.10.7</strong>. Let <span class="math inline">\(A_1, A_2, \dots\)</span> be events. Show that</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cup_{n=1}^\infty A_n \right) \leq \sum_{n=1}^\infty \mathbb{P}(A_n) \]</span></p>
+<p>Hint: Define <span class="math inline">\(B_n = A_n - \cup_{i=1}^{n-1} A_i\)</span>. Then show that the <span class="math inline">\(B_n\)</span> are disjoint and that <span class="math inline">\(\cup_{n=1}^\infty A_n =\cup_{n=1}^\infty B_n\)</span>.</p>
+<p><strong>Solution</strong>. Following the hint, let <span class="math inline">\(B_n = A_n - \cup_{i=1}^{n-1} A_i\)</span>.</p>
+<ul>
+<li>Note that, for <span class="math inline">\(i &lt; j\)</span>, <span class="math inline">\(B_i\)</span> and <span class="math inline">\(B_j\)</span> are disjoint, since all elements of <span class="math inline">\(B_i\)</span> must be elements of <span class="math inline">\(A_i\)</span>, and all elements of <span class="math inline">\(A_i\)</span> are explicitly excluded on the definition of <span class="math inline">\(B_j\)</span>.</li>
+<li>Also note that <span class="math inline">\(\cup_{n=1}^\infty A_n = \cup_{n=1}^\infty B_n\)</span>: <span class="math inline">\(A_n = \cup_{i=1}^n B_i\)</span> by construction, so <span class="math inline">\(\cup_{n=1}^\infty A_n = \cup_{n=1}^\infty \cup_{i=1}^n B_i = \cup_{n=1}^\infty B_n\)</span>, since <span class="math inline">\(B_i \cup B_i = B_i\)</span> and we can include each <span class="math inline">\(B_i\)</span> only once in the expression.</li>
+</ul>
+<p>Now, we have:</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cup_{n=1}^\infty A_n \right) = \mathbb{P}\left( \cup_{n=1}^\infty B_n \right) = \sum_{n=1}^\infty \mathbb{P}(B_n) \leq \sum_{n=1}^\infty \mathbb{P}(A_n) \]</span></p>
+<p>since <span class="math inline">\(B_n \cup \left(\cup_{i=1}^{n-1} A_i\right) = A_n\)</span> and so <span class="math inline">\(\mathbb{P}(B_n) \leq \mathbb{P}(A_n)\)</span> for every <span class="math inline">\(n\)</span>.</p>
+<p><strong>Exercise 2.10.8</strong>. Suppose that <span class="math inline">\(\mathbb{P}(A_i) = 1\)</span> for each <span class="math inline">\(i\)</span>. Prove that</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cap_{i=1}^\infty A_i \right) = 1 \]</span></p>
+<p><strong>Solution</strong>. Using the result from exercise 4,</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cap_{i=1}^\infty A_i \right) = 1 - \mathbb{P}\left(\left( \cap_{i=1}^\infty A_i \right)^c\right)
+= 1 - \mathbb{P}\left( \cup_{i=1}^\infty A_i^c \right)\]</span></p>
+<p>Using the result from exercise 7,</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cup_{i=1}^\infty A_i^c \right) \leq \sum_{i=1}^\infty \mathbb{P}(A_i^c) =  \sum_{i=1}^\infty \left(1 - \mathbb{P}\left( A_i \right) \right) = \sum_{i=1}^\infty 0 = 0 \]</span></p>
+<p>so the equality holds, since a probability is non-negative. Therefore,</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cap_{i=1}^\infty A_i \right) = 1 - \mathbb{P}\left( \cup_{i=1}^\infty A_i^c \right) = 1 - 0 = 1 \]</span></p>
+<p><strong>Exercise 2.10.9</strong>. For fixed <span class="math inline">\(B\)</span> such that <span class="math inline">\(\mathbb{P}(B) &gt; 0\)</span>, show that <span class="math inline">\(\mathbb{P}(\cdot | B)\)</span> satisfies the axioms of probability.</p>
+<p><strong>Solution</strong>.</p>
+<ul>
+<li>Axiom 1: <span class="math inline">\(\mathbb{P}(\cdot | B) = \frac{\mathbb{P}(\cdot B)}{\mathbb{P}(B)} \geq 0\)</span>, since <span class="math inline">\(\mathbb{P}(\cdot B) &gt; 0\)</span>.</li>
+<li>Axiom 2: <span class="math inline">\(\mathbb{P}(\Omega | B) = \frac{\mathbb{P}(\Omega B)}{\mathbb{P}(B)} = \frac{\mathbb{P}(B)}{\mathbb{P}(B)} =1\)</span>.</li>
+<li>Axiom 3: Assuming <span class="math inline">\(A_1, A_2, \dots\)</span> are disjoint,
+<span class="math display">\[ \mathbb{P} \left( \cup_{i=1}^\infty A_i | B \right) = \frac{\mathbb{P} \left( B \left( \cup_{i=1}^\infty A_i \right) \right)}{\mathbb{P}(B)} 
+=  \frac{\mathbb{P}\left( \cup_{i=1}^\infty \left( A_i B \right) \right)}{\mathbb{P}(B)}
+= \frac{\sum_{i=1}^\infty \mathbb{P}(A_i B)}{\mathbb{P}(B)} = \sum_{i=1}^\infty \frac{\mathbb{P}(A_i B)}{\mathbb{P}(B)}
+= \sum_{i=1}^\infty \mathbb{P}(A_i | B)\]</span></li>
+</ul>
+<p><strong>Exercise 2.10.10</strong>. You have probably heard it before. Now you can solve it rigorously. It is called the “Monty Hall Problem.” A prize is placed at random between one of three doors. You pick a door. To be concrete, let’s suppose you always pick door 1. Now Monty Hall chooses one of the other two doors, opens it and shows to you that it is empty. He then gives you the opportunity to keep your door or switch to the other unopened door. Should you stay or switch? Intuition suggests it doesn’t matter. The correct answer is that you should switch. Prove it. It will help to specify the sample space and the relevant events carefully. Thus write <span class="math inline">\(\Omega = \{ (\omega_1, \omega_2) : \omega_i \in \{ 1, 2, 3 \} \}\)</span> where <span class="math inline">\(\omega_1\)</span> is where the prize is and <span class="math inline">\(\omega_2\)</span> is the door Monty opens.</p>
+<p><strong>Solution</strong>. Following the provided notation, the event space is</p>
+<p><span class="math display">\[ \Omega = \{ (1, 2), (1, 3), (2, 3), (3, 2) \} \]</span></p>
+<p>The probability and the reward associated with switching for each outcome are:</p>
+<table>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\omega\)</span></th>
+<th><span class="math inline">\(\mathbb{P}\)</span></th>
+<th><span class="math inline">\(R\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\((1, 2)\)</span></td>
+<td><span class="math inline">\(\frac{1}{3}\frac{1}{2}\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((1, 3)\)</span></td>
+<td><span class="math inline">\(\frac{1}{3}\frac{1}{2}\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((2, 3)\)</span></td>
+<td><span class="math inline">\(\frac{1}{2}\)</span></td>
+<td><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((3, 2)\)</span></td>
+<td><span class="math inline">\(\frac{1}{2}\)</span></td>
+<td><span class="math inline">\(1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Therefore,</p>
+<p><span class="math display">\[\mathbb{P}[ R | \omega_2 = 2 ] = \frac{\mathbb{P}(\{(3, 2)\})}{\mathbb{P}(\{ (3, 2), (1, 2) \})} \frac{\frac{1}{2}}{\frac{1}{2} + \frac{1}{3}\frac{1}{2}} = \frac{2}{3}\]</span></p>
+<p>and, similarly, <span class="math inline">\(\mathbb{P}[ R | \omega_3 = 3 ]\)</span>, and so <span class="math inline">\(\mathbb{P}[R] = \frac{2}{3}\)</span>.</p>
+<p><strong>Exercise 2.10.11</strong>. Suppose that <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent events. Show that <span class="math inline">\(A^c\)</span> and <span class="math inline">\(B^c\)</span> are independent events.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(A^c B^c) &amp;= \mathbb{P}((A \cup B)^c)  = 1 - \mathbb{P}(A \cup B) \\
+&amp;= 1 - \left( \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(AB) \right)  \\
+&amp;= 1 - \mathbb{P}(A) - \mathbb{P}(B) + \mathbb{P}(A) \mathbb{P}(B) \\
+&amp;= 1 - (1 - \mathbb{P}(A^c)) - (1 - \mathbb{P}(B^c)) + (1 - \mathbb{P}(A^c)) (1 - \mathbb{P}(B^c)) \\
+&amp;= \mathbb{P}(A^c) \mathbb{P}(B^c)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 2.10.12</strong>. There are three cards. The first card is green on both sides, the second is red on both sides, and the third is green on one side and red on the other. We choose a card at random and we see one side (also chosen at random). If the side we see is green, what is the probability that the other side is also green? Many people intuitively answer 1/2. Show that the correct answer is 2/3.</p>
+<p><strong>Solution</strong>. There are 6 potential card sides to be chosen, all with equal probability, of which only 3 are green – one belongs to the red / green card, and two belong to the green / green card. The probability that the other side is also green is the probability that the a side on the green / green card was chosen, which is 2 / 3.</p>
+<p><strong>Exercise 2.10.13</strong>. Suppose a fair coin is tossed repeatedly until both a head and a tail have appeared at least once.</p>
+<p><strong>(a)</strong> Describe the sample space <span class="math inline">\(\Omega\)</span>.</p>
+<p><strong>(b)</strong> What is the probability that three tosses will be required?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong>. The sample space consists of the sequence of <span class="math inline">\(k\)</span> identical coin toss results and a coin toss result with the opposite value,</p>
+<p><span class="math display">\[ \Omega = \{ (r_1, \dots, r_k, r_{k+1}) : r_i \in \{ \text{head}, \text{tails} \}, r_1 = \dots = r_k \neq r_{k + 1} \} \]</span></p>
+<p><strong>(b)</strong> Exactly 3 tosses will be required if the first 3 results are <span class="math inline">\((h, h, t)\)</span> or <span class="math inline">\((t, t, h)\)</span>.</p>
+<p>If we map all infinite coin toss sequences to <span class="math inline">\(\Omega\)</span> by truncating it whenever the stop condition occurs, the probability of a (single-outcome) event in <span class="math inline">\(\Omega\)</span> is the same as the probability of all outcomes mapped into it. In particular, the probability of a sequence with its first 3 symbols being a specific sequence is 1/8, and so the probability of the desired outcome is 1/8 + 1/8 = 1/4.</p>
+<p><strong>Exercise 2.10.14</strong>. Show that if <span class="math inline">\(\mathbb{P}(A) = 0\)</span> or <span class="math inline">\(\mathbb{P}(A) = 1\)</span> then <span class="math inline">\(A\)</span> is independent of every other event. Show that if <span class="math inline">\(A\)</span> is independent of itself then <span class="math inline">\(\mathbb{P}(A)\)</span> is either 0 or 1.</p>
+<p><strong>Solution</strong>.</p>
+<p>If <span class="math inline">\(\mathbb{P}(A) = 0\)</span>, then <span class="math inline">\(\mathbb{P}(AB) = \mathbb{P}(A) - \mathbb{P}(A - B) = 0 -\mathbb{P}(A - B) \leq 0\)</span>, and since probabilities are non-negative we must have <span class="math inline">\(\mathbb{P}(AB) = 0\)</span>. Therefore <span class="math inline">\(\mathbb{P}(AB) = \mathbb{P}(A) \mathbb{P}(B) = 0\)</span> for all events <span class="math inline">\(B\)</span>, and <span class="math inline">\(A\)</span> is independent of every other event.</p>
+<p>If <span class="math inline">\(\mathbb{P}(A) = 1\)</span>, then <span class="math inline">\(\mathbb{P}(A^c) = 0\)</span>, and so <span class="math inline">\(A^c\)</span> and <span class="math inline">\(B\)</span> are independent for every other event <span class="math inline">\(B\)</span>. Then, from the result in exercise 10, <span class="math inline">\(A\)</span> is also independent from every other event <span class="math inline">\(B^c\)</span> – which covers all potential events, since every event has a complement.</p>
+<p>If <span class="math inline">\(A\)</span> is independent of itself, <span class="math inline">\(\mathbb{P}(AA) = \mathbb{P}(A) \mathbb{P}(A)\)</span>, so <span class="math inline">\(\mathbb{P}(A) = \mathbb{P}(A)^2\)</span> or <span class="math inline">\(\mathbb{P}(A) ( \mathbb{P}(A) - 1 ) = 0\)</span>. Therefore <span class="math inline">\(\mathbb{P}(A) = 0\)</span> or <span class="math inline">\(\mathbb{P}(A) = 1\)</span>.</p>
+<p><strong>Exercise 2.10.15</strong>. The probability that a child has blue eyes is 1/4. Assume independence between children. Consider a family with 5 children.</p>
+<p><strong>(a)</strong> If it is known that at least one child has blue eyes, what is the probability that at least 3 children have blue eyes?</p>
+<p><strong>(b)</strong> If it is known that the youngest child has blue eyes, what is the probability that at least 3 children have blue eyes?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> Represent the sample space as</p>
+<p><span class="math display">\[ \Omega = \{ (x_1, x_2, x_3, x_4, x_5) : x_i \in \{ 0, 1 \} \} \]</span></p>
+<p>where <span class="math inline">\(x_i = 1\)</span> if the <span class="math inline">\(i-\)</span>th child (youngest to oldest) has blue eyes.</p>
+<ul>
+<li>“At least one child has blue eyes” is the event <span class="math inline">\(A = \Omega - \{ (0, 0, 0, 0, 0) \}\)</span>.<br />
+</li>
+<li>“At least 3 children have blue eyes” is the event <span class="math inline">\(B\)</span> with 3 children with blue eyes, 4 children with blue eyes, or 5 children with blue eyes.</li>
+<li>The intersection of these events is <span class="math inline">\(BA = B\)</span>.</li>
+</ul>
+<p>Let <span class="math inline">\(p = 1/4\)</span> be the probability at a given child will have blue eyes. The desired probability is then:</p>
+<p><span class="math display">\[\mathbb{P}(B | A) = \frac{\mathbb{P}(BA)}{\mathbb{P}(A)} = \frac{
+\binom{5}{3} p^3 (1 - p)^2 + \binom{5}{4} p^4 (1 - p) + \binom{5}{5} p^5
+}{1 - \left(1 - p \right)^5} = \frac{106}{781} \approx 0.1357 \]</span></p>
+<p><strong>(b)</strong></p>
+<ul>
+<li>“The youngest child has blue eyes” is the event <span class="math inline">\(C = \{ \omega = (1, x_2, x_3, x_4, x_5) : \omega \in \Omega \}\)</span>.</li>
+<li>The intersection of events <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> is <span class="math inline">\(BC\)</span>, the set of outcomes starting with 1 and having the other 4 dimensions having 2, 3, or 4 values 1; <span class="math inline">\(BC = \{ \omega = (1, x_2, x_3, x_4, x_5) : \omega \in \Omega, x_2 + x_3 + x_4 + x_5 \geq 2 \}\)</span>.</li>
+</ul>
+<p>The desired probability is then</p>
+<p><span class="math display">\[ \mathbb{P}(B | C) = \frac{\mathbb{P}(BC)}{\mathbb{P}(C)} = \frac{p \left(\binom{4}{2} p^2 (1-p)^2 + \binom{4}{3} p^3 (1 - p) + \binom{4}{4} p^4 \right)}{ p } = \frac{67}{256} \approx 0.2617 \]</span></p>
+<p><strong>Exercise 2.10.16</strong>. Show that</p>
+<p><span class="math display">\[  \mathbb{P}(ABC) = \mathbb{P}(A | BC) \mathbb{P}(B | C) \mathbb{P}(C) \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[ \mathbb{P}(A | BC) \mathbb{P}(B | C) \mathbb{P}(C) = \frac{\mathbb{P}(ABC)}{\mathbb{P}(BC)}  \frac{\mathbb{P}(BC)}{\mathbb{P}(C)} \mathbb{P}(C) = \mathbb{P}(ABC) \]</span></p>
+<p><strong>Exercise 2.10.17</strong>. Suppose <span class="math inline">\(k\)</span> events for a partition of the sample space <span class="math inline">\(\Omega\)</span>, i.e. they are disjoint and <span class="math inline">\(\cup_{i=1}^k A_i = \Omega\)</span>. Assume that <span class="math inline">\(\mathbb{P}(B &gt; 0)\)</span>. Prove that if <span class="math inline">\(\mathbb{P}(A_1 | B) &lt; \mathbb{P}(A_1)\)</span> then <span class="math inline">\(\mathbb{P}(A_i | B) &gt; \mathbb{P}(A_i)\)</span> for some <span class="math inline">\(i = 2, \dots, k\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have</p>
+<p><span class="math display">\[ B = B\Omega = B \left( \cup_{i=1}^k A_i \right) = \cup_{i=1}^k A_i B \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{P}\left( \cup_{i=1}^k A_i B \right) = \mathbb{P}(B) 
+\Longleftrightarrow \sum_{i=1}^k \frac{\mathbb{P}(A_i B)}{\mathbb{P}(B)} = 1
+\Longleftrightarrow \sum_{i=1}^k \mathbb{P}(A_i | B) = 1
+\Longleftrightarrow \sum_{i=1}^k \mathbb{P}(A_i | B) = \sum_{i=1}^k \mathbb{P}(A_i)
+\]</span></p>
+<p>If we assume that <span class="math inline">\(\mathbb{P}(A_i | B) \leq \mathbb{P}(A_i)\)</span> for all <span class="math inline">\(i\)</span> and <span class="math inline">\(\mathbb{P}(A_1 | B) &lt; \mathbb{P}(A_1)\)</span>, then we must have <span class="math inline">\(\sum_{i=1}^k \mathbb{P}(A_i | B) &lt; \sum_{i=1}^k \mathbb{P}(A_i)\)</span>, a contradiction. Therefore the desired statement must hold.</p>
+<p><strong>Exercise 2.10.18</strong>. Suppose that 30% of computer users use a Macintosh, 50% use Windows and 20% use Linux. Suppose that 65% of the Mac users have succumbed to a computer virus, 82% of the Windows users get the virus and 50% of the Linux users get the virus. We select a person at random and learn that her system was infected with the virus. What is the probability that she is a Windows user?</p>
+<p><strong>Solution</strong>. The event space can be described as:</p>
+<table>
+<thead>
+<tr class="header">
+<th>outcome</th>
+<th>probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mac, no virus</td>
+<td>30% * 35%</td>
+</tr>
+<tr class="even">
+<td>Mac, virus</td>
+<td>30% * 65%</td>
+</tr>
+<tr class="odd">
+<td>Windows, no virus</td>
+<td>50% * 18%</td>
+</tr>
+<tr class="even">
+<td>Windows, virus</td>
+<td>50% * 82%</td>
+</tr>
+<tr class="odd">
+<td>Linux, no virus</td>
+<td>20% * 50%</td>
+</tr>
+<tr class="even">
+<td>Linux, virus</td>
+<td>20% * 50%</td>
+</tr>
+</tbody>
+</table>
+<p>The desired conditional probability is</p>
+<p><span class="math display">\[ \mathbb{P}(\text{Windows} | \text{virus}) = \frac{\mathbb{P}(\text{Windows}, \text{virus})}{\mathbb{P}(\text{virus})}
+= \frac{0.50 \cdot 0.82}{0.30 \cdot 0.65 + 0.50 \cdot 0.82 + 0.20 \cdot 0.50} \approx 0.5816
+\]</span></p>
+<p><strong>Exercise 2.10.19</strong>. A box contains 5 coins and each has a different probability of showing heads. Let <span class="math inline">\(p_1, \dots, p_5\)</span> denote the probability of heads on each coin. Suppose that</p>
+<p><span class="math display">\[ p_1 = 0, \quad p_2 = 1/4, \quad p_3 = 1/2, \quad p_4 = 3/4, \quad \text{and } p_5 = 1\]</span></p>
+<p>Let <span class="math inline">\(H\)</span> denote “heads is obtained” and let <span class="math inline">\(C_i\)</span> denote the event that coin <span class="math inline">\(i\)</span> is selected.</p>
+<p><strong>(a)</strong> Select a coin at random and toss it. Suppose a head is obtained. What is the posterior probability that coin <span class="math inline">\(i\)</span> was selected (<span class="math inline">\(i = 1, \dots, 5\)</span>)? In other words, find <span class="math inline">\(\mathbb{P}(C_i | H)\)</span> for <span class="math inline">\(i = 1, \dots, 5\)</span>.</p>
+<p><strong>(b)</strong> Toss the coin again. What is the probability of another head? In other words find <span class="math inline">\(\mathbb{P}(H_2 | H_1)\)</span> where <span class="math inline">\(H_j\)</span> means “heads on toss <span class="math inline">\(j\)</span>.”</p>
+<p><strong>(c)</strong> Find <span class="math inline">\(\mathbb{P}(C_i | B_4)\)</span> where <span class="math inline">\(B_4\)</span> means “first head is obtained on toss 4.”</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> We have:</p>
+<p><span class="math display">\[ \mathbb{P}(C_i | H) = \frac{\mathbb{P}(C_i H)}{\mathbb{P}(H)} = \frac{\mathbb{P}(C_i H)}{\sum_j \mathbb{P}(C_j H)} = \frac{\mathbb{P}(C_i)\mathbb{P}(H | C_i)}{ \sum_j \mathbb{P}(C_j)\mathbb{P}(H | C_j)}\]</span></p>
+<p>Assuming that the coin selection is uniformly random, <span class="math inline">\(\mathbb{P}(C_i) = 1/5\)</span> for <span class="math inline">\(i = 1, \dots, 5\)</span>, and the above simplifies to</p>
+<p><span class="math display">\[ \frac{\mathbb{P}(H | C_i)}{ \sum_j \mathbb{P}(H | C_j)} = \frac{p_i}{\sum_j p_j}\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[ \mathbb{P}(C_1 | H) = 0
+\quad
+\mathbb{P}(C_2 | H) = 1/10
+\quad
+\mathbb{P}(C_3 | H) = 1/5
+\quad
+\mathbb{P}(C_4 | H) = 3/10
+\quad
+\mathbb{P}(C_5 | H) = 2/5
+\]</span></p>
+<p><strong>(b)</strong> We have:</p>
+<p><span class="math display">\[ \mathbb{P}(H_2 | H_1) = \frac{\mathbb{P}(H_2 H_1) }{\mathbb{P}(H_1) } = \frac{\sum_j \mathbb{P}(C_j H_1 H_2)}{\sum_j \mathbb{P}(C_j H_1)} = \frac{\sum_j (1/5) p_j^2}{\sum_j (1/5) p_j} = \frac{3}{16} \]</span></p>
+<p><strong>(c)</strong> We have:</p>
+<p><span class="math display">\[ \mathbb{P}(C_i | B_4) = \frac{\mathbb{P}(C_i B_4)}{\mathbb{P}(B_4)}= \frac{\mathbb{P}(C_i B_4)}{\sum_j \mathbb{P}(C_j B_4)}\]</span></p>
+<p>But <span class="math inline">\(\mathbb{P}(C_i B_4) = (1/5) (1 - p_i)^3 p_i\)</span> – selecting coin <span class="math inline">\(i\)</span>, then obtaining 3 tails followed by a head on that coin – so</p>
+<p><span class="math display">\[
+\mathbb{P}(C_1 | B_4) = 0
+\quad
+\mathbb{P}(C_2 | B_4) = \frac{27}{46}
+\quad
+\mathbb{P}(C_3 | B_4) = \frac{8}{23}
+\quad
+\mathbb{P}(C_4 | B_4) = \frac{3}{46}
+\quad
+\mathbb{P}(C_5 | B_4) = 0
+\]</span></p>
+<p><strong>Exercise 2.10.20 (Computer Experiment)</strong>. Suppose a coin has probability <span class="math inline">\(p\)</span> of falling heads. If we flip the coin many times, we would expect the proportion of heads to be near <span class="math inline">\(p\)</span>. We will make this formal later. Take <span class="math inline">\(p = .3\)</span> and <span class="math inline">\(n = 1000\)</span> and simulate <span class="math inline">\(n\)</span> coin flips. Plot the proportion of heads as a function of <span class="math inline">\(n\)</span>. Repeat for <span class="math inline">\(p = .03\)</span>.</p>
+<pre class="python"><code>import numpy as np
+
+np.random.seed(0)
+
+n = 1000
+X1 = np.where(np.random.uniform(low=0, high=1, size=n) &lt; 0.3, 1, 0) 
+X2 = np.where(np.random.uniform(low=0, high=1, size=n) &lt; 0.03, 1, 0) </code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(1, n + 1)
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, np.cumsum(X1) / nn, label=&#39;p = 0.3&#39;)
+plt.plot(nn, np.cumsum(X2) / nn, label=&#39;p = 0.03&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2002%20-%20Probability_files/Chapter%2002%20-%20Probability_73_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 2.10.21 (Computer Experiment)</strong>. Suppose we flip a coin <span class="math inline">\(n\)</span> times and let <span class="math inline">\(p\)</span> denote the probability of heads. Let <span class="math inline">\(X\)</span> be the number of heads. We call <span class="math inline">\(X\)</span> a binomial random variable which is discussed in the next chapter. Intuition suggests that <span class="math inline">\(X\)</span> will be close to <span class="math inline">\(np\)</span>. To see if this is true, we can repeat this experiment many times and average the <span class="math inline">\(X\)</span> values. Carry out a simulation and compare the averages of the <span class="math inline">\(X\)</span>’s to <span class="math inline">\(np\)</span>. Try this for <span class="math inline">\(p = .3\)</span> and <span class="math inline">\(n = 10, 100, 1000\)</span>.</p>
+<pre class="python"><code>import numpy as np
+
+B = 50000
+
+np.random.seed(0)
+
+X1 = np.random.binomial(n=10, p=0.3, size=B)
+X2 = np.random.binomial(n=100, p=0.3, size=B)
+X3 = np.random.binomial(n=1000, p=0.3, size=B)</code></pre>
+<pre class="python"><code>print(&#39;X1 mean: %.3f&#39; % X1.mean())
+print(&#39;X1 np:   %.3f&#39; % (0.3 * 10))
+print()
+print(&#39;X2 mean: %.3f&#39; % X2.mean())
+print(&#39;X2 np:   %.3f&#39; % (0.3 * 100))
+print()
+print(&#39;X3 mean: %.3f&#39; % X3.mean())
+print(&#39;X3 np:   %.3f&#39; % (0.3 * 1000))</code></pre>
+<pre><code>X1 mean: 2.989
+X1 np:   3.000
+
+X2 mean: 30.023
+X2 np:   30.000
+
+X3 mean: 299.903
+X3 np:   300.000</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+ax = plt.subplot(3, 1, 1)
+ax.hist(X1, density=True, bins=100, label=&#39;histogram&#39;, color=&#39;C0&#39;)
+ax.vlines(X1.mean(), ymin=0, ymax=5, label=r&#39;$\overline{X}$&#39;, color=&#39;C1&#39;)
+ax.vlines(0.3 * 10, ymin=0, ymax=5, label=r&#39;$np$&#39;, color=&#39;C2&#39;)
+ax.legend(loc=&#39;upper right&#39;)
+ax.set_title(&#39;n = 10&#39;)
+
+ax = plt.subplot(3, 1, 2)
+ax.hist(X2, density=True, bins=100, label=&#39;histogram&#39;, color=&#39;C0&#39;)
+ax.vlines(X2.mean(), ymin=0, ymax=0.5, label=r&#39;$\overline{X}$&#39;, color=&#39;C1&#39;)
+ax.vlines(0.3 * 100, ymin=0, ymax=0.5, label=r&#39;$np$&#39;, color=&#39;C2&#39;)
+ax.legend(loc=&#39;upper right&#39;)
+ax.set_title(&#39;n = 100&#39;)
+
+ax = plt.subplot(3, 1, 3)
+ax.hist(X3, density=True, bins=100, label=&#39;histogram&#39;, color=&#39;C0&#39;)
+ax.vlines(X3.mean(), ymin=0, ymax=0.05, label=r&#39;$\overline{X}$&#39;, color=&#39;C1&#39;)
+ax.vlines(0.3 * 1000, ymin=0, ymax=0.05, label=r&#39;$np$&#39;, color=&#39;C2&#39;)
+ax.legend(loc=&#39;upper right&#39;)
+ax.set_title(&#39;n = 1000&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2002%20-%20Probability_files/Chapter%2002%20-%20Probability_77_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 2.10.22 (Computer Experiment)</strong>. Here we will get some experience simulating conditional probabilities. Consider tossing a fair die. Let <span class="math inline">\(A = \{2, 4, 6\}\)</span> and <span class="math inline">\(B = \{1, 2, 3, 4\}\)</span>. Then <span class="math inline">\(\mathbb{P}(A) = 1/2\)</span>, <span class="math inline">\(\mathbb{P}(B) = 2/3\)</span> and <span class="math inline">\(\mathbb{P}(AB) = 1/3\)</span>. Since <span class="math inline">\(\mathbb{P}(AB) = \mathbb{P}(A) \mathbb{P}(B)\)</span>, the events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. Simulate draws from the sample space and verify that <span class="math inline">\(\hat{P}(AB) = \hat{P}(A) \hat{P}(B)\)</span> where <span class="math inline">\(\hat{P}\)</span> is the proportion of times an event occurred in the simulation. Now find two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> that are not independent. Compute <span class="math inline">\(\hat{P}(A)\)</span>, <span class="math inline">\(\hat{P}(B)\)</span> and <span class="math inline">\(\hat{P}(AB)\)</span>. Compare the calculated values to their theoretical values. Report your results and interpret.</p>
+<pre class="python"><code>import numpy as np
+
+np.random.seed(0)
+
+B = 10000
+results = np.random.randint(low=1, high=7, size=B)</code></pre>
+<pre class="python"><code>results</code></pre>
+<pre><code>array([5, 6, 1, ..., 2, 1, 6])</code></pre>
+<pre class="python"><code>A_hat = np.isin(results, [2, 4, 6])
+B_hat = np.isin(results, [1, 2, 3, 4])
+AB_hat = np.isin(results, [2, 4])</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(1, B + 1)
+
+
+f, (a0, a1) = plt.subplots(2, 1, gridspec_kw={&#39;height_ratios&#39;: [3, 1]}, figsize=(12, 8))
+
+a0.plot(nn, np.cumsum(A_hat) / nn, label=r&#39;$\hat{P}(A)$&#39;)
+a0.plot(nn, np.cumsum(B_hat) / nn, label=r&#39;$\hat{P}(B)$&#39;)
+a0.plot(nn, np.cumsum(AB_hat) / nn, label=r&#39;$\hat{P}(AB)$&#39;)
+a0.plot(nn, np.cumsum(A_hat) * np.cumsum(B_hat) / (nn * nn), label=r&#39;$\hat{P}(A) \hat{P}(B)$&#39;)
+a0.legend(loc=&#39;upper right&#39;)
+
+a1.plot(nn, np.cumsum(A_hat) * np.cumsum(B_hat) / (nn * nn) - np.cumsum(AB_hat) / nn, 
+         label=r&#39;$\hat{P}(A) \hat{P}(B)- \hat{P}(AB)$&#39;, color=&#39;purple&#39;)
+a1.legend(loc=&#39;upper right&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2002%20-%20Probability_files/Chapter%2002%20-%20Probability_82_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>For our own choice of non-independent events, let <span class="math inline">\(A = \{ 2, 4, 6\}\)</span> and <span class="math inline">\(B = \{2, 4, 5\}\)</span>. Then <span class="math inline">\(\mathbb{P}(A) = \mathbb{P}(B) = 1/2\)</span> but <span class="math inline">\(\mathbb{P}(AB) = 1/3\)</span>.</p>
+<pre class="python"><code>A_hat = np.isin(results, [2, 4, 6])
+B_hat = np.isin(results, [2, 4, 5])
+AB_hat = np.isin(results, [2, 4])</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(1, B + 1)
+
+
+f, (a0, a1) = plt.subplots(2, 1, gridspec_kw={&#39;height_ratios&#39;: [3, 1]}, figsize=(12, 8))
+
+a0.plot(nn, np.cumsum(A_hat) / nn, label=r&#39;$\hat{P}(A)$&#39;)
+a0.plot(nn, np.cumsum(B_hat) / nn, label=r&#39;$\hat{P}(B)$&#39;)
+a0.plot(nn, np.cumsum(AB_hat) / nn, label=r&#39;$\hat{P}(AB)$&#39;)
+a0.plot(nn, np.cumsum(A_hat) * np.cumsum(B_hat) / (nn * nn), label=r&#39;$\hat{P}(A) \hat{P}(B)$&#39;)
+a0.legend(loc=&#39;upper right&#39;)
+
+a1.plot(nn, np.cumsum(A_hat) * np.cumsum(B_hat) / (nn * nn) - np.cumsum(AB_hat) / nn, 
+         label=r&#39;$\hat{P}(A) \hat{P}(B)- \hat{P}(AB)$&#39;, color=&#39;purple&#39;)
+a1.legend(loc=&#39;upper right&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2002%20-%20Probability_files/Chapter%2002%20-%20Probability_85_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>As noted, the estimates converges to the theoretical value – and the product of the estimates only converge to the estimate of the joint event in the scenario where the events are independent.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

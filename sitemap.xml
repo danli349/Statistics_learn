@@ -4,12 +4,47 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2021/04/11/aos-chapter03-random-variables/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/distribution/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/statistics/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2021/04/09/aos-chapter02-probability/</loc>
+    <lastmod>2021-04-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/inference/</loc>
+    <lastmod>2021-04-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -18,22 +53,7 @@
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/regression/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/statistics/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2021-04-03T00:00:00+00:00</lastmod>
   </url>
   
@@ -243,11 +263,6 @@
   </url>
   
   <url>
-    <loc>/tags/inference/</loc>
-    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/categories/inferences/</loc>
     <lastmod>2020-10-29T00:00:00+00:00</lastmod>
   </url>
@@ -280,11 +295,6 @@
   <url>
     <loc>/2020/09/25/inferences-about-the-mean/</loc>
     <lastmod>2020-09-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/distribution/</loc>
-    <lastmod>2020-09-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
