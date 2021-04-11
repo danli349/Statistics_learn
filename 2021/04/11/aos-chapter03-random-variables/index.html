@@ -307,7 +307,7 @@ plt.show()</code></pre>
 <p>In the continuous case, we call a function <span class="math inline">\(f(x, y)\)</span> a PDF for the random variables <span class="math inline">\((X, Y)\)</span> if:</p>
 <ul>
 <li><span class="math inline">\(f(x, y) \geq 0\)</span> for all <span class="math inline">\((x, y)\)</span></li>
-<li>$ <em>{-}^</em>{-}^f(x, y) ; dx dy = 1$</li>
+<li><span class="math inline">\(\int_{-\infty}^\infty \int_{-\infty}^\infty f(x, y) \; dx dy = 1\)</span></li>
 <li>For any set <span class="math inline">\(A \subset \mathbb{R} \times \mathbb{R}\)</span>, <span class="math inline">\(\mathbb{P}((X, Y) \in A) = \int \int_A f(x, y) \; dx dy\)</span></li>
 </ul>
 <p>In the continuous or discrete case, we define the joint CDF as $ F_{X, Y}(x, y) = (X x, Y y) $.</p>
@@ -720,7 +720,8 @@ X = 1 &amp; p &amp; 0
 <p>In particular, <span class="math inline">\(f_{X, Y}(1, 0) = p\)</span> and <span class="math inline">\(f_X(1) f_Y(0) = p^2\)</span>, so the events are dependent unless <span class="math inline">\(p \in \{0, 1\}\)</span>.</p>
 <p><strong>(b)</strong> The joint probability mass function is:</p>
 <p><span class="math display">\[ \mathbb{P}(X = x, Y = y) = \mathbb{P}(N = x + y, X = x) = \frac{\lambda^{x+y}e^{-\lambda}}{(x + y)!} \binom{x + y}{x} p^x (1-p)^y  = e^{-\lambda} \left(\frac{\lambda^x}{x!} p^x \right) \left(\frac{\lambda^y}{y!} (1 - p)^y\right) = g(x) h(y)\]</span></p>
-<p>where $g(x) = e^{-}  p^x $, $h(y) =  (1 - p)^y $. The result then follows from theorem 3.33.</p>
+<p>where <span class="math inline">\(g(x)=e^{-\lambda}\frac{\lambda^x}{x!}p^x\)</span>,
+<span class="math inline">\(h(y) = \frac{\lambda^y}{y!} (1 - p)^y\)</span>. The result then follows from theorem 3.33.</p>
 <p><strong>Exercise 3.14.12</strong>. Prove theorem 3.33.</p>
 <p>Suppose that the range of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is a (possibly infinite) rectangle. If <span class="math inline">\(f(x, y) = g(x) h(y)\)</span> for some functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> (not necessarily probability density functions) then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p>
 <p><strong>Solution</strong>.</p>
@@ -911,13 +912,16 @@ print(&#39;%.4f&#39; % (1 - norm.cdf(-5/16)))
 print(&#39;%.4f&#39; % (1 - norm.cdf(-2, loc=3, scale=16)))</code></pre>
 <pre><code>0.6227
 0.6227</code></pre>
-<p><strong>(c)</strong> <span class="math inline">\(\mathbb{P}(X &gt; x) = .05 \Longleftrightarrow 1 - F_X(x) = .05 \Longleftrightarrow F_X(x) = .95 \Longleftrightarrow x = F_X^{-1}(.95)\)</span></p>
-<p>or: $(X &gt; x) = .05
-( &gt; ) = .05
- - () = .05
- = ^{-1}(.95)
-x = 16 ^{-1}(.95) + 3
-$</p>
+<p><strong>(c)</strong> <span class="math display">\[\mathbb{P}(X &gt; x) = .05 
+\Longleftrightarrow 1 - F_X(x) = .05 
+\Longleftrightarrow F_X(x) = .95 
+\Longleftrightarrow x = F_X^{-1}(.95)\]</span></p>
+<p>or: <span class="math display">\[\mathbb{P}(X &gt; x) = .05 
+\Longleftrightarrow \mathbb{P}\left(\frac{X - 3}{16} &gt; \frac{x - 3}{16}\right) = .05 
+\Longleftrightarrow 1 - \Phi\left(\frac{x - 3}{16}\right) = .05 
+\Longleftrightarrow \frac{x - 3}{16} = \Phi^{-1}(.95)
+\Longleftrightarrow x = 16 \Phi^{-1}(.95) + 3
+\]</span></p>
 <pre class="python"><code>import numpy as np
 from scipy.stats import norm
 
