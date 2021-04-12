@@ -6,7 +6,17 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter04 Expectation</title>
+      <link>/2021/04/12/aos-chapter04-expectation/</link>
+      <pubDate>Mon, 12 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/12/aos-chapter04-expectation/</guid>
+      <description>4. Expectation4.1 Expectation of a Random Variable4.2 Properties of Expectations4.3 Variance and Covariance4.4 Expectation and Variance of Important Random Variables4.5 Conditional Expectation4.6 Technical Appendix4.7 ExercisesReferences4. Expectation4.1 Expectation of a Random VariableThe expected value, mean or first moment of \(X\) is defined to be
+\[ \mathbb{E}(X) = \int x \; dF(x) = \begin{cases}\sum_x x f(x) &amp;amp;\text{if } X \text{ is discrete} \\\int x f(x)\; dx &amp;amp;\text{if } X \text{ is continuous}\end{cases} \]</description>
+    </item>
+    
     <item>
       <title>AOS chapter03 Random Variables</title>
       <link>/2021/04/11/aos-chapter03-random-variables/</link>

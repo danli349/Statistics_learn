@@ -181,6 +181,7 @@
 <li><a href="#ex.-4.8">Ex. 4.8</a></li>
 <li><a href="#ex.-4.9">Ex. 4.9</a></li>
 </ul></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
@@ -4947,14 +4948,15 @@ N_1\mu_1+N_2\mu_2&amp;(N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\\
 <p>And <span class="math display">\[(N_1\mu_1+N_2\mu_2)\beta_0+\left((N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta=N(\mu_2-\mu_1)\]</span>
 then
 <span class="math display">\[\begin{align}
-(N_1\mu_1+N_2\mu_2)\left(-\frac{1}{N}(N_1\mu_1^T+N_2\mu_2^T)\beta\right)+\left((N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta&amp;=-\frac{1}{N}(N_1\mu_1+N_2\mu_2)(N_1\mu_1^T+N_2\mu_2^T)\beta+\left((N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma-\frac{N_1^2}{N}\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T-\frac{N_2^2}{N}\mu_2\mu_2^T+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma+\left(-\frac{N_1^2}{N}+N_1\right)\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T+\left(-\frac{N_2^2}{N}+N_2\right)\mu_2\mu_2^T\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T+\frac{N_2N_1}{N}\mu_2\mu_2^T\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_1\mu_1^T-2\mu_1\mu_2^T+\mu_2\mu_2^T)\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_1-\mu_2)(\mu_1-\mu_2)^T\right)\beta\\
-&amp;=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_2-\mu_1)(\mu_2-\mu_1)^T\right)\beta\\
-&amp;=N(\mu_2-\mu_1)
+(N_1\mu_1+N_2\mu_2)\left(-\frac{1}{N}(N_1\mu_1^T+N_2\mu_2^T)\beta\right)+\left((N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta\\
+=-\frac{1}{N}(N_1\mu_1+N_2\mu_2)(N_1\mu_1^T+N_2\mu_2^T)\beta+\left((N-2)\hat\Sigma+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta\\
+=\left((N-2)\hat\Sigma-\frac{N_1^2}{N}\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T-\frac{N_2^2}{N}\mu_2\mu_2^T+N_1\mu_1\mu_1^T+N_2\mu_2\mu_2^T\right)\beta\\
+=\left((N-2)\hat\Sigma+\left(-\frac{N_1^2}{N}+N_1\right)\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T+\left(-\frac{N_2^2}{N}+N_2\right)\mu_2\mu_2^T\right)\beta\\
+=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}\mu_1\mu_1^T-\frac{2N_1N_2}{N}\mu_1\mu_2^T+\frac{N_2N_1}{N}\mu_2\mu_2^T\right)\beta\\
+=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_1\mu_1^T-2\mu_1\mu_2^T+\mu_2\mu_2^T)\right)\beta\\
+=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_1-\mu_2)(\mu_1-\mu_2)^T\right)\beta\\
+=\left((N-2)\hat\Sigma+\frac{N_1N_2}{N}(\mu_2-\mu_1)(\mu_2-\mu_1)^T\right)\beta\\
+=N(\mu_2-\mu_1)
 \end{align}\]</span></p>
 <p>then the solution <span class="math inline">\(\hat\beta\)</span> satisfies
 <span class="math display">\[\left[(N-2)\hat\Sigma+N\hat\Sigma_{\mathcal B}\right]\beta=N(\hat\mu_2-\hat\mu_1)\]</span> (after simplification), where <span class="math display">\[\hat\Sigma_{\mathcal B}=\frac{N_1N_2}{N_2}(\hat\mu_2-\hat\mu_1)(\hat\mu_2-\hat\mu_1)^T\]</span></p>
@@ -4977,9 +4979,12 @@ multinomial log-likelihood, and describe how you would implement this algorithm.
 class can be written as <span class="math display">\[p_y(x) = Pr(G = 1|X = x)^{y_1}Pr(G = 2|X = x)^{y_2} \cdots Pr(G = K − 1|X = x)y^{K-1}
 \times \left[1 − Pr(G = 1|X = x) − Pr(G = 2|X = x) − \cdots − Pr(G = K − 1|X = x)\right]^{1-\sum_{l=1}^{K-1}y_l}\]</span></p>
 <p>Since this expression is for one data point the log-likelihood for an entire data set will be given by <span class="math display">\[l=\sum_{i=1}^{N}\log(p_{y_i}(x_i))\]</span> Using the Equation in the above expression we find <span class="math inline">\(\log(p_y(x))\)</span> for any given training pair <span class="math inline">\((x_i, y_i)\)</span> is given by <span class="math display">\[\begin{align}
-\log(p_{\mathbf y}(\mathbf x))&amp;=y_1 \log(Pr(G = 1|X = x)) + y_2 \log(Pr(G = 2|X = x)) + \cdots + y_{K-1} \log(Pr(G = K − 1|X = x)) + (1 − y_1 − y_2 − \cdots − y_{K−1}) \log(Pr(G = K|X = x))\\
-&amp;=\log(Pr(G = K|X = x))+y_1\log\left(\frac{Pr(G = 1|X = x)}{Pr(G = K|X = x)}\right)+y_2\log\left(\frac{Pr(G = 2|X = x)}{Pr(G = K|X = x)}\right)+\cdots+y_{K-1}\log\left(\frac{Pr(G = K-1|X = x)}{Pr(G = K|X = x)}\right)\\
-&amp;=\log(Pr(G = K|X = x))+y_1(\beta_{01}+\beta_1^Tx)+y_2(\beta_{02}+\beta_2^Tx)+\cdots+y_{K-1}(\beta_{0(k-1)}+\beta_{K-1}^Tx)
+\log(p_{\mathbf y}(\mathbf x))=y_1 \log(Pr(G = 1|X = x)) + y_2 \log(Pr(G = 2|X = x)) + \cdots + y_{K-1} \log(Pr(G = K − 1|X = x)) \\
++ (1 − y_1 − y_2 − \cdots − y_{K−1}) \log(Pr(G = K|X = x))\\
+=\log(Pr(G = K|X = x))+y_1\log\left(\frac{Pr(G = 1|X = x)}{Pr(G = K|X = x)}\right)+y_2\log\left(\frac{Pr(G = 2|X = x)}{Pr(G = K|X = x)}\right)+\cdots\\
++y_{K-1}\log\left(\frac{Pr(G = K-1|X = x)}{Pr(G = K|X = x)}\right)\\
+=\log(Pr(G = K|X = x))+y_1(\beta_{01}+\beta_1^Tx)+y_2(\beta_{02}+\beta_2^Tx)+\cdots\\
++y_{K-1}(\beta_{0(k-1)}+\beta_{K-1}^Tx)
 \end{align}\]</span> The total log-likelihood is then given by summing the above expression over all data points <span class="math display">\[l(\theta)=\sum_{i=1}^{N}\left[\log(Pr(G = k|X = x_i))+\sum_{l=1}^{K-1}y_{il}\beta_l^Tx_i\right]\]</span> where</p>
 <ul>
 <li><p><span class="math inline">\(x_i\)</span> is the <span class="math inline">\(i\)</span>th vector sample <span class="math inline">\(1 \le i \le N\)</span> with a leading one and so is of length <span class="math inline">\(p + 1\)</span>.</p></li>
@@ -5178,10 +5183,13 @@ with the additional restriction that <span class="math inline">\(\text{rank }\le
 analysis by fitting a separate Gaussian model per class. Try it out on the
 vowel data, and compute the misclassification error for the test data. The
 data can be found in the book website www-stat.stanford.edu/ElemStatLearn.</p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-friedman2001elements" class="csl-entry">
 1. Friedman J, Hastie T, Tibshirani R, others. The elements of statistical learning. Springer series in statistics New York; 2009.
-</div>
 </div>
 </div>
 </div>

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter04 Expectation - A Hugo website</title>
+<meta property="og:title" content="AOS chapter04 Expectation - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">33 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter04 Expectation</h1>
+
+    
+    <span class="article-date">2021-04-12</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/12/aos-chapter04-expectation/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#expectation">4. Expectation</a>
+<ul>
+<li><a href="#expectation-of-a-random-variable">4.1 Expectation of a Random Variable</a></li>
+<li><a href="#properties-of-expectations">4.2 Properties of Expectations</a></li>
+<li><a href="#variance-and-covariance">4.3 Variance and Covariance</a></li>
+<li><a href="#expectation-and-variance-of-important-random-variables">4.4 Expectation and Variance of Important Random Variables</a></li>
+<li><a href="#conditional-expectation">4.5 Conditional Expectation</a></li>
+<li><a href="#technical-appendix">4.6 Technical Appendix</a></li>
+<li><a href="#exercises">4.7 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="expectation" class="section level2">
+<h2>4. Expectation</h2>
+<div id="expectation-of-a-random-variable" class="section level3">
+<h3>4.1 Expectation of a Random Variable</h3>
+<p>The <strong>expected value</strong>, <strong>mean</strong> or <strong>first moment</strong> of <span class="math inline">\(X\)</span> is defined to be</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int x \; dF(x) = \begin{cases}
+\sum_x x f(x) &amp;\text{if } X \text{ is discrete} \\
+\int x f(x)\; dx &amp;\text{if } X \text{ is continuous}
+\end{cases} \]</span></p>
+<p>assuming that the sum (or integral) is well-defined. We use the following notation to denote the expected value of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}X = \int x\; dF(x) = \mu = \mu_X \]</span></p>
+<p>The expectation is a one-number summary of the distribution. Think of <span class="math inline">\(\mathbb{E}(X)\)</span> as the average value you’d obtain if you computed the numeric average <span class="math inline">\(n^{-1} \sum_{i=1}^n X_i\)</span> for a large number of IID draws <span class="math inline">\(X_1, \dots, X_n\)</span>. The fact that <span class="math inline">\(\mathbb{E}(X) \approx n^{-1} \sum_{i=1}^n X_i\)</span> is a theorem called the law of large numbers which we will discuss later. We use <span class="math inline">\(\int x \; dF(x)\)</span> as a convenient unifying notation between the discrete case <span class="math inline">\(\sum_x x f(x)\)</span> and the continuous case <span class="math inline">\(\int x f(x) \; dx\)</span> but you should be aware that <span class="math inline">\(\int x \; dF(x)\)</span> has a precise meaning discussed in real analysis courses.</p>
+<p>To ensure that <span class="math inline">\(\mathbb{E}(X)\)</span> is well defined, we say that <span class="math inline">\(\mathbb{E}(X)\)</span> exists if <span class="math inline">\(\int_x |x| \; dF_X(x) &lt; \infty\)</span>. Otherwise we say that the expectation does not exist. From now on, wheneverwe discuss expectations, we implicitly assume they exist.</p>
+<p><strong>Theorem 4.6 (The rule of the lazy statician)</strong>. Let <span class="math inline">\(Y = r(X)\)</span>. Then</p>
+<p><span class="math display">\[ \mathbb{E}(Y) = \mathbb{E}(r(X)) = \int r(x) \; dF_X(x) \]</span></p>
+<p>As a special case, let <span class="math inline">\(A\)</span> be an event and let <span class="math inline">\(r(x) = I_A(x)\)</span>, where <span class="math inline">\(I_A(x) = 1\)</span> if <span class="math inline">\(x \in A\)</span> and <span class="math inline">\(I_A(x) = 0\)</span> otherwise. Then</p>
+<p><span class="math display">\[ \mathbb{E}(I_A(X)) = \int I_A(x) f_X(x) dx = \int_A f_X(x) dx = \mathbb{P}(X \in A) \]</span></p>
+<p>In other words, probability is a special case of expectation.</p>
+<p>Functions of several variables are handled in a similar way. If <span class="math inline">\(Z = r(X, Y)\)</span> then</p>
+<p><span class="math display">\[ \mathbb{E}(Z) = \mathbb{E}(r(X, Y)) = \int \int r(x, y) \; dF(x, y) \]</span></p>
+<p>The <strong><span class="math inline">\(k\)</span>-th moment</strong> of <span class="math inline">\(X\)</span> is defined to be <span class="math inline">\(\mathbb{E}(X^k)\)</span>, assuming that <span class="math inline">\(\mathbb{E}(|X|^k) &lt; \infty\)</span>. We shall rarely make much use of moments beyond <span class="math inline">\(k = 2\)</span>.</p>
+</div>
+<div id="properties-of-expectations" class="section level3">
+<h3>4.2 Properties of Expectations</h3>
+<p><strong>Theorem 4.10</strong>. If <span class="math inline">\(X_1, \dots, X_n\)</span> are random variables and <span class="math inline">\(a_1, \dots, a_n\)</span> are constants, then</p>
+<p><span class="math display">\[ \mathbb{E}\left( \sum_i a_i X_i \right) = \sum_i a_i \mathbb{E}(X_i) \]</span></p>
+<p><strong>Theorem 4.12</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be independent random variables. Then,</p>
+<p><span class="math display">\[ \mathbb{E}\left(\prod_i X_i \right) = \prod_i \mathbb{E}(X_i) \]</span></p>
+<p>Notice that the summation rule does not require independence but the product does.</p>
+</div>
+<div id="variance-and-covariance" class="section level3">
+<h3>4.3 Variance and Covariance</h3>
+<p>Let <span class="math inline">\(X\)</span> be a random variable with mean <span class="math inline">\(\mu\)</span>. The <strong>variance</strong> of <span class="math inline">\(X\)</span> – denoted by <span class="math inline">\(\sigma^2\)</span> or <span class="math inline">\(\sigma_X^2\)</span> or <span class="math inline">\(\mathbb{V}(X)\)</span> or <span class="math inline">\(\mathbb{V}X\)</span> – is defined by</p>
+<p><span class="math display">\[ \sigma^2 = \mathbb{E}(X - \mu)^2 = \int (x - \mu)^2\; dF(x) \]</span></p>
+<p>assuming this expectation exists. The <strong>standard deviation</strong> is <span class="math inline">\(\text{sd}(X) = \sqrt{\mathbb{V}(X)}\)</span> and is also denoted by <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\sigma_X\)</span>.</p>
+<p><strong>Theorem 4.14</strong>. Assuming the variance is well defined, it has the following properties:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2\)</span></p></li>
+<li><p>If <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are constants then <span class="math inline">\(\mathbb{V}(aX + b) = a^2 \mathbb{V}(X)\)</span></p></li>
+<li><p>If <span class="math inline">\(X_1, \dots, X_n\)</span> are independent and <span class="math inline">\(a_1, \dots, a_n\)</span> are constants then</p>
+<p><span class="math display">\[ \mathbb{V}\left( \sum_{i=1}^n a_iX_i \right) = \sum_{i=1}^n a_i^2 \mathbb{V}(X_i) \]</span></p></li>
+</ol>
+<p>If <span class="math inline">\(X_1, \dots, X_n\)</span> are random variables then we define the <strong>sample mean</strong> to be</p>
+<p><span class="math display">\[ \overline{X}_n = \frac{1}{n} \sum_{i=1}^n X_i  \]</span></p>
+<p>and the <strong>sample variance</strong> to be</p>
+<p><span class="math display">\[ S_n^2 = \frac{1}{n - 1} \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \]</span></p>
+<p><strong>Theorem 4.16</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID and let <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span>, <span class="math inline">\(\sigma^2 = \mathbb{V}(X_i)\)</span>. Then</p>
+<p><span class="math display">\[ 
+\mathbb{E}\left(\overline{X}_n\right) = \mu,
+\quad
+\mathbb{V}\left(\overline{X}_n\right) = \frac{\sigma^2}{n},
+\quad \text{and} \quad
+\mathbb{E}\left(S_n^2\right) = \sigma^2
+\]</span></p>
+<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are random variables, then the covariance and correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> measure how strong the linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is.</p>
+<p>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables with means <span class="math inline">\(\mu_X\)</span> and <span class="math inline">\(\mu_Y\)</span> and standard deviation <span class="math inline">\(\sigma_X\)</span> and <span class="math inline">\(\sigma_Y\)</span>. Define the <strong>covariance</strong> between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> by</p>
+<p><span class="math display">\[ \text{Cov}(X, Y) = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)] \]</span></p>
+<p>and the <strong>correlation</strong> by</p>
+<p><span class="math display">\[ \rho = \rho_{X, Y} = \rho(X, Y) = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y} \]</span></p>
+<p><strong>Theorem 4.18</strong>. The covariance satisfies:</p>
+<p><span class="math display">\[ \text{Cov}(X, Y) = \mathbb{E}(XY) - \mathbb{E}(X) \mathbb{E}(Y) \]</span></p>
+<p>The correlation satisfies:</p>
+<p><span class="math display">\[ -1 \leq \rho(X, Y) \leq 1 \]</span></p>
+<p>If <span class="math inline">\(Y = a + bX\)</span> for some constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> then <span class="math inline">\(\rho(X, Y) = 1\)</span> if <span class="math inline">\(b &gt; 0\)</span> and <span class="math inline">\(\rho(X, Y) = -1\)</span> if <span class="math inline">\(b &lt; 0\)</span>. If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, then <span class="math inline">\(\text{Cov}(X, Y) = \rho = 0\)</span>. The converse is not true in general.</p>
+<p><strong>Theorem 4.19</strong>.</p>
+<p><span class="math display">\[ 
+\mathbb{V}(X + Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2 \text{Cov}(X, Y)
+\quad \text{ and } \quad
+\mathbb{V}(X - Y) = \mathbb{V}(X) + \mathbb{V}(Y) - 2 \text{Cov}(X, Y)
+\]</span></p>
+<p>More generally, for random variables <span class="math inline">\(X_1, \dots, X_n\)</span>,</p>
+<p><span class="math display">\[ \mathbb{V}\left( \sum_i a_i X_i \right) = \sum_i a_i^2 \mathbb{V}(X_i) + 2 \sum \sum_{i &lt; j} a_i a_j \text{Cov}(X_i, X_j) \]</span></p>
+</div>
+<div id="expectation-and-variance-of-important-random-variables" class="section level3">
+<h3>4.4 Expectation and Variance of Important Random Variables</h3>
+<p><span class="math display">\[
+\begin{array}{lll}
+\text{Distribution} &amp; \text{Mean} &amp; \text{Variance}           \\
+\hline
+\text{Point mass at } p      &amp; a             &amp; 0              \\
+\text{Bernoulli}(p)          &amp; p             &amp; p(1-p)         \\
+\text{Binomial}(n, p)        &amp; np            &amp; np(1-p)        \\
+\text{Geometric}(p)          &amp; 1/p           &amp; (1 - p)/p^2    \\
+\text{Poisson}(\lambda)      &amp; \lambda       &amp; \lambda        \\
+\text{Uniform}(a, b)         &amp; (a + b) / 2   &amp; (b - a)^2 / 12 \\
+\text{Normal}(\mu, \sigma^2) &amp; \mu           &amp; \sigma^2       \\
+\text{Exponential}(\beta)    &amp; \beta         &amp; \beta^2        \\
+\text{Gamma}(\alpha, \beta)  &amp; \alpha \beta  &amp; \alpha \beta^2 \\
+\text{Beta}(\alpha, \beta)   &amp; \alpha / (\alpha + \beta) &amp; \alpha \beta / ((\alpha + \beta)^2 (\alpha + \beta + 1)) \\
+t_\nu                        &amp; 0 \text{ (if } \nu &gt; 1 \text{)} &amp; \nu / (\nu - 2) \text{ (if } \nu &gt; 2 \text{)} \\
+\chi^2_p                     &amp; p             &amp; 2p             \\
+\text{Multinomial}(n, p)     &amp; np            &amp; \text{see below} \\
+\text{Multivariate Nornal}(\mu, \Sigma) &amp; \mu &amp; \Sigma \\
+\end{array}
+\]</span></p>
+<p>The last two entries in the table are multivariate models which involve a random vector <span class="math inline">\(X\)</span> of the form</p>
+<p><span class="math display">\[ X = \begin{pmatrix} X_1 \\ \vdots \\ X_k \end{pmatrix} \]</span></p>
+<p>The mean of a random vector <span class="math inline">\(X\)</span> is defined by</p>
+<p><span class="math display">\[ \mu = \begin{pmatrix} \mu_1 \\ \vdots \\ \mu_k \end{pmatrix} = \begin{pmatrix} \mathbb{E}(X_1) \\ \vdots \\ \mathbb{E}(X_k) \end{pmatrix} \]</span></p>
+<p>The <strong>variance-covariance matrix</strong> <span class="math inline">\(\Sigma\)</span> is defined to be</p>
+<p><span class="math display">\[ \Sigma = \begin{pmatrix}
+\mathbb{V}(X_1) &amp; \text{Cov}(X_1, X_2) &amp; \cdots &amp; \text{Cov}(X_1, X_k) \\
+\text{Cov}(X_2, X_1) &amp; \mathbb{V}(X_2) &amp; \cdots &amp; \text{Cov}(X_2, X_k) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\text{Cov}(X_k, X_1) &amp; \text{Cov}(X_k, X_2) &amp; \cdots &amp; \mathbb{V}(X_k)
+\end{pmatrix} \]</span></p>
+<p>If <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> then</p>
+<p><span class="math display">\[ 
+\mathbb{E}(X) = np = n(p_1, \dots, p_k)
+\quad \text{and} \quad
+\mathbb{V}(X) = \begin{pmatrix}
+np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
+-np_2p_1 &amp; np_2(1 - p_2) &amp; \cdots &amp; np_2p_k \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+-np_kp_1 &amp; -np_kp_2 &amp; \cdots &amp; np_k(1 - p_k)
+\end{pmatrix} \]</span></p>
+<p>To see this:</p>
+<ul>
+<li>Note that the marginal distribution of any one component is <span class="math inline">\(X_i \sim \text{Binomial}(n, p_i)\)</span>, so <span class="math inline">\(\mathbb{E}(X_i) = np_i\)</span> and <span class="math inline">\(\mathbb{V}(X_i) = np_i(1 - p_i)\)</span>.<br />
+</li>
+<li>Note that, for <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\(X_i + X_j \sim \text{Binomial}(n, p_i + p_j)\)</span>, so <span class="math inline">\(\mathbb{V}(X_i + X_j) = n(p_i + p_j)(1 - (p_i + p_j))\)</span>.</li>
+<li>Using the formula for the covariance of a sum, for <span class="math inline">\(i \neq j\)</span>,</li>
+</ul>
+<p><span class="math display">\[ \mathbb{V}(X_i + X_j) = \mathbb{V}(X_i) + \mathbb{V}(X_j) + 2 \text{Cov}(X_i, X_j) =  np_i(1 - p_i) + np_j(1 - p_j) + 2 \text{Cov}(X_i, X_j) \]</span></p>
+<p>Equating the last two formulas we get a formula for the covariance, <span class="math inline">\(\text{Cov}(X_i, X_j) = -np_ip_j\)</span>.</p>
+<p>Finally, here’s a lemma that can be useful for finding means and variances of linear combinations of multivariate random vectors.</p>
+<p><strong>Lemma 4.20</strong>. If <span class="math inline">\(a\)</span> is a vector and <span class="math inline">\(X\)</span> is a random vector with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\Sigma\)</span> then</p>
+<p><span class="math display">\[ \mathbb{E}(a^T X) = a^T \mu
+\quad \text{and} \quad
+\mathbb{V}(a^T X) = a^T \Sigma a \]</span></p>
+<p>If <span class="math inline">\(A\)</span> is a matrix then</p>
+<p><span class="math display">\[ \mathbb{E}(A X) = A \mu
+\quad \text{and} \quad
+\mathbb{V}(AX) = A \Sigma A^T \]</span></p>
+</div>
+<div id="conditional-expectation" class="section level3">
+<h3>4.5 Conditional Expectation</h3>
+<p>The conditional expectation of <span class="math inline">\(X\)</span> given <span class="math inline">\(Y = y\)</span> is</p>
+<p><span class="math display">\[ \mathbb{E}(X | Y = y) = \begin{cases}
+\sum x f_{X | Y}(x | y) &amp;\text{ discrete case} \\
+\int x f_{X | Y}(x | y) dy &amp;\text{ continuous case}
+\end{cases}
+\]</span></p>
+<p>If <span class="math inline">\(r\)</span> is a function of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> then</p>
+<p><span class="math display">\[ \mathbb{E}(r(X, Y) | Y = y) = \begin{cases}
+\sum r(x, y) f_{X | Y}(x | y) &amp;\text{ discrete case} \\
+\int r(x, y) f_{X | Y}(x | y) dy &amp;\text{ continuous case}
+\end{cases}
+\]</span></p>
+<p>While <span class="math inline">\(\mathbb{E}(X)\)</span> is a number, <span class="math inline">\(\mathbb{E}(X | Y = y)\)</span> is a function of <span class="math inline">\(y\)</span>. Before we observe <span class="math inline">\(Y\)</span>, we don’t know the value of <span class="math inline">\(\mathbb{E}(X | Y = y)\)</span> so it is a random variable which we denote <span class="math inline">\(\mathbb{E}(X | Y)\)</span>. In other words, <span class="math inline">\(\mathbb{E}(X | Y)\)</span> is the random variable whose value is <span class="math inline">\(\mathbb{E}(X | Y = y)\)</span> when <span class="math inline">\(Y\)</span> is observed as <span class="math inline">\(y\)</span>. Similarly, <span class="math inline">\(\mathbb{E}(r(X, Y) | Y)\)</span> is the random variable whose value is <span class="math inline">\(\mathbb{E}(r(X, Y) | Y = y)\)</span> when <span class="math inline">\(Y\)</span> is observed as <span class="math inline">\(y\)</span>.</p>
+<p><strong>Theorem 4.23 (The rule of iterated expectations)</strong>. For random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, assuming the expectations exist, we have that</p>
+<p><span class="math display">\[ \mathbb{E}[\mathbb{E}(Y | X)] = \mathbb{E}(Y)
+\quad \text{and} \quad
+\mathbb{E}[\mathbb{E}(X | Y)] = \mathbb{E}(X) \]</span></p>
+<p>More generally, for any function <span class="math inline">\(r(x, y)\)</span> we have</p>
+<p><span class="math display">\[ \mathbb{E}[\mathbb{E}(r(X, Y) | X)] = \mathbb{E}(r(X, Y))
+\quad \text{and} \quad
+\mathbb{E}[\mathbb{E}(r(X, Y) | Y)] = \mathbb{E}(r(X, Y)) \]</span></p>
+<p><strong>Proof</strong>. We will prove the first equation.</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}[\mathbb{E}(Y | X)] &amp;= \int \mathbb{E}(Y | X = x) f_X(x) dx = \int \int y f(y | x) dy f(x) dx \\
+&amp;= \int \int y f(y|x) f(x) dx dy = \int \int y f(x, y) dx dy = \mathbb{E}(Y)
+\end{align}
+\]</span></p>
+<p>The <strong>conditional variance</strong> is defined as</p>
+<p><span class="math display">\[ \mathbb{V}(Y | X = x) = \int (y - \mu(x))^2 f(y | x) dx \]</span></p>
+<p>where <span class="math inline">\(\mu(x) = \mathbb{E}(Y | X = x)\)</span>.</p>
+<p><strong>Theorem 4.26</strong>. For random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>,</p>
+<p><span class="math display">\[ \mathbb{V}(Y) = \mathbb{E}\mathbb{V}(Y | X) + \mathbb{V} \mathbb{E} (Y | X)\]</span></p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>4.6 Technical Appendix</h3>
+<div id="expectation-as-an-integral" class="section level4">
+<h4>4.6.1 Expectation as an Integral</h4>
+<p>The integral of a measurable function <span class="math inline">\(r(x)\)</span> is defined as follows. First suppose that <span class="math inline">\(r\)</span> is simple, meaning that it takes finitely many values <span class="math inline">\(a_1, \dots, a_k\)</span> over a partition <span class="math inline">\(A_1, \dots, A_k\)</span>. Then <span class="math inline">\(\int r(x) dF(x) = \sum_{i=1}^k a_i \mathbb{P}(r(X) \in A_i)\)</span>. The integral of a positive measurable function <span class="math inline">\(r\)</span> is defined by <span class="math inline">\(\int r(x) dF(x) = \lim_i \int r_i(x) dF(x)\)</span>, where <span class="math inline">\(r_i\)</span> is a sequence of simple functions such that <span class="math inline">\(r_i(x) \leq r(x)\)</span> and <span class="math inline">\(r_i(x) \rightarrow r(x)\)</span> as <span class="math inline">\(i \rightarrow \infty\)</span>. This does not depend on the particular sequence. The integral of a measurable function <span class="math inline">\(r\)</span> is defined to be <span class="math inline">\(\int r(x) dF(x) = \int r^+(x) dF(x) - \int r^-(x) dF(x)\)</span> assuming both integrals are finite, where <span class="math inline">\(r^+(x) = \max \{ r(x), 0 \}\)</span> and <span class="math inline">\(r^-(x) = \min\{ r(x), 0 \}\)</span>.</p>
+</div>
+<div id="moment-generating-functions" class="section level4">
+<h4>4.6.2 Moment Generating Functions</h4>
+<p>The <strong>moment generating function (mgf)</strong> or <strong>Laplace transform</strong> of <span class="math inline">\(X\)</span> is defined by</p>
+<p><span class="math display">\[ \psi_X(t) = \mathbb{E}(e^{tX}) = \int e^{tx} dF(x) \]</span></p>
+<p>where <span class="math inline">\(t\)</span> varies over the real numbers.</p>
+<p>In what follows, we assume the mgf is well defined for all <span class="math inline">\(t\)</span> in small neighborhood of 0. A related function is the characteristic function, defined by <span class="math inline">\(\mathbb{E}(e^{itX})\)</span> where <span class="math inline">\(i = \sqrt{-1}\)</span>. This function is always defined for all <span class="math inline">\(t\)</span>. The mgf is useful for several reasons. First, it helps us compute the moments of a distribution. Second, it helps us find the distribution of sums of random variables. Third, it is used to prove the central limit theorem.</p>
+<p>When the mgf is well defined, it can be shown that we can interchange the operations of differentiation and “taking expectation.” This leads to</p>
+<p><span class="math display">\[ \psi&#39;(0) = \left[ \frac{d}{dt} \mathbb{E} e^{tX} \right]_{t = 0} = \mathbb{E} \left[ \frac{d}{dt} e^{tX} \right]_{t = 0}
+= \mathbb{E}[X e^{tX}]_{t = 0} = \mathbb{E}(X)
+\]</span></p>
+<p>By taking further derivatives we conclude that <span class="math inline">\(\psi^{(k)}(0) = \mathbb{E}(X^k)\)</span>. This gives us a method for computing the moments of a distribution.</p>
+<p><strong>Lemma 4.30</strong>. Properties of the mgf.</p>
+<ol style="list-style-type: decimal">
+<li>If <span class="math inline">\(Y = aX + b\)</span> then $_Y(t) = e^{bt} _X(at) $</li>
+<li>if <span class="math inline">\(X_1, \dots, X_n\)</span> are independent and <span class="math inline">\(Y = \sum_i X_i\)</span> then <span class="math inline">\(\psi_Y(t) = \prod_i \psi_{i}(t)\)</span>, where <span class="math inline">\(\psi_i\)</span> is the mgf of <span class="math inline">\(X_i\)</span>.</li>
+</ol>
+<p><strong>Theorem 4.32</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables. If <span class="math inline">\(\psi_X(t) = \psi_Y(t)\)</span> for all <span class="math inline">\(t\)</span> in an open interval around 0, then <span class="math inline">\(X \overset{d}= Y\)</span>.</p>
+<p><strong>Moment Generating Function for Some Common Distributions</strong></p>
+<p><span class="math display">\[
+\begin{array}{ll}
+\text{Distribution} &amp; \text{mgf} \\
+\hline
+\text{Bernoulli}(p)   &amp; pe^t + (1 - p)         \\
+\text{Binomial}(n, p) &amp; (pe^t + (1 - p))^n     \\
+\text{Poisson}(\lambda) &amp; e^{\lambda(e^t - 1)} \\
+\text{Normal}(\mu, \sigma^2) &amp; \exp\left\{\mu t + \frac{\sigma^2 t^2}{2} \right\} \\
+\text{Gamma}(\alpha, \beta) &amp; \left( \frac{\beta}{\beta - t} \right)^\alpha \text{ for } t &lt; \beta
+\end{array}
+\]</span></p>
+</div>
+</div>
+<div id="exercises" class="section level3">
+<h3>4.7 Exercises</h3>
+<p><strong>Exercise 4.7.1</strong>. Suppose we play a game where we start with <span class="math inline">\(c\)</span> dollars. On each play of the game you either double your money or half your money, with equal probability. What is your expected fortune after <span class="math inline">\(n\)</span> trials?</p>
+<p><strong>Solution</strong>. Let the random variables <span class="math inline">\(X_i\)</span> be the fortune after the <span class="math inline">\(i\)</span>-th trial, <span class="math inline">\(X_0 = c\)</span> always taking the value <span class="math inline">\(c\)</span>. Then:</p>
+<p><span class="math display">\[ \mathbb{E}[X_{i + 1} | X_i = x] = 2x \cdot \frac{1}{2} + \frac{x}{2} \cdot \frac{1}{2} = \frac{5}{4}x \]</span></p>
+<p>Taking the expectation on <span class="math inline">\(X_i\)</span> on both sides (i.e. integrating over <span class="math inline">\(F_{X_i}(x)\)</span>),</p>
+<p><span class="math display">\[ \mathbb{E}(\mathbb{E}[X_{i + 1} | X_i = x]) = \frac{5}{4} \mathbb{E}(X_i) \Longrightarrow \mathbb{E}(X_{i+1}) = \frac{5}{4}  \mathbb{E}(X_i)\]</span></p>
+<p>Therefore, by induction,</p>
+<p><span class="math display">\[ \mathbb{E}(X_n) = \left(\frac{5}{4}\right)^n c \]</span></p>
+<p>Note that this is <strong>not</strong> a martingale, as in the traditional double-or-nothing formulation – the expected value goes up at each iteration.</p>
+<p><strong>Exercise 4.7.2</strong>. Show that <span class="math inline">\(\mathbb{V}(X) = 0\)</span> if and only if there is a constant <span class="math inline">\(c\)</span> such that <span class="math inline">\(\mathbb{P}(X = c) = 1\)</span>.</p>
+<p><strong>Solution</strong>. We have <span class="math inline">\(\mathbb{V}(X) = \mathbb{E}[(X - \mathbb{E}(X))^2]\)</span>:</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \int (x - \mu_X)^2 dF_X(x) \]</span></p>
+<p>Since <span class="math inline">\((x - \mu_X)^2 \geq 0\)</span>, in order for the variance to be 0 we must have the integrand be zero with probability 1, i.e. <span class="math inline">\(\mathbb{P}(X = \mu_X) = 1\)</span>.</p>
+<p><strong>Exercise 4.7.3</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(0, 1)\)</span> and let <span class="math inline">\(Y_n = \max \{ X_1, \dots, X_n \}\)</span>. Find <span class="math inline">\(\mathbb{E}(Y_n)\)</span>.</p>
+<p><strong>Solution</strong>. The CDF of <span class="math inline">\(Y_n\)</span>, for <span class="math inline">\(0 \leq y \leq 1\)</span>, is:</p>
+<p><span class="math display">\[ F_{Y_n}(y) = \mathbb{P}(Y_n \leq y) = \prod_{i=1}^n \mathbb{P}(X_i \leq y) = y^n \]</span></p>
+<p>so its PDF is <span class="math inline">\(f_{Y_n}(y) = F&#39;_{Y_n}(y) = n y^{n-1}\)</span> for <span class="math inline">\(0 \leq y \leq 1\)</span>.</p>
+<p>The expected value of <span class="math inline">\(Y_n\)</span> then is</p>
+<p><span class="math display">\[ \mathbb{E}(Y_n) = \int_0^1 y f_{Y_n}(y) dy = \int_0^1 n y^n dy = \frac{n}{n+1} \]</span></p>
+<p><strong>Exercise 4.7.4</strong>. A particle starts at the origin of the real line and moves along the line in jumps of one unit. For each jump the probability is <span class="math inline">\(p\)</span> that the particle will move one unit to the left and the probability is <span class="math inline">\(1 - p\)</span> that the particle will jump one unit to the right. Let <span class="math inline">\(X_n\)</span> be the position of the particle after <span class="math inline">\(n\)</span> units. Find <span class="math inline">\(\mathbb{E}(X_n)\)</span> and <span class="math inline">\(\mathbb{V}(X_n)\)</span>. (This is known as a random walk.)</p>
+<p><strong>Solution</strong>.</p>
+<p>We can define <span class="math inline">\(X_n = \sum_{i=1}^n (1 - 2Y_i)\)</span>, where <span class="math inline">\(Y_i \sim \text{Bernoulli}(p)\)</span> and the <span class="math inline">\(Y_i\)</span>’s are independent random variables representing the direction of each jump.</p>
+<p>We then have:</p>
+<p><span class="math display">\[ \mathbb{E}(X_n) = \sum_{i=1}^n \mathbb{E}(1 - 2Y_i) = \sum_{i=1}^n (1 - 2p) = n(1 - 2p) \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{V}(X_n) = \sum_{i=1}^n \mathbb{V}(1 - 2Y_i) \sum_{i=1}^n 4\mathbb{V}(Y_i) = 4np(1 - p) \]</span></p>
+<p><strong>Exercise 4.7.5</strong>. A fair coin is tossed until a head is obtained. What is the expected number of tosses that will be required?</p>
+<p><strong>Solution</strong>. The number of tosses follows a geometric distribution, <span class="math inline">\(X \sim \text{Geom}(p)\)</span>, where <span class="math inline">\(p\)</span> is the probability of heads. Let’s deduce its expected value, rather than use it as a known fact (<span class="math inline">\(\mathbb{E}(X) = 1/p\)</span>). The PDF is</p>
+<p><span class="math display">\[ f_X(k) = p (1 - p)^{k - 1}, \quad k &gt; 0 \]</span></p>
+<p>The expected value for <span class="math inline">\(X\)</span> is</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X) &amp;= \sum_{k=1}^\infty k p (1 - p)^{k - 1}  \\
+&amp;= \sum_{k=1}^\infty p(1-p)^{k-1} + \sum_{k=2}^\infty (k - 1) p(1-p)^{k - 1} \\
+&amp;= p \left( 1 + (1 - p) + (1 - p)^2 + \dots \right) + \sum_{k=1}^\infty k p(1-p)^k \\
+&amp;= p \left(\frac{1}{1 - (1 - p)}\right) + (1 - p) \sum_{k=1}^\infty k p(1-p)^{k - 1} \\
+&amp;= 1 + (1 - p) \mathbb{E}(X)
+\end{align}
+\]</span></p>
+<p>from where we get <span class="math inline">\(\mathbb{E}(X) = 1 / p\)</span>.</p>
+<p><strong>Exercise 4.7.6</strong>. Prove Theorem 4.6 for discrete random variables.</p>
+<p>Let <span class="math inline">\(Y = r(X)\)</span>. Then</p>
+<p><span class="math display">\[ \mathbb{E}(Y) = \mathbb{E}(r(X)) = \int r(x) \; dF_X(x) \]</span></p>
+<p><strong>Solution</strong>. The result is immediate from the definition of expectation:</p>
+<p><span class="math display">\[ Y(\omega) = r(X(\omega)) = r(x) \quad \forall \omega : X(\omega) = x \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{E}(Y) = \int r(x) dF_x(x) \]</span></p>
+<p><strong>Exercise 4.7.7</strong>. Let <span class="math inline">\(X\)</span> be a continuous random variable with CDF <span class="math inline">\(F\)</span>. Suppose that <span class="math inline">\(\mathbb{P}(X &gt; 0) = 1\)</span> and that <span class="math inline">\(\mathbb{E}(X)\)</span> exists. Show that <span class="math inline">\(\mathbb{E}(X) = \int_0^\infty \mathbb{P}(X &gt; x) dx\)</span>.</p>
+<p>Hint: Consider integrating by parts. The following fact is helpful: if <span class="math inline">\(\mathbb{E}(X)\)</span> exists then <span class="math inline">\(\lim_{x \rightarrow +\infty} x | 1 - F(x) | = 0\)</span>.</p>
+<p><strong>Solution</strong>. Let’s prove the following, slightly more general, lemma.</p>
+<p>Lemma: For every continuous random variable <span class="math inline">\(X\)</span>,</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int_0^\infty (1 - F_X(y)) dy - \int_{-\infty}^0 F_X(y) dy \]</span></p>
+<p>Proof:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X) &amp;= \int_{-\infty}^\infty x f_X(x) dx \\
+&amp;= \int_{-\infty}^0 \int_x^0 -f_X(x) dy dx + \int_0^\infty \int_0^x f_X(x) dy dx \\
+&amp;= -\int_{-\infty}^0 \int_{-\infty}^y f_X(x) dx dy + \int_0^\infty \int_y^\infty f_X(x) dx dy \\
+&amp;= -\int_{\infty}^0 \mathbb{P}(X \leq y) dy + \int_0^\infty \mathbb{P}(X \geq y) dy \\
+&amp;= \int_0^\infty (1 - F_X(y)) dy - \int_{-\infty}^0 F_X(y) dy
+\end{align}
+\]</span></p>
+<p>The result follows by imposing <span class="math inline">\(\mathbb{P}(X &gt; 0) = 1\)</span>, which implies <span class="math inline">\(\int_{-\infty}^0 F_X(y) dy = 0\)</span>.</p>
+<p><strong>Exercise 4.7.8</strong>. Prove Theorem 4.16.</p>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID and let <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span>, <span class="math inline">\(\sigma^2 = \mathbb{V}(X_i)\)</span>. Then</p>
+<p><span class="math display">\[ 
+\mathbb{E}\left(\overline{X}_n\right) = \mu,
+\quad
+\mathbb{V}\left(\overline{X}_n\right) = \frac{\sigma^2}{n},
+\quad \text{and} \quad
+\mathbb{E}\left(S_n^2\right) = \sigma^2
+\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>For the expected value of sample mean:</p>
+<p><span class="math display">\[ \mathbb{E}\left(\overline{X}_n\right) 
+= \mathbb{E}\left( \frac{1}{n} \sum_{i=1}^n X_i \right)
+= \frac{1}{n} \sum_{i=1}^n \mathbb{E}(X_i)
+= \frac{1}{n} n\mu = \mu \]</span></p>
+<p>For the variance of sample mean:</p>
+<p><span class="math display">\[ \mathbb{V}\left(\overline{X}_n\right) 
+= \mathbb{V}\left( \frac{1}{n} \sum_{i=1}^n X_i \right)
+= \frac{1}{n^2} \sum_{i=1}^n \mathbb{V}(X_i)
+= \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n} \]</span></p>
+<p>For the expected value of sample variance:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(S_n^2) &amp;= \mathbb{E}\left(\frac{1}{n - 1} \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \right) \\
+&amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \right) \\
+&amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n \left(X_i^2 - 2 X_i \overline{X}_n + \overline{X}_n^2\right) \right) \\
+&amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n X_i^2 - 2 \overline{X}_n \sum_{i=1}^n X_i + n \overline{X}_n^2 \right) \\
+&amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n X_i^2 - 2 \overline{X}_n \cdot n \overline{X}_n  + n \overline{X}_n^2 \right) \\
+&amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n X_i^2 - n \overline{X}_n^2 \right) \\
+&amp;= \frac{1}{n - 1} \left( \sum_{i=1}^n  \mathbb{E}(X_i^2) - n \mathbb{E}\left( \overline{X}_n^2 \right) \right) \\
+&amp;= \frac{1}{n - 1} \left( \sum_{i=1}^n \left(\mathbb{V}(X_i) + (\mathbb{E}(X_i))^2 \right) - n \left(\mathbb{V}\left( \overline{X}_n \right) + \left(\mathbb{E}\left(\overline{X}_n\right)\right)^2 \right)\right) \\
+&amp;= \frac{1}{n -1} \left( n \left( \sigma^2 + \mu^2\right) - n \left(\frac{\sigma^2}{n} + \mu^2 \right) \right) \\
+&amp;= \sigma^2
+\end{align}
+\]</span></p>
+<p><strong>Exercise 4.7.9 (Computer Experiment)</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be <span class="math inline">\(N(0, 1)\)</span> random variables and let <span class="math inline">\(\overline{X}_n = n^{-1} \sum_{i=1}^n X_i\)</span>. Plot <span class="math inline">\(\overline{X}_n\)</span> versus <span class="math inline">\(n\)</span> for <span class="math inline">\(n = 1, \dots, 10,000\)</span>. Repeat for <span class="math inline">\(X_1, \dots, X_n \sim \text{Cauchy}\)</span>. Explain why there is such a difference.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm, cauchy
+
+np.random.seed(0)
+
+N = 10000
+X = norm.rvs(size=N)
+Y = cauchy.rvs(size = N)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(1, N + 1)
+
+plt.figure(figsize=(12, 8))
+
+ax = plt.subplot(2, 1, 1)
+ax.plot(nn, np.cumsum(X) / nn)
+ax.set_title(&#39;N(0, 1)&#39;)
+ax.set_xlabel(&#39;n&#39;)
+ax.set_ylabel(r&#39;$\overline{X}_n$&#39;)
+
+ax = plt.subplot(2, 1, 2)
+ax.plot(nn, np.cumsum(Y) / nn)
+ax.set_title(&#39;Cauchy&#39;)
+ax.set_xlabel(&#39;n&#39;)
+ax.set_ylabel(r&#39;$\overline{X}_n$&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2004%20-%20Expectation_files/Chapter%2004%20-%20Expectation_60_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The mean on the Cauchy distribution is famously undefined: <span class="math inline">\(\overline{X}_ n\)</span> is not going to converge.</p>
+<p><strong>Exercise 4.7.10</strong>. Let <span class="math inline">\(X \sim N(0, 1)\)</span> and let <span class="math inline">\(Y = e^X\)</span>. Find <span class="math inline">\(\mathbb{E}(Y)\)</span> and <span class="math inline">\(\mathbb{V}(Y)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The CDF of <span class="math inline">\(Y\)</span> is, for <span class="math inline">\(y &gt; 0\)</span>:</p>
+<p><span class="math display">\[ F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(X \leq \log y) = \Phi(\log y) \]</span></p>
+<p>and so the PDF is</p>
+<p><span class="math display">\[ f_Y(y) = F&#39;_Y(y) = \frac{d}{dy} \Phi(\log y) = \frac{d \Phi(\log y)}{d \log y} \frac{d \log y}{dy} = \frac{\phi(\log y)}{y}\]</span></p>
+<p>The expected value is</p>
+<p><span class="math display">\[ \mathbb{E}(Y) = \int y f_Y(y) dy = \int_0^\infty y \frac{\phi(\log y)}{y} dy = \int_0^\infty \phi(\log y)\; dy = \sqrt{e}\]</span></p>
+<p>The expected value of <span class="math inline">\(Y^2\)</span> is</p>
+<p><span class="math display">\[ \mathbb{E}(Y^2) = \int y^2 f_Y(y) dy = \int_0^\infty y^2 \frac{\phi(\log y)}{y} dy = \int_0^\infty y \phi(\log y)\; dy = e^2\]</span></p>
+<p>and so the variance is</p>
+<p><span class="math display">\[ \mathbb{V}(Y) = \mathbb{E}(Y^2) - \mathbb{E}(Y)^2 = e(e - 1) \]</span></p>
+<p><strong>Exercise 4.7.11 (Computer Experiment: Simulating the Stock Market)</strong>. Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be independent random variables such that <span class="math inline">\(\mathbb{P}(Y_i = 1) = \mathbb{P}(Y_i = -1) = 1/2\)</span>. Let <span class="math inline">\(X_n = \sum_{i=1}^n Y_i\)</span>. Think of <span class="math inline">\(Y_i = 1\)</span> as “the stock price increased by one dollar” <span class="math inline">\(Y_i = -1\)</span> as “the stock price decreased by one dollar” and <span class="math inline">\(X_n\)</span> as the value of the stock on day <span class="math inline">\(n\)</span>.</p>
+<p><strong>(a)</strong> Find <span class="math inline">\(\mathbb{E}(X_n)\)</span> and <span class="math inline">\(\mathbb{V}(X_n)\)</span>.</p>
+<p><strong>(b)</strong> Simulate <span class="math inline">\(X_n\)</span> and plot <span class="math inline">\(X_n\)</span> versus <span class="math inline">\(n\)</span> for <span class="math inline">\(n = 1, 2, \dots, 10,000\)</span>. Repeat the whole simulation several times. Notice two things. First, it’s easy to “see” patterns in the sequence even though it is random. Second, you will find that the runs look very different even though they were generated the same way. How do the calculations in (a) explain the second observation?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> We have:</p>
+<p><span class="math display">\[ \mathbb{E}(X_n) = \mathbb{E}\left( \sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{E}(Y_i) = 0 \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X_n^2) &amp;= \mathbb{E}\left( \left( \sum_{i=1}^n Y_i \right)^2 \right) \\
+&amp;= \mathbb{E}\left( \sum_{i=1}^n Y_i^2 + \sum_{i=1}^n \sum_{j = 1, j \neq i}^n Y_i Y_j \right) \\
+&amp;= \sum_{i=1}^n \mathbb{E}(Y_i^2) + \sum_{i=1}^n \sum_{j = 1, j \neq i}^n \mathbb{E}(Y_i Y_j) \\
+&amp;= \sum_{i=1}^n 1 + \sum_{i=1}^n \sum_{j = 1, j \neq i}^n 0 \\
+&amp;= n
+\end{align}
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[\mathbb{V}(X_n) = \mathbb{E}(X_n^2) - \mathbb{E}(X_n)^2 = n\]</span></p>
+<p><strong>(b)</strong></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm, bernoulli
+
+N = 10000
+B = 20
+
+Y = 2 * bernoulli.rvs(p=1/2, loc=0, size=(B, N), random_state=0) - 1
+X = np.cumsum(Y, axis=1)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+nn = np.arange(1, N + 1)
+
+z = norm.ppf(0.975)
+plt.plot(nn, z * np.sqrt(nn), color=&#39;red&#39;)
+plt.plot(nn, -z * np.sqrt(nn), color=&#39;red&#39;)
+plt.fill_between(nn, z * np.sqrt(nn), -z * np.sqrt(nn), color=&#39;red&#39;, alpha=0.05)
+
+for b in range(B):
+    plt.plot(nn, X[b])
+    
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2004%20-%20Expectation_files/Chapter%2004%20-%20Expectation_68_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The standard deviation is <span class="math inline">\(\sqrt{n}\)</span> – it scales up with the square root of the “time.” The plot above draws <span class="math inline">\(z_{\alpha / 2} \sqrt{n}\)</span> curves – confidence bands for <span class="math inline">\(1 - \alpha = 95\%\)</span> – that contain most of the randomly generated path.</p>
+<p><strong>Exercise 4.7.12</strong>. Prove the formulas given in the table at the beginning of Section 4.4 for the Bernoulli, Poisson, Uniform, Exponential, Gamma, and Beta. Here are some hints. For the mean of the Poisson, use the fact that <span class="math inline">\(e^a = \sum_{x=0}^a a^x / x!\)</span>. To compute the variance, first compute <span class="math inline">\(\mathbb{E}(X(X - 1))\)</span>. For the mean of the Gamma, it will help to multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) / \beta^{\alpha + 1}\)</span> and use the fact that a Gamma density integrates to 1. For the Beta, multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) \Gamma(\beta) / \Gamma(\alpha + \beta + 1)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We will do all expressions in the table instead (other than multinomial and multivariate normal, where proofs are already provided in the book).</p>
+<p><strong>Point mass at <span class="math inline">\(p\)</span></strong>. Let <span class="math inline">\(X\)</span> have a point mass at <span class="math inline">\(p\)</span>. Then:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(X) = p \cdot 1 = p\)</span></li>
+<li><span class="math inline">\(\mathbb{E}(X^2) = p^2 \cdot 1 = p^2\)</span></li>
+<li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p^2 - p^2 = 0\)</span></li>
+</ul>
+<p><strong>Bernoulli</strong>. Let <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. Then:</p>
+<ul>
+<li>$(X) = 1 p + 0 (1 - p) = p $</li>
+<li><span class="math inline">\(\mathbb{E}(X^2) = 1 \cdot p + 0 \cdot (1 - p) = p\)</span></li>
+<li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p(1 - p)\)</span></li>
+</ul>
+<p><strong>Binomial</strong>. Let <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>. Then <span class="math inline">\(X = \sum_{i=1}^n Y_i\)</span>, where <span class="math inline">\(Y_i \sim \text{Bernoulli}(p)\)</span> are IID random variables.</p>
+<ul>
+<li>$(X) = ( <em>{i=1}^n Y_i ) = </em>{i=1}^n (Y_i) = np $</li>
+<li>$(X) = (<em>{i=1}^n Y_i ) = </em>{i=1}^n (Y_i) = np(1-p) $</li>
+</ul>
+<p><strong>Geometric</strong>. Let <span class="math inline">\(X \sim \text{Geometric}(p)\)</span>. Then:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X) &amp;= \sum_{k=1}^\infty k p (1 - p)^{k - 1}  \\
+&amp;= \sum_{k=1}^\infty p(1-p)^{k-1} + \sum_{k=2}^\infty (k - 1) p(1-p)^{k - 1} \\
+&amp;= p \left( 1 + (1 - p) + (1 - p)^2 + \dots \right) + \sum_{k=1}^\infty k p(1-p)^k \\
+&amp;= p \left(\frac{1}{1 - (1 - p)}\right) + (1 - p) \sum_{k=1}^\infty k p(1-p)^{k - 1} \\
+&amp;= 1 + (1 - p) \mathbb{E}(X)
+\end{align}
+\]</span></p>
+<p>Solving for the expectation, we get <span class="math inline">\(\mathbb{E}(X) = 1/p\)</span>.</p>
+<p>We also have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X^2) &amp;= \sum_{k=1}^\infty k^2 p (1 - p)^{k - 1}  \\
+&amp;= \sum_{k=1}^\infty k p(1-p)^{k-1} + \sum_{k=2}^\infty (k^2 - k) p(1-p)^{k - 1} \\
+&amp;= \mathbb{E}(X) + (1 - p) \sum_{k=1}^\infty (k^2 + k) p(1-p)^{k - 1} \\
+&amp;= \mathbb{E}(X) + (1 - p) \mathbb{E}(X) + (1 - p) \sum_{k=1}^\infty k^2 p(1-p)^{k-1} \\
+&amp;= \frac{2 - p}{p} + (1 - p) \mathbb{E}(X^2)
+\end{align}
+\]</span></p>
+<p>Solving for the expectation, we get <span class="math inline">\(\mathbb{E}(X^2) = (2 - p) / p^2\)</span>.</p>
+<p>Finally,</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} \]</span></p>
+<p><strong>Poisson</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
+<ul>
+<li><p>$ (X) = <em>{k=0}^k  = e^{-} </em>{k=1}^ = e^{-} _{k=0}^ = e^{-} e^{} = $</p></li>
+<li><p>$ (X^2) = <em>{k=0}<sup>k</sup>2  = </em>{k=1}^k  = _{k=0}^(k + 1)  = (X + 1) = (+ 1) $</p></li>
+<li><p>$ (X) = (X^2) - (X)^2 = ^2 + - ^2 = $</p></li>
+</ul>
+<p><strong>Uniform</strong>. Let <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>. Then:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(X) = \int_a^b x \frac{1}{b - a} dx = \frac{a + b}{2}\)</span></li>
+<li><span class="math inline">\(\mathbb{E}(X^2) = \int_a^b x^2 \frac{1}{b - a} dx = \frac{a^2 + ab + b}{3}\)</span></li>
+<li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{a^2 + ab + b}{3} - \frac{a^2 + 2ab + b^2}{4} = \frac{(b - a)^2}{12}\)</span></li>
+</ul>
+<p><strong>Normal</strong>. Let <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Converting into a standard normal, we get <span class="math inline">\(Z = (X - \mu) / \sigma \sim N(0, 1)\)</span>. Then:</p>
+<ul>
+<li>$ (X) = (Z + ) = (Z) + = $</li>
+<li>$ (X) = (Z + ) = ^2 (Z) = ^2$</li>
+</ul>
+<p>To prove that the expected value <span class="math inline">\(Z\)</span> is 0, note that the PDF of <span class="math inline">\(Z\)</span> is even, <span class="math inline">\(\phi(z) = \phi(-z)\)</span>, so</p>
+<p><span class="math display">\[ \mathbb{E}(Z) = \int_{-\infty}^\infty z \phi(z) dz = \int_{-\infty}^0 z \phi(z) dz + \int_0^\infty z \phi(z) dz \\
+= \int_0^\infty -z \phi(-z) dz + \int_0^\infty z \phi(z) dz = \int_0^\infty (-z + z)\phi(z) = 0 \]</span></p>
+<p>To prove that the variance of <span class="math inline">\(Z\)</span> is 0, write out the integral explicitly for the expectation of <span class="math inline">\(Z^2\)</span>,</p>
+<p><span class="math display">\[ \mathbb{E}(Z^2) = \int_{-\infty}^\infty z^2 \phi(z) dz = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^\infty z^2 e^{-z^2/2} dz\\
+= \left[ \Phi(z) - \frac{1}{\sqrt{2 \pi}}  z e^{-z^2/2} \right]_{-\infty}^\infty = \lim_{x \rightarrow +\infty} \Phi(x) - \lim_{x \rightarrow -\infty} \Phi(x) = 1 - 0 = 1
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[\mathbb{V}(Z) = \mathbb{E}(Z^2) - \mathbb{E}(Z)^2 = 1 - 0 = 1\]</span></p>
+<p><strong>Exponential</strong>. Let <span class="math inline">\(X \sim \text{Exponential}(\beta)\)</span>. Then:</p>
+<ul>
+<li>$ (X) = _0^x  e^{-x / } dx =  _0^x e^{-x / } dx =  ^2 = $</li>
+<li>$(X^2) = _0<sup>x</sup>2  e^{-x / } dx =  _0<sup>x</sup>2 e^{-x / } dx =  2^3 = 2 ^2 $</li>
+<li>$ (X) = (X^2) - (X)^2 = 2^2 - ^2 = ^2$</li>
+</ul>
+<p><strong>Gamma</strong>. Let <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>. The PDF is</p>
+<p><span class="math display">\[ f_X(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} \quad \text{for } x &gt; 0 \]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X) 
+&amp;= \int x f_X(x) dx \\
+&amp;= \int_0^\infty x \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx \\
+&amp;= \frac{\alpha}{\beta} \int_0^\infty\frac{\beta^{\alpha + 1}}{\Gamma(\alpha + 1)} x^\alpha e^{-\beta x} dx \\
+&amp;= \frac{\alpha}{\beta}
+\end{align}
+\]</span></p>
+<p>where we used that</p>
+<ul>
+<li><span class="math inline">\(\alpha \Gamma(\alpha) = \Gamma(\alpha + 1)\)</span>,</li>
+<li>and last integral is the PDF of <span class="math inline">\(\text{Gamma}(\alpha + 1, \beta)\)</span>, integrated over its entire domain.</li>
+</ul>
+<p>We also have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X^2) 
+&amp;= \int x^2 f_X(x) dx \\
+&amp;= \int_0^\infty x^2 \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx \\
+&amp;= \frac{\alpha (\alpha + 1)}{\beta^2} \int_0^\infty\frac{\beta^{\alpha + 2}}{\Gamma(\alpha + 2)} x^{\alpha + 1} e^{-\beta x} dx \\
+&amp;= \frac{\alpha (\alpha + 1)}{\beta^2}
+\end{align}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\alpha(\alpha + 1) \Gamma(\alpha) = \Gamma(\alpha + 2)\)</span>,</li>
+<li>and last integral is the PDF of <span class="math inline">\(\text{Gamma}(\alpha + 2, \beta)\)</span>, integrated over its entire domain.</li>
+</ul>
+<p>Therefore,</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\alpha (\alpha + 1)}{\beta^2} - \frac{\alpha^2}{\beta^2} = \frac{\alpha}{\beta^2} \]</span></p>
+<p><strong>Beta</strong>. Let <span class="math inline">\(X \sim \text{Beta}(\alpha, \beta)\)</span>. The PDF is</p>
+<p><span class="math display">\[f_X(x) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} \quad \text{for } x &gt; 0\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X) 
+&amp;= \int x f_X(x) dx \\
+&amp;= \int_0^\infty x \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} dx \\
+&amp;= \frac{\alpha}{\alpha + \beta} \int_0^\infty \frac{\Gamma(\alpha + \beta + 1)}{\Gamma(\alpha + 1) \Gamma(\beta)} x^{\alpha}(1 - x)^{\beta - 1} dx \\
+&amp;= \frac{\alpha}{\alpha + \beta}
+\end{align}
+\]</span></p>
+<p>where we used that</p>
+<ul>
+<li><span class="math inline">\(\alpha \Gamma(\alpha) = \Gamma(\alpha + 1)\)</span>,</li>
+<li><span class="math inline">\((\alpha + \beta) \Gamma(\alpha + \beta) = \Gamma(\alpha + \beta + 1)\)</span>,</li>
+<li>and the last integral is the PDF of <span class="math inline">\(\text{Beta}(\alpha + 1, \beta)\)</span>, integrated over its entire domain.</li>
+</ul>
+<p>We also have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X^2) 
+&amp;= \int x^2 f_X(x) dx \\
+&amp;= \int_0^\infty x^2 \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} dx \\
+&amp;= \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)} \int_0^\infty \frac{\Gamma(\alpha + \beta + 2)}{\Gamma(\alpha + 2) \Gamma(\beta)} x^{\alpha + 1}(1 - x)^{\beta - 1} dx \\
+&amp;= \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)}
+\end{align}
+\]</span></p>
+<p>where we used that</p>
+<ul>
+<li><span class="math inline">\(\alpha (\alpha + 1) \Gamma(\alpha) = \Gamma(\alpha + 2)\)</span>,</li>
+<li><span class="math inline">\((\alpha + \beta) (\alpha + \beta + 1) \Gamma(\alpha + \beta) = \Gamma(\alpha + \beta + 2)\)</span>,</li>
+<li>and the last integral is the PDF of <span class="math inline">\(\text{Beta}(\alpha + 2, \beta)\)</span>, integrated over its entire domain.</li>
+</ul>
+<p>Therefore,</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)} - \frac{\alpha^2}{(\alpha + \beta)^2} = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} \]</span></p>
+<p><strong>t-student</strong>. Let <span class="math inline">\(X \sim t_\nu\)</span>. The PDF for the t-student distribution is</p>
+<p><span class="math display">\[ f_X(x) = \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \frac{1}{\left(1 + \frac{x^2}{\nu} \right)^{(\nu + 1)/2}} \]</span></p>
+<p>Since the PDF is even, <span class="math inline">\(f_X(x) = f_X(-x)\)</span>, the expectation will be 0 when it is defined:</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^\infty x f_X(x) dx = \int_{-\infty}^0 x f_X(x) dx + \int_0^\infty x f_X(x) dx \\
+= \int_0^\infty -x f_X(-x) dx + \int_0^\infty x f_X(x) dx = \int_0^\infty (-x + x)f_X(x) dx = 0 \]</span></p>
+<p>But</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^\infty x f_X(x) dx = \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_{-\infty}^\infty x  \left(1 + \frac{x^2}{\nu} \right)^{-(\nu + 1)/2} dx \]</span></p>
+<p>For the expectation of <span class="math inline">\(X^2\)</span>, assuming it is defined, we have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X^2) &amp;= \int_{-\infty}^\infty x^2 f_X(x) dx \\
+&amp;= \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_{-\infty}^\infty x^2 \left( 1 + \frac{x^2}{\nu}\right)^{-(\nu + 1) / 2} dx \\
+&amp;= \frac{\nu}{\sqrt{\pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_0^1 y^{\nu /2 - 2} \left( 1 - y \right)^{1 / 2} dy \\
+&amp;= \frac{\nu}{\sqrt{\pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \frac{\Gamma\left(\frac{\nu}{2} - 1\right) \Gamma\left(\frac{3}{2}\right)}{\Gamma\left(\frac{\nu + 1}{2}\right)} \\
+&amp;= \frac{\nu}{\nu - 2}
+\end{align}
+\]</span></p>
+<p>where we used:</p>
+<ul>
+<li>A variable replacement <span class="math inline">\(y = \left( 1 + \frac{x^2}{\nu} \right)^{-1}\)</span></li>
+<li>The property that <span class="math inline">\(\int_0^1 y^{p - 1} (1 - y)^{q - 1} dy = \frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, since this is the integral of the PDF of <span class="math inline">\(\Gamma(p, q)\)</span> scaled by a factor of <span class="math inline">\(\frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, with <span class="math inline">\(p = \nu / 2 - 1\)</span>, <span class="math inline">\(q = 3/2\)</span></li>
+<li><span class="math inline">\(\Gamma(3 / 2) = \sqrt{\pi}/2\)</span></li>
+</ul>
+<p>Finally,</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\nu}{\nu - 2} \]</span></p>
+<p><em>Reference: <a href="https://math.stackexchange.com/a/1502519" class="uri">https://math.stackexchange.com/a/1502519</a></em></p>
+<p><strong><span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as the sum of squares of <span class="math inline">\(k\)</span> IID standard Normal random variables, <span class="math inline">\(X = \sum_{i=1}^k Z_i^2\)</span>, <span class="math inline">\(Z_i \sim N(0, 1)\)</span>.</p>
+<p>The expectation of <span class="math inline">\(X\)</span> can then be computed:</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}\left( \sum_{i=1}^k Z_i^2 \right) = \sum_{i=1}^k \mathbb{E}(Z_i^2) = \sum_{i=1}^k (\mathbb{V}(Z_i) + \mathbb{E}(Z_i)^2) = \sum_{i=1}^k (1 + 0) = k \]</span></p>
+<p>The expectation of <span class="math inline">\(X^2\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X^2) &amp;= \mathbb{E}\left( \left( \sum_{i=1}^k Z_i^2 \right)^2 \right) \\
+&amp;= \mathbb{E}\left( \sum_{i=1}^k Z_i^4 + \sum_{i=1}^k \sum_{j=1; j \neq i}^k Z_i^2 Z_j^2 \right) \\
+&amp;= \sum_{i=1}^k \mathbb{E}(Z_i^4) + \sum_{i=1}^k \sum_{j=1; j \neq i}^k \mathbb{E}(Z_i^2) \mathbb{E}(Z_j^2)
+\end{align}
+\]</span></p>
+<p>But we have:</p>
+<p><span class="math display">\[ \mathbb{E}(Z_i^2) = \mathbb{V}(Z_i) + \mathbb{E}(Z_i)^2 = 1 + 0 = 1 \]</span></p>
+<p>and, using moment generating functions,</p>
+<p><span class="math display">\[M_Z(t) = e^{t^2 / 2}\]</span></p>
+<p>and taking the fourth derivative,</p>
+<p><span class="math display">\[ M_Z^{(4)}(t) = 3 M_Z^{(2)}(t) + t M_Z^{(3)}(t)\]</span></p>
+<p>Setting <span class="math inline">\(t = 0\)</span> gives us <span class="math inline">\(\mathbb{E}(Z_i^4) = 3\)</span>.</p>
+<p>Replacing it back on the expectation expression for <span class="math inline">\(X^2\)</span>,</p>
+<p><span class="math display">\[
+\mathbb{E}(X^2) = \sum_{i=1}^k 3 + \sum_{i=1}^k \sum_{j=1; j \neq i}^k 1 \cdot 1 = 3k + k(k-1) = k^2 + 2k
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = k^2 + 2k - k^2 = 2k \]</span></p>
+<p><em>The proofs for the multinomial and mutivariate normal distribution expressions are provided in the book text (and there are notes above).</em></p>
+<p><strong>Exercise 4.7.13</strong>. Suppose we generate a random variable <span class="math inline">\(X\)</span> in the following way. First we flip a fair coin. If the coin is heads, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. If the coin is tails, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(3, 4)\)</span> distribution.</p>
+<p><strong>(a)</strong> Find the mean of <span class="math inline">\(X\)</span>.</p>
+<p><strong>(b)</strong> Find the standard deviation of <span class="math inline">\(X\)</span>.</p>
+<p><strong>Solution</strong>. We have <span class="math inline">\(X = C U_1 + (1 - C)U_2\)</span>, where <span class="math inline">\(U \sim \text{Bernoulli}(1/2)\)</span>, <span class="math inline">\(U_1 \sim \text{Uniform}(0, 1)\)</span> and <span class="math inline">\(U_2 \sim \text{Uniform}(3,4)\)</span> are all independent.</p>
+<p><strong>(a)</strong></p>
+<p><span class="math display">\[\mathbb{E}(X) = \mathbb{E}(CU_1 + (1 - C)U_2) = \mathbb{E}(C)\mathbb{E}(U_1) + (1 - \mathbb{E}(C))\mathbb{E}(U_2) = \frac{1}{2} \left(\frac{1}{2} + \frac{7}{2}\right) = 2\]</span></p>
+<p><strong>(b)</strong></p>
+<p><span class="math display">\[ X^2 = (CU_1 + (1 - C)U_2)^2 = C^2U_1^2 + (1 - C)^2 U_2^2 + 2C(1 - C)U_1U_2 = C^2U_1^2 + (1 - C)^2 U_2^2 \]</span></p>
+<p>so</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X^2) &amp;= \mathbb{E}(C^2)\mathbb{E}(U_1^2) + \mathbb{E}((1 - C)^2) \mathbb{E}(U_2^2) \\
+&amp;= \mathbb{E}(C) \mathbb{E}(U_1^2) + \mathbb{E}(1 - C) \mathbb{E}(U_2^2) \\
+&amp;= \frac{1}{2} \left( \frac{1}{3} + \frac{37}{3} \right) = \frac{19}{3}
+\end{align}
+\]</span></p>
+<p>and then</p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{19}{3} - 2^2 = \frac{7}{3} \]</span></p>
+<p>and so the standard deviation is <span class="math inline">\(\sqrt{\mathbb{V}(X)} = \sqrt{7/3}\)</span>.</p>
+<p><strong>Exercise 4.17.14</strong>. Let <span class="math inline">\(X_1, \dots, X_m\)</span> and <span class="math inline">\(Y_1, \dots, Y_n\)</span> be random variables and let <span class="math inline">\(a_1, \dots, a_m\)</span> and <span class="math inline">\(b_1, \dots, b_n\)</span> be constants. Show that</p>
+<p><span class="math display">\[ \text{Cov}\left( \sum_{i=1}^m a_i X_i , \sum_{j=1}^n b_j Y_j \right) = \sum_{i=1}^m \sum_{j=1}^n a_i b_j \text{Cov}(X_i, Y_j) \]</span></p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\text{Cov}\left(\sum_{i=1}^m a_i X_i, Y\right) &amp;= \mathbb{E}\left(\left( \sum_{i=1}^m a_i X_i \right) Y\right) - \mathbb{E}\left( \sum_{i=1}^m a_i X_i \right) \mathbb{E}(Y) \\
+&amp;= \sum_{i=1}^m \mathbb{E}(a_i X_i Y) - \left( \sum_{i=1}^m a_i \mathbb{E}(X_i) \right) \mathbb{E}(Y) \\
+&amp;= \sum_{i=1}^m \big(\mathbb{E}(a_i X_i Y) -  a_i \mathbb{E}(X_i) \mathbb{E}(Y)\big) \\
+&amp;= \sum_{i=1}^m a_i \text{Cov}(X_i, Y)
+\end{align}
+\]</span></p>
+<p>and, since <span class="math inline">\(\text{Cov}(A, B) = \text{Cov}(B, A)\)</span>,</p>
+<p><span class="math display">\[ \text{Cov}\left(X, \sum_{j=1}^n b_j Y_j \right) = \sum_{j=1}^n b_j \text{Cov}(X, Y_j) \]</span></p>
+<p>Applying this for each <span class="math inline">\(X_i\)</span>, we get the result.</p>
+<p><strong>Exercise 4.17.15</strong>. Let</p>
+<p><span class="math display">\[ f_{X, Y} = \begin{cases}
+\frac{1}{3} (x + y) &amp;\text{if } 0 \leq x \leq 1, 0 \leq y \leq 2 \\
+0 &amp;\text{otherwise}
+\end{cases}\]</span></p>
+<p>Find <span class="math inline">\(\mathbb{V}(2X - 3Y + 8)\)</span>.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(r(x, y) = 2x - 3y\)</span>. Then:</p>
+<p><span class="math display">\[ \mathbb{V}(2X - 3Y + 8) = \mathbb{V}(2X - 3Y) = \mathbb{V}(r(X, Y)) \]</span></p>
+<p>Calculating the expectation of <span class="math inline">\(r(X, Y)\)</span> and <span class="math inline">\(r(X, Y)^2\)</span>:</p>
+<p><span class="math display">\[ \mathbb{E}(r(X, Y)) = \int_0^1 \int_0^2 r(x, y) f(x, y) dy dx = \int_0^1 \int_0^2 \frac{1}{3}(2x - 3y)(x + y) dy dx\\ 
+= \int_0^1 \frac{2}{3}(2x^2 - x - 4) dx = -\frac{23}{9} \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{E}(r(X, Y)^2) = \int_0^1 \int_0^2 r(x, y)^2 f(x, y) dy dx = \int_0^1 \int_0^2 \frac{1}{3}(2x - 3y)^2(x + y) dy dx \\
+= \int_0^1 \frac{4}{3}(2x^3 - 4x^2 - 2x + 9) dx = \frac{86}{9} \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{V}(r(X, Y)) = \mathbb{E}(r(X, Y)^2) - \mathbb{E}(r(X, Y))^2 = \frac{86}{9} - \frac{23^2}{9^2} = \frac{245}{81} \]</span></p>
+<p><strong>Exercise 4.17.16</strong>. Let <span class="math inline">\(r(x)\)</span> be a function of <span class="math inline">\(x\)</span> and let <span class="math inline">\(s(y)\)</span> be a function of <span class="math inline">\(y\)</span>. Show that</p>
+<p><span class="math display">\[ \mathbb{E}(r(X) s(Y) | X) = r(X) \mathbb{E}(s(Y) | X) \]</span></p>
+<p>Also, show that <span class="math inline">\(\mathbb{E}(r(X) | X) = r(X)\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[ \mathbb{E}(r(X) s(Y) | X = x) = \int r(x) s(y) f(x, y) dy = r(x) \int s(y) f(x, y) dy = r(x) \mathbb{E}(s(Y) | X = x) \]</span></p>
+<p>and so the random variable <span class="math inline">\(\mathbb{E}(r(X) s(Y) | X)\)</span> takes the same value as the variable <span class="math inline">\(r(X) \mathbb{E}(s(Y) | X)\)</span> for each <span class="math inline">\(X = x\)</span> – therefore the random variables are equal.</p>
+<p>In particular, when <span class="math inline">\(s(y) = 1\)</span> for all <span class="math inline">\(y\)</span>, we have <span class="math inline">\(\mathbb{E}(r(X) | X) = r(X)\)</span>.</p>
+<p><strong>Exercise 4.17.17</strong>. Prove that</p>
+<p><span class="math display">\[ \mathbb{V}(Y) = \mathbb{E} \mathbb{V} (Y | X) + \mathbb{V} \mathbb{E} (Y | X) \]</span></p>
+<p>Hint: Let <span class="math inline">\(m = \mathbb{E}(Y)\)</span> and let <span class="math inline">\(b(x) = \mathbb{E}(Y | X = x)\)</span>. Note that <span class="math inline">\(\mathbb{E}(b(X)) = \mathbb{E} \mathbb{E}(Y | X) = \mathbb{E}(Y) = m\)</span>. Bear in mind that <span class="math inline">\(b\)</span> is a function of <span class="math inline">\(x\)</span>. Now write</p>
+<p><span class="math display">\[\mathbb{V}(Y) = \mathbb{E}((Y - m)^2) = \mathbb{E}(((Y - b(X)) + (b(X) - m))^2)\]</span></p>
+<p>Expand the square and take the expectation. You then have to take the expectation of three terms. In each case, use the rule of iterated expectation, i.e. <span class="math inline">\(\mathbb{E}(\text{stuff}) = \mathbb{E}(\mathbb{E}(\text{stuff} | X))\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}(Y) &amp;= \mathbb{E}(Y^2) - \mathbb{E}(Y)^2 \\
+&amp;= \mathbb{E}(\mathbb{E}(Y^2 | X)) - \mathbb{E}(\mathbb{E}(Y | X))^2 \\
+&amp;= \mathbb{E}\left( \mathbb{V}(Y | X) + \mathbb{E}(Y | X)^2 \right) - \mathbb{E}(\mathbb{E}(Y | X))^2 \\
+&amp;= \mathbb{E}(\mathbb{V}(Y | X)) + \left( \mathbb{E}(\mathbb{E}(Y | X)^2) - \mathbb{E}(\mathbb{E}(Y | X))^2 \right) \\
+&amp;= \mathbb{E} (\mathbb{V}(Y | X) + \mathbb{V}(\mathbb{E}(Y | X))
+\end{align}
+\]</span></p>
+<p><strong>Exercise 4.17.18</strong>. Show that if $(X | Y = y) = c $ for some constant <span class="math inline">\(c\)</span> then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are uncorrelated.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[ \mathbb{E}(XY) = \int \mathbb{E}(XY | Y = y) dF_Y(y) = \int y \mathbb{E}(X | Y = y) dF_Y(y) = \int cy dF_Y(y) = c \; \mathbb{E}(Y)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}(\mathbb{E}(X | Y)) = \mathbb{E}(c) = c \]</span></p>
+<p>so <span class="math inline">\(\mathbb{E}(XY) = \mathbb{E}(X) \mathbb{E}(Y)\)</span>, and so <span class="math inline">\(\text{Cov}(X, Y) = 0\)</span>, and so <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are uncorrelated.</p>
+<p><strong>Exercise 4.17.19</strong>. This question is to help you understand the idea of <strong>sampling distribution</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Let <span class="math inline">\(\overline{X}_n = n^{-1}\sum_{i=1}^n X_i\)</span>. Then <span class="math inline">\(\overline{X}_n\)</span> is a <strong>statistic</strong>, that is, a function of the data. Since <span class="math inline">\(\overline{X}_n\)</span> is a random variable, it has a distribution. This distribution is called the <em>sampling distribution of the statistic</em>. Recall from Theorem 4.16 that <span class="math inline">\(\mathbb{E}(\overline{X}_n) = \mu\)</span> and <span class="math inline">\(\mathbb{V}(\overline{X}_n) = \sigma^2 / n\)</span>. Don’t confuse the distribution of the data <span class="math inline">\(f_X\)</span> and the distribution of the statistic <span class="math inline">\(f_{\overline{X}_n}\)</span>. To make this clear, let <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(0, 1)\)</span>. Let <span class="math inline">\(f_X\)</span> be the density of the <span class="math inline">\(\text{Uniform}(0, 1)\)</span>. Plot <span class="math inline">\(f_X\)</span>. Now let <span class="math inline">\(\overline{X}_n = n^{-1} \sum_{i=1}^n X_i\)</span>. Find <span class="math inline">\(\mathbb{E}(\overline{X}_n)\)</span> and <span class="math inline">\(\mathbb{V}(\overline{X}_n)\)</span>. Plot them as a function of <span class="math inline">\(n\)</span>. Comment. Now simulate the distribution of <span class="math inline">\(\overline{X}_n\)</span> for <span class="math inline">\(n = 1, 5, 25, 100\)</span>. Check the simulated values of <span class="math inline">\(\mathbb{E}(\overline{X}_n)\)</span> and <span class="math inline">\(\mathbb{V}(\overline{X}_n)\)</span> agree with your theoretical calculations. What do you notice about the sampling distribution of <span class="math inline">\(\overline{X}_n\)</span> as it increases?</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[ \mathbb{E}\left(\overline{X}_n\right) = \mathbb{E}\left(n^{-1} \sum_{i=1}^n X_i \right) = n^{-1} \sum_{i=1}^n \mathbb{E}(X_i) = \frac{1}{2} \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{V}\left(\overline{X}_n\right) = \mathbb{V}\left(n^{-1} \sum_{i=1}^n X_i \right) = n^{-2} \sum_{i=1}^n \mathbb{V}(X_i) = \frac{1}{12 n} \]</span></p>
+<pre class="python"><code>import numpy as np
+
+np.random.seed(0)
+
+B = 1000
+
+E_overline_X = np.empty(100)
+V_overline_X = np.empty(100)
+
+for n in range(1, 101):
+    X_n = np.random.uniform(low=0, high=1, size=(B, n)).mean(axis=1)
+    E_overline_X[n - 1] = X_n.mean()
+    V_overline_X[n - 1] = X_n.var()</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+ax = plt.subplot(212)
+ax.hlines(0, xmin=-0.5, xmax=0, color=&#39;C0&#39;)
+ax.hlines(1, xmin=0, xmax=1, color=&#39;C0&#39;)
+ax.hlines(0, xmin=1, xmax=1.5, color=&#39;C0&#39;)
+ax.vlines([0, 1], ymin=0, ymax=1, color=&#39;C0&#39;, linestyle=&#39;dashed&#39;)
+ax.set_xlabel(&#39;x&#39;)
+ax.set_ylabel(r&#39;$f_X(x)$&#39;)
+ax.set_title(&#39;Density of Uniform(0, 1)&#39;)
+
+nn = np.arange(1, 101)
+
+ax = plt.subplot(221)
+ax.plot(nn, 1/2 * np.ones(100), label=&#39;Calculated&#39;)
+ax.plot(nn, E_overline_X, label=&#39;Measured&#39;)
+ax.set_xlabel(&#39;n&#39;)
+ax.set_ylabel(r&#39;$\mathbb{E}(\overline{X}_n)$&#39;)
+ax.set_title(&#39;Sampling distribution mean&#39;)
+ax.legend(loc=&#39;lower right&#39;)
+
+ax = plt.subplot(222)
+ax.plot(nn, 1 / (12 * nn), label=&#39;Calculated&#39;)
+ax.plot(nn, V_overline_X, label=&#39;Measured&#39;)
+ax.set_xlabel(&#39;n&#39;)
+ax.set_yscale(&#39;log&#39;)
+ax.set_ylabel(r&#39;$\mathbb{V}(\overline{X}_n)$&#39;)
+ax.set_title(&#39;Sampling distribution variance&#39;)
+ax.legend(loc=&#39;upper right&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2004%20-%20Expectation_files/Chapter%2004%20-%20Expectation_102_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Calculated and simulated values agree.</p>
+<p><strong>Exercise 4.17.20</strong>. Prove Lemma 4.20.</p>
+<p>If <span class="math inline">\(a\)</span> is a vector and <span class="math inline">\(X\)</span> is a random vector with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\Sigma\)</span> then</p>
+<p><span class="math display">\[ \mathbb{E}(a^T X) = a^T \mu
+\quad \text{and} \quad
+\mathbb{V}(a^T X) = a^T \Sigma a \]</span></p>
+<p>If <span class="math inline">\(A\)</span> is a matrix then</p>
+<p><span class="math display">\[ \mathbb{E}(A X) = A \mu
+\quad \text{and} \quad
+\mathbb{V}(AX) = A \Sigma A^T \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[ \mathbb{E}(a^T X) = \begin{pmatrix}
+\mathbb{E}(a_1 X_1) \\
+\mathbb{E}(a_2 X_2) \\
+\cdots \\
+\mathbb{E}(a_k X_k)
+\end{pmatrix} = \begin{pmatrix}
+a_1 \mathbb{E}(X_1) \\
+\mathbb{E}(X_2) \\
+\cdots \\
+\mathbb{E}(X_k)
+\end{pmatrix} = a^T \mu \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{V}(a^T X) = \mathbb{E}((a^T (X - \mu) (a^T(X - \mu))^T) = \mathbb{E}((a^T (X - \mu) (X - \mu)^T a) = a^T \Sigma a \]</span></p>
+<p>Similarly, for the matrix case,</p>
+<p><span class="math display">\[ \mathbb{E}(AX) = \begin{pmatrix}
+\mathbb{E}\left( \sum_{j=1}^k a_{1, j} X_j \right) \\
+\mathbb{E}\left( \sum_{j=1}^k a_{2, j} X_j \right) \\
+\cdots \\
+\mathbb{E}\left( \sum_{j=1}^k a_{k, j} X_j \right) \\
+\end{pmatrix} = \begin{pmatrix}
+\sum_{j=1}^k a_{1, j} \mathbb{E}(X_j) \\
+\sum_{j=1}^k a_{2, j} \mathbb{E}(X_j) \\
+\cdots \\
+\sum_{j=1}^k a_{k, j} \mathbb{E}(X_j) \\
+\end{pmatrix} = A \mu \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{V}(A X) = \mathbb{E}((A (X - \mu) (A(X - \mu))^T) = \mathbb{E}((A (X - \mu) (X - \mu)^T A^T) = A \Sigma A^T \]</span></p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
