@@ -698,7 +698,7 @@ plt.show()</code></pre>
 <p><strong>Solution</strong>. Let’s start from the definition for the PDF of the exponential distribution:</p>
 <p><span class="math display">\[ f(x) = \frac{1}{\beta} e^{-x / \beta}, \quad x &gt; 0 \]</span></p>
 <p>We have:</p>
-<p><span class="math display">\[ F(x) = \int_{-\infty}^x f(t) dt = \int_{-\infty}^x \frac{1}{\beta} e^{-t / \beta} dt = \frac{1}{\beta} \beta \left( 1 - e^{-x / \beta} \right) = 1 - e^{-x / \beta} \]</span></p>
+<p><span class="math display">\[ F(x) = \int_{0}^x f(t) dt = \int_{0}^x \frac{1}{\beta} e^{-t / \beta} dt = \frac{1}{\beta} \beta \left( 1 - e^{-x / \beta} \right) = 1 - e^{-x / \beta} \]</span></p>
 <p>and so</p>
 <p><span class="math display">\[ q = 1 - e^{-F^{-1}(q) / \beta} \Longrightarrow F^{-1}(q) = -\beta \log (1 - q) \]</span></p>
 <p><strong>Exercise 3.14.10</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be independent. Show that <span class="math inline">\(g(X)\)</span> is independent of <span class="math inline">\(h(Y)\)</span> where <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> are functions.</p>

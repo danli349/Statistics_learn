@@ -6,7 +6,19 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter05 Inequalities</title>
+      <link>/2021/04/13/aos-chapter05-inequalities/</link>
+      <pubDate>Tue, 13 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/13/aos-chapter05-inequalities/</guid>
+      <description>5. Inequalities5.1 Markov and Chebyshev Inequalities5.2 Hoeffding’s Inequality5.3 Cauchy-Schwartz and Jensen Inequalities5.4 Technical Appendix: Proof of Hoeffding’s Inequality5.6 ExercisesReferences5. Inequalities5.1 Markov and Chebyshev InequalitiesTheorem 5.1 (Markov’s Inequality). Let \(X\) be a non-negative random variable and suppose that \(\mathbb{E}(X)\) exists. For any \(t &amp;gt; 0\),
+\[ \mathbb{P}(X &amp;gt; t) \leq \frac{\mathbb{E}(X)}{t} \]
+Proof.
+\[ \mathbb{E}(X)=\int_0^\infty xf(x) dx=\int_0^t xf(x) dx + \int_t^\infty xf(x) dx\geq \int_t^\infty xf(x) dx\geq t \int_t^\infty f(x) dx= t \mathbb{P}(X &amp;gt; t)\]</description>
+    </item>
+    
     <item>
       <title>AOS chapter04 Expectation</title>
       <link>/2021/04/12/aos-chapter04-expectation/</link>

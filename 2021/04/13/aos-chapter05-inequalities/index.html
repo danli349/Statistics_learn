@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter05 Inequalities - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter05 Inequalities - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">10 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter05 Inequalities</h1>
+
+    
+    <span class="article-date">2021-04-13</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/13/aos-chapter05-inequalities/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#inequalities">5. Inequalities</a>
+<ul>
+<li><a href="#markov-and-chebyshev-inequalities">5.1 Markov and Chebyshev Inequalities</a></li>
+<li><a href="#hoeffdings-inequality">5.2 Hoeffding’s Inequality</a></li>
+<li><a href="#cauchy-schwartz-and-jensen-inequalities">5.3 Cauchy-Schwartz and Jensen Inequalities</a></li>
+<li><a href="#technical-appendix-proof-of-hoeffdings-inequality">5.4 Technical Appendix: Proof of Hoeffding’s Inequality</a></li>
+<li><a href="#exercises">5.6 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="inequalities" class="section level2">
+<h2>5. Inequalities</h2>
+<div id="markov-and-chebyshev-inequalities" class="section level3">
+<h3>5.1 Markov and Chebyshev Inequalities</h3>
+<p><strong>Theorem 5.1 (Markov’s Inequality)</strong>. Let <span class="math inline">\(X\)</span> be a non-negative random variable and suppose that <span class="math inline">\(\mathbb{E}(X)\)</span> exists. For any <span class="math inline">\(t &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(X &gt; t) \leq \frac{\mathbb{E}(X)}{t} \]</span></p>
+<p><strong>Proof</strong>.</p>
+<p><span class="math display">\[ 
+\mathbb{E}(X)
+=\int_0^\infty xf(x) dx
+=\int_0^t xf(x) dx + \int_t^\infty xf(x) dx
+\geq \int_t^\infty xf(x) dx
+\geq t \int_t^\infty f(x) dx
+= t \mathbb{P}(X &gt; t)
+\]</span></p>
+<p><strong>Theorem 5.2 (Chebyshev’s Inequality)</strong>. Let <span class="math inline">\(\mu = \mathbb{E}(X)\)</span> and <span class="math inline">\(\sigma^2 = \mathbb{V}(X)\)</span>. Then,</p>
+<p><span class="math display">\[ \mathbb{P}(|X - \mu| \geq t) \leq \frac{\sigma^2}{t^2} 
+\quad \text{and} \quad
+\mathbb{P}(|Z| \geq k) \leq \frac{1}{k^2} \]</span></p>
+<p>where <span class="math inline">\(Z = (X - \mu) / \sigma\)</span>. In particular, <span class="math inline">\(\mathbb{P}(|Z| &gt; 2) \leq 1/4\)</span> and <span class="math inline">\(\mathbb{P}(|Z| &gt; 3) \leq 1/9\)</span>.</p>
+<p><strong>Proof</strong>. We use Markov’s inequality to conclude that</p>
+<p><span class="math display">\[ \mathbb{P}(|X - \mu| \geq t) = \mathbb{P}(|X - \mu|^2 \geq t^2) \leq \left(\frac{\mathbb{E}(X - \mu)}{t}\right)^2 = \frac{\sigma^2}{t^2} \]</span></p>
+<p>The second part follows by setting <span class="math inline">\(t = k \sigma\)</span>.</p>
+</div>
+<div id="hoeffdings-inequality" class="section level3">
+<h3>5.2 Hoeffding’s Inequality</h3>
+<p>Hoeffding’s inequality is similar in spirit to Markov’s inequality but it is a sharper inequality. We present the result here in two parts. The proofs are in the technical appendix.</p>
+<p><strong>Theorem 5.4</strong>. Let <span class="math inline">\(Y_1, \dots, Y_n\)</span> be independent observations such that <span class="math inline">\(\mathbb{E}(Y_i) = 0\)</span> and <span class="math inline">\(a_i \leq Y_i \leq b_i\)</span>. Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Then, for any <span class="math inline">\(t &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}\left( \sum_{i=1}^n Y_i \geq \epsilon \right) \leq e^{-t\epsilon} \prod_{i=1}^n e^{t^2(b_i - a_i)^2 / 8} \]</span></p>
+<p><strong>Theorem 5.5</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span>. Then, for any <span class="math inline">\(\epsilon &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(|\overline{X}_n - p| &gt; \epsilon) \leq 2e^{-2n\epsilon^2} \]</span></p>
+<p>Hoeffding’s inequality gives us a simple way go create a <strong>confidence interval</strong> for a binomial parameter <span class="math inline">\(p\)</span>. We will discuss confidence intervals later but here is the basic idea. Let <span class="math inline">\(\alpha &gt; 0\)</span> and let</p>
+<p><span class="math display">\[ \epsilon_n = \left\{ \frac{1}{2n} \log \left( \frac{2}{\alpha} \right) \right\}^{1/2} \]</span></p>
+<p>By Hoeffding’s inequality,</p>
+<p><span class="math display">\[ \mathbb{P}(|\overline{X}_n - p| &gt; \epsilon_n) \leq 2e^{-2n\epsilon_n^2} = \alpha \]</span></p>
+<p>Let <span class="math inline">\(C = (\overline{X}_n - \epsilon, \overline{X}_n + \epsilon)\)</span>. Then, <span class="math inline">\(\mathbb{P}(\text{not } C \in p) = \mathbb{P}(|\overline{X}_n - p| &gt; \epsilon) \leq \alpha\)</span>. Hence, <span class="math inline">\(\mathbb{P}(p \in C) \geq 1 - \alpha\)</span>, that is, ratio <span class="math inline">\((1 - \alpha)\)</span> of the random intervals <span class="math inline">\(C\)</span> trap the true parameter <span class="math inline">\(p\)</span>; we call <span class="math inline">\(C\)</span> a <span class="math inline">\(1 - \alpha\)</span> confidence interval. More on this later.</p>
+</div>
+<div id="cauchy-schwartz-and-jensen-inequalities" class="section level3">
+<h3>5.3 Cauchy-Schwartz and Jensen Inequalities</h3>
+<p>This section contains two inequalities on expected values that are often useful.</p>
+<p><strong>Theorem 5.7 (Cauchy-Schwartz Inequalities)</strong>. If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have finite variances then</p>
+<p><span class="math display">\[ \mathbb{E}|XY| \leq \sqrt{\mathbb{E}\left(X^2\right) \mathbb{E}\left(Y^2\right)} \]</span></p>
+<p>Recall that a function <span class="math inline">\(g\)</span> is <strong>convex</strong> if for each <span class="math inline">\(x, y\)</span> and each <span class="math inline">\(\alpha \in [0, 1]\)</span>,</p>
+<p><span class="math display">\[ g(\alpha x + (1 - \alpha)y) \leq \alpha g(x) + (1 - \alpha) g(y) \]</span></p>
+<p>If <span class="math inline">\(g\)</span> is twice differentiable, then the convexity reduces to checking that <span class="math inline">\(g&#39;&#39;(x) \geq 0\)</span> for all <span class="math inline">\(x\)</span>. It can be shown that if <span class="math inline">\(g\)</span> is convex then it lies above any line that touches <span class="math inline">\(g\)</span> at some point, called a tangent line. A function <span class="math inline">\(g\)</span> is <strong>concave</strong> if <span class="math inline">\(-g\)</span> is convex. Examples of convex functions are <span class="math inline">\(g(x) = -x^2\)</span> and <span class="math inline">\(g(x) = \log x\)</span>.</p>
+<p><strong>Theorem 5.8 (Jensen’s Inequality)</strong>. If <span class="math inline">\(g\)</span> is convex then</p>
+<p><span class="math display">\[ \mathbb{E}g(X) \geq g(\mathbb{E}X) \]</span></p>
+<p>If <span class="math inline">\(g\)</span> is concave then</p>
+<p><span class="math display">\[ \mathbb{E}g(X) \leq g(\mathbb{E}X) \]</span></p>
+<p><strong>Proof</strong>. Let <span class="math inline">\(L(x) = a + bx\)</span> be a line, tangent to the <span class="math inline">\(g(x)\)</span> at the point <span class="math inline">\(\mathbb{E}(X)\)</span>. Since <span class="math inline">\(g\)</span> is convex, it lies above the line <span class="math inline">\(L(x)\)</span>. So,</p>
+<p><span class="math display">\[ \mathbb{E}g(X) \geq \mathbb{E}L(X) = \mathbb{E}(a + bX) = a + b\mathbb{E}(X) = L(\mathbb{E}(X)) = g(\mathbb{E}(X))\]</span></p>
+<p>From Jensen’s inequality we see that <span class="math inline">\(\mathbb{E}X^2 \geq (\mathbb{E}X)^2\)</span> and <span class="math inline">\(\mathbb{E}(1/X) \geq 1 / \mathbb{E}(X)\)</span>. Since log is concave, <span class="math inline">\(\mathbb{E}(\log X) \leq \log \mathbb{E}(X)\)</span>. For example, suppose that <span class="math inline">\(X \sim N(3, 1)\)</span>. Then <span class="math inline">\(\mathbb{E}(1 / X) \geq 1/3\)</span>.</p>
+</div>
+<div id="technical-appendix-proof-of-hoeffdings-inequality" class="section level3">
+<h3>5.4 Technical Appendix: Proof of Hoeffding’s Inequality</h3>
+<p>We will make use of the exact form of Taylor’s theorem: if <span class="math inline">\(g\)</span> is a smooth function, then there is a number <span class="math inline">\(\xi \in (0, u)\)</span> such that <span class="math inline">\(g(u) = g(0) + u g&#39;(0) + \frac{u^2}{2}g&#39;&#39;(\xi)\)</span>.</p>
+<p><strong>Proof of Theorem 5.4</strong>. For any <span class="math inline">\(t &gt; 0\)</span>, we have, from Markov’s inequality, that</p>
+<p><span class="math display">\[ \mathbb{P}\left( \sum_{i=1}^n Y_i \geq \epsilon \right) = \mathbb{P}\left( t \sum_{i=1}^n Y_i \geq t \epsilon \right)
+= \mathbb{P}\left( e^{t \sum_{i=1}^n Y_i} \geq e^{t \epsilon} \right) \leq e^{-t\epsilon} \mathbb{E}\left( e^{t \sum_{i=1}^n Y_i}\right) = e^{-t\epsilon} \prod_i \mathbb{E}\left(e^{tY_i}\right) \]</span></p>
+<p>Since <span class="math inline">\(a_i \leq Y_i \leq b_i\)</span>, we can write <span class="math inline">\(Y_i\)</span> as a convex combination of <span class="math inline">\(a_i\)</span> and <span class="math inline">\(b_i\)</span>, namely, <span class="math inline">\(Y-i = \alpha b_i + (1 - \alpha) a_i\)</span> where <span class="math inline">\(\alpha = (Y_i - a_i) / (b_i - a_i)\)</span>. So, by the convexity of <span class="math inline">\(e^{ty}\)</span> we have</p>
+<p><span class="math display">\[ e^{tY_i} \leq \frac{Y_i - a_i}{b_i - a_i} e^{tb_i} + \frac{b_i - Y_i}{b_i - a_i} e^{ta_i} \]</span></p>
+<p>Take expectations of both sides and use the fact that <span class="math inline">\(\mathbb{E}(Y_i) = 0\)</span> to get</p>
+<p><span class="math display">\[ \mathbb{E}e^{tY_i} \leq - \frac{a_i}{b_i - a_i} e^{tb_i} + \frac{b_i}{b_i - a_i} e^{ta_i} = e^{g(u)} \]</span></p>
+<p>where <span class="math inline">\(u = t(b_i - a_i)\)</span>, <span class="math inline">\(g(u) = -\gamma u + \log (1 - \gamma + \gamma e^u)\)</span> and <span class="math inline">\(\gamma = -a_i / (b_i - a_i)\)</span>.</p>
+<p>Note that <span class="math inline">\(g(0) = g&#39;(0) = 0\)</span>. Also, <span class="math inline">\(g&#39;&#39;(u) \leq 1/4\)</span> for all <span class="math inline">\(u &gt; 0\)</span>. By Taylor’s theorem, there is a <span class="math inline">\(\xi \in (0, u)\)</span> such that</p>
+<p><span class="math display">\[ g(u) = g(0) + u g&#39;(0) + \frac{u^2}{2} g(\xi) = \frac{u^2}{2} g(\xi) \leq \frac{u^2}{8} = \frac{t^2(b_i - a_i)^2}{8} \]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[ \mathbb{E}e^{tY_i} \leq e^{g(u)} \leq e^{t^2(b_i - a_i)^2/8} \]</span></p>
+<p>and the result follows.</p>
+<p><strong>Proof of Theorem 5.5</strong>. Let <span class="math inline">\(Y_i = (1 / n)(X_i - p)\)</span>. Then <span class="math inline">\(\mathbb{E}(Y_i) = 0\)</span> and <span class="math inline">\(a \leq Y_i \leq b\)</span> where <span class="math inline">\(a = -p/n\)</span> and <span class="math inline">\(b = (1 - p) / n\)</span>. Also, <span class="math inline">\((b - a)^2 = 1/n^2\)</span>. Applying Theorem 5.4 we get</p>
+<p><span class="math display">\[ \mathbb{P}\left(\overline{X}_n - p &gt; \epsilon\right) = \mathbb{P}\left( \sum_i Y_i &gt; \epsilon \right) \leq e^{-t\epsilon} e^{t^2/(8n^2)}\]</span></p>
+<p>The above holds for any <span class="math inline">\(t &gt; 0\)</span>. In particular, take <span class="math inline">\(t = 4n\epsilon\)</span> and we get <span class="math inline">\(\mathbb{P}\left(\overline{X}_n - p &gt; \epsilon\right) \leq e^{-2n\epsilon^2}\)</span>. By a similar argument we can show that <span class="math inline">\(\mathbb{P}\left(\overline{X}_n - p &lt; \epsilon\right) \leq e^{-2n\epsilon^2}\)</span>. Putting those together we get <span class="math inline">\(\mathbb{P}\left(|\overline{X}_n - p| &gt; \epsilon\right) \leq 2e^{-2n\epsilon^2}\)</span>.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>5.6 Exercises</h3>
+<p><strong>Exercise 5.6.1</strong>. Let <span class="math inline">\(X \sim \text{Exponential}(\beta)\)</span>. Find <span class="math inline">\(\mathbb{P}(|X - \mu_X| &gt; k \sigma_X)\)</span> for <span class="math inline">\(k &gt; 1\)</span>. Compare this to the bound you get from Chebyshev’s inequality.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\beta} e^{-x / \beta}, \quad x &gt; 0 \]</span></p>
+<p>Let <span class="math inline">\(F\)</span> be the CDF of <span class="math inline">\(X\)</span>. We have:</p>
+<p><span class="math display">\[ F(x) = \int_{0}^x f(t) dt = \int_{0}^x \frac{1}{\beta} e^{-t / \beta} dt = \frac{1}{\beta} \beta \left( 1 - e^{-x / \beta} \right) = 1 - e^{-x / \beta} \]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int_0^\infty x \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x e^{-x / \beta} dx = \frac{1}{\beta} \beta^2 = \beta\]</span>
+<span class="math display">\[\mathbb{E}(X^2) =  \int_0^\infty x^2 \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x^2 e^{-x / \beta} dx = \frac{1}{\beta} 2\beta^3 = 2 \beta^2 \]</span>
+<span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = 2\beta^2 - \beta^2 = \beta^2\]</span>
+and
+<span class="math display">\[\mu_X=\sigma_X=\beta\]</span></p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(|X - \mu_X| &gt; k \sigma_X) &amp;= 1 - \mathbb{P}(-k \sigma_X &lt; X - \mu_X &lt; k \sigma_X) \\
+&amp;= 1 - \mathbb{P}(\mu_X - k \sigma_X &lt; X &lt; \mu_X + k \sigma_X) \\
+&amp;= 1 - F(\mu_X + k \sigma_X) + F(\mu_X - k \sigma_X) \\
+&amp;= 1 - 1 + \exp\left\{ -\frac{\left(\beta + k \beta\right)^+}{\beta} \right\} + 1 - \exp\left\{-\frac{\left(\beta - k \beta\right)^+}{\beta} \right\} \\
+&amp;= 1 + e^{-(1+k)^+ } - e^{-(1-k)^+} 
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\((a)^+ = \max \{ a, 0 \}\)</span>.</p>
+<p>On the other hand, Chebyshev’s bound provides, for <span class="math inline">\(t = k\sigma_X\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(|X - \mu_X| \geq k \sigma_X) \leq \frac{\sigma_X^2}{k^2 \sigma_X^2}  = \frac{1}{k^2} \]</span></p>
+<p>which is a weaker bound.</p>
+<pre class="python"><code>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+def f(k):
+    return 1 + np.exp(-np.maximum(1+k, 0)) - np.exp(-np.maximum(1 - k, 0))
+
+def chebyshev(k):
+    # Limit upper bound to 1, since probability is always under 1
+    return np.minimum(1 / (k**2), 1)
+
+kk = np.arange(0.01, 10, step = 0.01)
+
+plt.figure(figsize=(12, 8))
+
+plt.plot(kk, f(kk), label=&#39;Calculated probability&#39;)
+plt.plot(kk, chebyshev(kk), label=&#39;min(Chebyshev bound, 1)&#39;)
+plt.yscale(&#39;log&#39;)
+plt.xlabel(&#39;k&#39;)
+plt.ylabel(&#39;Probability bound&#39;)
+plt.legend(loc=&#39;lower left&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2005%20-%20Inequalities_files/Chapter%2005%20-%20Inequalities_25_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 5.6.2</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Use Chebyshev’s inequality to show that <span class="math inline">\(\mathbb{P}(X \geq 2\lambda) \leq 1 / \lambda\)</span>.</p>
+<p><strong>Solution</strong>. We have <span class="math inline">\(\mu_X = \lambda\)</span> and <span class="math inline">\(\sigma_X^2 = \lambda\)</span>, so Chebyshev’s gives us:</p>
+<p><span class="math display">\[ \mathbb{P}(|X - \lambda| \geq t) \leq \frac{\lambda}{t^2} \]</span></p>
+<p>If we make <span class="math inline">\(t = \lambda\)</span>, we get</p>
+<p><span class="math display">\[ \mathbb{P}(X \geq \lambda) = \mathbb{P}(|X - \lambda| \geq \lambda) \leq \frac{1}{\lambda} \]</span></p>
+<p><strong>Exercise 5.6.3</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span> and <span class="math inline">\(\overline{X}_n = n^{-1} \sum_{i=1}^n X_i\)</span>. Bound <span class="math inline">\(\mathbb{P}(|\overline{X}_n - p| &gt; \epsilon)\)</span> using Chebyshev’s inequality and using Hoeffding’s inequality.</p>
+<p>Show that, when <span class="math inline">\(n\)</span> is large, the bound from Hoeffding’s inequality is smaller than the bound from Chebyshev’s inequality.</p>
+<p><strong>Solution</strong>. Note that <span class="math inline">\(\mathbb{E}(\overline{X}_n) = p\)</span> and <span class="math inline">\(\mathbb{V}(\overline{X}_n) = p(1-p) / n\)</span>, since <span class="math inline">\(n \overline{X}_n \sim \text{Binomial}(n, p)\)</span>.</p>
+<p>Using Chebyshev’s inequality,</p>
+<p><span class="math display">\[ \mathbb{P}(|\overline{X}_n - p| \geq \epsilon) \leq \frac{p(1 - p)}{n \epsilon^2} \]</span></p>
+<p>Using Hoeffding’s inequality,</p>
+<p><span class="math display">\[ \mathbb{P}(|\overline{X}_n - p| &gt; \epsilon) \leq 2e^{-2n\epsilon^2} \]</span></p>
+<p>The bound provided by Hoeffding’s inequality is <span class="math inline">\(O(e^{-2n\epsilon^2})\)</span>, while the bound provided by Chebyshev’s inequality is <span class="math inline">\(O(n^{-1})\)</span>, therefore the bound from Hoeffding’s inequality is smaller for a sufficiently large <span class="math inline">\(n\)</span>.</p>
+<p><strong>Exercise 5.6.4</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span>.</p>
+<p><strong>(a)</strong> Let <span class="math inline">\(\alpha &gt; 0\)</span> be fixed and define</p>
+<p><span class="math display">\[ \epsilon_n = \sqrt{\frac{1}{2n} \log \left( \frac{2}{\alpha}\right)} \]</span></p>
+<p>Let <span class="math inline">\(\hat{p}_n = n^{-1} \sum_{i=1}^n X_i\)</span>. Define <span class="math inline">\(C_n = (\hat{p}_n - \epsilon_n, \hat{p}_n + \epsilon_n)\)</span>. Use Hoeffding’s inequality to show that</p>
+<p><span class="math display">\[ \mathbb{P}(p \in C_n) \geq 1 - \alpha \]</span></p>
+<p>We call <span class="math inline">\(C_n\)</span> a <em><span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(p\)</span></em>. In practice, we truncate the interval so it does not go below 0 or above 1.</p>
+<p><strong>(b) (Computer Experiment)</strong> Let’s examine the properties of this confidence interval. Let <span class="math inline">\(\alpha = 0.05\)</span> and <span class="math inline">\(p = 0.4\)</span>. Conduct a simulation study to see how often the interval contains <span class="math inline">\(p\)</span> (called the coverage). Do this for various values of <span class="math inline">\(n\)</span> between 1 and 10000. Plot the coverage versus <span class="math inline">\(n\)</span>.</p>
+<p><strong>(c)</strong> Plot the length of the interval versus <span class="math inline">\(n\)</span>. Suppose we want the length of the interval to be no more than .05. How large should <span class="math inline">\(n\)</span> be?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> The result is immediate from replacing <span class="math inline">\(\epsilon_n\)</span> into Hoeffding’s inequality,</p>
+<p><span class="math display">\[ \mathbb{P}(|\hat{p}_n - p| &gt; \epsilon_n) \leq 2e^{-2n\epsilon_n^2} = \alpha \]</span></p>
+<p>since <span class="math inline">\(\mathbb{E}(\hat{p}_n) = p\)</span>.</p>
+<p><strong>(b)</strong></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import bernoulli
+import tqdm
+
+alpha = 0.05
+p = 0.4
+
+B = 50000
+N = 10000
+
+nn = np.arange(1, N + 1)
+epsilon_n = np.sqrt((1 / (2 * nn)) * np.log(2 / alpha))
+
+p_hat = np.empty((B, N))
+for i in tqdm.notebook.tqdm(range(B)):
+    X = bernoulli.rvs(p, size=N, random_state=i)
+    p_hat[i] = np.cumsum(X) / nn
+
+coverage = np.mean((p_hat + epsilon_n &gt;= p) &amp; (p_hat - epsilon_n &lt;= p), axis=0)</code></pre>
+<pre><code>  0%|          | 0/50000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, coverage)
+plt.xlabel(&#39;n&#39;)
+plt.ylabel(&#39;Coverage&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2005%20-%20Inequalities_files/Chapter%2005%20-%20Inequalities_34_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(c)</strong> The length of the interval is <span class="math inline">\(\min \{\hat{p}_n + \epsilon_n, 1 \} - \max \{ \hat{p}_n - \epsilon_n, 0\}\)</span>. As <span class="math inline">\(\hat{p}_n \rightarrow p\)</span>, let’s plot the approximation on the limit case, which is just <span class="math inline">\(2 \epsilon_n\)</span>.</p>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.plot(nn, 2 * epsilon_n, label=&#39;Interval length&#39;)
+plt.xlabel(&#39;n&#39;)
+plt.ylabel(r&#39;$2\epsilon_n$&#39;)
+plt.hlines(.05, xmin=0, xmax=N, color=&#39;red&#39;, label=&#39;Threshold&#39;)
+plt.yscale(&#39;log&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()
+
+selected_n = nn[np.argmax(2 * epsilon_n &lt;= .05)]
+print(&#39;Smallest n with interval length under .05: %i&#39; % selected_n)</code></pre>
+<div class="figure">
+<img src="Chapter%2005%20-%20Inequalities_files/Chapter%2005%20-%20Inequalities_36_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Smallest n with interval length under .05: 2952</code></pre>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

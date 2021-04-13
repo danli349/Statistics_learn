@@ -567,9 +567,9 @@ plt.show()</code></pre>
 <p><span class="math display">\[\mathbb{V}(Z) = \mathbb{E}(Z^2) - \mathbb{E}(Z)^2 = 1 - 0 = 1\]</span></p>
 <p><strong>Exponential</strong>. Let <span class="math inline">\(X \sim \text{Exponential}(\beta)\)</span>. Then:</p>
 <ul>
-<li>$ (X) = _0^x  e^{-x / } dx =  _0^x e^{-x / } dx =  ^2 = $</li>
-<li>$(X^2) = _0<sup>x</sup>2  e^{-x / } dx =  _0<sup>x</sup>2 e^{-x / } dx =  2^3 = 2 ^2 $</li>
-<li>$ (X) = (X^2) - (X)^2 = 2^2 - ^2 = ^2$</li>
+<li><span class="math display">\[ \mathbb{E}(X) = \int_0^\infty x \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x e^{-x / \beta} dx = \frac{1}{\beta} \beta^2 = \beta\]</span></li>
+<li><span class="math display">\[\mathbb{E}(X^2) =  \int_0^\infty x^2 \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x^2 e^{-x / \beta} dx = \frac{1}{\beta} 2\beta^3 = 2 \beta^2 \]</span></li>
+<li><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = 2\beta^2 - \beta^2 = \beta^2\]</span></li>
 </ul>
 <p><strong>Gamma</strong>. Let <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>. The PDF is</p>
 <p><span class="math display">\[ f_X(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} \quad \text{for } x &gt; 0 \]</span></p>
