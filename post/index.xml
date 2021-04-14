@@ -6,7 +6,17 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter06 Convergence of Random Variables</title>
+      <link>/2021/04/14/aos-chapter05-convergence-of-random-variables/</link>
+      <pubDate>Wed, 14 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/14/aos-chapter05-convergence-of-random-variables/</guid>
+      <description>6. Convergence of Random Variables6.2 Types of convergence6.3 The Law of Large Numbers6.4 The Central Limit Theorem6.5 The Delta Method6.6 Technical appendix6.8 ExercisesReferences6. Convergence of Random Variables6.2 Types of convergence\(X_n\) converges to \(X\) in probability, written \(X_n \xrightarrow{\text{P}} X\), if, for every \(\epsilon &amp;gt; 0\),:
+\[ \mathbb{P}( |X_n - X| &amp;gt; \epsilon ) \rightarrow 0 \]</description>
+    </item>
+    
     <item>
       <title>AOS Chapter05 Inequalities</title>
       <link>/2021/04/13/aos-chapter05-inequalities/</link>

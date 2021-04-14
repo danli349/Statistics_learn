@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter06 Convergence of Random Variables - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter06 Convergence of Random Variables - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">25 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter06 Convergence of Random Variables</h1>
+
+    
+    <span class="article-date">2021-04-14</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/14/aos-chapter05-convergence-of-random-variables/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#convergence-of-random-variables">6. Convergence of Random Variables</a>
+<ul>
+<li><a href="#types-of-convergence">6.2 Types of convergence</a></li>
+<li><a href="#the-law-of-large-numbers">6.3 The Law of Large Numbers</a></li>
+<li><a href="#the-central-limit-theorem">6.4 The Central Limit Theorem</a></li>
+<li><a href="#the-delta-method">6.5 The Delta Method</a></li>
+<li><a href="#technical-appendix">6.6 Technical appendix</a></li>
+<li><a href="#exercises">6.8 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="convergence-of-random-variables" class="section level2">
+<h2>6. Convergence of Random Variables</h2>
+<div id="types-of-convergence" class="section level3">
+<h3>6.2 Types of convergence</h3>
+<p><strong><span class="math inline">\(X_n\)</span> converges to <span class="math inline">\(X\)</span> in probability</strong>, written <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span>, if, for every <span class="math inline">\(\epsilon &gt; 0\)</span>,:</p>
+<p><span class="math display">\[ \mathbb{P}( |X_n - X| &gt; \epsilon ) \rightarrow 0 \]</span></p>
+<p>as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong><span class="math inline">\(X_n\)</span> converges to <span class="math inline">\(X\)</span> in distribution</strong>, written <span class="math inline">\(X_n \leadsto X\)</span>, if</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} F_n(t) = F(t) \]</span></p>
+<p>for all <span class="math inline">\(t\)</span> for which <span class="math inline">\(F\)</span> is continuous.</p>
+<p><strong><span class="math inline">\(X_n\)</span> converges to <span class="math inline">\(X\)</span> in quadratic mean</strong>, written <span class="math inline">\(X_n \xrightarrow{\text{qm}} X\)</span>, if,</p>
+<p><span class="math display">\[ \mathbb{E}(X_n - X)^2 \rightarrow 0 \]</span></p>
+<p>as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong>Theorem 6.4</strong>. The following relationships hold:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(X_n \xrightarrow{\text{qm}} X\)</span> implies that <span class="math inline">\(X_n \xrightarrow{P} X\)</span>.</p></li>
+<li><p><span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span> implies that <span class="math inline">\(X_n \leadsto X\)</span>.</p></li>
+<li><p>if <span class="math inline">\(X_n \leadsto X\)</span> and if <span class="math inline">\(\mathbb{P}(X = c) = 1\)</span> for some real number <span class="math inline">\(c\)</span>, then <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span>.</p></li>
+</ol>
+<p><strong>Proof</strong></p>
+<ol style="list-style-type: decimal">
+<li>Fix <span class="math inline">\(\epsilon &gt; 0\)</span>. Using Chebyshev’s inequality,</li>
+</ol>
+<p><span class="math display">\[ \mathbb{P}(|X_n - X| &gt; \epsilon) = \mathbb{P}(|X_n - X|^2 &gt; \epsilon^2) \leq \frac{\mathbb{E}|X_n - X|^2}{\epsilon^2} \rightarrow 0 \]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Fix <span class="math inline">\(\epsilon &gt; 0\)</span> and let <span class="math inline">\(x\)</span> be a point of continuity of <span class="math inline">\(F\)</span>. Then</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+F_n(x) &amp; = \mathbb{P}(X_n \leq x) = \mathbb{P}(X_n \leq x, X \leq x + \epsilon) + \mathbb{P}(X_n \leq x, X &gt; x + \epsilon) \\
+       &amp; \leq \mathbb{P}(X \leq x + \epsilon) + \mathbb{P}(|X_n - X| &gt; \epsilon) \\
+       &amp; = F(x + \epsilon) + \mathbb{P}(|X_n - X| &gt; \epsilon)
+\end{align}
+\]</span></p>
+<p>Also,</p>
+<p><span class="math display">\[
+\begin{align}
+F(x - \epsilon) &amp; = \mathbb{P}(X \leq x - \epsilon) = \mathbb{P}(X \leq x - \epsilon, X_n \leq x) + \mathbb{P}(X \leq x + \epsilon, X_n &gt; x) \\
+                &amp; \leq F_n(x) + \mathbb{P}(|X_n - X| &gt; \epsilon)
+\end{align}
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[ F(x - \epsilon) - \mathbb{P}(|X_n - X| &gt; \epsilon) \leq F_n(x) \leq F_n(x + \epsilon) + \mathbb{P}(|X_n - X| &gt; \epsilon) \]</span></p>
+<p>Take the limit as <span class="math inline">\(n \rightarrow \infty\)</span> to conclude that</p>
+<p><span class="math display">\[ F(x - \epsilon) \leq \liminf_{n \rightarrow \infty} F_n(x) \leq \limsup_{n \rightarrow \infty} F_n(x) \leq F(x + \epsilon) \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Fix <span class="math inline">\(\epsilon &gt; 0\)</span>. Then,</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(|X_n - c| &gt; \epsilon) &amp; = \mathbb{P}(X_n &lt; c - \epsilon) + \mathbb{P}(X_n &gt; c + \epsilon) \\
+                                 &amp; \leq \mathbb{P}(X_n \leq c - \epsilon) + \mathbb{P}(X_n &gt; c + \epsilon) \\
+                                 &amp; = F_n(c - \epsilon) + 1 - F_n(c + \epsilon) \\
+                                 &amp; \rightarrow F(c - \epsilon) + 1 - F(c + \epsilon) \\
+                                 &amp; = 0 + 1 - 1 = 0
+\end{align}
+\]</span></p>
+<p>Now, to show that the reverse implications do not hold:</p>
+<div id="convergence-in-probability-does-not-imply-convergence-in-quadratic-mean" class="section level4">
+<h4>Convergence in probability does not imply convergence in quadratic mean</h4>
+<p>Let <span class="math inline">\(U \sim \text{Unif}(0, 1)\)</span>, and let <span class="math inline">\(X_n \sim \sqrt{n} I_{(0, 1 / n)}(U)\)</span>. Then <span class="math inline">\(\mathbb{P}(|X_n| &gt; \epsilon) = \mathbb{P}(\sqrt{n} I_{(0, 1 / n)}(U) &gt; \epsilon) = \mathbb{P}(0 \leq U &lt; 1/n) = 1/n \rightarrow 0\)</span>. Hence, then <span class="math inline">\(X_n \xrightarrow{\text{P}} 0\)</span>. But <span class="math inline">\(\mathbb{E}(X_n^2) = n \int_0^{1/n} du = 1\)</span> for all <span class="math inline">\(n\)</span> so <span class="math inline">\(X_n\)</span> does not converge in quadratic mean.</p>
+</div>
+<div id="convergence-in-distribution-does-not-imply-convergence-in-probability" class="section level4">
+<h4>Convergence in distribution does not imply convergence in probability</h4>
+<p>Let <span class="math inline">\(X \sim N(0, 1)\)</span>. Let <span class="math inline">\(X_n = -X\)</span> for <span class="math inline">\(n = 1, 2, 3, \dots\)</span>; hence <span class="math inline">\(X_n \sim N(0, 1)\)</span>. <span class="math inline">\(X_n\)</span> has the same distribution as <span class="math inline">\(X\)</span> for all <span class="math inline">\(n\)</span> so, trivially, <span class="math inline">\(\lim _n F_n(x) \rightarrow F(x)\)</span> for all <span class="math inline">\(x\)</span>. Therefore, <span class="math inline">\(X_n \leadsto X\)</span>. But <span class="math inline">\(\mathbb{P}(|X_n - X| &gt; \epsilon) = \mathbb{P}(|2X| &gt; \epsilon) \neq 0\)</span>. So <span class="math inline">\(X_n\)</span> does not tend to <span class="math inline">\(X\)</span> in probability.</p>
+<div class="figure">
+<img src="image.png" alt="" />
+<p class="caption">image.png</p>
+</div>
+<p><strong>Theorem 6.5</strong> Let <span class="math inline">\(X_n, X, Y_n, Y\)</span> be random variables. Let <span class="math inline">\(g\)</span> be a continuous function. Then:</p>
+<ol style="list-style-type: decimal">
+<li>If <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span> and <span class="math inline">\(Y_n \xrightarrow{\text{P}} Y\)</span>, then <span class="math inline">\(X_n + Y_n \xrightarrow{\text{P}} X + Y\)</span>.</li>
+<li>If <span class="math inline">\(X_n \xrightarrow{\text{qm}} X\)</span> and <span class="math inline">\(Y_n \xrightarrow{\text{qm}} Y\)</span>, then <span class="math inline">\(X_n + Y_n \xrightarrow{\text{qm}} X + Y\)</span>.</li>
+<li>If <span class="math inline">\(X_n \leadsto X\)</span> and <span class="math inline">\(Y_n \leadsto c\)</span>, then <span class="math inline">\(X_n + Y_n \leadsto X + c\)</span>.</li>
+<li>If <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span> and <span class="math inline">\(Y_n \xrightarrow{\text{P}} Y\)</span>, then <span class="math inline">\(X_n Y_n \xrightarrow{\text{P}} XY\)</span>.</li>
+<li>If <span class="math inline">\(X_n \leadsto X\)</span> and <span class="math inline">\(Y_n \leadsto c\)</span>, then <span class="math inline">\(X_n Y_n \leadsto cX\)</span>.</li>
+<li>If <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span> then <span class="math inline">\(g(X_n) \xrightarrow{\text{P}} g(X)\)</span> .</li>
+<li>If <span class="math inline">\(X_n \leadsto X\)</span> then <span class="math inline">\(g(X_n) \leadsto g(X)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div id="the-law-of-large-numbers" class="section level3">
+<h3>6.3 The Law of Large Numbers</h3>
+<p><strong>Theorem 6.6 (The Weak Law of Large Numbers (WLLN))</strong>. If <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> are IID, then <span class="math inline">\(\overline{X}_n \xrightarrow{\text{P}} \mu\)</span>.</p>
+<p><strong>Proof</strong>: Assume that <span class="math inline">\(\sigma &lt; \infty\)</span>. This is not necessary but it simplifies the proof. Using Chebyshev’s inequality,</p>
+<p><span class="math display">\[ \mathbb{P}(|\overline{X}_n - \mu| &gt; \epsilon) \leq \frac{\mathbb{E}(|\overline{X}_n - \mu|^2)}{\epsilon^2} = \frac{\mathbb{V}(\overline{X}_n)}{\epsilon^2} = \frac{\sigma^2}{n \epsilon^2} \]</span></p>
+<p>which tends to 0 as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+</div>
+<div id="the-central-limit-theorem" class="section level3">
+<h3>6.4 The Central Limit Theorem</h3>
+<p><strong>Theorem 6.8 (The Central Limit Theorem (CLT))</strong>. Let <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> be IID with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Let <span class="math inline">\(\overline{X}_n = n^{-1}\sum_{i=1}^n X_i\)</span>. Then</p>
+<p><span class="math display">\[ Z_n \equiv \frac{\sqrt{n} \left( \overline{X}_n - \mu \right)}{\sigma} \leadsto Z \]</span></p>
+<p>where <span class="math inline">\(Z \sim N(0, 1)\)</span>. In other words,</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} \mathbb{P}(Z_n \leq z) = \Phi(z) = \int _{-\infty} ^z \frac{1}{\sqrt{2 \pi}} e^{-x^2/2}dx\]</span></p>
+<p>In addition to <span class="math inline">\(Z_n \leadsto N(0, 1)\)</span>, there are several forms of notation to denote the fact that the distribution of <span class="math inline">\(Z_n\)</span> is converging to a Normal. They all mean the same thing. Here they are:</p>
+<p><span class="math display">\[
+\begin{align}
+Z_n                                           &amp; \approx N(0, 1) \\
+\overline{X}_n                                &amp; \approx N\left( \mu, \frac{\sigma^2}{n} \right)  \\
+\overline{X}_n - \mu                          &amp; \approx N\left( 0,   \frac{\sigma^2}{n} \right)  \\
+\sqrt{n}(\overline{X}_n - \mu)                &amp; \approx N\left( 0, \sigma^2 \right)              \\
+\frac{\sqrt{n}(\overline{X}_n - \mu)}{\sigma} &amp; \approx N(0, 1)
+\end{align}
+\]</span></p>
+<p>The central limit theorem tells us that <span class="math inline">\(Z_n = \sqrt{n}(\overline{X}_n - \mu)/\sigma\)</span> is approximately <span class="math inline">\(N(0, 1)\)</span>. However, we rarely know <span class="math inline">\(\sigma\)</span>. We can estimate <span class="math inline">\(\sigma^2\)</span> from <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> by</p>
+<p><span class="math display">\[ S_n^2 = \frac{1}{n - 1} \sum_{i=1}^n ( X_i - \overline{X}_n )^2 \]</span></p>
+<p>This raises the following question: if we replace <span class="math inline">\(\sigma\)</span> with <span class="math inline">\(S_n\)</span> is the central limit theorem still true? The answer is yes.</p>
+<p><strong>Theorem 6.10</strong>. Assume the same conditions as the CLT. Then,</p>
+<p><span class="math display">\[ \frac{\sqrt{n} \left(\overline{X}_n - \mu \right)}{S_n} \leadsto N(0, 1)\]</span></p>
+<p>You might wonder how accurate the normal approximation is. The answer is given by the Berry-Essèen theorem.</p>
+<p><strong>Theorem 6.11 (Berry-Essèen)</strong>. Suppose that <span class="math inline">\(\mathbb{E}|X_1|^3 &lt; \infty\)</span>. Then</p>
+<p><span class="math display">\[ \sup _z |\mathbb{P}(Z_n \leq z) - \Phi(z)| \leq \frac{33}{4} \frac{\mathbb{E}|X_1 - \mu|^3}{\sqrt{n}\sigma^3} \]</span></p>
+<p>There is also a multivariate version of the central limit theorem.</p>
+<p><strong>Theorem 6.12 (Multivariate central limit theorem)</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID random vectors where</p>
+<p><span class="math display">\[ X_i = \begin{pmatrix} X_{1i} \\ X_{2i} \\ \vdots \\ X_{ki} \end{pmatrix}\]</span></p>
+<p>with mean</p>
+<p><span class="math display">\[ \mu 
+= \begin{pmatrix} \mu_1 \\ \mu_2 \\ \vdots \\ \mu_k \end{pmatrix} 
+= \begin{pmatrix} \mathbb{E}(X_{1i}) \\ \mathbb{E}(X_{2i}) \\ \vdots \\ \mathbb{E}(X_{ki}) \end{pmatrix} \]</span></p>
+<p>and variance matrix <span class="math inline">\(\Sigma\)</span>. Let</p>
+<p><span class="math display">\[ \overline{X} = \begin{pmatrix} \overline{X}_1 \\ \overline{X}_2 \\ \vdots \\ \overline{X}_k \end{pmatrix}\]</span></p>
+<p>where <span class="math display">\[\overline{X}_r = n^{-1}\sum_{i=1}^n X_{ri}\]</span>. Then,</p>
+<p><span class="math display">\[ \sqrt{n} (\overline{X} - \mu) \leadsto N(0, \Sigma) \]</span></p>
+</div>
+<div id="the-delta-method" class="section level3">
+<h3>6.5 The Delta Method</h3>
+<p><strong>Theorem 6.13 (The Delta Method)</strong>. Suppose that</p>
+<p><span class="math display">\[ \frac{\sqrt{n}(Y_n - \mu)}{\sigma} \leadsto N(0, 1)\]</span></p>
+<p>and that <span class="math inline">\(g\)</span> is a differentiable function such that <span class="math inline">\(g&#39;(u) \neq 0\)</span>. Then</p>
+<p><span class="math display">\[ \frac{\sqrt{n}(g(Y_n) - g(u))}{|g&#39;(u)| \sigma} \leadsto N(0, 1)\]</span></p>
+<p>In other words,</p>
+<p><span class="math display">\[ Y_n \approx N \left( \mu, \frac{\sigma^2}{n} \right) \Rightarrow g(Y_n) \approx N \left( g(\mu), (g&#39;(\mu))^2 \frac{\sigma^2}{n} \right) \]</span></p>
+<p><strong>Theorem 6.15 (The Multivariate Delta method)</strong>. Suppose that <span class="math inline">\(Y_n = (Y_{n1}, \dots, Y_{nk})\)</span> is a sequence of random vectors such that</p>
+<p><span class="math display">\[ \sqrt{n}(Y_n - \mu) \leadsto N(0, \Sigma) \]</span></p>
+<p>Let <span class="math inline">\(g : \mathbb{R}^k \rightarrow \mathbb{R}\)</span> and let</p>
+<p><span class="math display">\[ \nabla g = \begin{pmatrix} \frac{\partial g}{\partial y_1} \\ \vdots \\  \frac{\partial g}{\partial y_k} \end{pmatrix} \]</span></p>
+<p>Let <span class="math inline">\(\nabla_\mu\)</span> denote <span class="math inline">\(\nabla g(y)\)</span> evaluated at <span class="math inline">\(y = \mu\)</span> and assume that the elements of <span class="math inline">\(\nabla_\mu\)</span> are non-zero. Then</p>
+<p><span class="math display">\[ \sqrt{n}(g(Y_n) - g(\mu)) \leadsto N(0, \nabla_\mu^T \Sigma \nabla_\mu) \]</span></p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>6.6 Technical appendix</h3>
+<p><strong><span class="math inline">\(X_n\)</span> converges to <span class="math inline">\(X\)</span> almost surely</strong>, written <span class="math inline">\(X_n \xrightarrow{\text{as}} X\)</span>, if</p>
+<p><span class="math display">\[ \mathbb{P}(\{s : X_n(s) \rightarrow X(s)\}) = 1 \]</span></p>
+<p><strong><span class="math inline">\(X_n\)</span> converges to <span class="math inline">\(X\)</span> in <span class="math inline">\(L_1\)</span></strong>, written <span class="math inline">\(X_n \xrightarrow{L_1} X\)</span>, if</p>
+<p><span class="math display">\[ \mathbb{E} |X_n - X| \rightarrow 0 \]</span></p>
+<p><strong>Theorem 6.17</strong>. Let <span class="math inline">\(X_n\)</span> and <span class="math inline">\(X\)</span> be random variables. Then:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(X_n \xrightarrow{\text{as}} X\)</span> implies that <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span>.</li>
+<li><span class="math inline">\(X_n \xrightarrow{\text{qm}} X\)</span> implies that <span class="math inline">\(X_n \xrightarrow{L_1} X\)</span>.</li>
+<li><span class="math inline">\(X_n \xrightarrow{L_1} X\)</span> implies that <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span>.</li>
+</ol>
+<p>The weak law of large numbers says that <span class="math inline">\(\overline{X}_n\)</span> converges to <span class="math inline">\(\mathbb{E} X\)</span> in probability. The strong law asserts that this is also true almost surely.</p>
+<p><strong>Theorem 6.18 (The strong law of large numbers)</strong>. Let <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> be IID. If <span class="math inline">\(\mu = \mathbb{E}|X_1| &lt; \infty\)</span> then <span class="math inline">\(\overline{X}_n \xrightarrow{\text{as}} \mu\)</span>.</p>
+<p>A sequence is <strong>asymptotically uniformly integrable</strong> if</p>
+<p><span class="math display">\[ \lim _{M \rightarrow \infty} \limsup _{n \rightarrow \infty} \mathbb{E} ( |X_n| I(|X_n| &gt; M) ) = 0 \]</span></p>
+<p>If <span class="math inline">\(X_n \xrightarrow{\text{P}} b\)</span> and <span class="math inline">\(X_n\)</span> is asymptotically uniformly integrable, then <span class="math inline">\(\mathbb{E}(X_n) \rightarrow b\)</span>.</p>
+<p>The <strong>moment generating function</strong> of a random variable <span class="math inline">\(X\)</span> is</p>
+<p><span class="math display">\[\psi_X(t) = \mathbb{E}(e^{tX}) = \int_u e^{tu} f_X(u) du\]</span></p>
+<p><strong>Lemma 6.19</strong>. Let <span class="math inline">\(Z_1, Z_2, \dots, Z_n\)</span> be a sequence of random variables. Let <span class="math inline">\(\psi_n\)</span> be the mgf of <span class="math inline">\(Z_n\)</span>. Let <span class="math inline">\(Z\)</span> be another random variable and denote its mgf by <span class="math inline">\(\psi\)</span>. If <span class="math inline">\(\psi_n(t) \rightarrow \psi(t)\)</span> for all <span class="math inline">\(t\)</span> in some open interval around 0, then <span class="math inline">\(Z_n \leadsto Z\)</span>.</p>
+<div id="proof-of-the-central-limit-theorem" class="section level4">
+<h4>Proof of the Central Limit Theorem</h4>
+<p>Let <span class="math inline">\(Y_i = (X_i - \mu) / \sigma\)</span>. Then, <span class="math display">\[Z_n = \sqrt{n}(\overline{X}_n - \mu)/\sigma= n^{-1/2} \sum_i Y_i\]</span>. Let <span class="math inline">\(\psi(t)\)</span> be the mgf of <span class="math inline">\(Y_i\)</span>. The mgf of <span class="math inline">\(\sum_i Y_i\)</span> is <span class="math inline">\((\psi(t))^n\)</span> and the mgf of <span class="math inline">\(Z_n\)</span> is <span class="math inline">\([\psi(t / \sqrt{n})]^n \equiv \xi_n(t)\)</span>.</p>
+<p>Now <span class="math inline">\(\psi&#39;(0) = \mathbb{E}(Y_1) = 0\)</span> and <span class="math inline">\(\psi&#39;&#39;(0) = \mathbb{E}(Y_1^2) = \mathbb{V}(Y_1) = 1\)</span>. So,</p>
+<p><span class="math display">\[
+\begin{align}
+\psi(t) &amp; = \psi(0) + t \psi&#39;(0) + \frac{t^2}{2!} \psi&#39;&#39;(0) + \frac{t^3}{3!} \psi&#39;&#39;&#39;(0) + \dots \\
+        &amp; = 1 + 0 + \frac{t^2}{2} +  \frac{t^3}{3!} \psi&#39;&#39;&#39;(0) + \ldots \\
+        &amp; = 1 + \frac{t^2}{2} +  \frac{t^3}{3!} \psi&#39;&#39;&#39;(0) + \ldots
+\end{align}
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\xi_n(t) &amp; = \left[ \psi \left( \frac{t}{\sqrt{n}} \right) \right] ^n \\
+         &amp; = \left[  1 + \frac{t^2}{2n} +  \frac{t^3}{3!n^{3/2}} \psi&#39;&#39;&#39;(0) + \ldots \right] ^n \\
+         &amp; = \left[  1 + \frac{\frac{t^2}{2} +  \frac{t^3}{3!n^{1/2}} \psi&#39;&#39;&#39;(0) + \ldots}{n} \right] ^n \\
+         &amp; \rightarrow e^{t^2/2}
+\end{align}
+\]</span></p>
+<p>which is the mgf of <span class="math inline">\(N(0, 1)\)</span>. The resolt follows from the previous theorem. In the last step we used the fact that, if <span class="math inline">\(a_n \rightarrow a\)</span>, then</p>
+<p><span class="math display">\[ \left( 1 + \frac{a_n}{n} \right) ^n \rightarrow e^a \]</span></p>
+</div>
+</div>
+<div id="exercises" class="section level3">
+<h3>6.8 Exercises</h3>
+<p><strong>Exercise 6.8.1.</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid with finite mean <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span> and finite variance <span class="math inline">\(\sigma^2 = \mathbb{V}(X_i)\)</span>. Let <span class="math inline">\(\overline{X}_n\)</span> be the sample mean and let <span class="math inline">\(S_n^2\)</span> be the sample variance.</p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(\mathbb{E}(S_n^2) = \frac{n-1}{n}\sigma^2\)</span>.</p>
+<p><strong>Solution</strong>:</p>
+<p><span class="math inline">\(S_n^2\)</span> is the sample variance, that is, $ S_n^2 = n^{-1} _{i=1}^n ( X_i - _n)^2 $. Therefore:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[S_n^2] &amp; = \mathbb{E}\left[ \frac 1n \sum_{i=1}^n \left(X_i - \frac 1n \sum_{j=1}^n X_j \right)^2 \right] \\
+&amp; = \frac 1n \sum_{i=1}^n \mathbb{E}\left[ X_i^2 - \frac 2n X_i \sum_{j=1}^n X_j + \frac{1}{n^2} \sum_{j=1}^n X_j \sum_{k=1}^n X_k \right] \\
+&amp; = \frac 1n \sum_{i=1}^n \left[ \frac{n-2}{n} \mathbb{E}[X_i^2] - \frac{2}{n} \sum_{j \neq i} \mathbb{E}[X_i X_j] + \frac{1}{n^2} \sum_{j=1}^n \sum_{k \neq j}^n \mathbb{E}[X_j X_k] +\frac{1}{n^2} \sum_{j=1}^n \mathbb{E}[X_j^2] \right] \\
+&amp; = \frac 1n \sum_{i=1}^n \left[ \frac{n-2}{n} (\sigma^2+\mu^2) - \frac 2n (n-1) \mu^2 + \frac{1}{n^2} n (n-1) \mu^2 + \frac 1n (\sigma^2+\mu^2) \right] \\
+&amp; = \frac 1n \sum_{i=1}^n \left[ \frac{n-1}{n} (\sigma^2+\mu^2) - \frac {2}{n} (n-1) \mu^2 + \frac{1}{n} (n-1) \mu^2 \right] \\
+&amp; = \frac 1n \sum_{i=1}^n \left[ \frac{n-1}{n} (\sigma^2+\mu^2) - \frac{1}{n} (n-1) \mu^2 \right] \\
+&amp; = \frac{n-1}{n} \sigma^2
+\end{align}
+\]</span></p>
+<p><strong>(b)</strong> Show that <span class="math inline">\(S_n^2 \xrightarrow{\text{P}} \sigma^2\)</span>.</p>
+<p>Hint: show that <span class="math inline">\(S_n^2 = c_n n^{-1} \sum_{i=1}^n X_i^2 - d_n \overline{X}_n^2\)</span> where <span class="math inline">\(c_n \rightarrow 1\)</span> and <span class="math inline">\(d_n \rightarrow 1\)</span>. Apply the law of large numbers to <span class="math inline">\(n^{-1}\sum_{i=1}^n X_i^2\)</span> and to <span class="math inline">\(\overline{X}_n\)</span>. Then use part (e) of Theorem 6.5.</p>
+<p><strong>Solution</strong>:</p>
+<p>We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\overline{X}_n^2 &amp; = \frac{1}{n^2} \left( \sum_{i=1}^n X_i \right)^2 \\
+  &amp;= \frac{1}{n^2} \sum_{i=1}^n X_i^2 +  \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1, i \neq j}^n X_i X_j
+\end{align}
+\]</span></p>
+<p>Isolating the sum of products, we have:</p>
+<p><span class="math display">\[  \sum_{j=1, i \neq j}^n X_i X_j = n^2 \overline{X}_n^2 - \sum_{i=1}^n X_i^2 \]</span></p>
+<p>Now, from the sample variance :</p>
+<p><span class="math display">\[
+\begin{align}
+S_n^2 &amp; = \frac{1}{n} \sum_{i=1}^n ( X_i - \overline{X}_n)^2 \\
+ &amp; = \frac{1}{n} \sum_{i=1}^n \left( X_i^2 - 2 X_i \overline{X}_n + \overline{X}_n^2  \right)\\
+ &amp; = \frac{1}{n} \sum_{i=1}^n X_i^2 - \overline{X}_n^2\\
+\end{align}
+\]</span></p>
+<p>We can use <span class="math inline">\(c_n = 1\)</span> and <span class="math inline">\(d_n = 1\)</span>, as suggested in the hint. Applying the law of large numbers,</p>
+<p><span class="math display">\[ n^{-1} \sum_{i=1}^n X_i^2 \xrightarrow{\text{P}} n^{-1} \sum_{i=1}^n \mathbb{E}(X_i^2) = \sigma^2 + \mu^2\]</span></p>
+<p><span class="math display">\[ \overline{X}_n \xrightarrow{\text{P}} n^{-1} \sum_{i=1}^n \mathbb{E}(X_i) = \mu \Rightarrow \overline{X}_n^2 \xrightarrow{\text{P}} \mu^2 \]</span></p>
+<p>Therefore, from theorem 6.5.e, $ S_n^2 = c_n n^{-1} _{i=1}^n X_i^2 - d_n _n^2  ^2 + ^2 - ^2 = ^2$.</p>
+<p><strong>Exercise 6.8.2.</strong> Let <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> be a sequence of random variables. Show that <span class="math inline">\(X_n \xrightarrow{\text{qm}} b\)</span> if and only if</p>
+<p><span class="math display">\[
+\begin{equation}
+\lim_{n \rightarrow \infty} \mathbb{E}(X_n) = b
+\quad\mathrm{and}\quad 
+\lim_{n \rightarrow \infty} \mathbb{V}(X_n) = 0
+\end{equation}
+\]</span></p>
+<p><strong>Solution</strong>:</p>
+<p><span class="math inline">\(X_n \xrightarrow{\text{qm}} b\)</span> id equivalent to:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[(X_n - b)^2]           &amp; \rightarrow 0 \\
+\mathbb{E}[X_n^2 - 2b X_n + b^2]  &amp; \rightarrow 0 \\
+\mathbb{E}[X_n^2] - 2b \mathbb{E}[X_n] + b^2 &amp; \rightarrow 0 \\
+\mathbb{V}[X_n] + (\mathbb{E}[X_n])^2 - 2b \mathbb{E}[X_n] + b^2  &amp; \rightarrow 0
+\end{align}
+\]</span></p>
+<p>If <span class="math inline">\(\lim_{n \rightarrow \infty} \mathbb{V}[X_n] = 0\)</span> and <span class="math inline">\(\lim_{n \rightarrow \infty} \mathbb{E}[X_n] = b\)</span>, then</p>
+<p><span class="math display">\[ 
+\begin{align}
+&amp; \lim_{n \rightarrow \infty} \mathbb{E}[(X_n - b)^2] = \\
+&amp; = \lim_{n \rightarrow \infty} \mathbb{V}[X_n] + (\mathbb{E}[X_n])^2 - 2b \mathbb{E}[X_n] + b^2 \\
+&amp; = \lim_{n \rightarrow \infty} \mathbb{V}[X_n] + (\lim_{n \rightarrow \infty} \mathbb{E}[X_n])^2 - 2b \lim_{n \rightarrow \infty} \mathbb{E}[X_n] + b^2 \\
+&amp;= 0 + b^2 - 2b^2 + b^2 \\
+&amp;= 0
+\end{align}
+\]</span></p>
+<p>On the other direction, if <span class="math inline">\(X_n \xrightarrow{\text{qm}} b\)</span>, then</p>
+<p><span class="math display">\[
+\begin{align}
+\lim_{n \rightarrow \infty} \mathbb{V}[X_n] + (\lim_{n \rightarrow \infty} \mathbb{E}[X_n])^2 - 2b \lim_{n \rightarrow \infty} \mathbb{E}[X_n] + b^2 &amp;= 0 \\
+\lim_{n \rightarrow \infty} \mathbb{V}[X_n] + (\lim_{n \rightarrow \infty} \mathbb{E}[X_n] - b)^2 &amp;= 0 \\
+\lim_{n \rightarrow \infty} \mathbb{V}[X_n - b] + \lim_{n \rightarrow \infty}  (\mathbb{E}[X_n - b])^2 &amp;= 0
+\end{align}
+\]</span></p>
+<p>Since both terms inside the limits are non-negative, the limits themselves are non-negative. Two non-negative values add up to 0, so they must both be zero, and so we have:</p>
+<p><span class="math display">\[
+\begin{equation}
+\lim_{n \rightarrow \infty} \mathbb{E}(Y_n) = 0
+\quad\mathrm{and}\quad 
+\lim_{n \rightarrow \infty} \mathbb{V}(Y_n) = 0
+\end{equation}
+\]</span></p>
+<p>or, equivalently,</p>
+<p><span class="math display">\[
+\begin{equation}
+\lim_{n \rightarrow \infty} \mathbb{E}(X_n) = b
+\quad\mathrm{and}\quad 
+\lim_{n \rightarrow \infty} \mathbb{V}(X_n) = 0
+\end{equation}
+\]</span></p>
+<p><strong>Exercise 6.8.3</strong>. Let <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> be iid and let <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span>. Suppose that variance is finite. Show that <span class="math inline">\(\overline{X}_n \xrightarrow{\text{qm}} \mu\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let <span class="math inline">\(Y_i = X_i - \mu\)</span>. It has variance <span class="math inline">\(\sigma_Y = \sigma\)</span> and mean <span class="math inline">\(\mu_Y = 0\)</span>. We have:</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \mathbb{E}[(\overline{X}_n - \mu)^2] \\
+&amp; = \mathbb{E}\left[\left(\frac{1}{n} \sum_{i=1}^n (X_i - \mu) \right)^2\right] \\
+&amp; = \frac{1}{n^2} \mathbb{E} \left[ \left(\sum_{i=1}^n Y_i \right)^2 \right] \\
+&amp; = \frac{1}{n^2} \left( \sum_{i=1}^n \mathbb{E}[Y_i^2] - \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}[Y_i Y_j] \right) \\
+&amp; = \frac{1}{n} \left( (\sigma_Y^2 + \mu_Y^2) - (n-1) \mu_Y^2 \right) \\
+&amp; = \frac{\sigma^2}{n}
+\end{align}
+\]</span></p>
+<p>Therefore, <span class="math display">\[\lim _{n \rightarrow \infty} \mathbb{E}[(\overline{X}_n - \mu)^2] = \lim _{n \rightarrow \infty} \sigma^2 / n = 0\]</span>, and so <span class="math inline">\(\overline{X}_n \xrightarrow{\text{qm}} \mu\)</span>.</p>
+<p><strong>Exercise 6.8.4</strong>. Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of random variables such that</p>
+<p><span class="math display">\[
+\begin{equation}
+\mathbb{P}\left(X_n = \frac{1}{n}\right) = 1 - \frac{1}{n^2}
+\quad\mathrm{and}\quad 
+\mathbb{P}\left(X_n = n\right) = \frac{1}{n^2}
+\end{equation}
+\]</span></p>
+<p>Does <span class="math inline">\(X_n\)</span> converge in probability? Doex <span class="math inline">\(X_n\)</span> converge in quadratic mean?</p>
+<p><strong>Solution</strong>.</p>
+<p>For any distribution <span class="math inline">\(X\)</span>, we have:</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \mathbb{P}( |X_n - X| &gt; \epsilon ) = \\
+&amp;= \mathbb{P}\left( |X_n - X| &gt; \epsilon \;\middle|\; X_n = \frac{1}{n} \right)\mathbb{P}\left(X_n = \frac{1}{n}\right)
+  + \mathbb{P}\left( |X_n - X| &gt; \epsilon \;\middle|\; X_n = n \right)\mathbb{P}\left(X_n = n\right) \\
+&amp;= \mathbb{P}\left( \middle|\frac{1}{n} - X\middle|\; &gt; \epsilon \right)\left(1 - \frac{1}{n^2} \right)
+  + \mathbb{P}\left( |n - X| &gt; \epsilon \right)\frac{1}{n^2}
+\end{align}
+\]</span></p>
+<p>Looking at the limit as <span class="math inline">\(n \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[ 
+\begin{align}
+&amp; \lim _{n \rightarrow \infty} \mathbb{P}( |X_n - X| &gt; \epsilon ) = \\
+&amp; = \lim _{n \rightarrow \infty} \mathbb{P}\left( \middle|\frac{1}{n} - X\middle|\; &gt; \epsilon \right)\left(1 - \frac{1}{n^2} \right)
+  + \lim _{n \rightarrow \infty} \mathbb{P}\left( |n - X| &gt; \epsilon \right)\frac{1}{n^2} \\
+&amp; = \lim _{n \rightarrow \infty} \mathbb{P}\left( |X| &gt; \epsilon \right)
+\end{align}
+\]</span></p>
+<p>If we set <span class="math inline">\(X = 0\)</span>, the limit above will be zero for any positive <span class="math inline">\(\epsilon\)</span> – so we have <span class="math inline">\(X_n \xrightarrow{\text{P}} 0\)</span>.</p>
+<p>Now, for any quadratic mean potential convergence, we have:</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \mathbb{E}\left[(X_n - X)^2\right] = \\
+&amp; = \mathbb{E}\left[(X_n - X)^2 \bigg| X_n = \frac{1}{n} \right] \mathbb{P}\left(X_n = \frac{1}{n}\right)
+   + \mathbb{E}\left[(X_n - X)^2 \big| X_n = n \right] \mathbb{P}\left(X_n = n\right) \\
+&amp; = \mathbb{E}\left[\left(X - \frac{1}{n}\right)^2  \right] \left(1 - \frac{1}{n^2}\right)
+   + \mathbb{E}\left[(X - n)^2  \right] \frac{1}{n^2} \\
+&amp; = \mathbb{E}\left[X^2 - 2Xn^{-1} + n^{-2} \right] \left(1 - \frac{1}{n^2}\right)
+   + \mathbb{E}\left[X^2 - 2Xn + n^2 \right] \frac{1}{n^2} \\
+&amp; = \mathbb{E}\left[X^2\right] + \mathbb{E}\left[X\right] \left(\frac{-2}{n} \left(1 - \frac{1}{n^2} \right) -\frac{2}{n}\right) + \frac{1}{n^2} \left(1 - \frac{1}{n^2} \right) + 1 \\
+&amp; = \mathbb{E}\left[X^2\right] - \mathbb{E}\left[X\right] \frac{2}{n} \left( 2 - \frac{1}{n^2} \right) + \frac{1}{n^2} \left(1 - \frac{1}{n^2} \right) + 1
+\end{align}
+\]</span></p>
+<p>Taking the limit as <span class="math inline">\(n \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \lim _{n \rightarrow \infty} \mathbb{E}\left[(X_n - X)^2\right] \\
+&amp; = 1 + \lim _{n \rightarrow \infty} \mathbb{E}\left[X^2\right] \\
+&amp; = 1 + \mathbb{E}\left[X^2\right] \\
+&amp; \geq 1
+\end{align}
+\]</span></p>
+<p>so there is no distribution <span class="math inline">\(X\)</span> for which this value is 0, and so there is no quadratic mean convergence.</p>
+<p><strong>Exercise 6.8.5</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span>. Prove that</p>
+<p><span class="math display">\[
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^n X_i^2 \xrightarrow{\text{P}} p
+\quad\mathrm{and}\quad 
+\frac{1}{n} \sum_{i=1}^n X_i^2 \xrightarrow{\text{qm}} p
+\end{equation}
+\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>Given that quadratic mean convergence implies probability convergence, we only need to prove the second proposition.</p>
+<p>Let <span class="math inline">\(Y_i = X_i^2 - p\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[Y_i] &amp; = \mathbb{E}[X_i^2] - p \\
+&amp; = \mathbb{V}[X_i] + \mathbb{E}[X_i]^2 - p \\
+&amp; = p(1-p) + p^2 - p \\
+&amp; = 0 \\
+\mathbb{E}[Y_i^2] &amp; = \mathbb{V}[Y_i] + \mathbb{E}[Y_i]^2 \\
+&amp; = \mathbb{V}[X_i^2 - p] + 0^2 \\
+&amp; = \mathbb{V}[X_i^2] + 0^2 \\
+&amp; = \mathbb{V}[X_i]\\
+&amp; = p(1-p) \\
+\mathbb{E}[Y_i Y_j] &amp; = \text{(for independent variables)}\\
+&amp; = \mathbb{E}[Y_i] \mathbb{E}[Y_j] \\
+&amp; = 0
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \mathbb{E}\left[\left(\left(\frac{1}{n} \sum_{i=1}^n X_i^2\right) - p\right)^2\right] \\
+&amp; = \mathbb{E}\left[\left(\frac{1}{n} \sum_{i=1}^n \left(X_i^2 - p\right)\right)^2\right] \\
+&amp; = \frac{1}{n^2} \mathbb{E}\left[\left(\sum_{i=1}^n Y_i\right)^2\right] \\
+&amp; = \frac{1}{n^2} \mathbb{E}\left[\sum_{i=1}^n Y_i^2 - \sum_{i=1}^n \sum_{j=1, j \neq i}^n Y_i Y_j\right] \\
+&amp; = \frac{1}{n^2} \left( \sum_{i=1}^n \mathbb{E}\left[Y_i^2\right] - \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}\left[ Y_i Y_j \right] \right) \\
+&amp; = \frac{p(1-p)}{n}
+\end{align}
+\]</span></p>
+<p>So, as <span class="math inline">\(n \rightarrow \infty\)</span>, this expectation goes to 0, and we have quadratic mean convergence.</p>
+<p><strong>Exercise 6.8.6</strong>. Suppose that the height of men has mean 68 inches and standard deviation 4 inches. We draw 100 men at random. Find (approximately) the probability that the average height of men in our sample will be at least 68 inches.</p>
+<p><strong>Solution</strong>.</p>
+<p>We assume all men’s heights are measurements from iid variables <span class="math inline">\(X_i\)</span> with mean <span class="math inline">\(\mu = 68\)</span> and variance <span class="math inline">\(\sigma^2 = 16\)</span>.</p>
+<p>We need to approximate <span class="math inline">\(\mathbb{P}(\overline{X}_{100} &gt; \mu)\)</span>. But by the central limit theorem,</p>
+<p><span class="math display">\[ \overline{X}_n \approx N\left(\mu, \frac{\sigma^2}{n}\right) \]</span></p>
+<p>so this probability will be approximately <span class="math display">\[\mathbb{P}\left(\frac{\sqrt{n}(\overline{X}_n - \mu)}{\sigma} \geq \frac{\sqrt{n}(\mu- \mu)}{\sigma}\right) = \mathbb{P}\left(\frac{\sqrt{n}(\overline{X}_n - \mu)}{\sigma} \geq 0 \right) = P(Z \geq 0) = \frac{1}{2}\]</span></p>
+<p><strong>Exercise 6.8.7</strong>. Let <span class="math inline">\(\lambda_n = 1/n\)</span> for <span class="math inline">\(n = 1, 2, \dots\)</span>. Let <span class="math inline">\(X_n \sim \text{Poisson}(\lambda_n)\)</span>.</p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(X_n \xrightarrow{\text{P}} 0\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[
+\mathbb{E}(X_n^2) = \mathbb{V}(X_n) + \mathbb{E}(X_n)^2
+= \lambda_n + \lambda_n^2 = 1/n + 1/n^2
+\]</span></p>
+<p>This quantity goes to zero as <span class="math inline">\(n \rightarrow \infty\)</span>, so we have <span class="math inline">\(X_n \xrightarrow{\text{qm}} 0\)</span>, which implies <span class="math inline">\(X_n \xrightarrow{\text{P}} 0\)</span>.</p>
+<p><strong>(b)</strong> Let <span class="math inline">\(Y_n = n X_n\)</span>. Show that <span class="math inline">\(Y_n \xrightarrow{\text{P}} 0\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math display">\[
+\mathbb{E}(Y_n^2) = \mathbb{V}(Y_n) + \mathbb{E}(Y_n)^2
+= n^2 \lambda_n + n^2\lambda_n^2 = n+1
+\]</span></p>
+<p>so we <em>don’t</em> have a straightforward quadratic mean convergence on <span class="math inline">\(Y_n\)</span>.</p>
+<p>We <em>don’t</em> have a straightforward <span class="math inline">\(L_1\)</span> convergence either:</p>
+<p><span class="math display">\[\mathbb{E}(|Y_n|) = \mathbb{E}(Y_n) = n \lambda_n = 1\]</span></p>
+<p>However, we can show that <span class="math inline">\(Y_n \leadsto 0\)</span>:</p>
+<p><span class="math display">\[\lim _{n \rightarrow \infty} F_{Y_n}(t) = \lim _{n \rightarrow \infty} F_{X_n}(t / n) = 0 \]</span></p>
+<p>as, when <span class="math inline">\(n \rightarrow \infty\)</span>, the portion of the CDF in the positive neighborhood of 0 shrinks to <span class="math inline">\(F_{Y_1}(0) = 0\)</span>.</p>
+<p>We also have a point mass distribution on our target distribution <span class="math inline">\(Y_\infty = 0\)</span>: probability of 1 in point 0, and 0 everywhere else.</p>
+<p>Therefore, from theorem 6.4 item c, we have <span class="math inline">\(Y_n \xrightarrow{\text{P}} 0\)</span>.</p>
+<p><strong>Exercise 6.8.8</strong>. Suppose we have a computer program consisting of <span class="math inline">\(n = 100\)</span> pages of code. Let <span class="math inline">\(X_i\)</span> be the number of errors in the <span class="math inline">\(i\)</span>-th page of code. Suppose that the <span class="math inline">\(X_i\)</span>’s are Poisson with mean 1 and that they are independent. Let <span class="math inline">\(Y = \sum_{i=1}^n X_i\)</span> be the total number of errors. Use the central limit theorem to approximate <span class="math inline">\(\mathbb{P}(Y &lt; 90)\)</span>.</p>
+<p><strong>Solution</strong>. We have <span class="math inline">\(Y = n \overline{X}_n\)</span>, the total being <span class="math inline">\(n\)</span> times the sample mean. We need to approximate:</p>
+<p>We need to approximate <span class="math inline">\(\mathbb{P}(\overline{X}_{100} &lt; 0.9)\)</span>. But by the central limit theorem,</p>
+<p><span class="math display">\[ \overline{X}_n \approx N\left(\mu, \frac{\sigma^2}{n}\right) \]</span></p>
+<p>so this probability will be approximately
+<span class="math display">\[
+\mathbb{P}\left(\frac{\sqrt{n}(\overline{X}_n - \mu)}{\sigma} &lt; \frac{\sqrt{100}(0.9 - 1)}{1}\right) 
+= \mathbb{P}\left(\frac{\sqrt{n}(\overline{X}_n - \mu)}{\sigma} &lt; -1 \right) 
+= P(Z &lt; -1)\]</span></p>
+<p><strong>Exercise 6.8.9</strong>. Suppose that <span class="math inline">\(\mathbb{P}(X = 1) = \mathbb{P}(X = -1) = 1/2\)</span>. Define</p>
+<p><span class="math display">\[
+\begin{equation}
+  X_n =
+    \begin{cases}
+      X   &amp; \text{with probability } 1 - \frac{1}{n}\\
+      e^n &amp; \text{with probability } \frac{1}{n}
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>Does <span class="math inline">\(X_n\)</span> converge to <span class="math inline">\(X\)</span> in probability? Does <span class="math inline">\(X_n\)</span> converge to <span class="math inline">\(X\)</span> in distribution? Does <span class="math inline">\(\mathbb{E}(X - X_n)^2\)</span> converge to 0?</p>
+<p><strong>Solution</strong>.</p>
+<p>For any potential quadratic mean convergence, we’d have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X - X_n)^2 &amp;= \left(\mathbb{E}(X - X_n \middle| X_n = X)\mathbb{P}(X_n = X) + \mathbb{E}(X - X_n \middle| X_n = e^n)\mathbb{P}(X_n = e^n) \right)^2 \\
+&amp; = \left(\mathbb{E}(0)\left(1 - \frac{1}{n} \right) + \mathbb{E}(X - e^n)\frac{1}{n} \right)^2 \\
+&amp; = \frac{1}{n^2} \mathbb{E}(X - e^n)^2 \\
+&amp; = \frac{1}{n^2} \left( \mathbb{E}(X) - e^n  \right)^2 \\
+&amp; = \frac{e^{2n}}{n^2}
+\end{align}
+\]</span></p>
+<p>which does not converge to 0, so we do not have quadratic mean convergence.</p>
+<p>For any potential distribution convergence, <span class="math inline">\(X_n\)</span> has a point mass distribution, and we can write its CDF <span class="math inline">\(F_{X_n}\)</span> explicitly as:</p>
+<p><span class="math display">\[
+\begin{equation}
+  F_{X_n}(t) =
+    \begin{cases}
+      0   &amp; \text{if } t &lt; -1 \\
+      \frac{1}{2} \left(1 - \frac{1}{n}\right) &amp; \text{if } -1 \leq t &lt; 1 \\
+      1 - \frac{1}{n} &amp; \text{if } 1 \leq t &lt; e^n \\
+      1 &amp; \text{if } e^n \leq t
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>On the other hand, the CDF <span class="math inline">\(F_X\)</span> of the target distribution <span class="math inline">\(X\)</span> is:</p>
+<p><span class="math display">\[
+\begin{equation}
+  F_X(t) =
+    \begin{cases}
+      0   &amp; \text{if } t &lt; -1 \\
+      \frac{1}{2} &amp; \text{if } -1 \leq t &lt; 1 \\
+      1 &amp; \text{if } 1 \leq t
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>We then have:</p>
+<p><span class="math display">\[
+\begin{equation}
+  F_X(t) - F_{X_n}(t) =
+    \begin{cases}
+      0   &amp; \text{if } t &lt; -1 \\
+      \frac{1}{2n} &amp; \text{if } -1 \leq t &lt; 1 \\
+      \frac{1}{n} &amp; \text{if } 1 \leq t &lt; e^n \\
+      0 &amp; \text{if } e^n \leq t
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>so <span class="math inline">\(0 \leq F_X(t) - F_{X_n}(t) \leq 1/n\)</span>, which goes to 0 as <span class="math inline">\(n \rightarrow \infty\)</span>. Therefore <span class="math inline">\(\lim _{n \rightarrow \infty} F_{X_n}(t) = F_X(t)\)</span>, or <span class="math inline">\(X_n \leadsto X\)</span>.</p>
+<p>Distribution convergence implies probability convergence, so we also have probability convergence, <span class="math inline">\(X_n \xrightarrow{\text{P}} X\)</span>.</p>
+<p><strong>Exercise 6.8.10</strong>. Let <span class="math inline">\(Z \sim N(0, 1)\)</span>. Let <span class="math inline">\(t &gt; 0\)</span>.</p>
+<p><strong>(a)</strong> Show that, for any <span class="math inline">\(k &gt; 0\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}(|Z| &gt; t) \leq \frac{\mathbb{E}|Z|^k}{t^k}\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}|Z|^k &amp;= \int _{-\infty}^{\infty} |z|^{k}\left( \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \right) dz \\
+&amp;= \int _{-\infty}^{0} (-z)^{k}\left( \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \right) dz
+  + \int _{0}^{\infty} z^{k}\left( \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \right) dz \\
+&amp;=  \left\{ \frac{2}{\pi} \right\}^{1/2} \int _{0}^{\infty} z^k \left( e^{-z^2/2} \right) dz \\
+\end{align}
+\]</span></p>
+<p>For t &gt; 0,</p>
+<p><span class="math display">\[
+\begin{align}
+&amp;\mathbb{P}(|Z| &gt; t) = \\
+&amp;= 2 \int _t^{\infty} \left( \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \right) dz \\
+&amp;= \left\{ \frac{2}{\pi} \right\}^{1/2} \int _t^{\infty} e^{-z^2/2} dz
+\end{align}
+\]</span></p>
+<p>Now we need to prove:</p>
+<p><span class="math display">\[\int _t^{\infty} e^{-z^2/2} dz \leq \frac{1}{t^k}\int _{0}^{\infty} z^k \left(e^{-z^2/2} \right) dz \]</span></p>
+<p>As the integrands are always positive, we can prove the stronger statement that, for <span class="math inline">\(k \geq 0\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\int _t^{\infty} e^{-z^2/2} dz &amp; \leq \frac{1}{t^k}\int _{t}^{\infty} z^k \left(  e^{-z^2/2} \right) dz  \\
+t^k \int _t^{\infty}  e^{-z^2/2} dz &amp; \leq \int _{t}^{\infty} z^k \left(  e^{-z^2/2} \right) dz  \\
+0 &amp; \leq \int _{t}^{\infty} (z^k - t^k) \left(  e^{-z^2/2} \right) dz  \\
+\end{align}
+\]</span></p>
+<p>But that’s true, since <span class="math inline">\((z^k - t^k) (z e^{-z^2/2}) \geq 0\)</span> whenever <span class="math inline">\(z \geq t\)</span>. So the given statement follows.</p>
+<p><strong>(b) (Mill’s inequality)</strong> Show that</p>
+<p><span class="math display">\[\mathbb{P}(|Z| &gt; t) \leq \left\{ \frac{2}{\pi} \right\}^{1/2} \frac{e^{-t^2/2}}{t}\]</span></p>
+<p>Hint. Note that <span class="math inline">\(\mathbb{P}(|Z| &gt; t) = 2\mathbb{P}(Z &gt; t)\)</span>. Now write out what <span class="math inline">\(\mathbb{P}(Z &gt; t)\)</span> means and note that <span class="math inline">\(x/t &gt; 1\)</span> whenever <span class="math inline">\(x &gt; t\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The stronger result we proved in (a) was, for <span class="math inline">\(k \geq 0\)</span>,</p>
+<p><span class="math display">\[
+\mathbb{P}(|Z| &gt; t) = \left\{ \frac{2}{\pi} \right\}^{1/2}  \int _t^{\infty}  e^{-z^2/2} dz \leq \left\{ \frac{2}{\pi} \right\}^{1/2} \frac{1}{t^k}\int _{t}^{\infty} z^k \left(  e^{-z^2/2} \right) dz
+\]</span></p>
+<p>If we use <span class="math inline">\(k = 1\)</span>, we get:</p>
+<p><span class="math display">\[
+\mathbb{P}(|Z| &gt; t) \leq \left\{ \frac{2}{\pi} \right\}^{1/2} \frac{1}{t}\int _{t}^{\infty} z e^{-z^2/2} dz = \left\{ \frac{2}{\pi} \right\}^{1/2} \frac{e^{-t^2/2}}{t}
+\]</span></p>
+<p>which is the desired result.</p>
+<p><strong>Exercise 6.8.11</strong>. Suppose that <span class="math inline">\(X_n \sim N(0, 1/n)\)</span> and let <span class="math inline">\(X\)</span> be a random variable with distribution <span class="math inline">\(F(x) = 0\)</span> if <span class="math inline">\(x &lt; 0\)</span> and <span class="math inline">\(F(x) = 1\)</span> if <span class="math inline">\(x \geq 0\)</span>. Does <span class="math inline">\(X_n\)</span> converge to <span class="math inline">\(X\)</span> in probability? Does <span class="math inline">\(X_n\)</span> converge to <span class="math inline">\(X\)</span> in distribution?</p>
+<p><strong>Solution</strong>.</p>
+<p>We do not have convergence in distribution: $ F_{X_n}(0) = 1/2$ for any <span class="math inline">\(n\)</span> (as the normal distribution is symmetric around its mean), so <span class="math inline">\(\lim _{n \rightarrow \infty} F_{X_n}(0) = 1/2 \neq F_X(0) = 1\)</span>.</p>
+<p>We do have convergence in probability: for every <span class="math inline">\(\epsilon &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(|X - X_n| &gt; \epsilon) = \mathbb{P}(|X_n| &gt; \epsilon) = 2 \mathbb{P}(X_n &gt; \epsilon) = 2 (1 - F_{X_n}(\epsilon))\]</span></p>
+<p>so</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} \mathbb{P}(|X - X_n| &gt; \epsilon)  = 2 (1 - \lim _{n \rightarrow \infty} F_{X_n}(\epsilon)) =  2 (1 - \lim _{n \rightarrow \infty} F_{X_1}(n \epsilon)) = 2 (1 - 1) = 0 \]</span></p>
+<p><strong>Exercise 6.8.12</strong>. Let <span class="math inline">\(X, X_1, X_2, X_3, \cdots\)</span> be random variables that are positive and integer valued. Show that <span class="math inline">\(X_n \leadsto X\)</span> if and only if</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} \mathbb{P}(X_n = k) = \mathbb{P}(X = k) \]</span></p>
+<p>for every integer <span class="math inline">\(k\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>If <span class="math inline">\(X_n \leadsto X\)</span>, then <span class="math inline">\(\lim _{n \rightarrow \infty} F_{X_n}(k) = F_X(k)\)</span> for every integer <span class="math inline">\(k\)</span>. But since the variables are positive and integer valued,</p>
+<p><span class="math display">\[
+\begin{equation}
+\mathbb{P}(X_n = k) = F_{X_n}(k) - F_{X_n}(k - 1)
+\quad\mathrm{and}\quad 
+\mathbb{P}(X = k) = F_X(k) - F_X(k - 1)
+\end{equation}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[\begin{align}
+\lim _{n \rightarrow \infty} \mathbb{P}(X_n = k) &amp;= \lim _{n \rightarrow \infty} F_{X_n}(k) - F_{X_n}(k - 1)\\
+&amp;= \lim _{n \rightarrow \infty} F_{X_n}(k) - \lim _{n \rightarrow \infty} F_{X_n}(k - 1)\\
+&amp;= F_X(k) - F_X(k - 1)\\
+&amp;= \mathbb{P}(X = k)\\
+\end{align}\]</span></p>
+<p>On the other direction, if <span class="math display">\[\lim _{n \rightarrow \infty} \mathbb{P}(X_n = k) = \mathbb{P}(X = k)\]</span>, then</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty}\left( F_{X_n}(k) - F_{X_n}(k - 1) \right) = F_X(k) - F_X(k - 1) \]</span></p>
+<p>But the variables are positive and integer valued, so <span class="math inline">\(F_{X_n}(k) = F_X(k) = 0\)</span> for <span class="math inline">\(k \leq 0\)</span>. We can then show that <span class="math inline">\(\lim _{n \rightarrow \infty} F_{X_n}(k) = F_X(k)\)</span> for every integer valued <span class="math inline">\(k\)</span> by induction in <span class="math inline">\(k\)</span>:</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} \left( F_{X_n}(k) - F_{X_n}(k - 1) \right) = \left( \lim _{n \rightarrow \infty} F_{X_n}(k) \right) - F_X(k - 1) = F_X(k) - F_X(k - 1)\]</span>
+<span class="math display">\[ \Rightarrow \lim _{n \rightarrow \infty} F_{X_n}(k) = F_X(k)\]</span></p>
+<p>Since the result holds for every integer variable <span class="math inline">\(k\)</span> and the random variables can only take integer values, it must hold for all values, therefore <span class="math inline">\(X_n \leadsto X\)</span>.</p>
+<p><strong>Exercise 6.8.13</strong>. Let <span class="math inline">\(Z_1, Z_2, \dots\)</span> be iid random variables with density <span class="math inline">\(f\)</span>. Suppose that <span class="math inline">\(\mathbb{P}(Z_i &gt; 0) = 1\)</span> and that <span class="math inline">\(\lambda = \lim _{x \downarrow 0} f(x) &gt; 0\)</span>. Let</p>
+<p><span class="math display">\[ X_n = n \min \{ Z_1, \dots, Z_n \} \]</span></p>
+<p>Show that <span class="math inline">\(X_n \leadsto Z\)</span> where <span class="math inline">\(Z\)</span> has and exponential distribution with mean <span class="math inline">\(1 / \lambda\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Since <span class="math inline">\(\mathbb{P}(Z_i &gt; 0) = 1\)</span>, the cumulative density functions <span class="math inline">\(F\)</span> assume value 0 for values up until 0 inclusive.</p>
+<p>We have:</p>
+<p><span class="math display">\[\mathbb{P}(X_n &gt; x) = \mathbb{P}(n \min\{Z_1, \dots, Z_n\} &gt; x) = \prod _{i=1}^n \mathbb{P}(Z_i &gt; x/n)\]</span></p>
+<p>Expanding the probability based on its density function,</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{P}(X_n &gt; x)&amp;= \prod _{i=1}^n \mathbb{P}(Z_i &gt; x/n)\\
+&amp;= \prod _{i=1}^n \int _0^{x/n} f(u) du\\
+&amp;= \left(F\left(\frac{x}{n}\right) \right)^n\\
+&amp;= \left(F(0) + F&#39;(0)\frac{x}{n} + F&#39;&#39;(0)\left(\frac{x}{n}\right)^2\frac{1}{2!} + \cdots \right)^n\\
+\end{align}\]</span></p>
+<p>Taking the limit as <span class="math inline">\(n \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[
+\lim _{n \rightarrow \infty}\mathbb{P}(X_n &gt; x)
+= \lim _{n \rightarrow \infty} \left(F(0) + F&#39;(0)\frac{x}{n} + F&#39;&#39;(0)\left(\frac{x}{n}\right)^2\frac{1}{2!} + \cdots \right)^n\\
+= \lim _{n \rightarrow \infty} \left(F(0) + F&#39;(0)\frac{x}{n} \right)^n
+= \lim _{n \rightarrow \infty} \left(0 + \lambda\frac{x}{n} \right)^n
+= e^{-\lambda x}
+\]</span></p>
+<p>On the other hand, <span class="math inline">\(\mathbb{P}(Z &gt; x) = e^{-\lambda x}\)</span>, so the limit of the CDF complements are the same, and so <span class="math inline">\(X_n \leadsto Z\)</span>.</p>
+<p><strong>Exercise 6.8.14</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(0, 1)\)</span>. Let <span class="math inline">\(Y_n = \overline{X}_n^2\)</span>. Find the limiting distribution of <span class="math inline">\(Y_n\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let <span class="math inline">\(F_K(x)\)</span> denote the CDF of random variable <span class="math inline">\(K\)</span>.</p>
+<p>The sample mean <span class="math inline">\(\overline{X}_n\)</span> has a limiting distribution of <span class="math inline">\(X = 1/2\)</span>, by the (strong) law of large numbers.</p>
+<p>Then, for <span class="math inline">\(x \geq 0\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}(Y_n &gt; x) = \mathbb{P}(\overline{X}_n^2 &gt; x) = \mathbb{P}(\overline{X}_n &gt; x^{1/2})\]</span></p>
+<p><span class="math display">\[F_{Y_n}(x) = F_{\overline{X}_n}(x^{1/2}) \]</span></p>
+<p>Since <span class="math inline">\(\overline{X}_n \leadsto 1/2\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+\lim _{n \rightarrow \infty} F_{\overline{X}_n}(x) &amp; = F_{1/2}(x) \\
+\lim _{n \rightarrow \infty} F_{\overline{X}_n}(x^{1/2}) &amp; = F_{1/2}(x^{1/2}) \\
+\lim _{n \rightarrow \infty} F_{Y}(x) &amp; = F_{1/2}(x^{1/2})
+\end{align}
+\]</span></p>
+<p>Therefore, <span class="math inline">\(Y \leadsto Z\)</span>, where <span class="math inline">\(F_Z(x) = F_{1/2}(x^{1/2})\)</span>, that is,</p>
+<p><span class="math display">\[
+\begin{equation}
+  F_Z(t) =
+    \begin{cases}
+      0   &amp; \text{if } t^{1/2} &lt; 1/2 \\
+      1 &amp; \text{otherwise}
+    \end{cases}   
+  = \begin{cases}
+      0   &amp; \text{if } t &lt; 1/4 \\
+      1 &amp; \text{otherwise}
+    \end{cases} 
+\end{equation}
+\]</span></p>
+<p>so <span class="math inline">\(Z\)</span> assumes the constant value of <span class="math inline">\(1/4\)</span>, and <span class="math inline">\(Y \leadsto 1/4\)</span>.</p>
+<p><strong>Exercise 6.8.15</strong>. Let</p>
+<p><span class="math display">\[ 
+\begin{pmatrix} X_{11} \\ X_{21} \end{pmatrix}, \;
+\begin{pmatrix} X_{12} \\ X_{22} \end{pmatrix}, \;
+\cdots, \;
+\begin{pmatrix} X_{1n} \\ X_{1n} \end{pmatrix}
+\]</span></p>
+<p>be iid random vectors with mean <span class="math inline">\(\mu = (\mu_1, \mu_2)\)</span> and variance <span class="math inline">\(\Sigma\)</span>.</p>
+<p>Let</p>
+<p><span class="math display">\[
+\overline{X}_1 = \frac{1}{n}\sum_{i=1}^n X_{1i}, \; \; \;
+\overline{X}_2 = \frac{1}{n}\sum_{i=1}^n X_{2i}
+\]</span></p>
+<p>and define <span class="math inline">\(Y_n = \overline{X}_1 \big/ \overline{X}_2\)</span>. Find the limiting distribution of <span class="math inline">\(Y_n\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let
+<span class="math display">\[\overline{X} = n^{-1} \sum_{i=1}^n \begin{pmatrix} X_{1i} \\ X_{2i} \end{pmatrix} = \begin{pmatrix} \overline{X}_1 \\ \overline{X}_2 \end{pmatrix}\]</span>.</p>
+<p>By the multivariate central limit theorem,</p>
+<p><span class="math display">\[
+\sqrt{n}(\overline{X} - \mu) \leadsto N(0, \Sigma)
+\]</span></p>
+<p>Define <span class="math inline">\(g: \mathbb{R} \times \mathbb{R}_{\neq 0} \rightarrow \mathbb{R}\)</span> as:</p>
+<p><span class="math display">\[
+g \begin{pmatrix} y_1 \\ y_2 \end{pmatrix} = y_1 / y_2
+\]</span></p>
+<p>Then, <span class="math inline">\(Y_n = g(\overline{X_n})\)</span> in every scenario where <span class="math inline">\(Y_n\)</span> is defined.</p>
+<p>Applying the multivariate delta method,</p>
+<p><span class="math display">\[ \nabla g 
+= \begin{pmatrix} \frac{\partial g}{\partial y_1} \\ \frac{\partial g}{\partial y_2} \end{pmatrix} 
+= \begin{pmatrix} \frac{1}{y_2} \\ -\frac{y_1}{y_2^2} \end{pmatrix} 
+\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \nabla_\mu 
+= \begin{pmatrix} \frac{1}{\mu_2} \\ -\frac{\mu_1}{\mu_2^2} \end{pmatrix} 
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ 
+\begin{align}
+\sqrt{n}(Y_n - g(\mu)) &amp; \leadsto N(0, \nabla_\mu^T \Sigma \nabla_\mu)  \\
+Y_n &amp; \leadsto N(\mu_1 / \mu_2, n^{-1/2} \nabla_\mu^T \Sigma \nabla_\mu) 
+\end{align}
+\]</span></p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
