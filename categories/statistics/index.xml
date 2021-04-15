@@ -6,7 +6,17 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter07 Models, Statistical Inference and Learning</title>
+      <link>/2021/04/15/aos-chapter07-models-statistical-inference-and-learning/</link>
+      <pubDate>Thu, 15 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/15/aos-chapter07-models-statistical-inference-and-learning/</guid>
+      <description>7. Models, Statistical Inference and Learning7.2 Parametric and Nonparametric Models7.3 Fundamental Concepts in Inference7.5 Technical AppendixReferences7. Models, Statistical Inference and Learning7.2 Parametric and Nonparametric ModelsA statistical model is a set of distributions \(\mathfrak{F}\).
+A parametric model is a set \(\mathfrak{F}\) that may be parametrized by a finite number of parameters. For example, if we assume that data comes from a normal distribution then</description>
+    </item>
+    
     <item>
       <title>AOS Chapter06 Convergence of Random Variables</title>
       <link>/2021/04/14/aos-chapter05-convergence-of-random-variables/</link>

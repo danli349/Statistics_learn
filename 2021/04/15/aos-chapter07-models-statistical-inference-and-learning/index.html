@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter07 Models, Statistical Inference and Learning - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter07 Models, Statistical Inference and Learning - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter07 Models, Statistical Inference and Learning</h1>
+
+    
+    <span class="article-date">2021-04-15</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/15/aos-chapter07-models-statistical-inference-and-learning/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#models-statistical-inference-and-learning">7. Models, Statistical Inference and Learning</a>
+<ul>
+<li><a href="#parametric-and-nonparametric-models">7.2 Parametric and Nonparametric Models</a></li>
+<li><a href="#fundamental-concepts-in-inference">7.3 Fundamental Concepts in Inference</a></li>
+<li><a href="#technical-appendix">7.5 Technical Appendix</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="models-statistical-inference-and-learning" class="section level2">
+<h2>7. Models, Statistical Inference and Learning</h2>
+<div id="parametric-and-nonparametric-models" class="section level3">
+<h3>7.2 Parametric and Nonparametric Models</h3>
+<p>A <strong>statistical model</strong> is a set of distributions <span class="math inline">\(\mathfrak{F}\)</span>.</p>
+<p>A <strong>parametric model</strong> is a set <span class="math inline">\(\mathfrak{F}\)</span> that may be parametrized by a finite number of parameters. For example, if we assume that data comes from a normal distribution then</p>
+<p><span class="math display">\[ \mathfrak{F} = \left\{ f(x; \mu, \sigma) = 
+\frac{1}{\sigma\sqrt{\pi}} \exp \left\{ -\frac{1}{2\sigma^2} \left(x - \mu \right)^2 \right\}, \; \; 
+\mu \in \mathbb{R}, \; \sigma &gt; 0
+\right\} \]</span></p>
+<p>In general, a parametric model takes the form</p>
+<p><span class="math display">\[ \mathfrak{F} = \left\{ f(x; \theta) : \; \theta \in \Theta \right\} \]</span></p>
+<p>where <span class="math inline">\(\theta\)</span> is an unknown parameter that takes values in the <strong>parameter space</strong> <span class="math inline">\(\Theta\)</span>.</p>
+<p>If <span class="math inline">\(\theta\)</span> is a vector and we are only interested in one component of <span class="math inline">\(\theta\)</span>, we call the remaining parameters <strong>nuisance parameters</strong>.</p>
+<p>A <strong>nonparametric model</strong> is a set <span class="math inline">\(\mathfrak{F}\)</span> that cannot be parametrized by a finite number of parameters.</p>
+<div id="some-notation" class="section level4">
+<h4>Some notation</h4>
+<p>If <span class="math inline">\(\mathfrak{F} = \{ f(x; \theta) : \; \theta \in \Theta \}\)</span> is a parametric model, we write</p>
+<p><span class="math display">\[\mathbb{P}_\theta(X \in A) = \int_A f(x; \theta)dx\]</span></p>
+<p><span class="math display">\[\mathbb{E}_\theta(X \in A) = \int_A x f(x; \theta)dx\]</span></p>
+<p>The subscript <span class="math inline">\(\theta\)</span> indicates that the probability or expectation is defined with respect to <span class="math inline">\(f(x; \theta)\)</span>; it does not mean we are averaging over <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div id="fundamental-concepts-in-inference" class="section level3">
+<h3>7.3 Fundamental Concepts in Inference</h3>
+<div id="point-estimation" class="section level4">
+<h4>7.3.1 Point estimation</h4>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be <span class="math inline">\(n\)</span> iid data points from some distribution <span class="math inline">\(F\)</span>. A point estimator <span class="math inline">\(\hat{\theta_n}\)</span> of a parameter <span class="math inline">\(\theta\)</span> is some function:</p>
+<p><span class="math display">\[ \hat{\theta_n} = g(X_1, \dots, X_n) \]</span></p>
+<p>We define</p>
+<p><span class="math display">\[ \text{bias}(\hat{\theta_n}) = \mathbb{E}_\theta(\hat{\theta_n}) - \theta \]</span></p>
+<p>to be the bias of <span class="math inline">\(\hat{\theta_n}\)</span>. We say that <span class="math inline">\(\hat{\theta_n}\)</span> is <strong>unbiased</strong> if
+<span class="math display">\[ \mathbb{E}_\theta(\hat{\theta_n}) = 0 \]</span>.</p>
+<p>A point estimator <span class="math inline">\(\hat{\theta_n}\)</span> of a parameter <span class="math inline">\(\theta\)</span> is <strong>consistent</strong> if <span class="math inline">\(\hat{\theta_n} \xrightarrow{\text{P}} \theta\)</span>.</p>
+<p>The distribution of <span class="math inline">\(\hat{\theta_n}\)</span> is called the <strong>sampling distribution</strong>.</p>
+<p>The standard deviation of <span class="math inline">\(\hat{\theta_n}\)</span> is called the <strong>standard error</strong>, denoted by <span class="math inline">\(\text{se}\)</span>:</p>
+<p><span class="math display">\[ \text{se} = \text{se}(\hat{\theta_n}) = \sqrt{\mathbb{V}(\hat{\theta_n})} \]</span></p>
+<p>Often it is not possible to compute the standard error but usually we can estimate the standard error. The estimated standard error is denoted by <span class="math inline">\(\hat{\text{se}}\)</span>.</p>
+<p><strong>Example</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span> and let <span class="math inline">\(\hat{p_n} = n^{-1} \sum_i X_i\)</span>. Then <span class="math inline">\(\mathbb{E}(\hat{p_n}) = n^{-1} \sum_i \mathbb{E}(X_i) = p\)</span> so <span class="math inline">\(\hat{p_n}\)</span> is unbiased. The standard error is <span class="math inline">\(\text{se} = \sqrt{\mathbb{V}(\hat{p_n})} = \sqrt{p(1-p)/n}\)</span>. The estimated standard error is <span class="math inline">\(\hat{\text{se}} = \sqrt{\hat{p}(1 - \hat{p})/n}\)</span>.</p>
+<p>The quality of a point estimate is sometimes assessed by the <strong>mean squared error</strong>, or MSE, defined by:</p>
+<p><span class="math display">\[ \text{MSE} = \mathbb{E}_\theta \left( \hat{\theta_n} - \theta \right)^2 \]</span></p>
+<p><strong>Theorem 7.8</strong>. The MSE can be rewritten as:</p>
+<p><span class="math display">\[ \text{MSE} = \text{bias}(\hat{\theta_n})^2 + \mathbb{V}_\theta(\hat{\theta_n}) \]</span></p>
+<p><strong>Proof</strong>. Let <span class="math inline">\(\bar{\theta_n} = \mathbb{E}_\theta(\hat{\theta_n})\)</span>. Then</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_\theta(\hat{\theta_n} - \theta)^2 &amp; = \mathbb{E}_\theta(\hat{\theta_n} - \bar{\theta_n} + \bar{\theta_n} - \theta)^2 \\
+&amp;=  \mathbb{E}_\theta(\hat{\theta_n} - \bar{\theta_n})^2
+  + 2 (\bar{\theta_n} - \theta) \mathbb{E}_\theta(\hat{\theta_n} - \bar{\theta_n})^2
+  + \mathbb{E}_\theta(\hat{\theta_n} - \theta)^2 \\
+&amp;= (\bar{\theta_n} - \theta)^2 + \mathbb{E}_\theta(\hat{\theta_n} - \bar{\theta_n})^2 \\
+&amp;= \text{bias}^2 + \mathbb{V}_\theta(\hat{\theta_n})
+\end{align}
+\]</span></p>
+<p><strong>Theorem 7.9</strong>. If <span class="math inline">\(\text{bias} \rightarrow 0\)</span> and <span class="math inline">\(\text{se} \rightarrow 0\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span> then <span class="math inline">\(\hat{\theta_n}\)</span> is consistent, that is, <span class="math inline">\(\hat{\theta_n} \xrightarrow{\text{P}} \theta\)</span>.</p>
+<p><strong>Proof</strong>. If <span class="math inline">\(\text{bias} \rightarrow 0\)</span> and <span class="math inline">\(\text{se} \rightarrow 0\)</span> then, by theorem 7.8, <span class="math inline">\(\text{MSE} \rightarrow 0\)</span>. It follows that <span class="math inline">\(\hat{\theta_n} \xrightarrow{\text{qm}} \theta\)</span> – and quadratic mean convergence implies probability convergence.</p>
+<p>An estimator is <strong>asymptotically Normal</strong> if</p>
+<p><span class="math display">\[ \frac{\hat{\theta_n} - \theta}{\text{se}} \leadsto N(0, 1) \]</span></p>
+</div>
+<div id="confidence-sets" class="section level4">
+<h4>7.3.2 Confidence sets</h4>
+<p>A <span class="math inline">\(1 - \alpha\)</span> <strong>confidence interval</strong> for a parameter <span class="math inline">\(\theta\)</span> is an interval <span class="math inline">\(C_n = (a, b)\)</span> where <span class="math inline">\(a = a(X_1, \dots, X_n)\)</span> and <span class="math inline">\(b = b(X_1, \dots, _n)\)</span> are functions of the data such that</p>
+<p><span class="math display">\[\mathbb{P}_\theta(\theta \in C_n) \geq 1 - \alpha, \;\; \text{for all } \theta \in \Theta\]</span></p>
+<p>In words, <span class="math inline">\((a, b)\)</span> traps <span class="math inline">\(\theta\)</span> with probability <span class="math inline">\(1 - \alpha\)</span>. We call <span class="math inline">\(1 - \alpha\)</span> the <strong>coverage</strong> of the confidence interval.</p>
+<p>Note: <strong><span class="math inline">\(C_n\)</span> is random and <span class="math inline">\(\theta\)</span> is fixed!</strong></p>
+<p>If <span class="math inline">\(\theta\)</span> is a vector then we use a confidence set (such as a sphere or ellipse) instead of an interval.</p>
+<p>Point estimators often have a limiting Normal distribution, meaning <span class="math inline">\(\hat{\theta_n} \approx N(\theta, \hat{\text{se}}^2)\)</span>. In this case we can construct (approximate) confidence intervals as follows:</p>
+<p><strong>Theorem 7.14 (Normal-based Confidence Interval)</strong>. Suppose that <span class="math inline">\(\hat{\theta_n} \approx N(\theta, \hat{\text{se}}^2)\)</span>. Let <span class="math inline">\(\Phi\)</span> be the CDF of a standard Normal and let <span class="math inline">\(z_{\alpha/2} = \Phi^{-1}\left(1 - (\alpha / 2)\right)\)</span>, that is, <span class="math inline">\(\mathbb{P}(Z &gt; z_{\alpha/2}) = \alpha/2\)</span> and <span class="math inline">\(\mathbb{P}(-z_{\alpha/2} &lt; Z &lt; z_{alpha/2}) = 1 - \alpha\)</span> where <span class="math inline">\(Z \sim N(0, 1)\)</span>. Let</p>
+<p><span class="math display">\[ C_n = \left(\hat{\theta_n} - z_{\alpha/2} \hat{\text{se}}, \; \hat{\theta_n} + z_{\alpha/2} \hat{\text{se}}\right) \]</span></p>
+<p>Then</p>
+<p><span class="math display">\[ \mathbb{P}_\theta(\theta \in C_n) \rightarrow 1 - \alpha \]</span>.</p>
+<p><strong>Proof</strong>.</p>
+<p>Let <span class="math inline">\(Z_n = (\hat{\theta_n} - \theta) / \hat{\text{se}}\)</span>. By assumption <span class="math inline">\(Z_n \leadsto Z \sim N(0, 1)\)</span>. Hence,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}_\theta(\theta \in C_n) 
+&amp; = \mathbb{P}_\theta \left(\hat{\theta_n} - z_{\alpha/2} \hat{\text{se}} &lt; \theta &lt; \hat{\theta_n} + z_{\alpha/2} \hat{\text{se}} \right) \\
+&amp; = \mathbb{P}_\theta \left(-z_{\alpha/2} &lt; \frac{\hat{\theta_n} - \theta}{\hat{\text{se}}} &lt; z_{\alpha/2} \right) \\
+&amp; \rightarrow \mathbb{P}\left(-z_{\alpha/2} &lt; Z &lt; z_{\alpha/2}\right) \\
+&amp;= 1 - \alpha
+\end{align}
+\]</span></p>
+</div>
+<div id="hypothesis-testing" class="section level4">
+<h4>7.3.3 Hypothesis Testing</h4>
+<p>In <strong>hypothesis testing</strong>, we start with some default theory – called a <strong>null hypothesis</strong> – and we ask if the data provide sufficient evidence to reject the theory. If not we retain the null hypothesis.</p>
+</div>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>7.5 Technical Appendix</h3>
+<ul>
+<li>Our definition of confidence interval requires that <span class="math display">\[\mathbb{P}_\theta(\theta \in C_n) \geq 1 - \alpha\]</span> for all <span class="math inline">\(\theta \in \Theta\)</span>.</li>
+<li>A <strong>pointwise asymptotic</strong> confidence interval requires that <span class="math display">\[\lim \inf_{n \rightarrow \infty} \mathbb{P}_\theta(\theta \in C_n) \geq 1 - \alpha\]</span> for all <span class="math inline">\(\theta \in \Theta\)</span>.</li>
+<li>An <strong>uniform asymptotic</strong> confidence interval requires that <span class="math display">\[\lim \inf_{n \rightarrow \infty} \inf{\theta \in \Theta} \mathbb{P}_\theta(\theta \in C_n) \geq 1 - \alpha\]</span></li>
+</ul>
+<p>The approximate Normal-based interval is a pointwise asymptotic confidence interval. In general, it might not be a uniform asymptotic confidence interval.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
