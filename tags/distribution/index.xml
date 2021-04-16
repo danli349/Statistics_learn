@@ -6,7 +6,17 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter08 Estimating the CDF and Statistical Functionals</title>
+      <link>/2021/04/16/aos-chapter08-estimating-the-cdf-and-statistical-functionals/</link>
+      <pubDate>Fri, 16 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/16/aos-chapter08-estimating-the-cdf-and-statistical-functionals/</guid>
+      <description>8. Estimating the CDF and Statistical Functionals8.1 Empirical distribution function8.2 Statistical Functionals8.3 Technical Appendix8.5 ExercisesReferences8. Estimating the CDF and Statistical Functionals8.1 Empirical distribution functionThe empirical distribution function \(\hat{F_n}\) is the CDF that puts mass \(1/n\) at each data point \(X_i\). Formally,
+\[\begin{align}\hat{F_n}(x) &amp;amp; = \frac{\sum_{i=1}^n I\left(X_i \leq x \right)}{n} \\&amp;amp;= \frac{\text{#}|\text{observations less than or equal to x}|}{n}\end{align}\]</description>
+    </item>
+    
     <item>
       <title>AOS Chapter07 Models, Statistical Inference and Learning</title>
       <link>/2021/04/15/aos-chapter07-models-statistical-inference-and-learning/</link>

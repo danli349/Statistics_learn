@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter08 Estimating the CDF and Statistical Functionals - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter08 Estimating the CDF and Statistical Functionals - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">17 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter08 Estimating the CDF and Statistical Functionals</h1>
+
+    
+    <span class="article-date">2021-04-16</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/16/aos-chapter08-estimating-the-cdf-and-statistical-functionals/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#estimating-the-cdf-and-statistical-functionals">8. Estimating the CDF and Statistical Functionals</a>
+<ul>
+<li><a href="#empirical-distribution-function">8.1 Empirical distribution function</a></li>
+<li><a href="#statistical-functionals">8.2 Statistical Functionals</a></li>
+<li><a href="#technical-appendix">8.3 Technical Appendix</a></li>
+<li><a href="#exercises">8.5 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="estimating-the-cdf-and-statistical-functionals" class="section level2">
+<h2>8. Estimating the CDF and Statistical Functionals</h2>
+<div id="empirical-distribution-function" class="section level3">
+<h3>8.1 Empirical distribution function</h3>
+<p>The <strong>empirical distribution function</strong> <span class="math inline">\(\hat{F_n}\)</span> is the CDF that puts mass <span class="math inline">\(1/n\)</span> at each data point <span class="math inline">\(X_i\)</span>. Formally,</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{F_n}(x) &amp; = \frac{\sum_{i=1}^n I\left(X_i \leq x \right)}{n} \\
+&amp;= \frac{\text{#}|\text{observations less than or equal to x}|}{n}
+\end{align}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{equation}
+I\left(X_i \leq x\right) =
+    \begin{cases}
+      1   &amp; \text{if } X_i \leq x \\
+      0   &amp; \text{if } X_i &gt; x
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p><strong>Theorem 8.3</strong>. At any fixed value of <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+\begin{equation}
+\mathbb{E}\left( \hat{F_n}(x) \right) = F(x)
+\quad\mathrm{and}\quad 
+\mathbb{V}\left( \hat{F_n}(x) \right) = \frac{F(x)(1 - F(x))}{n}
+\end{equation}
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[ \text{MSE} = \frac{F(x)(1 - F(x))}{n} \rightarrow 0 \]</span></p>
+<p>and hence, <span class="math inline">\(\hat{F_n}(x) \xrightarrow{\text{P}} F(x)\)</span>.</p>
+<p><strong>Theorem 8.4 (Glivenko-Cantelli Theorem)</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim F\)</span>. Then</p>
+<p><span class="math display">\[ \sup _x |\hat{F_n}(x) - F(x)| \xrightarrow{\text{P}} 0 \]</span></p>
+<p>(actually, <span class="math inline">\(\sup _x |\hat{F_n}(x) - F(x)|\)</span> converges to 0 almost surely.)</p>
+</div>
+<div id="statistical-functionals" class="section level3">
+<h3>8.2 Statistical Functionals</h3>
+<p>A <strong>statistical functional</strong> <span class="math inline">\(T(F)\)</span> is any function of <span class="math inline">\(F\)</span>. Examples are the mean <span class="math inline">\(\mu = \int x dF(x)\)</span>, the variance <span class="math inline">\(\sigma^2 = \int (x - \mu)^2 dF(x)\)</span> and the median <span class="math inline">\(m = F^{-1}(1/2)\)</span>.</p>
+<p>The <strong>plug-in estimator</strong> of <span class="math inline">\(\theta = T(F)\)</span> is defined by</p>
+<p><span class="math display">\[\hat{\theta_n} = T(\hat{F_n}) \]</span></p>
+<p>In other words, just plug in <span class="math inline">\(\hat{F_n}\)</span> for the unknown <span class="math inline">\(F\)</span>.</p>
+<p>A functional of the form <span class="math inline">\(\int r(x) dF(x)\)</span> is called a <strong>linear functional</strong>. Recall that <span class="math inline">\(\int r(x) dF(x)\)</span> is defined to be <span class="math inline">\(\int r(x) f(x) d(x)\)</span> in the continuous case and <span class="math inline">\(\sum_j r(x_j) f(x_j)\)</span> in the discrete.</p>
+<p>The plug-in estimator for the linear functional <span class="math inline">\(T(F) = \int r(x) dF(x)\)</span> is:</p>
+<p><span class="math display">\[T(\hat{F_n}) = \int r(x) d\hat{F_n}(x) = \frac{1}{n} \sum_{i=1}^n r(X_i)\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[ T(\hat{F_n}) \approx N\left(T(F), \hat{\text{se}}\right) \]</span></p>
+<p>An approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(T(F)\)</span> is then</p>
+<p><span class="math display">\[ T(\hat{F_n}) \pm z_{\alpha/2} \hat{\text{se}} \]</span></p>
+<p>We call this the <strong>Normal-based interval</strong>.</p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>8.3 Technical Appendix</h3>
+<p><strong>Theorem 8.12 (Dvoretsky-Kiefer-Wolfowitz (DKW) inequality)</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid from <span class="math inline">\(F\)</span>. Then, for any <span class="math inline">\(\epsilon &gt; 0\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}\left( \sup_x |F(x) - \hat{F_n}(x) | &gt; \epsilon \right) \leq 2 e^{-2n\epsilon^2}\]</span></p>
+<p>From the DKW inequality, we can construct a confidence set. Let <span class="math inline">\(\epsilon_n^2 = \log(2/\alpha) / (2n)\)</span>, <span class="math inline">\(L(x) = \max \{ \hat{F_n}(x) - \epsilon_n, \; 0 \}\)</span> and <span class="math inline">\(U(x) = \min \{\hat{F_n}(x) + \epsilon_n, 1 \}\)</span>. It follows that for any <span class="math inline">\(F\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(F \in C_n) \geq 1 - \alpha \]</span></p>
+<p>To summarize:</p>
+<p>A <span class="math inline">\(1 - \alpha\)</span> nonparametric confidence band for <span class="math inline">\(F\)</span> is <span class="math inline">\((L(x), \; U(x))\)</span> where</p>
+<p><span class="math display">\[
+\begin{align}
+L(x) &amp;= \max \{ \hat{F_n}(x) - \epsilon_n, \; 0 \} \\
+U(x) &amp;= \min \{ \hat{F_n}(x) + \epsilon_n, \; 1 \} \\
+\epsilon_n &amp;= \sqrt{\frac{1}{2n} \log \left( \frac{2}{\alpha} \right) }
+\end{align}
+\]</span></p>
+</div>
+<div id="exercises" class="section level3">
+<h3>8.5 Exercises</h3>
+<p><strong>Exercise 8.5.1</strong>. Prove Theorem 8.3.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[
+\hat{F_n}(x) = \frac{\sum_{i=1}^n I\left(X_i \leq x \right)}{n}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{equation}
+I\left(X_i \leq x\right) =
+    \begin{cases}
+      1   &amp; \text{if } X_i \leq x \\
+      0   &amp; \text{if } X_i &gt; x
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{F_n}(x)) &amp; = n^{-1} \sum_{i = 1}^n \mathbb{E}(I\left(X_i \leq x \right)) \\
+ &amp; = n^{-1} \sum_{i = 1}^n \mathbb{P}\left(X_i \leq x \right) \\
+ &amp; = n^{-1} \sum_{i = 1}^n F(x) \\
+ &amp; = F(x)
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{F_n}(x)^2) &amp; = n^{-2} \mathbb{E} \left( \sum_{i = 1}^n I\left(X_i \leq x \right) \right)^2 \\
+&amp; = n^{-2} \mathbb{E} \left( \sum_{i = 1}^n I\left(X_i \leq x \right)^2 
++ \sum_{i = 1}^n \sum_{j = 1, j \neq i}^n I\left(X_i \leq x \right) I\left(X_j \leq x \right) \right) \\
+&amp; = n^{-2} \left( \sum_{i = 1}^n \mathbb{E} \left( I\left(X_i \leq x \right)^2 \right)
++ \sum_{i = 1}^n \sum_{j = 1, j \neq i}^n \mathbb{E} \left( I\left(X_i \leq x \right) I\left(X_j \leq x \right) \right) \right) \\
+&amp; = n^{-2} \left( \sum_{i = 1}^n \mathbb{E} \left( I\left(X_i \leq x \right) \right)
++ \sum_{i = 1}^n \sum_{j = 1, j \neq i}^n \mathbb{E} \left( I\left(X_i \leq x \right) \right) \mathbb{E} \left( I\left(X_j \leq x \right) \right) \right) \\
+&amp; = n^{-2} \left( \sum_{i = 1}^n \mathbb{P}\left(X_i \leq x \right) 
++ \sum_{i = 1}^n \sum_{j = 1, j \neq i}^n \mathbb{P}\left(X_i \leq x \right) \mathbb{P}\left(X_j \leq x \right)  \right) \\
+&amp;= n^{-2} \left( \sum_{i = 1}^n F(x)
++ \sum_{i = 1}^n \sum_{j = 1, j \neq i}^n F(x)^2  \right) \\
+&amp;= n^{-2} \left( nF(x) + (n^2 - n)F(x)^2 \right) \\
+&amp;= n^{-1} ( F(x) + (n - 1) F(x)^2 )
+\end{align}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[ \mathbb{V}(\hat{F_n}(x)) 
+= \mathbb{E}(\hat{F_n}(x)^2) - \mathbb{E}(\hat{F_n}(x))^2
+= F(x) /n + (1 - 1/n)F(x)^2 - F(x)^2
+= \frac{F(x)(1 - F(x))}{n}
+\]</span></p>
+<p>Finally,</p>
+<p><span class="math display">\[ \text{MSE} = (\text{bias}(\hat{F_n}(x)))^2 + \mathbb{V}(\hat{F_n}(x)) \\
+= (\mathbb{E}(\hat{F_n}(x)) - F(x))^2 + \mathbb{V}(\hat{F_n}(x)) = \mathbb{V}(\hat{F_n}(x)) = \frac{F(x)(1 - F(x))}{n} \rightarrow 0\]</span></p>
+<p><strong>Exercise 8.5.2</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span> and let <span class="math inline">\(Y_1, \dots, Y_m \sim \text{Bernoulli}(q)\)</span>.</p>
+<ul>
+<li>Find the plug-in estimator and estimated standard error for <span class="math inline">\(p\)</span>.</li>
+<li>Find an approximate 90-percent confidence interval for <span class="math inline">\(p\)</span>.</li>
+<li>Find the plug-in estimator and estimated standard error for <span class="math inline">\(p - q\)</span>.</li>
+<li>Find an approximate 90-percent confidence interval for <span class="math inline">\(p - q\)</span>.</li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p><span class="math inline">\(p\)</span> is the mean of <span class="math inline">\(\text{Bernoulli}(p)\)</span>, so its plugin estimator is <span class="math inline">\(\hat{p} = \mathbb{E}(\hat{F_n}) = n^{-1} \sum_{i=1}^n X_i = \overline{X}_n\)</span>.</p>
+<p><span class="math inline">\(\sqrt{p(1-p)}\)</span> is the standard error of <span class="math inline">\(\text{Bernoulli}(p)\)</span>, so its plugin estimator is <span class="math inline">\(\sqrt{\hat{p}(1-\hat{p})} = \sqrt{\overline{X}_n(1 - \overline{X}_n)}\)</span>.</p>
+<p><strong>(b)</strong></p>
+<p>The 90-percent confidence interval for <span class="math inline">\(p\)</span> is <span class="math inline">\(\hat{p} \pm z_{5\%} \hat{se}(\hat{p})= \overline{X}_n \pm z_{5\%} \sqrt{\overline{X}_n(1-\overline{X}_n)}\)</span>.</p>
+<p><strong>(c)</strong></p>
+<p>The plug-in estimator for <span class="math inline">\(\theta = p - q\)</span> is <span class="math inline">\(\hat{\theta} = \hat{p} - \hat{q} = \overline{X}_n - \overline{Y}_m\)</span>.</p>
+<p>The standard error of <span class="math inline">\(\hat{\theta}\)</span> is</p>
+<p><span class="math display">\[\text{se} = \sqrt{\mathbb{V}(\hat{p} - \hat{q})} = \sqrt{\mathbb{V}(\hat{p}) + \mathbb{V}(\hat{q})} = \sqrt{\hat{p}(1 - \hat{p}) + \hat{q}(1 - \hat{q})} = \sqrt{\overline{X}_n(1 - \overline{X}_n) + \overline{Y}_m(1 - \overline{Y}_m)} \]</span></p>
+<p><strong>(d)</strong></p>
+<p>The 90-percent confidence interval for <span class="math inline">\(\theta = p - q\)</span> is $ z_{5%} () = _n - <em>m z</em>{5%}  $</p>
+<p><strong>Exercise 8.5.3</strong>. (Computer Experiment) Generate 100 observations from a <span class="math inline">\(N(0, 1)\)</span> distribution. Compute a 95 percent confidence band for the CDF <span class="math inline">\(F\)</span>. Repeat this 1000 times and see how often the confidence band contains the true function. Repeat using data from a Cauchy distribution.</p>
+<pre class="python"><code>import math
+import numpy as np
+import pandas as pd
+from scipy.stats import norm, cauchy
+import matplotlib.pyplot as plt
+from tqdm import notebook</code></pre>
+<pre class="python"><code># One iteration wtih Normal distribution
+
+n = 100
+alpha = 0.05
+r = norm.rvs(size=n)
+epsilon = math.sqrt((1 / (2 * n)) * math.log(2 / alpha))
+
+F_n = lambda x : sum(r &lt; x) / n
+L_n = lambda x : max(F_n(x) - epsilon, 0)
+U_n = lambda x : min(F_n(x) + epsilon, 1)
+
+xx = sorted(r)
+
+df = pd.DataFrame({
+    &#39;x&#39;: xx, 
+    &#39;F_n&#39;: np.array(list(map(F_n, xx))), 
+    &#39;U_n&#39;: np.array(list(map(U_n, xx))), 
+    &#39;L_n&#39;: np.array(list(map(L_n, xx))), 
+    &#39;CDF&#39;: np.array(list(map(norm.cdf, xx)))
+})
+df[&#39;in_bounds&#39;] = (df[&#39;U_n&#39;] &gt;= df[&#39;CDF&#39;]) &amp; (df[&#39;CDF&#39;] &gt;= df[&#39;L_n&#39;])
+
+plt.plot( &#39;x&#39;, &#39;L_n&#39;, data=df, color=&#39;red&#39;)
+plt.plot( &#39;x&#39;, &#39;U_n&#39;, data=df, color=&#39;green&#39;)
+plt.plot( &#39;x&#39;, &#39;CDF&#39;, data=df, color=&#39;purple&#39;)
+plt.legend()</code></pre>
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f2580e620a0&gt;</code></pre>
+<div class="figure">
+<img src="Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_files/Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_21_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># 1000 iterations with Normal distribution
+
+bounds = []
+for k in notebook.tqdm(range(1000)):
+    n = 100
+    alpha = 0.05
+    r = norm.rvs(size=n)
+    epsilon = math.sqrt((1 / (2 * n)) * math.log(2 / alpha))
+
+    F_n = lambda x : sum(r &lt; x) / n
+    L_n = lambda x : max(F_n(x) - epsilon, 0)
+    U_n = lambda x : min(F_n(x) + epsilon, 1)
+
+    # xx = sorted(r)
+    xx = r # No need to sort without plotting
+    
+    df = pd.DataFrame({
+        &#39;x&#39;: xx, 
+        &#39;F_n&#39;: np.array(list(map(F_n, xx))), 
+        &#39;U_n&#39;: np.array(list(map(U_n, xx))), 
+        &#39;L_n&#39;: np.array(list(map(L_n, xx))), 
+        &#39;CDF&#39;: np.array(list(map(norm.cdf, xx)))
+    })
+    all_in_bounds = ((df[&#39;U_n&#39;] &gt;= df[&#39;CDF&#39;]) &amp; (df[&#39;CDF&#39;] &gt;= df[&#39;L_n&#39;])).all()
+    bounds.append(all_in_bounds)
+    
+print(&#39;Average fraction in bounds: %.3f&#39; % np.array(bounds).mean())</code></pre>
+<pre><code>  0%|          | 0/1000 [00:00&lt;?, ?it/s]
+
+
+Average fraction in bounds: 0.965</code></pre>
+<pre class="python"><code># One iteration wtih Cauchy distribution
+
+n = 100
+alpha = 0.05
+r = cauchy.rvs(size=n)
+epsilon = math.sqrt((1 / (2 * n)) * math.log(2 / alpha))
+
+F_n = lambda x : sum(r &lt; x) / n
+L_n = lambda x : max(F_n(x) - epsilon, 0)
+U_n = lambda x : min(F_n(x) + epsilon, 1)
+
+xx = sorted(r)
+
+df = pd.DataFrame({
+    &#39;x&#39;: xx, 
+    &#39;F_n&#39;: np.array(list(map(F_n, xx))), 
+    &#39;U_n&#39;: np.array(list(map(U_n, xx))), 
+    &#39;L_n&#39;: np.array(list(map(L_n, xx))), 
+    &#39;CDF&#39;: np.array(list(map(norm.cdf, xx)))
+})
+df[&#39;in_bounds&#39;] = (df[&#39;U_n&#39;] &gt;= df[&#39;CDF&#39;]) &amp; (df[&#39;CDF&#39;] &gt;= df[&#39;L_n&#39;])
+
+plt.plot( &#39;x&#39;, &#39;L_n&#39;, data=df, color=&#39;red&#39;)
+plt.plot( &#39;x&#39;, &#39;U_n&#39;, data=df, color=&#39;green&#39;)
+plt.plot( &#39;x&#39;, &#39;CDF&#39;, data=df, color=&#39;purple&#39;)
+plt.legend()</code></pre>
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f0394ce8dc0&gt;</code></pre>
+<div class="figure">
+<img src="Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_files/Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_23_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># 1000 iterations with Cauchy distribution
+
+bounds = []
+for k in tqdm.notebook.tqdm(range(1000)):
+    n = 100
+    alpha = 0.05
+    r = cauchy.rvs(size=n)
+    epsilon = math.sqrt((1 / (2 * n)) * math.log(2 / alpha))
+
+    F_n = lambda x : sum(r &lt; x) / n
+    L_n = lambda x : max(F_n(x) - epsilon, 0)
+    U_n = lambda x : min(F_n(x) + epsilon, 1)
+
+    # xx = sorted(r)
+    xx = r # No need to sort without plotting
+
+    df = pd.DataFrame({
+        &#39;x&#39;: xx, 
+        &#39;F_n&#39;: np.array(list(map(F_n, xx))), 
+        &#39;U_n&#39;: np.array(list(map(U_n, xx))), 
+        &#39;L_n&#39;: np.array(list(map(L_n, xx))), 
+        &#39;CDF&#39;: np.array(list(map(norm.cdf, xx)))
+    })
+    all_in_bounds = ((df[&#39;U_n&#39;] &gt;= df[&#39;CDF&#39;]) &amp; (df[&#39;CDF&#39;] &gt;= df[&#39;L_n&#39;])).all()
+    bounds.append(all_in_bounds)
+    
+print(&#39;Average fraction in bounds: %.3f&#39; % np.array(bounds).mean())</code></pre>
+<pre><code>  0%|          | 0/1000 [00:00&lt;?, ?it/s]
+
+
+Average fraction in bounds: 0.192</code></pre>
+<p><strong>Exercise 8.5.4</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim F\)</span> and let <span class="math inline">\(\hat{F}_n(x)\)</span> be the empirical distribution function. For a fixed <span class="math inline">\(x\)</span>, use the central limit theorem to find the limiting distribution of <span class="math inline">\(\hat{F}_n(x)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[
+\hat{F_n}(x) = \frac{\sum_{i=1}^n I\left(X_i \leq x \right)}{n}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{equation}
+I\left(X_i \leq x\right) =
+    \begin{cases}
+      1   &amp; \text{if } X_i \leq x \\
+      0   &amp; \text{if } X_i &gt; x
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>Let <span class="math inline">\(Y_i = I\left(X_i \leq x \right)\)</span> for some fixed <span class="math inline">\(x\)</span>. From the central limit theorem,</p>
+<p><span class="math display">\[
+\begin{align}
+\sqrt{n} (\overline{Y}_n - \mu_Y) &amp; \leadsto N(0, \sigma_Y^2) \\
+\overline{Y}_n &amp; \leadsto N(\mu_Y, \sigma_Y^2 / n)
+\end{align}
+\]</span></p>
+<p>We can estimate the mean <span class="math inline">\(\mu_Y\)</span> as <span class="math inline">\(\mathbb{E}(\hat{\mu_Y}) = \mathbb{E}(\overline{Y}_n) = n^{-1} \sum_{i=1}^n \mathbb{E}(I(X_i \leq x)) = n^{-1} \sum_{i=1}^n F(x) = \hat{F_n}(x)\)</span>.</p>
+<p>We can estimate the variance <span class="math inline">\(\sigma_Y^2\)</span> as <span class="math display">\[\mathbb{E}(\hat{\sigma_Y}^2) = \mathbb{E}(\mathbb{V}(\overline{Y}_n)) = n^{-1} \sum_{i=1}^n \mathbb{E}((Y_i - \overline{Y}_n)^2) \\
+= n^{-1} \sum_{i=1}^n \left( \mathbb{E}(Y_i^2) - 2 \mathbb{E}(Y_i \overline{Y}_n) + \mathbb{E}(\overline{Y}_n^2) \right) \leq n^{-1} \sum_{i=1}^n \left( \mathbb{E}(Y_i) + \mathbb{E}(\overline{Y}_n^2) \right) \leq 2\]</span></p>
+<p>Therefore, for large <span class="math inline">\(n\)</span>, the limiting distribution has variance that goes to 0 – so <span class="math inline">\(\overline{Y}_n \leadsto \mu_Y\)</span>, or <span class="math inline">\(I\left(X_i \leq x \right) \leadsto F(x)\)</span> for every x. Then,</p>
+<p><span class="math inline">\(\hat{F_n}(x) \leadsto n^{-1} \sum_{i=1}^n F(x) = F(x)\)</span>,</p>
+<p>and, as expected, <span class="math inline">\(F\)</span> is the limiting distribution of <span class="math inline">\(F_n\)</span>.</p>
+<p><strong>Exercise 8.5.5</strong>. Let <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> be two distinct points. Find <span class="math inline">\(\text{Cov}(\hat{F_n}(x), \hat{F_n}(y))\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Cov}(\hat{F_n}(x), \hat{F_n}(y)) &amp; = \mathbb{E}(\hat{F_n}(x) \hat{F_n}(y)) - \mathbb{E}(\hat{F_n}(x))\mathbb{E}(\hat{F_n}(y)) \\
+&amp;= \mathbb{E}(\hat{F_n}(x) \hat{F_n}(y)) - F(x)F(y)
+\end{align}
+\]</span></p>
+<p>But:</p>
+<p><span class="math display">\[
+\hat{F_n}(x) \hat{F_n}(y) = \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n I(X_i \leq x) I(X_j \leq y)
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{F_n}(x) \hat{F_n}(y)) &amp; = \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \mathbb{E}(I(X_i \leq x) I(X_j \leq y)) \\
+&amp;= \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \mathbb{P}(X_i \leq x, X_j \leq y) \\
+&amp;= \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \mathbb{P}(X_i \leq x | X_j \leq y) \mathbb{P}(X_j \leq y) \\
+&amp;= \frac{1}{n^2} \left( \sum_{i=1}^n F(\min\{x, y\}) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n F(x)F(y) \right) \\
+&amp;= \frac{1}{n} F(\min\{x, y\}) + \left( 1 - \frac{1}{n}\right) F(x)F(y)
+\end{align}
+\]</span></p>
+<p>Therefore, assuming <span class="math inline">\(x \leq y\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Cov}(\hat{F_n}(x), \hat{F_n}(y)) &amp; = \mathbb{E}(\hat{F_n}(x) \hat{F_n}(y)) - \mathbb{E}(\hat{F_n}(x))\mathbb{E}(\hat{F_n}(y)) \\
+&amp;= \mathbb{E}(\hat{F_n}(x) \hat{F_n}(y)) - F(x)F(y) \\
+&amp;= \frac{1}{n} F(\min\{x, y\}) + \left( 1 - \frac{1}{n}\right) F(x)F(y) - F(x)F(y) \\
+&amp;= \frac{F(x)(1 - F(y))}{n}
+\end{align}
+\]</span></p>
+<p><strong>Exercise 8.5.6</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim F\)</span> and let <span class="math inline">\(\hat{F}\)</span> be the empirical distribution function. Let <span class="math inline">\(a &lt; b\)</span> be fixed numbers and define <span class="math inline">\(\theta = T(F) = F(b) - F(a)\)</span>. Let <span class="math inline">\(\hat{\theta} = T(\hat{F}_n) = \hat{F}_n(b) - \hat{F}_n(a)\)</span>.</p>
+<ul>
+<li>Find the estimated standard error of <span class="math inline">\(\hat{\theta}\)</span>.</li>
+<li>Find an expression for an approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\theta\)</span>.</li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p>The estimated mean for <span class="math inline">\(\hat{\theta}\)</span> is <span class="math inline">\(\mathbb{E}(\hat{\theta}) = \mathbb{E}(\hat{F}_n(b) - \hat{F}_n(a)) = \mathbb{E}(\hat{F}_n(b)) - \mathbb{E}(\hat{F}_n(a)) = F(b) - F(a) = \theta\)</span>.</p>
+<p>The estimated variance for <span class="math inline">\(\hat{\theta}\)</span> is</p>
+<p><span class="math display">\[ \mathbb{V}(\hat{\theta}) = \mathbb{E}(\hat{\theta}^2) - \mathbb{E}(\hat{\theta})^2 \]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{\theta}^2) &amp; = \mathbb{E}((\hat{F}_n(b) - \hat{F}_n(a))^2)  \\
+&amp;= \mathbb{E}(\hat{F}_n(a)^2 + \hat{F}_n(b)^2 - 2 \hat{F}_n(a)\hat{F}_n(b)) \\
+&amp;= \mathbb{E}(\hat{F}_n(a)^2) + \mathbb{E}(\hat{F}_n(b)^2) - 2 \mathbb{E}(\hat{F}_n(a)\hat{F}_n(b))
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{F}_n(a)^2) &amp; = \mathbb{E}\left(\left(\frac{1}{n} \sum_{i=1}^n I(X_i \leq a)\right)^2\right) \\
+&amp; = \frac{1}{n^2} \left(\sum_{i=1}^n \mathbb{E} \left( I(X_i \leq a)^2 \right) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}\left( I(X_i \leq a) I(X_j \leq a) \right) \right) \\
+&amp; = \frac{1}{n^2} \left(\sum_{i=1}^n \mathbb{E} \left( I(X_i \leq a) \right) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}\left( I(X_i \leq a) I(X_j \leq a) \right) \right) \\
+&amp; = \frac{1}{n^2} \left(\sum_{i=1}^n \mathbb{P} \left( X_i \leq a \right) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{P}\left( X_i \leq a, X_j \leq a \right) \right) \\
+&amp; = \frac{1}{n^2} \left(n F(a) + n(n-1) F(a)^2 \right) \\
+&amp;= F(a) \frac{1}{n} + F(a)^2 \left(1 - \frac{1}{n} \right) \\
+\mathbb{E}(\hat{F}_n(b)^2) &amp; = F(b) \frac{1}{n} + F(b)^2 \left(1 - \frac{1}{n} \right)
+\end{align}
+\]</span></p>
+<p>From the previous exercise,</p>
+<p><span class="math display">\[ \mathbb{E}(\hat{F}_n(a)\hat{F}_n(b)) = \frac{1}{n} F(a) + \left( 1 - \frac{1}{n}\right) F(a)F(b) \]</span></p>
+<p>Putting it together,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(\hat{\theta}^2) 
+&amp;= \mathbb{E}(\hat{F}_n(a)^2) + \mathbb{E}(\hat{F}_n(b)^2) - 2 \mathbb{E}(\hat{F}_n(a)\hat{F}_n(b)) \\
+&amp;=   F(a) \frac{1}{n} + F(a)^2 \left(1 - \frac{1}{n} \right) +  F(b) \frac{1}{n} + F(b)^2 \left(1 - \frac{1}{n} \right) - 2 \left( \frac{1}{n} F(a) + \left( 1 - \frac{1}{n}\right) F(a)F(b) \right) \\
+&amp;=  \frac{1}{n} \left(F(b) - F(a)\right) + \left( 1 - \frac{1}{n}\right) \left( F(b) - F(a) \right)^2 \\
+&amp;=  \frac{1}{n} \theta + \left( 1 - \frac{1}{n} \right) \theta^2 \\
+\mathbb{V}(\hat{\theta}) &amp;=  \mathbb{E}(\hat{\theta}^2) - \mathbb{E}(\hat{\theta})^2 \\
+&amp;=  \frac{1}{n} \theta + \left( 1 - \frac{1}{n} \right) \theta^2 - \theta^2 \\
+&amp;= \frac{\theta (1 - \theta)}{n} 
+\end{align}
+\]</span></p>
+<p>Finally, the estimated standard error is</p>
+<p><span class="math display">\[\text{se}(\hat{\theta}) = \sqrt{\mathbb{V}(\hat{\theta})} = \sqrt{\frac{\hat{\theta}(1 - \hat{\theta})}{n}}\]</span></p>
+<p><strong>(b)</strong></p>
+<p>An approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval is</p>
+<p><span class="math display">\[ \hat{\theta} \pm z_{\alpha/2}\text{se}(\hat{\theta}) = \hat{\theta} \pm z_{\alpha/2} \sqrt{\frac{\hat{\theta}(1 - \hat{\theta})}{n}}\]</span></p>
+<p><strong>Exercise 8.5.7</strong>. Data on the magnitudes of earthquakes near Fiji are available on the course website.</p>
+<ul>
+<li>Estimate the CDF.</li>
+<li>Compute and plot a 95% confidence envelope for F.</li>
+<li>Find an approximate 95% confidence interval for F(4.9) - F(4.3).</li>
+</ul>
+<pre class="python"><code>import pandas as pd
+
+data = pd.read_csv(&#39;data/fijiquakes.csv&#39;, sep=&#39;\t&#39;)
+r = np.array(data[&#39;mag&#39;])
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+obs
+</th>
+<th>
+lat
+</th>
+<th>
+long
+</th>
+<th>
+depth
+</th>
+<th>
+mag
+</th>
+<th>
+stations
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+1
+</td>
+<td>
+-20.42
+</td>
+<td>
+181.62
+</td>
+<td>
+562
+</td>
+<td>
+4.8
+</td>
+<td>
+41
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+2
+</td>
+<td>
+-20.62
+</td>
+<td>
+181.03
+</td>
+<td>
+650
+</td>
+<td>
+4.2
+</td>
+<td>
+15
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+3
+</td>
+<td>
+-26.00
+</td>
+<td>
+184.10
+</td>
+<td>
+42
+</td>
+<td>
+5.4
+</td>
+<td>
+43
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+4
+</td>
+<td>
+-17.97
+</td>
+<td>
+181.66
+</td>
+<td>
+626
+</td>
+<td>
+4.1
+</td>
+<td>
+19
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+5
+</td>
+<td>
+-20.42
+</td>
+<td>
+181.96
+</td>
+<td>
+649
+</td>
+<td>
+4.0
+</td>
+<td>
+11
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+995
+</th>
+<td>
+996
+</td>
+<td>
+-25.93
+</td>
+<td>
+179.54
+</td>
+<td>
+470
+</td>
+<td>
+4.4
+</td>
+<td>
+22
+</td>
+</tr>
+<tr>
+<th>
+996
+</th>
+<td>
+997
+</td>
+<td>
+-12.28
+</td>
+<td>
+167.06
+</td>
+<td>
+248
+</td>
+<td>
+4.7
+</td>
+<td>
+35
+</td>
+</tr>
+<tr>
+<th>
+997
+</th>
+<td>
+998
+</td>
+<td>
+-20.13
+</td>
+<td>
+184.20
+</td>
+<td>
+244
+</td>
+<td>
+4.5
+</td>
+<td>
+34
+</td>
+</tr>
+<tr>
+<th>
+998
+</th>
+<td>
+999
+</td>
+<td>
+-17.40
+</td>
+<td>
+187.80
+</td>
+<td>
+40
+</td>
+<td>
+4.5
+</td>
+<td>
+14
+</td>
+</tr>
+<tr>
+<th>
+999
+</th>
+<td>
+1000
+</td>
+<td>
+-21.59
+</td>
+<td>
+170.56
+</td>
+<td>
+165
+</td>
+<td>
+6.0
+</td>
+<td>
+119
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+1000 rows × 6 columns
+</p>
+</div>
+<pre class="python"><code>n = len(r)
+alpha = 0.05
+epsilon = math.sqrt((1 / (2 * n)) * math.log(2 / alpha))
+
+F_n = lambda x : sum(r &lt; x) / n
+L_n = lambda x : max(F_n(x) - epsilon, 0)
+U_n = lambda x : min(F_n(x) + epsilon, 1)
+
+xx = sorted(r)
+
+df = pd.DataFrame({
+    &#39;x&#39;: xx, 
+    &#39;F_n&#39;: np.array(list(map(F_n, xx))), 
+    &#39;U_n&#39;: np.array(list(map(U_n, xx))), 
+    &#39;L_n&#39;: np.array(list(map(L_n, xx)))
+})
+
+plt.plot( &#39;x&#39;, &#39;L_n&#39;, data=df, color=&#39;red&#39;)
+plt.plot( &#39;x&#39;, &#39;U_n&#39;, data=df, color=&#39;green&#39;)
+plt.plot( &#39;x&#39;, &#39;F_n&#39;, data=df, color=&#39;blue&#39;)
+plt.legend()</code></pre>
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f033fe97820&gt;</code></pre>
+<div class="figure">
+<img src="Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_files/Chapter%2008%20-%20Estimating%20the%20CDF%20and%20Statistical%20Functionals_33_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># Now to find the confidence interval, using the result from 8.5.6:
+
+import math
+from scipy.stats import norm
+
+#ppf(q, loc=0, scale=1) Percent point function (inverse of cdf — percentiles).
+#The method norm.ppf() takes a percentage and returns a standard deviation multiplier 
+#for what value that percentage occurs at.
+
+z_95 = norm.ppf(.975)
+theta = F_n(4.9) - F_n(4.3)
+se = math.sqrt(theta * (1 - theta) / n)
+
+print(&#39;95%% confidence interval: (%.3f, %.3f)&#39; % ((theta - z_95 * se), (theta + z_95 * se)))</code></pre>
+<pre><code>95% confidence interval: (0.526, 0.588)</code></pre>
+<p><strong>Exercise 8.5.8</strong>. Get the data on eruption times and waiting times between eruptions of the old faithful geyser from the course website.</p>
+<ul>
+<li>Estimate the mean waiting time and give a standard error for the estimate.</li>
+<li>Also, give a 90% confidence interval for the mean waiting time.</li>
+<li>Now estimate the median waiting time.</li>
+</ul>
+<p>In the next chapter we will see how to get the standard error for the median.</p>
+<pre class="python"><code>import pandas as pd
+
+data = pd.read_csv(&#39;data/geysers.csv&#39;, sep=&#39;,&#39;)
+r = np.array(data[&#39;waiting&#39;])
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+index
+</th>
+<th>
+eruptions
+</th>
+<th>
+waiting
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+1
+</td>
+<td>
+3.600
+</td>
+<td>
+79
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+2
+</td>
+<td>
+1.800
+</td>
+<td>
+54
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+3
+</td>
+<td>
+3.333
+</td>
+<td>
+74
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+4
+</td>
+<td>
+2.283
+</td>
+<td>
+62
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+5
+</td>
+<td>
+4.533
+</td>
+<td>
+85
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+267
+</th>
+<td>
+268
+</td>
+<td>
+4.117
+</td>
+<td>
+81
+</td>
+</tr>
+<tr>
+<th>
+268
+</th>
+<td>
+269
+</td>
+<td>
+2.150
+</td>
+<td>
+46
+</td>
+</tr>
+<tr>
+<th>
+269
+</th>
+<td>
+270
+</td>
+<td>
+4.417
+</td>
+<td>
+90
+</td>
+</tr>
+<tr>
+<th>
+270
+</th>
+<td>
+271
+</td>
+<td>
+1.817
+</td>
+<td>
+46
+</td>
+</tr>
+<tr>
+<th>
+271
+</th>
+<td>
+272
+</td>
+<td>
+4.467
+</td>
+<td>
+74
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+272 rows × 3 columns
+</p>
+</div>
+<pre class="python"><code># Estimate the mean waiting time and give a standard error for the estimate.
+theta = r.mean()
+se = r.std()
+
+print(&quot;Estimated mean: %.3f&quot; % theta)
+print(&quot;Estimated SE: %.3f&quot; % se)</code></pre>
+<pre><code>Estimated mean: 70.897
+Estimated SE: 13.570</code></pre>
+<pre class="python"><code># Also, give a 90% confidence interval for the mean waiting time.
+
+import math
+from scipy.stats import norm
+
+z_90 = norm.ppf(.95)
+
+print(&#39;90%% confidence interval: (%.3f, %.3f)&#39; % ((theta - z_90 * se), (theta + z_90 * se)))</code></pre>
+<pre><code>90% confidence interval: (48.576, 93.218)</code></pre>
+<pre class="python"><code># Now estimate the median time
+median = np.median(r)
+
+print(&quot;Estimated median time: %.3f&quot; % median)</code></pre>
+<pre><code>Estimated median time: 76.000</code></pre>
+<p><strong>Exercise 8.5.9</strong>. 100 people are given a standard antibiotic to treat an infection and another 100 are given a new antibiotic. In the first group, 90 people recover; in the second group, 85 people recover. Let <span class="math inline">\(p_1\)</span> be the probability of recovery under the standard treatment, and let <span class="math inline">\(p_2\)</span> be the probability of recovery under the new treatment. We are interested in estimating <span class="math inline">\(\theta = p_1 - p_2\)</span>. Provide an estimate, standard error, an 80% confidence interval and a 95% confidence interval for <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(X_1, \dots, X_100\)</span> be indicator random variables (0 or 1) determining recovery on the first group, and <span class="math inline">\(Y_1, \dots, Y_100\)</span> indicating recovery on the second group. From the problem formulation, we can assume <span class="math inline">\(X_i \sim \text{Bernoulli}(p_1)\)</span> and <span class="math inline">\(Y_i \sim \text{Bernoulli}(p_2)\)</span>.</p>
+<p>If <span class="math inline">\(\theta = p_1 - p_2\)</span>, then from exercise 8.5.2:</p>
+<p><span class="math display">\[\hat{\theta} = \hat{p_1} - \hat{p_2}\]</span></p>
+<p><span class="math display">\[\text{se}(\hat{\theta}) = \sqrt{\hat{p_1}(1 - \hat{p_1}) + \hat{p_2}(1 - \hat{p_2})}\]</span></p>
+<pre class="python"><code>import math
+
+p_hat_1 = 0.9
+p_hat_2 = 0.85
+
+theta_hat = p_hat_1 - p_hat_2
+se_theta_hat = math.sqrt(p_hat_1 * (1 - p_hat_1) + p_hat_2 * (1 - p_hat_2))
+
+print(&#39;Estimated mean: %.3f&#39; % theta_hat)
+print(&#39;Estimated SE: %.3f&#39;   % se_theta_hat)</code></pre>
+<pre><code>Estimated mean: 0.050
+Estimated SE: 0.466</code></pre>
+<pre class="python"><code>from scipy.stats import norm
+
+z_80 = norm.ppf(.9)
+z_95 = norm.ppf(.975)
+
+print(&#39;80%% confidence interval: (%.3f, %.3f)&#39; % ((theta_hat - z_80 * se_theta_hat), (theta_hat + z_80 * se_theta_hat)))
+print(&#39;95%% confidence interval: (%.3f, %.3f)&#39; % ((theta_hat - z_95 * se_theta_hat), (theta_hat + z_95 * se_theta_hat)))</code></pre>
+<pre><code>80% confidence interval: (-0.548, 0.648)
+95% confidence interval: (-0.864, 0.964)</code></pre>
+<p><strong>Exercise 8.5.10</strong>. In 1975, an experiment was conducted to see if cloud seeding produced rainfall. 26 clouds were seeded with silver nitrate and 26 were not. The decision to seed or not was made at random. Get the data from the provided link.</p>
+<p>Let <span class="math inline">\(\theta\)</span> be the difference in the median precipitation from the two groups.</p>
+<ul>
+<li>Estimate <span class="math inline">\(\theta\)</span>.</li>
+<li>Estimate the standard error of the estimate and produce a 95% confidence interval.</li>
+</ul>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+from tqdm import notebook
+
+data = pd.read_csv(&#39;data/cloud_seeding.csv&#39;, sep=&#39;,&#39;)
+X = data[&#39;Seeded_Clouds&#39;]
+Y = data[&#39;Unseeded_Clouds&#39;]
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Unseeded_Clouds
+</th>
+<th>
+Seeded_Clouds
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+1202.6
+</td>
+<td>
+2745.6
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+830.1
+</td>
+<td>
+1697.8
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+372.4
+</td>
+<td>
+1656.0
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+345.5
+</td>
+<td>
+978.0
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+321.2
+</td>
+<td>
+703.4
+</td>
+</tr>
+<tr>
+<th>
+5
+</th>
+<td>
+244.3
+</td>
+<td>
+489.1
+</td>
+</tr>
+<tr>
+<th>
+6
+</th>
+<td>
+163.0
+</td>
+<td>
+430.0
+</td>
+</tr>
+<tr>
+<th>
+7
+</th>
+<td>
+147.8
+</td>
+<td>
+334.1
+</td>
+</tr>
+<tr>
+<th>
+8
+</th>
+<td>
+95.0
+</td>
+<td>
+302.8
+</td>
+</tr>
+<tr>
+<th>
+9
+</th>
+<td>
+87.0
+</td>
+<td>
+274.7
+</td>
+</tr>
+<tr>
+<th>
+10
+</th>
+<td>
+81.2
+</td>
+<td>
+274.7
+</td>
+</tr>
+<tr>
+<th>
+11
+</th>
+<td>
+68.5
+</td>
+<td>
+255.0
+</td>
+</tr>
+<tr>
+<th>
+12
+</th>
+<td>
+47.3
+</td>
+<td>
+242.5
+</td>
+</tr>
+<tr>
+<th>
+13
+</th>
+<td>
+41.1
+</td>
+<td>
+200.7
+</td>
+</tr>
+<tr>
+<th>
+14
+</th>
+<td>
+36.6
+</td>
+<td>
+198.6
+</td>
+</tr>
+<tr>
+<th>
+15
+</th>
+<td>
+29.0
+</td>
+<td>
+129.6
+</td>
+</tr>
+<tr>
+<th>
+16
+</th>
+<td>
+28.6
+</td>
+<td>
+119.0
+</td>
+</tr>
+<tr>
+<th>
+17
+</th>
+<td>
+26.3
+</td>
+<td>
+118.3
+</td>
+</tr>
+<tr>
+<th>
+18
+</th>
+<td>
+26.1
+</td>
+<td>
+115.3
+</td>
+</tr>
+<tr>
+<th>
+19
+</th>
+<td>
+24.4
+</td>
+<td>
+92.4
+</td>
+</tr>
+<tr>
+<th>
+20
+</th>
+<td>
+21.7
+</td>
+<td>
+40.6
+</td>
+</tr>
+<tr>
+<th>
+21
+</th>
+<td>
+17.3
+</td>
+<td>
+32.7
+</td>
+</tr>
+<tr>
+<th>
+22
+</th>
+<td>
+11.5
+</td>
+<td>
+31.4
+</td>
+</tr>
+<tr>
+<th>
+23
+</th>
+<td>
+4.9
+</td>
+<td>
+17.5
+</td>
+</tr>
+<tr>
+<th>
+24
+</th>
+<td>
+4.9
+</td>
+<td>
+7.7
+</td>
+</tr>
+<tr>
+<th>
+25
+</th>
+<td>
+1.0
+</td>
+<td>
+4.1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>theta_hat = X.median() - Y.median()
+
+print(&#39;Estimated mean: %.3f&#39; % theta_hat)</code></pre>
+<pre><code>Estimated mean: 177.400</code></pre>
+<pre class="python"><code># Using bootstrap (from chapter 9):
+
+nx = len(X)
+ny = len(Y)
+
+B = 10000
+t_boot = np.zeros(B)
+for i in notebook.tqdm(range(B)):
+    xx = X.sample(n=nx, replace=True)
+    yy = Y.sample(n=ny, replace=True)
+    t_boot[i] = xx.median() - yy.median()
+    
+se = np.array(t_boot).std()
+
+print(&#39;Estimated SE: %.3f&#39; % se)</code></pre>
+<pre><code>  0%|          | 0/10000 [00:00&lt;?, ?it/s]
+
+
+Estimated SE: 64.244</code></pre>
+<pre class="python"><code># See example 9.5, page 135
+
+from scipy.stats import norm
+
+z_95 = norm.ppf(.975)
+
+normal_conf = (theta_hat - z_95 * se, theta_hat + z_95 * se)
+percentile_conf = (np.quantile(t_boot, .025), np.quantile(t_boot, .975))
+pivotal_conf = (2*theta_hat - np.quantile(t_boot, 0.975), 2*theta_hat - np.quantile(t_boot, .025))
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)
+print(&#39;95%% confidence interval (percentile): \t %.3f, %.3f&#39; % percentile_conf)
+print(&#39;95%% confidence interval (pivotal): \t %.3f, %.3f&#39; % pivotal_conf)</code></pre>
+<pre><code>95% confidence interval (Normal):    53.080, 301.720
+95% confidence interval (percentile):    37.450, 263.950
+95% confidence interval (pivotal):   90.850, 317.350</code></pre>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
