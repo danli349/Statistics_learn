@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">20 min read</span>
     
 
     <h1 class="article-title"></h1>
@@ -74,258 +74,695 @@
     
 
     <div class="article-content">
-      <hr>
+      <h1 id="9-the-bootstrap">9. The Bootstrap</h1>
+<p>Let $X_1, \dots, X_n \sim F$ be random variables distributed according to $F$, and</p>
+<p>$$ T_n = g(X_1, \dots, X_n)$$</p>
+<p>be a <strong>statistic</strong>, that is, any function of the data.  Suppose we want to know $\mathbb{V}_F(T_n)$, the variance of $T_n$.</p>
+<p>For example, if $T_n = n^{-1}\sum_{i=1}^nX_i$ then $\mathbb{V}_F(T_n) = \sigma^2/n$ where $\sigma^2 = \int (x - \mu)^2dF(x)$ and $\mu = \int x dF(x)$.</p>
+<h3 id="91-simulation">9.1 Simulation</h3>
+<p>Suppose we draw iid samples $Y_1, \dots, Y_B \sim G$.  By the law of large numbers,</p>
+<p>$$ \overline{Y}<em>n = \frac{1}{B} \sum</em>{j=1}^B Y_j ; \xrightarrow{\text{P}} \int y dG(y) = \mathbb{E}(Y)$$</p>
+<p>as $B \rightarrow \infty$.  So if we draw a large sample from $G$, we can use the sample mean to approximate the mean of the distribution.</p>
+<p>More generally, if $h$ is any function with finite mean then, as $B \rightarrow \infty$,</p>
+<p>$$\frac{1}{B} \sum_{j=1}^B h(Y_j) ; \xrightarrow{\text{P}} \int h(y) dG(y) = \mathbb{E}(h(Y))$$</p>
+<p>In particular, as $B \rightarrow \infty$,</p>
+<p>$$\frac{1}{B} \sum_{j=1}^B (Y_j - \overline{Y})^2
+= \frac{1}{B} \sum_{j=1}^B Y_j^2 - \left(\frac{1}{B} \sum_{j=1}^B Y_j \right)^2
+\xrightarrow{\text{P}} \int y^2 dG(y) - \left( \int y dG(y) \right)^2 = \mathbb{V}(Y)
+$$</p>
+<p>So we can use the sample variance of the simulated values to approximate $\mathbb{V}(Y)$.</p>
+<h3 id="92-bootstrap-variance-estimation">9.2 Bootstrap Variance Estimation</h3>
+<p>To simulate from the distribution of a statistic $T_n$ when the data is assumed to have distribution $\hat{F}_n$, we simulate $X_1^<em>, \dots, X_n^</em>$ from $\hat{F}_n$ and then compute the statistic over these values, $T_n^* = g(X_1^*, \dots, X_n^*)$.</p>
+<p>$$
+\begin{align}
+\text{Real world} \quad      &amp; F         &amp; \Longrightarrow\quad &amp; X_1, \dots, X_n        &amp; \Longrightarrow &amp; \quad T_n = g(X_1, \dots, X_n) \<br>
+\text{Bootstrap world} \quad &amp; \hat{F}_n &amp; \Longrightarrow\quad  &amp; X_1^<em>, \dots, X_n^</em> &amp; \Longrightarrow &amp; \quad T_n^* = g(X_1^*, \dots, X_n^*)
+\end{align}
+$$</p>
+<p><strong>Drawing an observation from $\hat{F}_n$ is equivalent to drawing one point at random from the original data set.</strong></p>
+<h4 id="bootstrap-variance-estimation">Bootstrap Variance Estimation</h4>
+<ol>
+<li>Draw $X_1^<em>, \dots, X_n^</em> \sim \hat{F}_n$.</li>
+<li>Compute $T_n^* = g(X_1^*, \dots, X_n^*)$.</li>
+<li>Repeat steps 1 and 2, $B$ times, to get $T_{n, 1}^*, \dots, T_{n, B}^*$.</li>
+<li>Let</li>
+</ol>
+<p>$$ v_{\text{boot}} = \frac{1}{B} \sum_{b=1}^B \left( T_{n, b}^* - \frac{1}{B} \sum_{r=1}^B T_{n, r}^* \right)^2 $$</p>
+<h3 id="93-bootstrap-confidence-intervals">9.3 Bootstrap Confidence Intervals</h3>
+<p><strong>Normal Interval</strong>.</p>
+<p>$$ T_n \pm z_{\alpha/2} \hat{\text{se}}_\text{boot} $$</p>
+<p>where $\hat{\text{se}}_\text{boot}$ is the bootstrap estimate of the standard error.  This is not accurate unless the distribution of $T_n$ is close to Normal.</p>
+<p><strong>Pivotal Intervals</strong>.</p>
+<p>Let $\theta = T(F)$, $\hat{\theta}_n = T(\hat{F}<em>n)$ and define the <strong>pivot</strong> $R_n = \hat{\theta}<em>n  - \theta$.  Let $\hat{\theta}</em>{n, 1}^*, \dots, \hat{\theta}</em>{n, B}^*$ define bootstrap replications of $\hat{\theta}_n$.  Let $H(r)$ denote the CDF of the pivot:</p>
+<p>$$ H(r) = \mathbb{P}_F(R_n \leq r)$$</p>
+<p>Define the interval $C_n^* = (a, b)$ where</p>
+<p>$$
+a = \hat{\theta}_n - H^{-1}\left( 1 - \frac{\alpha}{2} \right)
+\quad\text{and}\quad
+b = \hat{\theta}_n - H^{-1}\left( \frac{\alpha}{2} \right)
+$$</p>
+<p>Then,</p>
+<p>$$
+\begin{align}
+\mathbb{P}(a \leq \theta \leq b) &amp;= \mathbb{P}(a - \hat{\theta}_n \leq \theta - \hat{\theta}_n \leq b - \hat{\theta}_n) \<br>
+&amp;= \mathbb{P}(\hat{\theta}_n - b \leq \hat{\theta}_n - \theta \leq \hat{\theta}_n - a) \<br>
+&amp;= \mathbb{P}(\hat{\theta}_n - b \leq R_n \leq \hat{\theta}_n - a) \<br>
+&amp;= H(\hat{\theta}_n - a) - H(\hat{\theta}_n - b) \<br>
+&amp;= H\left(H^{-1}\left( 1 - \frac{\alpha}{2} \right) \right) - H\left(H^{-1}\left( \frac{\alpha}{2} \right)\right) \<br>
+&amp;= 1 - \frac{\alpha}{2}  - \frac{\alpha}{2} = 1 - \alpha
+\end{align}
+$$</p>
+<p>Hence $C_n^*$ is an exact $1 - \alpha$ confidence interval for $\theta$.</p>
+<p>Unfortunately, $a$ and $b$ depend on the unknown distribution $H$, but we can form a bootstrap estimate for it:</p>
+<p>$$\hat{H}(r) = \frac{1}{B} \sum_{b=1}^B I(R_{n, b}^* \leq r)$$</p>
+<p>where $R_{n, b}^* = \hat{\theta}_{n, b}^* - \hat{\theta}_n$.</p>
+<p>Let $r_\beta^*$ denote the $\beta$ sample quantile of $(R_{n, 1}^*, \dots, R_{n, B}^*)$, and let $\theta_\beta^*$ denote the $\beta$ sample quantile of $(\theta_{n, 1}^*, \dots, \theta_{n, B}^*)$.  Note that $r_\beta^* = \theta_\beta^* - \hat{\theta}_n$.  It follows an approximate $1 - \alpha$ confidence interval $C_n = (\hat{a}, \hat{b})$ where</p>
+<p>$$
+\hat{a} = \hat{\theta}_n - \hat{H}^{-1}\left(1 - \frac{\alpha}{2}\right)
+= \hat{\theta}<em>n - r</em>{1 - \alpha/2}^*
+= 2\hat{\theta}_n - \theta_{1 - \alpha/2}^*\<br>
+\hat{b} = \hat{\theta}_n - \hat{H}^{-1}\left(\frac{\alpha}{2}\right)
+= \hat{\theta}_n - r_{\alpha/2}^*
+= 2\hat{\theta}_n - \theta_{\alpha/2}^*
+$$</p>
+<p>The <strong>$1 - \alpha$ bootstrap pivotal confidence</strong> is</p>
+<p>$$ C_n = \left(2 \hat{\theta}<em>n - \hat{\theta}</em>{1 - \alpha/2}^<em>, ; 2 \hat{\theta}<em>n - \hat{\theta}</em>{\alpha/2}^</em> \right) $$</p>
+<p><strong>Theorem 9.3</strong>.  Under weak conditions on $T(F)$,</p>
+<p>$$ \lim _{n \rightarrow \infty} \mathbb{P}_F\left(T(F) \in C_n\right) \rightarrow 1 - \alpha$$</p>
+<p><strong>Percentile Intervals</strong>.</p>
+<p>The <strong>bootstrap percentile interval</strong> is defined by</p>
+<p>$$ C_n = \left( \theta_{\alpha/2}^*, ; \theta_{1 - \alpha/2}^*\right) $$</p>
+<h3 id="95-technical-appendix">9.5 Technical Appendix</h3>
+<h4 id="the-jacknife">The Jacknife</h4>
+<p>This method is less computationally expensive than bootstraping, but it is less general &ndash; it does <em>not</em> produce consistent estimates of the standard errors of the sample quantiles.</p>
+<p>Let $T_n = T(X_1, \dots, X_n)$ be a statistic and let $T_{(-i)}$ denote the statistic with the $i$-th observation removed.  Let $\overline{T}_n = n^{-1} \sum_{i=1}^n T_{(-1)}$.  The jacknife estimate of $\mathbb{V}(T_n)$ is</p>
+<p>$$ v_\text{jack} = \frac{n - 1}{n} \sum_{i=1}^n \left(T_{(-i)} - \overline{T}_n \right)^2 $$</p>
+<p>and the jacknife estimate of the standard error is $\hat{\text{se}}<em>\text{jack} = \sqrt{v</em>\text{jack}}$.</p>
+<p>Under suitable conditions on $T$ it can be shown that $v_\text{jack} / \mathbb{V}(T_n) \xrightarrow{\text{P}} 1$.</p>
+<h4 id="justification-for-the-percentile-interval">Justification for the Percentile Interval</h4>
+<p>Suppose there exists a monotone transformation $U = m(T)$ such that $U \sim N(\phi, c^2)$ where $\phi = m(\theta)$.</p>
+<p>Let $U_t^* = m(\theta_{n, b}^*)$.  Let $u_\beta^*$ be the sample quantile of the $U_b^*$&rsquo;s.  Since a monotone transformation preserves quantiles, we have that $u_{\alpha/2}^* = m(\theta_{\alpha/2}^*)$.</p>
+<p>Also, since $U \sim N(\phi, c^2)$ the $\alpha/2$ quantile of $U$ is $\phi - z_{\alpha/2}c$.  Hence $u_{\alpha/2}^* = \phi - z_{\alpha/2}c$.  Similarly, $u_{1 - \alpha/2}^* = \phi + z_{\alpha/2}c$.</p>
+<p>Therefore,</p>
+<p>$$
+\begin{align}
+\mathbb{P}(\theta_{\alpha/2}^* \leq \theta \leq \theta_{1 - \alpha/2}^*) &amp;=
+\mathbb{P}(m(\theta_{\alpha/2}^*) \leq m(\theta) \leq m(\theta_{1 - \alpha/2}^*)) \<br>
+&amp;= \mathbb{P}(u_{\alpha/2}^* \leq \phi \leq u_{1 - \alpha/2}^*) \<br>
+&amp;= \mathbb{P}(U - cz_{\alpha/2} \leq \phi \leq U + cz_{1 - \alpha/2}) \<br>
+&amp;= \mathbb{P}\left(-z_{\alpha/2} \leq \frac{Y - \phi}{c} \leq z_{1 - \alpha/2} \right) \<br>
+&amp;= 1 - \alpha
+\end{align}
+$$</p>
+<h3 id="96-exercises">9.6 Exercises</h3>
+<p><strong>Exercise 9.6.1</strong>.  Consider the data in example 9.6.</p>
+<ul>
+<li>Find the plug-in estimate of the correlation coefficient.</li>
+<li>Estimate the standard error using the bootstrap.</li>
+<li>Find a 95% confidence interval using all three methods.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Data from example 9.6:</span>
+
+LSAT <span style="color:#f92672">=</span> [<span style="color:#ae81ff">576</span>, <span style="color:#ae81ff">635</span>, <span style="color:#ae81ff">558</span>, <span style="color:#ae81ff">578</span>, <span style="color:#ae81ff">666</span>, <span style="color:#ae81ff">580</span>, <span style="color:#ae81ff">555</span>, <span style="color:#ae81ff">661</span>, <span style="color:#ae81ff">651</span>, <span style="color:#ae81ff">605</span>, <span style="color:#ae81ff">653</span>, <span style="color:#ae81ff">575</span>, <span style="color:#ae81ff">545</span>, <span style="color:#ae81ff">572</span>, <span style="color:#ae81ff">594</span>]
+GPA <span style="color:#f92672">=</span> [<span style="color:#ae81ff">3.39</span>, <span style="color:#ae81ff">3.30</span>, <span style="color:#ae81ff">2.81</span>, <span style="color:#ae81ff">3.03</span>, <span style="color:#ae81ff">3.44</span>, <span style="color:#ae81ff">3.07</span>, <span style="color:#ae81ff">3.00</span>, <span style="color:#ae81ff">3.43</span>, <span style="color:#ae81ff">3.36</span>, <span style="color:#ae81ff">3.13</span>, <span style="color:#ae81ff">3.12</span>, <span style="color:#ae81ff">2.74</span>, <span style="color:#ae81ff">2.76</span>, <span style="color:#ae81ff">2.88</span>, <span style="color:#ae81ff">3.96</span>]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> math
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> notebook
+<span style="color:#f92672">%</span>matplotlib inline
+
+df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;LSAT&#39;</span>: LSAT, <span style="color:#e6db74">&#39;GPA&#39;</span>: GPA})
+df<span style="color:#f92672">.</span>plot<span style="color:#f92672">.</span>scatter(x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;LSAT&#39;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;GPA&#39;</span>)
+</code></pre></div><pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7feeb9031520&gt;
+</code></pre>
+<p><img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_19_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Plug-in estimates for mean and correlation</span>
+
+X <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;LSAT&#39;</span>]<span style="color:#f92672">.</span>to_numpy()
+Y <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;GPA&#39;</span>]<span style="color:#f92672">.</span>to_numpy()
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">corr</span>(X, Y):
+    mu_x <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>mean()
+    mu_y <span style="color:#f92672">=</span> Y<span style="color:#f92672">.</span>mean()
+
+    <span style="color:#66d9ef">return</span> sum((X <span style="color:#f92672">-</span> mu_x) <span style="color:#f92672">*</span> (Y <span style="color:#f92672">-</span> mu_y)) <span style="color:#f92672">/</span> math<span style="color:#f92672">.</span>sqrt(sum((X <span style="color:#f92672">-</span> mu_x)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">*</span> sum((Y <span style="color:#f92672">-</span> mu_y)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>))
+  
+
+theta_hat <span style="color:#f92672">=</span> corr(X, Y)
+    
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Estimated correlation coefficient: </span><span style="color:#e6db74">%.4f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> corr(X, Y))
+</code></pre></div><pre><code>Estimated correlation coefficient: 0.5459
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Bootstrap for SE of correlation coefficient</span>
+
+nx <span style="color:#f92672">=</span> len(X)
+ny <span style="color:#f92672">=</span> len(Y)
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(X, nx, replace<span style="color:#f92672">=</span>True)
+    yy <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(Y, ny, replace<span style="color:#f92672">=</span>True)
+    t_boot[i] <span style="color:#f92672">=</span> corr(xx, yy)
+    
+se <span style="color:#f92672">=</span> t_boot<span style="color:#f92672">.</span>std()
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Estimated SE of correlation coefficient: </span><span style="color:#e6db74">%.4f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> se)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+Estimated SE of correlation coefficient: 0.2676
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Confidence intervals obtained from bootstrap</span>
+
+<span style="color:#f92672">from</span> scipy.stats <span style="color:#f92672">import</span> norm
+
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#f92672">.</span><span style="color:#ae81ff">975</span>)
+
+normal_conf <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se)
+percentile_conf <span style="color:#f92672">=</span> (np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#f92672">.</span><span style="color:#ae81ff">025</span>), np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#f92672">.</span><span style="color:#ae81ff">975</span>))
+pivotal_conf <span style="color:#f92672">=</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>theta_hat <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#ae81ff">0.975</span>), <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>theta_hat <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#f92672">.</span><span style="color:#ae81ff">025</span>))
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (percentile): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> percentile_conf)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (pivotal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> pivotal_conf)
+</code></pre></div><pre><code>95% confidence interval (Normal): 	 0.022, 1.070
+95% confidence interval (percentile): 	 -0.502, 0.523
+95% confidence interval (pivotal): 	 0.569, 1.594
+</code></pre>
+<p><strong>Exercise 9.6.2</strong>.  (Computer Experiment).  Conduct a simulation to compare the four bootstrap confidence interval methods.</p>
+<p>Let $n = 50$ and let $T(F) = \int (x - \mu)^3 dF(x) / \sigma^3$ be the skewness.  Draw $Y_1, \dots, Y_n \sim N(0, 1)$ and set $X_i = e^{Y_i}$, $i = 1, \dots, n$.  Construct the four types of bootstrap 95% intervals for $T(F)$ from the data $X_1, \dots, X_n$.  Repeat this whole thing many times and estimate the true coverage of the four intervals.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> notebook
+<span style="color:#f92672">from</span> scipy.stats <span style="color:#f92672">import</span> norm
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_data</span>(n<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
+    y <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>rvs(size<span style="color:#f92672">=</span>n)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>exp(y)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">skewness</span>(x):
+    n <span style="color:#f92672">=</span> len(x)
+    mu <span style="color:#f92672">=</span> sum(x) <span style="color:#f92672">/</span> n
+    var <span style="color:#f92672">=</span> sum((x <span style="color:#f92672">-</span> mu)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">/</span> n
+    <span style="color:#66d9ef">return</span> sum((x <span style="color:#f92672">-</span> mu)<span style="color:#f92672">**</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">/</span> (n <span style="color:#f92672">*</span> var<span style="color:#f92672">**</span>(<span style="color:#ae81ff">3</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)))
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bootstrap_values</span>(x, B<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span>, show_progress<span style="color:#f92672">=</span>True):
+    n <span style="color:#f92672">=</span> len(x)
+    t_boot <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+    iterable <span style="color:#f92672">=</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)) <span style="color:#66d9ef">if</span> show_progress <span style="color:#66d9ef">else</span> range(B)
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> iterable:
+        xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(x, n, replace<span style="color:#f92672">=</span>True)
+        t_boot[i] <span style="color:#f92672">=</span> skewness(xx)
+
+    <span style="color:#66d9ef">return</span> t_boot
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bootstrap_intervals</span>(theta_hat, t_boot, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>):
+    se <span style="color:#f92672">=</span> t_boot<span style="color:#f92672">.</span>std()
+    
+    z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+    q_half_alpha <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(t_boot, alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+    q_c_half_alpha <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+
+    normal_conf <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se)
+    percentile_conf <span style="color:#f92672">=</span> (q_half_alpha, q_c_half_alpha)
+    pivotal_conf <span style="color:#f92672">=</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>theta_hat <span style="color:#f92672">-</span> q_c_half_alpha, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>theta_hat <span style="color:#f92672">-</span> q_half_alpha)
+    
+    <span style="color:#66d9ef">return</span> normal_conf, percentile_conf, pivotal_conf
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Creating the data</span>
+x <span style="color:#f92672">=</span> create_data(n<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Nonparametric Bootstrap</span>
+theta_hat <span style="color:#f92672">=</span> skewness(x)
+t_boot <span style="color:#f92672">=</span> bootstrap_values(x, B<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span>)
+
+normal_conf, percentile_conf, pivotal_conf <span style="color:#f92672">=</span> bootstrap_intervals(theta_hat, t_boot, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (percentile): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> percentile_conf)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (pivotal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> pivotal_conf)
+</code></pre></div><pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal): 	 1.828, 7.650
+95% confidence interval (percentile): 	 0.932, 5.490
+95% confidence interval (pivotal): 	 3.988, 8.546
+</code></pre>
+<p><strong>Note</strong>: parametric bootstrap is only covered in chapter 10.  The below assumes that &ldquo;four types of bootstrap&rdquo; in the exercise refers to the 3 types of nonparametric bootstrap covered in chapter 9, plus parametric bootstrap from chapter 10.</p>
+<p>For the parametric bootstrap, assume $X = e^Y$ where $Y \sim N(\mu, \sigma^2)$.<br>
+The moment-generating function for a normal random variable Y is:
+$$\begin{align}
+M_X(t)=E(e^{tY})&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{ty} e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}dy\<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{y^2-2y\mu+\mu^2-2\sigma^2ty}{2\sigma^2})dy\<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{(y-(\mu+t\sigma^2))^2-2t\mu\sigma^2-t^2\sigma^4}{2\sigma^2})dy\<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}exp(t\mu+t^2\sigma^2/2)\int_{-\infty}^{+\infty}exp(-\frac{1}{2}\frac{(y-(\mu+t\sigma^2))^2}{\sigma^2})dy\<br>
+&amp;=exp(t\mu+t^2\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+t\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy\<br>
+&amp;=e^{t\mu+t^2\sigma^2/2}
+\end{align}$$
+Then</p>
+<p>$$\begin{align}
+\mathbb{E}(X) &amp;= \mathbb{E}(e^Y) \<br>
+&amp;= \int_{-\infty}^\infty e^y \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left(\frac{y - \mu}{\sigma} \right)^2} dy \<br>
+&amp;= \frac{1}{\sigma \sqrt{2 \pi}} \int e^{y - \frac{1}{2}\left(\frac{y - \mu}{\sigma}\right)^2} dy \<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\left(-\frac{y^2-2y\mu+\mu^2-2\sigma^2y}{2\sigma^2}\right)dy \<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\left(-\frac{(y-(\mu+\sigma^2))^2-2\mu\sigma^2-\sigma^4}{2\sigma^2}\right)dy \<br>
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}exp(\mu+\sigma^2/2)\int_{-\infty}^{+\infty}exp\left(-\frac{1}{2}\frac{(y-(\mu+\sigma^2))^2}{\sigma^2}\right)dy \<br>
+&amp;=exp(\mu+\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy \<br>
+&amp;= e^{\mu + \sigma^2/2} \<br>
+\end{align}$$</p>
+<p>$$\mathbb{E}(X^2) = \mathbb{E}(e^{2Y}) = e^{2\mu + (2\sigma)^2/2} = e^{2\mu + 2\sigma^2}$$</p>
+<p>Solving the two equations for the moments we get parameter estimates:</p>
+<p>$$
+\begin{align}
+\hat{\mu}_Y &amp; = \left[4 \log \mathbb{E}(X) - \log \mathbb{E}(X^2)\right]/2 \<br>
+\hat{\sigma}_Y &amp; = \sqrt{\log \mathbb{E}(X^2) - 2 \log \mathbb{E}(X)}
+\end{align}
+$$</p>
+<p>From these parameter estimates, we can generate bootstrap samples:  sample values for $Y_i ~ N(\hat{\mu}_Y, \hat{\sigma}_Y^2)$, calculate $X_i = Y_i$, and calculate the statistic $T(X_i)$ on each sample generated this way.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Parametric bootstrap</span>
+<span style="color:#75715e"># Assume X = e^Y, Y ~ N(\mu, \sigma^2)</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">estimate_parameters</span>(x):
+    log_e_x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>log(x<span style="color:#f92672">.</span>mean())
+    log_e_x2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>log((x<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">.</span>mean())
+    
+    mu_Y_hat <span style="color:#f92672">=</span> (<span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> log_e_x <span style="color:#f92672">-</span> log_e_x2)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+    sigma_Y_hat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sqrt(log_e_x2 <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> log_e_x)
+    
+    <span style="color:#66d9ef">return</span> mu_Y_hat, sigma_Y_hat
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bootstrap_skewness_parametric</span>(mu, sigma, n, B <span style="color:#f92672">=</span> <span style="color:#ae81ff">10000</span>, show_progress<span style="color:#f92672">=</span>True):
+    t_boot <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+    iterable <span style="color:#f92672">=</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)) <span style="color:#66d9ef">if</span> show_progress <span style="color:#66d9ef">else</span> range(B)
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> iterable:
+        xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>exp(norm<span style="color:#f92672">.</span>rvs(size<span style="color:#f92672">=</span>n, loc<span style="color:#f92672">=</span>n, scale<span style="color:#f92672">=</span>sigma))
+        t_boot[i] <span style="color:#f92672">=</span> skewness(xx)
+        
+    <span style="color:#66d9ef">return</span> t_boot
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bootstrap_parametric_intervals</span>(mu, t_boot, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>):
+    se <span style="color:#f92672">=</span> t_boot<span style="color:#f92672">.</span>std()
+    z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+    
+    <span style="color:#66d9ef">return</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mu_X_hat <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>mean()
+mu_Y_hat, sigma_Y_hat <span style="color:#f92672">=</span> estimate_parameters(x)
+t_boot <span style="color:#f92672">=</span> bootstrap_skewness_parametric(mu_Y_hat, sigma_Y_hat, <span style="color:#ae81ff">50</span>, B<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span>)
+
+parametric_normal_conf <span style="color:#f92672">=</span> bootstrap_parametric_intervals(mu_X_hat, t_boot, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Parametric Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> parametric_normal_conf)
+</code></pre></div><pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Parametric Normal): 	 2.513, 6.965
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Repeat nonparametric bootstrap many times</span>
+n_experiments <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+
+normal_conf <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty((n_experiments, <span style="color:#ae81ff">2</span>))
+percentile_conf <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty((n_experiments, <span style="color:#ae81ff">2</span>))
+pivotal_conf <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty((n_experiments, <span style="color:#ae81ff">2</span>))
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(n_experiments)):
+    theta_hat <span style="color:#f92672">=</span> skewness(x)
+    t_boot_experiment <span style="color:#f92672">=</span> bootstrap_values(x, B<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span>, show_progress<span style="color:#f92672">=</span>False)
+    normal_conf[i], percentile_conf[i], pivotal_conf[i] <span style="color:#f92672">=</span> bootstrap_intervals(theta_hat, t_boot_experiment, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>)
+</code></pre></div><pre><code>  0%|          | 0/10 [00:00&lt;?, ?it/s]
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Normal confidence lower bound: </span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (normal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>mean(), normal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>std()))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Normal confidence upper bound: </span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (normal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>mean(), normal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>std()))
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Percentile confidence lower bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (percentile_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>mean(), percentile_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>std()))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Percentile confidence upper bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (percentile_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>mean(), percentile_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>std()))
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Pivotal confidence lower bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (pivotal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>mean(), pivotal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>std()))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Pivotal confidence upper bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (pivotal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>mean(), pivotal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>std()))
+</code></pre></div><pre><code>Normal confidence lower bound: 		 mean 1.821, SE 0.005
+Normal confidence upper bound: 		 mean 7.657, SE 0.005
+Percentile confidence lower bound: 	 mean 0.928, SE 0.004
+Percentile confidence upper bound: 	 mean 5.494, SE 0.004
+Pivotal confidence lower bound: 	 mean 3.984, SE 0.004
+Pivotal confidence upper bound: 	 mean 8.550, SE 0.004
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Repeat parametric bootstrap many times</span>
+
+n_experiments <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+parametric_normal_conf <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty((n_experiments, <span style="color:#ae81ff">2</span>))
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(n_experiments)):
+    mu_X_hat <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>mean()
+    mu_Y_hat, sigma_Y_hat <span style="color:#f92672">=</span> estimate_parameters(x)
+    t_boot <span style="color:#f92672">=</span> bootstrap_skewness_parametric(mu_Y_hat, sigma_Y_hat, <span style="color:#ae81ff">50</span>, B<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span>, show_progress<span style="color:#f92672">=</span>False)
+    parametric_normal_conf[i] <span style="color:#f92672">=</span> bootstrap_parametric_intervals(mu_X_hat, t_boot, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>)
+</code></pre></div><pre><code>  0%|          | 0/10 [00:00&lt;?, ?it/s]
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Parametric Normal confidence lower bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (parametric_normal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>mean(), parametric_normal_conf[:, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>std()))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Parametric Normal confidence upper bound: </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> mean </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, SE </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> 
+      (parametric_normal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>mean(), parametric_normal_conf[:, <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>std()))
+</code></pre></div><pre><code>Parametric Normal confidence lower bound: 	 mean 2.512, SE 0.006
+Parametric Normal confidence upper bound: 	 mean 6.966, SE 0.006
+</code></pre>
+<p><strong>Exercise 9.6.3</strong>.  Let  $X_1, \dots, X_n \sim t_3$ where $n = 25$.  Let $\theta = T(F) = (q_{.75} - q_{.25})/1.34$ where $q_p$ denotes the $p$-th quantile.  Do a simulation to compare the coverage and length of the following confidence intervals for $\theta$:</p>
+<ul>
+<li>Normal interval with standard error from the bootstrap</li>
+<li>Bootstrap percentile interval</li>
+</ul>
+<p>Remark: the jacknife does not give a consistent estimator of the variance of a quantile.</p>
+<p><strong>Solution</strong>.  We will assume that $t_3$ represents a t-distribution with shape parameter 3.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> scipy.stats <span style="color:#f92672">import</span> t
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> notebook
+
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">25</span>
+X <span style="color:#f92672">=</span> t<span style="color:#f92672">.</span>rvs(<span style="color:#ae81ff">3</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">T</span>(x):
+    <span style="color:#66d9ef">return</span> (np<span style="color:#f92672">.</span>quantile(x, <span style="color:#ae81ff">0.75</span>) <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>quantile(x, <span style="color:#ae81ff">0.25</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">1.34</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">theta_hat <span style="color:#f92672">=</span> T(X)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Run bootstrap</span>
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(X, n, replace<span style="color:#f92672">=</span>True)
+    t_boot[i] <span style="color:#f92672">=</span> T(xx)
+    
+se_boot <span style="color:#f92672">=</span> t_boot<span style="color:#f92672">.</span>std()
+
+alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+q_half_alpha <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(t_boot, alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+q_c_half_alpha <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(t_boot, <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+
+normal_conf <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se_boot, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se_boot)
+percentile_conf <span style="color:#f92672">=</span> (q_half_alpha, q_c_half_alpha)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (percentile): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> percentile_conf)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal): 	 -0.072, 1.511
+95% confidence interval (percentile): 	 0.422, 1.767
+</code></pre>
+<p><strong>Exercise 9.6.4</strong>.  Let $X_1, \dots, X_n$ be distinct observations (no ties).  Show that there are</p>
+<p>$$ \binom{2n - 1}{n}$$</p>
+<p>distinct bootstrap samples.</p>
+<p>Hint: Imagine putting $n$ balls into $n$ buckets.</p>
+<p><strong>Solution</strong>.</p>
+<p>Each bootstrap sample (random draws with replacement) will select $a_i$ copies of $X_i$, where $0 \leq a_i \leq n$ and $\sum_{i=1}^n a_i = n$, for integer $a_i$.  Each bootstrap sample is uniquely represented by this sequence of variables, and each sequence of variables uniquely determines a bootstrap sample &ndash; so the number of distinct bootstrap samples is equal to the number of solutions to this equation, that is, the number of partitions of $n$ into $n$ buckets.</p>
+<p>Lets write $a_i$ explicitly in base 1, representing it as $a_i$ consecutive copies of the digit 1:</p>
+<p>$$
+\begin{align}
+0_{10} &amp; = \text{empty string}_1 \<br>
+1_{10} &amp; = 1_1 \<br>
+2_{10} &amp; = 11_1 \<br>
+3_{10} &amp; = 111_1 \<br>
+4_{10} &amp; = 1111_1 \<br>
+\vdots
+\end{align}
+$$</p>
+<p>So a solution for</p>
+<p>$$a_1 + a_2 + \dots + a_n = n$$</p>
+<p>is uniquely represented by a sequence of $2n - 1$ symbols, being $n$ digits $1$ and $n - 1$ plus signs.  For example, if $a_1 = 3$, $a_2 = 0$, $a_3 = 1$, then we write</p>
+<p>$$ 111 + + 1 + \dots = n $$</p>
+<p>The number of such solutions is then obtained by choosing $n$ of the $2n - 1$ symbols to be digit $1$ &ndash; that is, $\binom{2n - 1}{n}$.</p>
+<p><strong>Exercise 9.6.5</strong>.  Let $X_1, \dots, X_n$ be distinct observations (no ties).  Let $X_1^<em>, \dots, X_n^</em>$ denote a bootstrap sample and let $\overline{X}_n^* = n^{-1}\sum_{i=1}^nX_i^*$.  Find:</p>
+<ul>
+<li>$\mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n)$</li>
+<li>$\mathbb{V}(\overline{X}_n^* | X_1, \dots, X_n)$</li>
+<li>$\mathbb{E}(\overline{X}_n^*)$</li>
+<li>$\mathbb{V}(\overline{X}_n^*)$</li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> $$
+\begin{align}
+\mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n) &amp;= \mathbb{E}\left(n^{-1}\sum_{i=1}^nX_i\right) = n^{-1}\sum_{i=1}^n \mathbb{E}(X_i) = \mathbb{E}(X)
+\end{align}
+$$</p>
+<p><strong>(b)</strong> $$
+\begin{align}
+\mathbb{V}(\overline{X}_n^* | X_1, \dots, X_n) &amp; =
+\mathbb{E}((\overline{X}_n^*)^2 | X_1, \dots, X_n) - \mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n)^2 \<br>
+&amp;= \mathbb{E}\left(\left(n^{-1}\sum_{i=1}^nX_i\right)^2\right) - \mathbb{E}\left(n^{-1}\sum_{i=1}^nX_i\right)^2 \<br>
+&amp;= n^{-2} \mathbb{E}\left(\sum_{i=1}^nX_i^2 + \sum_{i=1}^n \sum_{j=1, j \neq i}^n X_i X_j\right) - \mathbb{E}(X)^2 \<br>
+&amp;= n^{-2} \sum_{i=1}^n \mathbb{E}(X_i^2) + n^{-2} \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}(X_i X_j) - \mathbb{E}(X)^2  \<br>
+&amp;= n^{-1} (\mathbb{V}(X) + \mathbb{E}(X)^2) + n^{-2} \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}(X_i) \mathbb{E}(X_j) - \mathbb{E}(X)^2 \<br>
+&amp;= n^{-1} (\mathbb{V}(X) + \mathbb{E}(X)^2) + n^{-1} (n - 1) \mathbb{E}(X)^2 - \mathbb{E}(X)^2 \<br>
+&amp;= \frac{1}{n}\mathbb{V}(X)
+\end{align}
+$$</p>
+<p><strong>(c)</strong> $$
+\begin{align}
+\mathbb{E}(\overline{X}<em>n^*) &amp;= \mathbb{E}\left(n^{-1} \sum</em>{i=1}^nX_i^*\right) = n^{-1} \sum_{i=1}^n \mathbb{E}(X_i^*) = \mathbb{E}(X)
+\end{align}
+$$</p>
+<p><strong>(d)</strong> $$
+\begin{align}
+\mathbb{V}(\overline{X}<em>n^<em>) &amp;= \mathbb{E}((\overline{X}_n^</em>)^2) - \mathbb{E}(\overline{X}<em>n^*)^2 \<br>
+&amp;= \mathbb{E}\left(\left(n^{-1} \sum</em>{i=1}^nX_i^*\right)^2\right) - \mathbb{E}(X)^2 \<br>
+&amp;= n^{-2} \sum</em>{i=1}^n\sum_{j=1}^n \mathbb{E}(X_i^* X_j^*) - \mathbb{E}(X)^2
+\end{align}
+$$</p>
+<p>Now, the same value $X_k$ may have been sampled twice in $\mathbb{E}(X_i^* X_j^*)$.  This always happens when $i = j$, and this happens with probability $1 / n$ when $i \neq j$. Thus,</p>
+<p>$$
+\begin{align}
+\mathbb{V}(\overline{X}<em>n^*)
+&amp;= n^{-2} \left(\sum</em>{i=1}^n \mathbb{E}(X_i^2) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n \left( \frac{1}{n} \mathbb{E}(X_i^2) + \left(1 - \frac{1}{n}\right)\mathbb{E}(X_i)\mathbb{E}(X_j)\right) \right) - \mathbb{E}(X)^2 \<br>
+&amp;= n^{-1} \mathbb{E}(X^2) + n^{-2} (n-1) \mathbb{E}(X^2) + n^{-2}(n-1)^2 E(X)^2 - \mathbb{E}(X)^2 \<br>
+&amp;= n^{-2} (2n - 1) \left( \mathbb{E}(X^2) - \mathbb{E}(X)^2 \right) \<br>
+&amp;= \frac{2n - 1}{n^2} \mathbb{V}(X)
+\end{align}
+$$</p>
+<p><strong>Exercise 9.6.6</strong>.  (Computer Experiment).  Let $X_1, \dots, X_n \sim N(\mu, 1)$.  Let $\theta = e^\mu$and let $\hat{\theta} = e^{\overline{X}}$ be the mle.  Create a dataset (using $\mu = 5$) consisting of $n = 100$ observations.</p>
+<p><strong>(a)</strong> Use the bootstrap to get the $\text{se}$ and 95% confidence interval for $\theta$.</p>
+<p><strong>(b)</strong> Plot a histogram of the bootstrap replications for the parametric and non-parametric bootstraps.  These are estimates of the distribution of $\hat{\theta}$.  Compare this to the true sampling distribution of $\hat{\theta}$.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 <span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
-<span style="color:#f92672">import</span> scanpy <span style="color:#f92672">as</span> sc
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># !mkdir data</span>
-<span style="color:#75715e"># !wget http://cf.10xgenomics.com/samples/cell-exp/1.1.0/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz -O data/pbmc3k_filtered_gene_bc_matrices.tar.gz</span>
-<span style="color:#75715e"># !cd data; tar -xzf pbmc3k_filtered_gene_bc_matrices.tar.gz</span>
-<span style="color:#75715e"># !mkdir write</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>verbosity <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>             <span style="color:#75715e"># verbosity: errors (0), warnings (1), info (2), hints (3)</span>
-sc<span style="color:#f92672">.</span>logging<span style="color:#f92672">.</span>print_header()
-sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>set_figure_params(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>, facecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;white&#39;</span>)
-</code></pre></div><pre><code>scanpy==1.6.1 anndata==0.7.5 umap==0.4.6 numpy==1.19.2 scipy==1.5.2 pandas==1.2.1 scikit-learn==0.23.2 statsmodels==0.12.1 python-igraph==0.8.3 leidenalg==0.8.3
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">results_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;write/pbmc3k.h5ad&#39;</span>  <span style="color:#75715e"># the file that will store the analysis results</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> sc<span style="color:#f92672">.</span>read_10x_mtx(
-    <span style="color:#e6db74">&#39;filtered_gene_bc_matrices/hg19/&#39;</span>,  <span style="color:#75715e"># the directory with the `.mtx` file</span>
-    var_names<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gene_symbols&#39;</span>,                <span style="color:#75715e"># use gene symbols for the variable names (variables-axis index)</span>
-    cache<span style="color:#f92672">=</span>True)                              <span style="color:#75715e"># write a cache file for faster subsequent reading</span>
-</code></pre></div><pre><code>... writing an h5ad cache file to speedup reading next time
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>var_names_make_unique()  <span style="color:#75715e"># this is unnecessary if using `var_names=&#39;gene_ids&#39;` in `sc.read_10x_mtx`</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>obs
-</code></pre></div><!-- raw HTML omitted -->
-<pre><code>.dataframe tbody tr th {
-    vertical-align: top;
-}
+<span style="color:#f92672">from</span> scipy.stats <span style="color:#f92672">import</span> norm
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> notebook
+<span style="color:#f92672">%</span>matplotlib inline
 
-.dataframe thead th {
-    text-align: right;
-}
-</code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>highest_expr_genes(adata, n_top<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, )
-</code></pre></div><pre><code>normalizing counts per cell
-    finished (0:00:00)
-</code></pre>
-<p><img src="scanpy_files/scanpy_7_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>filter_cells(adata, min_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
-sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>filter_genes(adata, min_cells<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
-</code></pre></div><pre><code>filtered out 19024 genes that are detected in less than 3 cells
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>var[<span style="color:#e6db74">&#39;mt&#39;</span>] <span style="color:#f92672">=</span> adata<span style="color:#f92672">.</span>var_names<span style="color:#f92672">.</span>str<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#39;MT-&#39;</span>)  <span style="color:#75715e"># annotate the group of mitochondrial genes as &#39;mt&#39;</span>
-sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>calculate_qc_metrics(adata, qc_vars<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;mt&#39;</span>], percent_top<span style="color:#f92672">=</span>None, log1p<span style="color:#f92672">=</span>False, inplace<span style="color:#f92672">=</span>True)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>violin(adata, [<span style="color:#e6db74">&#39;n_genes_by_counts&#39;</span>, <span style="color:#e6db74">&#39;total_counts&#39;</span>, <span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>],
-             jitter<span style="color:#f92672">=</span><span style="color:#ae81ff">0.4</span>, multi_panel<span style="color:#f92672">=</span>True)
-</code></pre></div><pre><code>/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_core.py:1319: UserWarning: Vertical orientation ignored with only `x` specified.
-  warnings.warn(single_var_warning.format(&quot;Vertical&quot;, &quot;x&quot;))
-</code></pre>
-<p><img src="scanpy_files/scanpy_10_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>scatter(adata, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;total_counts&#39;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>)
-sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>scatter(adata, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;total_counts&#39;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;n_genes_by_counts&#39;</span>)
-</code></pre></div><p><img src="scanpy_files/scanpy_11_0.png" alt="png"></p>
-<p><img src="scanpy_files/scanpy_11_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> adata[adata<span style="color:#f92672">.</span>obs<span style="color:#f92672">.</span>n_genes_by_counts <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2500</span>, :]
-adata <span style="color:#f92672">=</span> adata[adata<span style="color:#f92672">.</span>obs<span style="color:#f92672">.</span>pct_counts_mt <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>, :]
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>normalize_total(adata, target_sum<span style="color:#f92672">=</span><span style="color:#ae81ff">1e4</span>)
-</code></pre></div><pre><code>normalizing counts per cell
-    finished (0:00:00)
+X <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>rvs(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Get estimated value</span>
+
+theta_hat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>exp(X<span style="color:#f92672">.</span>mean())
+
+<span style="color:#75715e"># Run nonparametric bootstrap</span>
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot_nonparam <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+n <span style="color:#f92672">=</span> len(X)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(X, n, replace<span style="color:#f92672">=</span>True)
+    t_boot_nonparam[i] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>exp(xx<span style="color:#f92672">.</span>mean())
+    
+se_boot <span style="color:#f92672">=</span> t_boot_nonparam<span style="color:#f92672">.</span>std()
+
+alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+normal_conf <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se_boot, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se_boot)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
 
 
-/home/dan/miniconda3/lib/python3.8/site-packages/scanpy/preprocessing/_normalization.py:138: UserWarning: Revieved a view of an AnnData. Making a copy.
-  view_to_actual(adata)
+95% confidence interval (Normal): 	 128.387, 194.808
 </code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>log1p(adata)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>highly_variable_genes(adata, min_mean<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0125</span>, max_mean<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, min_disp<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
-</code></pre></div><pre><code>extracting highly variable genes
-    finished (0:00:00)
---&gt; added
-    'highly_variable', boolean vector (adata.var)
-    'means', float vector (adata.var)
-    'dispersions', float vector (adata.var)
-    'dispersions_norm', float vector (adata.var)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>highly_variable_genes(adata)
-</code></pre></div><p><img src="scanpy_files/scanpy_16_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>raw <span style="color:#f92672">=</span> adata
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> adata[:, adata<span style="color:#f92672">.</span>var<span style="color:#f92672">.</span>highly_variable]
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>regress_out(adata, [<span style="color:#e6db74">&#39;total_counts&#39;</span>, <span style="color:#e6db74">&#39;pct_counts_mt&#39;</span>])
-</code></pre></div><pre><code>regressing out ['total_counts', 'pct_counts_mt']
-    sparse input is densified and may lead to high memory use
-    finished (0:00:08)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>scale(adata, max_value<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>pca(adata, svd_solver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;arpack&#39;</span>)
-</code></pre></div><pre><code>computing PCA
-    on highly variable genes
-    with n_comps=50
-    finished (0:00:00)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>pca(adata, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;CST3&#39;</span>)
-</code></pre></div><p><img src="scanpy_files/scanpy_22_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>pca_variance_ratio(adata, log<span style="color:#f92672">=</span>True)
-</code></pre></div><p><img src="scanpy_files/scanpy_23_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata
-</code></pre></div><pre><code>AnnData object with n_obs × n_vars = 2638 × 1838
-    obs: 'n_genes', 'n_genes_by_counts', 'total_counts', 'total_counts_mt', 'pct_counts_mt'
-    var: 'gene_ids', 'n_cells', 'mt', 'n_cells_by_counts', 'mean_counts', 'pct_dropout_by_counts', 'total_counts', 'highly_variable', 'means', 'dispersions', 'dispersions_norm', 'mean', 'std'
-    uns: 'log1p', 'hvg', 'pca'
-    obsm: 'X_pca'
-    varm: 'PCs'
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pp<span style="color:#f92672">.</span>neighbors(adata, n_neighbors<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, n_pcs<span style="color:#f92672">=</span><span style="color:#ae81ff">40</span>)
-</code></pre></div><pre><code>computing neighbors
-    using 'X_pca' with n_pcs = 40
-    finished: added to `.uns['neighbors']`
-    `.obsp['distances']`, distances for each pair of neighbors
-    `.obsp['connectivities']`, weighted adjacency matrix (0:00:01)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>umap(adata)
-</code></pre></div><pre><code>computing UMAP
-    finished: added
-    'X_umap', UMAP coordinates (adata.obsm) (0:00:03)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>])
-</code></pre></div><p><img src="scanpy_files/scanpy_28_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>], use_raw<span style="color:#f92672">=</span>False)
-</code></pre></div><p><img src="scanpy_files/scanpy_29_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>leiden(adata)
-</code></pre></div><pre><code>running Leiden clustering
-    finished: found 8 clusters and added
-    'leiden', the cluster labels (adata.obs, categorical) (0:00:00)
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;leiden&#39;</span>, <span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>])
-</code></pre></div><p><img src="scanpy_files/scanpy_31_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;t-test&#39;</span>)
-sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
-</code></pre></div><pre><code>ranking genes
-    finished: added to `.uns['rank_genes_groups']`
-    'names', sorted np.recarray to be indexed by group ids
-    'scores', sorted np.recarray to be indexed by group ids
-    'logfoldchanges', sorted np.recarray to be indexed by group ids
-    'pvals', sorted np.recarray to be indexed by group ids
-    'pvals_adj', sorted np.recarray to be indexed by group ids (0:00:00)
-</code></pre>
-<p><img src="scanpy_files/scanpy_33_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>settings<span style="color:#f92672">.</span>verbosity <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>  <span style="color:#75715e"># reduce the verbosity</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;wilcoxon&#39;</span>)
-sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
-</code></pre></div><pre><code>ranking genes
-    finished (0:00:03)
-</code></pre>
-<p><img src="scanpy_files/scanpy_35_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;logreg&#39;</span>)
-sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span>, sharey<span style="color:#f92672">=</span>False)
-</code></pre></div><pre><code>ranking genes
-    finished (0:00:05)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Run parametric bootstrap</span>
+
+mu_hat <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>mean()
+theta_hat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>exp(mu_hat)
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot_param <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+n <span style="color:#f92672">=</span> len(X)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>rvs(size<span style="color:#f92672">=</span>n, loc<span style="color:#f92672">=</span>mu_hat, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    t_boot_param[i] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>exp(xx<span style="color:#f92672">.</span>mean())
+    
+se_boot_param <span style="color:#f92672">=</span> t_boot_param<span style="color:#f92672">.</span>std()
+
+alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+normal_conf_param <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se_boot_param, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se_boot_param)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Parametric Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf_param)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
 
 
-/home/dan/miniconda3/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:762: ConvergenceWarning: lbfgs failed to converge (status=1):
-STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+95% confidence interval (Parametric Normal): 	 129.688, 193.507
+</code></pre>
+<p>For the true sampling distribution,</p>
+<p>$$ \overline{X} = \frac{1}{n} \sum_{i=1}^n X_i \sim \frac{1}{n} N(n \mu, n) = N(\mu, n^{-2})$$</p>
+<p>so the distribution of $\hat{\theta}$ is the distribution of $e^\overline{X}$.  Its CDF is:</p>
+<p>$$
+\mathbb{P}\left(\hat{\theta} \leq t\right) =
+\mathbb{P}\left(e^\overline{X} \leq t\right) =
+\mathbb{P}\left(\overline{X} \leq \log t\right) = F_{\overline{X}}\left(\log t\right)
+$$</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> scipy.stats <span style="color:#f92672">import</span> norm
+<span style="color:#f92672">from</span> matplotlib <span style="color:#f92672">import</span> pyplot
 
-Increase the number of iterations (max_iter) or scale the data as shown in:
-    https://scikit-learn.org/stable/modules/preprocessing.html
-Please also refer to the documentation for alternative solver options:
-    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
-  n_iter_i = _check_optimize_result(
-</code></pre>
-<p><img src="scanpy_files/scanpy_37_2.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">marker_genes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;IL7R&#39;</span>, <span style="color:#e6db74">&#39;CD79A&#39;</span>, <span style="color:#e6db74">&#39;MS4A1&#39;</span>, <span style="color:#e6db74">&#39;CD8A&#39;</span>, <span style="color:#e6db74">&#39;CD8B&#39;</span>, <span style="color:#e6db74">&#39;LYZ&#39;</span>, <span style="color:#e6db74">&#39;CD14&#39;</span>,
-                <span style="color:#e6db74">&#39;LGALS3&#39;</span>, <span style="color:#e6db74">&#39;S100A8&#39;</span>, <span style="color:#e6db74">&#39;GNLY&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;KLRB1&#39;</span>,
-                <span style="color:#e6db74">&#39;FCGR3A&#39;</span>, <span style="color:#e6db74">&#39;MS4A7&#39;</span>, <span style="color:#e6db74">&#39;FCER1A&#39;</span>, <span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>]
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata <span style="color:#f92672">=</span> sc<span style="color:#f92672">.</span>read(results_file)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pd<span style="color:#f92672">.</span>DataFrame(adata<span style="color:#f92672">.</span>uns[<span style="color:#e6db74">&#39;rank_genes_groups&#39;</span>][<span style="color:#e6db74">&#39;names&#39;</span>])<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">5</span>)
-</code></pre></div><!-- raw HTML omitted -->
-<pre><code>.dataframe tbody tr th {
-    vertical-align: top;
-}
+bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">250</span>, <span style="color:#ae81ff">500</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Generate the CDF for theta, calculate it for each bin, and include the differences between bins</span>
 
-.dataframe thead th {
-    text-align: right;
-}
-</code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">result <span style="color:#f92672">=</span> adata<span style="color:#f92672">.</span>uns[<span style="color:#e6db74">&#39;rank_genes_groups&#39;</span>]
-groups <span style="color:#f92672">=</span> result[<span style="color:#e6db74">&#39;names&#39;</span>]<span style="color:#f92672">.</span>dtype<span style="color:#f92672">.</span>names
-pd<span style="color:#f92672">.</span>DataFrame(
-    {group <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;_&#39;</span> <span style="color:#f92672">+</span> key[:<span style="color:#ae81ff">1</span>]: result[key][group]
-    <span style="color:#66d9ef">for</span> group <span style="color:#f92672">in</span> groups <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;names&#39;</span>, <span style="color:#e6db74">&#39;pvals&#39;</span>]})<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">5</span>)
-</code></pre></div><!-- raw HTML omitted -->
-<pre><code>.dataframe tbody tr th {
-    vertical-align: top;
-}
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">theta_cdf</span>(x):
+    <span style="color:#66d9ef">return</span> norm<span style="color:#f92672">.</span>cdf(np<span style="color:#f92672">.</span>log(x), loc<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">50</span>)
 
-.dataframe thead th {
-    text-align: right;
-}
+theta_cdf_bins <span style="color:#f92672">=</span> list(map(theta_cdf, bins))
+theta_cdf_bins_delta <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(len(bins))
+theta_cdf_bins_delta[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+theta_cdf_bins_delta[<span style="color:#ae81ff">1</span>:] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>diff(theta_cdf_bins)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pyplot<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">8</span>))
+pyplot<span style="color:#f92672">.</span>hist(t_boot_nonparam, bins, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Nonparametric bootstrap&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;blue&#39;</span>, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;step&#39;</span>, density<span style="color:#f92672">=</span>True)
+pyplot<span style="color:#f92672">.</span>hist(t_boot_param, bins, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Parametric bootstrap&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;red&#39;</span>, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;step&#39;</span>, density<span style="color:#f92672">=</span>True)
+pyplot<span style="color:#f92672">.</span>step(bins, theta_cdf_bins_delta, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;green&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;True sampling distribution&#39;</span>)
+pyplot<span style="color:#f92672">.</span>axvline(x<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>exp(<span style="color:#ae81ff">5</span>), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;θ (true parameter)&#39;</span>)
+pyplot<span style="color:#f92672">.</span>legend(loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
+pyplot<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_51_0.png" alt="png"></p>
+<p><strong>Exercise 9.6.7</strong>. Let $X_1, \dots, X_n \sim \text{Uniform}(0, \theta)$.  The mle is $\hat{\theta} = X_\text{max} = \max { X_1, \dots, X_n }$.  Generate a dataset of size 50 with $\theta = 1$.</p>
+<p><strong>(a)</strong>  Find the distribution of $\hat{\theta}$.  Compare the true distribution of $\hat{\theta}$ to the histograms from the parametric and nonparametric bootstraps.</p>
+<p><strong>(b)</strong>  This is a case where the nonparametric bootstrap does very poorly.  In fact, we can prove that this is the case.  Show that, for parametric bootstrap $\mathbb{P}(\hat{\theta}^* = \hat{\theta}) = 0$ but for the nonparametric $\mathbb{P}(\hat{\theta}^* = \hat{\theta}) \approx 0.632$.</p>
+<p>Hint: show that $\mathbb{P}(\hat{\theta}^* = \hat{\theta}) = 1 - (1 - (1/n))^n$ then take the limit as $n$ gets large.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+
+X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(low<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, high<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Nonparametric bootstrap</span>
+
+theta_hat <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>max()
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot_nonparam <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+n <span style="color:#f92672">=</span> len(X)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(X, n, replace<span style="color:#f92672">=</span>True)
+    t_boot_nonparam[i] <span style="color:#f92672">=</span> xx<span style="color:#f92672">.</span>max()
+    
+se_boot <span style="color:#f92672">=</span> t_boot_nonparam<span style="color:#f92672">.</span>std()
+
+alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+normal_conf <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se_boot, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se_boot)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal): 	 0.979, 1.019
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>tl<span style="color:#f92672">.</span>rank_genes_groups(adata, <span style="color:#e6db74">&#39;leiden&#39;</span>, groups<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;0&#39;</span>], reference<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1&#39;</span>, method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;wilcoxon&#39;</span>)
-sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups(adata, groups<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;0&#39;</span>], n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>)
-</code></pre></div><pre><code>ranking genes
-    finished (0:00:01)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Run parametric bootstrap</span>
+
+theta_hat <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>max()
+
+B <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>
+t_boot_param <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(B)
+n <span style="color:#f92672">=</span> len(X)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> notebook<span style="color:#f92672">.</span>tqdm(range(B)):
+    xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(low<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, high<span style="color:#f92672">=</span>theta_hat, size<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>)
+    t_boot_param[i] <span style="color:#f92672">=</span> xx<span style="color:#f92672">.</span>max()
+    
+se_boot_param <span style="color:#f92672">=</span> t_boot_param<span style="color:#f92672">.</span>std()
+
+alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+z <span style="color:#f92672">=</span> norm<span style="color:#f92672">.</span>ppf(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+normal_conf_param <span style="color:#f92672">=</span> (theta_hat <span style="color:#f92672">-</span> z <span style="color:#f92672">*</span> se_boot_param, theta_hat <span style="color:#f92672">+</span> z <span style="color:#f92672">*</span> se_boot_param)
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;95</span><span style="color:#e6db74">%%</span><span style="color:#e6db74"> confidence interval (Parametric Normal): </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%.3f</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> normal_conf_param)
+</code></pre></div><pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Parametric Normal): 	 0.961, 1.037
 </code></pre>
-<p><img src="scanpy_files/scanpy_42_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups_violin(adata, groups<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0&#39;</span>, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)
-</code></pre></div><p><img src="scanpy_files/scanpy_43_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>rank_genes_groups_violin(adata, groups<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0&#39;</span>, n_genes<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)
-</code></pre></div><p><img src="scanpy_files/scanpy_44_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>violin(adata, [<span style="color:#e6db74">&#39;CST3&#39;</span>, <span style="color:#e6db74">&#39;NKG7&#39;</span>, <span style="color:#e6db74">&#39;PPBP&#39;</span>], groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>)
-</code></pre></div><pre><code>/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-/home/dan/miniconda3/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  warnings.warn(
-</code></pre>
-<p><img src="scanpy_files/scanpy_45_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_cluster_names <span style="color:#f92672">=</span> [
-    <span style="color:#e6db74">&#39;CD4 T&#39;</span>, <span style="color:#e6db74">&#39;CD14 Monocytes&#39;</span>,
-    <span style="color:#e6db74">&#39;B&#39;</span>, <span style="color:#e6db74">&#39;CD8 T&#39;</span>,
-    <span style="color:#e6db74">&#39;NK&#39;</span>, <span style="color:#e6db74">&#39;FCGR3A Monocytes&#39;</span>,
-    <span style="color:#e6db74">&#39;Dendritic&#39;</span>, <span style="color:#e6db74">&#39;Megakaryocytes&#39;</span>]
-adata<span style="color:#f92672">.</span>rename_categories(<span style="color:#e6db74">&#39;leiden&#39;</span>, new_cluster_names)
-</code></pre></div><pre><code>Omitting rank_genes_groups/names as old categories do not match.
-Omitting rank_genes_groups/scores as old categories do not match.
-Omitting rank_genes_groups/pvals as old categories do not match.
-Omitting rank_genes_groups/pvals_adj as old categories do not match.
-Omitting rank_genes_groups/logfoldchanges as old categories do not match.
-</code></pre>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>umap(adata, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>, legend_loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;on data&#39;</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>, frameon<span style="color:#f92672">=</span>False, save<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;.pdf&#39;</span>)
-</code></pre></div><pre><code>WARNING: saving figure to file figures/umap.pdf
-</code></pre>
-<p><img src="scanpy_files/scanpy_47_1.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>dotplot(adata, marker_genes, groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>);
-</code></pre></div><p><img src="scanpy_files/scanpy_48_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sc<span style="color:#f92672">.</span>pl<span style="color:#f92672">.</span>stacked_violin(adata, marker_genes, groupby<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;leiden&#39;</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">90</span>);
-</code></pre></div><p><img src="scanpy_files/scanpy_49_0.png" alt="png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>write(results_file, compression<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gzip&#39;</span>)  <span style="color:#75715e"># `compression=&#39;gzip&#39;` saves disk space, but slows down writing and subsequent reading</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">adata<span style="color:#f92672">.</span>raw<span style="color:#f92672">.</span>to_adata()<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;./data/write/pbmc3k_withoutX.h5ad&#39;</span>)
-</code></pre></div>
+<p>For the true sampling distribution,</p>
+<p>$$\hat{\theta} = \max { X_1, \dots X_n }$$</p>
+<p>Its CDF is</p>
+<p>$$\mathbb{P}(\hat{\theta} \leq x) = \prod_{i=1}^n \mathbb{P}(X_i \leq x) = F_{\text{Uniform}(0, \theta)}(x)^n$$</p>
+<p>where</p>
+<p>$$F_{\text{Uniform}(0, \theta)}(x) = \begin{cases}
+0 &amp; \text{if } x \leq 0 \<br>
+\frac{x}{\theta} &amp; \text{if } 0 &lt; x \leq \theta \<br>
+1 &amp; \text{if } \theta &lt; x
+\end{cases}
+$$</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0.75</span>, <span style="color:#ae81ff">1.05</span>, <span style="color:#ae81ff">200</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Generate the CDF for theta, calculate it for each bin, and include the differences between bins</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">theta_cdf</span>(x):
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">return</span> x<span style="color:#f92672">**</span><span style="color:#ae81ff">50</span>
+
+theta_cdf_bins <span style="color:#f92672">=</span> list(map(theta_cdf, bins))
+theta_cdf_bins_delta <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>empty(len(bins))
+theta_cdf_bins_delta[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+theta_cdf_bins_delta[<span style="color:#ae81ff">1</span>:] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>diff(theta_cdf_bins)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pyplot<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">8</span>))
+pyplot<span style="color:#f92672">.</span>hist(t_boot_nonparam, bins, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Nonparametric bootstrap&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;blue&#39;</span>, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;step&#39;</span>, density<span style="color:#f92672">=</span>True)
+pyplot<span style="color:#f92672">.</span>hist(t_boot_param, bins, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Parametric bootstrap&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;red&#39;</span>, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;step&#39;</span>, density<span style="color:#f92672">=</span>True)
+pyplot<span style="color:#f92672">.</span>axvline(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;θ (true parameter)&#39;</span>)
+pyplot<span style="color:#f92672">.</span>legend(loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
+pyplot<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_59_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pyplot<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">8</span>))
+pyplot<span style="color:#f92672">.</span>step(bins, theta_cdf_bins_delta, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;green&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;True sampling distribution&#39;</span>)
+pyplot<span style="color:#f92672">.</span>axvline(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;θ (true parameter)&#39;</span>)
+pyplot<span style="color:#f92672">.</span>legend(loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
+pyplot<span style="color:#f92672">.</span>ylim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.1</span>)
+pyplot<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_60_0.png" alt="png"></p>
+<p><strong>(b)</strong></p>
+<p>For the parametric bootstrap process, the estimated parameter $\hat{\theta}^*$ is used on each $k$-th bootstrap sampling ${ X_{k1}, X_{k2}, \dots, X_{kn} }$.  But each variable $X_{kj}$ is sampled from  $\text{Uniform}(0, \hat{\theta}^*)$, which is a continuous distribution &ndash; so the probability of obtaining exactly a sample at the boundaries is 0, and $\mathbb{P}(X_{kj} &lt; \hat{\theta}^*) = 1$.  Since the bootstrap functional of each draw, $T(F_n) = \max(F_n)$ is the largest drawn value in each sample, its values will also always be under $\hat{\theta}$, thus the estimated parameter via parametric bootstraping will aywals be under $[\hat{\theta}$, and $\mathbb{P}(\hat{\theta}* = \hat{\theta}) = 0$].</p>
+<p>For the nonparametric bootstrap process, the estimated parameter $\hat{\theta}^*$ is the maximum value with a point mass in the empirical distribution function $\hat{F}$.  Each bootstrap resample may or may not include that value when drawing from this sample &ndash; if $\max{X_1, \dots, X_n} \in {X_{k1}, \dots, X_{kn} }$ then the estimated functional for that bootstrap sample will be the estimated parameter $\hat{\theta}^*$, otherwise it will necessarily be smaller.</p>
+<p>Thus, the probability that  $\mathbb{P}(\hat{\theta}* = \hat{\theta})$ is the probability that the largest element on the original data is included in a resampling with replacement.  That turns out to be one minus the probability that it never gets included, so,  $\mathbb{P}(\hat{\theta}* = \hat{\theta}) = 1 - (1 - (1/n))^n$.  But $\lim_{n \rightarrow \infty } (1 + x/n)^n = e^x$, so the given probability goes to $1 - e^{-1} \approx 0.632$.</p>
+<p><strong>Exercise 9.6.8</strong>.  Let $T_n = \overline{X}_n^2$, $\mu = \mathbb{E}(X_1)$, $\alpha_k = \int |x - \mu|^k dF(x)$ and $\hat{\alpha}<em>k = n^{-1} \sum</em>{i=1}^n |X_i - \overline{X}_n|^k$.  Show that</p>
+<p>$$v_\text{boot} = \frac{4 \overline{X}_n^2 \hat{\alpha}_2}{n} + \frac{4 \overline{X}_n \hat{\alpha}_3}{n^2} + \frac{\hat{\alpha}_4}{n^3}$$</p>
+<p><strong>Solution</strong>.</p>
+<p>First, we rewrite the sample mean in terms of an expression containing the central moments.  Let $S_n = n^{-1} \sum_{i=1}^n (X_i - \overline{X}_n) = 0$.  Then:</p>
+<p>$$ \overline{X}_n = S_n + \overline{X}<em>n = \frac{1}{n} \sum</em>{i=1}^n (X_i - \overline{X}_n) + \overline{X}_n $$</p>
+<p>The bootstrap variance, $\mathbb{V}\left(\overline{X}_n^2\right)$, can be expressed as</p>
+<p>$$ \mathbb{V}\left(\overline{X}_n^2\right) = \mathbb{E}\left(\overline{X}_n^4\right) - \mathbb{E}\left(\overline{X}_n^2\right)^2 $$</p>
+<p>Note that $\overline{X}_n$ is the mean of the distribution, and can be treated as constant when taking expectations.</p>
+<p>We now have:</p>
+<p>$$
+\begin{align}
+\mathbb{E}\left(\overline{X}_n^4\right) &amp;= \mathbb{E}\left( (S_n + \overline{X}_n)^4 \right) \<br>
+&amp;= \mathbb{E}\left( S_n^4 + 4 S_n^3 \overline{X}_n + 6 S_n^2 \overline{X}_n^2 + 4 S_n \overline{X}_n^3 + \overline{X}_n^4 \right) \<br>
+&amp;= \mathbb{E}(S_n^4) + 4 \overline{X}_n \mathbb{E}(S_n^3) + 6 \overline{X}_n^2 \mathbb{E}(S_n^2) + 4 \overline{X}_n^3 \mathbb{E}(S_n) + \overline{X}_n^4
+\end{align}
+$$</p>
+<p>Then, computing the moments of $S_n$,</p>
+<p>$$
+\begin{align}
+\mathbb{E}(S_n) &amp;= 0 \<br>
+\mathbb{E}(S_n^2) &amp;= \mathbb{E}\left( n^{-2} \left( \sum_i X_i - \overline{X}_n \right)^2 \right) = \frac{\hat{\alpha}_2}{n} \<br>
+\mathbb{E}(S_n^3) &amp;= \mathbb{E}\left( n^{-3} \left( \sum_i X_i - \overline{X}_n \right)^3 \right) = \frac{\hat{\alpha}_3}{n^2} \<br>
+\mathbb{E}(S_n^4) &amp;= \mathbb{E}\left( n^{-4} \left( \sum_i X_i - \overline{X}<em>n \right)^4 + n^{-2}n^{-4} \sum_i \sum</em>{j \neq i} (X_i - \overline{X}_n)^2 (X_j - \overline{X}_n)^2 \right) = \frac{\hat{\alpha}_4 + \hat{\alpha}_2^2}{n^3}
+\end{align}
+$$</p>
+<p>and finally</p>
+<p>$$
+\mathbb{E}\left(\overline{X}_n^2\right)^2 = \mathbb{E}\left(\overline{X}_n^2 + S_n\right)^2 = \overline{X}_n^4 + 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + \frac{\hat{\alpha}_2^2}{n^2}
+$$</p>
+<p>Putting everything together,</p>
+<p>$$
+\begin{align}
+v_\text{boot} &amp;= \mathbb{E}\left( (S_n + \overline{X}_n)^4 \right) - \mathbb{E}\left(\overline{X}_n^2 + S_n\right)^2 \<br>
+&amp;= \mathbb{E}(S_n^4) + 4 \overline{X}_n \mathbb{E}(S_n^3) + 6 \overline{X}_n^2 \mathbb{E}(S_n^2) + 4 \overline{X}_n^3 \mathbb{E}(S_n) + \overline{X}_n^4 - \left( \overline{X}_n^4 + 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + \frac{\hat{\alpha}_2^2}{n^2}\right) \<br>
+&amp;= \frac{\hat{\alpha}_4 + \hat{\alpha}_2^2}{n^3} + 4 \overline{X}_n \frac{\hat{\alpha}_3}{n^2} + 6 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + 0 + \overline{X}_n^4 - \overline{X}_n^4 - 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} - \frac{\hat{\alpha}_2^2}{n^2} \<br>
+&amp;= \frac{4 \overline{X}_n^2 \hat{\alpha}_2}{n} + \frac{4 \overline{X}_n \hat{\alpha}_3}{n^2} + \frac{\hat{\alpha}_4}{n^3}
+\end{align}
+$$</p>
+<p><em>Reference and discussion: <a href="https://stats.stackexchange.com/q/26082">https://stats.stackexchange.com/q/26082</a></em></p>
+
     </div>
   </article>
 
@@ -359,6 +796,9 @@ Omitting rank_genes_groups/logfoldchanges as old categories do not match.
 
 
     
+<script src="../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>

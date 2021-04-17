@@ -6,7 +6,19 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 16 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter09 The Bootstrap</title>
+      <link>/2021/04/17/aos-chapter09-the-bootstrap/</link>
+      <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/17/aos-chapter09-the-bootstrap/</guid>
+      <description>9. The Bootstrap9.1 Simulation9.2 Bootstrap Variance Estimation9.3 Bootstrap Confidence Intervals9.5 Technical Appendix9.6 ExercisesReferences9. The BootstrapLet \(X_1, \dots, X_n \sim F\) be random variables distributed according to \(F\), and
+\[ T_n = g(X_1, \dots, X_n)\]
+be a statistic, that is, any function of the data. Suppose we want to know \(\mathbb{V}_F(T_n)\), the variance of \(T_n\).
+For example, if \(T_n = n^{-1}\sum_{i=1}^nX_i\) then \(\mathbb{V}_F(T_n) = \sigma^2/n\) where \(\sigma^2 = \int (x - \mu)^2dF(x)\) and \(\mu = \int x dF(x)\).</description>
+    </item>
+    
     <item>
       <title>AOS Chapter08 Estimating the CDF and Statistical Functionals</title>
       <link>/2021/04/16/aos-chapter08-estimating-the-cdf-and-statistical-functionals/</link>

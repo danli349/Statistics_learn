@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter09 The Bootstrap - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter09 The Bootstrap - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">21 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter09 The Bootstrap</h1>
+
+    
+    <span class="article-date">2021-04-17</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/17/aos-chapter09-the-bootstrap/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#the-bootstrap">9. The Bootstrap</a>
+<ul>
+<li><a href="#simulation">9.1 Simulation</a></li>
+<li><a href="#bootstrap-variance-estimation">9.2 Bootstrap Variance Estimation</a></li>
+<li><a href="#bootstrap-confidence-intervals">9.3 Bootstrap Confidence Intervals</a></li>
+<li><a href="#technical-appendix">9.5 Technical Appendix</a></li>
+<li><a href="#exercises">9.6 Exercises</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="the-bootstrap" class="section level1">
+<h1>9. The Bootstrap</h1>
+<p>Let <span class="math inline">\(X_1, \dots, X_n \sim F\)</span> be random variables distributed according to <span class="math inline">\(F\)</span>, and</p>
+<p><span class="math display">\[ T_n = g(X_1, \dots, X_n)\]</span></p>
+<p>be a <strong>statistic</strong>, that is, any function of the data. Suppose we want to know <span class="math inline">\(\mathbb{V}_F(T_n)\)</span>, the variance of <span class="math inline">\(T_n\)</span>.</p>
+<p>For example, if <span class="math inline">\(T_n = n^{-1}\sum_{i=1}^nX_i\)</span> then <span class="math inline">\(\mathbb{V}_F(T_n) = \sigma^2/n\)</span> where <span class="math inline">\(\sigma^2 = \int (x - \mu)^2dF(x)\)</span> and <span class="math inline">\(\mu = \int x dF(x)\)</span>.</p>
+<div id="simulation" class="section level3">
+<h3>9.1 Simulation</h3>
+<p>Suppose we draw iid samples <span class="math inline">\(Y_1, \dots, Y_B \sim G\)</span>. By the law of large numbers,</p>
+<p><span class="math display">\[ \overline{Y}_n = \frac{1}{B} \sum_{j=1}^B Y_j \; \xrightarrow{\text{P}} \int y dG(y) = \mathbb{E}(Y)\]</span></p>
+<p>as <span class="math inline">\(B \rightarrow \infty\)</span>. So if we draw a large sample from <span class="math inline">\(G\)</span>, we can use the sample mean to approximate the mean of the distribution.</p>
+<p>More generally, if <span class="math inline">\(h\)</span> is any function with finite mean then, as <span class="math inline">\(B \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[\frac{1}{B} \sum_{j=1}^B h(Y_j) \; \xrightarrow{\text{P}} \int h(y) dG(y) = \mathbb{E}(h(Y))\]</span></p>
+<p>In particular, as <span class="math inline">\(B \rightarrow \infty\)</span>,</p>
+<p><span class="math display">\[\frac{1}{B} \sum_{j=1}^B (Y_j - \overline{Y})^2 
+= \frac{1}{B} \sum_{j=1}^B Y_j^2 - \left(\frac{1}{B} \sum_{j=1}^B Y_j \right)^2
+\xrightarrow{\text{P}} \int y^2 dG(y) - \left( \int y dG(y) \right)^2 = \mathbb{V}(Y)
+\]</span></p>
+<p>So we can use the sample variance of the simulated values to approximate <span class="math inline">\(\mathbb{V}(Y)\)</span>.</p>
+</div>
+<div id="bootstrap-variance-estimation" class="section level3">
+<h3>9.2 Bootstrap Variance Estimation</h3>
+<p>To simulate from the distribution of a statistic <span class="math inline">\(T_n\)</span> when the data is assumed to have distribution <span class="math inline">\(\hat{F}_n\)</span>, we simulate <span class="math inline">\(X_1^*, \dots, X_n^*\)</span> from <span class="math inline">\(\hat{F}_n\)</span> and then compute the statistic over these values, <span class="math inline">\(T_n^* = g(X_1^*, \dots, X_n^*)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Real world} \quad      &amp; F         &amp; \Longrightarrow\quad &amp; X_1, \dots, X_n        &amp; \Longrightarrow &amp; \quad T_n = g(X_1, \dots, X_n) \\
+\text{Bootstrap world} \quad &amp; \hat{F}_n &amp; \Longrightarrow\quad  &amp; X_1^*, \dots, X_n^* &amp; \Longrightarrow &amp; \quad T_n^* = g(X_1^*, \dots, X_n^*)
+\end{align}
+\]</span></p>
+<p><strong>Drawing an observation from <span class="math inline">\(\hat{F}_n\)</span> is equivalent to drawing one point at random from the original data set.</strong></p>
+<div id="bootstrap-variance-estimation-1" class="section level4">
+<h4>Bootstrap Variance Estimation</h4>
+<ol style="list-style-type: decimal">
+<li>Draw <span class="math inline">\(X_1^*, \dots, X_n^* \sim \hat{F}_n\)</span>.</li>
+<li>Compute <span class="math inline">\(T_n^* = g(X_1^*, \dots, X_n^*)\)</span>.</li>
+<li>Repeat steps 1 and 2, <span class="math inline">\(B\)</span> times, to get <span class="math inline">\(T_{n, 1}^*, \dots, T_{n, B}^*\)</span>.</li>
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ v_{\text{boot}} = \frac{1}{B} \sum_{b=1}^B \left( T_{n, b}^* - \frac{1}{B} \sum_{r=1}^B T_{n, r}^* \right)^2 \]</span></p>
+</div>
+</div>
+<div id="bootstrap-confidence-intervals" class="section level3">
+<h3>9.3 Bootstrap Confidence Intervals</h3>
+<p><strong>Normal Interval</strong>.</p>
+<p><span class="math display">\[ T_n \pm z_{\alpha/2} \hat{\text{se}}_\text{boot} \]</span></p>
+<p>where <span class="math inline">\(\hat{\text{se}}_\text{boot}\)</span> is the bootstrap estimate of the standard error. This is not accurate unless the distribution of <span class="math inline">\(T_n\)</span> is close to Normal.</p>
+<p><strong>Pivotal Intervals</strong>.</p>
+<p>Let <span class="math inline">\(\theta = T(F)\)</span>, <span class="math inline">\(\hat{\theta}_n = T(\hat{F}_n)\)</span> and define the <strong>pivot</strong> <span class="math inline">\(R_n = \hat{\theta}_n - \theta\)</span>. Let <span class="math inline">\(\hat{\theta}_{n, 1}^*, \dots, \hat{\theta}_{n, B}^*\)</span> define bootstrap replications of <span class="math inline">\(\hat{\theta}_n\)</span>. Let <span class="math inline">\(H(r)\)</span> denote the CDF of the pivot:</p>
+<p><span class="math display">\[ H(r) = \mathbb{P}_F(R_n \leq r)\]</span></p>
+<p>Define the interval <span class="math inline">\(C_n^* = (a, b)\)</span> where</p>
+<p><span class="math display">\[
+a = \hat{\theta}_n - H^{-1}\left( 1 - \frac{\alpha}{2} \right) 
+\quad\text{and}\quad
+b = \hat{\theta}_n - H^{-1}\left( \frac{\alpha}{2} \right) 
+\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(a \leq \theta \leq b) &amp;= \mathbb{P}(a - \hat{\theta}_n \leq \theta - \hat{\theta}_n \leq b - \hat{\theta}_n) \\
+&amp;= \mathbb{P}(\hat{\theta}_n - b \leq \hat{\theta}_n - \theta \leq \hat{\theta}_n - a) \\
+&amp;= \mathbb{P}(\hat{\theta}_n - b \leq R_n \leq \hat{\theta}_n - a) \\
+&amp;= H(\hat{\theta}_n - a) - H(\hat{\theta}_n - b) \\
+&amp;= H\left(H^{-1}\left( 1 - \frac{\alpha}{2} \right) \right) - H\left(H^{-1}\left( \frac{\alpha}{2} \right)\right) \\
+&amp;= 1 - \frac{\alpha}{2}  - \frac{\alpha}{2} = 1 - \alpha
+\end{align}
+\]</span></p>
+<p>Hence <span class="math inline">\(C_n^*\)</span> is an exact <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\theta\)</span>.</p>
+<p>Unfortunately, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> depend on the unknown distribution <span class="math inline">\(H\)</span>, but we can form a bootstrap estimate for it:</p>
+<p><span class="math display">\[\hat{H}(r) = \frac{1}{B} \sum_{b=1}^B I(R_{n, b}^* \leq r)\]</span></p>
+<p>where <span class="math inline">\(R_{n, b}^* = \hat{\theta}_{n, b}^* - \hat{\theta}_n\)</span>.</p>
+<p>Let <span class="math inline">\(r_\beta^*\)</span> denote the <span class="math inline">\(\beta\)</span> sample quantile of <span class="math inline">\((R_{n, 1}^*, \dots, R_{n, B}^*)\)</span>, and let <span class="math inline">\(\theta_\beta^*\)</span> denote the <span class="math inline">\(\beta\)</span> sample quantile of <span class="math inline">\((\theta_{n, 1}^*, \dots, \theta_{n, B}^*)\)</span>. Note that <span class="math inline">\(r_\beta^* = \theta_\beta^* - \hat{\theta}_n\)</span>. It follows an approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval <span class="math inline">\(C_n = (\hat{a}, \hat{b})\)</span> where</p>
+<p><span class="math display">\[
+\hat{a} = \hat{\theta}_n - \hat{H}^{-1}\left(1 - \frac{\alpha}{2}\right) 
+= \hat{\theta}_n - r_{1 - \alpha/2}^* 
+= 2\hat{\theta}_n - \theta_{1 - \alpha/2}^*\\
+\hat{b} = \hat{\theta}_n - \hat{H}^{-1}\left(\frac{\alpha}{2}\right) 
+= \hat{\theta}_n - r_{\alpha/2}^* 
+= 2\hat{\theta}_n - \theta_{\alpha/2}^*
+\]</span></p>
+<p>The <strong><span class="math inline">\(1 - \alpha\)</span> bootstrap pivotal confidence</strong> is</p>
+<p><span class="math display">\[ C_n = \left(2 \hat{\theta}_n - \hat{\theta}_{1 - \alpha/2}^*, \; 2 \hat{\theta}_n - \hat{\theta}_{\alpha/2}^* \right) \]</span></p>
+<p><strong>Theorem 9.3</strong>. Under weak conditions on <span class="math inline">\(T(F)\)</span>,</p>
+<p><span class="math display">\[ \lim _{n \rightarrow \infty} \mathbb{P}_F\left(T(F) \in C_n\right) \rightarrow 1 - \alpha\]</span></p>
+<p><strong>Percentile Intervals</strong>.</p>
+<p>The <strong>bootstrap percentile interval</strong> is defined by</p>
+<p><span class="math display">\[ C_n = \left( \theta_{\alpha/2}^*, \; \theta_{1 - \alpha/2}^*\right) \]</span></p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>9.5 Technical Appendix</h3>
+<div id="the-jacknife" class="section level4">
+<h4>The Jacknife</h4>
+<p>This method is less computationally expensive than bootstraping, but it is less general – it does <em>not</em> produce consistent estimates of the standard errors of the sample quantiles.</p>
+<p>Let <span class="math inline">\(T_n = T(X_1, \dots, X_n)\)</span> be a statistic and let <span class="math inline">\(T_{(-i)}\)</span> denote the statistic with the <span class="math inline">\(i\)</span>-th observation removed. Let <span class="math inline">\(\overline{T}_n = n^{-1} \sum_{i=1}^n T_{(-1)}\)</span>. The jacknife estimate of <span class="math inline">\(\mathbb{V}(T_n)\)</span> is</p>
+<p><span class="math display">\[ v_\text{jack} = \frac{n - 1}{n} \sum_{i=1}^n \left(T_{(-i)} - \overline{T}_n \right)^2 \]</span></p>
+<p>and the jacknife estimate of the standard error is <span class="math inline">\(\hat{\text{se}}_\text{jack} = \sqrt{v_\text{jack}}\)</span>.</p>
+<p>Under suitable conditions on <span class="math inline">\(T\)</span> it can be shown that <span class="math inline">\(v_\text{jack} / \mathbb{V}(T_n) \xrightarrow{\text{P}} 1\)</span>.</p>
+</div>
+<div id="justification-for-the-percentile-interval" class="section level4">
+<h4>Justification for the Percentile Interval</h4>
+<p>Suppose there exists a monotone transformation <span class="math inline">\(U = m(T)\)</span> such that <span class="math inline">\(U \sim N(\phi, c^2)\)</span> where <span class="math inline">\(\phi = m(\theta)\)</span>.</p>
+<p>Let <span class="math inline">\(U_t^* = m(\theta_{n, b}^*)\)</span>. Let <span class="math inline">\(u_\beta^*\)</span> be the sample quantile of the <span class="math inline">\(U_b^*\)</span>’s. Since a monotone transformation preserves quantiles, we have that <span class="math inline">\(u_{\alpha/2}^* = m(\theta_{\alpha/2}^*)\)</span>.</p>
+<p>Also, since <span class="math inline">\(U \sim N(\phi, c^2)\)</span> the <span class="math inline">\(\alpha/2\)</span> quantile of <span class="math inline">\(U\)</span> is <span class="math inline">\(\phi - z_{\alpha/2}c\)</span>. Hence <span class="math inline">\(u_{\alpha/2}^* = \phi - z_{\alpha/2}c\)</span>. Similarly, <span class="math inline">\(u_{1 - \alpha/2}^* = \phi + z_{\alpha/2}c\)</span>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(\theta_{\alpha/2}^* \leq \theta \leq \theta_{1 - \alpha/2}^*) &amp;=
+\mathbb{P}(m(\theta_{\alpha/2}^*) \leq m(\theta) \leq m(\theta_{1 - \alpha/2}^*)) \\
+&amp;= \mathbb{P}(u_{\alpha/2}^* \leq \phi \leq u_{1 - \alpha/2}^*) \\
+&amp;= \mathbb{P}(U - cz_{\alpha/2} \leq \phi \leq U + cz_{1 - \alpha/2}) \\
+&amp;= \mathbb{P}\left(-z_{\alpha/2} \leq \frac{Y - \phi}{c} \leq z_{1 - \alpha/2} \right) \\
+&amp;= 1 - \alpha
+\end{align}
+\]</span></p>
+</div>
+</div>
+<div id="exercises" class="section level3">
+<h3>9.6 Exercises</h3>
+<p><strong>Exercise 9.6.1</strong>. Consider the data in example 9.6.</p>
+<ul>
+<li>Find the plug-in estimate of the correlation coefficient.<br />
+</li>
+<li>Estimate the standard error using the bootstrap.<br />
+</li>
+<li>Find a 95% confidence interval using all three methods.</li>
+</ul>
+<pre class="python"><code># Data from example 9.6:
+
+LSAT = [576, 635, 558, 578, 666, 580, 555, 661, 651, 605, 653, 575, 545, 572, 594]
+GPA = [3.39, 3.30, 2.81, 3.03, 3.44, 3.07, 3.00, 3.43, 3.36, 3.13, 3.12, 2.74, 2.76, 2.88, 3.96]</code></pre>
+<pre class="python"><code>import math
+import numpy as np
+import pandas as pd
+from tqdm import notebook
+%matplotlib inline
+
+df = pd.DataFrame({&#39;LSAT&#39;: LSAT, &#39;GPA&#39;: GPA})
+df.plot.scatter(x=&#39;LSAT&#39;, y=&#39;GPA&#39;)</code></pre>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7feeb9031520&gt;</code></pre>
+<div class="figure">
+<img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_19_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># Plug-in estimates for mean and correlation
+
+X = df[&#39;LSAT&#39;].to_numpy()
+Y = df[&#39;GPA&#39;].to_numpy()
+
+def corr(X, Y):
+    mu_x = X.mean()
+    mu_y = Y.mean()
+
+    return sum((X - mu_x) * (Y - mu_y)) / math.sqrt(sum((X - mu_x)**2) * sum((Y - mu_y)**2))
+  
+
+theta_hat = corr(X, Y)
+    
+print(&#39;Estimated correlation coefficient: %.4f&#39; % corr(X, Y))</code></pre>
+<pre><code>Estimated correlation coefficient: 0.5459</code></pre>
+<pre class="python"><code># Bootstrap for SE of correlation coefficient
+
+nx = len(X)
+ny = len(Y)
+
+B = 1000000
+t_boot = np.empty(B)
+for i in notebook.tqdm(range(B)):
+    xx = np.random.choice(X, nx, replace=True)
+    yy = np.random.choice(Y, ny, replace=True)
+    t_boot[i] = corr(xx, yy)
+    
+se = t_boot.std()
+
+print(&#39;Estimated SE of correlation coefficient: %.4f&#39; % se)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+Estimated SE of correlation coefficient: 0.2676</code></pre>
+<pre class="python"><code># Confidence intervals obtained from bootstrap
+
+from scipy.stats import norm
+
+z = norm.ppf(.975)
+
+normal_conf = (theta_hat - z * se, theta_hat + z * se)
+percentile_conf = (np.quantile(t_boot, .025), np.quantile(t_boot, .975))
+pivotal_conf = (2*theta_hat - np.quantile(t_boot, 0.975), 2*theta_hat - np.quantile(t_boot, .025))
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)
+print(&#39;95%% confidence interval (percentile): \t %.3f, %.3f&#39; % percentile_conf)
+print(&#39;95%% confidence interval (pivotal): \t %.3f, %.3f&#39; % pivotal_conf)</code></pre>
+<pre><code>95% confidence interval (Normal):    0.022, 1.070
+95% confidence interval (percentile):    -0.502, 0.523
+95% confidence interval (pivotal):   0.569, 1.594</code></pre>
+<p><strong>Exercise 9.6.2</strong>. (Computer Experiment). Conduct a simulation to compare the four bootstrap confidence interval methods.</p>
+<p>Let <span class="math inline">\(n = 50\)</span> and let <span class="math inline">\(T(F) = \int (x - \mu)^3 dF(x) / \sigma^3\)</span> be the skewness. Draw <span class="math inline">\(Y_1, \dots, Y_n \sim N(0, 1)\)</span> and set <span class="math inline">\(X_i = e^{Y_i}\)</span>, <span class="math inline">\(i = 1, \dots, n\)</span>. Construct the four types of bootstrap 95% intervals for <span class="math inline">\(T(F)\)</span> from the data <span class="math inline">\(X_1, \dots, X_n\)</span>. Repeat this whole thing many times and estimate the true coverage of the four intervals.</p>
+<pre class="python"><code>import numpy as np
+from tqdm import notebook
+from scipy.stats import norm
+
+def create_data(n=50):
+    y = norm.rvs(size=n)
+    return np.exp(y)
+
+def skewness(x):
+    n = len(x)
+    mu = sum(x) / n
+    var = sum((x - mu)**2) / n
+    return sum((x - mu)**3 / (n * var**(3/2)))
+
+def bootstrap_values(x, B=10000, show_progress=True):
+    n = len(x)
+    t_boot = np.empty(B)
+    iterable = notebook.tqdm(range(B)) if show_progress else range(B)
+    for i in iterable:
+        xx = np.random.choice(x, n, replace=True)
+        t_boot[i] = skewness(xx)
+
+    return t_boot
+
+def bootstrap_intervals(theta_hat, t_boot, alpha=0.05):
+    se = t_boot.std()
+    
+    z = norm.ppf(1 - alpha/2)
+    q_half_alpha = np.quantile(t_boot, alpha/2)
+    q_c_half_alpha = np.quantile(t_boot, 1 - alpha/2)
+
+    normal_conf = (theta_hat - z * se, theta_hat + z * se)
+    percentile_conf = (q_half_alpha, q_c_half_alpha)
+    pivotal_conf = (2*theta_hat - q_c_half_alpha, 2*theta_hat - q_half_alpha)
+    
+    return normal_conf, percentile_conf, pivotal_conf</code></pre>
+<pre class="python"><code># Creating the data
+x = create_data(n=50)</code></pre>
+<pre class="python"><code># Nonparametric Bootstrap
+theta_hat = skewness(x)
+t_boot = bootstrap_values(x, B=100000)
+
+normal_conf, percentile_conf, pivotal_conf = bootstrap_intervals(theta_hat, t_boot, alpha=0.05)
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)
+print(&#39;95%% confidence interval (percentile): \t %.3f, %.3f&#39; % percentile_conf)
+print(&#39;95%% confidence interval (pivotal): \t %.3f, %.3f&#39; % pivotal_conf)</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal):    1.828, 7.650
+95% confidence interval (percentile):    0.932, 5.490
+95% confidence interval (pivotal):   3.988, 8.546</code></pre>
+<p><strong>Note</strong>: parametric bootstrap is only covered in chapter 10. The below assumes that “four types of bootstrap” in the exercise refers to the 3 types of nonparametric bootstrap covered in chapter 9, plus parametric bootstrap from chapter 10.</p>
+<p>For the parametric bootstrap, assume <span class="math inline">\(X = e^Y\)</span> where <span class="math inline">\(Y \sim N(\mu, \sigma^2)\)</span>.<br />
+The moment-generating function for a normal random variable Y is:
+<span class="math display">\[\begin{align}
+M_X(t)=E(e^{tY})&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}e^{ty} e^{-\frac{1}{2}(\frac{y-\mu}{\sigma})^2}dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{y^2-2y\mu+\mu^2-2\sigma^2ty}{2\sigma^2})dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp(-\frac{(y-(\mu+t\sigma^2))^2-2t\mu\sigma^2-t^2\sigma^4}{2\sigma^2})dy\\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}exp(t\mu+t^2\sigma^2/2)\int_{-\infty}^{+\infty}exp(-\frac{1}{2}\frac{(y-(\mu+t\sigma^2))^2}{\sigma^2})dy\\
+&amp;=exp(t\mu+t^2\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+t\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy\\
+&amp;=e^{t\mu+t^2\sigma^2/2}
+\end{align}\]</span>
+Then</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{E}(X) &amp;= \mathbb{E}(e^Y) \\
+&amp;= \int_{-\infty}^\infty e^y \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left(\frac{y - \mu}{\sigma} \right)^2} dy \\
+&amp;= \frac{1}{\sigma \sqrt{2 \pi}} \int e^{y - \frac{1}{2}\left(\frac{y - \mu}{\sigma}\right)^2} dy \\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\left(-\frac{y^2-2y\mu+\mu^2-2\sigma^2y}{2\sigma^2}\right)dy \\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\left(-\frac{(y-(\mu+\sigma^2))^2-2\mu\sigma^2-\sigma^4}{2\sigma^2}\right)dy \\
+&amp;=\frac{1}{\sqrt{2\pi}\sigma}exp(\mu+\sigma^2/2)\int_{-\infty}^{+\infty}exp\left(-\frac{1}{2}\frac{(y-(\mu+\sigma^2))^2}{\sigma^2}\right)dy \\
+&amp;=exp(\mu+\sigma^2/2)\frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty}exp\Biggl[-\frac{1}{2}\Bigl[\frac{y-(\mu+\sigma^2)}{\sigma}\Bigr]^2\Biggr]dy \\
+&amp;= e^{\mu + \sigma^2/2} \\
+\end{align}\]</span></p>
+<p><span class="math display">\[\mathbb{E}(X^2) = \mathbb{E}(e^{2Y}) = e^{2\mu + (2\sigma)^2/2} = e^{2\mu + 2\sigma^2}\]</span></p>
+<p>Solving the two equations for the moments we get parameter estimates:</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\mu}_Y &amp; = \left[4 \log \mathbb{E}(X) - \log \mathbb{E}(X^2)\right]/2 \\
+\hat{\sigma}_Y &amp; = \sqrt{\log \mathbb{E}(X^2) - 2 \log \mathbb{E}(X)}
+\end{align}
+\]</span></p>
+<p>From these parameter estimates, we can generate bootstrap samples: sample values for <span class="math inline">\(Y_i ~ N(\hat{\mu}_Y, \hat{\sigma}_Y^2)\)</span>, calculate <span class="math inline">\(X_i = Y_i\)</span>, and calculate the statistic <span class="math inline">\(T(X_i)\)</span> on each sample generated this way.</p>
+<pre class="python"><code># Parametric bootstrap
+# Assume X = e^Y, Y ~ N(\mu, \sigma^2)
+
+def estimate_parameters(x):
+    log_e_x = np.log(x.mean())
+    log_e_x2 = np.log((x**2).mean())
+    
+    mu_Y_hat = (4 * log_e_x - log_e_x2)/2
+    sigma_Y_hat = np.sqrt(log_e_x2 - 2 * log_e_x)
+    
+    return mu_Y_hat, sigma_Y_hat
+
+def bootstrap_skewness_parametric(mu, sigma, n, B = 10000, show_progress=True):
+    t_boot = np.empty(B)
+    iterable = notebook.tqdm(range(B)) if show_progress else range(B)
+    for i in iterable:
+        xx = np.exp(norm.rvs(size=n, loc=n, scale=sigma))
+        t_boot[i] = skewness(xx)
+        
+    return t_boot
+
+def bootstrap_parametric_intervals(mu, t_boot, alpha=0.05):
+    se = t_boot.std()
+    z = norm.ppf(1 - alpha/2)
+    
+    return (theta_hat - z * se, theta_hat + z * se)</code></pre>
+<pre class="python"><code>mu_X_hat = x.mean()
+mu_Y_hat, sigma_Y_hat = estimate_parameters(x)
+t_boot = bootstrap_skewness_parametric(mu_Y_hat, sigma_Y_hat, 50, B=100000)
+
+parametric_normal_conf = bootstrap_parametric_intervals(mu_X_hat, t_boot, alpha=0.05)
+print(&#39;95%% confidence interval (Parametric Normal): \t %.3f, %.3f&#39; % parametric_normal_conf)</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Parametric Normal):     2.513, 6.965</code></pre>
+<pre class="python"><code># Repeat nonparametric bootstrap many times
+n_experiments = 10
+
+normal_conf = np.empty((n_experiments, 2))
+percentile_conf = np.empty((n_experiments, 2))
+pivotal_conf = np.empty((n_experiments, 2))
+
+for i in notebook.tqdm(range(n_experiments)):
+    theta_hat = skewness(x)
+    t_boot_experiment = bootstrap_values(x, B=100000, show_progress=False)
+    normal_conf[i], percentile_conf[i], pivotal_conf[i] = bootstrap_intervals(theta_hat, t_boot_experiment, alpha=0.05)</code></pre>
+<pre><code>  0%|          | 0/10 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>print(&#39;Normal confidence lower bound: \t\t mean %.3f, SE %.3f&#39; % 
+      (normal_conf[:, 0].mean(), normal_conf[:, 0].std()))
+print(&#39;Normal confidence upper bound: \t\t mean %.3f, SE %.3f&#39; % 
+      (normal_conf[:, 1].mean(), normal_conf[:, 1].std()))
+
+print(&#39;Percentile confidence lower bound: \t mean %.3f, SE %.3f&#39; % 
+      (percentile_conf[:, 0].mean(), percentile_conf[:, 0].std()))
+print(&#39;Percentile confidence upper bound: \t mean %.3f, SE %.3f&#39; % 
+      (percentile_conf[:, 1].mean(), percentile_conf[:, 1].std()))
+
+print(&#39;Pivotal confidence lower bound: \t mean %.3f, SE %.3f&#39; % 
+      (pivotal_conf[:, 0].mean(), pivotal_conf[:, 0].std()))
+print(&#39;Pivotal confidence upper bound: \t mean %.3f, SE %.3f&#39; % 
+      (pivotal_conf[:, 1].mean(), pivotal_conf[:, 1].std()))</code></pre>
+<pre><code>Normal confidence lower bound:       mean 1.821, SE 0.005
+Normal confidence upper bound:       mean 7.657, SE 0.005
+Percentile confidence lower bound:   mean 0.928, SE 0.004
+Percentile confidence upper bound:   mean 5.494, SE 0.004
+Pivotal confidence lower bound:      mean 3.984, SE 0.004
+Pivotal confidence upper bound:      mean 8.550, SE 0.004</code></pre>
+<pre class="python"><code># Repeat parametric bootstrap many times
+
+n_experiments = 10
+parametric_normal_conf = np.empty((n_experiments, 2))
+
+for i in notebook.tqdm(range(n_experiments)):
+    mu_X_hat = x.mean()
+    mu_Y_hat, sigma_Y_hat = estimate_parameters(x)
+    t_boot = bootstrap_skewness_parametric(mu_Y_hat, sigma_Y_hat, 50, B=100000, show_progress=False)
+    parametric_normal_conf[i] = bootstrap_parametric_intervals(mu_X_hat, t_boot, alpha=0.05)</code></pre>
+<pre><code>  0%|          | 0/10 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>print(&#39;Parametric Normal confidence lower bound: \t mean %.3f, SE %.3f&#39; % 
+      (parametric_normal_conf[:, 0].mean(), parametric_normal_conf[:, 0].std()))
+print(&#39;Parametric Normal confidence upper bound: \t mean %.3f, SE %.3f&#39; % 
+      (parametric_normal_conf[:, 1].mean(), parametric_normal_conf[:, 1].std()))</code></pre>
+<pre><code>Parametric Normal confidence lower bound:    mean 2.512, SE 0.006
+Parametric Normal confidence upper bound:    mean 6.966, SE 0.006</code></pre>
+<p><strong>Exercise 9.6.3</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim t_3\)</span> where <span class="math inline">\(n = 25\)</span>. Let <span class="math inline">\(\theta = T(F) = (q_{.75} - q_{.25})/1.34\)</span> where <span class="math inline">\(q_p\)</span> denotes the <span class="math inline">\(p\)</span>-th quantile. Do a simulation to compare the coverage and length of the following confidence intervals for <span class="math inline">\(\theta\)</span>:</p>
+<ul>
+<li>Normal interval with standard error from the bootstrap</li>
+<li>Bootstrap percentile interval</li>
+</ul>
+<p>Remark: the jacknife does not give a consistent estimator of the variance of a quantile.</p>
+<p><strong>Solution</strong>. We will assume that <span class="math inline">\(t_3\)</span> represents a t-distribution with shape parameter 3.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import t
+from tqdm import notebook
+
+n = 25
+X = t.rvs(3, size=25)</code></pre>
+<pre class="python"><code>def T(x):
+    return (np.quantile(x, 0.75) - np.quantile(x, 0.25)) / 1.34</code></pre>
+<pre class="python"><code>theta_hat = T(X)</code></pre>
+<pre class="python"><code># Run bootstrap
+
+B = 1000000
+t_boot = np.empty(B)
+for i in notebook.tqdm(range(B)):
+    xx = np.random.choice(X, n, replace=True)
+    t_boot[i] = T(xx)
+    
+se_boot = t_boot.std()
+
+alpha = 0.05
+z = norm.ppf(1 - alpha/2)
+q_half_alpha = np.quantile(t_boot, alpha/2)
+q_c_half_alpha = np.quantile(t_boot, 1 - alpha/2)
+
+normal_conf = (theta_hat - z * se_boot, theta_hat + z * se_boot)
+percentile_conf = (q_half_alpha, q_c_half_alpha)
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)
+print(&#39;95%% confidence interval (percentile): \t %.3f, %.3f&#39; % percentile_conf)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal):    -0.072, 1.511
+95% confidence interval (percentile):    0.422, 1.767</code></pre>
+<p><strong>Exercise 9.6.4</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be distinct observations (no ties). Show that there are</p>
+<p><span class="math display">\[ \binom{2n - 1}{n}\]</span></p>
+<p>distinct bootstrap samples.</p>
+<p>Hint: Imagine putting <span class="math inline">\(n\)</span> balls into <span class="math inline">\(n\)</span> buckets.</p>
+<p><strong>Solution</strong>.</p>
+<p>Each bootstrap sample (random draws with replacement) will select <span class="math inline">\(a_i\)</span> copies of <span class="math inline">\(X_i\)</span>, where <span class="math inline">\(0 \leq a_i \leq n\)</span> and <span class="math inline">\(\sum_{i=1}^n a_i = n\)</span>, for integer <span class="math inline">\(a_i\)</span>. Each bootstrap sample is uniquely represented by this sequence of variables, and each sequence of variables uniquely determines a bootstrap sample – so the number of distinct bootstrap samples is equal to the number of solutions to this equation, that is, the number of partitions of <span class="math inline">\(n\)</span> into <span class="math inline">\(n\)</span> buckets.</p>
+<p>Lets write <span class="math inline">\(a_i\)</span> explicitly in base 1, representing it as <span class="math inline">\(a_i\)</span> consecutive copies of the digit 1:</p>
+<p><span class="math display">\[
+\begin{align}
+0_{10} &amp; = \text{empty string}_1 \\
+1_{10} &amp; = 1_1 \\
+2_{10} &amp; = 11_1 \\
+3_{10} &amp; = 111_1 \\
+4_{10} &amp; = 1111_1 \\
+\vdots
+\end{align}
+\]</span></p>
+<p>So a solution for</p>
+<p><span class="math display">\[a_1 + a_2 + \dots + a_n = n\]</span></p>
+<p>is uniquely represented by a sequence of <span class="math inline">\(2n - 1\)</span> symbols, being <span class="math inline">\(n\)</span> digits <span class="math inline">\(1\)</span> and <span class="math inline">\(n - 1\)</span> plus signs. For example, if <span class="math inline">\(a_1 = 3\)</span>, <span class="math inline">\(a_2 = 0\)</span>, <span class="math inline">\(a_3 = 1\)</span>, then we write</p>
+<p><span class="math display">\[ 111 + + 1 + \dots = n \]</span></p>
+<p>The number of such solutions is then obtained by choosing <span class="math inline">\(n\)</span> of the <span class="math inline">\(2n - 1\)</span> symbols to be digit <span class="math inline">\(1\)</span> – that is, <span class="math inline">\(\binom{2n - 1}{n}\)</span>.</p>
+<p><strong>Exercise 9.6.5</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be distinct observations (no ties). Let <span class="math inline">\(X_1^*, \dots, X_n^*\)</span> denote a bootstrap sample and let <span class="math inline">\(\overline{X}_n^* = n^{-1}\sum_{i=1}^nX_i^*\)</span>. Find:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n)\)</span></li>
+<li><span class="math inline">\(\mathbb{V}(\overline{X}_n^* | X_1, \dots, X_n)\)</span></li>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}_n^*)\)</span></li>
+<li><span class="math inline">\(\mathbb{V}(\overline{X}_n^*)\)</span></li>
+</ul>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> <span class="math display">\[
+\begin{align}
+\mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n) &amp;= \mathbb{E}\left(n^{-1}\sum_{i=1}^nX_i\right) = n^{-1}\sum_{i=1}^n \mathbb{E}(X_i) = \mathbb{E}(X)
+\end{align}
+\]</span></p>
+<p><strong>(b)</strong> <span class="math display">\[
+\begin{align}
+\mathbb{V}(\overline{X}_n^* | X_1, \dots, X_n) &amp; =
+\mathbb{E}((\overline{X}_n^*)^2 | X_1, \dots, X_n) - \mathbb{E}(\overline{X}_n^* | X_1, \dots, X_n)^2 \\
+&amp;= \mathbb{E}\left(\left(n^{-1}\sum_{i=1}^nX_i\right)^2\right) - \mathbb{E}\left(n^{-1}\sum_{i=1}^nX_i\right)^2 \\
+&amp;= n^{-2} \mathbb{E}\left(\sum_{i=1}^nX_i^2 + \sum_{i=1}^n \sum_{j=1, j \neq i}^n X_i X_j\right) - \mathbb{E}(X)^2 \\
+&amp;= n^{-2} \sum_{i=1}^n \mathbb{E}(X_i^2) + n^{-2} \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}(X_i X_j) - \mathbb{E}(X)^2  \\
+&amp;= n^{-1} (\mathbb{V}(X) + \mathbb{E}(X)^2) + n^{-2} \sum_{i=1}^n \sum_{j=1, j \neq i}^n \mathbb{E}(X_i) \mathbb{E}(X_j) - \mathbb{E}(X)^2 \\
+&amp;= n^{-1} (\mathbb{V}(X) + \mathbb{E}(X)^2) + n^{-1} (n - 1) \mathbb{E}(X)^2 - \mathbb{E}(X)^2 \\
+&amp;= \frac{1}{n}\mathbb{V}(X)
+\end{align}
+\]</span></p>
+<p><strong>(c)</strong> <span class="math display">\[
+\begin{align}
+\mathbb{E}(\overline{X}_n^*) &amp;= \mathbb{E}\left(n^{-1} \sum_{i=1}^nX_i^*\right) = n^{-1} \sum_{i=1}^n \mathbb{E}(X_i^*) = \mathbb{E}(X)
+\end{align}
+\]</span></p>
+<p><strong>(d)</strong> <span class="math display">\[
+\begin{align}
+\mathbb{V}(\overline{X}_n^*) &amp;= \mathbb{E}((\overline{X}_n^*)^2) - \mathbb{E}(\overline{X}_n^*)^2 \\
+&amp;= \mathbb{E}\left(\left(n^{-1} \sum_{i=1}^nX_i^*\right)^2\right) - \mathbb{E}(X)^2 \\
+&amp;= n^{-2} \sum_{i=1}^n\sum_{j=1}^n \mathbb{E}(X_i^* X_j^*) - \mathbb{E}(X)^2
+\end{align}
+\]</span></p>
+<p>Now, the same value <span class="math inline">\(X_k\)</span> may have been sampled twice in <span class="math inline">\(\mathbb{E}(X_i^* X_j^*)\)</span>. This always happens when <span class="math inline">\(i = j\)</span>, and this happens with probability <span class="math inline">\(1 / n\)</span> when <span class="math inline">\(i \neq j\)</span>. Thus,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}(\overline{X}_n^*) 
+&amp;= n^{-2} \left(\sum_{i=1}^n \mathbb{E}(X_i^2) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n \left( \frac{1}{n} \mathbb{E}(X_i^2) + \left(1 - \frac{1}{n}\right)\mathbb{E}(X_i)\mathbb{E}(X_j)\right) \right) - \mathbb{E}(X)^2 \\
+&amp;= n^{-1} \mathbb{E}(X^2) + n^{-2} (n-1) \mathbb{E}(X^2) + n^{-2}(n-1)^2 E(X)^2 - \mathbb{E}(X)^2 \\
+&amp;= n^{-2} (2n - 1) \left( \mathbb{E}(X^2) - \mathbb{E}(X)^2 \right) \\
+&amp;= \frac{2n - 1}{n^2} \mathbb{V}(X)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 9.6.6</strong>. (Computer Experiment). Let <span class="math inline">\(X_1, \dots, X_n \sim N(\mu, 1)\)</span>. Let <span class="math inline">\(\theta = e^\mu\)</span>and let <span class="math inline">\(\hat{\theta} = e^{\overline{X}}\)</span> be the mle. Create a dataset (using <span class="math inline">\(\mu = 5\)</span>) consisting of <span class="math inline">\(n = 100\)</span> observations.</p>
+<p><strong>(a)</strong> Use the bootstrap to get the <span class="math inline">\(\text{se}\)</span> and 95% confidence interval for <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>(b)</strong> Plot a histogram of the bootstrap replications for the parametric and non-parametric bootstraps. These are estimates of the distribution of <span class="math inline">\(\hat{\theta}\)</span>. Compare this to the true sampling distribution of <span class="math inline">\(\hat{\theta}\)</span>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+from scipy.stats import norm
+from tqdm import notebook
+%matplotlib inline
+
+X = norm.rvs(loc=5, scale=1, size=100)</code></pre>
+<pre class="python"><code># Get estimated value
+
+theta_hat = np.exp(X.mean())
+
+# Run nonparametric bootstrap
+
+B = 1000000
+t_boot_nonparam = np.empty(B)
+n = len(X)
+for i in notebook.tqdm(range(B)):
+    xx = np.random.choice(X, n, replace=True)
+    t_boot_nonparam[i] = np.exp(xx.mean())
+    
+se_boot = t_boot_nonparam.std()
+
+alpha = 0.05
+z = norm.ppf(1 - alpha/2)
+normal_conf = (theta_hat - z * se_boot, theta_hat + z * se_boot)
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal):    128.387, 194.808</code></pre>
+<pre class="python"><code># Run parametric bootstrap
+
+mu_hat = X.mean()
+theta_hat = np.exp(mu_hat)
+
+B = 1000000
+t_boot_param = np.empty(B)
+n = len(X)
+for i in notebook.tqdm(range(B)):
+    xx = norm.rvs(size=n, loc=mu_hat, scale=1)
+    t_boot_param[i] = np.exp(xx.mean())
+    
+se_boot_param = t_boot_param.std()
+
+alpha = 0.05
+z = norm.ppf(1 - alpha/2)
+normal_conf_param = (theta_hat - z * se_boot_param, theta_hat + z * se_boot_param)
+
+print(&#39;95%% confidence interval (Parametric Normal): \t %.3f, %.3f&#39; % normal_conf_param)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Parametric Normal):     129.688, 193.507</code></pre>
+<p>For the true sampling distribution,</p>
+<p><span class="math display">\[ \overline{X} = \frac{1}{n} \sum_{i=1}^n X_i \sim \frac{1}{n} N(n \mu, n) = N(\mu, n^{-2})\]</span></p>
+<p>so the distribution of <span class="math inline">\(\hat{\theta}\)</span> is the distribution of <span class="math inline">\(e^\overline{X}\)</span>. Its CDF is:</p>
+<p><span class="math display">\[
+\mathbb{P}\left(\hat{\theta} \leq t\right) = 
+\mathbb{P}\left(e^\overline{X} \leq t\right) = 
+\mathbb{P}\left(\overline{X} \leq \log t\right) = F_{\overline{X}}\left(\log t\right)
+\]</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+from matplotlib import pyplot
+
+bins = np.linspace(50, 250, 500)</code></pre>
+<pre class="python"><code># Generate the CDF for theta, calculate it for each bin, and include the differences between bins
+
+def theta_cdf(x):
+    return norm.cdf(np.log(x), loc=5, scale=1/50)
+
+theta_cdf_bins = list(map(theta_cdf, bins))
+theta_cdf_bins_delta = np.empty(len(bins))
+theta_cdf_bins_delta[0] = 0
+theta_cdf_bins_delta[1:] = np.diff(theta_cdf_bins)</code></pre>
+<pre class="python"><code>pyplot.figure(figsize=(12, 8))
+pyplot.hist(t_boot_nonparam, bins, label=&#39;Nonparametric bootstrap&#39;, color=&#39;blue&#39;, histtype=&#39;step&#39;, density=True)
+pyplot.hist(t_boot_param, bins, label=&#39;Parametric bootstrap&#39;, color=&#39;red&#39;, histtype=&#39;step&#39;, density=True)
+pyplot.step(bins, theta_cdf_bins_delta, color=&#39;green&#39;, label=&#39;True sampling distribution&#39;)
+pyplot.axvline(x=np.exp(5), color=&#39;black&#39;, label=&#39;θ (true parameter)&#39;)
+pyplot.legend(loc=&#39;upper left&#39;)
+pyplot.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_51_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 9.6.7</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(0, \theta)\)</span>. The mle is <span class="math inline">\(\hat{\theta} = X_\text{max} = \max \{ X_1, \dots, X_n \}\)</span>. Generate a dataset of size 50 with <span class="math inline">\(\theta = 1\)</span>.</p>
+<p><strong>(a)</strong> Find the distribution of <span class="math inline">\(\hat{\theta}\)</span>. Compare the true distribution of <span class="math inline">\(\hat{\theta}\)</span> to the histograms from the parametric and nonparametric bootstraps.</p>
+<p><strong>(b)</strong> This is a case where the nonparametric bootstrap does very poorly. In fact, we can prove that this is the case. Show that, for parametric bootstrap <span class="math inline">\(\mathbb{P}(\hat{\theta}^* = \hat{\theta}) = 0\)</span> but for the nonparametric <span class="math inline">\(\mathbb{P}(\hat{\theta}^* = \hat{\theta}) \approx 0.632\)</span>.</p>
+<p>Hint: show that <span class="math inline">\(\mathbb{P}(\hat{\theta}^* = \hat{\theta}) = 1 - (1 - (1/n))^n\)</span> then take the limit as <span class="math inline">\(n\)</span> gets large.</p>
+<pre class="python"><code>import numpy as np
+
+X = np.random.uniform(low=0, high=1, size=50)</code></pre>
+<pre class="python"><code># Nonparametric bootstrap
+
+theta_hat = X.max()
+
+B = 1000000
+t_boot_nonparam = np.empty(B)
+n = len(X)
+for i in notebook.tqdm(range(B)):
+    xx = np.random.choice(X, n, replace=True)
+    t_boot_nonparam[i] = xx.max()
+    
+se_boot = t_boot_nonparam.std()
+
+alpha = 0.05
+z = norm.ppf(1 - alpha/2)
+normal_conf = (theta_hat - z * se_boot, theta_hat + z * se_boot)
+
+print(&#39;95%% confidence interval (Normal): \t %.3f, %.3f&#39; % normal_conf)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Normal):    0.979, 1.019</code></pre>
+<pre class="python"><code># Run parametric bootstrap
+
+theta_hat = X.max()
+
+B = 1000000
+t_boot_param = np.empty(B)
+n = len(X)
+for i in notebook.tqdm(range(B)):
+    xx = np.random.uniform(low=0, high=theta_hat, size=50)
+    t_boot_param[i] = xx.max()
+    
+se_boot_param = t_boot_param.std()
+
+alpha = 0.05
+z = norm.ppf(1 - alpha/2)
+normal_conf_param = (theta_hat - z * se_boot_param, theta_hat + z * se_boot_param)
+
+print(&#39;95%% confidence interval (Parametric Normal): \t %.3f, %.3f&#39; % normal_conf_param)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+95% confidence interval (Parametric Normal):     0.961, 1.037</code></pre>
+<p>For the true sampling distribution,</p>
+<p><span class="math display">\[\hat{\theta} = \max \{ X_1, \dots X_n \}\]</span></p>
+<p>Its CDF is</p>
+<p><span class="math display">\[\mathbb{P}(\hat{\theta} \leq x) = \prod_{i=1}^n \mathbb{P}(X_i \leq x) = F_{\text{Uniform}(0, \theta)}(x)^n\]</span></p>
+<p>where</p>
+<p><span class="math display">\[F_{\text{Uniform}(0, \theta)}(x) = \begin{cases}
+0 &amp; \text{if } x \leq 0 \\
+\frac{x}{\theta} &amp; \text{if } 0 &lt; x \leq \theta \\
+1 &amp; \text{if } \theta &lt; x
+\end{cases}
+\]</span></p>
+<pre class="python"><code>bins = np.linspace(0.75, 1.05, 200)</code></pre>
+<pre class="python"><code># Generate the CDF for theta, calculate it for each bin, and include the differences between bins
+
+def theta_cdf(x):
+    if x &lt;= 0:
+        return 0
+    if x &gt;= 1:
+        return 1
+    return x**50
+
+theta_cdf_bins = list(map(theta_cdf, bins))
+theta_cdf_bins_delta = np.empty(len(bins))
+theta_cdf_bins_delta[0] = 0
+theta_cdf_bins_delta[1:] = np.diff(theta_cdf_bins)</code></pre>
+<pre class="python"><code>pyplot.figure(figsize=(12, 8))
+pyplot.hist(t_boot_nonparam, bins, label=&#39;Nonparametric bootstrap&#39;, color=&#39;blue&#39;, histtype=&#39;step&#39;, density=True)
+pyplot.hist(t_boot_param, bins, label=&#39;Parametric bootstrap&#39;, color=&#39;red&#39;, histtype=&#39;step&#39;, density=True)
+pyplot.axvline(x=1, color=&#39;black&#39;, label=&#39;θ (true parameter)&#39;)
+pyplot.legend(loc=&#39;upper left&#39;)
+pyplot.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_59_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>pyplot.figure(figsize=(12, 8))
+pyplot.step(bins, theta_cdf_bins_delta, color=&#39;green&#39;, label=&#39;True sampling distribution&#39;)
+pyplot.axvline(x=1, color=&#39;black&#39;, label=&#39;θ (true parameter)&#39;)
+pyplot.legend(loc=&#39;upper left&#39;)
+pyplot.ylim(0, 0.1)
+pyplot.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2009%20-%20The%20Bootstrap_files/Chapter%2009%20-%20The%20Bootstrap_60_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong></p>
+<p>For the parametric bootstrap process, the estimated parameter <span class="math inline">\(\hat{\theta}^*\)</span> is used on each <span class="math inline">\(k\)</span>-th bootstrap sampling <span class="math inline">\(\{ X_{k1}, X_{k2}, \dots, X_{kn} \}\)</span>. But each variable <span class="math inline">\(X_{kj}\)</span> is sampled from <span class="math inline">\(\text{Uniform}(0, \hat{\theta}^*)\)</span>, which is a continuous distribution – so the probability of obtaining exactly a sample at the boundaries is 0, and <span class="math inline">\(\mathbb{P}(X_{kj} &lt; \hat{\theta}^*) = 1\)</span>. Since the bootstrap functional of each draw, <span class="math inline">\(T(F_n) = \max(F_n)\)</span> is the largest drawn value in each sample, its values will also always be under <span class="math inline">\(\hat{\theta}\)</span>, thus the estimated parameter via parametric bootstraping will aywals be under <span class="math inline">\([\hat{\theta}\)</span>, and <span class="math inline">\(\mathbb{P}(\hat{\theta}* = \hat{\theta}) = 0\)</span>].</p>
+<p>For the nonparametric bootstrap process, the estimated parameter <span class="math inline">\(\hat{\theta}^*\)</span> is the maximum value with a point mass in the empirical distribution function <span class="math inline">\(\hat{F}\)</span>. Each bootstrap resample may or may not include that value when drawing from this sample – if <span class="math inline">\(\max\{X_1, \dots, X_n\} \in \{X_{k1}, \dots, X_{kn} \}\)</span> then the estimated functional for that bootstrap sample will be the estimated parameter <span class="math inline">\(\hat{\theta}^*\)</span>, otherwise it will necessarily be smaller.</p>
+<p>Thus, the probability that <span class="math inline">\(\mathbb{P}(\hat{\theta}* = \hat{\theta})\)</span> is the probability that the largest element on the original data is included in a resampling with replacement. That turns out to be one minus the probability that it never gets included, so, <span class="math inline">\(\mathbb{P}(\hat{\theta}* = \hat{\theta}) = 1 - (1 - (1/n))^n\)</span>. But <span class="math inline">\(\lim_{n \rightarrow \infty } (1 + x/n)^n = e^x\)</span>, so the given probability goes to <span class="math inline">\(1 - e^{-1} \approx 0.632\)</span>.</p>
+<p><strong>Exercise 9.6.8</strong>. Let <span class="math inline">\(T_n = \overline{X}_n^2\)</span>, <span class="math inline">\(\mu = \mathbb{E}(X_1)\)</span>, <span class="math inline">\(\alpha_k = \int |x - \mu|^k dF(x)\)</span> and <span class="math inline">\(\hat{\alpha}_k = n^{-1} \sum_{i=1}^n |X_i - \overline{X}_n|^k\)</span>. Show that</p>
+<p><span class="math display">\[v_\text{boot} = \frac{4 \overline{X}_n^2 \hat{\alpha}_2}{n} + \frac{4 \overline{X}_n \hat{\alpha}_3}{n^2} + \frac{\hat{\alpha}_4}{n^3}\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>First, we rewrite the sample mean in terms of an expression containing the central moments. Let <span class="math inline">\(S_n = n^{-1} \sum_{i=1}^n (X_i - \overline{X}_n) = 0\)</span>. Then:</p>
+<p><span class="math display">\[ \overline{X}_n = S_n + \overline{X}_n = \frac{1}{n} \sum_{i=1}^n (X_i - \overline{X}_n) + \overline{X}_n \]</span></p>
+<p>The bootstrap variance, <span class="math inline">\(\mathbb{V}\left(\overline{X}_n^2\right)\)</span>, can be expressed as</p>
+<p><span class="math display">\[ \mathbb{V}\left(\overline{X}_n^2\right) = \mathbb{E}\left(\overline{X}_n^4\right) - \mathbb{E}\left(\overline{X}_n^2\right)^2 \]</span></p>
+<p>Note that <span class="math inline">\(\overline{X}_n\)</span> is the mean of the distribution, and can be treated as constant when taking expectations.</p>
+<p>We now have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}\left(\overline{X}_n^4\right) &amp;= \mathbb{E}\left( (S_n + \overline{X}_n)^4 \right) \\
+&amp;= \mathbb{E}\left( S_n^4 + 4 S_n^3 \overline{X}_n + 6 S_n^2 \overline{X}_n^2 + 4 S_n \overline{X}_n^3 + \overline{X}_n^4 \right) \\
+&amp;= \mathbb{E}(S_n^4) + 4 \overline{X}_n \mathbb{E}(S_n^3) + 6 \overline{X}_n^2 \mathbb{E}(S_n^2) + 4 \overline{X}_n^3 \mathbb{E}(S_n) + \overline{X}_n^4
+\end{align}
+\]</span></p>
+<p>Then, computing the moments of <span class="math inline">\(S_n\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(S_n) &amp;= 0 \\
+\mathbb{E}(S_n^2) &amp;= \mathbb{E}\left( n^{-2} \left( \sum_i X_i - \overline{X}_n \right)^2 \right) = \frac{\hat{\alpha}_2}{n} \\
+\mathbb{E}(S_n^3) &amp;= \mathbb{E}\left( n^{-3} \left( \sum_i X_i - \overline{X}_n \right)^3 \right) = \frac{\hat{\alpha}_3}{n^2} \\
+\mathbb{E}(S_n^4) &amp;= \mathbb{E}\left( n^{-4} \left( \sum_i X_i - \overline{X}_n \right)^4 + n^{-2}n^{-4} \sum_i \sum_{j \neq i} (X_i - \overline{X}_n)^2 (X_j - \overline{X}_n)^2 \right) = \frac{\hat{\alpha}_4 + \hat{\alpha}_2^2}{n^3}
+\end{align}
+\]</span></p>
+<p>and finally</p>
+<p><span class="math display">\[
+\mathbb{E}\left(\overline{X}_n^2\right)^2 = \mathbb{E}\left(\overline{X}_n^2 + S_n\right)^2 = \overline{X}_n^4 + 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + \frac{\hat{\alpha}_2^2}{n^2}
+\]</span></p>
+<p>Putting everything together,</p>
+<p><span class="math display">\[
+\begin{align}
+v_\text{boot} &amp;= \mathbb{E}\left( (S_n + \overline{X}_n)^4 \right) - \mathbb{E}\left(\overline{X}_n^2 + S_n\right)^2 \\
+&amp;= \mathbb{E}(S_n^4) + 4 \overline{X}_n \mathbb{E}(S_n^3) + 6 \overline{X}_n^2 \mathbb{E}(S_n^2) + 4 \overline{X}_n^3 \mathbb{E}(S_n) + \overline{X}_n^4 - \left( \overline{X}_n^4 + 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + \frac{\hat{\alpha}_2^2}{n^2}\right) \\
+&amp;= \frac{\hat{\alpha}_4 + \hat{\alpha}_2^2}{n^3} + 4 \overline{X}_n \frac{\hat{\alpha}_3}{n^2} + 6 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} + 0 + \overline{X}_n^4 - \overline{X}_n^4 - 2 \overline{X}_n^2 \frac{\hat{\alpha}_2}{n} - \frac{\hat{\alpha}_2^2}{n^2} \\
+&amp;= \frac{4 \overline{X}_n^2 \hat{\alpha}_2}{n} + \frac{4 \overline{X}_n \hat{\alpha}_3}{n^2} + \frac{\hat{\alpha}_4}{n^3}
+\end{align}
+\]</span></p>
+<p><em>Reference and discussion: <a href="https://stats.stackexchange.com/q/26082" class="uri">https://stats.stackexchange.com/q/26082</a></em></p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
