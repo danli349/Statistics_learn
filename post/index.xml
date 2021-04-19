@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 17 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter10  Parametric Inference</title>
+      <link>/2021/04/18/aos-chapter10-parametric-inference/</link>
+      <pubDate>Sun, 18 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/18/aos-chapter10-parametric-inference/</guid>
+      <description>10. Parametric Inference10.1 Parameter of interest10.2 The Method of Moments10.3 Maximum Likelihood10.4 Properties of Maximum Likelihood Estimators10.5 Consistency of Maximum Likelihood Estimator10.6 Equivalence of the MLE10.7 Asymptotic Normality10.8 Optimality10.9 The Delta Method10.10 Multiparameter Models10.11 The Parametric Bootstrap10.12 Technical Appendix10.13 ExercisesReferences10. Parametric InferenceParametric models are of the form</description>
+    </item>
+    
     <item>
       <title>AOS Chapter09 The Bootstrap</title>
       <link>/2021/04/17/aos-chapter09-the-bootstrap/</link>

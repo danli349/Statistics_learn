@@ -506,14 +506,14 @@ plt.show()</code></pre>
 </ul>
 <p><strong>Bernoulli</strong>. Let <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. Then:</p>
 <ul>
-<li>$(X) = 1 p + 0 (1 - p) = p $</li>
-<li><span class="math inline">\(\mathbb{E}(X^2) = 1 \cdot p + 0 \cdot (1 - p) = p\)</span></li>
-<li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p(1 - p)\)</span></li>
+<li><span class="math display">\[\mathbb{E}(X) = 1 \cdot p + 0 \cdot (1 - p) = p \]</span></li>
+<li><span class="math display">\[\mathbb{E}(X^2) = 1 \cdot p + 0 \cdot (1 - p) = p\]</span></li>
+<li><span class="math display">\[\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p(1 - p)\]</span></li>
 </ul>
 <p><strong>Binomial</strong>. Let <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>. Then <span class="math inline">\(X = \sum_{i=1}^n Y_i\)</span>, where <span class="math inline">\(Y_i \sim \text{Bernoulli}(p)\)</span> are IID random variables.</p>
 <ul>
-<li>$(X) = ( <em>{i=1}^n Y_i ) = </em>{i=1}^n (Y_i) = np $</li>
-<li>$(X) = (<em>{i=1}^n Y_i ) = </em>{i=1}^n (Y_i) = np(1-p) $</li>
+<li><span class="math display">\[\mathbb{E}(X) = \mathbb{E}\left( \sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{E}(Y_i) = np \]</span></li>
+<li><span class="math display">\[\mathbb{V}(X) = \mathbb{V}\left(\sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{V}(Y_i) = np(1-p) \]</span></li>
 </ul>
 <p><strong>Geometric</strong>. Let <span class="math inline">\(X \sim \text{Geometric}(p)\)</span>. Then:</p>
 <p><span class="math display">\[ 
@@ -541,20 +541,20 @@ plt.show()</code></pre>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} \]</span></p>
 <p><strong>Poisson</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
 <ul>
-<li><p>$ (X) = <em>{k=0}^k  = e^{-} </em>{k=1}^ = e^{-} _{k=0}^ = e^{-} e^{} = $</p></li>
-<li><p>$ (X^2) = <em>{k=0}<sup>k</sup>2  = </em>{k=1}^k  = _{k=0}^(k + 1)  = (X + 1) = (+ 1) $</p></li>
-<li><p>$ (X) = (X^2) - (X)^2 = ^2 + - ^2 = $</p></li>
+<li><p><span class="math display">\[ \mathbb{E}(X) = \sum_{k=0}^\infty k \frac{\lambda^k e^{-\lambda}}{k!} = \lambda e^{-\lambda} \sum_{k=1}^\infty \frac{\lambda^{k - 1} }{(k - 1)!} = \lambda e^{-\lambda} \sum_{k=0}^\infty \frac{\lambda^k}{k!} = \lambda e^{-\lambda} e^{\lambda} = \lambda \]</span></p></li>
+<li><p><span class="math display">\[ \mathbb{E}(X^2) = \sum_{k=0}^\infty k^2 \frac{\lambda^k e^{-\lambda}}{k!} = \lambda \sum_{k=1}^\infty k \frac{\lambda^{k-1} e^{-\lambda} }{(k-1)!} = \lambda \sum_{k=0}^\infty (k + 1) \frac{\lambda^{k} e^{-\lambda} }{k!} = \lambda \mathbb{E}(X + 1) = \lambda(\lambda + 1) \]</span></p></li>
+<li><p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \lambda^2 + \lambda - \lambda^2 = \lambda \]</span></p></li>
 </ul>
 <p><strong>Uniform</strong>. Let <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>. Then:</p>
 <ul>
-<li><span class="math inline">\(\mathbb{E}(X) = \int_a^b x \frac{1}{b - a} dx = \frac{a + b}{2}\)</span></li>
-<li><span class="math inline">\(\mathbb{E}(X^2) = \int_a^b x^2 \frac{1}{b - a} dx = \frac{a^2 + ab + b}{3}\)</span></li>
-<li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{a^2 + ab + b}{3} - \frac{a^2 + 2ab + b^2}{4} = \frac{(b - a)^2}{12}\)</span></li>
+<li><span class="math display">\[\mathbb{E}(X) = \int_a^b x \frac{1}{b - a} dx = \frac{a + b}{2}\]</span></li>
+<li><span class="math display">\[\mathbb{E}(X^2) = \int_a^b x^2 \frac{1}{b - a} dx = \frac{a^2 + ab + b^2}{3}\]</span></li>
+<li><span class="math display">\[\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{a^2 + ab + b^2}{3} - \frac{a^2 + 2ab + b^2}{4} = \frac{(b - a)^2}{12}\]</span></li>
 </ul>
 <p><strong>Normal</strong>. Let <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Converting into a standard normal, we get <span class="math inline">\(Z = (X - \mu) / \sigma \sim N(0, 1)\)</span>. Then:</p>
 <ul>
-<li>$ (X) = (Z + ) = (Z) + = $</li>
-<li>$ (X) = (Z + ) = ^2 (Z) = ^2$</li>
+<li><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}(\sigma Z + \mu) = \sigma \mathbb{E}(Z) + \mu = \mu\]</span></li>
+<li><span class="math display">\[ \mathbb{V}(X) = \mathbb{V}(\sigma Z + \mu) = \sigma^2 \mathbb{V}(Z) = \sigma^2\]</span></li>
 </ul>
 <p>To prove that the expected value <span class="math inline">\(Z\)</span> is 0, note that the PDF of <span class="math inline">\(Z\)</span> is even, <span class="math inline">\(\phi(z) = \phi(-z)\)</span>, so</p>
 <p><span class="math display">\[ \mathbb{E}(Z) = \int_{-\infty}^\infty z \phi(z) dz = \int_{-\infty}^0 z \phi(z) dz + \int_0^\infty z \phi(z) dz \\
