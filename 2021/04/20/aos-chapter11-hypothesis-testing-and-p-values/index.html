@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS Chapter11 Hypothesis Testing and p-values - A Hugo website</title>
+<meta property="og:title" content="AOS Chapter11 Hypothesis Testing and p-values - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">30 min read</span>
+    
+
+    <h1 class="article-title">AOS Chapter11 Hypothesis Testing and p-values</h1>
+
+    
+    <span class="article-date">2021-04-20</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/20/aos-chapter11-hypothesis-testing-and-p-values/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#hypothesis-testing-and-p-values">11. Hypothesis Testing and p-values</a>
+<ul>
+<li><a href="#the-wald-test">11.1 The Wald Test</a></li>
+<li><a href="#p-values">11.2 p-values</a></li>
+<li><a href="#the-chi2-distribution">11.3 The <span class="math inline">\(\chi^2\)</span> distribution</a></li>
+<li><a href="#pearsons-chi2-test-for-multinomial-data">11.4 Pearson’s <span class="math inline">\(\chi^2\)</span> Test for Multinomial Data</a></li>
+<li><a href="#the-permutation-test">11.5 The Permutation Test</a></li>
+<li><a href="#multiple-testing">11.6 Multiple Testing</a></li>
+<li><a href="#technical-appendix">11.7 Technical Appendix</a></li>
+<li><a href="#exercises">11.9 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="hypothesis-testing-and-p-values" class="section level2">
+<h2>11. Hypothesis Testing and p-values</h2>
+<p>Suppose we partition the parameters space <span class="math inline">\(\Theta\)</span> into two disjoint sets <span class="math inline">\(\Theta_0\)</span> and <span class="math inline">\(\Theta_1\)</span> and we wish to test</p>
+<p><span class="math display">\[
+H_0: \theta \in \Theta_0
+\quad \text{versus} \quad
+H_1: \theta \in \Theta_1
+\]</span></p>
+<p>We call <span class="math inline">\(H_0\)</span> the <strong>null hypothesis</strong> and <span class="math inline">\(H_1\)</span> the <strong>alternative hypothesis</strong>.</p>
+<p>Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(\mathcal{X}\)</span> be the range of <span class="math inline">\(X\)</span>. We test a hypothesis by finding an appropriate subset of outcomes <span class="math inline">\(R \subset \mathcal{X}\)</span> called the <strong>rejection region</strong>.</p>
+<p><span class="math display">\[
+\begin{align}
+X \in R &amp; \Longrightarrow  \text{reject } H_0 \\
+X \notin R &amp; \Longrightarrow  \text{retain (do not reject) } H_0
+\end{align}
+\]</span></p>
+<p>Usually the rejection region is of form</p>
+<p><span class="math display">\[ R = \bigg\{x: T(x) &gt; c \bigg\}\]</span></p>
+<p>where <span class="math inline">\(T\)</span> is a <strong>test statistic</strong> and <span class="math inline">\(c\)</span> is a <strong>critical value</strong>. The problem in hypothesis testing is to find an appropriate test statistic <span class="math inline">\(T\)</span> and and appropriate cutoff value <span class="math inline">\(c\)</span>.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Retain Null</th>
+<th>Reject Null</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_0\)</span> true</td>
+<td><span class="math inline">\(\checkmark\)</span></td>
+<td>Type I error</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_1\)</span> true</td>
+<td>Type II error</td>
+<td><span class="math inline">\(\checkmark\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>power function</strong> of a test with rejection region <span class="math inline">\(R\)</span> is defined by</p>
+<p><span class="math display">\[\beta(\theta) = \mathbb{P}_\theta(X \in R)\]</span></p>
+<p>The <strong>size</strong> of a test is defined to be</p>
+<p><span class="math display">\[\alpha = \sup_{\theta \in \Theta_0} \beta(\theta)\]</span></p>
+<p>A test is said to have <strong>level <span class="math inline">\(\alpha\)</span></strong> if its size is less than or equal to <span class="math inline">\(\alpha\)</span>.</p>
+<ul>
+<li>A hypothesis of the form <span class="math inline">\(\theta = \theta_0\)</span> is called a <strong>simple hypothesis</strong>.</li>
+<li>A hypothesis of the form <span class="math inline">\(\theta &gt; \theta_0\)</span> or <span class="math inline">\(\theta &lt; \theta_0\)</span> is called a <strong>composite hypothesis</strong>.</li>
+<li>A test of the form <span class="math inline">\(H_0 : \theta = \theta_0\)</span> versus <span class="math inline">\(H_1 : \theta \neq \theta_0\)</span> is called a <strong>two-sided test</strong>.</li>
+<li>A test of the form <span class="math inline">\(H_0 : \theta \leq \theta_0\)</span> versus <span class="math inline">\(H_1: \theta &gt; \theta_0\)</span> or <span class="math inline">\(H_0: \theta \geq \theta_0\)</span> versus <span class="math inline">\(H_1: \theta &lt; \theta_0\)</span> is called a <strong>one-sided test</strong>.</li>
+</ul>
+<p>The most common tests are two-sided.</p>
+<p>Finding most powerful tests is hard and, in many cases, most powerful tests don’t even exist. We will just consider three widely used tests: the Wald test, the <span class="math inline">\(\chi^2\)</span> test, and the permutation test. A fourth test, the likelihood ratio test, is discussed in the appendix.</p>
+<div id="the-wald-test" class="section level3">
+<h3>11.1 The Wald Test</h3>
+<p>In statistics, the Wald test (named after Abraham Wald) assesses constraints on statistical parameters based on the weighted distance between the unrestricted estimate and its hypothesized value under the null hypothesis, where the weight is the precision of the estimate. Intuitively, the larger this weighted distance, the less likely it is that the constraint is true. While the finite sample distributions of Wald tests are generally unknown, it has an asymptotic <span class="math inline">\(\chi^2\)</span>-distribution under the null hypothesis, a fact that can be used to determine statistical significance.</p>
+<p>Under the Wald test, the estimated <span class="math inline">\(\hat{\theta}\)</span> that was found as the maximizing argument of the unconstrained likelihood function is compared with a hypothesized value <span class="math inline">\(\theta _{0}\)</span>. In particular, the squared difference <span class="math inline">\(\displaystyle{\hat{\theta}-\theta _{0}}\)</span> is weighted by the curvature of the log-likelihood function.</p>
+<p>Consider testing</p>
+<p><span class="math display">\[ H_0: \theta = \theta_0
+\quad \text{versus} \quad
+H_1: \theta \neq \theta_0\]</span></p>
+<p>Assume that <span class="math inline">\(\hat{\theta}\)</span> is asymptotically Normal:</p>
+<p><span class="math display">\[ \frac{\sqrt{n}(\hat{\theta} - \theta_0)}{\hat{\text{se}}} \leadsto N(0, 1) \]</span></p>
+<p>Test on a single parameter, the size <span class="math inline">\(\alpha\)</span> <strong>Wald test</strong> is: reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(|W| &gt; z_{\alpha/2}\)</span>, where</p>
+<p><span class="math display">\[ W = \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}}\]</span></p>
+<p><strong>Theorem 11.4</strong>. Asymptotically, the Wald test has size <span class="math inline">\(\alpha\)</span>, that is,</p>
+<p><span class="math display">\[ \mathbb{P}_{\theta_0} \left(|W| &gt; z_{\alpha/2} \right) \rightarrow \alpha\]</span></p>
+<p>as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong>Proof</strong>. Under <span class="math inline">\(\theta = \theta_0\)</span>, <span class="math inline">\((\hat{\theta} - \theta) / \text{se} \leadsto N(0, 1)\)</span>, so the probability of rejecting when the null hypothesis <span class="math inline">\(\theta = \theta_0\)</span> is true is</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}_{\theta_0}(|W| &gt; z_{\alpha / 2}) &amp;= \mathbb{P}_{\theta_0} \left(\frac{|\hat{\theta} - \theta_0|}{\hat{\text{se}}} &gt; z_{\alpha/2} \right) \\
+&amp; \rightarrow \mathbb{P}_{\theta_0}(| N(0, 1) | &gt; z_{\alpha/2}) \\
+&amp; = \alpha
+\end{align}
+\]</span></p>
+<p>Most texts define the Wald test with the standard error computed at <span class="math inline">\(\theta = \theta_0\)</span> rather than at the estimated value <span class="math inline">\(\hat{\theta}\)</span>. Both versions are valid.</p>
+<p><strong>Theorem 11.6</strong>. Suppose that the true value of <span class="math inline">\(\theta\)</span> is <span class="math inline">\(\theta_* \neq \theta_0\)</span>. The power <span class="math inline">\(\beta(\theta_*)\)</span>, the probability of correctly rejecting the null hypothesis, is given (approximately) by</p>
+<p><span class="math display">\[ 1 - \Phi \left(\frac{\theta_0 - \theta_*}{\hat{\text{se}}} + z_{\alpha/2} \right) + \Phi \left(\frac{\theta_0 - \theta_*}{\hat{\text{se}}} - z_{\alpha/2} \right) \]</span></p>
+<pre class="python"><code>from scipy.stats import norm
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+fig, ax = plt.subplots(figsize=(10, 8))
+# for distribution curve
+x= np.arange(-4,4,0.001)
+ax.plot(x, norm.pdf(x))
+ax.set_title(&quot;Cumulative normal distribution&quot;)
+ax.set_xlabel(&#39;x&#39;)
+ax.set_ylabel(&#39;pdf(x)&#39;)
+ax.grid(True)
+# for fill_between
+px=np.arange(-4,-3,0.01)
+ax.set_ylim(0,0.5)
+ax.fill_between(px,norm.pdf(px),alpha=0.5, color=&#39;r&#39;)
+px2=np.arange(1,4,0.01)
+ax.fill_between(px2,norm.pdf(px2),alpha=0.5, color=&#39;r&#39;)
+# for text
+ax.text(-1,0.05, r&#39;$\beta(\theta_*)$&#39;, fontsize=20, color=&#39;r&#39;)
+ax.arrow(-0.1, 0.055, dx=1.0, dy=-0.005, color=&#39;r&#39;, head_width=0.01,head_length=0.1, linewidth=0.1)
+ax.arrow(-1.05, 0.055, dx=-1.85, dy=-0.052, color=&#39;r&#39;, head_width=0.01,head_length=0.1, linewidth=0.1)
+ax.text(-1.25,-0.04, r&#39;$ \frac{\theta_0-\theta_*}{\hat{se}} $&#39;, fontsize=15)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2011%20-%20Hypothesis%20Testing%20and%20p-values_files/Chapter%2011%20-%20Hypothesis%20Testing%20and%20p-values_14_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Theorem 11.10</strong>. The size <span class="math inline">\(\alpha\)</span> Wald test rejects <span class="math inline">\(H_0: \theta = \theta_0\)</span> versus <span class="math inline">\(H_1: \theta \neq \theta_0\)</span> if and only if <span class="math inline">\(\theta_0 \notin C\)</span> where</p>
+<p><span class="math display">\[ C = \left(\hat{\theta} - \hat{\text{se}} z_{\alpha/2}, \; \hat{\theta} + \hat{\text{se}} z_{\alpha / 2} \right) \]</span></p>
+<p>Thus, testing the hypothesis is equivalent to checking whether the null value is in the confidence interval.</p>
+</div>
+<div id="p-values" class="section level3">
+<h3>11.2 p-values</h3>
+<p>Suppose that for every <span class="math inline">\(\alpha \in (0, 1)\)</span> we have a size <span class="math inline">\(\alpha\)</span> test with rejection region <span class="math inline">\(R_\alpha\)</span>. Then,</p>
+<p><span class="math display">\[ \text{p-value} = \inf \Big\{ \alpha : T(X^n) \in R_\alpha \Big\} \]</span></p>
+<p>That is, the p-value is the smallest level at which we can reject <span class="math inline">\(H_0\)</span>.</p>
+<p>Informally, the p-value is a measure of the evidence against <span class="math inline">\(H_0\)</span>: the smaller the p-value, the stronger the evidence against <span class="math inline">\(H_0\)</span>. Typically, researchers use the following evidence scale:</p>
+<table>
+<thead>
+<tr class="header">
+<th>p-value</th>
+<th>evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>under 1%</td>
+<td>very strong evidence against <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td>1% to 5%</td>
+<td>strong evidence against <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="odd">
+<td>5% to 10%</td>
+<td>weak evidence against <span class="math inline">\(H_0\)</span></td>
+</tr>
+<tr class="even">
+<td>over 10%</td>
+<td>little or no evidence against <span class="math inline">\(H_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Warning</strong>: a large p-value is not strong evidence in favor of <span class="math inline">\(H_0\)</span>. A large p-value can occur for two reasons:
+- <span class="math inline">\(H_0\)</span> is true, or
+- <span class="math inline">\(H_0\)</span> is false but the test has low power</p>
+<p><strong>The p-value is not the probability that the null hypothesis is true</strong>. We discuss quantities like <span class="math inline">\(\mathbb{P}(H_0 | \text{Data})\)</span> in the chapter on Bayesian inference.</p>
+<p><strong>Theorem 11.12</strong>. Suppose that the size <span class="math inline">\(\alpha\)</span> test is of the form</p>
+<p><span class="math display">\[ \text{reject } H_0 \text{ if and only if } T(X^n) \geq c_\alpha\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \text{p-value} = \sup_{\theta \in \Theta_0} \mathbb{P}_\theta \left(T(X^n) \geq T(x^n) \right)\]</span></p>
+<p>In words, the p-value is the probability (under <span class="math inline">\(H_0\)</span>) of observing a value of the test statistic as or more extreme than what was actually observed.</p>
+<p>For a Wald test, <span class="math inline">\(W\)</span> has an approximate <span class="math inline">\(N(0, 1)\)</span> distribution under <span class="math inline">\(H_0\)</span>. Hence, the p-value is</p>
+<p><span class="math display">\[ \text{p-value} \approx \mathbb{P}(|Z| &gt; |w|) = 2\mathbb{P}(Z &lt; -|w|) = 2 \Phi(Z &lt; -|w|) \]</span></p>
+<p>where <span class="math inline">\(Z \sim N(0, 1)\)</span> and <span class="math inline">\(w = (\hat{\theta} - \theta_0) / \hat{\text{se}}\)</span> is the observed value of the test statistic.</p>
+<p><strong>Theorem 11.13</strong>. If the test statistic has a continuous distribution, then under <span class="math inline">\(H_0: \theta = \theta_0\)</span> the p-value has an <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution.</p>
+</div>
+<div id="the-chi2-distribution" class="section level3">
+<h3>11.3 The <span class="math inline">\(\chi^2\)</span> distribution</h3>
+<p>Let <span class="math inline">\(Z_1, \dots, Z_k\)</span> be independent, standard normals. Let <span class="math inline">\(V = \sum_{i=1}^k Z_i^2\)</span>. Then we say that <span class="math inline">\(V\)</span> has a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(k\)</span> degrees of freedom, written <span class="math inline">\(V \sim \chi^2_k\)</span>. The probability density of <span class="math inline">\(V\)</span> is</p>
+<p><span class="math display">\[ f(v) = \frac{v^{(k/2) - 1}e^{-v/2}}{2^{k/2} \Gamma(k / 2)} \]</span></p>
+<p>for <span class="math inline">\(v &gt; 0\)</span>. It can be shown that <span class="math inline">\(\mathbb{E}(V) = k\)</span> and <span class="math inline">\(\mathbb{V}(k) = 2k\)</span>. We define the upper <span class="math inline">\(\alpha\)</span> quantile <span class="math inline">\(\chi^2_{k, \alpha} = F^{-1}(1 - alpha)\)</span> where <span class="math inline">\(F\)</span> is the CDF. That is, <span class="math inline">\(\mathbb{P}(\chi^2_k &gt; \chi^2_{k, \alpha}) = \alpha\)</span>.</p>
+</div>
+<div id="pearsons-chi2-test-for-multinomial-data" class="section level3">
+<h3>11.4 Pearson’s <span class="math inline">\(\chi^2\)</span> Test for Multinomial Data</h3>
+<p>Recall that <span class="math inline">\(X = (X_1, \dots, X_n)\)</span> has a multinomial distribution if</p>
+<p><span class="math display">\[ f(x_1, \dots, x_k; p) = \begin{pmatrix}
+n \\
+x_1 \dots x_k
+\end{pmatrix} p_1^{x_1} \dots p_k^{x_k}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+n \\
+x_1 \dots x_k
+\end{pmatrix} = 
+\frac{n!}{x_1! \dots x_k!}
+\]</span></p>
+<p>The MLE of <span class="math inline">\(p\)</span> is <span class="math inline">\(\hat{p} = (\hat{p_1}, \dots, \hat{p_k}) = \left(X_1 / n, \dots, X_k / n\right)\)</span>.</p>
+<p>Let <span class="math inline">\((p_{01}, \dots, p_{0k})\)</span> be some fixed test of probabilities and suppose we want to test</p>
+<p><span class="math display">\[ H_0: (p_1, \dots, p_k) = (p_{01}, \dots, p_{0k})
+\quad \text{versus} \quad
+H_1: (p_1, \dots, p_k) \neq (p_{01}, \dots, p_{0k})\]</span></p>
+<p><strong>Pearson’s <span class="math inline">\(\chi^2\)</span> statistic</strong> is</p>
+<p><span class="math display">\[ T = \sum_{j=1}^k \frac{(X_j - np_{0j})^2}{np_{0j}} = \sum_{j=1}^k \frac{(O_j - E_j)^2}{E_j}\]</span></p>
+<p>where <span class="math inline">\(O_j = X_j\)</span> is the observed data and <span class="math inline">\(E_j = \mathbb{E}(X_j) = np_{0j}\)</span> is the expected value of <span class="math inline">\(X_j\)</span> under <span class="math inline">\(H_0\)</span>.</p>
+<p><strong>Theorem 11.15</strong>. Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(T \leadsto \chi^2_{k - 1}\)</span>. Hence the test: reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T &gt; \chi^2_{k - 1, \alpha}\)</span> has asymptotic level <span class="math inline">\(\alpha\)</span>. The p-value is <span class="math inline">\(\mathbb{P}(\chi^2_k &gt; t)\)</span> where <span class="math inline">\(t\)</span> is the observed value of the test statistic.</p>
+</div>
+<div id="the-permutation-test" class="section level3">
+<h3>11.5 The Permutation Test</h3>
+<p>Suppose that <span class="math inline">\(X_1, \dots, X_m \sim F_X\)</span> and <span class="math inline">\(Y_1, \dots, Y_n \sim F_Y\)</span> are two independent samples and <span class="math inline">\(H_0\)</span> is the hypothesis that both samples are identically distributed. More precisely we are testing</p>
+<p><span class="math display">\[ H_0: F_X = F_Y \quad \text{versus} \quad F_1: F_X \neq F_Y\]</span></p>
+<p>Let <span class="math inline">\(T(x_1, \dots, x_m, y_1, \dots, y_n)\)</span> be some test statistic, for example</p>
+<p><span class="math display">\[ T(X_1, \dots, X_m, Y_1, \dots, Y_n) = | \overline{X}_m - \overline{Y}_n |\]</span></p>
+<p>Let <span class="math inline">\(N = m + n\)</span> and consider forming all <span class="math inline">\(N!\)</span> permutations of the data <span class="math inline">\(X_1, \dots, X_m, Y_1, \dots, Y_n\)</span>. For exach permutation, compute the test statistic <span class="math inline">\(T\)</span>. Denote these values by <span class="math inline">\(T_1, \dots, T_{N!}\)</span>. Under the null hypothesis, each of these values is equally likely. The distribution <span class="math inline">\(P_0\)</span> that puts mass <span class="math inline">\(1 / N!\)</span> on each <span class="math inline">\(T_j\)</span> is called the <strong>permutation distribution</strong> of <span class="math inline">\(T\)</span>. Let <span class="math inline">\(t_\text{obs}\)</span> be the observed value of the test statistic. Assuming we reject when <span class="math inline">\(T\)</span> is large, the p-value is</p>
+<p><span class="math display">\[ \text{p-value} = \mathbb{P}_0(T &gt; t_\text{obs}) = \frac{1}{N!} \sum_{i=1}^{N!} I(T_j &gt; t_\text{obs}) \]</span></p>
+<p>Usually it is not practical to evaluate all <span class="math inline">\(N!\)</span> permutations. We can approximate the p-value by sampling randomly from the set of permutations. The fraction of times <span class="math inline">\(T &gt; t_\text{obs}\)</span> among these samples approximates the p-value.</p>
+<p><strong>Algorithm for the Permutation Test</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Compute the observed value of the test statistic <span class="math inline">\(t_\text{obs} = T(X_1, \dots, X_m, Y_1, \dots, Y_n)\)</span>.</p></li>
+<li><p>Randomly permute the data. Compute the statistic again using the permuted data.</p></li>
+<li><p>Repeat the previous step <span class="math inline">\(B\)</span> times and let <span class="math inline">\(T_1, \dots, T_B\)</span> denote the resulting values.</p></li>
+<li><p>The approximate p-value is</p></li>
+</ol>
+<p><span class="math display">\[ \frac{1}{B} \sum_{i=1}^B I(T_j &gt; t_\text{obs}) \]</span></p>
+<p>In large samples, the permutation test usually gives similar results to a test that is based on large sample theory. The permutation test is thus most useful for small samples.</p>
+</div>
+<div id="multiple-testing" class="section level3">
+<h3>11.6 Multiple Testing</h3>
+<p>Consider <span class="math inline">\(m\)</span> hypothesis tests:</p>
+<p><span class="math display">\[ H_{0i} \quad \text{versus} \quad H_{1i}, \quad i = 1, \dots, m\]</span></p>
+<p>and let <span class="math inline">\(P_1, \dots, P_m\)</span> denote <span class="math inline">\(m\)</span> p-values for these tests.</p>
+<p><strong>The Bonferroni Method</strong>: Given p-values <span class="math inline">\(P_1, \dots, P_m\)</span>, reject null hypothesis <span class="math inline">\(H_{0i}\)</span> if <span class="math inline">\(P_i &lt; \alpha / m\)</span>.</p>
+<p><strong>Theorem 11.19</strong>. Using the Bonferroni method, the probability of falsely rejecting any null hypothesis is less than or equal to <span class="math inline">\(\alpha\)</span>.</p>
+<p><strong>Proof</strong>. Let <span class="math inline">\(R\)</span> be the event that at least one null hypothesis is falsely rejected. Let <span class="math inline">\(R_i\)</span> be the event that the <span class="math inline">\(i\)</span>-th null hypothesis is falsely rejected. Recall that if <span class="math inline">\(A_1, \dots, A_k\)</span> are events then <span class="math inline">\(\mathbb{P} \left( \bigcup_{i=1}^k A_i \right) \leq \sum_{i=1}^k \mathbb{P}(A_i)\)</span>. Hence,</p>
+<p><span class="math display">\[\mathbb{P}(R) = \mathbb{P}\left( \bigcup_{i=1}^k R_i \right) \leq \sum_{i=1}^k \mathbb{P}(R_i) = \sum_{i=1}^k \frac{\alpha}{m} = \alpha\]</span></p>
+<p>The Bonferroni Method is very conservative because it is trying to make it unlikely that you would make even one false rejection. Sometimes, a more reasonable idea is to control the <strong>false discovery rate</strong> (FDR) which is defined as the mean number of false rejections divided by the number of rejections.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(H_0\)</span> not rejected</th>
+<th><span class="math inline">\(H_0\)</span> rejected</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_0\)</span> true</td>
+<td><span class="math inline">\(U\)</span></td>
+<td><span class="math inline">\(V\)</span></td>
+<td><span class="math inline">\(m_0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_0\)</span> false</td>
+<td><span class="math inline">\(T\)</span></td>
+<td><span class="math inline">\(S\)</span></td>
+<td><span class="math inline">\(m_1\)</span></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td><span class="math inline">\(m - R\)</span></td>
+<td><span class="math inline">\(R\)</span></td>
+<td><span class="math inline">\(m\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Define the <strong>false discovery proportion</strong> (FDP):</p>
+<p><span class="math display">\[ \text{FDP} = \begin{cases}
+V / R &amp; \text{if } R &gt; 0\\
+0     &amp; \text{if}  R = 0
+\end{cases}\]</span></p>
+<p>The FDP is the proportion of rejections that are incorrect. Next define <span class="math inline">\(\text{FDR} = \mathbb{E}(\text{FDP})\)</span>.</p>
+<p><strong>The Benjamini-Hochberg (BH) Method</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Let <span class="math inline">\(P_{(1)} &lt; \cdots &lt; P_{(m)}\)</span> denote the ordered p-values.</p></li>
+<li><p>Define</p></li>
+</ol>
+<p><span class="math display">\[\ell_i = \frac{i \alpha}{C_m m},
+\quad \text{and} \quad
+R = \max \bigg\{ i: P_{(i)} &lt; \ell_i \bigg\}\]</span></p>
+<p>where <span class="math inline">\(C_m\)</span> is defined to be 1 if the p-values are independent and <span class="math inline">\(C_m = \sum_{i=1}^m (1/i)\)</span> otherwise.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Let <span class="math inline">\(t = P_{(R)}\)</span>; we call <span class="math inline">\(t\)</span> the <strong>BH rejection threshold</strong>.</p></li>
+<li><p>Reject all null hypothesis <span class="math inline">\(H_{0i}\)</span> for which <span class="math inline">\(P_i \leq t\)</span>.</p></li>
+</ol>
+<p><strong>Theorem 11.21 (Benjamini and Hocheberg)</strong>. If the procedure above is applied, then regardless of how many nulls are true and regardless of the distribution of p-values when the null hypothesis is false,</p>
+<p><span class="math display">\[\text{FDR} = \mathbb{E}(\text{FDP}) \leq \frac{m_0}{m} \alpha \leq \alpha \]</span>.</p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>11.7 Technical Appendix</h3>
+<div id="the-neyman-pearson-lemma" class="section level4">
+<h4>11.7.1 The Neyman-Pearson Lemma</h4>
+<p><strong>Theorem 11.23 (Neyman-Pearson)</strong>. Suppose we test <span class="math inline">\(H_0: \theta = \theta_0\)</span> versus <span class="math inline">\(H_1: \theta = \theta_1\)</span>. Let</p>
+<p><span class="math display">\[ T = \frac{\mathcal{L}(\theta_1)}{\mathcal{L}(\theta_0)} = \frac{\prod_{i=1}^n f(x_i; \theta_1)}{\prod_{i=1}^n f(x_i; \theta_0)}\]</span></p>
+<p>Suppose we reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(T &gt; k\)</span>. If we choose <span class="math inline">\(k\)</span> so that <span class="math inline">\(\mathbb{P}_{\theta_0}(T &gt; k) = \alpha\)</span> then this test is the most powerful, size <span class="math inline">\(\alpha\)</span> test. That is, among all tests with size <span class="math inline">\(\alpha\)</span>, this test maximizes power <span class="math inline">\(\beta(\theta_1)\)</span>.</p>
+</div>
+<div id="power-of-the-wald-test" class="section level4">
+<h4>11.7.2 Power of the Wald Test</h4>
+<p><strong>Proof of Theorem 11.6</strong>.</p>
+<p>Let <span class="math inline">\(Z \sim N(0, 1)\)</span>. Then,</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Power} &amp;= \beta(\theta_*) \\
+&amp;= \mathbb{P}_{\theta_*}(\text{Reject } H_0) \\
+&amp;= \mathbb{P}_{\theta_*}\left( \frac{|\hat{\theta} - \theta_0|}{\hat{\text{se}}} &gt; z_{\alpha/2} \right) \\
+&amp;= \mathbb{P}_{\theta_*}\left( \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} &gt; z_{\alpha/2} \right) 
++ \mathbb{P}_{\theta_*}\left( \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} &lt; -z_{\alpha/2} \right) \\
+&amp;= \mathbb{P}_{\theta_*}(\hat{\theta} &gt; \theta_0 + \hat{\text{se}} z_{\alpha/2})
++ \mathbb{P}_{\theta_*}(\hat{\theta} &lt; \theta_0 - \hat{\text{se}} z_{\alpha/2}) \\
+&amp;= \mathbb{P}_{\theta_*}\left( \frac{\hat{\theta} - \theta_*}{\hat{\text{se}}} &gt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} + z_{\alpha/2} \right) 
++ \mathbb{P}_{\theta_*}\left( \frac{\hat{\theta} - \theta_*}{\hat{\text{se}}} &lt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} - z_{\alpha/2} \right) \\
+&amp; \approx \mathbb{P}\left(Z &gt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} + z_{\alpha/2} \right) 
++ \mathbb{P}\left(Z &lt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} - z_{\alpha/2} \right) \\
+&amp;= 1 - \Phi\left( \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} + z_{\alpha/2} \right) 
++ \Phi\left( \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} - z_{\alpha/2} \right)
+\end{align}
+\]</span></p>
+</div>
+<div id="the-t-test" class="section level4">
+<h4>11.7.3 The t-test</h4>
+<p>To test <span class="math inline">\(H_0: \mu = \mu_0\)</span> where <span class="math inline">\(\mu\)</span> is the mean, we can use the Wald test. When the data is assumed to be Normal and the sample size is small, it is common instead to use the <strong>t-test</strong>. A random variable <span class="math inline">\(T\)</span> as a <em>t-distribution with <span class="math inline">\(k\)</span> degrees of freedom</em> if it has density</p>
+<p><span class="math display">\[ f(t) = \frac{\Gamma\left(\frac{k+1}{2}\right)}{\sqrt{k \pi} \Gamma\left(\frac{k}{2}\right) \left(1 + \frac{t^2}{k}\right)^{(k+1)/2}}\]</span></p>
+<p>When the degrees of freedom <span class="math inline">\(k \rightarrow \infty\)</span>, this tends to a Normal distribution. When <span class="math inline">\(k = 1\)</span> it reduces to a Cauchy distribution.</p>
+<p>Let <span class="math inline">\(X_1, \dots, X_n \sim N(\mu, \sigma^2)\)</span> where <span class="math inline">\(\theta = (\mu, \sigma^2)\)</span> are both unknown. Suppose we want to test <span class="math inline">\(\mu = \mu_0\)</span> versus <span class="math inline">\(\mu \neq \mu_0\)</span>. Let</p>
+<p><span class="math display">\[T = \frac{\sqrt{n}(\overline{X}_n - \mu_0)}{S_n}\]</span></p>
+<p>where <span class="math inline">\(S_n^2\)</span> is the sample variance. For large samples <span class="math inline">\(T \approx N(0, 1)\)</span> under <span class="math inline">\(H_0\)</span>. The exact distribution of <span class="math inline">\(T\)</span> under <span class="math inline">\(H_0\)</span> is <span class="math inline">\(t_{n-1}\)</span>. Hence if we reject when <span class="math inline">\(|T| &gt; t_{n-1, \alpha/2}\)</span> then we get a size <span class="math inline">\(\alpha\)</span> test.</p>
+</div>
+<div id="the-likelihood-ratio-test" class="section level4">
+<h4>11.7.4 The Likelihood Ratio Test</h4>
+<p>Let <span class="math inline">\(\theta = (\theta_1, \dots, \theta_q, \theta_{q+1}, \dots, \theta_r)\)</span> and suppose that <span class="math inline">\(\Theta_0\)</span> consists of all parameter values <span class="math inline">\(\theta\)</span> such that <span class="math inline">\((\theta_{q+1}, \dots, \theta_r) = (\theta_{0, q+1}, \dots, \theta_{0, r})\)</span>.</p>
+<p>Define the <strong>likelihood ratio statistic</strong> by</p>
+<p><span class="math display">\[ \lambda 
+= 2 \log \left(  \frac{\sup_{\theta \in \Theta} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)} \right) 
+= 2 \log \left(  \frac{\mathcal{L}(\hat{\theta})}{\mathcal{L}(\hat{\theta_0})} \right) \]</span></p>
+<p>where <span class="math inline">\(\hat{\theta}\)</span> is the MLE and <span class="math inline">\(\hat{\theta_0}\)</span> is the MLE when <span class="math inline">\(\theta\)</span> is restricted to lie in <span class="math inline">\(\Theta_0\)</span>.</p>
+<p>The <strong>likelihood ratio test</strong> is: reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(\lambda(x^n) &gt; \chi^2_{r-q, \alpha}\)</span>.</p>
+<p><strong>Theorem 11.25</strong>. Under <span class="math inline">\(H_0\)</span>,</p>
+<p><span class="math display">\[ 2 \log \lambda (x^n) \overset{d}{\leadsto} \chi^2_{r - q}\]</span></p>
+<p>Hence, asymptotically, the LR test level is <span class="math inline">\(\alpha\)</span>.</p>
+</div>
+</div>
+<div id="exercises" class="section level3">
+<h3>11.9 Exercises</h3>
+<p><strong>Exercise 11.9.1</strong>. Prove Theorem 11.13.</p>
+<p>If the test statistic has a continuous distribution, then under <span class="math inline">\(H_0: \theta = \theta_0\)</span> the p-value has an <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(T\)</span> be the test statistic, and <span class="math inline">\(F_T\)</span> be its CDF under <span class="math inline">\(H_0\)</span>. Then</p>
+<p><span class="math display">\[ F_\text{p-value}(p) = \mathbb{P}(\text{p-value} &lt; p) = \mathbb{P}(F(T) &lt; p) = \mathbb{P}(T &lt; F^{-1}(p)) = F(F^{-1}(p)) = p\]</span></p>
+<p>so the CDF for the p-value is the same as the CDF for the <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution, therefore the p-value follows a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution.</p>
+<p><strong>Exercise 11.9.2</strong>. Prove Theorem 11.10.</p>
+<p>The size <span class="math inline">\(\alpha\)</span> Wald test rejects <span class="math inline">\(H_0: \theta = \theta_0\)</span> versus <span class="math inline">\(H_1: \theta \neq \theta_0\)</span> if and only if <span class="math inline">\(\theta_0 \notin C\)</span> where</p>
+<p><span class="math display">\[ C = \left(\hat{\theta} - \hat{\text{se}} z_{\alpha/2}, \; \hat{\theta} + \hat{\text{se}} z_{\alpha / 2} \right) \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p><span class="math inline">\(\theta_0 \in C\)</span> if and only if</p>
+<p><span class="math display">\[
+\hat{\theta} - \hat{\text{se}} z_{\alpha/2} &lt; \theta_0 &lt; \hat{\theta} + \hat{\text{se}} z_{\alpha/2} \\
+\frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} - z_{\alpha/2} &lt; 0 &lt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} +  z_{\alpha/2} \\
+- z_{\alpha/2} &lt; \frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} &lt; z_{\alpha/2} \\
+|Z| &gt; z_{\alpha/2}
+\]</span></p>
+<p>which is the criteria for the Wald test.</p>
+<p><strong>Exercise 11.9.3</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(0, \theta)\)</span> and let <span class="math inline">\(Y = \max \{ X_1, \dots, X_n \}\)</span>. We want to test</p>
+<p><span class="math display">\[ H_0: \theta = 1/2 \quad \text{versus} \quad H_1: \theta &gt; 1/2 \]</span></p>
+<p>The Wald test is not appropriate since <span class="math inline">\(Y\)</span> does not converge to a Normal. Suppose we decide to test this hypothesis by rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(Y &gt; c\)</span>.</p>
+<p><strong>(a)</strong> Find the power function.</p>
+<p><strong>(b)</strong> What choice of <span class="math inline">\(c\)</span> will make the size of the test 0.05?</p>
+<p><strong>(c)</strong> In a sample of size <span class="math inline">\(n = 20\)</span> with <span class="math inline">\(Y = 0.48\)</span> what is the p-value? What conclusion about <span class="math inline">\(H_0\)</span> would you make?</p>
+<p><strong>(d)</strong> In a sample of size <span class="math inline">\(n = 20\)</span> with <span class="math inline">\(Y = 0.52\)</span> what is the p-value? What conclusion about <span class="math inline">\(H_0\)</span> would you make?</p>
+<p><strong>Solution</strong></p>
+<p><strong>(a)</strong> The power function for this test is</p>
+<p><span class="math display">\[\beta(\theta) = \mathbb{P}_\theta(X \in R) = \mathbb{P}_\theta(Y &gt; c) = 1 - \mathbb{P}_\theta(Y \leq c) = 1 - \prod_{i=1}^n \mathbb{P}_\theta(X_i \leq c) = 1 - \left(\text{clip}\left(\frac{c}{\theta}\right)\right)^n\]</span></p>
+<p>where we limit <span class="math inline">\(c/\theta\)</span> to the <span class="math inline">\([0, 1]\)</span> interval, <span class="math display">\[\text{clip}(t) = \begin{cases} 1 &amp; \text{if } t &gt; 1 \\ t &amp; \text{if } 0 \leq t \leq 1 \\ 0 &amp; \text{otherwise} \end{cases}\]</span></p>
+<p><strong>(b)</strong> There is only one value in <span class="math inline">\(\Theta_0\)</span>, <span class="math inline">\(\theta = 1/2\)</span>. The size of the test then is <span class="math inline">\(\beta(1/2) = 1 - \left(\text{clip}\left(2c\right)\right)^n\)</span>. Equating it to 0.05 and solving, we get <span class="math inline">\(c = 0.5 \cdot 0.95^{1/n}\)</span>.</p>
+<p><strong>(c)</strong> The test has size <span class="math inline">\(\alpha\)</span> when $ 1 - ((2c))^n = $, or <span class="math inline">\(c = 0.5 \cdot (1 - \alpha)^{1/n}\)</span>. The p-value occurs on the threshold of the rejection region, that is, the infimal <span class="math inline">\(\alpha\)</span> such that <span class="math inline">\(Y &gt; c\)</span>, so <span class="math inline">\(Y &gt; 0.5 \cdot (1 - \alpha)^{1/n}\)</span>, or <span class="math inline">\(\alpha &gt; 1 - (2Y)^n\)</span>.</p>
+<p>For <span class="math inline">\(n = 20\)</span>, <span class="math inline">\(Y = 0.48\)</span>, that reduces to <span class="math inline">\(\alpha &gt; 1 - (2\cdot 0.48)^{20} \approx 0.557\)</span>. This means that the test provides little or no evidence against <span class="math inline">\(H_0\)</span>.</p>
+<p><strong>(d)</strong> For <span class="math inline">\(n = 20\)</span>, <span class="math inline">\(Y = 0.52\)</span>, the clipping function gets stuck at its maximum – even for <span class="math inline">\(\alpha = 0\)</span> we get <span class="math inline">\(Y &gt; c = 0.05\)</span>, so the p-value is 0, and the test almost surely rejects the null hypothesis. This is in agreement with the observation that, since <span class="math inline">\(Y &gt; \theta_0\)</span>, the maximum sample was generated with value greater than <span class="math inline">\(\theta_0\)</span>, so it is certain that <span class="math inline">\(\theta_* &gt; \theta_0\)</span>.</p>
+<p><strong>Exercise 11.9.4</strong>. There is a theory that people can postpone their death until after an important event. To test the theory, Phillips and King (1988) collected data on deaths around the Jewish holiday Passover. Of 1919 deaths, 922 died the week before the holiday and 997 died the week after. Think of this as a binomial and test the null hypothesis that <span class="math inline">\(\theta = 1/2\)</span>. Report and interpret the p-value. Also construct a confidence interval for <span class="math inline">\(\theta\)</span>.</p>
+<p>Reference:
+Philips, D.P and King, E.W. (1988).
+<em>Death takes a holiday: Mortality surrounding major social occasions.</em>
+The Lancet, 2, 728-732.</p>
+<p><strong>Solution</strong>. Let the number of deaths be <span class="math inline">\(X \sim \text{Binomial}(n, \theta)\)</span>, with <span class="math inline">\(n = 1919\)</span>. We have a measurement for <span class="math inline">\(X = 922\)</span>, and we want to test the null hypothesis:</p>
+<p><span class="math display">\[H_0:  \theta = 1/2 \quad \text{versus} \quad H_1: \theta \neq 1/2\]</span></p>
+<p>The MLE is <span class="math inline">\(\hat{\theta} = X / n = 922 / 1919\)</span>; the estimated standard error is <span class="math inline">\(\sqrt{\hat{\theta}(1 - \hat{\theta})/n}\)</span>. The Wald test statistic is <span class="math inline">\(W = (\hat{\theta} - \theta_0) / \hat{\text{se}}\)</span>, and the p-value is <span class="math inline">\(\mathbb{P}(|Z| &gt; |W|) = 2(1 - \Phi(|W|))\)</span>.</p>
+<pre class="python"><code>import math
+from scipy.stats import norm
+
+n = 1919
+X = 922
+theta_hat = 922 / 1919
+se_hat = math.sqrt(theta_hat * (1 - theta_hat) / n)
+
+z_05 = norm.ppf(0.975)
+confidence_interval = (theta_hat - z_05 * se_hat, theta_hat + z_05 * se_hat)
+
+w = (theta_hat - 0.5) / se_hat
+p_value = 2 * (1 - norm.cdf(abs(w)))
+
+print(&#39;Estimated theta: \t %.3f&#39; % theta_hat)
+print(&#39;Estimated SE: \t\t %.3f&#39; % se_hat)
+print(&#39;95%% confidence interval: (%.3f, %.3f)&#39; % confidence_interval)
+print(&#39;Wald statistic: \t %.3f&#39; % w)
+print(&#39;p-value: \t\t %.3f&#39; % p_value)</code></pre>
+<pre><code>Estimated theta:     0.480
+Estimated SE:        0.011
+95% confidence interval: (0.458, 0.503)
+Wald statistic:      -1.713
+p-value:         0.087</code></pre>
+<p>A 95% confidence interval can be built based on the estimated value for <span class="math inline">\(\theta\)</span> and its estimated standard error, from 45.8% to 50.3%.</p>
+<p>The Wald test produces a p-value of 8.7%, which represents only weak evidence against the null hypothesis – inconclusive results.</p>
+<p><strong>Exercise 11.9.5</strong>. In 1861, 10 essays appeared in the New Orleans Daily Crescent. They were signed “Quintus Curtuis Snodgrass” and some people suspected they were actually written by Mark Twain. To investigate this, we will investigate the proportion of three letter words found in an author’s work.</p>
+<p>From eight Twain essays we have:</p>
+<p><span class="math display">\[ 
+0.225 \quad 0.262 \quad 0.217 \quad 0.240 \quad 0.230 \quad 0.229 \quad 0.235 \quad 0.217
+\]</span></p>
+<p>From 10 Snodgrass essays we have:</p>
+<p><span class="math display">\[
+0.209 \quad 0.205 \quad 0.196 \quad 0.210 \quad 0.202 \quad 0.207 \quad 0.224 \quad 0.223 \quad 0.220 \quad 0.201
+\]</span></p>
+<p>(source: Rice xxxx)</p>
+<p><strong>(a)</strong> Perform a Wald test for equality of the means. Use the nonparametric plug-in estimator. Report the p-value and a 95% confidence interval for the difference of means. What do you conclude?</p>
+<p><strong>(b)</strong> Now use a permutation test to avoid the use of large sample methods. What is your conclusion?</p>
+<pre class="python"><code>X = [0.225, 0.262, 0.217, 0.240, 0.230, 0.229, 0.235, 0.217]
+Y = [0.209, 0.205, 0.196, 0.210, 0.202, 0.207, 0.224, 0.223, 0.220, 0.201]</code></pre>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+X = np.array(X)
+Y = np.array(Y)
+
+x_hat = X.mean()
+y_hat = Y.mean()
+
+diff_hat = x_hat - y_hat
+se_hat = np.sqrt(X.var(ddof=1)/len(X) + Y.var(ddof=1)/len(Y))
+
+z_05 = norm.ppf(0.975)
+confidence_interval = (diff_hat - z_05 * se_hat, diff_hat + z_05 * se_hat)
+
+w = diff_hat / se_hat
+p_value = 2 * (1 - norm.cdf(abs(w)))
+
+print(&#39;Estimated difference of means:\t %.3f&#39; % diff_hat)
+print(&#39;Estimated SE: \t\t\t %.3f&#39; % se_hat)
+print(&#39;95%% confidence interval:\t (%.3f, %.3f)&#39; % confidence_interval)
+print(&#39;Wald statistic: \t\t %.3f&#39; % w)
+print(&#39;Wald test p-value: \t\t %.4f&#39; % p_value)</code></pre>
+<pre><code>Estimated difference of means:   0.022
+Estimated SE:            0.006
+95% confidence interval:     (0.010, 0.034)
+Wald statistic:          3.704
+Wald test p-value:       0.0002</code></pre>
+<p>Such a small p-value (0.02%) offers very strong evidence to reject the null hypothesis – that is, that the series follow distributions with different means. The writing styles are different according to this metric, even if the same writer is responsible for both.</p>
+<p><strong>(b)</strong></p>
+<pre class="python"><code># Permutation test using random shuffling
+
+B = 1000000
+full_series = np.concatenate([X, Y])
+nx = len(X)
+diff_boot_count = 0
+for i in notebook.tqdm(range(B)):
+    np.random.shuffle(full_series)
+    xx, yy = full_series[:nx], full_series[nx:]
+    diff_boot = xx.mean() - yy.mean()
+    if diff_boot &gt; diff_hat:
+        diff_boot_count += 1
+        
+p_value_perm = diff_boot_count / B
+
+print(&#39;Permutation test p-value: \t\t %.4f&#39; % p_value_perm)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+Permutation test p-value:        0.0005</code></pre>
+<p>This small p-value (0.05%) also offers very strong evidence that the two samples come from series with different means.</p>
+<p><strong>Exercise 11.9.6</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim N(\theta, 1)\)</span>. Consider testing</p>
+<p><span class="math display">\[ H_0: \theta = 0 \quad \text{versus} \quad H_1: \theta = 1\]</span></p>
+<p>Let the rejection region be <span class="math inline">\(R = \{ x^n : T(x^n) &gt; c \}\)</span> where <span class="math inline">\(T(x^n) = n^{-1} \sum_{i=1}^n X_i\)</span>.</p>
+<p><strong>(a)</strong> Find <span class="math inline">\(c\)</span> so that the test has size <span class="math inline">\(\alpha\)</span>.</p>
+<p><strong>(b)</strong> Find the power under <span class="math inline">\(H_1\)</span>, i.e., find <span class="math inline">\(\beta(1)\)</span>.</p>
+<p><strong>(c)</strong> Show that <span class="math inline">\(\beta(1) \rightarrow 1\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> Assume that <span class="math inline">\(\hat{\theta}\)</span> is asymptotically Normal:</p>
+<p><span class="math display">\[ \frac{\sqrt{n}(\hat{\theta} - \theta_0)}{\hat{\text{se}}} \leadsto N(0, 1) \]</span></p>
+<p>The size of the rejection region is</p>
+<p><span class="math display">\[\mathbb{P}_{\theta = 0}(T &gt; c) = \mathbb{P}_{\theta = 0}(\sqrt{n}T / 1 &gt; \sqrt{n}c) = \mathbb{P}(Z &gt; \sqrt{n} c) = 1 - \Phi(\sqrt{n}c)\]</span></p>
+<p>If this value is <span class="math inline">\(\alpha\)</span>, then</p>
+<p><span class="math display">\[
+\begin{align}
+\alpha &amp;= 1 - \Phi(\sqrt{n}c) \\
+\Phi(\sqrt{n}c) &amp;= 1 - \alpha \\
+\sqrt{n}c &amp;= z_{\alpha} \\
+c &amp;= z_{\alpha} / \sqrt{n}
+\end{align}
+\]</span></p>
+<p><strong>(b)</strong> We have <span class="math display">\[\beta(1) = \mathbb{P}_{\theta = 1}(T &gt; c) = \mathbb{\theta = 1}(\sqrt{n}(T - 1)/1 &gt; \sqrt{n}(c - 1)) \\
+= \mathbb{P}(Z &gt; \sqrt{n}(c - 1)) = 1 - \Phi(\sqrt{n}(c - 1)) = 1 - \Phi(z_\alpha - \sqrt{n})\]</span></p>
+<p><strong>(c)</strong> As <span class="math inline">\(n \rightarrow \infty\)</span>, <span class="math inline">\(\beta(1) \rightarrow 1 - \Phi(-\infty) = 1\)</span>.</p>
+<p><strong>Exercise 11.9.7</strong>. Let <span class="math inline">\(\hat{\theta}\)</span> be the MLE of a parameter theta and let <span class="math inline">\(\hat{\text{se}} = \{ n I(\hat{\theta})\}^{-1/2}\)</span> where <span class="math inline">\(I(\hat{\theta})\)</span> is the Fisher information. Consider testing</p>
+<p><span class="math display">\[H_0: \theta = \theta_0 \quad \text{versus} \quad H_1: \theta \neq \theta_0\]</span></p>
+<p>Consider the Wald test with rejection region <span class="math inline">\(R = \{ x^n: |Z| &gt; z_{\alpha/2} \}\)</span> where <span class="math inline">\(Z = (\hat{\theta} - \theta_0) / \hat{\text{se}}\)</span>. Let <span class="math inline">\(\theta_1 &gt; \theta_0\)</span> be some alternative. Show that <span class="math inline">\(\beta(\theta_1) \rightarrow 1\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have</p>
+<p><span class="math display">\[
+\begin{align}
+\beta(\theta_1) &amp;= \mathbb{P}_{\theta_1}(|Z| &gt; z_{\alpha/2}) \\
+&amp;= \mathbb{P}_{\theta_1}(Z &gt; z_{\alpha/2}) + \mathbb{P}_{\theta_1}(Z &lt; - z_{\alpha/2})\\
+&amp;= \mathbb{P}_{\theta_1}\left(\frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} &gt; z_{\alpha/2}\right)
++ \mathbb{P}_{\theta_1}\left(\frac{\hat{\theta} - \theta_0}{\hat{\text{se}}} &lt; -z_{\alpha/2}\right) \\
+&amp;= \mathbb{P}_{\theta_1}\left(\hat{\theta} &gt; \hat{\text{se}} z_{\alpha/2} + \theta_0 \right)
++ \mathbb{P}_{\theta_1}\left(\hat{\theta} &lt; -\hat{\text{se}} z_{\alpha/2} + \theta_0 \right) \\
+&amp;= \mathbb{P}_{\theta_1}\left(\frac{\hat{\theta} - \theta_1}{\hat{\text{se}}} &gt;  z_{\alpha/2} + \frac{\theta_0 - \theta_1}{\hat{\text{se}}} \right)
++ \mathbb{P}_{\theta_1}\left(\frac{\hat{\theta} - \theta_1}{\hat{\text{se}}} &lt;  -z_{\alpha/2} + \frac{\theta_0 - \theta_1}{\hat{\text{se}}} \right) \\
+&amp;= \mathbb{P}_{\theta_1}\left(W &gt;  z_{\alpha/2} + \frac{\theta_0 - \theta_1}{\hat{\text{se}}} \right)
++ \mathbb{P}_{\theta_1}\left(W &lt;  -z_{\alpha/2} + \frac{\theta_0 - \theta_1}{\hat{\text{se}}} \right) \\
+&amp; \geq \mathbb{P}_{\theta_1}\left(W &gt;  z_{\alpha/2} + \frac{\theta_0 - \theta_1}{\hat{\text{se}}} \right)
+\end{align}
+\]</span></p>
+<p>When <span class="math inline">\(n\rightarrow\infty\)</span>, <span class="math inline">\(\hat{\text{se}}\rightarrow 0\)</span>. Since <span class="math inline">\(\theta_1 &gt; \theta_0\)</span>, the right hand side of the inequality goes to <span class="math inline">\(-\infty\)</span>, and so the lower bound probability goes to 1. Therefore <span class="math inline">\(\beta(\theta_1) \rightarrow 1\)</span>.</p>
+<p><strong>Exercise 11.9.8</strong>. Here are the number of elderly Jewish and Chinese women who died just before and after the Chinese Harvest Moon Festival.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Chinese</th>
+<th>Jewish</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-2</td>
+<td>55</td>
+<td>141</td>
+</tr>
+<tr class="even">
+<td>-1</td>
+<td>33</td>
+<td>145</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>70</td>
+<td>139</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>49</td>
+<td>161</td>
+</tr>
+</tbody>
+</table>
+<p>Compare the two mortality patterns.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import pandas as pd
+
+df = pd.DataFrame({
+    &#39;Chinese&#39;: [55, 33, 70, 49],
+    &#39;Jewish&#39;:  [141, 145, 139, 161]
+}, index=[-2, -1, 1, 2])</code></pre>
+<p>Let’s use a few different approaches.</p>
+<p>First: <span class="math inline">\(\chi^2\)</span> tests comparing, separately, Chinese and Jewish mortalities before and after the Chinese Harvest Moon Festival.</p>
+<p><strong>Pearson’s <span class="math inline">\(\chi^2\)</span> statistic</strong> is</p>
+<p><span class="math display">\[ T = \sum_{j=1}^k \frac{(X_j - np_{0j})^2}{np_{0j}} = \sum_{j=1}^k \frac{(O_j - E_j)^2}{E_j}\]</span></p>
+<p>where <span class="math inline">\(O_j = X_j\)</span> is the observed data and <span class="math inline">\(E_j = \mathbb{E}(X_j) = np_{0j}\)</span> is the expected value of <span class="math inline">\(X_j\)</span> under <span class="math inline">\(H_0\)</span>.</p>
+<pre class="python"><code>from scipy.stats import chi2
+
+chinese_before = df[&#39;Chinese&#39;].loc[-2:-1].sum()
+chinese_after = df[&#39;Chinese&#39;].loc[1:2].sum()
+
+mu_chinese_hat = (chinese_before + chinese_after) / 2
+t_pearson_chinese = (chinese_before - mu_chinese_hat)**2/mu_chinese_hat \
+    + (chinese_after - mu_chinese_hat)**2/mu_chinese_hat
+
+chi2_95 = chi2.ppf(0.95, 1)
+p_value_chinese = 1 - chi2.cdf(t_pearson_chinese, 1)
+
+print(&#39;Test statistic:\t\t\t\t%.3f &#39; % t_pearson_chinese)
+print(&#39;95%% percentile chi squared with 1 df:\t%.3f&#39; % chi2_95)
+print(&#39;p-value for different distributions:\t%.3f&#39; % p_value_chinese)</code></pre>
+<pre><code>Test statistic:             4.643 
+95% percentile chi squared with 1 df:   3.841
+p-value for different distributions:    0.031</code></pre>
+<pre class="python"><code>jewish_before = df[&#39;Jewish&#39;].loc[-2:-1].sum()
+jewish_after = df[&#39;Jewish&#39;].loc[1:2].sum()
+
+mu_jewish_hat = (jewish_before + jewish_after) / 2
+t_pearson_jewish = (jewish_before - mu_jewish_hat)**2/mu_jewish_hat \
+    + (jewish_after - mu_jewish_hat)**2/mu_jewish_hat
+
+chi2_95 = chi2.ppf(0.95, 1)
+p_value_jewish = 1 - chi2.cdf(t_pearson_jewish, 1)
+
+print(&#39;Test statistic:\t\t\t\t%.3f &#39; % t_pearson_jewish)
+print(&#39;95%% percentile chi squared with 1 df:\t%.3f&#39; % chi2_95)
+print(&#39;p-value for different distributions:\t%.3f&#39; % p_value_jewish)</code></pre>
+<pre><code>Test statistic:             0.334 
+95% percentile chi squared with 1 df:   3.841
+p-value for different distributions:    0.563</code></pre>
+<p>The <span class="math inline">\(\chi^2\)</span> test statistics for the Chinese population <em>do</em> suggest, with a p-value of 3.1%, that the mortality rates are distinct before and after the event, while the statistics for the Jewish population do not suggest so (with a no-evidence p-value of 56.3%).</p>
+<p>Using the likelihood test to compare mortality in each group before and after the event:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Chinese</th>
+<th>Jewish</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Before</td>
+<td>88</td>
+<td>286</td>
+</tr>
+<tr class="even">
+<td>After</td>
+<td>119</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+<p>Let <span class="math inline">\(\theta = (\theta_1, \dots, \theta_q, \theta_{q+1}, \dots, \theta_r)\)</span> and suppose that <span class="math inline">\(\Theta_0\)</span> consists of all parameter values <span class="math inline">\(\theta\)</span> such that <span class="math inline">\((\theta_{q+1}, \dots, \theta_r) = (\theta_{0, q+1}, \dots, \theta_{0, r})\)</span>.</p>
+<p>Define the <strong>likelihood ratio statistic</strong> by</p>
+<p><span class="math display">\[ \lambda 
+= 2 \log \left(  \frac{\sup_{\theta \in \Theta} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)} \right) 
+= 2 \log \left(  \frac{\mathcal{L}(\hat{\theta})}{\mathcal{L}(\hat{\theta_0})} \right) \]</span></p>
+<p>where <span class="math inline">\(\hat{\theta}\)</span> is the MLE and <span class="math inline">\(\hat{\theta_0}\)</span> is the MLE when <span class="math inline">\(\theta\)</span> is restricted to lie in <span class="math inline">\(\Theta_0\)</span>.</p>
+<p>The <strong>likelihood ratio test</strong> is: reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(\lambda(x^n) &gt; \chi^2_{r-q, \alpha}\)</span>.</p>
+<p>MLE under alternate hypothesis: <span class="math display">\[\hat{\theta} = \left( \frac{88}{793}, \frac{119}{793}, \frac{286}{793}, \frac{300}{793} \right)\]</span></p>
+<p>MLE under null hypothesis: <span class="math display">\[\hat{\theta_0} =\left( \frac{103.5}{793}, \frac{103.5}{793}, \frac{293}{793}, \frac{293}{793} \right)\]</span></p>
+<p>Log-likelihood ratio statistic:</p>
+<p><span class="math display">\[ \lambda = 2 \log \left( \frac{\mathcal{L}(\hat{\theta})}{\mathcal{L}(\hat{\theta_0})} \right)
+= 2 \left( 88 \log \frac{88}{103.5} + 119 \log \frac{119}{103.5} + 286 \log \frac{286}{293} + 300 \log \frac{300}{293} \right) \approx 2.497
+\]</span></p>
+<p>The 95% percentile value for the <span class="math inline">\(\chi^2\)</span> distribution with 1 degree of freedom is <span class="math inline">\(\approx 3.841\)</span>, so the likelihood test does not reject the null hypothesis at this confidence level. The p-value for this test is 0.114, suggesting little or no evidence that, for both groups, the mortality rates are distinct.</p>
+<p>Finally, let’s do 4 distinct sample binomial tests, one for each week:</p>
+<p>In statistics, the binomial test is an exact test of the statistical significance of deviations from a theoretically expected distribution of observations into two categories.</p>
+<p>The binomial test is useful to test hypotheses about the probability (<span class="math inline">\(\pi\)</span>) of success:</p>
+<p><span class="math display">\[\displaystyle H_{0}:\pi =\pi_{0}\]</span>
+where <span class="math inline">\(\pi _{0}\)</span> is a user-defined value between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.</p>
+<p>If in a sample of size <span class="math inline">\(n\)</span> there are <span class="math inline">\(k\)</span> successes, while we expect <span class="math inline">\(\displaystyle n\pi_{0}\)</span>, the formula of the binomial distribution gives the probability of finding this value:</p>
+<p><span class="math display">\[\displaystyle Pr(X=k)={\binom {n}{k}}p^{k}(1-p)^{n-k}\]</span>
+If the null hypothesis <span class="math inline">\(H_{0}\)</span> were correct, then the expected number of successes would be <span class="math inline">\(\displaystyle n\pi _{0}\)</span>. We find our <span class="math inline">\(p\)</span>-value for this test by considering the probability of seeing an outcome as, or more, extreme. For a one-tailed test, this is straightforward to calculate. Suppose that we want to test if <span class="math inline">\(\displaystyle \pi &lt;\pi _{0}\)</span>. Then our <span class="math inline">\(p\)</span>-value would be,</p>
+<p><span class="math display">\[\displaystyle p=\sum _{i=0}^{k}Pr(X=i)=\sum _{i=0}^{k}{\binom {n}{i}}p^{i}(1-p)^{n-i}\]</span>
+An analogous computation can be done if we’re testing if <span class="math inline">\(\displaystyle \pi &gt;\pi _{0}\)</span>.</p>
+<p>Calculating a <span class="math inline">\(p\)</span>-value for a two-tailed test is slightly more complicated, since a binomial distribution isn’t symmetric if <span class="math inline">\(\displaystyle \pi _{0}\neq 0.5\)</span>. This means that we can’t just double the <span class="math inline">\(p\)</span>-value from the one-tailed test. Recall that we want to consider events that are as, or more, extreme then the one we’ve seen, so we should consider the probability that we would see an event that is as, or less, likely than <span class="math inline">\(\displaystyle X=k\)</span>. Let <span class="math display">\[\displaystyle {\mathcal {I}}=\{i:Pr(X=i)\leq Pr(X=k)\}\]</span> denote all such events. Then the two-tailed <span class="math inline">\(p\)</span>-value is calculated as,</p>
+<p><span class="math display">\[\displaystyle p=\sum _{i\in {\mathcal {I}}}Pr(X=i)=\sum _{i\in {\mathcal {I}}}{\binom {n}{i}}p^{i}(1-p)^{n-i}\]</span></p>
+<p><em>scipy.stats.binom_test(x, n=None, p=0.5, alternative=‘two-sided’)</em><br />
+Perform a test that the probability of success is p. This is an exact, two-sided test of the null hypothesis that the probability of success in a Bernoulli experiment is p. </p>
+<p>x: int or array_like<br />
+The number of successes, or if x has length 2, it is the number of successes and the number of failures.</p>
+<pre class="python"><code>import pandas as pd
+from scipy.stats import binom_test
+
+theta_week1 = 55 / (55 + 141)
+theta_week2 = 33 / (33 + 145)
+theta_week3 = 70 / (70 + 139)
+theta_week4 = 49 / (49 + 161)
+
+theta_null = (55 + 33 + 70 + 49) / (55 + 33 + 70 + 49 + 141 + 145 + 139 + 161)
+
+p1 = binom_test(55, 55 + 141, theta_null, alternative=&quot;two-sided&quot;)
+p2 = binom_test(33, 33 + 145, theta_null, alternative=&quot;two-sided&quot;)
+p3 = binom_test(70, 70 + 139, theta_null, alternative=&quot;two-sided&quot;)
+p4 = binom_test(49, 49 + 161, theta_null, alternative=&quot;two-sided&quot;)
+
+results = pd.DataFrame({&#39;p-value&#39;: [p1, p2, p3, p4]}, index=[-2, -1, 1, 2])
+results</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+p-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+-2
+</th>
+<td>
+0.516380
+</td>
+</tr>
+<tr>
+<th>
+-1
+</th>
+<td>
+0.021061
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+0.017937
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+0.388072
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The tests suggest that there <em>is</em> strong evidence for distinct mortality rates between the Chinese and Jewish populations on the weeks immediately preceding and following the event (p-values of 2.1% and 1.8%), but not in the 2 weeks before or after the event (p-values of 51.6% and 38.8%).</p>
+<p><strong>Exercise 11.9.9</strong>. A randomized, double-blind experiment was conducted to assess the effectiveness of several drugs for reducing post-operative nausea. The data are as follows.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Number of patients</th>
+<th>Incidents of Nausea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Placebo</td>
+<td>80</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>Chlorpromazine</td>
+<td>75</td>
+<td>26</td>
+</tr>
+<tr class="odd">
+<td>Dimenhydrate</td>
+<td>85</td>
+<td>52</td>
+</tr>
+<tr class="even">
+<td>Pentobarbital (100 mg)</td>
+<td>67</td>
+<td>35</td>
+</tr>
+<tr class="odd">
+<td>Pentobarbital (150 mg)</td>
+<td>85</td>
+<td>37</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(a)</strong> Test each drug versus the placebo at the 5% level. Also, report the estimated odds-ratios. Summarize your findings.</p>
+<p><strong>(b)</strong> Use the Bonferroni and the FDR method to adjust for multiple testing.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+from scipy.stats import norm
+
+df = pd.DataFrame({
+    &#39;Treatment&#39;: [&#39;Placebo&#39;, &#39;Chlorpromazine&#39;, &#39;Dimenhydrate&#39;, &#39;Pentobarbital (100 mg)&#39;, &#39;Pentobarbital (150 mg)&#39;],
+    &#39;Number of patients&#39;: [80, 75, 85, 67, 85],
+    &#39;Incidents of Nausea&#39;: [45, 26, 52, 35, 37]
+})
+df</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Treatment
+</th>
+<th>
+Number of patients
+</th>
+<th>
+Incidents of Nausea
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+Placebo
+</td>
+<td>
+80
+</td>
+<td>
+45
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+Chlorpromazine
+</td>
+<td>
+75
+</td>
+<td>
+26
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Dimenhydrate
+</td>
+<td>
+85
+</td>
+<td>
+52
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Pentobarbital (100 mg)
+</td>
+<td>
+67
+</td>
+<td>
+35
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Pentobarbital (150 mg)
+</td>
+<td>
+85
+</td>
+<td>
+37
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>df[&#39;p_hat&#39;] = df[&#39;Incidents of Nausea&#39;] / df[&#39;Number of patients&#39;]
+df[&#39;variance&#39;] = df[&#39;p_hat&#39;] * (1 - df[&#39;p_hat&#39;]) / df[&#39;Number of patients&#39;]
+df</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Treatment
+</th>
+<th>
+Number of patients
+</th>
+<th>
+Incidents of Nausea
+</th>
+<th>
+p_hat
+</th>
+<th>
+variance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+Placebo
+</td>
+<td>
+80
+</td>
+<td>
+45
+</td>
+<td>
+0.562500
+</td>
+<td>
+0.003076
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+Chlorpromazine
+</td>
+<td>
+75
+</td>
+<td>
+26
+</td>
+<td>
+0.346667
+</td>
+<td>
+0.003020
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Dimenhydrate
+</td>
+<td>
+85
+</td>
+<td>
+52
+</td>
+<td>
+0.611765
+</td>
+<td>
+0.002794
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Pentobarbital (100 mg)
+</td>
+<td>
+67
+</td>
+<td>
+35
+</td>
+<td>
+0.522388
+</td>
+<td>
+0.003724
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Pentobarbital (150 mg)
+</td>
+<td>
+85
+</td>
+<td>
+37
+</td>
+<td>
+0.435294
+</td>
+<td>
+0.002892
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>p_hat_placebo = df[df[&#39;Treatment&#39;] == &#39;Placebo&#39;][&#39;p_hat&#39;][0]
+variance_placebo = df[df[&#39;Treatment&#39;] == &#39;Placebo&#39;][&#39;variance&#39;][0]
+
+# odds = affected / normal = p / (1 - p)
+df[&#39;Odds&#39;] = df[&#39;p_hat&#39;] / (1 - df[&#39;p_hat&#39;])
+
+# odds ratio = odds_placebo / odds_treatment
+df[&#39;Odds ratio&#39;] = df[df[&#39;Treatment&#39;] == &#39;Placebo&#39;][&#39;Odds&#39;][0] / df[&#39;Odds&#39;]
+
+df[&#39;Wald statistic&#39;] = (df[&#39;p_hat&#39;] - p_hat_placebo) / np.sqrt(df[&#39;variance&#39;] + variance_placebo)
+df[&#39;p-value&#39;] = 2 * (1 - norm.cdf(abs(df[&#39;Wald statistic&#39;])))
+df</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Treatment
+</th>
+<th>
+Number of patients
+</th>
+<th>
+Incidents of Nausea
+</th>
+<th>
+p_hat
+</th>
+<th>
+variance
+</th>
+<th>
+Odds
+</th>
+<th>
+Odds ratio
+</th>
+<th>
+Wald statistic
+</th>
+<th>
+p-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+Placebo
+</td>
+<td>
+80
+</td>
+<td>
+45
+</td>
+<td>
+0.562500
+</td>
+<td>
+0.003076
+</td>
+<td>
+1.285714
+</td>
+<td>
+1.000000
+</td>
+<td>
+0.000000
+</td>
+<td>
+1.000000
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+Chlorpromazine
+</td>
+<td>
+75
+</td>
+<td>
+26
+</td>
+<td>
+0.346667
+</td>
+<td>
+0.003020
+</td>
+<td>
+0.530612
+</td>
+<td>
+2.423077
+</td>
+<td>
+-2.764364
+</td>
+<td>
+0.005703
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Dimenhydrate
+</td>
+<td>
+85
+</td>
+<td>
+52
+</td>
+<td>
+0.611765
+</td>
+<td>
+0.002794
+</td>
+<td>
+1.575758
+</td>
+<td>
+0.815934
+</td>
+<td>
+0.642987
+</td>
+<td>
+0.520232
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Pentobarbital (100 mg)
+</td>
+<td>
+67
+</td>
+<td>
+35
+</td>
+<td>
+0.522388
+</td>
+<td>
+0.003724
+</td>
+<td>
+1.093750
+</td>
+<td>
+1.175510
+</td>
+<td>
+-0.486428
+</td>
+<td>
+0.626664
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Pentobarbital (150 mg)
+</td>
+<td>
+85
+</td>
+<td>
+37
+</td>
+<td>
+0.435294
+</td>
+<td>
+0.002892
+</td>
+<td>
+0.770833
+</td>
+<td>
+1.667954
+</td>
+<td>
+-1.646605
+</td>
+<td>
+0.099639
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>df[[&#39;Treatment&#39;, &#39;Odds ratio&#39;, &#39;Wald statistic&#39;, &#39;p-value&#39;]][df[&#39;Treatment&#39;] != &#39;Placebo&#39;]</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Treatment
+</th>
+<th>
+Odds ratio
+</th>
+<th>
+Wald statistic
+</th>
+<th>
+p-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+1
+</th>
+<td>
+Chlorpromazine
+</td>
+<td>
+2.423077
+</td>
+<td>
+-2.764364
+</td>
+<td>
+0.005703
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Dimenhydrate
+</td>
+<td>
+0.815934
+</td>
+<td>
+0.642987
+</td>
+<td>
+0.520232
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Pentobarbital (100 mg)
+</td>
+<td>
+1.175510
+</td>
+<td>
+-0.486428
+</td>
+<td>
+0.626664
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Pentobarbital (150 mg)
+</td>
+<td>
+1.667954
+</td>
+<td>
+-1.646605
+</td>
+<td>
+0.099639
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>At the 5% significance level, only Chlorpromazine changes the Nausea incidence, with an odds ratio of 2.42.</p>
+<p><strong>(b)</strong> There are 4 tests, so the significance ratio for the Bonferroni method will be <span class="math inline">\(0.05 / 4 = 0.0125\)</span>. Again, only Chlorpromazine rejects the null hypothesis.</p>
+<p>For the Benjamini-Hochfield method, the ordered p-values are <span class="math inline">\(0.0057 &lt; 0.0996 &lt; 0.5202 &lt; 0.6266\)</span>; <span class="math inline">\(\ell_i = i \alpha / m = 0.0125 \cdot i\)</span>, and <span class="math inline">\(R = \max \{ i : P_{(i)} &lt; \ell_i \} = 1\)</span>, so the rejection threshold again only rejects the null hypothesis for the first treatment.</p>
+<p><strong>Exercise 11.9.10</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim \text{Poisson}(\lambda)\)</span>.</p>
+<p><strong>(a)</strong> Let <span class="math inline">\(\lambda_0 &gt; 0\)</span>. Find the size <span class="math inline">\(\alpha\)</span> Wald test for</p>
+<p><span class="math display">\[ H_0: \lambda = \lambda_0 \quad \text{versus} \quad H_1: \lambda \neq \lambda_0\]</span></p>
+<p><strong>(b)</strong> (Computer Experiment) Let <span class="math inline">\(\lambda_0 = 1\)</span>, <span class="math inline">\(n = 20\)</span> and <span class="math inline">\(\alpha = 0.05\)</span>. Simulate <span class="math inline">\(X_1, \dots, X_n \sim \text{Poisson}(\lambda_0)\)</span> and perform the Wald test. Repeat many times and count how often you reject the null. How close is the type I error rate to 0.05?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p><span class="math display">\[
+\begin{align}
+\beta(\lambda_0) &amp;= \mathbb{P}_{\lambda_0}\left( |W| &gt; z_{\alpha/2} \right)  \\
+&amp;= \mathbb{P}_{\lambda_0}\left( \Bigg| \frac{\hat{\lambda} - \lambda_0}{\hat{\text{se}}} \Bigg| &gt; z_{\alpha/2} \right)
+\end{align}
+\]</span></p>
+<p>The MLE for the parameter is the mean of the data, <span class="math inline">\(\hat{\lambda} = \overline{X}\)</span>, while the estimate of the SE is <span class="math inline">\(\sqrt{1 / I_n(\hat{\lambda})} = 1 / \sqrt{n\overline{X}}\)</span>. Replacing these, we get</p>
+<p><span class="math display">\[
+\mathbb{P}_{\lambda_0}\left( \big| (\overline{X} - \lambda_0)\sqrt{n \overline{X}} \big| &gt; z_{\alpha/2} \right)
+\]</span></p>
+<p><strong>(b)</strong></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm, poisson
+from tqdm import notebook
+
+lambda_0 = 1
+n = 20
+alpha = 0.05
+
+z = norm.ppf(1 - alpha / 2)</code></pre>
+<pre class="python"><code># Perform process once
+X = poisson.rvs(lambda_0, size=n)
+lambda_hat = X.mean()
+rejection = ((lambda_hat - lambda_0)**2) * (n * lambda_hat) &gt; z**2
+print(&#39;Rejection: &#39;, rejection)</code></pre>
+<pre><code>Rejection:  False</code></pre>
+<pre class="python"><code># Perform process many times
+B = 1000000
+num_rejections = 0
+for i in notebook.tqdm(range(B)):
+    X = poisson.rvs(lambda_0, size=n)
+    lambda_hat = X.mean()
+    if ((lambda_hat - lambda_0)**2) * (n * lambda_hat) &gt; z**2:
+        num_rejections += 1
+        
+fraction_rejections = num_rejections / B
+
+print(&#39;Fraction of rejections: %.3f&#39; % fraction_rejections)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+Fraction of rejections: 0.052</code></pre>
+<p>The measured fraction of rejections of the null hypothesis is <span class="math inline">\(0.052\)</span>, which is very close to <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

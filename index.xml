@@ -6,7 +6,17 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS Chapter11 Hypothesis Testing and p-values</title>
+      <link>/2021/04/20/aos-chapter11-hypothesis-testing-and-p-values/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/20/aos-chapter11-hypothesis-testing-and-p-values/</guid>
+      <description>11. Hypothesis Testing and p-values11.1 The Wald Test11.2 p-values11.3 The \(\chi^2\) distribution11.4 Pearson’s \(\chi^2\) Test for Multinomial Data11.5 The Permutation Test11.6 Multiple Testing11.7 Technical Appendix11.9 ExercisesReferences11. Hypothesis Testing and p-valuesSuppose we partition the parameters space \(\Theta\) into two disjoint sets \(\Theta_0\) and \(\Theta_1\) and we wish to test
+\[H_0: \theta \in \Theta_0\quad \text{versus} \quadH_1: \theta \in \Theta_1\]</description>
+    </item>
+    
     <item>
       <title>AOS chapter10  Parametric Inference</title>
       <link>/2021/04/18/aos-chapter10-parametric-inference/</link>
