@@ -6,7 +6,17 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter12 Bayesian Inference</title>
+      <link>/2021/04/21/aos-chapter12-bayesian-inference/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/21/aos-chapter12-bayesian-inference/</guid>
+      <description>12. Bayesian Inference12.1 Bayesian Philosophy12.2 The Bayesian Method12.3 Functions of Parameters12.4 Simulation12.5 Large Sample Properties for Bayes’ Procedures12.6 Flat Priors, Improper Priors and “Noninformative” Priors12.7 Multiparameter Problems12.8 Strenghts and Weaknesses of Bayesian Inference12.9 Appendix12.11 ExercisesReferences12. Bayesian Inference12.1 Bayesian PhilosophyPostulates of frequentist (or classical) inference:
+Probabilty refers to limiting relative frequencies.</description>
+    </item>
+    
     <item>
       <title>AOS Chapter11 Hypothesis Testing and p-values</title>
       <link>/2021/04/20/aos-chapter11-hypothesis-testing-and-p-values/</link>
