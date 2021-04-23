@@ -6,7 +6,17 @@
     <description>Recent content in Distribution on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/distribution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter13 Statistical Decision Theory</title>
+      <link>/2021/04/22/aos-chapter13-statistical-decision-theory/</link>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/22/aos-chapter13-statistical-decision-theory/</guid>
+      <description>13. Statistical Decision Theory13.1 Preliminaries13.2 Comparing Risk Functions13.3 Bayes Estimators13.4 Minimax Rules13.5 Maximum Likelihood, Minimax and Bayes13.6 Admissibility13.7 Stein’s Paradox13.9 ExercisesReferences13. Statistical Decision Theory13.1 PreliminariesDecision theory is a formal theory for comparing between statistical procedures.
+In the language of decision theory, a estimator is sometimes called a decision rule and the possible values of the decision rule are called actions.</description>
+    </item>
+    
     <item>
       <title>AOS chapter12 Bayesian Inference</title>
       <link>/2021/04/21/aos-chapter12-bayesian-inference/</link>

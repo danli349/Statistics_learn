@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter13 Statistical Decision Theory - A Hugo website</title>
+<meta property="og:title" content="AOS chapter13 Statistical Decision Theory - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">18 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter13 Statistical Decision Theory</h1>
+
+    
+    <span class="article-date">2021-04-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/22/aos-chapter13-statistical-decision-theory/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#statistical-decision-theory">13. Statistical Decision Theory</a>
+<ul>
+<li><a href="#preliminaries">13.1 Preliminaries</a></li>
+<li><a href="#comparing-risk-functions">13.2 Comparing Risk Functions</a></li>
+<li><a href="#bayes-estimators">13.3 Bayes Estimators</a></li>
+<li><a href="#minimax-rules">13.4 Minimax Rules</a></li>
+<li><a href="#maximum-likelihood-minimax-and-bayes">13.5 Maximum Likelihood, Minimax and Bayes</a></li>
+<li><a href="#admissibility">13.6 Admissibility</a></li>
+<li><a href="#steins-paradox">13.7 Stein’s Paradox</a></li>
+<li><a href="#exercises">13.9 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="statistical-decision-theory" class="section level2">
+<h2>13. Statistical Decision Theory</h2>
+<div id="preliminaries" class="section level3">
+<h3>13.1 Preliminaries</h3>
+<p><strong>Decision theory</strong> is a formal theory for comparing between statistical procedures.</p>
+<p>In the language of decision theory, a estimator is sometimes called a <strong>decision rule</strong> and the possible values of the decision rule are called <strong>actions</strong>.</p>
+<p>We shall measure the discrepancy between <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\hat{\theta}\)</span> using a <strong>loss function</strong> <span class="math inline">\(L(\theta, \hat{\theta})\)</span>. Formally, <span class="math inline">\(L\)</span> maps <span class="math inline">\(\Theta \times \Theta\)</span> into <span class="math inline">\(\mathbb{R}\)</span>.</p>
+<p>The <strong>risk</strong> of an estimator <span class="math inline">\(\hat{\theta}\)</span> is</p>
+<p><span class="math display">\[ R(\theta, \hat{\theta}) = \mathbb{E}_\theta \left( L(\theta, \hat{\theta}) \right)
+= \int L(\theta, \hat{\theta}(x)) f(x; \theta) dx\]</span></p>
+<p>When the loss function is squared error, then the risk is just the mean squared error:</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}) = \mathbb{E}_\theta(\hat{\theta} - \theta)^2 = \text{MSE} = \mathbb{V}_\theta(\hat{\theta}) + \text{bias}_\theta^2(\hat{\theta})\]</span></p>
+<p>In the rest of chapter, if the risk function is not specified, assume the loss function is the squared error.</p>
+</div>
+<div id="comparing-risk-functions" class="section level3">
+<h3>13.2 Comparing Risk Functions</h3>
+<p>The <strong>maximum risk</strong> is</p>
+<p><span class="math display">\[ \overline{R}(\hat{\theta}) = \sup_\theta R(\theta, \hat{\theta})\]</span></p>
+<p>and the <strong>Bayes risk</strong> is</p>
+<p><span class="math display">\[ r(\pi, \hat{\theta}) = \int R(\theta, \hat{\theta}) \pi(\theta) d\theta\]</span></p>
+<p>where <span class="math inline">\(\pi(\theta)\)</span> is a prior for <span class="math inline">\(\theta\)</span>.</p>
+<p>An estimator that minimizes the maximum risk is called a <strong>minimax rule</strong>. Formally, <span class="math inline">\(\hat{\theta}\)</span> is minimax if</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}) = \inf_{\overline{\theta}} \sup_\theta R(\theta, \hat{\theta})\]</span></p>
+<p>where the infimum is over all estimators <span class="math inline">\(\overline{\theta}\)</span>.</p>
+<p>A decision rule that minimizes the Bayes risk is called a <strong>Bayes rule</strong>. Formally, <span class="math inline">\(\hat{\theta}\)</span> is a Bayes rule for prior <span class="math inline">\(\pi\)</span> if</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}) = \inf_{\overline{\theta}} r(\pi, \overline{\theta})\]</span></p>
+<p>where the infimum is over all estimators <span class="math inline">\(\overline{\theta}\)</span>.</p>
+</div>
+<div id="bayes-estimators" class="section level3">
+<h3>13.3 Bayes Estimators</h3>
+<p>Let <span class="math inline">\(\pi\)</span> be a prior. From Bayes’ theorem, the posterior density is</p>
+<p><span class="math display">\[f(\theta | x) = \frac{f(x | \theta) \pi(\theta)}{m(x)} = \frac{f(x | \theta) \pi(\theta)}{\int f(x | \theta) \pi(\theta) d\theta} \]</span></p>
+<p>where <span class="math inline">\(m(x) = \int f(x, \theta) d\theta = \int f(x | \theta) \pi(\theta) d\theta\)</span> is the <strong>marginal distribution</strong> of <span class="math inline">\(X\)</span>. Define the <strong>posterior risk</strong> of an estimator <span class="math inline">\(\hat{\theta}(x)\)</span> by</p>
+<p><span class="math display">\[r(\hat{\theta} | x) = \int L(\theta, \hat{\theta}(x)) f(\theta | x) d\theta\]</span></p>
+<p><strong>Theorem 13.8</strong>. The Bayes risk <span class="math inline">\(r(\pi, \hat{\theta})\)</span> satisfies</p>
+<p><span class="math display">\[r(\pi, \hat{\theta}) = \int r(\hat{\theta} | x) m(x) dx\]</span></p>
+<p>Let <span class="math inline">\(\hat{\theta}(x)\)</span> be the value of <span class="math inline">\(\theta\)</span> that minimizes <span class="math inline">\(r(\hat{\theta} | x)\)</span>. Then <span class="math inline">\(\hat{\theta}\)</span> is the Bayes estimator.</p>
+<p><strong>Proof</strong>. We can rewrite the Bayes risk as:</p>
+<p><span class="math display">\[
+\begin{align}
+r(\pi, \hat{\theta}) &amp;= \int R(\theta, \hat{\theta}) \pi(\theta) d\theta \\
+&amp;= \int \left( \int L(\theta, \hat{\theta}(x)) f(x | \theta) dx \right) \pi(\theta) d\theta \\
+&amp;= \int \int L(\theta, \hat{\theta}(x)) f(x, \theta) dx d\theta \\
+&amp;= \int \int L(\theta, \hat{\theta}(x)) f(\theta | x) m(x) dx d\theta \\
+&amp;= \int \left(\int L(\theta, \hat{\theta}(x) f(\theta | x) d\theta \right) m(x) dx \\
+&amp;= \int r(\hat{\theta} | x) m(x) dx
+\end{align}
+\]</span></p>
+<p>If <span class="math inline">\(\hat{\theta} = \text{argmin}_\theta r(\hat{\theta} | x)\)</span> then we will minimize the integrand at every <span class="math inline">\(x\)</span> and thus minimize the integral <span class="math inline">\(\int r(\hat{\theta} | x)m(x) dx\)</span>.</p>
+<p><strong>Theorem 13.9</strong>. If <span class="math inline">\(L(\theta, \hat{\theta}) = (\theta - \hat{\theta})^2\)</span> then the Bayes estimator is</p>
+<p><span class="math display">\[\hat{\theta}(x) = \int \theta f(\theta | x) d\theta = \mathbb{E}(\theta | X = x)\]</span></p>
+<p>If <span class="math inline">\(L(\theta, \hat{\theta}) = |\theta - \hat{\theta}|\)</span> then the Bayes estimator is the median of the posterior <span class="math inline">\(f(\theta | x)\)</span>. If <span class="math inline">\(L(\theta, \hat{\theta})\)</span> is zero-one loss, then the Bayes estimator is the mode of the posterior <span class="math inline">\(f(\theta | x)\)</span>.</p>
+<p><strong>Proof</strong>. We will prove the theorem for the squared error loss. The Bayes rule <span class="math inline">\(\hat{\theta}\)</span> minimizes <span class="math inline">\(r(\theta | x) = \int (\theta - \hat{\theta}(x))^2 f(\theta | x) d\theta\)</span>. Taking the derivative of <span class="math inline">\(r(\hat{\theta} | x)\)</span> with respect to <span class="math inline">\(\hat{\theta}(x)\)</span> and setting it to 0 yields the equation <span class="math inline">\(2 \int (\theta - \hat{\theta}(x)) f(\theta | x) d\theta = 0\)</span>. Solving for <span class="math inline">\(\hat{\theta}(x)\)</span> we get the given estimator.</p>
+</div>
+<div id="minimax-rules" class="section level3">
+<h3>13.4 Minimax Rules</h3>
+<p>The problem of Minimax Rules is complicated and a complete coverage of that theory will not be attempted here, but a few key results will be mentioned. Main takeaway message from this section: Bayes estimators with a constant risk function are minimax.</p>
+<p><strong>Theorem 13.11</strong>. Let <span class="math inline">\(\hat{\theta}^\pi\)</span> be the Bayes rule for some prior <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[r(\pi, \hat{\theta}^\pi) = \inf_{\hat{\theta}} r(\pi, \hat{\theta})\]</span></p>
+<p>Suppose that</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}^\pi) \leq r(\pi, \hat{\theta}^\pi) \;\text{for all } \theta\]</span></p>
+<p>Then <span class="math inline">\(\hat{\theta}^\pi\)</span> is minimax and <span class="math inline">\(\pi\)</span> is called a <strong>least favorable prior</strong>.</p>
+<p><strong>Proof</strong>. Suppose that <span class="math inline">\(\hat{\theta}^\pi\)</span> is not minimax. Then there is another rule <span class="math inline">\(\hat{\theta}_0\)</span> such that <span class="math inline">\(\sup_\theta R(\theta, \hat{\theta}_0) \leq \sup_\theta R(\theta, \hat{\theta}^\pi)\)</span>. Since the average of a function is always less than or equal to its maximum, we have that <span class="math inline">\(r(\theta, \hat{\theta}_0) \leq \sup_\theta R(\theta, \hat{\theta}_0)\)</span>. Hence,</p>
+<p><span class="math display">\[r(\theta, \hat{\theta}_0) \leq \sup_\theta R(\theta, \hat{\theta}_0) \leq \sup_\theta R(\theta, \hat{\theta}^\pi) \leq r(\pi, \hat{\theta}^\pi)\]</span></p>
+<p>which contradicts <span class="math inline">\(r(\pi, \hat{\theta}^pi) = \inf_{\hat{\theta}} r(\pi, \hat{\theta})\)</span>.</p>
+<p><strong>Theorem 13.12</strong>. Suppose that <span class="math inline">\(\hat{\theta}\)</span> is the Bayes rule estimator with respect to some prior <span class="math inline">\(\pi\)</span>. Suppose further that <span class="math inline">\(\hat{\theta}\)</span> has constant risk: <span class="math inline">\(R(\theta, \hat{\theta}) = c\)</span> for some <span class="math inline">\(c\)</span>. Then <span class="math inline">\(\hat{\theta}\)</span> is minimax.</p>
+<p><strong>Proof</strong>. The Bayes risk is <span class="math inline">\(r(\pi, \hat{\theta}) = \int R(\theta, \hat{\theta}) \pi(\theta) d\theta = c\)</span> and hence <span class="math inline">\(R(\theta, \hat{\theta}) \leq r(\pi, \hat{\theta})\)</span> for all <span class="math inline">\(\theta\)</span>. Now apply Theorem 13.11.</p>
+<p><strong>Theorem 13.15</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim N(\theta, 1)\)</span> and let <span class="math inline">\(\hat{\theta} = \overline{X}\)</span>. Then <span class="math inline">\(\hat{\theta}\)</span> is minimax with respect to any well-behaved loss function. It is the only estimator with this property.</p>
+<p><em>Well-behaved means that the level sets must be convex and symmetric about the origin. The result holds up to sets of measure 0.</em></p>
+</div>
+<div id="maximum-likelihood-minimax-and-bayes" class="section level3">
+<h3>13.5 Maximum Likelihood, Minimax and Bayes</h3>
+<p>For parametric models that satisfy weak regularity conditions, the MLE is approximately minimax. Consider squared error loss which is squared bias plus variance. In parametric models with large samples, it can be shown that the variance term dominates the bias so the risk of the MLE <span class="math inline">\(\hat{\theta}\)</span> roughly equals the variance:</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}) = \mathbb{V}_\theta(\hat{\theta}) + \text{bias}^2 \approx \mathbb{V}_\theta(\hat{\theta})\]</span></p>
+<p><em>Typically, the squared bias is of order <span class="math inline">\(O(n^{-2})\)</span> while the variance is of order <span class="math inline">\(O(n^{-1})\)</span>.</em></p>
+<p>As seen on the chapter on parametric models, the variance is approximately:</p>
+<p><span class="math display">\[\mathbb{V}(\hat{\theta}) = \frac{1}{nI(\theta)}\]</span></p>
+<p>where <span class="math inline">\(I(\theta)\)</span> is the Fisher information. Hence,</p>
+<p><span class="math display">\[ n R(\theta, \hat{\theta}) \approx \frac{1}{I(\theta)}\]</span></p>
+<p>For any other estimator <span class="math inline">\(\theta&#39;\)</span>, it can be shown that, for large <span class="math inline">\(n\)</span>, <span class="math inline">\(R(\theta, \theta&#39;) \geq R(\theta, \hat{\theta})\)</span>. More precisely,</p>
+<p><span class="math display">\[ \lim_{\epsilon \rightarrow 0} \limsup_{n \rightarrow \infty} \sup_{|\theta - \theta&#39;| &lt; \epsilon} n R(\theta&#39;, \hat{\theta}) \geq \frac{1}{I(\theta)} \]</span></p>
+<p>This says that, in a local, large sample sense, the MLE is minimax. It can also be shown that the MLE is approximately the Bayes rule.</p>
+<p>In summary, in parametric models with large samples, the MLE is approximately minimax and Bayes. There is a caveat: these results break down when the number of parameters is large.</p>
+</div>
+<div id="admissibility" class="section level3">
+<h3>13.6 Admissibility</h3>
+<p>An estimator <span class="math inline">\(\hat{\theta}\)</span> is <strong>inadmissible</strong> if there exists another rule <span class="math inline">\(\hat{\theta}&#39;\)</span> such that</p>
+<p><span class="math display">\[
+\begin{align}
+R(\theta, \hat{\theta}&#39;) \leq R(\theta, \hat{\theta}) &amp; \quad \text{for all } \theta \text{ and} \\
+R(\theta, \hat{\theta}&#39;) &lt; R(\theta, \hat{\theta}) &amp; \quad \text{for at least one } \theta
+\end{align}
+\]</span></p>
+<p>A prior has <strong>full support</strong> if for every <span class="math inline">\(\theta\)</span> and every <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math inline">\(\int_{\theta - \epsilon}^{\theta + \epsilon} \pi(\theta) d\theta &gt; 0\)</span>.</p>
+<p><strong>Theorem 13.20 (Bayes’ rules are admissible)</strong>. Suppose that <span class="math inline">\(\theta \subset \mathbb{R}\)</span> and that <span class="math inline">\(R(\theta, \hat{\theta})\)</span> is a continuous function of <span class="math inline">\(\theta\)</span> for every <span class="math inline">\(\hat{\theta}\)</span>. Let <span class="math inline">\(\pi\)</span> be a prior density with full support and let <span class="math inline">\(\hat{\theta}^\pi\)</span> be the Bayes’ rule. If the Bayes risk is finite then <span class="math inline">\(\hat{\theta}^\pi\)</span> is admissible.</p>
+<p><strong>Proof</strong>. Suppose <span class="math inline">\(\hat{\theta}^\pi\)</span> is inadmissible. Then there exists a better rule <span class="math inline">\(\hat{\theta}\)</span> such that <span class="math inline">\(R(\theta, \hat{\theta}) \leq R(\theta, \hat{\theta}^\pi)\)</span> for all <span class="math inline">\(\theta\)</span> and <span class="math inline">\((\theta_0, \hat{\theta}) &lt; R(\theta_0, \hat{\theta}^\pi)\)</span> for some <span class="math inline">\(\theta_0\)</span>. Let <span class="math inline">\(v = R(\theta_0, \hat{\theta}^\pi) - R(\theta_0, \hat{\theta}) &gt; 0\)</span>. Since <span class="math inline">\(R\)</span> is continuous, there is an <span class="math inline">\(\epsilon &gt; 0\)</span> such that <span class="math inline">\(R(\theta, \hat{\theta}^\pi) - R(\theta_0, \hat{\theta}) &gt; v/2\)</span> for all <span class="math inline">\(\theta \in (\theta_0 - \epsilon, \theta_0 + \epsilon)\)</span>. Now,</p>
+<p><span class="math display">\[
+\begin{align}
+r(\pi, \hat{\theta}^{\pi}) - r(\pi, \hat{\theta}) &amp;= \int R(\theta, \hat{\theta}^\pi) \pi(\theta) d\theta - \int R(\theta, \hat{\theta}) \pi(\theta) d\theta \\
+&amp;= \int \left[ R(\theta, \hat{\theta}^\pi) - R(\theta, \hat{\theta})\right] \pi(\theta) d\theta \\
+&amp;\geq \int_{\theta_0 - \epsilon}^{\theta_0 + \epsilon} \left[ R(\theta, \hat{\theta}^\pi) - R(\theta, \hat{\theta})\right] \pi(\theta) d\theta \\
+&amp; \geq \frac{v}{2} \int_{\theta_0 - \epsilon}^{\theta_0 + \epsilon} \pi(\theta) d\theta \\
+&amp; &gt; 0
+\end{align}
+\]</span></p>
+<p>Hence <span class="math inline">\(r(\pi, \hat{\theta}^\pi) &gt; r(\pi, \hat{\theta})\)</span>. This implies that <span class="math inline">\(\hat{\theta}^\pi\)</span> does not minimize <span class="math inline">\(r(\pi, \hat{\theta})\)</span>, which contradicts the fact that <span class="math inline">\(\hat{\theta}^\pi\)</span> is the Bayes rule.</p>
+<p><strong>Theorem 13.21</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim N(\mu, \sigma^2)\)</span>. Under squared error loss, <span class="math inline">\(\overline{X}\)</span> is admissible.</p>
+<p>The proof of this theorem is very technical and ommitted. Outline: the posterior mean is admissible for any strictly positive prior. Take the prior to be <span class="math inline">\(N(a, b^2)\)</span>. When <span class="math inline">\(b^2\)</span> is very large, the posterior mean is approximately equal to <span class="math inline">\(\overline{X}\)</span>.</p>
+<p>In general, a rule may be minimax, admissible, both, or neither. Here are some facts linking admissibility and minimaxity.</p>
+<p><strong>Theorem 13.22</strong>. Suppose that <span class="math inline">\(\hat{\theta}\)</span> has constant risk and is admissible. Then it is minimax.</p>
+<p><strong>Proof</strong>. The risk is <span class="math inline">\(R(\theta, \hat{\theta}) = c\)</span> for some constant <span class="math inline">\(c\)</span>. If <span class="math inline">\(\hat{\theta}\)</span> were not minimax then there exists a rule <span class="math inline">\(\hat{\theta}&#39;\)</span> that further reduces the risk,</p>
+<p><span class="math display">\[R(\theta, \hat{\theta}&#39;) \leq \sup_{\theta} R(\theta, \hat{\theta}&#39;) &lt; \sup_{\theta} R(\theta, \hat{\theta}) = c\]</span></p>
+<p>But that would imply that <span class="math inline">\(\hat{\theta}\)</span> is inadmissible.</p>
+<p><strong>Theorem 13.23</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim N(\theta, 1)\)</span>. Then, under squared error loss, <span class="math inline">\(\hat{\theta} = \overline{X}\)</span> is minimax.</p>
+<p><strong>Proof</strong>. According to Theorem 13.21, <span class="math inline">\(\hat{\theta}\)</span> is admissible. The risk of <span class="math inline">\(\hat{\theta}\)</span> is <span class="math inline">\(1/n\)</span> which is constant. According to Theorem 13.22, it is also minimax.</p>
+<p>Although miminax rules are not guaranteed to be admissible they are “close to admissible.” Say <span class="math inline">\(\hat{\theta}\)</span> is <strong>strongly inadmissible</strong> if there is a rule <span class="math inline">\(\hat{\theta}&#39;\)</span> and an <span class="math inline">\(\epsilon &gt; 0\)</span> such that <span class="math inline">\(R(\theta, \hat{\theta}&#39;) &lt; R(\theta, \hat{\theta}) - \epsilon\)</span> for all <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Theorem 13.24</strong>. If <span class="math inline">\(\hat{\theta}\)</span> is minimax then it is not strongly inadmissible.</p>
+</div>
+<div id="steins-paradox" class="section level3">
+<h3>13.7 Stein’s Paradox</h3>
+<p>Suppose that <span class="math inline">\(X \sim N(0, 1)\)</span> and consider estimating <span class="math inline">\(\theta\)</span> with squared error loss. From the previous section we know that <span class="math inline">\(\hat{\theta}(X) = X\)</span> is admissible.</p>
+<p>Now consider estimating two, unrelated quantities <span class="math inline">\(\theta = (\theta_1, \theta_2)\)</span> and suppose that <span class="math inline">\(X_1 \sim N(\theta_1, 1)\)</span> and <span class="math inline">\(X_2 \sim N(\theta_2, 1)\)</span> independently, with loss <span class="math inline">\(L(\theta, \hat{\theta}) = \sum_{j=1}^2 (\theta_j - \hat{\theta}_j)^2\)</span>. Not surprisingly, <span class="math inline">\(\hat{\theta}(X) = X\)</span> is again admissible, where <span class="math inline">\(X = (X_1, X_2)\)</span>.</p>
+<p>Now consider the generalization to <span class="math inline">\(k\)</span> normal means. Let <span class="math inline">\(\theta = (\theta_1, \dots, \theta_k)\)</span>, <span class="math inline">\(X = (X_1, \dots, X_k)\)</span> with <span class="math inline">\(X_i \sim N(\theta_i, 1)\)</span> (independently) and loss <span class="math inline">\(L(\theta, \hat{\theta}) = \sum_{j=1}^k (\theta_j - \hat{\theta}_j)^2\)</span>.</p>
+<p>Stein astounded everyone when he proved that, if <span class="math inline">\(k \geq 3\)</span>, then <span class="math inline">\(\hat{\theta}(X) = X\)</span> is inadmissible. It can be shown that the following estimator, known as the James-Stein estimator, has smaller risk:</p>
+<p><span class="math display">\[\hat{\theta}_S(X) = \left(1 - \frac{k-2}{\sum_i X_i^2} \right)^+ X_i\]</span></p>
+<p>where <span class="math inline">\((z)^+ = \max \{z, 0\}\)</span>. This estimator shrinks the <span class="math inline">\(X_i\)</span>’s towards 0. The message is that, when estimating many parameters, there is great value in “shrinking” the estimates. This observation plays an important role in modern nonparametric function estimation.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>13.9 Exercises</h3>
+<p><strong>13.9.1</strong>. In each of the following models, find the Bayes risk and the Bayes estimator, using squared error loss.</p>
+<p><strong>(a)</strong> <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>, <span class="math inline">\(p \sim \text{Beta}(\alpha, \beta)\)</span>.</p>
+<p><strong>(b)</strong> <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>, <span class="math inline">\(\lambda \sim \text{Gamma}(\alpha, \beta)\)</span>.</p>
+<p><strong>(c)</strong> <span class="math inline">\(X \sim N(\theta, \sigma^2)\)</span> where <span class="math inline">\(\sigma^2\)</span> is known and <span class="math inline">\(\theta \sim N(a, b^2)\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p>We can determine the posterior distribution, since its proportional to the likelihood times the prior, <span class="math inline">\(f(\theta | X) \propto \mathcal{L}(\theta) f(\theta)\)</span>. But when using the square loss, the Bayes estimator is the mean of the posterior (from Theorem 13.9). So we can then get the Bayes estimator as <span class="math inline">\(\hat{\theta} = \mathbb{E}[\theta | X]\)</span>.</p>
+<p><strong>(a)</strong></p>
+<p><span class="math display">\[
+\begin{align}
+f(\theta | X) &amp;\propto \mathcal{L}(\theta) f(\theta) \\
+&amp;= \prod_{i = 1}^N \left( \binom{N}{X_i} p^{X_i}(1 - p)^{n - X_i} \right) \frac{p^{\alpha - 1}(1-p)^{\beta - 1}}{B(\alpha, \beta)} \\
+&amp; \propto p^{(\alpha - 1) + \sum_i X_i} (1 - p)^{(\beta - 1) + \sum_i (n - X_i)} \\
+&amp;= p^{\left(\alpha + N \overline{X}_N \right) - 1} (1 - p)^{\left(\beta + N(n - \overline{X}_N) \right)- 1}
+\end{align}
+\]</span></p>
+<p>So the posterior is proportional to, and drawn from, a Beta distribution:</p>
+<p><span class="math display">\[ \theta | X \sim \text{Beta}\left(\alpha + N \overline{X}, \beta + N(n - \overline{X}) \right)\]</span></p>
+<p>The mean of the Beta distribution with parameters <span class="math inline">\(\alpha_p, \beta_p\)</span> is <span class="math inline">\(\alpha_p / (\alpha_p + \beta_p)\)</span>, so the posterior mean (and the Bayes estimator) is:</p>
+<p><span class="math display">\[ \hat{\theta}(X) = \frac{\alpha + N \overline{X}}{\alpha + \beta + Nn} \]</span></p>
+<p>The Bayes risk for an arbitrary estimator <span class="math inline">\(\tilde{\theta}\)</span>, given a prior <span class="math inline">\(\pi(\theta)\)</span> that <span class="math inline">\(\theta \sim \text{Beta}(\alpha, \beta)\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+r(\pi, \tilde{\theta}) &amp;= \int R(\theta, \tilde{\theta}) \pi(\theta) d\theta \\
+&amp;= \int (\tilde{\theta} - \theta)^2 \frac{\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta \\
+&amp;= \tilde{\theta}^2 \int \frac{\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta
+- 2 \tilde{\theta} \int \theta \frac{\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta
++ \int \theta^2 \frac{\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta \\
+&amp;= \tilde{\theta}^2 \mathbb{E}_\pi[1] - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{E}_\pi[\theta^2]  \\
+&amp;= \tilde{\theta}^2 \cdot 1 - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{V}_\pi[\theta] + \mathbb{E}_\pi[\theta]^2 \\ 
+&amp;= \tilde{\theta}^2 - 2 \tilde{\theta} \frac{\alpha}{\alpha + \beta}
++ \frac{\alpha\beta}{(\alpha + \beta)^2(\alpha + \beta + 1)} + \frac{\alpha^2}{(\alpha + \beta)^2} \\
+&amp;= \tilde{\theta}^2 - 2 \tilde{\theta} \frac{\alpha}{\alpha + \beta}
++ \frac{\alpha\beta + \alpha^2(\alpha + \beta + 1)}{(\alpha + \beta)^2(\alpha + \beta + 1)}
+\end{align}
+\]</span></p>
+<p>Including the observations from <span class="math inline">\(X\)</span>, the prior is modified to a different Beta distribution, replacing <span class="math inline">\(\alpha\)</span> by <span class="math inline">\(\alpha + N \overline{X}\)</span> and <span class="math inline">\(\beta\)</span> by <span class="math inline">\(\beta + N(n - \overline{X})\)</span>.</p>
+<p><strong>(b)</strong></p>
+<p><span class="math display">\[
+\begin{align}
+f(\theta | X) &amp;\propto \mathcal{L}(\theta ) f(\theta) \\
+&amp;= \prod_{i = 1}^N \left( \frac{\lambda^X_i e^{-\lambda}}{X_i!} \right) \frac{\beta^\alpha}{\Gamma(\alpha)}\lambda^{\alpha - 1}e^{-\beta \lambda} \\
+&amp; \propto \lambda^{\sum_i X_i} e^{-N \lambda} \lambda^{\alpha - 1} e^{-\beta \lambda} \\
+&amp;= \lambda^{\left(\alpha + N \overline{X}\right) - 1} e^{-(\beta + N) \lambda}
+\end{align}
+\]</span></p>
+<p>So the posterior is proportional to, and drawn from, a Gamma distribution:</p>
+<p><span class="math display">\[ \theta | X \sim \text{Gamma}\left(\alpha + N \overline{X}, \beta + N \right)\]</span></p>
+<p>The mean of the Gamma distribution with parameters <span class="math inline">\(\alpha_p, \beta_p\)</span> is <span class="math inline">\(\alpha_p / \beta_p\)</span>, so the posterior mean (and the Bayes estimator) is:</p>
+<p><span class="math display">\[ \hat{\theta}(X) = \frac{\alpha + N \overline{X}}{\beta + N} \]</span></p>
+<p>The Bayes risk for an arbitrary estimator <span class="math inline">\(\tilde{\theta}\)</span>, given a prior <span class="math inline">\(\pi(\theta)\)</span> that <span class="math inline">\(\theta \sim \text{Gamma}(\alpha, \beta)\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+r(\pi, \tilde{\theta}) &amp;= \int R(\theta, \tilde{\theta})\pi(\theta) d\theta \\
+&amp;= \int (\tilde{\theta} - \theta)^2 \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha - 1}e^{-\beta \theta} d\theta \\
+&amp;= \tilde{\theta}^2 \int \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha - 1}e^{-\beta \theta} d\theta
+- 2 \tilde{\theta} \int \theta \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha - 1}e^{-\beta \theta} d\theta
++ \int \theta^2\frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha - 1}e^{-\beta \theta} d\theta \\
+&amp;= \tilde{\theta}^2 \mathbb{E}_\pi[1] - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{E}_\pi[\theta^2] \\
+&amp;= \tilde{\theta}^2 \cdot 1 - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{V}_\pi[\theta] + \mathbb{E}_\pi[\theta]^2 \\
+&amp;= \tilde{\theta}^2 - 2 \tilde{\theta} \frac{\alpha}{\beta} + \frac{\alpha(\alpha + 1)}{\beta^2}
+\end{align}
+\]</span></p>
+<p>Including the observations from <span class="math inline">\(X\)</span>, the prior is modified to a different Gamma distribution, replacing <span class="math inline">\(\alpha\)</span> by <span class="math inline">\(\alpha + N \overline{X}\)</span> and <span class="math inline">\(\beta\)</span> by <span class="math inline">\(\beta + N\)</span>.</p>
+<p><strong>(c)</strong></p>
+<p><span class="math display">\[
+\begin{align}
+f(\theta | X) &amp;\propto \mathcal{L}(\theta | X) f(\theta) \\
+&amp;= \prod_{i = 1}^N \left( \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left(\frac{X_i - \theta}{\sigma} \right)^2} \right) \frac{1}{a \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{\theta - a}{b}\right)^2} \\
+&amp; \propto \exp \left\{ -\frac{1}{2} \left( \sum_{i=1}^N \left( \frac{X_i - \theta}{\sigma}\right)^2 + \left( \frac{\theta - a}{b}\right)^2 \right) \right\} \\
+&amp; = \exp \left\{-\frac{1}{2} \left( \theta^2 \left(\frac{N}{\sigma^2} + \frac{1}{b^2} \right) - 2 \theta \left( \frac{N \overline{X}}{\sigma^2} + \frac{a}{b^2} \right) + C\right) \right\} \\
+&amp; \propto \exp \left\{-\frac{1}{2} \left( \frac{Nb^2 + \sigma^2}{\sigma^2 b^2} \right)\left(\theta^2 - 2\theta \left(\frac{N b^2 \overline{X} + a \sigma^2}{N b^2 + \sigma^2} \right) \right) \right\} \\
+&amp; \propto \exp \left\{-\frac{1}{2} \left( \frac{Nb^2 + \sigma^2}{\sigma^2 b^2} \right) \left(\theta - \left(\frac{N b^2 \overline{X} + a \sigma^2}{N b^2 + \sigma^2} \right) \right)^2 \right\} \\
+&amp; = \exp \left\{-\frac{1}{2} \left(\frac{\theta - \left(\frac{N b^2 \overline{X} + a \sigma^2}{N b^2 + \sigma^2} \right)}{\sqrt{\frac{\sigma^2 b^2}{Nb^2 + \sigma^2}}} \right)^2 \right\} \\
+&amp; = \exp \left\{-\frac{1}{2} \left(\frac{\theta - \overline{\theta}}{w} \right)^2 \right\}
+\end{align}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\overline{\theta} = \frac{\sigma^2}{\sigma^2 + N b^2}a + \frac{Nb^2}{\sigma^2 + Nb^2}\overline{X}
+\quad \text{and} \quad
+w^2 = \frac{1}{N} \frac{1}{\frac{1}{\sigma^2} + \frac{1}{Nb^2}}
+\]</span></p>
+<p>So the posterior is proportional to, and drawn from, a Normal distribution:</p>
+<p><span class="math display">\[ \theta | X \sim N(\overline{\theta}, w^2) \]</span></p>
+<p>The mean of the Normal distribution is <span class="math inline">\(\overline{\theta}\)</span>, so the mean of the posterior (and the Bayes estimator) is:</p>
+<p><span class="math display">\[ \hat{\theta}(X) = \frac{\sigma^2}{\sigma^2 + N b^2}a + \frac{Nb^2}{\sigma^2 + Nb^2}\overline{X}\]</span></p>
+<p>The Bayes risk for an arbitrary estimator <span class="math inline">\(\tilde{\theta}\)</span>, given a prior <span class="math inline">\(\pi(\theta)\)</span> that <span class="math inline">\(\theta \sim N(a, b^2)\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+r(\pi, \tilde{\theta}) &amp;= \int R(\theta, \tilde{\theta}) \pi(\theta) d\theta \\
+&amp;= \int (\tilde{\theta} - \theta)^2 \frac{1}{b \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left(\frac{\theta - a}{b}\right)^2 \right\} d\theta \\
+&amp;= \tilde{\theta}^2 \int \frac{1}{b \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left(\frac{\theta - a}{b}\right)^2 \right\} d\theta
+- 2 \tilde{\theta} \int \theta \frac{1}{b \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left(\frac{\theta - a}{b}\right)^2 \right\} d\theta
++ \int \theta^2 \frac{1}{b \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left(\frac{\theta - a}{b}\right)^2 \right\} d\theta \\
+&amp;= \tilde{\theta}^2 \mathbb{E}_\pi[1] - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{E}_\pi[\theta^2] \\
+&amp;= \tilde{\theta}^2 - 2 \tilde{\theta} \mathbb{E}_\pi[\theta] + \mathbb{V}_pi[\theta] + \mathbb{E}_\pi[\theta]^2 \\
+&amp;= \tilde{\theta}^2 - 2 \tilde{\theta} a + a^2 + b^2
+\end{align}
+\]</span></p>
+<p>Including the observations from <span class="math inline">\(X\)</span>, the prior is modified to a different Normal distribution, replacing <span class="math inline">\(a\)</span> with <span class="math inline">\(\overline{\theta}\)</span> and <span class="math inline">\(b^2\)</span> with <span class="math inline">\(w^2\)</span>.</p>
+<p><strong>Exercise 13.9.2</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim N(\theta, \sigma^2)\)</span> and suppose we estimate <span class="math inline">\(\theta\)</span> with loss function <span class="math inline">\(L(\theta, \hat{\theta}) = (\theta - \hat{\theta})^2 / \sigma^2\)</span>. Show that <span class="math inline">\(\overline{X}\)</span> is admissible and minimax.</p>
+<p><strong>Solution</strong>.</p>
+<p>The risk for an estimator <span class="math inline">\(\hat{\theta}\)</span> is the risk for the same estimator using the mean squared error, but scaled by <span class="math inline">\(1 / \sigma^2\)</span>:</p>
+<p><span class="math display">\[
+R_L(\theta, \hat{\theta}) = \mathbb{E}_\theta[L(\theta, \hat{\theta})] 
+= \mathbb{E}_\theta\left[\left( \frac{\theta - \hat{\theta}}{\sigma} \right)^2 \right] 
+= \frac{1}{\sigma^2} \mathbb{E}_\theta[ L_\text{MSE}(\theta, \hat{\theta})]  
+= \frac{1}{\sigma^2} R_\text{MSE}(\theta, \hat{\theta})
+\]</span></p>
+<p>Since <span class="math inline">\(\overline{X}\)</span> is admissible and minimax for the MSE loss function, it follows it is also admissible and minimax for this rescaled loss function.</p>
+<p><strong>Exercise 13.9.3</strong>. Let <span class="math inline">\(\Theta = \{ \theta_1, \dots, \theta_k \}\)</span> be a finite parameter space. Prove that the posterior mode is the Bayes estimator under zero-one loss.</p>
+<p><strong>Solution</strong>. The Bayes rule minimizes</p>
+<p><span class="math display">\[r(\hat{\theta} | x) = \int L(\theta, \hat{\theta}) f(\theta | x) d\theta = \sum_i I(\hat{\theta} \neq \theta_i) f(\theta_i | x) = 1 - \sum_i I(\hat{\theta} = \theta_i) f(\theta_i | x) = 1 - f(\hat{\theta} | X)\]</span></p>
+<p>The posterior probability <span class="math inline">\(f(\theta | X)\)</span> is maximized on the posterior mode, <span class="math inline">\(\hat{\theta} = \text{argmax}_\theta f(\theta | X)\)</span>, so the posterior mode is also the Bayes estimator under zero-one loss.</p>
+<p><strong>Exercise 13.9.4 (Casella and Berger)</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample from a distribution with variance <span class="math inline">\(\sigma^2\)</span>. Consider estimators of the form <span class="math inline">\(bS^2\)</span> where <span class="math inline">\(S^2\)</span> is the sample variance. Let the loss function for estimating <span class="math inline">\(\sigma^2\)</span> be</p>
+<p><span class="math display">\[L(\sigma^2, \hat{\sigma}^2) = \frac{\hat{\sigma}^2}{\sigma^2} - 1 - \log \frac{\hat{\sigma^2}}{\sigma^2}\]</span></p>
+<p>Find the optimal value of <span class="math inline">\(b\)</span> that minimizes the risk for all <span class="math inline">\(\sigma^2\)</span>.</p>
+<p><strong>Solution</strong>. For an estimator of the form <span class="math inline">\(\hat{\sigma}^2 = bS^2\)</span>, the risk is</p>
+<p><span class="math display">\[
+\begin{align}
+R(\sigma^2, bS^2) &amp;= \mathbb{E}_{\sigma^2}[ L(\sigma^2, bS^2) ]\\
+&amp;=\mathbb{E}_{\sigma^2}\left[\frac{bS^2}{\sigma^2} - 1 - \log b - \log S^2 + \log \sigma^2 \right] \\
+&amp;= \frac{b}{\sigma^2} \mathbb{E}_{\sigma^2}[S^2] - 1 -\log b - \mathbb{E}_{\sigma^2}[\log S^2] + \log \sigma^2 \\
+&amp;= b - \log b + C
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(C\)</span> does not depend on <span class="math inline">\(b\)</span>. The risk is minimized when the derivative is zero, <span class="math inline">\(1 - 1/b = 0\)</span>, or <span class="math inline">\(b = 1\)</span>.</p>
+<p><strong>Exercise 13.9.5 (Berliner, 1983)</strong>. Let <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span> and suppose the loss function is</p>
+<p><span class="math display">\[ L(p, \hat{p}) = \left(1 - \frac{\hat{p}}{p} \right)^2\]</span></p>
+<p>where <span class="math inline">\(0 &lt; p &lt; 1\)</span>. Consider the estimator <span class="math inline">\(\hat{p}(X) = 0\)</span>. This estimator falls outside of the parameter space <span class="math inline">\((0, 1)\)</span> but we will allow this. Show that <span class="math inline">\(\hat{p}(X) = 0\)</span> is the unique, minimax rule.</p>
+<p><strong>Solution</strong>.</p>
+<p>For the estimator <span class="math inline">\(\hat{p}(X) = 0\)</span>, the loss function is always 1, and so the risk is also always 1.</p>
+<p>For any estimator <span class="math inline">\(\tilde{p}\)</span> that falls within the parameter space <span class="math inline">\((0, 1)\)</span>, we are interested in calculating its maximum risk, <span class="math inline">\(\overline{R}(p, \tilde{p}) = \sup_p R(p, \tilde{p})\)</span>.</p>
+<p><span class="math display">\[ 
+\begin{align}
+R(p, \tilde{p}) &amp;= \mathbb{E}_p \left[\left(1 - \frac{\tilde{p}(X)}{p} \right)^2\right]\\
+&amp;=\mathbb{E}_p \left[1 + \frac{1}{p} (-2 \tilde{p}(X)) + \frac{1}{p^2} \tilde{p}(X)^2 \right] \\
+&amp;= 1 + \frac{1}{p} (-2 \mathbb{E}_p[\tilde{p}(X)]) + \frac{1}{p^2} \mathbb{E}_p[\tilde{p}(X)^2]
+\end{align}
+\]</span></p>
+<p>For a specific estimator, we have the expectations as constants, <span class="math inline">\(a = \mathbb{E}_p[\tilde{p}(X)]\)</span> and <span class="math inline">\(b = \mathbb{E}_p[\tilde{p}(X)^2]\)</span>. We are interested in picking a <span class="math inline">\(p \in (0, 1)\)</span> such that this risk is greater than 1; we can always do <span class="math inline">\(p = a / b &lt; 2a / b\)</span>, since <span class="math inline">\(a &gt; 0\)</span> due to the open interval constraint:</p>
+<p><span class="math display">\[
+\begin{align}
+1 + \frac{1}{p} (-2a) + \frac{1}{p^2} b &gt; 1 \\
+\frac{1}{p} \left(-2a + \frac{1}{p} b \right) &gt; 0 \\
+p &lt; \frac{2a}{b}
+\end{align}
+\]</span></p>
+<p>Therefore, any estimator within the parameter space can produce a risk greater than 1, and it is not minimax as the estimator <span class="math inline">\(\hat{p}(X)\)</span> produces a smaller maximum risk.</p>
+<p><strong>Exercise 13.9.6 (Computer Experiment)</strong>. Compare the risk of the MLE and the James-Stein estimator by simulation. Try various values of <span class="math inline">\(n\)</span> and various vectors <span class="math inline">\(\theta\)</span>. Summarize your results.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let’s plot the mean square error from running the simulation a large number of times for <span class="math inline">\(k = 3, 10, 100, 1000\)</span>, assuming that <span class="math inline">\(\theta\)</span> is a vector of all ones.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+
+from tqdm import notebook
+
+
+# MLE estimator: just return the original values
+def mle(X):
+    return X
+
+# James-Stein estimator: shrink towards zero
+def james_stein(X):
+    assert len(X) &gt; 2
+    return np.maximum(1 - ((len(X) - 2) / sum(X**2)), 0) * X
+
+# Calculates the mean square error between two sequences
+def mse(X_pred, X):
+    return ((X - X_pred)**2).mean()</code></pre>
+<pre class="python"><code>def plot_range(k, B=100000):
+    error_mle = np.empty(B)
+    error_js = np.empty(B)
+    for i in notebook.tqdm(range(B)):
+        theta = np.ones(k)
+        X = norm.rvs(loc=1, scale=1, size=k)
+        theta_hat_mle = mle(X)
+        theta_hat_js = james_stein(X)
+        error_mle[i] = mse(theta_hat_mle, theta)
+        error_js[i] = mse(theta_hat_js, theta)
+
+    plt.figure(figsize=(12, 8))
+    plt.hist(error_mle, density=True, bins=100, histtype=&#39;step&#39;, color=&#39;blue&#39;, label=&#39;MLE, k = &#39; + str(k))
+    plt.hist(error_js, density=True, bins=100, histtype=&#39;step&#39;, color=&#39;red&#39;, label=&#39;James-Stein, k = &#39; + str(k))
+    plt.legend(loc=&#39;upper right&#39;)
+    plt.show();</code></pre>
+<pre class="python"><code>plot_range(3)
+plot_range(10)
+plot_range(100)
+plot_range(1000)</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<div class="figure">
+<img src="Chapter%2013%20-%20Statistical%20Decision%20Theory_files/Chapter%2013%20-%20Statistical%20Decision%20Theory_59_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<div class="figure">
+<img src="Chapter%2013%20-%20Statistical%20Decision%20Theory_files/Chapter%2013%20-%20Statistical%20Decision%20Theory_59_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<div class="figure">
+<img src="Chapter%2013%20-%20Statistical%20Decision%20Theory_files/Chapter%2013%20-%20Statistical%20Decision%20Theory_59_5.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<div class="figure">
+<img src="Chapter%2013%20-%20Statistical%20Decision%20Theory_files/Chapter%2013%20-%20Statistical%20Decision%20Theory_59_7.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Note that the James-Stein estimator seems to have its mean square error go towards 0.5, while the MLE estimator has its error go towards 1.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
