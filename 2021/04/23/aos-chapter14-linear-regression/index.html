@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter14 Linear Regression - A Hugo website</title>
+<meta property="og:title" content="AOS chapter14 Linear Regression - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">47 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter14 Linear Regression</h1>
+
+    
+    <span class="article-date">2021-04-23</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/23/aos-chapter14-linear-regression/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#linear-regression">14. Linear Regression</a>
+<ul>
+<li><a href="#simple-linear-regression">14.1 Simple Linear Regression</a></li>
+<li><a href="#least-squares-and-maximum-likelihood">14.2 Least Squares and Maximum Likelihood</a></li>
+<li><a href="#properties-of-the-least-squares-estimators">14.3 Properties of the Least Squares Estimators</a></li>
+<li><a href="#prediction">14.4 Prediction</a></li>
+<li><a href="#multiple-regression">14.5 Multiple Regression</a></li>
+<li><a href="#model-selection">14.6 Model Selection</a></li>
+<li><a href="#the-lasso">14.7 The Lasso</a></li>
+<li><a href="#technical-appendix">14.8 Technical Appendix</a></li>
+<li><a href="#exercises">14.9 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="linear-regression" class="section level2">
+<h2>14. Linear Regression</h2>
+<p><strong>Regression</strong> is a method for studying the relationship between a <strong>response variable</strong> <span class="math inline">\(Y\)</span> and a <strong>covariates</strong> <span class="math inline">\(X\)</span>. The covariate is also called a <strong>predictor variable</strong> or <strong>feature</strong>. Later we will generalize and allow for more than one covariate. The data are of the form</p>
+<p><span class="math display">\[ (Y_1, X_1), \dots, (Y_n, X_n) \]</span></p>
+<p>One way to summarize the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is through the <strong>regression function</strong></p>
+<p><span class="math display">\[ r(x) = \mathbb{E}(Y | X = x) = \int y f(y | x) dy \]</span></p>
+<p>Most of this chapter is concerned with estimating the regression function.</p>
+<div id="simple-linear-regression" class="section level3">
+<h3>14.1 Simple Linear Regression</h3>
+<p>The simplest version of regression is when <span class="math inline">\(X_i\)</span> is simple (a scalar, not a vector) and <span class="math inline">\(r(x)\)</span> is assumed to be linear:</p>
+<p><span class="math display">\[r(x) = \beta_0 + \beta_1 x\]</span></p>
+<p>This model is called the <strong>simple linear regression model</strong>. Let <span class="math inline">\(\epsilon_i = Y_i - (\beta_0 + \beta_1 X_i)\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\epsilon_i | Y_i) &amp;= \mathbb{E}(Y_i - (\beta_0 + \beta_1 X_i) | X_i)\\
+&amp;= \mathbb{E}(Y_i | X_i) - (\beta_0 + \beta_1 X_i)\\
+&amp;= r(X_i) - (\beta_0 + \beta_1 X_i)\\
+&amp;= 0
+\end{align}
+\]</span></p>
+<p>Let <span class="math inline">\(\sigma^2(x) = \mathbb{V}(\epsilon_i | X_i = x)\)</span>. We will make the further simplifying assumption that <span class="math inline">\(\sigma^2(x) = \sigma^2\)</span> does not depend on <span class="math inline">\(x\)</span>.</p>
+<p><strong>The Linear Regression Model</strong></p>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]</span></p>
+<p>where <span class="math inline">\(\mathbb{E}(\epsilon_i | X_i) = 0\)</span> and <span class="math inline">\(\mathbb{V}(\epsilon_i | X_i) = \sigma^2\)</span>.</p>
+<p>The unknown models in the parameter are the intercept <span class="math inline">\(\beta_0\)</span>, the slope <span class="math inline">\(\beta_1\)</span> and the variance <span class="math inline">\(\sigma^2\)</span>. Let <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> denote the estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. The <strong>fitted line</strong> is defined to be</p>
+<p><span class="math display">\[\hat{r}(x) = \hat{\beta}_0 + \hat{\beta}_1 x\]</span></p>
+<p>The <strong>predicted values</strong> or <strong>fitted values</strong> are <span class="math inline">\(\hat{Y}_i = \hat{r}(X_i)\)</span> and the <strong>residuals</strong> are defined to be</p>
+<p><span class="math display">\[\hat{\epsilon}_i = Y_i - \hat{Y}_i = Y_i - (\hat{\beta}_0 + \hat{\beta}_1 X_i)\]</span></p>
+<p>The <strong>residual sum of squares</strong> or RSS is defined by</p>
+<p><span class="math display">\[ \text{RSS} = \sum_{i=1}^n \hat{\epsilon}_i^2\]</span></p>
+<p>The quantity RSS measures how well the fitted line fits the data.</p>
+<p>The <strong>least squares estimates</strong> are the values <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> that minimize <span class="math inline">\(\text{RSS} = \sum_{i=1}^n \hat{\epsilon}_i^2\)</span>.</p>
+<p><strong>Theorem 14.4</strong>. The least square estimates are given by</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (X_i - \overline{X}_n) (Y_i - \overline{Y}_n)}{\sum_{i=1}^n (X_i - \overline{X}_n)^2}\\
+\hat{\beta}_0 &amp;= \overline{Y}_n - \hat{\beta}_1 \overline{X}_n
+\end{align}
+\]</span></p>
+<p>An unbiased estimate of <span class="math inline">\(\sigma^2\)</span> is</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \left( \frac{1}{n - 2} \right) \sum_{i=1}^n \hat{\epsilon}_i^2
+\]</span></p>
+</div>
+<div id="least-squares-and-maximum-likelihood" class="section level3">
+<h3>14.2 Least Squares and Maximum Likelihood</h3>
+<p>Suppose we add the assumption that <span class="math inline">\(\epsilon_i | X_i \sim N(0, \sigma^2)\)</span>, that is,</p>
+<p><span class="math inline">\(Y_i | X_i \sim N(\mu_i, \sigma_i^2)\)</span></p>
+<p>where <span class="math inline">\(\mu_i = \beta_0 + \beta_i X_i\)</span>. The likelihood function is</p>
+<p><span class="math display">\[
+\begin{align}
+\prod_{i=1}n f(X_i, Y_i) &amp;= \prod_{i=1}^n f_X(X_i) f_{Y|X}(Y_i | X_i)\\
+&amp;= \prod_{i=1}^n f_X(X_i) \times \prod_{i=1}^n f_{Y|X}(Y_i | X_i) \\
+&amp;= \mathcal{L}_1 \times \mathcal{L}_2
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(\mathcal{L}_1 = \prod_{i=1}^n f_X(X_i)\)</span> and <span class="math inline">\(\mathcal{L}_2 = \prod_{i=1}^n f_{Y|X}(Y_i | X_i)\)</span>.</p>
+<p>The term <span class="math inline">\(\mathcal{L}_1\)</span> does not involve the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. We shall focus on the second term <span class="math inline">\(\mathcal{L}_2\)</span> which is called the <strong>conditional likelihood</strong>, given by</p>
+<p><span class="math display">\[\mathcal{L}_2 \equiv \mathcal{L}(\beta_0, \beta_1, \sigma)
+= \prod_{i=1}^n f_{Y|X}(Y_i | X_i)
+\propto \sigma^{-n} \exp \left\{ - \frac{1}{2 \sigma^2} \sum_i (Y_i - \mu_i)^2 \right\}
+\]</span></p>
+<p>The conditional log-likelihood is</p>
+<p><span class="math display">\[\ell(\beta_0, \beta_1, \sigma) = -n \log \sigma - \frac{1}{2 \sigma^2} \sum_{i=1}^n \left(Y_i - (\beta_0 + \beta_1 X_i) \right)^2\]</span></p>
+<p>To find the MLE of <span class="math inline">\((\beta_0, \beta_1)\)</span> we maximize the conditional log likelihood. We can see from the equation above that this is the same as minimizing the RSS. Therefore, we have shown the following:</p>
+<p><strong>Theorem 14.7</strong>. Under the assumption of Normality, the least squares estimator is also the maximum likelihood estimator.</p>
+<p>We can also maximize <span class="math inline">\(\ell(\beta_0, \beta_1, \sigma)\)</span> over <span class="math inline">\(\sigma\)</span> yielding the MLE</p>
+<p><span class="math display">\[ \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n \hat{\epsilon}_i^2 \]</span></p>
+<p>This estimator is similar to, but not identical to, the unbiased estimator. Common practice is to use the unbiased estimator.</p>
+</div>
+<div id="properties-of-the-least-squares-estimators" class="section level3">
+<h3>14.3 Properties of the Least Squares Estimators</h3>
+<p><strong>Theorem 14.8</strong>. Let <span class="math inline">\(\hat{\beta}^T = (\hat{\beta}_0, \hat{\beta}_1)^T\)</span> denote the least squares estimators. Then,</p>
+<p><span class="math display">\[
+\mathbb{E}(\hat{\beta} | X^n) = \begin{pmatrix}\beta_0 \\ \beta_1 \end{pmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\mathbb{V}(\hat{\beta} | X^n) = \frac{\sigma^2}{n s_X^2} \begin{pmatrix} 
+\frac{1}{n} \sum_{i=1}^n X_i^2 &amp; -\overline{X}_n \\
+-\overline{X}_n &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>where <span class="math inline">\(s_X^2 = n^{-1} \sum_{i=1}^n (X_i - \overline{X}_n)^2\)</span>.</p>
+<p>The estimated standard errors of <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are obtained by taking the square roots of the corresponding diagonal terms of <span class="math inline">\(\mathbb{V}(\hat{\beta} | X^n)\)</span> and inserting the estimate <span class="math inline">\(\hat{\sigma}\)</span> for <span class="math inline">\(\sigma\)</span>. Thus,</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\text{se}}(\hat{\beta}_0) &amp;= \frac{\hat{\sigma}}{s_X \sqrt{n}} \sqrt{\frac{\sum_{i=1}^n X_i^2}{n}}\\
+\hat{\text{se}}(\hat{\beta}_1) &amp;= \frac{\hat{\sigma}}{s_X \sqrt{n}}
+\end{align}
+\]</span></p>
+<p>We should write <span class="math inline">\(\hat{\text{se}}(\hat{\beta}_0 | X^n)\)</span> and <span class="math inline">\(\hat{\text{se}}(\hat{\beta}_1 | X^n)\)</span> but we will use the shorter notation <span class="math inline">\(\hat{\text{se}}(\hat{\beta}_0)\)</span> and <span class="math inline">\(\hat{\text{se}}(\hat{\beta}_1)\)</span>.</p>
+<ul>
+<li><p>univariate linear regression models:<br />
+When there are <span class="math inline">\(n\)</span> response variables <span class="math inline">\(Y_i, i=1,2,\cdots,n\)</span> and <span class="math inline">\(r\)</span> predictor variables <span class="math inline">\(Z_{ij},j=1,2,\cdots,r\)</span> for each response variable:
+<span class="math display">\[\begin{bmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n\\
+\end{bmatrix}=\begin{bmatrix}
+1&amp;Z_{11}&amp;Z_{12}&amp;\cdots&amp;Z_{1r}\\
+1&amp;Z_{21}&amp;Z_{22}&amp;\cdots&amp;Z_{2r}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;Z_{n1}&amp;Z_{n2}&amp;\cdots&amp;Z_{nr}\\
+\end{bmatrix}\begin{bmatrix}
+\beta_0\\
+\beta_1\\
+\vdots\\
+\beta_r\\
+\end{bmatrix}+\begin{bmatrix}
+\epsilon_1\\
+\epsilon_2\\
+\vdots\\
+\epsilon_n\\
+\end{bmatrix}\]</span> or
+<span class="math inline">\(\mathbf Y=\mathbf Z\boldsymbol\beta+\boldsymbol\epsilon\)</span>, where <span class="math inline">\(E(\boldsymbol\epsilon)=\boldsymbol0\)</span>, <span class="math inline">\(Cov(\boldsymbol\epsilon)=E(\boldsymbol\epsilon\boldsymbol\epsilon^T)=\sigma^2\mathbf I\)</span>. We have to find the regression coefficients <span class="math inline">\(\boldsymbol\beta\)</span> and the error variance <span class="math inline">\(\sigma^2\)</span> that are consistent with the available data. Denote <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> as least squares estimate of <span class="math inline">\(\boldsymbol\beta\)</span>, then <span class="math inline">\(\hat{\boldsymbol y}=\mathbf Z\hat{\boldsymbol\beta}\)</span> and <span class="math inline">\(\hat{\boldsymbol y}\)</span> is the projection of vector <span class="math inline">\(\boldsymbol y\)</span> on the column space of <span class="math inline">\(\mathbf Z\)</span>, so <span class="math inline">\(\boldsymbol y-\hat{\boldsymbol y}=\boldsymbol y-\mathbf Z\hat{\boldsymbol\beta}\)</span> is perpendicular to column space of <span class="math inline">\(\mathbf Z\)</span>, so <span class="math inline">\(\mathbf Z^T(\boldsymbol y-\mathbf Z\hat{\boldsymbol\beta})=\mathbf Z^T\boldsymbol y-\mathbf Z^T\mathbf Z\hat{\boldsymbol\beta}=\boldsymbol0\Rightarrow\mathbf Z^T\boldsymbol y=\mathbf Z^T\mathbf Z\hat{\boldsymbol\beta}\)</span>. <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is a <span class="math inline">\((r+1)(r+1)\)</span> asymmetric matrix. Because the column space of <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> must in the column space of <span class="math inline">\(\mathbf Z\)</span> and row space of <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> must in the row space of <span class="math inline">\(\mathbf Z\)</span> so the rank of <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)\le r+1\)</span> and <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)\le n\)</span>, because <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is a <span class="math inline">\((r+1)(r+1)\)</span> matrix, so only when <span class="math inline">\(r+1\le n\)</span>, it will be possible that <span class="math inline">\(rank(\mathbf Z^T\mathbf Z)=r+1\)</span> and <span class="math inline">\(\mathbf Z^T\mathbf Z\)</span> is invertible.<br />
+Then <span class="math inline">\(\hat{\boldsymbol\beta}=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol y\)</span> and <span class="math inline">\(\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol y=\hat{\boldsymbol y}\)</span> , so <span class="math inline">\(\boldsymbol y-\hat{\boldsymbol y}=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y\)</span> It is clear that every column vector of <span class="math inline">\((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\)</span> is perpendicular to column space of <span class="math inline">\(\mathbf Z\)</span> caused by <span class="math inline">\(\mathbf Z^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)=\mathbf0\)</span>. And <span class="math inline">\((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)=\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\)</span>, so <span class="math inline">\(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\)</span> is an <span style="color: red;"><strong>Idempotent matrix</strong></span>. So <span class="math display">\[\begin{align}
+tr[\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T]&amp;=tr[\mathbf 1]-tr[\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T]\\
+&amp;=tr[\mathbf 1]-tr[\mathbf Z^T\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}]\\
+&amp;=tr[\underset{n\times n}{\mathbf 1}]-tr[\underset{(r+1)\times (r+1)}{\mathbf 1}]\\
+&amp;=n-r-1
+\end{align}\]</span><br />
+Because <span class="math inline">\(\hat{\boldsymbol\epsilon}=\boldsymbol y-\hat{\boldsymbol y}\)</span> is perpendicular to column space of <span class="math inline">\(\mathbf Z\)</span>, then <span class="math inline">\(\mathbf Z^T\hat{\boldsymbol\epsilon}=\boldsymbol0\)</span> and <span class="math inline">\(\boldsymbol1^T\hat{\boldsymbol\epsilon}=\displaystyle\sum_{i=1}^{n}\hat{\boldsymbol\epsilon}_i=\displaystyle\sum_{i=1}^{n}y_i-\displaystyle\sum_{i=1}^{n}\hat y_i=n\bar y-n\bar{\hat y}=0\)</span>. Then <span class="math inline">\(\bar y=\bar{\hat y}\)</span> And because <span class="math inline">\(\mathbf y^T\mathbf y=(\hat{\mathbf y}+\mathbf y-\hat{\mathbf y})^T(\hat{\mathbf y}+\mathbf y-\hat{\mathbf y})=(\hat{\mathbf y}+\hat{\boldsymbol\epsilon})^T(\hat{\mathbf y}+\hat{\boldsymbol\epsilon})=\hat{\mathbf y}^T\hat{\mathbf y}+\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}\)</span>, this also can be get using Pythagorean theorem. Then sum of squares decomposition can be: <span class="math inline">\(\mathbf y^T\mathbf y-n(\bar y)^2=\hat{\mathbf y}^T\hat{\mathbf y}-n(\bar{\hat y})^2+\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}\)</span> or <span class="math inline">\(\underset{SS_{total}}{\displaystyle\sum_{i=1}^{n}(y_i-\bar y)^2}=\underset{SS_{regression}}{\displaystyle\sum_{i=1}^{n}(\hat y_i-\bar{\hat y})^2}+\underset{SS_{error}}{\displaystyle\sum_{i=1}^{n}\hat\epsilon_i^2}\)</span> The quality of the models fit can be measured by the <strong>coefficient of determination</strong> <span class="math inline">\(R^2=\frac{\displaystyle\sum_{i=1}^{n}(\hat y_i-\bar{\hat y})^2}{\displaystyle\sum_{i=1}^{n}(y_i-\bar y)^2}\)</span></p></li>
+<li><p>Inferences About the Regression Model:<br />
+</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Because <span class="math inline">\(E(\hat{\boldsymbol\beta})=E((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y)\)</span>, so <span class="math inline">\(E(\mathbf Z\hat{\boldsymbol\beta})=E(\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y)=E(\hat{\mathbf Y})\)</span> and because<br />
+<span class="math inline">\(E(\mathbf Z\boldsymbol\beta)=E(\mathbf Y-\boldsymbol\epsilon)=E(\mathbf Y)=E(\hat{\mathbf Y})\)</span>, so <span class="math inline">\(E(\mathbf Z\hat{\boldsymbol\beta})=E(\mathbf Z\boldsymbol\beta)\)</span> and <span class="math inline">\(E(\mathbf Z(\hat{\boldsymbol\beta}-\boldsymbol\beta))=\boldsymbol0\)</span> so <span class="math inline">\(E(\hat{\boldsymbol\beta})=E(\boldsymbol\beta)\)</span><br />
+</li>
+<li>If <span class="math inline">\(\boldsymbol\epsilon\)</span> is distributed as <span class="math inline">\(N_n(\boldsymbol0,\sigma^2\mathbf I)\)</span>, then <span class="math inline">\(Cov(\mathbf Z\hat{\boldsymbol\beta})=\mathbf Z^T\mathbf ZCov(\hat{\boldsymbol\beta})=Cov(\hat{\mathbf Y})=Cov(\mathbf Y+\boldsymbol\epsilon)=Cov(\boldsymbol\epsilon)=\sigma^2\mathbf I\)</span>, then <span class="math inline">\(Cov(\hat{\boldsymbol\beta})=\sigma^2(\mathbf Z^T\mathbf Z)^{-1}\)</span>, then <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> is distributed as <span class="math inline">\(N_{(r+1)}(\boldsymbol\beta,\sigma^2(\mathbf Z^T\mathbf Z)^{-1})\)</span><br />
+Because <span class="math inline">\(E(\hat{\boldsymbol\epsilon})=\boldsymbol 0\)</span> and <span class="math inline">\(Cov(\hat{\boldsymbol\epsilon})=Cov(\boldsymbol y-\hat{\boldsymbol y})=Cov((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y)=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\sigma^2\)</span> <span class="math display">\[\begin{align}
+E(\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon})&amp;=E(\boldsymbol y-\hat{\boldsymbol y})^T(\boldsymbol y-\hat{\boldsymbol y})\\
+&amp;=E((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y)^T((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y)\\
+&amp;=E(\boldsymbol y^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T))((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y)\\
+&amp;=E(\boldsymbol y^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y)\\
+&amp;=E(\boldsymbol y^T\boldsymbol y)-E(\boldsymbol y^T\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol y)\\
+&amp;=n\sigma^2-(r+1)\sigma^2\\
+&amp;=(n-r-1)\sigma^2\\
+\end{align}\]</span> so defining <span class="math display">\[s^2=\frac{\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}}{n-r-1}=\frac{\boldsymbol y^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol y}{n-r-1}\]</span> Then <span class="math inline">\(E(s^2)=\sigma^2\)</span></li>
+<li>If <span class="math inline">\(\hat\sigma^2\)</span> is the maximum likelihood estimator of <span class="math inline">\(\sigma^2\)</span>, then <span class="math inline">\(n\hat\sigma^2=(n-r-1)s^2=\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}\)</span> is distributed as <span class="math inline">\(\sigma^2\chi_{n-r-1}^2\)</span>. The likelihood associated with the parameters <span class="math inline">\(\boldsymbol\beta\)</span> and <span class="math inline">\(\sigma^2\)</span> is <span class="math inline">\(L(\boldsymbol\beta,\sigma^2)=\frac{1}{(2\pi)^{n/2}\sigma^n}exp\Bigl[-\frac{(\mathbf y-\mathbf Z\boldsymbol\beta)^T(\mathbf y-\mathbf Z\boldsymbol\beta)}{2\sigma^2}\Bigr]\)</span> with the maximum occurring at <span class="math inline">\(\hat{\boldsymbol\beta}=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol y\)</span>. For the maximum of <span class="math inline">\(\hat\sigma^2=(\mathbf y-\mathbf Z\hat{\boldsymbol\beta})^T(\mathbf y-\mathbf Z\hat{\boldsymbol\beta})/n\)</span>, then the maximum likelihood is <span class="math inline">\(L(\hat{\boldsymbol\beta},\hat\sigma^2)=\displaystyle\frac{1}{(2\pi)^{n/2}\hat\sigma^n}e^{-n/2}\)</span><br />
+</li>
+<li>Let <span class="math inline">\(\mathbf V=(\mathbf Z^T\mathbf Z)^{1/2}(\hat{\boldsymbol\beta}-\boldsymbol\beta)\)</span>, then <span class="math inline">\(E(\mathbf V)=\mathbf0\)</span> and <span class="math inline">\(Cov(\mathbf V)=(\mathbf Z^T\mathbf Z)^{1/2}Cov(\hat{\boldsymbol\beta}-\boldsymbol\beta)(\mathbf Z^T\mathbf Z)^{1/2}=(\mathbf Z^T\mathbf Z)^{1/2}Cov(\hat{\boldsymbol\beta})(\mathbf Z^T\mathbf Z)^{1/2}=(\mathbf Z^T\mathbf Z)^{1/2}\sigma^2(\mathbf Z^T\mathbf Z)^{-1}(\mathbf Z^T\mathbf Z)^{1/2}=\sigma^2\mathbf I\)</span>, so <span class="math inline">\(\mathbf V\)</span> is normally distributed and <span class="math inline">\(\mathbf V^T\mathbf V=(\hat{\boldsymbol\beta}-\boldsymbol\beta)^T(\mathbf Z^T\mathbf Z)^{1/2}(\mathbf Z^T\mathbf Z)^{1/2}(\hat{\boldsymbol\beta}-\boldsymbol\beta)=(\hat{\boldsymbol\beta}-\boldsymbol\beta)^T(\mathbf Z^T\mathbf Z)(\hat{\boldsymbol\beta}-\boldsymbol\beta)\)</span> is distributed as <span class="math inline">\(\sigma^2\chi_{r+1}^2\)</span>, then <span class="math inline">\(\frac{\chi_{r+1}^2/(r+1)}{\chi_{n-r-1}^2/(n-r-1)}=\frac{\mathbf V^T\mathbf V}{(r+1)s^2}\)</span> has an <span class="math inline">\(F_{(r+1),(n-r-1)}\)</span> distribution. Then a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence region for <span class="math inline">\(\boldsymbol\beta\)</span> is given by: <span class="math inline">\((\boldsymbol\beta-\hat{\boldsymbol\beta})^T(\mathbf Z^T\mathbf Z)(\boldsymbol\beta-\hat{\boldsymbol\beta})\le(r+1)s^2F_{(r+1),(n-r-1)}(\alpha)\)</span>. Also for each component of <span class="math inline">\(\boldsymbol\beta\)</span>, <span class="math inline">\(|\beta_i-\hat{\beta}_i|\le\sqrt{(r+1)F_{(r+1),(n-r-1)}(\alpha)}\sqrt{s^2(\mathbf Z^T\mathbf Z)_{ii}^{-1}}\)</span>, where <span class="math inline">\((\mathbf Z^T\mathbf Z)_{ii}^{-1}\)</span> is the <span class="math inline">\(i^{th}\)</span> diagonal element of <span class="math inline">\((\mathbf Z^T\mathbf Z)^{-1}\)</span>. Then, the simultaneous <span class="math inline">\(100(1-\alpha)\%\)</span> confidence intervals for the <span class="math inline">\(\beta_i\)</span> are given by: <span class="math inline">\(\hat{\beta}_i\pm\sqrt{(r+1)F_{(r+1),(n-r-1)}(\alpha)}\sqrt{s^2(\mathbf Z^T\mathbf Z)_{ii}^{-1}}\)</span><br />
+</li>
+<li>If some of <span class="math inline">\(\mathbf Z=[z_0,z_1,z_2,\cdots,z_q,z_{q+1},z_{q+2},\cdots,z_{r}]\)</span> parameters <span class="math inline">\([z_{q+1},z_{q+2},\cdots,z_{r}]\)</span> do not influence <span class="math inline">\(\mathbf y\)</span>, which means the hypothesis <span class="math inline">\(H_0:\beta_{q+1}=\beta_{q+2}=\cdots=\beta_{r}=0\)</span>. We can express the general linear model as <span class="math display">\[\mathbf y=\mathbf Z\boldsymbol\beta+\boldsymbol\epsilon=\left[\begin{array}{c:c}
+\underset{n\times(q+1)}{\mathbf Z_1}&amp;\underset{n\times(r-q)}{\mathbf Z_2}
+\end{array}
+\right]\begin{bmatrix}
+\underset{(q+1)\times1}{\boldsymbol \beta_{(1)}}\\
+\hdashline
+\underset{(r-q)\times1}{\boldsymbol \beta_{(2)}}\\
+\end{bmatrix}+\boldsymbol\epsilon=\mathbf Z_1\boldsymbol\beta_{(1)}+\mathbf Z_2\boldsymbol\beta_{(2)}+\boldsymbol\epsilon\]</span> Now the hypothesis is <span class="math inline">\(H_0:\boldsymbol\beta_{(2)}=\boldsymbol0,\mathbf y=\mathbf Z_1\boldsymbol\beta_{(1)}+\boldsymbol\epsilon\)</span> The <span class="math display">\[\begin{align}
+\text{Extra sum of squares}&amp;=SS_{\text{error}}(\mathbf Z_1)-SS_{\text{error}}(\mathbf Z)\\
+&amp;=(\mathbf y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})^T(\mathbf y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})-(\mathbf y-\mathbf Z\hat{\boldsymbol\beta})^T(\mathbf y-\mathbf Z\hat{\boldsymbol\beta})
+\end{align}\]</span> where <span class="math inline">\(\hat{\boldsymbol\beta}_{(1)}=(\mathbf Z_1^T\mathbf Z_1)^{-1}\mathbf Z_1^T\mathbf y\)</span>. Under the restriction of the null hypothesis, the maximum likelihood is <span class="math inline">\(\underset{\boldsymbol\beta_{(1)},\sigma^2}{\text{max }}L(\boldsymbol\beta_{(1)},\sigma^2)=\displaystyle\frac{1}{(2\pi)^{n/2}\hat\sigma_1^n}e^{-n/2}\)</span> where the maximum occurs at <span class="math inline">\(\hat{\boldsymbol\beta}_{(1)}=(\mathbf Z_1^T\mathbf Z_1)^{-1}\mathbf Z_1^T\boldsymbol y\)</span> and <span class="math inline">\(\hat\sigma_1^2=(\mathbf y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})^T(\mathbf y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})/n\)</span> Reject <span class="math inline">\(H_0:\boldsymbol\beta_{(2)}=\boldsymbol0\)</span> for small values of the <strong>likelihood ratio test</strong> : <span class="math display">\[\frac{\underset{\boldsymbol\beta_{(1)},\sigma^2}{\text{max }}L(\boldsymbol\beta_{(1)},\sigma^2)}{\underset{\boldsymbol\beta,\sigma^2}{\text{max }}L(\boldsymbol\beta,\sigma^2)}=\Bigl(\frac{\hat\sigma_1}{\hat\sigma}\Bigr)^{-n}=\Bigl(\frac{\hat\sigma^2_1}{\hat\sigma^2}\Bigr)^{-n/2}=\Bigl(1+\frac{\hat\sigma^2_1-\hat\sigma^2}{\hat\sigma^2}\Bigr)^{-n/2}\]</span> Which is equivalent to rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(\frac{\hat\sigma^2_1-\hat\sigma^2}{\hat\sigma^2}\)</span> is large or when <span class="math display">\[\frac{n(\hat\sigma^2_1-\hat\sigma^2)/(r-q)}{n\hat\sigma^2/(n-r-1)}=\frac{(SS_{error}(\mathbf Z_1)-SS_{error}(\mathbf Z))/(r-q)}{s^2}=F_{(r-q),(n-r-1)}\]</span> is large.<br />
+</li>
+<li>Let <span class="math inline">\(y_0\)</span> denote the response value when the predictor variables have values <span class="math inline">\(\mathbf z^T_0=[1,z_{01},z_{02},\cdots,z_{0r}]\)</span>, then <span class="math inline">\(E(y_0|\mathbf z_0)=\beta_0+z_{01}\beta_1+\cdots+z_{0r}\beta_r=\mathbf z^T_0\boldsymbol\beta\)</span>, its least squares estimate is <span class="math inline">\(\mathbf z^T_0\hat{\boldsymbol\beta}\)</span>. Because <span class="math inline">\(Cov(\hat{\boldsymbol\beta})=\sigma^2(\mathbf Z^T\mathbf Z)^{-1}\)</span> and <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> is distributed as <span class="math inline">\(N_{(r+1)}(\boldsymbol\beta,\sigma^2(\mathbf Z^T\mathbf Z)^{-1})\)</span>, so <span class="math inline">\(Var(\mathbf z^T_0\hat{\boldsymbol\beta})=\mathbf z^T_0Cov(\hat{\boldsymbol\beta})\mathbf z_0=\sigma^2\mathbf z^T_0(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0\)</span>. Because <span class="math inline">\((n-r-1)s^2=\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}\)</span> is distributed as <span class="math inline">\(\sigma^2\chi_{n-r-1}^2\)</span>, so <span class="math inline">\(\frac{s^2}{\sigma^2}=\chi_{n-r-1}^2/(n-r-1)\)</span>. Consequently, the linear combination <span class="math inline">\(\mathbf z^T_0\hat{\boldsymbol\beta}\)</span> is distributed as <span class="math inline">\(N(\mathbf z^T_0\boldsymbol\beta,\sigma^2\mathbf z^T_0(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0)\)</span> and <span class="math inline">\(\displaystyle\frac{(\mathbf z^T_0\hat{\boldsymbol\beta}-\mathbf z^T_0\boldsymbol\beta)/\sqrt{\sigma^2\mathbf z^T_0(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}}{\sqrt{\frac{s^2}{\sigma^2}}}\)</span> is distributed as <span class="math inline">\(t_{n-r-1}\)</span>. Then a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence interval for <span class="math inline">\(E(y_0|\mathbf z_0)=\mathbf z^T_0\boldsymbol\beta\)</span> is given by: <span class="math inline">\(\mathbf z^T_0\hat{\boldsymbol\beta}\pm t_{n-r-1}(\frac{\alpha}{2})\sqrt{\frac{s^2}{\sigma^2}}\sqrt{\sigma^2\mathbf z^T_0(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}=\mathbf z^T_0\hat{\boldsymbol\beta}\pm t_{n-r-1}(\frac{\alpha}{2})\sqrt{s^2\mathbf z^T_0(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}\)</span></li>
+</ol>
+<ul>
+<li><p>Multivariate linear regression:<br />
+When there are <span class="math inline">\(m\)</span> regression coefficients vectors <span class="math inline">\(\boldsymbol\beta_1,\cdots,\boldsymbol\beta_m\)</span>, each regression coefficients vector <span class="math inline">\(\boldsymbol\beta\)</span> has <span class="math inline">\(r+1\)</span> components <span class="math inline">\([\beta_0,\beta_1,\cdots,\beta_r]\)</span>, then the response variables are:
+<span class="math display">\[\underset{(n\times m)}{\underbrace{\begin{bmatrix}
+Y_{11}&amp;Y_{12}&amp;\cdots&amp;Y_{1m}\\
+Y_{21}&amp;Y_{22}&amp;\cdots&amp;Y_{2m}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+Y_{n1}&amp;Y_{n2}&amp;\cdots&amp;Y_{nm}\\
+\end{bmatrix}}}=\underset{(n\times (r+1))}{\underbrace{\begin{bmatrix}
+1&amp;Z_{11}&amp;Z_{12}&amp;\cdots&amp;Z_{1r}\\
+1&amp;Z_{21}&amp;Z_{22}&amp;\cdots&amp;Z_{2r}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;Z_{n1}&amp;Z_{n2}&amp;\cdots&amp;Z_{nr}\\
+\end{bmatrix}}}\underset{((r+1)\times m)}{\underbrace{\begin{bmatrix}
+\beta_{01}&amp;\beta_{02}&amp;\cdots&amp;\beta_{0m}\\
+\beta_{11}&amp;\beta_{12}&amp;\cdots&amp;\beta_{1m}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\beta_{r1}&amp;\beta_{r2}&amp;\cdots&amp;\beta_{rm}\\
+\end{bmatrix}}}+\underset{(n\times m)}{\underbrace{\begin{bmatrix}
+\epsilon_{11}&amp;\epsilon_{12}&amp;\cdots&amp;\epsilon_{1m}\\
+\epsilon_{21}&amp;\epsilon_{22}&amp;\cdots&amp;\epsilon_{2m}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\epsilon_{n1}&amp;\epsilon_{n2}&amp;\cdots&amp;\epsilon_{nm}\\
+\end{bmatrix}}}\]</span> or
+<span class="math inline">\(\mathbf Y=\mathbf Z\boldsymbol\beta+\boldsymbol\epsilon\)</span>, the <span class="math inline">\(j^{th}\)</span> row of <span class="math inline">\(\mathbf Y\)</span> is the <span class="math inline">\(m\)</span> observations on the <span class="math inline">\(j^{th}\)</span> trial and regressed using <span class="math inline">\(m\)</span> regression coefficients vectors. The <span class="math inline">\(i^{th}\)</span> column of <span class="math inline">\(\mathbf Y\)</span> is the <span class="math inline">\(n\)</span> observations on all of the <span class="math inline">\(n\)</span> trials and regressed using the <span class="math inline">\(i^{th}\)</span> regression coefficients vector. The <span class="math inline">\(i^{th}\)</span> column of <span class="math inline">\(\boldsymbol\epsilon\)</span> is the <span class="math inline">\(n\)</span> errors of the <span class="math inline">\(n\)</span> observations regressed using the <span class="math inline">\(i^{th}\)</span> regression coefficients vector <span class="math inline">\(\boldsymbol\beta_i\)</span>, <span class="math inline">\(\mathbf Y_i=\mathbf Z\boldsymbol\beta_i+\boldsymbol\epsilon_i\)</span><br />
+The <span class="math inline">\(2\)</span> columns of <span class="math inline">\(\boldsymbol\epsilon\)</span>, <span class="math inline">\(\boldsymbol\epsilon_i\)</span> and <span class="math inline">\(\boldsymbol\epsilon_k\)</span> are independent, with <span class="math inline">\(E(\boldsymbol\epsilon_i)=\boldsymbol0\)</span> and <span class="math inline">\(Cov(\boldsymbol\epsilon_i,\boldsymbol\epsilon_k)=\sigma_{ik}\mathbf I, \quad i,(k=1,2,\cdots,m)\)</span>. The <span class="math inline">\(m\)</span> observations on the <span class="math inline">\(j^{th}\)</span> trial with <span class="math inline">\(2\)</span> regression coefficients vectors <span class="math inline">\(\boldsymbol\beta_i,\boldsymbol\beta_k\)</span> have covariance matrix <span class="math inline">\(\underset{m\times m}{\boldsymbol\Sigma}=\{\sigma_{ik}\}\)</span></p></li>
+<li><p>Like in the univariate linear regression models, <span class="math inline">\(\hat{\boldsymbol\beta}_i=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y_i\)</span> and <span class="math inline">\(\hat{\boldsymbol\beta}=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y\)</span><br />
+The Predicted values:<span class="math inline">\(\hat{\mathbf Y}=\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y\)</span>,<br />
+Residuals: <span class="math inline">\(\hat{\boldsymbol\epsilon}=\mathbf Y-\hat{\mathbf Y}=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\mathbf Y\)</span> also because <span class="math inline">\(\mathbf Z^T\hat{\boldsymbol\epsilon}=\mathbf Z^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\mathbf Y=\mathbf0\)</span>, so the residuals <span class="math inline">\(\hat{\boldsymbol\epsilon}_i\)</span> are perpendicular to the columns of <span class="math inline">\(\mathbf Z\)</span>, also because <span class="math inline">\(\hat{\mathbf Y}^T\hat{\boldsymbol\epsilon}=(\mathbf Z\hat{\boldsymbol\beta})^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\mathbf Y=\hat{\boldsymbol\beta}^T\mathbf Z^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\mathbf Y=\mathbf0\)</span>, so <span class="math inline">\(\hat{\mathbf Y}_i\)</span> are perpendicular to all residual vectors <span class="math inline">\(\hat{\boldsymbol\epsilon}_i\)</span> So <span class="math inline">\(\mathbf Y^T\mathbf Y=(\hat{\mathbf Y}+\hat{\boldsymbol\epsilon})^T(\hat{\mathbf Y}+\hat{\boldsymbol\epsilon})=\hat{\mathbf Y}^T\hat{\mathbf Y}+\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}+\mathbf0+\mathbf0\)</span> or <span class="math inline">\(\mathbf Y^T\mathbf Y=\hat{\mathbf Y}^T\hat{\mathbf Y}+\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}\)</span></p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>Because <span class="math inline">\(\mathbf Y_i=\mathbf Z\boldsymbol\beta_i+\boldsymbol\epsilon_i\)</span>, then <span class="math inline">\(\hat{\boldsymbol\beta}_i-\boldsymbol\beta_i=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y_i-\boldsymbol\beta_i=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T(\mathbf Z\boldsymbol\beta_i+\boldsymbol\epsilon_i)-\boldsymbol\beta_i=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_i\)</span> so <span class="math inline">\(E(\hat{\boldsymbol\beta}_i-\boldsymbol\beta_i)=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^TE(\boldsymbol\epsilon_i)=\mathbf0\)</span>, or <span class="math inline">\(E(\hat{\boldsymbol\beta}_i)=\boldsymbol\beta_i\)</span>
+and because <span class="math inline">\(\hat{\boldsymbol\epsilon}_i=\mathbf Y_i-\hat{\mathbf Y}_i=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\mathbf Y_i=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)(\mathbf Z\boldsymbol\beta_i+\boldsymbol\epsilon_i)=(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_i\)</span>, so <span class="math inline">\(E(\hat{\boldsymbol\epsilon}_i)=\mathbf0\)</span> And <span class="math display">\[\begin{align}
+Cov(\hat{\boldsymbol\beta}_i,\hat{\boldsymbol\beta}_k)&amp;=E(\hat{\boldsymbol\beta}_i-\boldsymbol\beta_i)(\hat{\boldsymbol\beta}_k-\boldsymbol\beta_k)^T\\
+&amp;=E((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_i)((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_k)^T\\
+&amp;=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^TE(\boldsymbol\epsilon_i\boldsymbol\epsilon_k^T)\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\\
+&amp;=\sigma_{ik}(\mathbf Z^T\mathbf Z)^{-1}
+\end{align}\]</span> Then <span class="math display">\[\begin{align}
+E(\hat{\boldsymbol\epsilon}_i^T\hat{\boldsymbol\epsilon}_k)&amp;=E\Biggl(((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_i)^T((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_k)\Biggr)\\
+&amp;=E(\boldsymbol\epsilon_i^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_k)\\
+&amp;=E(tr(\boldsymbol\epsilon_i^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_k))\\
+&amp;=E(tr((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_k\boldsymbol\epsilon_i^T))\\
+&amp;=tr[(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)E(\boldsymbol\epsilon_k\boldsymbol\epsilon_i^T)]\\
+&amp;=tr[(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\sigma_{ik}\mathbf I]\\
+&amp;=\sigma_{ik}tr[\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T]\\
+&amp;=\sigma_{ik}(n-r-1)
+\end{align}\]</span>
+<span class="math display">\[\begin{align}
+Cov(\hat{\boldsymbol\beta}_i,\hat{\boldsymbol\epsilon}_k)&amp;=E(\hat{\boldsymbol\beta}_i-E(\hat{\boldsymbol\beta}_i))(\hat{\boldsymbol\epsilon}_k-E(\hat{\boldsymbol\epsilon}_k))^T\\
+&amp;=E(\hat{\boldsymbol\beta}_i-\boldsymbol\beta_i)(\hat{\boldsymbol\epsilon}_k-\boldsymbol\epsilon_k)^T\\
+&amp;=E((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_i)(\hat{\boldsymbol\epsilon}_k)^T\\
+&amp;=E((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_i)((\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\boldsymbol\epsilon_k)^T\\
+&amp;=E((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\boldsymbol\epsilon_i)(\boldsymbol\epsilon_k^T(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T))\\
+&amp;=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^TE(\boldsymbol\epsilon_i\boldsymbol\epsilon_k^T)(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T))\\
+&amp;=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\sigma_{ik}\mathbf I(\mathbf 1-\mathbf Z(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T))\\
+&amp;=\sigma_{ik}((\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T-(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T)\\
+&amp;=\mathbf0
+\end{align}\]</span>so each element of <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> is uncorrelated with each element of <span class="math inline">\(\hat{\boldsymbol\epsilon}\)</span>.</p></li>
+<li><p><span class="math inline">\(\hat{\boldsymbol\beta}=(\mathbf Z^T\mathbf Z)^{-1}\mathbf Z^T\mathbf Y\)</span> is the maximum likelihood estimator of <span class="math inline">\(\boldsymbol\beta\)</span> and <span class="math inline">\(\hat{\boldsymbol\beta}\)</span> is a normal distribution with <span class="math inline">\(E(\hat{\boldsymbol\beta})=\boldsymbol\beta\)</span> and <span class="math inline">\(Cov(\hat{\boldsymbol\beta}_i,\hat{\boldsymbol\beta}_k)=\sigma_{ik}(\mathbf Z^T\mathbf Z)^{-1}\)</span>. And <span class="math inline">\(\hat{\boldsymbol\Sigma}=\frac{1}{n}\hat{\boldsymbol\epsilon}^T\hat{\boldsymbol\epsilon}=\frac{1}{n}(\mathbf Y-\mathbf Z\hat{\boldsymbol\beta})^T(\mathbf Y-\mathbf Z\hat{\boldsymbol\beta})\)</span> is the maximum likelihood estimator of <span class="math inline">\(\boldsymbol\Sigma\)</span> and <span class="math inline">\(n\hat{\boldsymbol\Sigma}\)</span> is distribution with <span class="math inline">\(W_{p,n-r-1}(\boldsymbol\Sigma)\)</span>. The likelihood associated with the parameters <span class="math inline">\(\boldsymbol\beta\)</span> and <span class="math inline">\(\boldsymbol\Sigma\)</span> is <span class="math display">\[\begin{align}
+L(\hat{\boldsymbol\mu},\hat{\boldsymbol\Sigma})&amp;=\prod_{j=1}^{n}\Biggl[\frac{1}{(2\pi)^{m/2}|\hat{\boldsymbol\Sigma}|^{1/2}}e^{-\frac{1}{2}(\mathbf y_j-\boldsymbol\mu)^T\hat{\boldsymbol\Sigma}^{-1}(\mathbf y_j-\boldsymbol\mu)}\Biggr]\\
+&amp;=\frac{1}{(2\pi)^{\frac{mn}{2}}|\hat{\mathbf\Sigma}|^{n/2}}e^{-\frac{1}{2}\sum_{j=1}^{n}(\mathbf y_j-\boldsymbol\mu)^T\hat{\boldsymbol\Sigma}^{-1}(\mathbf y_j-\boldsymbol\mu)}\\
+&amp;=\frac{1}{(2\pi)^{\frac{mn}{2}}|\hat{\boldsymbol\Sigma}|^{n/2}}e^{-\frac{1}{2}tr\Biggl[\hat{\boldsymbol\Sigma}^{-1}\sum_{j=1}^{n}(\mathbf y_j-\boldsymbol\mu)^T(\mathbf y_j-\boldsymbol\mu)\Biggr]}\\
+&amp;=\frac{1}{(2\pi)^{(mn/2)}|\hat{\boldsymbol\Sigma}|^{n/2}}e^{-\frac{1}{2}mn}
+\end{align}\]</span></p></li>
+<li><p>If some of <span class="math inline">\(\mathbf Z=[z_0,z_1,z_2,\cdots,z_q,z_{q+1},z_{q+2},\cdots,z_{r}]\)</span> parameters <span class="math inline">\([z_{q+1},z_{q+2},\cdots,z_{r}]\)</span> do not influence <span class="math inline">\(\mathbf Y\)</span>, which means the hypothesis <span class="math inline">\(H_0:\boldsymbol\beta_{q+1}=\boldsymbol\beta_{q+2}=\cdots=\boldsymbol\beta_{r}=\boldsymbol0\)</span>. We can express the general linear model as <span class="math display">\[\mathbf Y=\mathbf Z\boldsymbol\beta+\boldsymbol\epsilon=\left[\begin{array}{c:c}
+\underset{n\times(q+1)}{\mathbf Z_1}&amp;\underset{n\times(r-q)}{\mathbf Z_2}
+\end{array}
+\right]\begin{bmatrix}
+\underset{(q+1)\times m}{\boldsymbol\beta_{(1)}}\\
+\hdashline
+\underset{(r-q)\times m}{\boldsymbol\beta_{(2)}}\\
+\end{bmatrix}+\boldsymbol\epsilon=\mathbf Z_1\boldsymbol\beta_{(1)}+\mathbf Z_2\boldsymbol\beta_{(2)}+\boldsymbol\epsilon\]</span> Now the hypothesis is <span class="math inline">\(H_0:\boldsymbol\beta_{(2)}=\boldsymbol0,\mathbf Y=\mathbf Z_1\boldsymbol\beta_{(1)}+\boldsymbol\epsilon\)</span> The <span class="math display">\[\begin{align}
+\text{Extra sum of squares}&amp;=SS_{\text{error}}(\mathbf Z_1)-SS_{\text{error}}(\mathbf Z)\\
+&amp;=(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})^T(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})-(\mathbf Y-\mathbf Z\hat{\boldsymbol\beta})^T(\mathbf Y-\mathbf Z\hat{\boldsymbol\beta})
+\end{align}\]</span> where <span class="math inline">\(\hat{\boldsymbol\beta}_{(1)}=(\mathbf Z_1^T\mathbf Z_1)^{-1}\mathbf Z_1^T\mathbf Y\)</span>. And <span class="math display">\[\hat{\boldsymbol\Sigma}_1=\frac{1}{n}SS_{\text{error}}(\mathbf Z_1)=\frac{1}{n}(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})^T(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})\]</span> Under the restriction of the null hypothesis, the maximum likelihood is <span class="math inline">\(\underset{\boldsymbol\beta_{(1)},\boldsymbol\Sigma_1}{\text{max }}L(\boldsymbol\beta_{(1)},\boldsymbol\Sigma_1)=\displaystyle\frac{1}{(2\pi)^{mn/2}\hat{\boldsymbol\Sigma}_1^{n/2}}e^{-mn/2}\)</span> where the maximum occurs at <span class="math inline">\(\hat{\boldsymbol\beta}_{(1)}=(\mathbf Z_1^T\mathbf Z_1)^{-1}\mathbf Z_1^T\boldsymbol Y\)</span> and <span class="math inline">\(\hat{\boldsymbol\Sigma}_1=\frac{1}{n}(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})^T(\mathbf Y-\mathbf Z_1\hat{\boldsymbol\beta}_{(1)})\)</span> Reject <span class="math inline">\(H_0:\boldsymbol\beta_{(2)}=\boldsymbol0\)</span> for small values of the <strong>likelihood ratio test</strong> : <span class="math display">\[\frac{\underset{\boldsymbol\beta_{(1)},\boldsymbol\Sigma_1}{\text{max }}L(\boldsymbol\beta_{(1)},\boldsymbol\Sigma_1)}{\underset{\boldsymbol\beta,\boldsymbol\Sigma}{\text{max }}L(\boldsymbol\beta,\boldsymbol\Sigma)}=\Bigl(\frac{|\hat{\boldsymbol\Sigma}_1|}{|\hat{\boldsymbol\Sigma}|}\Bigr)^{-n/2}=\Bigl(\frac{|\hat{\boldsymbol\Sigma}|}{|\hat{\boldsymbol\Sigma}_1|}\Bigr)^{n/2}=\Lambda\]</span>, where <span class="math inline">\(\Lambda^{2/n}=\frac{|\hat{\boldsymbol\Sigma}|}{|\hat{\boldsymbol\Sigma}_1|}\)</span> is the <span style="color: red;"><strong>Wilks’ lambda statistic</strong></span>.</p></li>
+<li><p>The responses <span class="math inline">\(\mathbf y_0\)</span> corresponding to fixed values <span class="math inline">\(\mathbf z_0\)</span> of the predictor variables and regression coefficients metrix <span class="math inline">\(\underset{n\times m}{\boldsymbol\beta}\)</span> is <span class="math inline">\(\mathbf y_0=\mathbf z_0^T\hat{\boldsymbol\beta}+\boldsymbol\epsilon_0\)</span>, <span class="math inline">\(E(\hat{\boldsymbol\beta}^T\mathbf z_0)=\boldsymbol\beta^T\mathbf z_0\)</span> and <span class="math inline">\(Cov(\hat{\boldsymbol\beta}^T\mathbf z_0)=\mathbf z_0^TCov(\hat{\boldsymbol\beta}^T)\mathbf z_0=\mathbf z_0^T(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0\boldsymbol\Sigma\)</span>, so <span class="math inline">\(\underset{m\times 1}{(\hat{\boldsymbol\beta}^T\mathbf z_0)}\)</span> is distributed as <span class="math inline">\(N_m(\boldsymbol\beta^T\mathbf z_0,\mathbf z_0^T(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0\boldsymbol\Sigma)\)</span> and <span class="math inline">\(n\hat{\boldsymbol\Sigma}\)</span> is independently distributed as <span class="math inline">\(W_{n-r-1}(\boldsymbol\Sigma)\)</span>. So the <span class="math inline">\(T^2\)</span>-statistic is <span class="math display">\[T^2=\Biggl(\frac{\hat{\boldsymbol\beta}^T\mathbf z_0-\boldsymbol\beta^T\mathbf z_0}{\sqrt{\mathbf z_0^T(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}}\Biggr)^T\Biggl(\frac{n\hat{\boldsymbol\Sigma}}{n-r-1}\Biggr)^{-1}\Biggl(\frac{\hat{\boldsymbol\beta}^T\mathbf z_0-\boldsymbol\beta^T\mathbf z_0}{\sqrt{\mathbf z_0^T(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}}\Biggr)\]</span> and <span class="math inline">\(100(1-\alpha)\%\)</span> confidence ellipsoid for <span class="math inline">\(\boldsymbol\beta^T\mathbf z_0\)</span> is provided by the inequality <span class="math display">\[T^2\le\frac{m(n-r-1)}{n-r-m}F_{m,n-r-m}(\alpha)\]</span> The <span class="math inline">\(100(1-\alpha)\%\)</span> simultaneous confidence intervals for the component of <span class="math inline">\(\mathbf z_0^T\boldsymbol\beta\)</span>, <span class="math inline">\(\mathbf z_0^T\boldsymbol\beta_i\)</span> is given by: <span class="math display">\[\mathbf z_0^T\hat{\boldsymbol\beta_i}\pm\sqrt{\frac{m(n-r-1)}{n-r-m}F_{m,n-r-m}(\alpha)}\sqrt{\mathbf z_0^T(\mathbf Z^T\mathbf Z)^{-1}\mathbf z_0}\sqrt{\frac{n\hat{\sigma_{ii}}}{n-r-1}}
+\]</span> <span class="math inline">\(i=1,2,\cdots,m\)</span></p></li>
+</ol>
+<p><strong>Theorem 14.9</strong>. Under appropriate conditions we have:</p>
+<ol style="list-style-type: decimal">
+<li><p>(Consistency) <span class="math inline">\(\hat{\beta}_0 \xrightarrow{\text{P}} \beta_0\)</span> and <span class="math inline">\(\hat{\beta}_1 \xrightarrow{\text{P}} \beta_1\)</span></p></li>
+<li><p>(Asymptotic Normality):</p></li>
+</ol>
+<p><span class="math display">\[
+\frac{\hat{\beta}_0 - \beta_0}{\hat{se}(\hat{\beta}_0)} \leadsto N(0, 1)
+\quad \text{and} \quad
+\frac{\hat{\beta}_1 - \beta_1}{\hat{se}(\hat{\beta}_1)} \leadsto N(0, 1)
+\]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Approximate <span class="math inline">\(1 - \alpha\)</span> confidence intervals for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are</li>
+</ol>
+<p><span class="math display">\[
+\hat{\beta}_0 \pm z_{\alpha/2} \hat{\text{se}}(\hat{\beta}_0)
+\quad \text{and} \quad
+\hat{\beta}_1 \pm z_{\alpha/2} \hat{\text{se}}(\hat{\beta}_1)
+\]</span></p>
+<p>The Wald statistic for testing <span class="math inline">\(H_0 : \beta_1 = 0\)</span> versus <span class="math inline">\(H_1: \beta_1 \neq 0\)</span> is: reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(W &gt; z_{\alpha / 2}\)</span> where <span class="math inline">\(W = \hat{\beta}_1 / \hat{\text{se}}(\hat{\beta}_1)\)</span>.</p>
+</div>
+<div id="prediction" class="section level3">
+<h3>14.4 Prediction</h3>
+<p>Suppose we have estimated a regression model <span class="math inline">\(\hat{r}(x) = \hat{\beta}_0 + \hat{\beta}_1 x\)</span> from data <span class="math inline">\((X_1, Y_1), \dots, (X_n, Y_n)\)</span>. We observe the value <span class="math inline">\(X_* = x\)</span> of the covariate for a new subject and we want to predict the outcome <span class="math inline">\(Y_*\)</span>. An estimate of <span class="math inline">\(Y_*\)</span> is</p>
+<p><span class="math display">\[ \hat{Y}_* = \hat{\beta}_0 + \hat{\beta}_1 X_*\]</span></p>
+<p>Using the formula for the variance of the sum of two random variables,</p>
+<p><span class="math display">\[ \mathbb{V}(\hat{Y}_*) = \mathbb{V}(\hat{\beta}_0 + \hat{\beta}_1 x_*) = \mathbb{V}(\hat{\beta}_0) + x_* \mathbb{V}(\hat{\beta}_1) + 2 x_* \text{Cov}(\hat{\beta}_0, \hat{\beta}_1) \]</span></p>
+<p>Theorem 14.8 gives the formulas for all terms in this equation. The estimated standard error <span class="math inline">\(\hat{\text{se}}(\hat{Y}_*)\)</span> is the square root of this variance, with <span class="math inline">\(\hat{\sigma}^2\)</span> in place of <span class="math inline">\(\sigma^2\)</span>. However, <strong>the confidence interval for <span class="math inline">\(\hat{Y}_*\)</span> is not of the usual form</strong> <span class="math inline">\(\hat{Y}_* \pm z_{\alpha} \hat{\text{se}}(\hat{Y}_*)\)</span>. The appendix explains why. The correct form is given in the following theorem. We can the interval a <strong>prediction interval</strong>.</p>
+<p><strong>Theorem 14.11 (Prediction Interval)</strong>. Let</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\xi}_n^2 &amp;= \hat{\text{se}}^2(\hat{Y}_*) + \hat{\sigma}^2 \\
+&amp;= \hat{\sigma}^2 \left(\frac{\sum_{i=1}^n (X_i - X_*)^2}{n \sum_{i=1}^n (X_i - \overline{X})^2} + 1 \right)
+\end{align}
+\]</span></p>
+<p>An approximate <span class="math inline">\(1 - \alpha\)</span> prediction interval for <span class="math inline">\(Y_*\)</span> is</p>
+<p><span class="math display">\[ \hat{Y}_* \pm z_{\alpha/2} \xi_n\]</span></p>
+</div>
+<div id="multiple-regression" class="section level3">
+<h3>14.5 Multiple Regression</h3>
+<p>Now suppose we have <span class="math inline">\(k\)</span> covariates <span class="math inline">\(X_1, \dots, X_k\)</span>. The data are of the form</p>
+<p><span class="math display">\[(Y_1, X_1), \dots, (Y_i, X_i), \dots, (Y_n, X_n)\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ X_i = (X_{i1}, \dots, X_{ik}) \]</span></p>
+<p>Here, <span class="math inline">\(X_i\)</span> is the vector of <span class="math inline">\(k\)</span> covariates for the <span class="math inline">\(i-\)</span>th observation. The linear regression model is</p>
+<p><span class="math display">\[ Y_i = \sum_{j=1}^k \beta_j X_{ij} + \epsilon_i \]</span></p>
+<p>for <span class="math inline">\(i = 1, \dots, n\)</span> where <span class="math inline">\(\mathbb{E}(\epsilon_i | X_{1i}, \dots, X_{ik}) = 0\)</span>. Usually we want to include an intercept in the model which we can do by setting <span class="math inline">\(X_{i1} = 1\)</span> for <span class="math inline">\(i = 1, \dots, n\)</span>. At this point it will become more convenient to express the model in matrix notation. The outcomes will be denoted by</p>
+<p><span class="math display">\[ Y = \begin{pmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{pmatrix}
+\]</span></p>
+<p>and the covariates will be denoted by</p>
+<p><span class="math display">\[ X = \begin{pmatrix}
+X_{11} &amp; X_{12} &amp; \cdots &amp; X_{1k} \\
+X_{21} &amp; X_{22} &amp; \cdots &amp; X_{2k} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+X_{n1} &amp; X_{n2} &amp; \cdots &amp; X_{nk}
+\end{pmatrix}
+\]</span></p>
+<p>Each row is one observation; the columns represent to the <span class="math inline">\(k\)</span> covariates. Thus, <span class="math inline">\(X\)</span> is a <span class="math inline">\(n \times k\)</span> matrix. Let</p>
+<p><span class="math display">\[
+\beta = \begin{pmatrix}
+\beta_1 \\
+\vdots \\
+\beta_k
+\end{pmatrix}
+\quad \text{and} \quad
+\epsilon = \begin{pmatrix}
+\epsilon_1 \\
+\vdots \\
+\epsilon_k
+\end{pmatrix}
+\]</span></p>
+<p>Then we can write the linear regression model as</p>
+<p><span class="math display">\[ Y = X \beta + \epsilon \]</span></p>
+<p><strong>Theorem 14.13</strong>. Assuming that the <span class="math inline">\(k \times k\)</span> matrix <span class="math inline">\(X^TX\)</span> is invertible, the least squares estimate is</p>
+<p><span class="math display">\[ \hat{\beta} = (X^T X)^{-1} X^T Y \]</span></p>
+<p>The estimated regression function is</p>
+<p><span class="math display">\[ \hat{r}(x) = \sum_{j=1}^k \hat{\beta}_j x_j\]</span></p>
+<p>The variance-covariance matrix of <span class="math inline">\(\hat{\beta}\)</span> is</p>
+<p><span class="math display">\[ \mathbb{V}(\hat{\beta} | X^n) = \sigma^2 (X^T X)^{-1} \]</span></p>
+<p>An unbiased estimate of <span class="math inline">\(\sigma^2\)</span> is</p>
+<p><span class="math display">\[ \hat{\sigma}^2 = \left( \frac{1}{n - k} \right) \sum_{i=1}^n \hat{\epsilon}_i^2 \]</span></p>
+<p>where <span class="math inline">\(\hat{\epsilon} = X \hat{\beta} - Y\)</span> is the vector of residuals. An approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\beta_j\)</span> is</p>
+<p><span class="math display">\[ \hat{\beta}_j \pm z_{\alpha/2} \hat{\text{se}}(\hat{\beta}_j) \]</span></p>
+<p>where <span class="math inline">\(\hat{\text{se}}^2(\hat{\beta}_j)\)</span> is the <span class="math inline">\(j\)</span>-th diagonal element of the matrix <span class="math inline">\(\hat{\sigma}^2 (X^T X)^{-1}\)</span>.</p>
+</div>
+<div id="model-selection" class="section level3">
+<h3>14.6 Model Selection</h3>
+<p>We may have data on many covariates but we may not want to include all of them in the model. A smaller model with fewer covariates has two advantages: it might give better predictions than a big model and it is more parsimonious (simpler). Generally, as you add more variables to a regression, the bias of the predictions decreases and the variance increases. Too few covariates yields high bias; too many covariates yields high variance. Good predictions result from achieving a good balance between bias and variance.</p>
+<p>In model selection there are two problems: assigning a score to each model which measures, in some sense, how good the model is, and searching through all models to find the model with the best score.</p>
+<p>Let <span class="math inline">\(S \subset \{1, \dots, k\}\)</span> and let <span class="math inline">\(\mathcal{X}_S = \{ X_j : j \in S \}\)</span> denote a subset of the covariates. Let <span class="math inline">\(\beta_S\)</span> denote the coefficients of the corresponding set of covariates and let <span class="math inline">\(\hat{\beta}_S\)</span> denote the least squares estimate of <span class="math inline">\(\beta_S\)</span>. Let <span class="math inline">\(X_S\)</span> denote the <span class="math inline">\(X\)</span> matrix for this subset of covariates, and let <span class="math inline">\(\hat{r}_S(x)\)</span> to be the estimated regression function. The predicted values from model <span class="math inline">\(S\)</span> are denoted by <span class="math inline">\(\hat{Y}_i(S) = \hat{r}_S(X_i)\)</span>.</p>
+<p>The <strong>prediction risk</strong> is defined to be</p>
+<p><span class="math display">\[R(S) = \sum_{i=1}^n \mathbb{E} (\hat{Y}_i(S) - Y_i^*)^2 \]</span></p>
+<p>where <span class="math inline">\(Y_i^*\)</span> denotes the value of the future observation of <span class="math inline">\(Y_i\)</span> at covariate value <span class="math inline">\(X_i\)</span>. Our goal is to choose <span class="math inline">\(S\)</span> to make <span class="math inline">\(R(S)\)</span> small.</p>
+<p>The <strong>training error</strong> is defined to be</p>
+<p><span class="math display">\[\hat{R}_\text{tr}(S) = \sum_{i=1}^n (\hat{Y}_i(S) - Y_i)^2 \]</span></p>
+<p>This estimate is very biased and under-estimates <span class="math inline">\(R(S)\)</span>.</p>
+<p><strong>Theorem 14.15</strong>. The training error is a downward biased estimate of the prediction risk:</p>
+<p><span class="math display">\[ \mathbb{E}(\hat{R}_\text{tr}(S)) &lt; R(S) \]</span></p>
+<p>In fact,</p>
+<p><span class="math display">\[\text{bias}(\hat{R}_\text{tr}(S)) = \mathbb{E}(\hat{R}_\text{tr}(S)) - R(S) = -2 \sum_{i=1}^n \text{Cov}(\hat{Y}_i, Y_i)\]</span></p>
+<p>The reason for the bias is that the data is being used twice: to estimate the parameters and to estimate the risk. When fitting a model with many variables, the covariance <span class="math inline">\(\text{Cov}(\hat{Y_i}, Y_i)\)</span> will be large and the bias of the training error gets worse.</p>
+<p>In summary, the training error is a poor estimate of risk. Here are some better estimates.</p>
+<p><strong>Mallow’s <span class="math inline">\(C_p\)</span> statistic</strong> is defined by</p>
+<p><span class="math display">\[\hat{R}(S) = \hat{R}_\text{tr}(S) + 2 |S| \hat{\sigma}^2\]</span></p>
+<p>where <span class="math inline">\(|S|\)</span> denotes the number of terms in <span class="math inline">\(S\)</span> and <span class="math inline">\(\hat{\sigma}^2\)</span> is the estimate of <span class="math inline">\(\sigma^2\)</span> obtained from the full model (with all covariates). Think of the <span class="math inline">\(C_p\)</span> statistic as lack of fit plus complexity penalty.</p>
+<p>A related method for estimating risk is <strong>AIC (Akaike Information Criterion)</strong>. The idea is to choose <span class="math inline">\(S\)</span> to maximize</p>
+<p><span class="math display">\[ \ell_S - |S|\]</span></p>
+<p>where <span class="math inline">\(\ell_S\)</span> is the log-likelihood of the model evaluated at the MLE. In linear regression with Normal errors, maximizing AIC is equivalent to minimizing Mallow’s <span class="math inline">\(C_p\)</span>; see exercise 8.</p>
+<p><em>Some texts use a slightly different definition of AIC which involves multiplying this definition by 2 or -2. This has no effect on which model is selected.</em></p>
+<p>Yet another method for estimating risk is <strong>leave-one-out cross-validation</strong>. In this case, the risk estimator is</p>
+<p><span class="math display">\[\hat{R}_\text{CV}(S) = \sum_{i=1}^n (Y_i - \hat{Y}_{(i)})^2 \]</span></p>
+<p>where <span class="math inline">\(\hat{Y}_{(i)}\)</span> is the prediction for <span class="math inline">\(Y_i\)</span> obtained by fitting the model with <span class="math inline">\(Y_i\)</span> omitted. It can be shown that</p>
+<p><span class="math display">\[\hat{R}_\text{CV}(S) = \sum_{i=1}^n \left( \frac{Y_i - \hat{Y}_i(S)}{1 - U_{ii}(S)} \right)^2 \]</span></p>
+<p>where <span class="math inline">\(U_ii\)</span> is the <span class="math inline">\(i\)</span>-th diagonal element of the matrix</p>
+<p><span class="math display">\[U(S) = X_S (X_S^T X_S)^{-1} X_S^T\]</span></p>
+<p>Thus one need not actually drop each observation and re-fit the model.</p>
+<p>A generalization is <strong>k-fold cross-validation</strong>. Here we divide the data into <span class="math inline">\(k\)</span> groups; often people take <span class="math inline">\(k = 10\)</span>. We omit one group of data and fit the models on the remaining data. We use the fitted model to predict the data in the group that was omitted. We then estimate the risk by <span class="math inline">\(\sum_i (Y_i - \hat{Y}_i)^2\)</span> where the sum is over the data points in the omitted group. This process is repeated for each of the <span class="math inline">\(k\)</span> groups and the resulting risk estimates are averaged.</p>
+<p>For linear regression, Mallows <span class="math inline">\(C_p\)</span> and cross-validation often yield essentially the same results so one might as well use Mallow’s method. In some of the more complex problems we will discuss later, cross-validation will be more useful.</p>
+<p>Another scoring method is <strong>BIC (Bayesian Information Criterion)</strong>. Here we choose a model to maximize</p>
+<p><span class="math display">\[ \text{BIC}(S) = \text{RSS}(S) = 2 |S| \hat{\sigma}^2 \]</span></p>
+<p>The BIC score has a Bayesian interpretation. Let <span class="math inline">\(\mathcal{S} = \{ S_1, \dots, S_m \}\)</span> denote a set of models. Suppose we assign the uniform prior <span class="math inline">\(\mathbb{P}(S_j) = 1 / m\)</span> over the models. Also assume we put a smooth prior on the parameters within each model. It can be shown that the posterior probability for a model is approximately</p>
+<p><span class="math display">\[ \mathbb{P}(S_j | \text{data}) \approx \frac{e^{\text{BIC}(S_j)}}{\sum_r e^{\text{BIC}(S_r)}}\]</span></p>
+<p>so choosing the model with highest BIC is like choosing the model with highest posterior probability.</p>
+<p>The BIC score also has an information-theoretical interpretation in terms of something called minimum description length.</p>
+<p>The BIC score is identical to Mallows <span class="math inline">\(C_p\)</span> except that it puts a more severe penalty for complexity. It thus leads one to choose a smaller model than the other methods.</p>
+<p>If there are <span class="math inline">\(k\)</span> covariates then there are <span class="math inline">\(2^k\)</span> possible models. We need to search through all of those models, assign a score to each one, and choose the model with the best score. When <span class="math inline">\(k\)</span> is large, this is infeasible; in that case, we need to search over a subset of all the models. Two common methods are <strong>forward and backward stepwise regression</strong>.</p>
+<p>In forward stepwise regression, we start with no covariates in the model, and keep adding variables one at a time that lead to the best score. In backward stepwise regression, we start with the biggest model (all covariates) and drop one variable at a time.</p>
+</div>
+<div id="the-lasso" class="section level3">
+<h3>14.7 The Lasso</h3>
+<p>This method, due to Tibshirani, is called the <strong>Lasso</strong>. Assume that all covariates have been rescaled to have the same variance. Consider estimating <span class="math inline">\(\beta = (\beta_1, \dots, \beta_k)\)</span> by minimizing the loss function</p>
+<p><span class="math display">\[ \sum_{i=1}^n (Y_i - \hat{Y}_i)^2 + \lambda \sum_{j=1}^k | \beta_j |\]</span></p>
+<p>where <span class="math inline">\(\lambda &gt; 0\)</span>. The idea is to minimize the sums of squares but there is a penalty that gets large if any <span class="math inline">\(\beta_j\)</span> gets large. It can be shown that some of the <span class="math inline">\(\beta_j\)</span>’s will be 0. We interpret this as having the <span class="math inline">\(j\)</span>-th covariate omitted from the model; thus we are doing estimation and model selection simultaneously.</p>
+<p>We need to choose a value of <span class="math inline">\(\lambda\)</span>. We can do this by estimating the prediction risk <span class="math inline">\(R(\lambda)\)</span> as a function of <span class="math inline">\(\lambda\)</span> and choosing to minimize it. For example, we can estimate the risk using leave-one-out cross-validation</p>
+</div>
+<div id="technical-appendix" class="section level3">
+<h3>14.8 Technical Appendix</h3>
+<p>The prediction interval is of a different form than other confidence intervals we have seen – the quantity of interest <span class="math inline">\(Y_*\)</span> is equal to a parameter <span class="math inline">\(\theta\)</span> plus a random variable.</p>
+<p>We can fix this by defining:</p>
+<p><span class="math display">\[ \xi_n^2 = \mathbb{V}(\hat{Y}_*) + \sigma^2 = \left[\frac{\sum_i (x_i - x_*)^2}{n \sum_i (x_i - \overline{x})^2} + 1\right] \sigma^2\]</span></p>
+<p>In practice, we substitute <span class="math inline">\(\hat{\sigma}\)</span> for <span class="math inline">\(\sigma\)</span> and we denote the resulting quantity by <span class="math inline">\(\hat{\xi}_n\)</span>. Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(\hat{Y}_* - z_{\alpha/2} \hat{\xi}_n &lt; Y_* &lt; \hat{Y}_* + z_{\alpha/2} \hat{\xi}_n) &amp;=
+\mathbb{P}\left(-z_{\alpha/2} &lt; \frac{\hat{Y}_* - Y_*}{\hat{\xi}_n} &lt; z_{\alpha/2} \right)\\
+&amp;= \mathbb{P}\left(-z_{\alpha/2} &lt; \frac{\hat{\theta} - \theta - \epsilon}{\hat{\xi}_n} &lt; z_{\alpha/2} \right) \\
+&amp;\approx \mathbb{P}\left(-z_{\alpha/2} &lt; \frac{N(0, s^2 + \sigma^2)}{\hat{\xi}_n} &lt; z_{\alpha/2} \right)  \\
+&amp;= \mathbb{P}(-z_{\alpha/2} &lt; N(0, 1) &lt; z_{\alpha/2}) \\
+&amp;= 1 - \alpha
+\end{align}
+\]</span></p>
+</div>
+<div id="exercises" class="section level3">
+<h3>14.9 Exercises</h3>
+<p><strong>Exercise 14.9.1</strong>. Prove Theorem 14.4:</p>
+<p>The least square estimates are given by</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (X_i - \overline{X}_n) (Y_i - \overline{Y}_n)}{\sum_{i=1}^n (X_i - \overline{X}_n)^2}\\
+\hat{\beta}_0 &amp;= \overline{Y}_n - \hat{\beta}_1 \overline{X}_n
+\end{align}
+\]</span></p>
+<p>An unbiased estimate of <span class="math inline">\(\sigma^2\)</span> is</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \left( \frac{1}{n - 2} \right) \sum_{i=1}^n \hat{\epsilon}_i^2
+\]</span></p>
+<p><strong>Solution</strong>. We can obtain the estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> by minimizing the RSS – by taking the partial derivatives with respect to <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>:</p>
+<p><span class="math display">\[\text{RSS} = \sum_i \hat{\epsilon}_i^2 = \sum_i (Y_i - (\beta_0 + \beta_1 X_i))^2\]</span></p>
+<p>Derivating RSS on <span class="math inline">\(\beta_0\)</span>:</p>
+<p><span class="math display">\[\frac{d}{d \beta_0}\text{RSS} = \sum_i \frac{d}{d \beta_0} (Y_i - (\beta_0 + \beta_1 X_i))^2
+= \sum_i 2 (\beta_0 - (Y_i - \beta_1 X_i))\]</span></p>
+<p>Making this derivative equal to 0 at <span class="math inline">\(\hat{\beta}_0\)</span>, <span class="math inline">\(\hat{\beta}_1\)</span> gives:</p>
+<p><span class="math display">\[
+\begin{align}
+0 &amp;= \sum_i 2 (\hat{\beta}_0 - (Y_i - \hat{\beta}_1 X_i))\\
+n \hat{\beta}_0 &amp;=  \sum_i Yi - \hat{\beta}_1  \sum_i X_i\\
+\hat{\beta}_0 &amp;= \overline{Y}_n - \hat{\beta}_1 \overline{X}_n
+\end{align}
+\]</span></p>
+<p>Replacing <span class="math inline">\(\overline{Y}_n - \beta_1 \overline{X}_n\)</span> for <span class="math inline">\(\beta_0\)</span> and derivating on <span class="math inline">\(\beta_1\)</span>:</p>
+<p><span class="math display">\[\frac{d}{d \beta_1}\text{RSS} = \sum_i \frac{d}{d \beta_1} (Y_i - (\beta_0 + \beta_1 X_i))^2\\
+=\sum_i \frac{d}{d \beta_1} (Y_i - \overline{Y}_n - \beta_1 (X_i - \overline{X}_n)))^2
+= \sum_i -2 (X_i - \overline{X}_n) (Y_i - \overline{Y}_n - \beta_1 (X_i - \overline{X}_n)))\]</span></p>
+<p>Making this derivative equal to 0 at <span class="math inline">\(\hat{\beta}_1\)</span> gives:</p>
+<p><span class="math display">\[
+\begin{align}
+0 &amp;= \sum_i (X_i - \overline{X}_n) (Y_i - \overline{Y}_n - \beta_1 (X_i - \overline{X}_n))) \\
+0 &amp;= \hat{\beta}_1 \sum_i (\overline{X}_n - X_i)^2 + \sum_i (\overline{X}_n - X_i)(Y_i - \overline{Y}_n) \\
+\hat{\beta}_1 &amp;= \frac{\sum_i (X_i - \overline{X}_n)(Y_i - \overline{Y}_n)}{\sum_i (X_i - \overline{X}_n)^2}
+\end{align}
+\]</span></p>
+<p>For the unbiased estimate, let’s adapt a more general proof from Greene (2003), restricted to <span class="math inline">\(k = 2\)</span> dimensions, where the first dimension is set to all ones to represent the intercept, and the second dimension represents the one-dimensional covariates <span class="math inline">\(X_i\)</span>.</p>
+<p>The vector of least square residuals is</p>
+<p><span class="math display">\[ \hat{\epsilon} = \begin{pmatrix}
+\hat{\epsilon}_1 \\
+\hat{\epsilon}_2 \\
+\vdots \\
+\hat{\epsilon}_n
+\end{pmatrix} = \begin{pmatrix}
+Y_1 - (\hat{\beta}_0 \cdot 1 + \hat{\beta}_1 X_1) \\
+Y_2 - (\hat{\beta}_0 \cdot 1 + \hat{\beta}_1 X_2) \\
+\vdots \\
+Y_n - (\hat{\beta}_0 \cdot 1 + \hat{\beta}_1 X_n)
+\end{pmatrix} = 
+y - X \hat{\beta}
+\]</span></p>
+<p>where <span class="math display">\[
+y = \begin{pmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{pmatrix}
+, \quad
+X = \begin{pmatrix}
+1 &amp; X_1 \\
+1 &amp; X_2 \\
+\vdots &amp; \vdots \\
+1 &amp; X_n
+\end{pmatrix},
+\quad \text{and} \quad
+\hat{\beta} = \begin{pmatrix}
+\hat{\beta}_0 \\
+\hat{\beta}_1
+\end{pmatrix}
+\]</span></p>
+<p>The least squares solution can be written as:</p>
+<p><span class="math display">\[\hat{\beta} = (X^T X)^{-1} X^T y\]</span></p>
+<p>Replacing it on the definition of <span class="math inline">\(\hat{\epsilon}\)</span>, we get</p>
+<p><span class="math display">\[ \hat{\epsilon} = y - X (X^T X)^{-1} X^T y = (I - X (X^T X)^{-1} X^T) y = M y\]</span></p>
+<p>where <span class="math inline">\(M = I - X (X^T X)^{-1} X^T\)</span> is known as the <strong>residual maker</strong> matrix.</p>
+<p>Note that <span class="math inline">\(M\)</span> is symmetric, that is, <span class="math inline">\(M^T = M\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+M^T &amp;= (I - X (X^T X)^{-1} X^T)^T  \\
+&amp;= I^T - (X (X^T X)^{-1} X^T)^T \\
+&amp;= I - (X^T)^T ((X^T X)^{-1})^T X^T \\
+&amp;= I - X ((X^{-1}(X^T)^{-1})^T X^T \\
+&amp;= I -  X (X^T X)^{-1} X^T \\
+&amp;= M
+\end{align}
+\]</span></p>
+<p>Note also that <span class="math inline">\(M\)</span> is idempotent, that is, <span class="math inline">\(M^2 = M\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+M^2 &amp;= (I - X (X^T X)^{-1} X^T) (I - X (X^T X)^{-1} X^T) \\
+&amp;= I - X (X^T X)^{-1} X^T - X (X^T X)^{-1} X^T + X \left( (X^T X)^{-1} X^T X \right) (X^T X)^{-1} X^T \\
+&amp;= I - X (X^T X)^{-1} X^T - X (X^T X)^{-1} X^T + X (X^T X)^{-1} X^T \\
+&amp;= I - X (X^T X)^{-1} X^T \\
+&amp;= M
+\end{align}
+\]</span></p>
+<p>Now, we have that <span class="math inline">\(MX = 0\)</span>, as running least squares on a regression where the covariates match the target variables should yield a model that just copies the covariate over, where all residuals are zero (<span class="math inline">\(\beta_0 = 0\)</span> and <span class="math inline">\(\beta_1 = 1\)</span>). So:</p>
+<p><span class="math display">\[\hat{\epsilon} = M y = M( X \beta + \epsilon) = M\epsilon\]</span></p>
+<p>where <span class="math inline">\(\epsilon = Y - X\beta\)</span> are the population residuals.</p>
+<p>We can then write an estimator for <span class="math inline">\(\sigma^2\)</span>:</p>
+<p><span class="math display">\[ \hat{\epsilon}^T \hat{\epsilon} = \epsilon^T M^T M \epsilon = \epsilon^T M^2 \epsilon = \epsilon^T M \epsilon\]</span></p>
+<p>Taking the expectation with respect to the data <span class="math inline">\(X\)</span> on both sides,</p>
+<p><span class="math display">\[\mathbb{E}(\hat{\epsilon}^T \hat{\epsilon} | X) = \mathbb{E}(\epsilon^T M \epsilon | X)\]</span></p>
+<p>But <span class="math inline">\(\epsilon^T M \epsilon\)</span> is a scalar (<span class="math inline">\(1 \times 1\)</span> matrix), so it is equal to its trace – and we can use the cyclic permutation property of the trace:</p>
+<p><span class="math display">\[ \mathbb{E}(\epsilon^T M \epsilon | X) = \mathbb{E}(\text{tr}(\epsilon^T M \epsilon) | X) = \mathbb{E}(\text{tr}(M \epsilon \epsilon^T) | X)\]</span></p>
+<p>Since <span class="math inline">\(M\)</span> is a function of <span class="math inline">\(X\)</span>, we can take it out of the expectation:</p>
+<p><span class="math display">\[\mathbb{E}(\text{tr}(M \epsilon \epsilon^T) | X) = \text{tr}(\mathbb{E}(M \epsilon \epsilon^T | X))
+= \text{tr}(M \mathbb{E}(\epsilon \epsilon^T | X))
+= \text{tr}(M \sigma^2 I_1)
+= \sigma^2 \text{tr}(M)
+\]</span></p>
+<p>Finally, we can compute the trace of <span class="math inline">\(M\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\text{tr}(M) &amp;= \text{tr}(I_n - X(X^T X)^{-1}X^T)\\
+&amp;= \text{tr}(I_n) - \text{tr}(X(X^T X)^{-1}X^T) \\
+&amp;= \text{tr}(I_n) - \text{tr}((X^T X)^{-1}X^T X) \\
+&amp;= \text{tr}(I_n) - \text{tr}(I_k)  \\
+&amp;= n - k
+\end{align}
+\]</span></p>
+<p>Therefore, the unbiased estimator is</p>
+<p><span class="math display">\[\hat{\sigma}^2 = \frac{\hat{\epsilon}^T \hat{\epsilon}}{n - k}\]</span></p>
+<p>or, for our case where <span class="math inline">\(k = 2\)</span>,</p>
+<p><span class="math display">\[\hat{\sigma}^2 = \left( \frac{1}{n - 2} \right) \sum_{i=1}^n \hat{\epsilon}_i^2\]</span></p>
+<p>Reference: Greene, William H. Econometric analysis. Pearson Education India, 2003. Chapter 4, pages 61-62.</p>
+<p><strong>Exercise 14.9.2</strong>. Prove the formulas for the standard errors in Theorem 14.8. You should regard the <span class="math inline">\(X_i\)</span>’s as fixed constants.</p>
+<p><span class="math display">\[
+\mathbb{E}(\hat{\beta} | X^n) = \begin{pmatrix}\beta_0 \\ \beta_1 \end{pmatrix}
+\quad \text{and} \quad
+\mathbb{V}(\hat{\beta} | X^n) = \frac{\sigma^2}{n s_X^2} \begin{pmatrix} 
+\frac{1}{n} \sum_{i=1}^n X_i^2 &amp; -\overline{X}_n \\
+-\overline{X}_n &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p><span class="math display">\[s_X^2 = n^{-1} \sum_{i=1}^n (X_i - \overline{X}_n)^2\]</span></p>
+<p><span class="math display">\[
+\hat{\text{se}}(\hat{\beta}_0) = \frac{\hat{\sigma}}{s_X \sqrt{n}} \sqrt{\frac{\sum_{i=1}^n X_i^2}{n}}
+\quad \text{and} \quad
+\hat{\text{se}}(\hat{\beta}_1) = \frac{\hat{\sigma}}{s_X \sqrt{n}}
+\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>The formulas follow immediately by performing the suggested replacement on the diagonal elements of <span class="math inline">\(\mathbb{V}(\hat{\beta} | X^n)\)</span> from Theorem 14.8. From the diagonals, replacing <span class="math inline">\(\hat{\sigma}\)</span> for <span class="math inline">\(\sigma\)</span>:</p>
+<p><span class="math display">\[
+\hat{\text{se}}(\hat{\beta}_0)^2 = \frac{\hat{\sigma}^2}{n s_X^2} \frac{\sum_{i=1}^n X_i^2}{n}
+\quad \text{and} \quad
+\hat{\text{se}}(\hat{\beta}_1)^2 = \frac{\hat{\sigma}^2}{n s_X^2} \cdot 1\]</span></p>
+<p>Results follow by taking the square root.</p>
+<p>We will also prove the variance matrix result itself, following from the notation and proof used on exercise 14.9.1 (again, adapting from Greene):</p>
+<p><span class="math display">\[
+\hat{\beta} = (X^T X)^{-1}X^T y = (X^T X)^{-1}X^T (X \beta + \epsilon) = \beta + (X^T X)^{-1}X^T \epsilon
+\]</span></p>
+<p>Taking the variance conditional on <span class="math inline">\(X\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}(\hat{\beta} | X) &amp;= \mathbb{V}(\hat{\beta} - \beta | X) \\
+&amp;= \mathbb{E}((\hat{\beta} - \beta)(\hat{\beta} - \beta)^T | X)  \\
+&amp;= \mathbb{E}((X^T X)^{-1}X^T \epsilon\epsilon^T X(X^T X)^{-1} | X) \\
+&amp;= (X^T X)^{-1}X^T \mathbb{E}(\epsilon\epsilon^T | X) X(X^T X)^{-1} \\
+&amp;= (X^T X)^{-1}X^T \sigma^2 I X(X^T X)^{-1} \\
+&amp;= \sigma^2 (X^T X)^{-1} 
+\end{align}
+\]</span></p>
+<p>But we have:</p>
+<p><span class="math display">\[ X^T X = \begin{pmatrix}
+1 &amp; 1 &amp; \cdots &amp; 1 \\
+X_1 &amp; X_2 &amp; \cdots &amp; X_n
+\end{pmatrix} \begin{pmatrix}
+1 &amp; X_1 \\
+1 &amp; X_2 \\
+\vdots &amp; \vdots \\
+1 &amp; X_n
+\end{pmatrix} = 
+n \begin{pmatrix}
+1 &amp; \overline{X}_n \\
+\overline{X}_n &amp; \frac{1}{n}\sum_{i=1}^n X_i^2
+\end{pmatrix}
+\]</span></p>
+<p>so we can verify its inverse is</p>
+<p><span class="math display">\[(X^T X)^{-1} = \frac{1}{n s_X^2} \begin{pmatrix}
+\frac{1}{n} \sum_{i=1}^n X_i^2 &amp; - \overline{X}_n \\
+-\overline{X}_n &amp; 1
+\end{pmatrix}\]</span></p>
+<p>and so the result follows.</p>
+<p>Reference: Greene, William H. Econometric analysis. Pearson Education India, 2003. Chapter 4, page 59.</p>
+<p><strong>Exercise 14.9.3</strong>. Consider the <strong>regression through the origin</strong> model:</p>
+<p><span class="math display">\[Y_i = \beta X_i + \epsilon\]</span></p>
+<p>Find the least squares estimate for <span class="math inline">\(\beta\)</span>. Find the standard error of the estimate. Find conditions that guarantee that the estimate is consistent.</p>
+<p><strong>Solution</strong>. Once more adopting notation from the solution of 14.9.1, let</p>
+<p><span class="math display">\[ y = \begin{pmatrix} Y_1 \\ \vdots \\ Y_n \end{pmatrix},
+\quad
+X = \begin{pmatrix} X_1 \\ \vdots \\ X_n \end{pmatrix}\]</span></p>
+<p>and <span class="math inline">\(\beta\)</span> is a scalar (or a <span class="math inline">\(1 \times 1\)</span> matrix).</p>
+<p>The least squares estimate is, again,</p>
+<p><span class="math display">\[\hat{\beta} = (X^T X)^{-1} X^T y\]</span></p>
+<p>which simplifies in this one-dimensional case to:</p>
+<p><span class="math display">\[\hat{\beta} = \frac{\sum_{i=1}^n X_i Y_i}{\sum_{i=1}^n X_i^2}\]</span></p>
+<p>The unbiased estimator for <span class="math inline">\(\sigma^2\)</span> is, with <span class="math inline">\(k = 1\)</span>,</p>
+<p><span class="math display">\[\hat{\sigma}^2 = \frac{1}{n - 1} \sum_{i=1}^n \hat{\epsilon}_i^2\]</span></p>
+<p>and the variance of <span class="math inline">\(\hat{\beta}\)</span> conditional of <span class="math inline">\(X\)</span> is:</p>
+<p><span class="math display">\[\mathbb{V}(\hat{\beta} | X) = \sigma^2 (X^T X)^{-1} = \frac{\sigma^2}{\sum_{i=1}^n X_i^2}\]</span></p>
+<p>so the standard error of the estimate is</p>
+<p><span class="math display">\[\hat{\text{se}}(\hat{\beta}) = \frac{\hat{\sigma}}{\sqrt{\sum_{i=1}^n X_i^2}}\]</span></p>
+<p>These, of course, make the assumption that <span class="math inline">\(X^T X\)</span> is invertible – that is, that the sum of squares of the <span class="math inline">\(X_i\)</span> variables is greater than 0. This is only not the case when all covariates are 0, in which case the value of our estimator <span class="math inline">\(\hat{\beta}\)</span> would be irrelevant to determining the prediction outcome – the system would be undetermined.</p>
+<p>Finally, note that <span class="math inline">\(\hat{\beta}\)</span> is also the MLE in the parameter space for regression through the origin. As each measurement error <span class="math inline">\(\epsilon_i = Y_i - \beta X_i\)</span> is drawn from a normal distribution <span class="math inline">\(N(0, \sigma^2)\)</span>, the log-likelihood for a given parameter <span class="math inline">\(\beta\)</span> is</p>
+<p><span class="math display">\[\ell_n(\beta) = -\frac{n}{2} \log \sigma^2 - \frac{1}{2 \sigma^2} \sum_{i=1}^n (Y_i - \beta X_i)^2 + C\]</span></p>
+<p>and so maximizing it is equivalent to minimizing <span class="math inline">\(\sum_{i=1}^n (Y_i - \beta X_i)^2\)</span>, which is what the least squares procedure does.</p>
+<p>Since the MLE is consistent, the least squares estimate is also consistent.</p>
+<p><strong>Exercise 14.9.4</strong>. Prove equation (14.24).</p>
+<p><span class="math display">\[ \text{bias}(\hat{R}_\text{tr}(S)) = \mathbb{E}(\hat{R}_\text{tr}(S)) - R(S) = -2 \sum_i \text{Cov}(\hat{Y}_i, Y_i) \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>The bias is:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(\hat{R}_\text{tr}(S)) - R(S) &amp;= \mathbb{E}\left[\sum_i (\hat{Y}_i- Y_i)^2 \right] - \mathbb{E} \left[ \sum_i (\hat{Y}_i - Y_i^*)^2 \right] \\
+&amp;= \sum_i \left( \mathbb{E} \left[\hat{Y}_i^2 \right] - 2 \mathbb{E} \left[\hat{Y}_i Y_i \right] + \mathbb{E}\left[Y_i^2 \right] - \mathbb{E} \left[\hat{Y}_i^2 \right] + 2 \mathbb{E} \left[\hat{Y}_i Y_i^* \right] - \mathbb{E}\left[{Y_i^*}^2 \right] \right)
+\end{align}
+\]</span></p>
+<p>The random variables <span class="math inline">\(Y_i = \beta X_i + \epsilon_\text{train}\)</span> and <span class="math inline">\(Y_i^* = \beta X_i + \epsilon_\text{pred}\)</span> are independent, as the errors during training and predition are independent, and the covariates <span class="math inline">\(X_i\)</span> and true parameter <span class="math inline">\(\beta\)</span> are constant. Since they are independent, <span class="math inline">\(\mathbb{E}[Y_i Y_i^*] = \mathbb{E}[Y_i] \mathbb{E}[Y_i^*]\)</span>.</p>
+<p>We also have <span class="math inline">\(\mathbb{E} [ {Y_i^*}^2 ] = \mathbb{V}[Y_i^*] + \mathbb{E}[Y_i^*]^2 = \mathbb{V}[\epsilon_\text{pred}] + \mathbb{E}[X \beta]^2 = \mathbb{V}[\epsilon_\text{train}] + \mathbb{E}[Y_i]^2 = \mathbb{E} [Y_i^2]\)</span>.</p>
+<p>Replacing both of those in the expression of bias above, we get the result:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(\hat{R}_\text{tr}(S)) - R(S) &amp;= 
+-2 \sum_i \left( \mathbb{E}[Y_i \hat{Y}_i] - \mathbb{E}[Y_i] \mathbb{E}[\hat{Y}_i] \right) \\
+&amp;= -2 \sum_i \text{Cov}(\hat{Y}_i, Y_i)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 14.9.5</strong>. In the simple linear regression model, construct a Wald test for <span class="math inline">\(H_0 : \beta_1 = 17 \beta_0\)</span> versus <span class="math inline">\(H_1 : \beta_1 \neq 17 \beta_0\)</span>.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(\delta = \beta_1 - 17 \beta_0\)</span>. The MLE is <span class="math inline">\(\hat{\delta} = \hat{\beta}_1 - 17 \hat{\beta}_0\)</span>, with estimated standard error <span class="math inline">\(\hat{\text{se}}(\hat{\delta})\)</span>, where</p>
+<p><span class="math display">\[\hat{\text{se}}(\hat{\delta})^2 = \hat{\text{se}}(\hat{\beta}_1 - 17 \hat{\beta}_0)^2 = \hat{\text{se}}(\hat{\beta}_1)^2 + 17^2 \hat{\text{se}}(\hat{\beta}_0)^2 \]</span></p>
+<p>and the estimates for the parameter standard deviations are</p>
+<p><span class="math display">\[
+\hat{\text{se}}(\hat{\beta}_0) = \frac{\hat{\sigma}}{s_X \sqrt{n}} \sqrt{\frac{\sum_{i=1}^n X_i^2}{n}}
+\quad \text{and} \quad
+\hat{\text{se}}(\hat{\beta}_1) = \frac{\hat{\sigma}}{s_X \sqrt{n}}
+\]</span></p>
+<p>The Wald test then checks if <span class="math inline">\(|W| &lt; z_{\alpha / 2}\)</span>, where</p>
+<p><span class="math display">\[W = \frac{\hat{\delta} - 0}{\hat{\text{se}}(\hat{\delta})} 
+= \frac{\hat{\beta}_1 - 17 \hat{\beta}_0}{\sqrt{\hat{\text{se}}(\hat{\beta}_1)^2 + 17^2 \hat{\text{se}}(\hat{\beta}_0)^2}}\]</span></p>
+<p><strong>Exercise 14.9.6</strong>. Get the passenger car mileage data from</p>
+<p><a href="http://lib.stat.cmu.edu/DASL/Datafiles/carmpgdat.html" class="uri">http://lib.stat.cmu.edu/DASL/Datafiles/carmpgdat.html</a></p>
+<p><strong>(a)</strong> Fit a simple linear regression model to predict MPG (miles per gallon) from HP (horsepower). Summarize your analysis including a plot of the data with the fitted line.</p>
+<p><strong>(b)</strong> Repeat the analysis but use log(MPG) as the response. Compare the analysis.</p>
+<p><strong>Solution</strong>.</p>
+<p>We would ordinarily use a library to do linear regression, but given this chapter is specifically on linear regression formulas, let’s do all of the calculations on matrix algebra “by hand” instead – and compare the results with statsmodels OLS.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+from scipy.stats import t
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Provided link is dead.  Data was found elsewhere online.
+data = pd.read_csv(&#39;data/carmileage.csv&#39;)</code></pre>
+<pre class="python"><code>def get_regression(X, Y):
+    X = X.copy()
+    
+    # Create new column with all 1s for intercept at start
+    X.insert(0, &#39;const&#39;, 1)
+    
+    # Least squares solution
+    beta_hat = (np.linalg.inv(X.T @ X) @ X.T @ Y).to_numpy()
+
+    # Predicted solutions
+    Y_pred = X @ beta_hat
+
+    # Prediction errors
+    epsilon_hat = Y_pred - Y
+
+    # Error on training data
+    training_error = epsilon_hat.T @ epsilon_hat
+    
+    # Estimated error variance
+    sigma2_hat = (training_error / (Y.shape[0] - X.shape[1]))
+
+    # Parameter estimated standard errors
+    se_beta_hat = np.sqrt(sigma2_hat * np.diag(np.linalg.inv(X.T @ X))).T
+
+    # t statistic for estimated parameters being non-zero
+    t_values = beta_hat.reshape(-1) / se_beta_hat
+
+    # p-values for estimated parameters being non-zero
+    p_values = 2 * (1 - t.cdf(np.abs(t_values), X.shape[0] - 1))
+    
+    return pd.DataFrame({
+        &#39;coef&#39;: beta_hat.reshape(-1),
+        &#39;std err&#39;: se_beta_hat.reshape(-1),
+        &#39;t&#39;: t_values.reshape(-1),
+        &#39;P &gt; |t|&#39;: p_values.reshape(-1) 
+        }, index=X.columns)
+</code></pre>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>Y = data[&#39;MPG&#39;]
+X = data[[&#39;HP&#39;]]</code></pre>
+<pre class="python"><code># Using manually coded solution
+get_regression(X, Y)</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+coef
+</th>
+<th>
+std err
+</th>
+<th>
+t
+</th>
+<th>
+P &gt; |t|
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+const
+</th>
+<td>
+50.066078
+</td>
+<td>
+1.569487
+</td>
+<td>
+31.899650
+</td>
+<td>
+0.0
+</td>
+</tr>
+<tr>
+<th>
+HP
+</th>
+<td>
+-0.139023
+</td>
+<td>
+0.012069
+</td>
+<td>
+-11.519295
+</td>
+<td>
+0.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code># Using statsmodels
+results = sm.OLS(Y, sm.add_constant(X)).fit()
+print(results.summary())</code></pre>
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    MPG   R-squared:                       0.624
+Model:                            OLS   Adj. R-squared:                  0.619
+Method:                 Least Squares   F-statistic:                     132.7
+Date:                Fri, 23 Apr 2021   Prob (F-statistic):           1.15e-18
+Time:                        16:39:08   Log-Likelihood:                -264.61
+No. Observations:                  82   AIC:                             533.2
+Df Residuals:                      80   BIC:                             538.0
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         50.0661      1.569     31.900      0.000      46.943      53.189
+HP            -0.1390      0.012    -11.519      0.000      -0.163      -0.115
+==============================================================================
+Omnibus:                       22.759   Durbin-Watson:                   0.721
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               31.329
+Skew:                           1.246   Prob(JB):                     1.57e-07
+Kurtosis:                       4.722   Cond. No.                         299.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+<pre class="python"><code># Plotting results
+
+fig, ax = plt.subplots(figsize=(12, 8))
+fig = sm.graphics.plot_fit(results, 1, ax=ax)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2014%20-%20Linear%20Regression_files/Chapter%2014%20-%20Linear%20Regression_64_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong></p>
+<pre class="python"><code># Exactly the same exercise, but fit on a different response variable
+
+Y = np.log(data[&#39;MPG&#39;]).rename(&#39;log MPG&#39;)
+X = data[[&#39;HP&#39;]]</code></pre>
+<pre class="python"><code># Using manually coded solution
+get_regression(X, Y)</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+coef
+</th>
+<th>
+std err
+</th>
+<th>
+t
+</th>
+<th>
+P &gt; |t|
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+const
+</th>
+<td>
+4.013229
+</td>
+<td>
+0.040124
+</td>
+<td>
+100.021194
+</td>
+<td>
+0.0
+</td>
+</tr>
+<tr>
+<th>
+HP
+</th>
+<td>
+-0.004589
+</td>
+<td>
+0.000309
+</td>
+<td>
+-14.873129
+</td>
+<td>
+0.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code># Using statsmodels
+results = sm.OLS(Y, sm.add_constant(X)).fit()
+print(results.summary())</code></pre>
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                log MPG   R-squared:                       0.734
+Model:                            OLS   Adj. R-squared:                  0.731
+Method:                 Least Squares   F-statistic:                     221.2
+Date:                Sun, 15 Mar 2020   Prob (F-statistic):           9.62e-25
+Time:                        17:06:26   Log-Likelihood:                 36.047
+No. Observations:                  82   AIC:                            -68.09
+Df Residuals:                      80   BIC:                            -63.28
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          4.0132      0.040    100.021      0.000       3.933       4.093
+HP            -0.0046      0.000    -14.873      0.000      -0.005      -0.004
+==============================================================================
+Omnibus:                        4.454   Durbin-Watson:                   1.026
+Prob(Omnibus):                  0.108   Jarque-Bera (JB):                3.827
+Skew:                           0.516   Prob(JB):                        0.148
+Kurtosis:                       3.236   Cond. No.                         299.
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+<pre class="python"><code># Plotting results
+
+fig, ax = plt.subplots(figsize=(12, 8))
+fig = sm.graphics.plot_fit(results, 1, ax=ax)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2014%20-%20Linear%20Regression_files/Chapter%2014%20-%20Linear%20Regression_69_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 14.9.7</strong>. Get the passenger car mileage data from</p>
+<p><a href="http://lib.stat.cmu.edu/DASL/Datafiles/carmpgdat.html" class="uri">http://lib.stat.cmu.edu/DASL/Datafiles/carmpgdat.html</a></p>
+<p><strong>(a)</strong> Fit a multiple linear regression model to predict MPG (miles per gallon) from HP (horsepower). Summarize your analysis including a plot of the data with the fitted line.</p>
+<p><strong>(b)</strong> Use Mallow’s <span class="math inline">\(C_p\)</span> to select a best sub-model. To search through all models try (i) all possible models, (ii) forward stepwise, (iii) backward stepwise. Summarize your findings.</p>
+<p><strong>(c)</strong> Repeat (b) but use BIC. Compare the results.</p>
+<p><strong>(d)</strong> Now use Lasso and compare the results.</p>
+<p><strong>Solution</strong>.</p>
+<p>The exercise wording is unclear – if we specify that HP is the only covariate, the multiple linear regression and the simple linear regression are the same, and (a) is like the previous exercise.</p>
+<p>We will elect to use VOL, HP, SP and WT as the covariates, and MPG as the response variable.</p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code># Use full model
+
+features = [&#39;HP&#39;, &#39;SP&#39;, &#39;WT&#39;, &#39;VOL&#39;]
+
+Y = data[&#39;MPG&#39;]
+X = data[features]</code></pre>
+<pre class="python"><code># Using manually coded solution
+get_regression(X, Y)</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+coef
+</th>
+<th>
+std err
+</th>
+<th>
+t
+</th>
+<th>
+P &gt; |t|
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+const
+</th>
+<td>
+192.437753
+</td>
+<td>
+23.531613
+</td>
+<td>
+8.177839
+</td>
+<td>
+3.351097e-12
+</td>
+</tr>
+<tr>
+<th>
+HP
+</th>
+<td>
+0.392212
+</td>
+<td>
+0.081412
+</td>
+<td>
+4.817602
+</td>
+<td>
+6.671547e-06
+</td>
+</tr>
+<tr>
+<th>
+SP
+</th>
+<td>
+-1.294818
+</td>
+<td>
+0.244773
+</td>
+<td>
+-5.289864
+</td>
+<td>
+1.019119e-06
+</td>
+</tr>
+<tr>
+<th>
+WT
+</th>
+<td>
+-1.859804
+</td>
+<td>
+0.213363
+</td>
+<td>
+-8.716617
+</td>
+<td>
+2.888800e-13
+</td>
+</tr>
+<tr>
+<th>
+VOL
+</th>
+<td>
+-0.015645
+</td>
+<td>
+0.022825
+</td>
+<td>
+-0.685425
+</td>
+<td>
+4.950327e-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code># Using statsmodels
+results = sm.OLS(Y, sm.add_constant(X)).fit()
+print(results.summary())</code></pre>
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    MPG   R-squared:                       0.873
+Model:                            OLS   Adj. R-squared:                  0.867
+Method:                 Least Squares   F-statistic:                     132.7
+Date:                Sun, 15 Mar 2020   Prob (F-statistic):           9.98e-34
+Time:                        17:06:27   Log-Likelihood:                -220.00
+No. Observations:                  82   AIC:                             450.0
+Df Residuals:                      77   BIC:                             462.0
+Df Model:                           4                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const        192.4378     23.532      8.178      0.000     145.580     239.295
+HP             0.3922      0.081      4.818      0.000       0.230       0.554
+SP            -1.2948      0.245     -5.290      0.000      -1.782      -0.807
+WT            -1.8598      0.213     -8.717      0.000      -2.285      -1.435
+VOL           -0.0156      0.023     -0.685      0.495      -0.061       0.030
+==============================================================================
+Omnibus:                       14.205   Durbin-Watson:                   1.148
+Prob(Omnibus):                  0.001   Jarque-Bera (JB):               18.605
+Skew:                           0.784   Prob(JB):                     9.12e-05
+Kurtosis:                       4.729   Cond. No.                     1.16e+04
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.16e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.</code></pre>
+<pre class="python"><code># Plotting results
+
+fig, ax = plt.subplots(figsize=(12, 8))
+fig = sm.graphics.plot_fit(results, 1, ax=ax)
+ax.set_ylabel(&quot;MPG&quot;)
+ax.set_xlabel(&quot;HP&quot;)
+ax.set_title(&quot;Linear Regression&quot;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2014%20-%20Linear%20Regression_files/Chapter%2014%20-%20Linear%20Regression_76_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong></p>
+<p>First, let’s create helper functions to calculate the model variance and Mallow’s <span class="math inline">\(C_p\)</span>:</p>
+<pre class="python"><code>def get_model_variance(X, Y):
+    X = X.copy()
+    
+    # Create new column with all 1s for intercept at start
+    X.insert(0, &#39;const&#39;, 1)
+    
+    # Least squares solution
+    beta_hat = (np.linalg.inv(X.T @ X) @ X.T @ Y).to_numpy()
+
+    # Predicted solutions
+    Y_pred = X @ beta_hat
+
+    # Prediction errors
+    epsilon_hat = Y_pred - Y
+
+    # Error on training data
+    training_error = epsilon_hat.T @ epsilon_hat
+    
+    # Estimated error variance
+    return (training_error / (Y.shape[0] - X.shape[1]))
+    
+
+def get_mallow_cp(X, Y, S, full_model_variance):
+    if len(S) &gt; 0:
+        X = X[list(S)].copy()
+        # Create new column with all 1s for intercept at start
+        X.insert(0, &#39;const&#39;, 1)
+    else:
+        X = pd.DataFrame({&#39;const&#39;: np.ones_like(Y)})
+    
+    # Least squares solution
+    beta_hat = (np.linalg.inv(X.T @ X) @ X.T @ Y).to_numpy()
+
+    # Predicted solutions
+    Y_pred = X @ beta_hat
+
+    # Prediction errors
+    epsilon_hat = Y_pred - Y
+
+    # Error on training data
+    partial_training_error = epsilon_hat.T @ epsilon_hat
+    
+    # Increase size of S by to account for constant covariate
+    return partial_training_error + 2 * (len(S) + 1) * full_model_variance</code></pre>
+<p>Next, let’s calculate and save the full model variance <strong>once</strong>, sine it’s used for every candidate model – and use it to define our custom score function.</p>
+<pre class="python"><code>full_model_variance = get_model_variance(X, Y)
+
+def score_mallow_cp(S):
+    return get_mallow_cp(X, Y, S, full_model_variance)</code></pre>
+<p>Finally, let’s do the submodel search.</p>
+<p>First approach is an explicit search through all features:</p>
+<pre class="python"><code># Recipe from itertools documentation, https://docs.python.org/2.7/library/itertools.html#recipes
+
+from itertools import chain, combinations
+
+def powerset(iterable):
+    &quot;powerset([1,2,3]) --&gt; () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)&quot;
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))</code></pre>
+<pre class="python"><code># Iterate through the powerset and calculate the score for each value
+results = [(S, score_mallow_cp(S)) for S in powerset(features)]
+    
+# Format as dataframe for ease of presentation
+results = pd.DataFrame(results, columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<pre class="python"><code>results</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+()
+</td>
+<td>
+8134.147794
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+(HP,)
+</td>
+<td>
+3102.805578
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+(SP,)
+</td>
+<td>
+4318.234609
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+(WT,)
+</td>
+<td>
+1519.372094
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+(VOL,)
+</td>
+<td>
+7059.223052
+</td>
+</tr>
+<tr>
+<th>
+5
+</th>
+<td>
+(HP, SP)
+</td>
+<td>
+2436.578842
+</td>
+</tr>
+<tr>
+<th>
+6
+</th>
+<td>
+(HP, WT)
+</td>
+<td>
+1510.677511
+</td>
+</tr>
+<tr>
+<th>
+7
+</th>
+<td>
+(HP, VOL)
+</td>
+<td>
+2354.823180
+</td>
+</tr>
+<tr>
+<th>
+8
+</th>
+<td>
+(SP, WT)
+</td>
+<td>
+1463.076513
+</td>
+</tr>
+<tr>
+<th>
+9
+</th>
+<td>
+(SP, VOL)
+</td>
+<td>
+3056.598857
+</td>
+</tr>
+<tr>
+<th>
+10
+</th>
+<td>
+(WT, VOL)
+</td>
+<td>
+1542.174631
+</td>
+</tr>
+<tr>
+<th>
+11
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+1140.390871
+</td>
+</tr>
+<tr>
+<th>
+12
+</th>
+<td>
+(HP, SP, VOL)
+</td>
+<td>
+2147.886521
+</td>
+</tr>
+<tr>
+<th>
+13
+</th>
+<td>
+(HP, WT, VOL)
+</td>
+<td>
+1507.484328
+</td>
+</tr>
+<tr>
+<th>
+14
+</th>
+<td>
+(SP, WT, VOL)
+</td>
+<td>
+1443.795004
+</td>
+</tr>
+<tr>
+<th>
+15
+</th>
+<td>
+(HP, SP, WT, VOL)
+</td>
+<td>
+1160.807643
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>results[results.score == results.score.min()]</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+11
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+1140.390871
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This approach recommends the features HP, SP, and WT.</p>
+<p>Next, let’s do forward stepwise feature selection:</p>
+<pre class="python"><code>current_subset = []
+current_score = score_mallow_cp(current_subset)
+
+while len(current_subset) &lt; len(features):
+    best_score, best_subset = current_score, current_subset
+    updated = False
+    for f in features:
+        if f not in current_subset:
+            candidate_subset = current_subset + [f]
+            candidate_score = score_mallow_cp(candidate_subset)
+            if candidate_score &lt; best_score:
+                best_score, best_subset = candidate_score, candidate_subset
+                updated = True              
+    if not updated:
+        break
+        
+    current_score, current_subset = best_score, best_subset
+    
+pd.DataFrame([[tuple(current_subset), current_score]], columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+(WT, SP, HP)
+</td>
+<td>
+1140.390871
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This approach also recommends selecting these 3 features (order is irrelevant): WT, SP, HP</p>
+<p>Finally, let’s so backward stepwise feature selection:</p>
+<pre class="python"><code>current_subset = features
+current_score = score_mallow_cp(current_subset)
+
+while len(current_subset) &gt; 0:
+    best_score, best_subset = current_score, current_subset
+    updated = False
+    for f in features:
+        if f in current_subset:
+            candidate_subset = [a for a in current_subset if a != f]
+            candidate_score = score_mallow_cp(candidate_subset)
+            if candidate_score &lt; best_score:
+                best_score, best_subset = candidate_score, candidate_subset
+                updated = True              
+    if not updated:
+        break
+        
+    current_score, current_subset = best_score, best_subset
+    
+pd.DataFrame([[tuple(current_subset), current_score]], columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+1140.390871
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This approach also recommends selecting the same 3 features.</p>
+<p><strong>(c)</strong> This is analogous to (b), using the new scoring function.</p>
+<p>Note that the book’s definition of BIC is:</p>
+<p><span class="math display">\[ \text{BIC}(S) = \text{RSS}(S) + 2 |S| \hat{\sigma}^2 \]</span></p>
+<p>while other sources apply a log to this quantity and scale it by the number of observations <span class="math inline">\(n\)</span>, e.g.</p>
+<p><span class="math display">\[ \text{BIC} = n \log \left( \text{RSS} / n \right) + |S| \log n \]</span></p>
+<p>We will use the later definition for this exercise.</p>
+<pre class="python"><code>def get_bic(X, Y, S):
+    if len(S) &gt; 0:
+        X = X[list(S)].copy()
+        # Create new column with all 1s for intercept at start
+        X.insert(0, &#39;const&#39;, 1)
+    else:
+        X = pd.DataFrame({&#39;const&#39;: np.ones_like(Y)})
+    
+    # Least squares solution
+    beta_hat = (np.linalg.inv(X.T @ X) @ X.T @ Y).to_numpy()
+
+    # Predicted solutions
+    Y_pred = X @ beta_hat
+
+    # Prediction errors
+    epsilon_hat = Y_pred - Y
+
+    # Error on training data
+    rss = epsilon_hat.T @ epsilon_hat
+    
+    n = Y.shape[0]
+    k = X.shape[1]
+    
+    return n * np.log(rss / n) + k * np.log(n)
+
+def score_bic(S):
+    return get_bic(X, Y, S)</code></pre>
+<p>Full search:</p>
+<pre class="python"><code># Iterate through the powerset and calculate the score for each value
+results = [(S, score_bic(S)) for S in powerset(features)]
+    
+# Format as dataframe for ease of presentation
+results = pd.DataFrame(results, columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<pre class="python"><code>results</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+()
+</td>
+<td>
+381.100039
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+(HP,)
+</td>
+<td>
+305.324815
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+(SP,)
+</td>
+<td>
+332.832040
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+(WT,)
+</td>
+<td>
+245.266568
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+(VOL,)
+</td>
+<td>
+373.531556
+</td>
+</tr>
+<tr>
+<th>
+5
+</th>
+<td>
+(HP, SP)
+</td>
+<td>
+288.594470
+</td>
+</tr>
+<tr>
+<th>
+6
+</th>
+<td>
+(HP, WT)
+</td>
+<td>
+247.670065
+</td>
+</tr>
+<tr>
+<th>
+7
+</th>
+<td>
+(HP, VOL)
+</td>
+<td>
+285.699095
+</td>
+</tr>
+<tr>
+<th>
+8
+</th>
+<td>
+(SP, WT)
+</td>
+<td>
+244.895261
+</td>
+</tr>
+<tr>
+<th>
+9
+</th>
+<td>
+(SP, VOL)
+</td>
+<td>
+307.747647
+</td>
+</tr>
+<tr>
+<th>
+10
+</th>
+<td>
+(WT, VOL)
+</td>
+<td>
+249.455822
+</td>
+</tr>
+<tr>
+<th>
+11
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+225.425717
+</td>
+</tr>
+<tr>
+<th>
+12
+</th>
+<td>
+(HP, SP, VOL)
+</td>
+<td>
+281.219751
+</td>
+</tr>
+<tr>
+<th>
+13
+</th>
+<td>
+(HP, WT, VOL)
+</td>
+<td>
+250.346085
+</td>
+</tr>
+<tr>
+<th>
+14
+</th>
+<td>
+(SP, WT, VOL)
+</td>
+<td>
+246.530268
+</td>
+</tr>
+<tr>
+<th>
+15
+</th>
+<td>
+(HP, SP, WT, VOL)
+</td>
+<td>
+229.333642
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>results[results.score == results.score.min()]</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+11
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+225.425717
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Forward stepwise:</p>
+<pre class="python"><code>current_subset = []
+current_score = score_bic(current_subset)
+
+while len(current_subset) &lt; len(features):
+    best_score, best_subset = current_score, current_subset
+    updated = False
+    for f in features:
+        if f not in current_subset:
+            candidate_subset = current_subset + [f]
+            candidate_score = score_bic(candidate_subset)
+            if candidate_score &lt; best_score:
+                best_score, best_subset = candidate_score, candidate_subset
+                updated = True              
+    if not updated:
+        break
+        
+    current_score, current_subset = best_score, best_subset
+    
+pd.DataFrame([[tuple(current_subset), current_score]], columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+(WT, SP, HP)
+</td>
+<td>
+225.425717
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Backward stepwise:</p>
+<pre class="python"><code>current_subset = features
+current_score = score_bic(current_subset)
+
+while len(current_subset) &gt; 0:
+    best_score, best_subset = current_score, current_subset
+    updated = False
+    for f in features:
+        if f in current_subset:
+            candidate_subset = [a for a in current_subset if a != f]
+            candidate_score = score_bic(candidate_subset)
+            if candidate_score &lt; best_score:
+                best_score, best_subset = candidate_score, candidate_subset
+                updated = True              
+    if not updated:
+        break
+        
+    current_score, current_subset = best_score, best_subset
+    
+pd.DataFrame([[tuple(current_subset), current_score]], columns=[&#39;S&#39;, &#39;score&#39;])</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+S
+</th>
+<th>
+score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+(HP, SP, WT)
+</td>
+<td>
+225.425717
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All approaches recommend the same feature selection as the previous method – select the 3 features HP, SP, and WT.</p>
+<p><strong>(d)</strong> To use Lasso, we will need to minimize the L1 loss function for an arbitrary penalty parameter <span class="math inline">\(\lambda\)</span>:</p>
+<p><span class="math display">\[ \sum_{i=1}^n (Y_i - \hat{Y}_i)^2 + \lambda \sum_{j=1}^k | \beta_j | \]</span></p>
+<p>Since we are including a penalty parameter that affects both estimation and model selection, we will need to calculate this loss function on some test data distinct from the training data – the recommended approach being to use leave-one-out cross validation.</p>
+<pre class="python"><code>from scipy.optimize import minimize
+
+# Lasso loss function
+def lasso_loss(Y, Y_pred, beta, l1_penalty):
+    error = Y - Y_pred
+    return error.T @ error + l1_penalty * sum(abs(beta))
+
+# Regularized fit
+def fit_regularized(X, Y, l1_penalty):
+    def loss_function(beta):
+        return lasso_loss(Y, X @ beta, beta, l1_penalty)
+    
+    # Use the solution without penalties as an initial guess
+    beta_initial_guess = (np.linalg.inv(X.T @ X) @ X.T @ Y).to_numpy()
+    return minimize(loss_function, beta_initial_guess, method = &#39;Powell&#39;,
+                    options={&#39;xtol&#39;: 1e-8, &#39;disp&#39;: False, &#39;maxiter&#39;: 10000 }) 
+
+# Leave-one-out cross-validation
+def leave_one_out_cv_risk(X, Y, fitting_function):
+    n = X.shape[1]
+    total_risk = 0
+    for i in range(n):
+        XX = pd.concat([X.iloc[:i], X.iloc[i + 1:]])
+        YY = pd.concat([Y.iloc[:i], Y.iloc[i + 1:]])
+        beta = fitting_function(XX, YY).x
+        validation_error = Y.iloc[i] - X.iloc[i] @ beta
+        total_risk += validation_error * validation_error
+    return total_risk / n
+
+# Optimize over penalty parameter with best cross-validation risk
+def optimize_l1_penalty(X, Y):
+    def loss_function(l1_penalty_signed):
+        # Ensure l1_penalty &gt;= 0
+        l1_penalty = abs(l1_penalty_signed)
+        return leave_one_out_cv_risk(X, Y, lambda xx, yy: fit_regularized(xx, yy, l1_penalty))
+    
+    l1_penalty_initial_guess = 0.0
+    return minimize(loss_function, l1_penalty_initial_guess, method = &#39;Powell&#39;,
+                   options={&#39;xtol&#39;: 1e-8, &#39;disp&#39;: True, &#39;maxiter&#39;: 10000 })</code></pre>
+<pre class="python"><code># Create a new dimension with constants, so the regressions have an intercept
+X_c = X.copy()
+X_c.insert(0, &#39;const&#39;, 1)</code></pre>
+<pre class="python"><code># Optimize cross validation risk over penalties
+best_penalty_res = optimize_l1_penalty(X_c, Y)
+selected_l1_penalty = abs(best_penalty_res.x)
+
+print(&quot;Selected penalty: &quot;, selected_l1_penalty)</code></pre>
+<pre><code>Optimization terminated successfully.
+         Current function value: 61.554007
+         Iterations: 1
+         Function evaluations: 45
+Selected penalty:  4.965056196086726e-07</code></pre>
+<pre class="python"><code># Re-fit with selected penalty over the whole dataset
+selected_fit = fit_regularized(X_c, Y, selected_l1_penalty)
+beta = selected_fit.x
+pd.DataFrame(beta.reshape(-1, 1), index=X_c.columns, columns=[&#39;coef&#39;])</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+coef
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+const
+</th>
+<td>
+192.437753
+</td>
+</tr>
+<tr>
+<th>
+HP
+</th>
+<td>
+0.392212
+</td>
+</tr>
+<tr>
+<th>
+SP
+</th>
+<td>
+-1.294818
+</td>
+</tr>
+<tr>
+<th>
+WT
+</th>
+<td>
+-1.859804
+</td>
+</tr>
+<tr>
+<th>
+VOL
+</th>
+<td>
+-0.015645
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The best leave-one-out cross validation for the Lasso procedure is achieved (according to our optimizer) at <span class="math inline">\(\lambda \approx\)</span> 0, where all covariants have a non-zero coefficient (i.e. <span class="math inline">\(\beta_i \neq 0\)</span> for all <span class="math inline">\(i\)</span>).</p>
+<p>In other words, Lasso with leave-one-out cross validation selects the full model.</p>
+<p><strong>Exercise 14.9.8</strong>. Assume that the errors are Normal. Show that the model with highest AIC is the model with lowest Mallows <span class="math inline">\(C_p\)</span> statistic.</p>
+<p>Mallows’ <span class="math inline">\(C_p\)</span>:</p>
+<p><span class="math display">\[\hat{R}(S) = \hat{R}_\text{tr}(S) + 2 |S| \hat{\sigma}^2\]</span></p>
+<p>AIC:</p>
+<p><span class="math display">\[  \text{AIC} = \ell_S - |S|\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>For the given definition, note that <span class="math inline">\(-2 \text{AIC} \hat{\sigma}^2 = -2 \ell_S \hat{\sigma}^2 + 2|S| \hat{\sigma}^2 = \hat{R}_\text{tr}(S) + 2 |S| \hat{\sigma}^2 = \hat{R}(S)\)</span>, given the log likelihood of a Normal model – so maximizing AIC is equivalent to minimizing Mallows <span class="math inline">\(C_p\)</span>.</p>
+<p>Note that a more general result holds: rather than assuming the errors are Normal, one can assume that the distributions are part of a spherically symmetric family, i.e., modifying the distributions under an orthogonal transformation (and potentially removing invariance). See: Boisbunon, Aurélie, et al. “AIC, Cp and estimators of loss for elliptically symmetric distributions.” arXiv preprint arXiv:1308.2766 (2013).</p>
+<p><strong>Exercise 14.9.9</strong>. In this question we will take a closer look at the AIC method. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid observations. Consider two models <span class="math inline">\(\mathcal{M}_0\)</span> and <span class="math inline">\(\mathcal{M}_1\)</span>. Under <span class="math inline">\(\mathcal{M}_0\)</span> the data are assumed to be <span class="math inline">\(N(0, 1)\)</span> while under <span class="math inline">\(M_1\)</span> the data are assumed to be <span class="math inline">\(N(\theta, 1)\)</span> for some unknown <span class="math inline">\(\theta \in \mathbb{R}\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathcal{M}_0 : X_1, \dots, X_n &amp;\sim N(0, 1) \\
+\mathcal{M}_1 : X_1, \dots, X_n &amp;\sim N(\theta, 1), \; \theta \in \mathbb{R}
+\end{align}
+\]</span></p>
+<p>This is just another way of viewing the hypothesis testing problem: <span class="math inline">\(H_0: \theta = 0\)</span> versus <span class="math inline">\(H_1: \theta \neq 0\)</span>. Let <span class="math inline">\(\ell_n(\theta)\)</span> be the log-likelihood function. The AIC score for a model is the log-likelihood at the MLE minus the number of parameters. (Some people multiply this score by 2 but that is irrelevant). Thus, the AIC score for <span class="math inline">\(\mathcal{M}_0\)</span> is <span class="math inline">\(\text{AIC}_0 = \ell_n(0)\)</span> and the AIC score for <span class="math inline">\(\mathcal{M}_1\)</span> is <span class="math inline">\(\text{AIC}_1 = \ell_n(\hat{\theta}) - 1\)</span>. Suppose we choose the model with highest AIC score. Let <span class="math inline">\(J_n\)</span> denote the selected model:</p>
+<p><span class="math display">\[J_n = \begin{cases}
+0 &amp; \text{if } \text{AIC}_0 &gt; \text{AIC}_1 \\
+1 &amp; \text{if } \text{AIC}_1 &gt; \text{AIC}_0
+\end{cases}\]</span></p>
+<p><strong>(a)</strong> Suppose that <span class="math inline">\(\mathcal{M}_0\)</span> is the true model, i.e. <span class="math inline">\(\theta = 0\)</span>. Find</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P}(J_n = 0) \]</span></p>
+<p>Now compute <span class="math inline">\(\lim_{n \rightarrow \infty} \mathbb{P}(J_n = 0)\)</span> when <span class="math inline">\(\theta \neq 0\)</span>.</p>
+<p><strong>(b)</strong> The fact that <span class="math inline">\(\lim_{n \rightarrow \infty} \mathbb{P}(J_n = 0) \neq 1\)</span> when <span class="math inline">\(\theta = 0\)</span> is why some people say that AIC “overfits.” But this is not quite true as we shall now see. Let <span class="math inline">\(\phi_\theta(x)\)</span> denote a Normal density function with mean <span class="math inline">\(\theta\)</span> and variance 1. Define</p>
+<p><span class="math display">\[ \hat{f}_n(x) = \begin{cases}
+\phi_0(x) &amp; \text{if } J_n = 0 \\
+\phi_\overline{\theta}(x) &amp; \text{if } J_n = 1
+\end{cases}\]</span></p>
+<p>If <span class="math inline">\(\theta = 0\)</span>, show that <span class="math inline">\(D(\phi_0, \hat{f}_n) \xrightarrow{\text{P}} 0\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span> where</p>
+<p><span class="math display">\[ D(f, g) = \int f(x) \log \left( \frac{f(x)}{g(x)} \right) dx \]</span></p>
+<p>is the Kullback-Leibler distance. Show that <span class="math inline">\(D(\phi_\theta, \hat{f}_n) \xrightarrow{\text{P}} 0\)</span> if <span class="math inline">\(\theta \neq 0\)</span>. Hence, AIC consistently estimates the true density even if it “overshoots” the correct model.</p>
+<p>REMARK: If you are feeling ambitious, repeat the analysis for BIC which is the log-likelihood minus <span class="math inline">\((p / 2) \log n\)</span> where <span class="math inline">\(p\)</span> is the number of parameters and <span class="math inline">\(n\)</span> is the sample size.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> Note that the log-likelihood of the distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+\ell_n(\mu, \sigma^2) &amp;= \log \prod_{i=1}^n f(X_i | \mu, \sigma^2) \\
+&amp;= \sum_{i=1}^n \log f(X_i | \mu, \sigma^2) \\
+&amp;= - \frac{n}{2} \log 2\pi - \frac{n}{2} \log \sigma^2 - \frac{1}{2\sigma^2} \sum_{i=1}^n (X_i - \mu)^2
+\end{align}
+\]</span></p>
+<p>Then, we have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(J_n = 0) &amp;= \mathbb{P}(\text{AIC}_0 &gt; \text{AIC}_1) \\
+&amp;= \mathbb{P}(\ell_n(0) &gt; \ell_n(\hat{\theta}) - 1) \\
+&amp;= \mathbb{P} \left(-\frac{n}{2} \log 2\pi - 0 - \frac{1}{2} \sum_{i=1}^n (X_i - 0)^2 &gt; -\frac{n}{2} \log 2\pi - 0 - \frac{1}{2} \sum_{i=1}^n (X_i - \hat{\theta})^2 - 1 \right) \\
+&amp;= \mathbb{P}\left( -\frac{1}{2} \sum_{i=1}^n X_i^2 &gt; -\frac{1}{2} \sum_{i=1}^n (X_i - \hat{\theta})^2 - 1\right) \\
+&amp;= \mathbb{P}\left( \sum_{i=1}^n \left((X_i - \hat{\theta})^2 - X_i^2 \right) &gt; -2 \right) \\
+&amp;= \mathbb{P}\left( n \hat{\theta}^2 - 2 \hat{\theta} \sum_{i=1}^n X_i &gt; -2 \right) \\
+&amp;= \mathbb{P}\left( n \overline{X}_n^2 - 2 \overline{X}_n n \overline{X}_n &gt; -2\right) \\
+&amp;= \mathbb{P}\left( -n \overline{X}_n^2 &gt; -2 \right) \\
+&amp;= \mathbb{P}\left(-\sqrt{\frac{2}{n}} &lt; \overline{X}_n &lt; \sqrt{\frac{2}{n}} \right)
+\end{align}
+\]</span></p>
+<p>But <span class="math inline">\(X_i \sim N(\theta, 1)\)</span>, so <span class="math inline">\(n \overline{X}_n = \sum_i X_i \sim N(n\theta, n)\)</span> and <span class="math inline">\(\overline{X}_n \sim N(\theta, 1/n)\)</span>. Then:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(J_n = 0) &amp;= \mathbb{P}\left(-\sqrt{\frac{2}{n}} &lt; \overline{X}_n &lt; \sqrt{\frac{2}{n}} \right) \\
+&amp;= \mathbb{P}\left(\frac{-\sqrt{\frac{2}{n}} - \theta}{\sqrt{1/n}} &lt; \frac{\overline{X}_n - \theta}{\sqrt{1/n}} &lt; \frac{\sqrt{\frac{2}{n}} - \theta}{\sqrt{1/n}} \right) \\
+&amp;= \mathbb{P}\left(-\sqrt{2} - \sqrt{n}\theta &lt; Z &lt; \sqrt{2} - \sqrt{n}\theta \right) \\
+&amp;= \Phi(\sqrt{2} - \sqrt{n}\theta) - \Phi(-\sqrt{2} - \sqrt{n}\theta)
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(\Phi\)</span> is the CDF of the standard normal distribution <span class="math inline">\(N(0, 1)\)</span>.</p>
+<p>When <span class="math inline">\(\theta = 0\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}(J_n = 0) = \Phi(\sqrt{2}) - \Phi(-\sqrt{2}) \approx 0.8427 \neq 0\]</span></p>
+<p>When <span class="math inline">\(\theta \neq 0\)</span>,</p>
+<p><span class="math display">\[\lim_{n \rightarrow \infty} \mathbb{P}(J_n = 0) = \lim_{n \rightarrow \infty}\Phi(\sqrt{2} - \sqrt{n}\theta) - \Phi(-\sqrt{2} - \sqrt{n}\theta) = \lim_{n \rightarrow \infty}\Phi(\sqrt{n}\theta) - \lim_{n \rightarrow \infty}\Phi(-\sqrt{n}\theta) = 0\]</span></p>
+<p><strong>(b)</strong> We have:</p>
+<p><span class="math display">\[ D(\phi_\theta, \hat{f}_n) = \int \phi_\theta(x) \log \left(\frac{\phi_\theta(x)}{\hat{f}_n(x)} \right) dx = \int \left[\phi_\theta(x) \log \phi_\theta(x) - \phi_\theta(x) \log \hat{f}_n(x) \right] dx \]</span></p>
+<p>But <span class="math inline">\(\lim_{n \rightarrow \infty} \hat{f}_n(x) = \phi_\theta(x)\)</span>, so the integrand goes to 0 at each x, and so <span class="math inline">\(D(\phi_\theta, \hat{f}_n) \xrightarrow{\text{P}} 0\)</span>.</p>
+<p><strong>REMARK: I am feeling ambitious.</strong> Let <span class="math inline">\(K_n\)</span> denote the selected model:</p>
+<p><span class="math display">\[ K_n = \begin{cases}
+0 &amp; \text{if } \text{BIC}_0 &gt; \text{BIC}_1 \\
+1 &amp; \text{if } \text{BIC}_1 &gt; \text{BIC}_0
+\end{cases}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\text{BIC}_0 = \ell_n(0) \\
+\text{BIC}_1 = \ell_n(\hat{\theta}) - \frac{1}{2} \log n
+\]</span></p>
+<p>So,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(K_n = 0) &amp;= \mathbb{P}(\text{BIC}_0 &gt; \text{BIC}_1) \\
+&amp;= \mathbb{P}\left(\ell_n(0) &gt; \ell_n(\hat{\theta}) - \frac{1}{2} \log n \right) \\
+&amp;= \mathbb{P} \left(-\frac{n}{2} \log 2\pi - 0 - \frac{1}{2} \sum_{i=1}^n (X_i - 0)^2 &gt; -\frac{n}{2} \log 2\pi - 0 - \frac{1}{2} \sum_{i=1}^n (X_i - \hat{\theta})^2 - \frac{1}{2} \log n \right) \\
+&amp;= \mathbb{P}\left( -\frac{1}{2} \sum_{i=1}^n X_i^2 &gt; -\frac{1}{2} \sum_{i=1}^n (X_i - \hat{\theta})^2 - \frac{1}{2} \log n\right) \\
+&amp;= \mathbb{P}\left( \sum_{i=1}^n \left((X_i - \hat{\theta})^2 - X_i^2 \right) &gt; -\log n \right) \\
+&amp;= \mathbb{P}\left( n \hat{\theta}^2 - 2 \hat{\theta} \sum_{i=1}^n X_i &gt; -\log n \right) \\
+&amp;= \mathbb{P}\left( n \overline{X}_n^2 - 2 \overline{X}_n n \overline{X}_n &gt; -\log n\right) \\
+&amp;= \mathbb{P}\left( -n \overline{X}_n^2 &gt; -\log n \right) \\
+&amp;= \mathbb{P}\left(-\sqrt{\frac{\log n}{n}} &lt; \overline{X}_n &lt; \sqrt{\frac{\log n}{n}} \right) \\
+&amp;= \mathbb{P}\left(\frac{-\sqrt{\frac{\log n}{n}} - \theta}{\sqrt{1/n}} &lt; \frac{\overline{X}_n - \theta}{\sqrt{1/n}} &lt; \frac{\sqrt{\frac{\log n}{n}} - \theta}{\sqrt{1/n}} \right) \\ 
+&amp;=  \mathbb{P}\left(-\sqrt{\log n} - \sqrt{n}\theta &lt; Z &lt; \sqrt{\log n} - \sqrt{n}\theta \right) \\
+&amp;= \Phi(\sqrt{\log n} - \sqrt{n}\theta) - \Phi(-\sqrt{\log n} - \sqrt{n}\theta)
+\end{align}
+\]</span></p>
+<p>As <span class="math inline">\(O(\sqrt{log n}) &lt; O(\sqrt{n})\)</span>, we get the result:</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P}(K_n = 0) = \begin{cases}
+1 &amp; \text{if } \theta = 0 \\
+0 &amp; \text{if } \theta \neq 0
+\end{cases}\]</span></p>
+<p>Also, if we define:</p>
+<p><span class="math display">\[\hat{g}_n(x) = \begin{cases}
+\phi_0(x) &amp; \text{if } K_n = 0 \\
+\phi_\overline{\theta}(x) &amp; \text{if } K_n = 1
+\end{cases}\]</span></p>
+<p>then, again,</p>
+<p><span class="math display">\[ D(\phi_\theta, \hat{g}_n) = \int \phi_\theta(x) \log \left(\frac{\phi_\theta(x)}{\hat{g}_n(x)} \right) dx = \int \left[\phi_\theta(x) \log \phi_\theta(x) - \phi_\theta(x) \log \hat{g}_n(x) \right] dx \]</span></p>
+<p>But <span class="math inline">\(\lim_{n \rightarrow \infty} \hat{g}_n(x) = \phi_\theta(x)\)</span>, so the integrand goes to 0 at each x, and so <span class="math inline">\(D(\phi_\theta, \hat{g}_n) \xrightarrow{\text{P}} 0\)</span>.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
