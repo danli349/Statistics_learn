@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter15 Multivariate Models - A Hugo website</title>
+<meta property="og:title" content="AOS chapter15 Multivariate Models - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">19 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter15 Multivariate Models</h1>
+
+    
+    <span class="article-date">2021-04-24</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/24/aos-chapter15-multivariate-models/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#multivariate-models">15. Multivariate Models</a>
+<ul>
+<li><a href="#random-vectors">15.1 Random Vectors</a></li>
+<li><a href="#estimating-the-correlation">15.2 Estimating the Correlation</a></li>
+<li><a href="#multinomial">15.3 Multinomial</a></li>
+<li><a href="#multivariate-normal">15.4 Multivariate Normal</a></li>
+<li><a href="#appendix">15.5 Appendix</a></li>
+<li><a href="#exercises">15.6 Exercises</a></li>
+<li><a href="#box_muller">box_muller</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="multivariate-models" class="section level2">
+<h2>15. Multivariate Models</h2>
+<p>Review of notation from linear algebra:</p>
+<ul>
+<li>If <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are vectors, then <span class="math inline">\(x^T y = \sum_j x_j y_j\)</span>.</li>
+<li>If <span class="math inline">\(A\)</span> is a matrix then <span class="math inline">\(\text{det}(A)\)</span> denotes the determinant of <span class="math inline">\(A\)</span>, <span class="math inline">\(A^T\)</span> denotes the transpose of A, and <span class="math inline">\(A^{-1}\)</span> denotes the inverse of <span class="math inline">\(A\)</span> (if the inverse exists).</li>
+<li>The trace of a square matrix <span class="math inline">\(A\)</span>, denoted by <span class="math inline">\(\text{tr}(A)\)</span>, is the sum of its diagonal elements.</li>
+<li>The trace satisfies <span class="math inline">\(\text{tr}(AB) = \text{tr}(BA)\)</span> and <span class="math inline">\(\text{tr}(A + B) = \text{tr}(A) + \text{tr}(B)\)</span>.</li>
+<li>The trace satisfies <span class="math inline">\(\text{tr}(a) = a\)</span> if <span class="math inline">\(a\)</span> is a scalar.</li>
+<li>A matrix <span class="math inline">\(\Sigma\)</span> is positive definite if <span class="math inline">\(x^T \Sigma x &gt; 0\)</span> for all non-zero vectors <span class="math inline">\(x\)</span>.</li>
+<li>If a matrix <span class="math inline">\(\Sigma\)</span> is symmetric and positive definite, there exists a matrix <span class="math inline">\(\Sigma^{1/2}\)</span>, called the square root of <span class="math inline">\(\Sigma\)</span>, with the following properties:
+<ul>
+<li><span class="math inline">\(\Sigma^{1/2}\)</span> is symmetric</li>
+<li><span class="math inline">\(\Sigma = \Sigma^{1/2} \Sigma^{1/2}\)</span></li>
+<li><span class="math inline">\(\Sigma^{1/2} \Sigma^{-1/2} = \Sigma^{-1/2} \Sigma^{1/2} = I\)</span> where <span class="math inline">\(\Sigma^{-1/2} = (\Sigma^{1/2})^{-1}\)</span>.</li>
+</ul></li>
+</ul>
+<div id="random-vectors" class="section level3">
+<h3>15.1 Random Vectors</h3>
+<p>Multivariate models involve a random vector <span class="math inline">\(X\)</span> of the form</p>
+<p><span class="math display">\[X = \begin{pmatrix} X_1 \\ \vdots \\ X_k \end{pmatrix}\]</span></p>
+<p>The mean of a random vector <span class="math inline">\(X\)</span> is defined by</p>
+<p><span class="math display">\[\mu 
+= \begin{pmatrix} \mu_1 \\ \vdots \\ mu_k \end{pmatrix} 
+= \begin{pmatrix} \mathbb{E}(X_1) \\ \vdots \\ \mathbb{E}(X_k) \end{pmatrix}
+\]</span></p>
+<p>The covariance matrix <span class="math inline">\(\Sigma\)</span> is defined to be</p>
+<p><span class="math display">\[\Sigma = \mathbb{V}(X) = \begin{pmatrix}
+\mathbb{V}(X_1) &amp; \text{Cov}(X_1, X_2) &amp; \cdots &amp; \text{Cov}(X_1, X_k) \\
+\text{Cov}(X_2, X_1) &amp; \mathbb{V}(X_2) &amp; \cdots &amp; \text{Cov}(X_2, X_k) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\text{Cov}(X_k, X_1) &amp; \text{Cov}(X_k, X_2) &amp; \cdots &amp; \mathbb{V}(X_k)
+\end{pmatrix}\]</span></p>
+<p>This is also called the variance matrix or the variance-covariance matrix.</p>
+<p><strong>Theorem 15.1</strong>. Let <span class="math inline">\(a\)</span> be a vector of length <span class="math inline">\(k\)</span> and let <span class="math inline">\(X\)</span> be a random vector of the same length with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\Sigma\)</span>. Then <span class="math inline">\(\mathbb{E}(a^T X) = a^T\mu\)</span> and <span class="math inline">\(\mathbb{V}(a^T X) = a^T \Sigma a\)</span>. If <span class="math inline">\(A\)</span> is a matrix with <span class="math inline">\(k\)</span> columns then <span class="math inline">\(\mathbb{E}(AX) = A\mu\)</span> and <span class="math inline">\(\mathbb{V}(AX) = A \Sigma A^T\)</span>.</p>
+<p>Now suppose we have a random sample of <span class="math inline">\(n\)</span> vectors:</p>
+<p><span class="math display">\[
+\begin{pmatrix}X_{11} \\ X_{21} \\ \vdots \\ X_{k1} \end{pmatrix}, \;
+\begin{pmatrix}X_{21} \\ X_{22} \\ \vdots \\ X_{k2} \end{pmatrix}, \;
+\cdots , \;
+\begin{pmatrix}X_{1n} \\ X_{2n} \\ \vdots \\ X_{kn} \end{pmatrix}
+\]</span></p>
+<p>The sample mean <span class="math inline">\(\overline{X}\)</span> is a vector defined by</p>
+<p><span class="math display">\[\overline{X} = \begin{pmatrix} \overline{X}_1 \\ \vdots \\ \overline{X}_k \end{pmatrix}\]</span></p>
+<p>where <span class="math inline">\(\overline{X}_i = n^{-1} \sum_{j = 1}^n X_{ij}\)</span>. The sample variance matrix is</p>
+<p><span class="math display">\[ S = \begin{pmatrix} 
+s_{11} &amp; s_{12} &amp; \cdots &amp; s_{1k} \\
+s_{12} &amp; s_{22} &amp; \cdots &amp; s_{2k} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+s_{1k} &amp; s_{2k} &amp; \cdots &amp; s_{kk}
+\end{pmatrix} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[s_{ab} = \frac{1}{n - 1} \sum_{j = 1}^n (X_{aj} - \overline{X}_a) (X_{bj} - \overline{X}_b)\]</span></p>
+<p>It follows that <span class="math inline">\(\mathbb{E}(\overline{X}) = \mu\)</span> and <span class="math inline">\(\mathbb{E}(S) = \Sigma\)</span>.</p>
+</div>
+<div id="estimating-the-correlation" class="section level3">
+<h3>15.2 Estimating the Correlation</h3>
+<p>Consider <span class="math inline">\(n\)</span> data points from a bivariate distribution</p>
+<p><span class="math display">\[
+\begin{pmatrix} X_{11} \\ X_{21}\end{pmatrix}, \;
+\begin{pmatrix} X_{12} \\ X_{22}\end{pmatrix}, \;
+\cdots \;
+\begin{pmatrix} X_{1n} \\ X_{1n}\end{pmatrix}
+\]</span></p>
+<p>Recall that the correlation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is</p>
+<p><span class="math display">\[\rho = \frac{\mathbb{E}((X_1 - \mu) (X_2 - \mu_2))}{\sigma_1 \sigma_2}\]</span></p>
+<p>The sample correlation (the plug-in estimator) is</p>
+<p><span class="math display">\[\hat{\rho} = \frac{\sum_{i=1}^n (X_{1i} - \overline{X}_1)(X_{2i} - \overline{X}_2)}{s_1 s_2}\]</span></p>
+<p>We can construct a confidence interval for <span class="math inline">\(\rho\)</span> by applying the delta method as usual. However, it turns out that we get a more accurate confidence interval by first constructing a confidence interval for a function <span class="math inline">\(\theta = f(\rho)\)</span> and then applying the inverse function <span class="math inline">\(f^{-1}\)</span>. The method, due to Fisher, is as follows. Define</p>
+<p><span class="math display">\[f(r) = \frac{1}{2} \left( \log(1 + r) - \log(1 - r)\right) \]</span></p>
+<p>and let <span class="math inline">\(\theta = f(\rho)\)</span>. The inverse of <span class="math inline">\(f\)</span> is</p>
+<p><span class="math display">\[g(z) \equiv f^{-1}(z) = \frac{e^{2z} - 1}{e^{2z} + 1}\]</span></p>
+<p>Now do the following steps:</p>
+<p><strong>Approximate Confidence Interval for the Correlation</strong></p>
+<ol style="list-style-type: decimal">
+<li>Compute</li>
+</ol>
+<p><span class="math display">\[\hat{\theta} = f(\hat{\rho}) = \frac{1}{2} \left( \log(1 + \hat{\rho}) - \log(1 - \hat{\rho})\right) \]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Compute the approximate standard error of <span class="math inline">\(\hat{\theta}\)</span> which can be shown to be</li>
+</ol>
+<p><span class="math display">\[\hat{\text{se}}(\hat{\theta}) = \frac{1}{\sqrt{n - 3}} \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>An approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\theta = f(\rho)\)</span> is</li>
+</ol>
+<p><span class="math display">\[(a, b) \equiv \left(\hat{\theta} - \frac{z_{\alpha/2}}{\sqrt{n - 3}}, \; \hat{\theta} + \frac{z_{\alpha/2}}{\sqrt{n - 3}} \right)\]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Apply the inverse transformation <span class="math inline">\(f^{-1}(z)\)</span> to get a confidence interval for <span class="math inline">\(\rho\)</span>:</li>
+</ol>
+<p><span class="math display">\[ \left( \frac{e^{2a} - 1}{e^{2a} + 1}, \frac{e^{2b} - 1}{e^{2b} + 1} \right) \]</span></p>
+</div>
+<div id="multinomial" class="section level3">
+<h3>15.3 Multinomial</h3>
+<p>Review of Multinomial distribution: consider drawing a ball from an urn that has <span class="math inline">\(n\)</span> balls of <span class="math inline">\(k\)</span> colors. Let <span class="math inline">\(p = (p_1, \dots, p_k)\)</span> where <span class="math inline">\(p_j \geq 0\)</span> are the probabilities of drawing (with replacement) a ball of each color; <span class="math inline">\(\sum_j p_j = 1\)</span>. Draw <span class="math inline">\(n\)</span> times and let <span class="math inline">\(X = (X_1, \dots, X_n)\)</span> where <span class="math inline">\(X_j\)</span> is the number of times that color <span class="math inline">\(j\)</span> appeared; so <span class="math inline">\(\sum_k X_k = n\)</span>. We say <span class="math inline">\(X\)</span> has a Multinomial(<span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span>) distribution. The probability function is</p>
+<p><span class="math display">\[ f(x; p) = \binom{n}{x_1 \dots x_k} p_1^{x_1}\dots p_k^{x_k}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \binom{n}{x_1 \dots x_k} = \frac{n!}{x_1! \dots x_k!} \]</span></p>
+<p><strong>Theorem 15.2</strong>. Let <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span>. Then the marginal distribution of <span class="math inline">\(X_j\)</span> is <span class="math inline">\(X_j \sim \text{Binomial}(n, p_j)\)</span>. The mean and variance of <span class="math inline">\(X\)</span> are</p>
+<p><span class="math display">\[\mathbb{E}(X) = \begin{pmatrix} np_1 \\ \vdots \\ np_k \end{pmatrix}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\mathbb{V}(X) = \begin{pmatrix}
+np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; -np_1p_k \\
+-np_1p_2 &amp; np_2(1 - p_2) &amp; \cdots &amp; -np_2p_k \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+-np_1p_k &amp; -np_2p_k &amp; \cdots &amp; -np_k(1 - p_k)
+\end{pmatrix}\]</span></p>
+<p><strong>Proof</strong>. That <span class="math inline">\(X_j \sim \text{Bimomial}(n, p_j)\)</span> follows easily. Hence <span class="math inline">\(\mathbb{E}(X_j) = np_j\)</span> and <span class="math inline">\(\mathbb{V}(X_j) = np_j(1 - p_j)\)</span>.</p>
+<p>To compute <span class="math inline">\(\text{Cov}(X_i, X_j)\)</span>, notice that <span class="math inline">\(X_i + X_j \sim \text{Binomial}(n, p_i + p_j)\)</span>, so <span class="math inline">\(\mathbb{V}(X_i + X_j) = n (p_i + p_j) (1 - p_i - p_j)\)</span>. On the other hand, decomposing the sum of the random variables on the variance,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}(X_i + X_j) &amp;= \mathbb{V}(X_i) + \mathbb{V}(X_j) + 2 \text{Cov}(X_i, X_j) \\
+&amp;= np_i(1 - p_i) + np_j(1 - p_j) + 2 \text{Cov}(X_i, X_j)
+\end{align}
+\]</span></p>
+<p>Equating both expressions and isolating the covariance we get <span class="math inline">\(\text{Cov}(X_i, X_j) = -np_ip_j\)</span>.</p>
+<p><strong>Theorem 15.3</strong>. The maximum likelihood estimator of <span class="math inline">\(p\)</span> is</p>
+<p><span class="math display">\[\hat{p} 
+= \begin{pmatrix} \hat{p}_1 \\ \vdots \\ \hat{p}_k \end{pmatrix}
+= \begin{pmatrix} \frac{X_1}{n} \\ \vdots \\ \frac{X_k}{n} \end{pmatrix}
+= \frac{X}{n}
+\]</span></p>
+<p><strong>Proof</strong>. The log-likelihood (ignoring a constant) is <span class="math inline">\(\ell(p) = \sum_j X_j \log p_j\)</span>. When we maximize it we need to be careful to enforce the constraint that <span class="math inline">\(\sum_j p_j = 1\)</span>. Using Lagrange multipliers, instead we maximize</p>
+<p><span class="math display">\[A(p) = \sum_{j=1}^k X_j \log p_j + \lambda \left( \sum_{j=1}^k p_j - 1 \right)\]</span></p>
+<p>But</p>
+<p><span class="math display">\[\frac{\partial A(p)}{\partial p_j} = \frac{X_j}{p_j} + \lambda\]</span></p>
+<p>Setting it to zero we get <span class="math inline">\(\hat{p}_j = - X_j / \lambda\)</span>. Since <span class="math inline">\(\sum_j \hat{p}_j = 1\)</span> we get <span class="math inline">\(\lambda = -n\)</span> and so <span class="math inline">\(\hat{p}_j = X_j / n\)</span>, which is our result.</p>
+<p>Next we want the variance of the MLE. The direct approach is to compute the variance matrix of <span class="math inline">\(\hat{p}\)</span> directly: <span class="math inline">\(\mathbb{V}(\hat{p}) = \mathbb{V}(X / n) = n^{-2} \mathbb{V}(X)\)</span>, so</p>
+<p><span class="math display">\[\mathbb{V}(\hat{p}) = \frac{1}{n} \begin{pmatrix}
+p_1(1 - p_1) &amp; -p_1p_2 &amp; \cdots &amp; -p_1p_k \\
+-p_1p_2 &amp; p_2(1 - p_2) &amp; \cdots &amp; -p_2p_k \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+-p_1p_k &amp; -p_2p_k &amp; \cdots &amp; p_k(1 - p_k)
+\end{pmatrix}\]</span></p>
+</div>
+<div id="multivariate-normal" class="section level3">
+<h3>15.4 Multivariate Normal</h3>
+<p>Let’s recall the definition of the multivariate normal. Let</p>
+<p><span class="math display">\[ Z = \begin{pmatrix} Z_1 \\ \vdots \\ Z_k \end{pmatrix} \]</span></p>
+<p>where <span class="math inline">\(Z_1, \dots, Z_k \sim N(0, 1)\)</span> are independent. The density of <span class="math inline">\(Z\)</span> is</p>
+<p><span class="math display">\[ f(z) = \frac{1}{(2\pi)^{k / 2}} \exp \left\{ -\frac{1}{2} \sum_{j=1}^k z_j^2 \right\} = \frac{1}{(2\pi)^{k / 2}} \exp \left\{ -\frac{1}{2} z^T z \right\}\]</span></p>
+<p>The variance matrix of <span class="math inline">\(Z\)</span> is the identity matrix <span class="math inline">\(I\)</span>. We write <span class="math inline">\(Z \sim N(0, I)\)</span> where it is understood that <span class="math inline">\(0\)</span> is a vector of <span class="math inline">\(k\)</span> zeroes. We say <span class="math inline">\(Z\)</span> has a standard multivariate Normal distribution.</p>
+<p>More generally, a vector <span class="math inline">\(X\)</span> has a multivariate Normal distribution, denoted by <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>, if its density is</p>
+<p><span class="math display">\[ f(x; \mu, \Sigma) = \frac{1}{(2 \pi)^{k / 2} \text{det}(\Sigma)^{1/2}} \exp \left\{ -\frac{1}{2} (x - \mu)^T \Sigma^{-1} (x - \mu)\right\}\]</span></p>
+<p>where <span class="math inline">\(\mu\)</span> is a vector of length <span class="math inline">\(k\)</span> and <span class="math inline">\(\Sigma\)</span> is a <span class="math inline">\(k \times k\)</span> symmetric, positive definite matrix. Then <span class="math inline">\(\mathbb{E}(X) = \mu\)</span> and <span class="math inline">\(\mathbb{V}(X) = \Sigma\)</span>. Setting <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\Sigma = I\)</span> gives back the standard Normal.</p>
+<p><strong>Theorem 15.4</strong>. The following properties hold:</p>
+<ol style="list-style-type: decimal">
+<li><p>If <span class="math inline">\(Z \sim N(0, 1)\)</span> and <span class="math inline">\(X = \mu + \Sigma^{1/2} Z\)</span> then <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>.</p></li>
+<li><p>If <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>, then <span class="math inline">\(\Sigma^{-1/2}(X - \mu) \sim N(0, 1)\)</span>.</p></li>
+<li><p>If <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span> and <span class="math inline">\(a\)</span> is a vector with the same length as <span class="math inline">\(X\)</span>, then <span class="math inline">\(a^T X \sim N(a^T \mu, a^T \Sigma a)\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(V = (X - \mu)^T \Sigma^{-1} (X - \mu)\)</span>. Then <span class="math inline">\(V \sim \xi_k^2\)</span>.</p></li>
+</ol>
+<p>Suppose we partition a random Normal vector <span class="math inline">\(X\)</span> into two parts <span class="math inline">\(X = (X_a, X_b)\)</span>. We can similarly partition the mean <span class="math inline">\(\mu = (\mu_a, \mu_b)\)</span> and the variance</p>
+<p><span class="math display">\[\Sigma = \begin{pmatrix} 
+\Sigma_{aa} &amp; \Sigma_{ab} \\
+\Sigma_{ba} &amp; \Sigma_{bb}
+\end{pmatrix}\]</span></p>
+<p><strong>Theorem 15.5</strong>. Let <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>. Then:</p>
+<ol style="list-style-type: decimal">
+<li>The marginal distribution of <span class="math inline">\(X_a\)</span> is <span class="math inline">\(X_a \sim N(\mu_a, \Sigma_{aa})\)</span>.</li>
+<li>The conditional distribution of <span class="math inline">\(X_b\)</span> given <span class="math inline">\(X_a = x_a\)</span> is</li>
+</ol>
+<p><span class="math display">\[ X_b | X_a = x_a \sim N(\mu(x_a), \Sigma(x_a))\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align}
+\mu(x_a) &amp;= \mu_b + \Sigma_{ba} \Sigma_{aa}^{-1} (x_a - \mu_a) \\
+\Sigma(x_a) &amp;= \Sigma_{bb} - \Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+\end{align}
+\]</span></p>
+<p><strong>Theorem 15.6</strong>. Given a random sample of size <span class="math inline">\(n\)</span> from a <span class="math inline">\(N(\mu, \Sigma)\)</span>, the log-likelihood (up to a constant not depending on <span class="math inline">\(\mu\)</span> or <span class="math inline">\(\Sigma\)</span>) is given by</p>
+<p><span class="math display">\[\ell(\mu, \Sigma) = -\frac{n}{2} (\overline{X} - \mu)^T \Sigma^{-1} (\overline{X} - \mu) - \frac{n}{2} \text{tr} \left( \Sigma^{-1}S \right) - \frac{n}{2} \log \text{det} \left( \Sigma \right) \]</span></p>
+<p>The MLE is</p>
+<p><span class="math display">\[ \hat{\mu} = \overline{X} 
+\quad \text{and} \quad
+\hat{\Sigma} = \left( \frac{n - 1}{n} \right) S\]</span></p>
+</div>
+<div id="appendix" class="section level3">
+<h3>15.5 Appendix</h3>
+<p><strong>Proof of Theorem 15.6</strong>. Let the <span class="math inline">\(i\)</span>-th random vector be <span class="math inline">\(X^i\)</span>. The log-likelihood is</p>
+<p><span class="math display">\[\ell(\mu, \Sigma) = \sum_{i = 1}^n f(X^i; \mu, \Sigma) 
+= -\frac{kn}{2} \log ( 2\pi ) - \frac{n}{2} \log \text{det} \left( \Sigma \right)
+- \frac{1}{2} \sum_{i=1}^n (X^i - \mu)^T \Sigma^{-1} (X^i - \mu)
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{i=1}^n (X^i - \mu)^T \Sigma^{-1} (X^i - \mu) &amp;=
+\sum_{i=1}^n \left[ (X^i - \overline {X}) + (\overline{X} - \mu) \right]^T \Sigma^{-1} \left[(X^i - \overline{X}) + (\overline{X} - \mu) \right] \\
+&amp;= \sum_{i=1}^n \left[(X^i - \overline{X})^T\Sigma^{-1}(X^i - \overline{X})\right]
++ n (\overline{X} - \mu)^T \Sigma^{-1} (\overline{X} - \mu)
+\end{align}
+\]</span></p>
+<p>since <span class="math inline">\(\sum_i (X^i - \overline{X})^T \Sigma^{-1} (\overline{X} - \mu) = 0\)</span>. Also, <span class="math inline">\((X^i - \mu)^T \Sigma^T (X^i - \mu)\)</span> is a scalar, so</p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{i=1}^n (X^i - \mu)^T \Sigma^{-1} (X^i - \mu) &amp;=
+\sum_{i=1}^n \text{tr} \left[ (X^i - \mu)^T \Sigma^{-1} (X^i - \mu)\right] \\
+&amp;= \sum_{i=1}^n \text{tr} \left[ \Sigma^{-1} (X^i - \mu) (X^i - \mu)^T \right] \\
+&amp;= \text{tr} \left[ \Sigma^{-1} \sum_{i=1}^n (X^i - \mu) (X^i - \mu) ^T \right] \\
+&amp;= n \; \text{tr} \left[ \Sigma^{-1} S\right]
+\end{align}
+\]</span></p>
+<p>so the conclusion follows.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>15.6 Exercises</h3>
+<p><strong>Exercise 15.6.1</strong>. Prove Theorem 15.1.</p>
+<p>Let <span class="math inline">\(a\)</span> be a vector of length <span class="math inline">\(k\)</span> and let <span class="math inline">\(X\)</span> be a random vector of the same length with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\Sigma\)</span>. Then <span class="math inline">\(\mathbb{E}(a^T X) = a^T\mu\)</span> and <span class="math inline">\(\mathbb{V}(a^T X) = a^T \Sigma a\)</span>. If <span class="math inline">\(A\)</span> is a matrix with <span class="math inline">\(k\)</span> columns then <span class="math inline">\(\mathbb{E}(AX) = A\mu\)</span> and <span class="math inline">\(\mathbb{V}(AX) = A \Sigma A^T\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>For the vector version of the theorem, we have:</p>
+<p><span class="math display">\[\mathbb{E}(a^T X) = \mathbb{E}\left( \sum_{i=1}^k a_i X_i \right) = \sum_{i=1}^k a_i \mathbb{E}(X_i) = \sum_{i=1}^k a_i \mu_i = a^T \mu \]</span></p>
+<p><span class="math display">\[\mathbb{V}(a^T X) = \mathbb{V}\left( \sum_{i=1}^k a_i X_i \right) = \sum_{i=1}^k \sum_{j=1}^k a_i a_j \text{Cov} (X_i, X_j) = \sum_{i=1}^k a_i \left( \sum_{j=1}^k \text{Cov}(X_i, X_j) a_j \right) = \sum_{i=1}^k a_i \Big( \Sigma a \Big)_i = a^T \Sigma a\]</span></p>
+<p>For the matrix version of the theorem, consider the <span class="math inline">\(r\)</span> rows of <span class="math inline">\(A\)</span> as vectors, separately, <span class="math inline">\(a^1, \dots, a^k\)</span>:</p>
+<p><span class="math display">\[ A = \begin{pmatrix}
+\cdots &amp; a^1 &amp; \cdots \\
+\cdots &amp; a^2 &amp; \cdots \\
+\vdots &amp; \vdots &amp; \vdots \\
+\cdots &amp; a^r &amp; \cdots
+\end{pmatrix}\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \mathbb{E}(AX) = \begin{pmatrix}
+\mathbb{E}(a^1 X) \\
+\mathbb{E}(a^2 X) \\
+\vdots \\
+\mathbb{E}(a^r X)
+\end{pmatrix} = \begin{pmatrix}
+a^1 \mu \\
+a^2 \mu \\
+\vdots \\
+a^r \mu
+\end{pmatrix} = A\mu
+\]</span></p>
+<p>Finally, looking at the <span class="math inline">\(i\)</span>-th term of <span class="math inline">\(AX\)</span>,</p>
+<p><span class="math display">\[(AX)_i = \sum_{s=1}^k a_{is} X_s = a^i X\]</span></p>
+<p>so, by the vector version of the theorem, <span class="math inline">\(\mathbb{V}((AX)_i) = (a^i)^T \Sigma a^i\)</span>. Applying this to every element:</p>
+<p><span class="math display">\[\mathbb{V}(AX) = \begin{pmatrix}
+\mathbb{V}((AX)_1) \\
+\mathbb{V}((AX)_2) \\
+\vdots \\
+\mathbb{V}((AX)_r)
+\end{pmatrix} = \begin{pmatrix}
+\mathbb{V}(a^1 X) \\
+\mathbb{V}(a^2 X) \\
+\vdots \\
+\mathbb{V}(a^r X)
+\end{pmatrix} = \begin{pmatrix}
+(a^1)^T \Sigma a^1 \\
+(a^2)^T \Sigma a^2 \\
+\vdots \\
+(a^r)^T \Sigma a^r
+\end{pmatrix} = A \Sigma A^T\]</span></p>
+<p><strong>Exercise 15.6.2</strong>. Find the Fisher information matrix for the MLE of a Multinomial.</p>
+<p><strong>Solution</strong>.</p>
+<p>The probability mass function for a Multinomial distribution is:</p>
+<p><span class="math display">\[ f(X; p) = \binom{n}{X_1 \dots X_k} p_1^{X_1} \dots p_k^{X_k} = \frac{n!}{X_1! \dots X_k!} p_1^{X_1} \dots p_k^{X_k}\]</span></p>
+<p>so the log-likelihood (ignoring a constant) is</p>
+<p><span class="math display">\[ \ell_n(p) = \sum_{i=1}^k X_i \log p_i\]</span></p>
+<p>The partial derivatives are:</p>
+<p><span class="math display">\[
+\begin{align}
+H_{ii} = \frac{\partial^2 \ell_n(p)}{\partial^2 p_i} &amp;= -\frac{X_i}{p_i^2} \\
+H_{ij} = \frac{\partial^2 \ell_n(p)}{\partial p_i \partial p_j} &amp;= 0 \; \text{for } i \neq j
+\end{align}
+\]</span></p>
+<p>so <span class="math inline">\(\mathbb{E}(H_{ii}) = - n/p_i\)</span>, and the Fisher Information Matrix is:</p>
+<p><span class="math display">\[I_n(p) = n \begin{pmatrix}
+\frac{1}{p_1} &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \frac{1}{p_2} &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \frac{1}{p_k}
+\end{pmatrix}\]</span></p>
+<p>Note, however, that the variance is <em>not</em> the inverse matrix of <span class="math inline">\(I_n(p)\)</span>, and further, that, <span class="math inline">\(\mathbb{V}(X)\)</span> is not invertible.</p>
+<p><strong>Exercise 15.6.3</strong>. Prove Theorem 15.5.</p>
+<p>Let <span class="math inline">\(X \sim N(\mu, \Sigma)\)</span>. Then:</p>
+<ol style="list-style-type: decimal">
+<li>The marginal distribution of <span class="math inline">\(X_a\)</span> is <span class="math inline">\(X_a \sim N(\mu_a, \Sigma_{aa})\)</span>.</li>
+<li>The conditional distribution of <span class="math inline">\(X_b\)</span> given <span class="math inline">\(X_a = x_a\)</span> is</li>
+</ol>
+<p><span class="math display">\[ X_b | X_a = x_a \sim N(\mu(x_a), \Sigma(x_a))\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align}
+\mu(x_a) &amp;= \mu_b + \Sigma_{ba} \Sigma_{aa}^{-1} (x_a - \mu_a) \\
+\Sigma(x_a) &amp;= \Sigma_{bb} - \Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+\end{align}
+\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>The marginal distribution result is immediate: for any given sample drawn from the distribution, collect only the first <span class="math inline">\(k\)</span> dimensions of the sample vector, where <span class="math inline">\(k\)</span> is the number of dimensions of <span class="math inline">\(X_a\)</span>. The resulting distribution will be multivariate normal, with mean and variance given by getting the first <span class="math inline">\(k\)</span> dimensions of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\Sigma\)</span>.</p>
+<p>For the conditional distribution result, let <span class="math inline">\(A = -\Sigma_{ba} \Sigma_{aa}^{-1}\)</span> and <span class="math inline">\(z = x_b + A x_a\)</span>. We have:</p>
+<p><span class="math display">\[\begin{align}
+\text{Cov}(z, x_a) &amp;= \text{Cov}(x_b, x_a) + \text{Cov}(A x_a, x_a) \\
+&amp;= \Sigma_{ba} + A \mathbb{V}(x_a) \\
+&amp;= \Sigma_{ba} - \Sigma_{ba} \Sigma_{aa}^{-1} \Sigma_{aa} \\
+&amp;= 0
+\end{align}\]</span></p>
+<p>so <span class="math inline">\(z\)</span> and <span class="math inline">\(x_a\)</span> are uncorrelated (and since they are jointly normal, they are also independent). We then have:</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{E}(x_b | x_a) &amp;= \mathbb{E}(z - A x_a | x_a) \\
+&amp;= \mathbb{E}(z | x_a) - \mathbb{E}(A x_a | x_a) \\
+&amp;= \mathbb{E}(z) - A x_a \\
+&amp;= \mu_b + A \mu_a - A x_a \\
+&amp;= \mu_b + \Sigma_{ba} \Sigma_{aa}^{-1} (x_a - \mu_a)
+\end{align}\]</span></p>
+<p>For the covariance matrix,</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{V}(x_b | x_a) &amp;= \mathbb{V}(z - A x_a | x_a) \\
+&amp;= \mathbb{V}(z | x_a) - \mathbb{V}(A x_a | x_a) - A \text{Cov}(z, -x_a) - \text{Cov}(z, -x_a) A^T \\
+&amp;= \mathbb{V}(z | x_a) - 0 - A \cdot 0 - 0 \cdot A \\
+&amp;= \mathbb{V}(z) \\
+&amp;= \mathbb{V}(x_b + A x_a) \\
+&amp;= \mathbb{V}(x_b) + A \mathbb{V}(x_a) A^T + A \text{Cov}(x_a, x_b) + \text{Cov}(x_b, x_a) A^T \\
+&amp;= \Sigma_{bb} + (- \Sigma_{ba} \Sigma_{aa}^{-1}) \Sigma_{aa} (- \Sigma_{ba} \Sigma_{aa}^{-1})^T + (- \Sigma_{ba} \Sigma_{aa}^{-1}) \Sigma_{ab} + \Sigma_{ba} (- \Sigma_{ba} \Sigma_{aa}^{-1})^T \\
+&amp;= \Sigma_{bb} + \Sigma_{ba} \Sigma_{aa}^{-1} \Sigma_{aa} \Sigma_{aa}^{-1} \Sigma_{ab} - 2 \Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab} \\
+&amp;= \Sigma_{bb} - \Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+\end{align}\]</span></p>
+<p>Reference: Macro (<a href="https://stats.stackexchange.com/users/4856/macro" class="uri">https://stats.stackexchange.com/users/4856/macro</a>), Deriving the conditional distributions of a multivariate normal distribution, URL (version: 2015-06-18): <a href="https://stats.stackexchange.com/q/30600" class="uri">https://stats.stackexchange.com/q/30600</a></p>
+<p><strong>Exercise 15.6.4 (Computer Experiment)</strong>. Write a function to generate <span class="math inline">\(\text{nsim}\)</span> observations from a <span class="math inline">\(\text{Multinomial}(n, p)\)</span> distribution.</p>
+<p><strong>Solution</strong>. Let’s use the combinatoric interpretation of the distribution: Drawing <span class="math inline">\(n\)</span> times, with replacement, from an urn with different ball colors, where the probability of obtaining balls of color <span class="math inline">\(i\)</span> is <span class="math inline">\(p_i\)</span>.</p>
+<pre class="python"><code>import numpy as np
+
+def multinomial_observations(n, p, nsim=1):
+    cumulative_probabilities = np.cumsum(p)
+    
+    # Ensure probabilities add up to 1 (approximately)
+    assert abs(cumulative_probabilities[-1] - 1) &lt; 1e-8, &quot;Probabilities should add up to 1&quot;
+    
+    def get_observation():
+        counts = np.zeros(cumulative_probabilities.size).astype(int)
+        rvs = np.random.uniform(size=n)
+        for i in range(n):
+            counts[np.argmin(rvs[i] &gt; cumulative_probabilities)] += 1
+
+        return counts
+    
+    return np.array([get_observation() for _ in range(nsim)])</code></pre>
+<pre class="python"><code># Sample usage
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+obs = multinomial_observations(n=500, p=[0.5, 0.3, 0.2], nsim=1000)
+
+plt.figure(figsize=(12, 8))
+plt.hist(obs[:, 0], density=True, bins=25, histtype=&#39;step&#39;, color=&#39;red&#39;, label=&#39;p = 0.5&#39;)
+plt.hist(obs[:, 1], density=True, bins=25, histtype=&#39;step&#39;, color=&#39;green&#39;, label=&#39;p = 0.3&#39;)
+plt.hist(obs[:, 2], density=True, bins=25, histtype=&#39;step&#39;, color=&#39;blue&#39;, label=&#39;p = 0.2&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2015%20-%20Multivariate%20Models_files/Chapter%2015%20-%20Multivariate%20Models_35_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>obs</code></pre>
+<pre><code>array([[266, 131, 103],
+       [258, 151,  91],
+       [252, 146, 102],
+       ...,
+       [268, 161,  71],
+       [241, 165,  94],
+       [256, 142, 102]])</code></pre>
+<p><strong>Exercise 15.6.5 (Computer Experiment)</strong>. Write a function to generate <span class="math inline">\(\text{nsim}\)</span> observations from a Multivariate normal with given mean <span class="math inline">\(\mu\)</span> and covariance matrix <span class="math inline">\(\Sigma\)</span>.</p>
+<p><strong>Solution</strong>. Let’s construct our samples based on samples of a standard multivariate normal <span class="math inline">\(Z \sim N(0, I)\)</span>, by making <span class="math inline">\(X = \mu + \Sigma^{1/2} Z\)</span>.</p>
+</div>
+<div id="box_muller" class="section level3">
+<h3>box_muller</h3>
+<p>A transformation which transforms from a two-dimensional continuous uniform distribution to a two-dimensional bivariate normal distribution (or complex normal distribution). If <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are uniformly and independently distributed between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, then <span class="math inline">\(z_1\)</span> and <span class="math inline">\(z_2\)</span> as defined below have a normal distribution with mean <span class="math inline">\(\mu=0\)</span> and variance <span class="math inline">\(\sigma^2=1\)</span>.</p>
+<p><span class="math display">\[z_1=\sqrt{-2\ln{x_1}}\cos(2\pi x_2)\]</span>
+<span class="math display">\[z_2=\sqrt{-2\ln{x_1}}\sin(2\pi x_2)\]</span>
+This can be verified by solving for <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>,</p>
+<p><span class="math display">\[x_1=e^{-(z_1^2+z_2^2)/2}\]</span>
+<span class="math display">\[x_2=\frac{1}{2\pi}\tan^{-1}\left(\frac{z_2}{z_1}\right)\]</span></p>
+<p>Taking the Jacobian yields</p>
+<p><span class="math display">\[\frac{\partial(x_1,x_2)}{\partial(z_1,z_2)}=\begin{bmatrix}
+\frac{\partial x_1}{\partial z_1} &amp; \frac{\partial x_1}{\partial z_2}\\ \frac{\partial x_2}{\partial z_1} &amp; \frac{\partial x_2}{\partial z_2}\\
+\end{bmatrix}\\
+=-\left[\frac{1}{\sqrt{2\pi}}e^{-z_1^2/2}\right]\left[\frac{1}{\sqrt{2\pi}}e^{-z_2^2/2}\right]
+\]</span></p>
+<pre class="python"><code>import numpy as np
+
+def multivariate_normal_observations(mu, sigma, nsim=1):
+    mu_array = np.array(mu)
+    sigma_array = np.array(sigma)
+    
+    assert len(mu_array.shape) == 1, &quot;mu should be a vector&quot;
+    k = mu_array.shape[0]
+    
+    assert sigma_array.shape == (k, k), &quot;sigma should be a square matrix with same length as mu&quot;
+    
+    # Do the eigenvalue decomposition, then get U D^{1/2} as Sigma^{1/2}
+    U, D, V = np.linalg.svd(sigma_array)
+    sigma_sqrt = U @ np.diag(np.sqrt(D))
+    
+    # Let&#39;s write our own random normal generator for fun, rather than use np.random.normal
+    # Strategy: Use Box-Muller to transform two random uniform variables in (0, 1) 
+    # into two standard normals
+    def random_normals(size):
+
+        def box_muller(u1, u2):
+            R = np.sqrt(-2 * np.log(u1))
+            theta = 2 * np.pi * u2
+
+            z0 = R * np.cos(theta)
+            z1 = R * np.sin(theta)
+
+            return z0, z1
+
+        def normal_generator(uniform_generator):
+            while True:
+                z0, z1 = box_muller(next(uniform_generator), next(uniform_generator))
+                yield z0
+                yield z1
+
+        def random_generator(batch_size):
+            while True:
+                for v in np.random.uniform(size=batch_size):
+                    yield v
+
+        result = np.empty(size)
+        gen = normal_generator(random_generator(batch_size=min(size, 1024)))
+        for i in range(size):
+            result[i] = next(gen)
+
+        return result
+
+    def get_observation():
+        z = random_normals(k)
+        return mu_array + sigma_sqrt @ z
+    
+    return np.array([get_observation() for _ in range(nsim)])</code></pre>
+<pre class="python"><code># Sample usage
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+mu = [1, 3]
+sigma = [[2, 1], [1, 2]]
+obs = multivariate_normal_observations(mu, sigma, nsim=5000)
+
+plt.figure(figsize=(12, 8))
+plt.hexbin(obs[:, 0], obs[:, 1], cmap=plt.cm.Reds)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2015%20-%20Multivariate%20Models_files/Chapter%2015%20-%20Multivariate%20Models_41_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 15.6.6 (Computer Experiment)</strong>. Generate 1000 random vectors from a <span class="math inline">\(N(\mu, \Sigma)\)</span> distribution where</p>
+<p><span class="math display">\[ \mu = \begin{pmatrix} 3 \\ 8\end{pmatrix}
+, \quad
+\Sigma = \begin{pmatrix}
+2 &amp; 6 \\
+6 &amp; 2
+\end{pmatrix}\]</span></p>
+<p>Plot the simulation as a scatterplot. Find the distribution of <span class="math inline">\(X_2 | X_1 = x_1\)</span> using theorem 15.5. In particular, what is the formula for <span class="math inline">\(\mathbb{E}(X_2 | X_1 = x_1)\)</span>? Plot <span class="math inline">\(\mathbb{E}(X_2 | X_1 = x_1)\)</span> on your scatterplot. Find the correlation <span class="math inline">\(\rho\)</span> between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>. Compare this with the sample correlations from your simulation. Find a 95% confidence interval for <span class="math inline">\(\rho\)</span>. Estimate the covariance matrix <span class="math inline">\(\Sigma\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The provided <span class="math inline">\(\Sigma\)</span> matrix has negative eigenvalues. We will instead use the following matrix:</p>
+<p><span class="math display">\[ \Sigma = \begin{pmatrix} 6 &amp; 2 \\ 2 &amp; 6\end{pmatrix}\]</span></p>
+<pre class="python"><code># Generate 1000 vectors
+mu = [3, 8]
+sigma = [[6, 2], [2, 6]]
+obs = multivariate_normal_observations(mu, sigma, nsim=1000)
+
+# Using numpy to generate observations:
+#obs = np.random.multivariate_normal(mu, sigma, size=1000)
+
+# Using scipy to generate observations:
+#obs = scipy.stats.multivariate_normal.rvs(mean=mu, cov=sigma, size=1000)
+
+x, y = obs[:, 0], obs[:, 1]
+
+# Plot scatterplot
+plt.figure(figsize=(12, 8))
+plt.scatter(x, y)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2015%20-%20Multivariate%20Models_files/Chapter%2015%20-%20Multivariate%20Models_44_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>From theorem 15.5,</p>
+<p><span class="math display">\[ X_2 | X_1 = x_1 \sim N(\mu(x_1), \Sigma(x_1))\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align}
+\mu(x_1) &amp;= \mu_2 + \Sigma_{21} \Sigma_{11}^{-1} (x_1 - \mu_1) \\
+\Sigma(x_1) &amp;= \Sigma_{22} - \Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}
+\end{align}
+\]</span></p>
+<p>Replacing the given values,</p>
+<p><span class="math display">\[
+\begin{align}
+\mu(x_1) &amp;= 8 + 2 \cdot 6^{-1} (x_1 - 3) = \frac{1}{3} x_1 + \frac{22}{3}\\
+\Sigma(x_1) &amp;= 6 - 2 \cdot 6^{-1} \cdot 2 = \frac{16}{3}
+\end{align}
+\]</span></p>
+<pre class="python"><code># Plot scatterplot + line
+f = lambda x: x/3 + 22/3
+
+plt.figure(figsize=(12, 8))
+plt.scatter(x, y)
+plt.plot([-6, 10], [f(-6), f(10)], color=&#39;red&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2015%20-%20Multivariate%20Models_files/Chapter%2015%20-%20Multivariate%20Models_46_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The correlation <span class="math inline">\(\rho\)</span> between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is:</p>
+<p><span class="math display">\[ \rho = \frac{\text{Cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} = \frac{1}{3}\]</span></p>
+<p>The estimated correlation <span class="math inline">\(\rho\)</span> between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is:</p>
+<p><span class="math display">\[ \hat{\rho} = \frac{\sum_i (X_{1i} - \overline{X}_1)(X_{2i} - \overline{X}_2)}{s_{X_1} s_{X_2}}\]</span></p>
+<pre class="python"><code>rho_hat = np.corrcoef(x, y)[0, 1]
+print(&quot;Estimated correlation: %.3f&quot; % rho_hat)</code></pre>
+<pre><code>Estimated correlation: 0.342</code></pre>
+<p>We will use the provided process to estimate a confidence interval for the correlation:</p>
+<p><strong>Approximate Confidence Interval for the Correlation</strong></p>
+<ol style="list-style-type: decimal">
+<li>Compute</li>
+</ol>
+<p><span class="math display">\[\hat{\theta} = f(\hat{\rho}) = \frac{1}{2} \left( \log(1 + \hat{\rho}) - \log(1 - \hat{\rho})\right) \]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Compute the approximate standard error of <span class="math inline">\(\hat{\theta}\)</span> which can be shown to be</li>
+</ol>
+<p><span class="math display">\[\hat{\text{se}}(\hat{\theta}) = \frac{1}{\sqrt{n - 3}} \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>An approximate <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\theta = f(\rho)\)</span> is</li>
+</ol>
+<p><span class="math display">\[(a, b) \equiv \left(\hat{\theta} - \frac{z_{\alpha/2}}{\sqrt{n - 3}}, \; \hat{\theta} + \frac{z_{\alpha/2}}{\sqrt{n - 3}} \right)\]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Apply the inverse transformation <span class="math inline">\(f^{-1}(z)\)</span> to get a confidence interval for <span class="math inline">\(\rho\)</span>:</li>
+</ol>
+<p><span class="math display">\[ \left( \frac{e^{2a} - 1}{e^{2a} + 1}, \frac{e^{2b} - 1}{e^{2b} + 1} \right) \]</span></p>
+<pre class="python"><code>from scipy.stats import norm
+
+theta_hat = (np.log(1 + rho_hat) - np.log(1 - rho_hat)) / 2
+se_theta_hat = 1 / np.sqrt(1000 - 3)
+z = norm.ppf(0.975)
+a, b = theta_hat - z * se_theta_hat, theta_hat + z * se_theta_hat
+f_inv = lambda x: (np.exp(2*x) - 1) / (np.exp(2*x) + 1)
+confidence_interval = (f_inv(a), f_inv(b))
+
+print(&#39;95%% confidence interval: %.3f, %.3f&#39; % confidence_interval)</code></pre>
+<pre><code>95% confidence interval: 0.286, 0.395</code></pre>
+<p>The sample covariance matrix is:</p>
+<p><span class="math display">\[ \hat{\Sigma} = \frac{1}{n} S = \frac{1}{n} \sum_{i=1}^n (X_i - \overline{X})(X_i - \overline{X})^T \]</span></p>
+<pre class="python"><code>import numpy as np
+mu_hat = np.array([x.mean(), y.mean()])
+xx = np.concatenate((x.reshape(-1, 1), y.reshape(-1, 1)), axis=1)
+sigma_hat = (xx - mu_hat).T @ (xx - mu_hat) / 1000
+
+sigma_hat</code></pre>
+<pre><code>array([[5.67452097, 1.90244085],
+       [1.90244085, 5.82662727]])</code></pre>
+<p><strong>Exercise 15.6.7 (Computer Experiment)</strong>. Generate 100 random vectors from a multivariate Normal with mean <span class="math inline">\((0, 2)^T\)</span> and variance</p>
+<p><span class="math display">\[ \begin{pmatrix}
+1 &amp; 3 \\
+3 &amp; 1
+\end{pmatrix} \]</span></p>
+<p>Find a 95% confidence interval for the correlation <span class="math inline">\(\rho\)</span>. What is the true value of <span class="math inline">\(\rho\)</span>?</p>
+<p><strong>Solution</strong>.</p>
+<p>The provided matrix, yet again, has negative eigenvalues. Let’s instead use:</p>
+<p><span class="math display">\[\Sigma = \begin{pmatrix}
+3 &amp; 1 \\
+1 &amp; 3
+\end{pmatrix}\]</span></p>
+<pre class="python"><code># Generate 100 vectors
+n = 100
+mu = [0, 2]
+sigma = [[3, 1], [1, 3]]
+obs = multivariate_normal_observations(mu, sigma, nsim=n)
+x, y = obs[:, 0], obs[:, 1]
+
+# Plot scatterplot
+plt.figure(figsize=(12, 8))
+plt.scatter(x, y)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2015%20-%20Multivariate%20Models_files/Chapter%2015%20-%20Multivariate%20Models_55_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># Find 95% confidence interval
+from scipy.stats import norm
+
+rho_hat = np.corrcoef(x, y)[0, 1]
+theta_hat = (np.log(1 + rho_hat) - np.log(1 - rho_hat)) / 2
+se_theta_hat = 1 / np.sqrt(n - 3)
+z = norm.ppf(0.975)
+a, b = theta_hat - z * se_theta_hat, theta_hat + z * se_theta_hat
+f_inv = lambda x: (np.exp(2*x) - 1) / (np.exp(2*x) + 1)
+confidence_interval = (f_inv(a), f_inv(b))
+
+print(&#39;95%% confidence interval: %.3f, %.3f&#39; % confidence_interval)</code></pre>
+<pre><code>95% confidence interval: 0.116, 0.474</code></pre>
+<p>True value of <span class="math inline">\(\rho\)</span>:</p>
+<p><span class="math display">\[ \rho = \frac{\text{Cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} = \frac{1}{3}\]</span></p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
