@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter16 Inference about Independence - A Hugo website</title>
+<meta property="og:title" content="AOS chapter16 Inference about Independence - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">25 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter16 Inference about Independence</h1>
+
+    
+    <span class="article-date">2021-04-25</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/25/aos-chapter16-inference-about-independence/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#inference-about-independence">16. Inference about Independence</a>
+<ul>
+<li><a href="#two-binary-variables">16.1 Two Binary Variables</a></li>
+<li><a href="#interpreting-the-odds-ratios">16.2 Interpreting the Odds Ratios</a></li>
+<li><a href="#two-discrete-variables">16.3 Two Discrete Variables</a></li>
+<li><a href="#two-continuous-variables">16.4 Two Continuous Variables</a></li>
+<li><a href="#one-continuous-variable-and-one-discrete">16.5 One Continuous Variable and One Discrete</a></li>
+<li><a href="#exercises">16.7 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="inference-about-independence" class="section level2">
+<h2>16. Inference about Independence</h2>
+<p>This chapter addresses two questions:</p>
+<ol style="list-style-type: decimal">
+<li>How do we test if two random variables are independent?</li>
+<li>How do we estimate the strength of dependence between two random variables?</li>
+</ol>
+<p>Recall we write <span class="math inline">\(Y \text{ ⫫ } Z\)</span> to mean that <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are independent.</p>
+<p>When <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are not independent, we say they are <strong>dependent</strong> or <strong>associated</strong> or <strong>related</strong>.</p>
+<p>Note that dependence does not mean causation:
+- Smoking is related to heart disease, and quitting smoking will reduce the chance of heart disease.
+- Owning a TV is related to lower starvation, but giving a starving person a TV does not make them not hungry.</p>
+<div id="two-binary-variables" class="section level3">
+<h3>16.1 Two Binary Variables</h3>
+<p>Suppose that both <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are binary. Consider a data set <span class="math inline">\((Y_1, Z_1), \dots, (Y_n, Z_n)\)</span>. Represent the data as a two-by-two table:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; Y = 0  &amp; Y = 1 &amp; \\
+\hline
+Z = 0 &amp; X_{00} &amp; X_{01} &amp; X_{0\text{·}}\\
+Z = 1 &amp; X_{10} &amp; X_{11} &amp; X_{1\text{·}}\\
+ \hline
+      &amp; X_{\text{·}0} &amp; X_{\text{·}1} &amp; n = X_{\text{··}}
+\end{array}
+\]</span></p>
+<p>where <span class="math inline">\(X_{ij}\)</span> represents the number of observations where <span class="math inline">\((Z_k, Y_k) = (i, j)\)</span>. The dotted subscripts denote sums, e.g. <span class="math inline">\(X_{i\text{·}} = \sum_j X_{ij}\)</span>. Denote the corresponding probabilities by:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; Y = 0  &amp; Y = 1 &amp; \\
+\hline
+Z = 0 &amp; p_{00} &amp; p_{01} &amp; p_{0\text{·}}\\
+Z = 1 &amp; p_{10} &amp; p_{11} &amp; p_{1\text{·}}\\
+ \hline
+      &amp; p_{\text{·}0} &amp; p_{\text{·}1} &amp; 1
+\end{array}
+\]</span></p>
+<p>where <span class="math inline">\(p_{ij} = \mathbb{P}(Z = i, Y = j)\)</span>. Let <span class="math inline">\(X = (X_{00}, X_{01}, X_{10}, X_{11})\)</span> denote the vector of counts. Then <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> where <span class="math inline">\(p = (p_{00}, p_{01}, p_{10}, p_{11})\)</span>.</p>
+<p>The <strong>odds ratio</strong> is defined to be</p>
+<p><span class="math display">\[ \psi = \frac{p_{00} p_{11}}{p_{01} p_{10}}\]</span></p>
+<p>The <strong>log odds ratio</strong> is defined to be</p>
+<p><span class="math display">\[ \gamma = \log \psi\]</span></p>
+<p><strong>Theorem 16.2</strong>. The following statements are equivalent:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(Y \text{ ⫫ } Z\)</span></li>
+<li><span class="math inline">\(\psi = 1\)</span></li>
+<li><span class="math inline">\(\gamma = 0\)</span></li>
+<li>For <span class="math inline">\(i, j \in \{ 0, 1 \}\)</span>, <span class="math inline">\(p_{ij} = p_{i\text{·}} p_{\text{·}j}\)</span></li>
+</ol>
+<p>Now consider testing</p>
+<p><span class="math display">\[
+H_0: Y \text{ ⫫ } Z
+\quad \text{versus} \quad
+H_1: \text{not} (Y \text{ ⫫ } Z)
+\]</span></p>
+<p>First consider the likelihood ratio test. Under <span class="math inline">\(H_1\)</span>, <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> and the MLE is <span class="math inline">\(\hat{p} = X / n\)</span>. Under <span class="math inline">\(H_0\)</span>, again <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> but <span class="math inline">\(p\)</span> is subjected to the constraint <span class="math inline">\(p_{ij} = p_{i.} p_{.j}\)</span>. This leads to the following test.</p>
+<p><strong>Theorem 16.3 (Likelihood Ratio Test for Independence in a 2-by-2 table)</strong>.
+Let</p>
+<p><span class="math display">\[ T = 2 \sum_{i=0}^1 \sum_{j=0}^1 X_{ij} \log \left( \frac{X_{ij} X_{\text{··}}}{X_{i\text{·}} X_{\text{·}j}} \right)\]</span></p>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(T \leadsto \chi_1^2\)</span>. Thus, an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(T &gt; \chi_{1, \alpha}^2\)</span>.</p>
+<p><strong>Theorem 16.4 (Pearson’s <span class="math inline">\(\chi^2\)</span> test for Independence in a 2-by-2 table)</strong>. Let</p>
+<p><span class="math display">\[ U = \sum_{i=0}^1 \sum_{j=0}^1 \frac{(X_{ij} - E_{ij})^2}{E_{ij}} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ E_{ij} = \frac{X_{i\text{·}} X_{\text{·}j}}{n}\]</span></p>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(U \leadsto \chi_1^2\)</span>. Thus, an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(U &gt; \chi_{1, \alpha}^2\)</span>.</p>
+<p>Here’s the intuition for the Pearson test: Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(p_{ij} = p_{i\text{·}} p_{\text{·}j}\)</span>, so the MLE of <span class="math inline">\(p_{ij}\)</span> is <span class="math inline">\(\hat{p}_{ij} = \hat{p}_{i\text{·}} \hat{p}_{\text{·}j} = \frac{X_{i\text{·}}}{n} \frac{X_{\text{·}j}}{n}\)</span>. Thus, the expected number of observations in the <span class="math inline">\((i, j)\)</span> cell is <span class="math inline">\(E_{ij} = n \hat{p}_{ij} = \frac{X_{i\text{·}} X_{\text{·}j}}{n}\)</span>. The statistic <span class="math inline">\(U\)</span> compares the observed and expected counts.</p>
+<p><strong>Theorem 16.6</strong>. The MLE’s of <span class="math inline">\(\psi\)</span> and <span class="math inline">\(\gamma\)</span> are</p>
+<p><span class="math display">\[
+\hat{\psi} = \frac{X_{00} X_{11}}{X_{01} X_{10}}
+, \quad
+\hat{\gamma} = \log \hat{\psi}
+\]</span></p>
+<p>The asymptotic standard errors (computed from the delta method) are</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\text{se}}(\hat{\psi}) &amp;= \sqrt{\frac{1}{X_{00}} + \frac{1}{X_{01}} + \frac{1}{X_{10}} + \frac{1}{X_{11}}}\\
+\hat{\text{se}}(\hat{\gamma}) &amp;= \hat{\psi} \hat{\text{se}}(\hat{\gamma})
+\end{align}
+\]</span></p>
+<p>Yet another test of independence is the Wald test for <span class="math inline">\(\gamma = 0\)</span> given by <span class="math inline">\(W = (\hat{\gamma} - 0) / \hat{\text{se}}(\hat{\gamma})\)</span>.</p>
+<p>A <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\gamma\)</span> is <span class="math inline">\(\hat{\gamma} \pm z_{\alpha/2} \hat{\text{se}}(\hat{\gamma})\)</span>.</p>
+<p>A <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(\psi\)</span> can be obtained in two ways. First, we could use <span class="math inline">\(\hat{\psi} \pm z_{\alpha/2} \hat{\text{se}}(\hat{\psi})\)</span>. Second, since <span class="math inline">\(\psi = e^{\gamma}\)</span> we could use <span class="math inline">\(\exp \{\hat{\gamma} \pm z_{\alpha/2} \hat{\text{se}}(\hat{\gamma})\}\)</span>. This second method is usually more accurate.</p>
+</div>
+<div id="interpreting-the-odds-ratios" class="section level3">
+<h3>16.2 Interpreting the Odds Ratios</h3>
+<p>Suppose event <span class="math inline">\(A\)</span> has probability <span class="math inline">\(\mathbb{P}(A)\)</span>. The odds of <span class="math inline">\(A\)</span> are defined as</p>
+<p><span class="math display">\[\text{odds}(A) = \frac{\mathbb{P}(A)}{1 - \mathbb{P}(A)}\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[\mathbb{P}(A) = \frac{\text{odds}(A)}{1 + \text{odds}(A)}\]</span></p>
+<p>Let <span class="math inline">\(E\)</span> be the event that someone is exposed to something (smoking, radiation, etc) and let <span class="math inline">\(D\)</span> be the event that they get a disease. The odds of getting the disease given exposure are:</p>
+<p><span class="math display">\[\text{odds}(D | E) = \frac{\mathbb{P}(D | E)}{1 - \mathbb{P}(D | E)}\]</span></p>
+<p>and the odds of getting the disease given non-exposure are:</p>
+<p><span class="math display">\[\text{odds}(D | E^c) = \frac{\mathbb{P}(D | E^c)}{1 - \mathbb{P}(D | E^c)}\]</span></p>
+<p>The <strong>odds ratio</strong> is defined to be</p>
+<p><span class="math display">\[\psi = \frac{\text{odds}(D | E)}{\text{odds}(D | E^c)}\]</span></p>
+<p>If <span class="math inline">\(\psi = 1\)</span> then the disease probability is the same for exposed and unexposed; this implies these events are independent. Recall that the log-odds ratio is defined as <span class="math inline">\(\gamma = \log \psi\)</span>. Independence corresponds to <span class="math inline">\(\gamma = 0\)</span>.</p>
+<p>Consider this table of probabilities:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; D^c    &amp; D      &amp; \\
+\hline
+E^c   &amp; p_{00} &amp; p_{01} &amp; p_{0\text{·}}\\
+E     &amp; p_{10} &amp; p_{11} &amp; p_{1\text{·}}\\
+ \hline
+      &amp; p_{\text{·}0} &amp; p_{\text{·}1} &amp; 1
+\end{array}
+\]</span></p>
+<p>Denote the data by</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; D^c    &amp; D      &amp; \\
+\hline
+E^c   &amp; X_{00} &amp; X_{01} &amp; X_{0\text{·}}\\
+E     &amp; X_{10} &amp; X_{11} &amp; X_{1\text{·}}\\
+ \hline
+      &amp; X_{\text{·}0} &amp; X_{\text{·}1} &amp; X_{\text{··}}
+\end{array}
+\]</span></p>
+<p>Now</p>
+<p><span class="math display">\[
+\mathbb{P}(D | E) = \frac{p_{11}}{p_{10} + p_{11}}
+\quad \text{and} \quad
+\mathbb{P}(D | E^c) = \frac{p_{01}}{p_{00} + p_{01}}
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[
+\text{odds}(D | E) = \frac{p_{11}}{p_{10}}
+\quad \text{and} \quad
+\text{odds}(D | E^c) = \frac{p_{01}}{p_{00}}
+\]</span></p>
+<p>and therefore</p>
+<p><span class="math display">\[ \psi = \frac{p_{11}p_{00}}{p_{01}p_{10}}\]</span></p>
+<p>To estimate the parameters, we have to consider how the data were collected. There are three methods.</p>
+<p><strong>Multinomial Sampling</strong>. We draw a sample from the population and, for each sample, record their exposure and disease status. In this case,
+<span class="math inline">\(X = (X_{00}, X_{01}, X_{10}, X_{11}) \sim \text{Multinomial}(n, p)\)</span>. We then estimates the probabilities in the table by <span class="math display">\[\hat{p}_{ij} = X_{ij} / n\]</span> and</p>
+<p><span class="math display">\[ \hat{\psi} = \frac{\hat{p}_{11} \hat{p}_{00}}{\hat{p}_{01} \hat{p}_{10}} = \frac{X_{11} X_{00}}{X_{01} X_{10}}\]</span></p>
+<p><strong>Prospective Sampling (Cohort Sampling)</strong>. We get some exposed and unexposed people and count the number with disease within each group. Thus,</p>
+<p><span class="math display">\[
+X_{01} \sim \text{Binomial}(X_{0\text{·}}, \mathbb{P}(D | E^c))
+\quad \text{and} \quad
+X_{11} \sim \text{Binomial}(X_{1\text{·}}, \mathbb{P}(D | E))
+\]</span></p>
+<p>In this case we should write small letters <span class="math inline">\(x_{0\text{·}}, x_{1\text{·}}\)</span> instead of capital letters $ X_{0}, X_{1}$ since they are fixed and not random, but we’ll keep using capital letters for notational simplicity.</p>
+<p>We can estimate <span class="math inline">\(\mathbb{P}(D | E))\)</span> and <span class="math inline">\(\mathbb{P}(D | E^c)\)</span> but we cannot estimate all probabilities in the table. Still, we can estimate <span class="math inline">\(\psi\)</span>. Now:</p>
+<p><span class="math display">\[\hat{\mathbb{P}}(D | E) = \frac{X_{11}}{X_{1\text{·}}}
+\quad \text{and} \quad
+\hat{\mathbb{P}}(D | E^c) = \frac{X_{01}}{X_{0\text{·}}}
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[ \hat{\psi} = \frac{X_{11} X_{00}}{X_{01} X_{10}}\]</span></p>
+<p>as before.</p>
+<p><strong>Case-Control (Retrospective Sampling)</strong>. Here we get some diseased and non-diseased people and we observe how many are exposed. This is much more efficient if the disease is rare. Hence,</p>
+<p><span class="math display">\[
+X_{10} \sim \text{Binomial}(X_{\text{·}0}, \mathbb{P}(E | D^c))
+\quad \text{and} \quad
+X_{11} \sim \text{Binomial}(X_{\text{·}1}, \mathbb{P}(E | D))
+\]</span></p>
+<p>From this data we can estimate <span class="math inline">\(\mathbb{P}(E | D)\)</span> and <span class="math inline">\(\mathbb{P}(E | D^c)\)</span>. Surprisingly, we can still estimate <span class="math inline">\(\psi\)</span>. To understand why, note that</p>
+<p><span class="math display">\[
+\mathbb{P}(E | D) = \frac{p_{11}}{p_{01} + p_{11}},
+\quad 1 - \mathbb{P}(E | D) = \frac{p_{01}}{p_{01} + p_{11}},
+\quad \text{odds}(E | D) = \frac{p_{11}}{p_{01}}
+\]</span></p>
+<p>By a similar argument,</p>
+<p><span class="math display">\[\text{odds}(E | D^c) = \frac{p_{10}}{p_{00}}\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[\frac{\text{odds}(E | D)}{\text{odds}(E | D^c)} = \frac{p_{11} p_{00}}{p_{01} p_{10}} = \psi\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[\hat{\psi} = \frac{X_{11} X_{00}}{X_{01} X_{10}}\]</span></p>
+<p>In all three methods, the estimate of <span class="math inline">\(\psi\)</span> turns out to be the same.</p>
+<p>It is tempting to try to estimate <span class="math inline">\(\mathbb{P}(D | E) - \mathbb{P}(D | E^c)\)</span>. In a case-control design, this quantity is not estimable. To see this, we apply Bayes’ theorem to get</p>
+<p><span class="math display">\[\mathbb{P}(D | E) - \mathbb{P}(D | E^c) = \frac{\mathbb{P}(E | D) \mathbb{P}(D))}{\mathbb{P}(E)} - \frac{\mathbb{P}(E^c | D) \mathbb{P}(D)}{\mathbb{P}(E^c)}\]</span></p>
+<p>Because of the way we obtained the data, <span class="math inline">\(\mathbb{P}(D)\)</span> is not estimable from the data.</p>
+<p>However, we can estimate <span class="math inline">\(\xi = \mathbb{P}(D | E) / \mathbb{P}(D | E^c)\)</span>, which is called the <strong>relative risk</strong>, under the <strong>rare disease assumption</strong>.</p>
+<p><strong>Theorem 16.9</strong>. Let <span class="math inline">\(\xi = \mathbb{P}(D | E) / \mathbb{P}(D | E^c)\)</span>. Then</p>
+<p><span class="math display">\[ \frac{\psi}{\xi} \rightarrow 1\]</span></p>
+<p>as <span class="math inline">\(\mathbb{P}(D) \rightarrow 0\)</span>.</p>
+<p>Thus, under the rare disease assumption, the relative risk is approximately the same as the odds ratio, which we can estimate.</p>
+<p>In a randomized experiment, we can interpret a strong association, that is <span class="math inline">\(\psi \neq 1\)</span>, as a causal relationship. In an observational (non-randomized) study, the association can be due to other unobserved <strong>confounding</strong> variables. We’ll discuss causation in more detail later.</p>
+</div>
+<div id="two-discrete-variables" class="section level3">
+<h3>16.3 Two Discrete Variables</h3>
+<p>Now suppose that <span class="math inline">\(Y \in \{ 1, \dots, I \}\)</span> and <span class="math inline">\(Z \in \{ 1, \dots, J \}\)</span> are two discrete variables. The data can be represented by an <span class="math inline">\(I \times J\)</span> table of contents:</p>
+<p><span class="math display">\[
+\begin{array}{c|cccccc|c} 
+       &amp; Y = 1  &amp; Y = 2  &amp; \cdots &amp; Y = j &amp; \cdots &amp; Y = J   &amp; \\
+\hline
+Z = 1 &amp; X_{11}  &amp; X_{12} &amp; \cdots &amp; X_{1j} &amp; \cdots &amp; X_{1J} &amp; X_{1\text{·}}\\
+Z = 2 &amp; X_{21}  &amp; X_{22} &amp; \cdots &amp; X_{2j} &amp; \cdots &amp; X_{2J} &amp; X_{2\text{·}}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+Z = i &amp; X_{i1}  &amp; X_{i2} &amp; \cdots &amp; X_{ij} &amp; \cdots &amp; X_{iJ} &amp; X_{i\text{·}}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+Z = I &amp; X_{I1}  &amp; X_{I2} &amp; \cdots &amp; X_{Ij} &amp; \cdots &amp; X_{IJ} &amp; X_{I\text{·}}\\
+ \hline
+      &amp; X_{\text{·}1} &amp; X_{\text{·}1} &amp; \cdots &amp; X_{\text{·}j} &amp; \cdots &amp; X_{\text{·}J} &amp; n
+\end{array}
+\]</span></p>
+<p>Consider testing</p>
+<p><span class="math display">\[
+H_0: Y \text{ ⫫ } Z
+\quad \text{versus} \quad
+H_1: \text{not } H_0
+\]</span></p>
+<p><strong>Theorem 16.10</strong>. Let</p>
+<p><span class="math display">\[ T = 2 \sum_{i=1}^I \sum_{j=1}^J X_{ij} \log \left( \frac{X_{ij} X_{\text{··}}}{X_{i\text{·}} X_{\text{·}j}} \right) \]</span></p>
+<p>The limiting distribution of <span class="math inline">\(T\)</span> under the null hypothesis of independence is <span class="math inline">\(\chi^2_\nu\)</span> where <span class="math inline">\(\nu = (I - 1)(J - 1)\)</span>.</p>
+<p>Pearson’s <span class="math inline">\(\chi^2\)</span> test statistic is</p>
+<p><span class="math display">\[ U = \sum_{i=1}^I \sum_{j=1}^J \frac{(n_{ij} - E_{ij})^2}{E_{ij}}\]</span></p>
+<p>Asymptotically, under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(U\)</span> has a <span class="math inline">\(\chi^2_\nu\)</span> distribution where <span class="math inline">\(\nu = (I - 1)(J - 1)\)</span>.</p>
+<p>There are a variety of ways to quantify the strength of dependence between two discrete variables <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span>. Most of them are not very intuitive. The one we shall use is not standard but is more interpretable.</p>
+<p>We define</p>
+<p><span class="math display">\[\delta(Y, Z) = \max_{A, B} \Big|\; \mathbb{P}_{Y, Z}(Y \in A, Z \in B) - \mathbb{P}_Y(Y \in A)\mathbb{P}_Z(Z \in B) \;\Big|\]</span></p>
+<p>where the maximum is over all pairs of events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</p>
+<p><em>Note: the original version on the book contains a typo; it is originally stated as</em></p>
+<p><span class="math display">\[\delta(Y, Z) = \max_{A, B} \Big|\; \mathbb{P}_{Y, Z}(Y \in A, Z \in B) - \mathbb{P}_Y(Y \in A) - \mathbb{P}_Z(Z \in B) \;\Big|\]</span></p>
+<p><em>For more context, this is a specific case of the “total variation distance” <span class="math inline">\(\delta(P_1, P_2)\)</span> between the probability metrics <span class="math inline">\(P_1(Y, Z) = \mathbb{P}_{Y, Z}(Y \in A, Z \in B)\)</span> and <span class="math inline">\(P_2(Y, Z) = \mathbb{P}_Y(Y \in A)\mathbb{P}_Z(Z \in B)\)</span>.</em></p>
+<p><strong>Theorem 16.12</strong>. Properties of <span class="math inline">\(\delta(Y, Z)\)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(0 \leq \delta(Y, Z) \leq 1\)</span></li>
+<li><span class="math inline">\(\delta(Y, Z) = 0\)</span> if and only if <span class="math inline">\(Y \text{ ⫫ } Z\)</span></li>
+<li>The following identity holds:</li>
+</ol>
+<p><span class="math display">\[ \delta(X, Y) = \frac{1}{2} \sum_{i=1}^I \sum_{j=1}^J \Big|\; p_{ij} - p_{i\text{·}} p_{\text{·}j} \;\Big|\]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>The MLE of <span class="math inline">\(\delta\)</span> is</li>
+</ol>
+<p><span class="math display">\[ \hat{\delta}(X, Y) = \frac{1}{2} \sum_{i=1}^I \sum_{j=1}^J \Big|\; \hat{p}_{ij} - \hat{p}_{i\text{·}} \hat{p}_{\text{·}j} \;\Big|\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\hat{p}_{ij} = \frac{X_{ij}}{n},
+\quad \hat{p}_{i\text{·}} = \frac{X_{i\text{·}}}{n},
+\quad \hat{p}_{\text{·}j} = \frac{X_{\text{·}j}}{n}
+\]</span></p>
+<p>The interpretation of <span class="math inline">\(\delta\)</span> is this: if one person makes probability statements assuming independence and another person makes probability statements without assuming independence, their probability statements may differ by as much as <span class="math inline">\(\delta\)</span>. Here’s a suggested scale for interpreting <span class="math inline">\(\delta\)</span>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>range</th>
+<th>interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0 to 0.01</td>
+<td>negligible association</td>
+</tr>
+<tr class="even">
+<td>0.01 to 0.05</td>
+<td>non-negligible association</td>
+</tr>
+<tr class="odd">
+<td>0.05 to 0.1</td>
+<td>substantial association</td>
+</tr>
+<tr class="even">
+<td>over 0.1</td>
+<td>very strong association</td>
+</tr>
+</tbody>
+</table>
+<p>A confidence interval for <span class="math inline">\(\delta\)</span> can be obtained by bootstrapping. The steps are:</p>
+<ol style="list-style-type: decimal">
+<li>Draw <span class="math inline">\(X^* \sim \text{Multinomial}(n, \hat{p})\)</span>;</li>
+<li>Compute <span class="math inline">\(\hat{p}_ij, \hat{p}_{i\text{·}}, \hat{p}_{\text{·}j}\)</span>;</li>
+<li>Compute <span class="math inline">\(\delta^*\)</span>;</li>
+<li>Repeat.</li>
+</ol>
+<p>Now we use any of the methods we learned earlier for constructing bootstrap confidence intervals. However, we should not use a Wald interval in this case. The reason is that if <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are independent then <span class="math inline">\(\delta = 0\)</span> and we are on the boundary of the parameter space. In this case, the Wald method is not valid.</p>
+</div>
+<div id="two-continuous-variables" class="section level3">
+<h3>16.4 Two Continuous Variables</h3>
+<p>Now suppose that <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are both continuous. If we assume that the joint distribution of <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> is bivariate Normal, then we measure the dependence between <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> by means of the correlation coefficient <span class="math inline">\(\rho\)</span>. Tests, estimates, and confidence intervals for <span class="math inline">\(\rho\)</span> in the Normal case are given in the previous chapter. If we do not assume normality, then we need a nonparametric method for asserting dependence.</p>
+<p>Recall that the correlation is</p>
+<p><span class="math display">\[\rho = \frac{\mathbb{E}((X_1 - \mu_1)(X_2 - \mu_2))}{\sigma_1 \sigma_2} \]</span></p>
+<p>A nonparametric estimator of <span class="math inline">\(\rho\)</span> is the plug-in estimator which is:</p>
+<p><span class="math display">\[\hat{\rho} = \frac{\sum_{i=1}^n (X_{1i} - \overline{X}_1)(X_{2i} - \overline{X}_2)}{\sqrt{\sum_{i=1}^n (X_{1i} - \overline{X}_1)^2 \sum_{i=1}^n (X_{2i} - \overline{X}_2)^2}} \]</span></p>
+<p>which is just the sample correlation. A confidence interval can be constructed using the bootstrap. A test for <span class="math inline">\(\rho = 0\)</span> can be based on the Wald test using the bootstrap to estimate the standard error.</p>
+<p>The plug-in approach is useful for large samples. For small samples, we measure the correlation using the <strong>Spearman rank correlation coefficient</strong> <span class="math inline">\(\hat{\rho}_S\)</span>. We simply replace the data by their ranks, ranking each variable separately, then compute the correlation coefficient of the ranks.</p>
+<p>To test the null hypothesis that <span class="math inline">\(\rho_S = 0\)</span>, we need the distribution of <span class="math inline">\(\hat{\rho}_S\)</span> under the null hypothesis. This can be obtained by simulation. We fix the ranks of the first variable as <span class="math inline">\(1, 2, \dots, n\)</span>. The ranks of the second variable are chosen at random from the set of <span class="math inline">\(n!\)</span> possible orderings, then we compute the correlation. This is repeated many times, and the resulting distribution <span class="math inline">\(\mathbb{P}_0\)</span> is the null distribution of <span class="math inline">\(\hat{\rho}_S\)</span>. The p-value for the test is <span class="math inline">\(\mathbb{P}_0(|R| &gt; |\hat{\rho}_S|)\)</span> where <span class="math inline">\(R\)</span> is drawn from the null distribution <span class="math inline">\(\mathbb{P}_0\)</span>.</p>
+</div>
+<div id="one-continuous-variable-and-one-discrete" class="section level3">
+<h3>16.5 One Continuous Variable and One Discrete</h3>
+<p>Suppose that <span class="math inline">\(Y \in \{ 1, \dots, I \}\)</span> is discrete and <span class="math inline">\(Z\)</span> is continuous. Let <span class="math inline">\(F_i(z) = \mathbb{P}(Z \leq z | Y = i)\)</span> denote the CDF of <span class="math inline">\(Z\)</span> conditional on <span class="math inline">\(Y = i\)</span>.</p>
+<p><strong>Theorem 16.15</strong>. When <span class="math inline">\(Y \in \{ 1, 2, \dots, I \}\)</span> is discrete and <span class="math inline">\(Z\)</span> is continuous, then <span class="math inline">\(Y \text{ ⫫ } Z\)</span> if and only if <span class="math inline">\(F_1 = F_2 = \dots = F_I\)</span>.</p>
+<p>It follows that to test for independence, we need to test</p>
+<p><span class="math display">\[ 
+H_0: F_1 = \dots = F_I
+\quad \text{versus} \quad
+H_1: \text{not } H_0
+\]</span></p>
+<p>For simplicity, we consider the case where <span class="math inline">\(I = 2\)</span>. To test the null hypothesis that <span class="math inline">\(F_1 = F_2\)</span> we will use the <strong>two sample Kolmogorov-Smirnov test</strong>.</p>
+<p>Let <span class="math inline">\(n_k\)</span> denote the number of observations for which <span class="math inline">\(Y_i = k\)</span>. Let</p>
+<p><span class="math display">\[\hat{F}_k(z) = \frac{1}{n_k} \sum_{i=1}^n I(Z_i \leq z) I(Y_i = k)\]</span></p>
+<p>denote the empirical distribution function of <span class="math inline">\(Z\)</span> given <span class="math inline">\(Y = k\)</span>. Define the test statistic</p>
+<p><span class="math display">\[ D = \sup_x | \hat{F}_1(x) - \hat{F}_2(x) |\]</span></p>
+<p><strong>Theorem 16.16</strong>. Let</p>
+<p><span class="math display">\[ H(t) = 1 - 2 \sum_{j=1}^\infty (-1)^{j-1} e^{-2j^2t^2} \]</span></p>
+<p>Under the null hypothesis that <span class="math inline">\(F_1 = F_2\)</span>,</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P} \left( \sqrt{\frac{n_1 n_2}{n_1 + n_2}} D \leq t \right) = H(t) \]</span></p>
+<p>It follows from the theorem than an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when</p>
+<p><span class="math display">\[ \sqrt{\frac{n_1 n_2}{n_1 + n_2}} D &gt; H^{-1}(1 - \alpha) \]</span></p>
+</div>
+<div id="exercises" class="section level3">
+<h3>16.7 Exercises</h3>
+<p><strong>Exercise 16.7.1</strong>. Prove Theorem 16.2.</p>
+<p>The following statements are equivalent:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(Y \text{ ⫫ } Z\)</span></li>
+<li><span class="math inline">\(\psi = 1\)</span></li>
+<li><span class="math inline">\(\gamma = 0\)</span></li>
+<li>For <span class="math inline">\(i, j \in \{ 0, 1 \}\)</span>, <span class="math inline">\(p_{ij} = p_{i\text{·}} p_{\text{·}j}\)</span></li>
+</ol>
+<p><strong>Solution</strong>.</p>
+<p><span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are independent if and only if <span class="math inline">\(\mathbb{P}(Y = j | Z = i) = \mathbb{P}(Y = j) \mathbb{P}(Z = i)\)</span> for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, so (1) and (4) are equivalent.</p>
+<p><span class="math inline">\(\gamma = \log \psi\)</span>, so (2) and (3) are equivalent.</p>
+<p>Finally,
+<span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; Y = 0  &amp; Y = 1 &amp; \\
+\hline
+Z = 0 &amp; p_{00} &amp; p_{01} &amp; p_{0\text{·}}\\
+Z = 1 &amp; p_{10} &amp; p_{11} &amp; p_{1\text{·}}\\
+ \hline
+      &amp; p_{\text{·}0} &amp; p_{\text{·}1} &amp; 1
+\end{array}
+\]</span>
+The <strong>odds ratio</strong> is defined to be</p>
+<p><span class="math display">\[ \psi = \frac{p_{00} p_{11}}{p_{01} p_{10}}\]</span></p>
+<p>The <strong>log odds ratio</strong> is defined to be</p>
+<p><span class="math display">\[ \gamma = \log \psi\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+&amp;\psi = 1\\
+&amp;\Leftrightarrow \frac{\text{odds}(Y | Z = 1)}{\text{odds}(Y | Z = 0)} = 1 \\
+&amp;\Leftrightarrow \text{odds}(Y | Z = 1) = \text{odds}(Y | Z = 0) \\
+&amp;\Leftrightarrow \mathbb{P}(Y | Z = 1) = \mathbb{P}(Y | Z = 0) \\
+&amp;\Leftrightarrow Y \text{ ⫫ } Z
+\end{align}
+\]</span></p>
+<p>so (1) and (2) are equivalent.</p>
+<p>Therefore, all statements are equivalent.</p>
+<p><strong>Exercise 16.7.2</strong>. Prove Theorem 16.3.</p>
+<p>Let</p>
+<p><span class="math display">\[ T = 2 \sum_{i=0}^1 \sum_{j=0}^1 X_{ij} \log \left( \frac{X_{ij} X_{\text{··}}}{X_{i\text{·}} X_{\text{·}j}} \right)\]</span></p>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(T \leadsto \chi_1^2\)</span>. Thus, an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(T &gt; \chi_{1, \alpha}^2\)</span>.</p>
+<p><strong>Solution</strong>. Let <span class="math inline">\(E_{ij} = \frac{X_{i\text{·}} X_{\text{·}j}}{X_\text{··}}\)</span>. We can rewrite the test statistic as</p>
+<p><span class="math display">\[ T = 2 \sum_{i, j} X_{ij} \log \frac{X_{ij}}{E_{ij}} \]</span></p>
+<p>The interpretation of <span class="math inline">\(E_{ij}\)</span> is that it is the expected count in cell <span class="math inline">\((i, j)\)</span> under <span class="math inline">\(H_0\)</span>:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}_{H_0}(Y = i, Z = j) &amp;= n \mathbb{P}_{H_0}(Y = i, Z = j) \\
+&amp;= n \mathbb{P}(Y = i) \mathbb{P}(Z = j) \\
+&amp;= n \hat{p}_{i\text{·}} \hat{p}_{\text{·}j} \\
+&amp;= X_{\text{··}} \frac{X_{i\text{·}}}{X_{\text{··}}} \frac{X_{\text{·}j}}{X_{\text{··}}} \\
+&amp;= E_{ij}
+\end{align}
+\]</span></p>
+<p>Now, the result will follow by applying the log-likelihood test between <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>. The test statistic is:</p>
+<p><span class="math display">\[ 2 \log \frac{\mathcal{L}(\tilde{p} | X)}{\mathcal{L}(\hat{p} | X)} 
+= 2 \log \frac{\prod_{i, j} \tilde{p}_{ij}^{X_{ij}}}{\prod_{i, j} \hat{p}_{ij}^{X_{ij}}}\]</span></p>
+<p>where <span class="math inline">\(\tilde{p}\)</span> is the MLE under <span class="math inline">\(H_1\)</span> and <span class="math inline">\(\hat{p}\)</span> is the MLE under <span class="math inline">\(H_0\)</span>. But we have:</p>
+<p><span class="math display">\[
+\tilde{p}_{ij} = \frac{X_{ij}}{n}
+\quad \text{and} \quad
+\hat{p}_{ij} = \frac{E_{ij}}{n}
+\]</span></p>
+<p>Substituting the MLEs on the log-likelihood ratio, we get</p>
+<p><span class="math display">\[ 2 \log \frac{\mathcal{L}(\tilde{p} | X)}{\mathcal{L}(\hat{p} | X)} 
+= 2 \log \prod_{i, j} \left( \frac{X_{ij}}{E_{ij}} \right)^{X_{ij}}
+= 2 \sum_{i, j} X_{ij} \log \frac{X_{ij}}{E_{ij}}
+\]</span></p>
+<p>which is the desired result.</p>
+<p><em>Reference: “G-test.” Wikipedia: The Free Encyclopedia. Wikimedia Foundation, Inc. 22 July 2004. Web. 17 Mar. 2020, en.wikipedia.org/w/index.php?title=G-test&amp;oldid=914538756</em></p>
+<p><strong>Exercise 16.7.3</strong>. Prove Theorem 16.9.</p>
+<p>Let <span class="math inline">\(\xi = \mathbb{P}(D | E) / \mathbb{P}(D | E^c)\)</span>. Then</p>
+<p><span class="math display">\[ \frac{\psi}{\xi} \rightarrow 1\]</span></p>
+<p>as <span class="math inline">\(\mathbb{P}(D) \rightarrow 0\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>Consider this table of probabilities:</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; D^c    &amp; D      &amp; \\
+\hline
+E^c   &amp; p_{00} &amp; p_{01} &amp; p_{0\text{·}}\\
+E     &amp; p_{10} &amp; p_{11} &amp; p_{1\text{·}}\\
+ \hline
+      &amp; p_{\text{·}0} &amp; p_{\text{·}1} &amp; 1
+\end{array}
+\]</span></p>
+<p>Denote the data by</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c} 
+      &amp; D^c    &amp; D      &amp; \\
+\hline
+E^c   &amp; X_{00} &amp; X_{01} &amp; X_{0\text{·}}\\
+E     &amp; X_{10} &amp; X_{11} &amp; X_{1\text{·}}\\
+ \hline
+      &amp; X_{\text{·}0} &amp; X_{\text{·}1} &amp; X_{\text{··}}
+\end{array}
+\]</span></p>
+<p>Now</p>
+<p><span class="math display">\[
+\mathbb{P}(D | E) = \frac{p_{11}}{p_{10} + p_{11}}
+\quad \text{and} \quad
+\mathbb{P}(D | E^c) = \frac{p_{01}}{p_{00} + p_{01}}
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[
+\text{odds}(D | E) = \frac{p_{11}}{p_{10}}
+\quad \text{and} \quad
+\text{odds}(D | E^c) = \frac{p_{01}}{p_{00}}
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[
+\xi = \frac{\mathbb{P}(D | E)}{\mathbb{P}(D | E^c)}
+= \frac{p_{11} (p_{00} + p_{01})}{p_{01} (p_{10} + p_{11})}
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[ \psi = \frac{p_{11}p_{00}}{p_{01}p_{10}}\]</span></p>
+<p>we have:</p>
+<p><span class="math display">\[ \frac{\psi}{\xi} = \frac{p_{11}p_{00}}{p_{01}p_{10}} \frac{p_{01} (p_{10} + p_{11})}{p_{11} (p_{00} + p_{01})} 
+= \frac{p_{00}}{p_{10}} \frac{p_{1\text{·}}}{p_{0\text{·}}}
+\]</span></p>
+<p>As <span class="math inline">\(\mathbb{P}(D) = p_{01} + p_{11} \rightarrow 0\)</span> and the probabilites are non-negative, <span class="math inline">\(p_{01} \rightarrow 0\)</span>, <span class="math inline">\(p_{11} \rightarrow 0\)</span>, so</p>
+<p><span class="math display">\[ \frac{\psi}{\xi} \rightarrow  \frac{p_{00}}{p_{10}} \frac{p_{10}}{p_{00}} = 1 \]</span></p>
+<p><strong>Exercise 16.7.4</strong>. Prove equation (16.14).</p>
+<p><span class="math display">\[ \delta(X, Y) = \max_{A, B} \Big|\; \mathbb{P}_{X, Y}(X \in A, Y \in B) - \mathbb{P}_X(X \in A) \mathbb{P}_Y(Y \in B) \;\Big| \]</span></p>
+<p>is equivalent to</p>
+<p><span class="math display">\[ \delta(X, Y) = \frac{1}{2} \sum_{i=1}^I \sum_{j=1}^J \Big|\; p_{ij} - p_{i\text{·}} p_{\text{·}j} \;\Big|\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>As noted when the definition was introduced, this definition of <span class="math inline">\(\delta(X, Y)\)</span> is a particular case of the total variation distance between metrics <span class="math inline">\(P_1(X, Y) = \mathbb{P}_{X, Y}(X \in A, Y \in B)\)</span> and <span class="math inline">\(P_2(X, Y) = \mathbb{P}_X(X \in A) \mathbb{P}_Y(Y \in B)\)</span>, where</p>
+<p><span class="math display">\[ \delta(P, Q) = \sup_{A \in \mathcal{F}} |P(A) - Q(A)| \]</span></p>
+<p>and <span class="math inline">\(P, Q\)</span> are two probability measures on a sigma-algebra <span class="math inline">\(\mathcal{F}\)</span> of subsets from the sample space <span class="math inline">\(\Omega\)</span>.</p>
+<p>(Note that <span class="math inline">\(P_1(X = i, Y = j) = p_{ij}\)</span> and <span class="math inline">\(P_2(X = i, Y = j) = p_{i\text{·}} p_{\text{·}j}\)</span>).</p>
+<p>It is a known property of the total variation distance in countable spaces that</p>
+<p><span class="math display">\[ \delta(P, Q) = \max_{A \in \mathcal{F}} |P(A) - Q(A)| = \frac{1}{2} \Vert P - Q \Vert_1 = \frac{1}{2} \sum_{\omega \in \Omega} \vert P(\omega) - Q(\omega) \vert\]</span></p>
+<p>Let’s demonstrate it, following the steps in the reference below.</p>
+<p>Let <span class="math inline">\(\mathcal{F}^+ \subset \mathcal{F}\)</span> be the set of states <span class="math inline">\(\omega\)</span> such that <span class="math inline">\(P(\omega) \geq Q(\omega)\)</span>, and let <span class="math inline">\(\mathcal{F}^- = \mathcal{F} - S^+\)</span> be the set of states <span class="math inline">\(\omega\)</span> such that <span class="math inline">\(P(\omega) &lt; Q(\omega)\)</span>. We have:</p>
+<p><span class="math display">\[ \max_{A \in \mathcal{F}} P(A) - Q(A) = P(\mathcal{F}^+) - Q(\mathcal{F}^+)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \max_{A \in \mathcal{F}} Q(A) - P(A) = Q(\mathcal{F}^-) - P(\mathcal{F}^-)\]</span></p>
+<p>But since <span class="math inline">\(P(\Omega) = Q(\Omega) = 1\)</span>, we have</p>
+<p><span class="math display">\[ P(\mathcal{F}^+) + P(\mathcal{F}^-) = Q(\mathcal{F}^+) + Q(\mathcal{F}^-) = 1 \]</span></p>
+<p>which implies that</p>
+<p><span class="math display">\[ P(\mathcal{F}^+) - Q(\mathcal{F}^+) = Q(\mathcal{F}^-) - P(\mathcal{F}^-)\]</span></p>
+<p>hence</p>
+<p><span class="math display">\[ \max_{A \in \mathcal{F}} P(A) - Q(A) = \vert P(\mathcal{F}^+) - Q(\mathcal{F}^+) \vert = \vert Q(\mathcal{F}^-) - P(\mathcal{F}^-) \vert \]</span></p>
+<p>Finally, since</p>
+<p><span class="math display">\[ 
+\vert P(\mathcal{F}^+) - Q(\mathcal{F}^+) \vert + \vert Q(\mathcal{F}^-) - P(\mathcal{F}^-) \vert = \sum_{\omega \in \Omega} | P(\omega) - Q(\omega) | = \Vert P - Q \Vert_1
+\]</span></p>
+<p>we have that</p>
+<p><span class="math display">\[ \max_{A \in \mathcal{F}} |P(A) - Q(A)| = \frac{1}{2} \Vert P - Q \Vert_1 \]</span></p>
+<p>which completes the proof.</p>
+<p><em>Reference: Upfal, E., and M. Mitzenmacher. “Probability and computing.” (2005). Lemma 11.1, pg. 272-273.</em></p>
+<p><strong>Exercise 16.7.5</strong>. The New York Times (January 8, 2003, page A12) reported the following data on death sentencing and rance, from a study in Maryland:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Death Sentence</th>
+<th>No Death Sentence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Black Victim</td>
+<td>14</td>
+<td>641</td>
+</tr>
+<tr class="even">
+<td>White Victim</td>
+<td>62</td>
+<td>594</td>
+</tr>
+</tbody>
+</table>
+<p>Analyse the data using the tools from this Chapter. Interpret the results. Explain why, based only on this information, you can’t make causal conclusions. (The authors of the study did use much more information in their full report).</p>
+<p><strong>Solution</strong>.</p>
+<p>The statistic for the log-likelihood test for independence is is:</p>
+<p><span class="math display">\[ T = 2 \sum_{i, j} X_{ij} \log \frac{X_{ij} X_{\text{··}}}{X_{i\text{·}} X_{\text{·}j}} \]</span></p>
+<p>The statistic for Pearson’s <span class="math inline">\(\chi^2\)</span> test is:</p>
+<p><span class="math display">\[ U = \sum_{i, j} \frac{(X_{ij} - E_{ij})^2}{E_{ij}}\]</span></p>
+<pre class="python"><code>import numpy as np
+
+X_ij = np.array([[14, 641], [62, 594]])</code></pre>
+<pre class="python"><code>X_idot = X_ij.sum(axis = 1).reshape(2, 1)
+X_dotj = X_ij.sum(axis = 0).reshape(1, 2)
+n = X_ij.sum()
+E_ij = X_idot @ X_dotj / n
+
+# Log-likelihood test statistic
+T = 2 * (X_ij * np.log(X_ij / E_ij)).sum()
+
+# Pearson&#39;s \chi^2 test statistic
+U = ((X_ij - E_ij)**2 / E_ij).sum()</code></pre>
+<pre class="python"><code>X_idot</code></pre>
+<pre><code>array([[655],
+       [656]])</code></pre>
+<pre class="python"><code>X_dotj</code></pre>
+<pre><code>array([[  76, 1235]])</code></pre>
+<pre class="python"><code>E_ij</code></pre>
+<pre><code>array([[ 37.97101449, 617.02898551],
+       [ 38.02898551, 617.97101449]])</code></pre>
+<pre class="python"><code>from scipy.stats import chi2
+
+p_value_log_likelihood = 1 - chi2.cdf(T, 1)
+p_value_pearson = 1 - chi2.cdf(U, 1)
+
+print(&#39;T test statistic: \t\t%.3f&#39;% T)
+print(&#39;Pearson chi^2 statistic: \t%.3f&#39;% U)
+
+print(&#39;p-value log likelihood:\t\t %.3f&#39; % p_value_log_likelihood)
+print(&#39;p-value Pearson: \t\t %.3f&#39; % p_value_pearson)</code></pre>
+<pre><code>T test statistic:       34.534
+Pearson chi^2 statistic:    32.104
+p-value log likelihood:      0.000
+p-value Pearson:         0.000</code></pre>
+<p>Both tests indicate that these variables are correlated. Note that this is not sufficient information, in itself, to imply causation.</p>
+<pre class="python"><code>from itertools import product
+
+p = X_ij / n
+p_idot = X_idot / n
+p_dotj = X_dotj / n
+
+delta = sum([abs(p[i, j] - p_idot[i, :] * p_dotj[:, j]) for (i, j) in product(range(2), range(2))]) / 2
+
+print(&#39;delta(X, Y): %.3f&#39; % delta)</code></pre>
+<pre><code>delta(X, Y): 0.037</code></pre>
+<p><span class="math inline">\(\delta(X, Y)\)</span> is between 0.01 and 0.05, suggesting a non-negligible association.</p>
+<pre class="python"><code>for (i, j) in product(range(2), range(2)):
+    print(i,j)</code></pre>
+<pre><code>0 0
+0 1
+1 0
+1 1</code></pre>
+<pre class="python"><code>p_idot</code></pre>
+<pre><code>array([[0.49961861],
+       [0.50038139]])</code></pre>
+<pre class="python"><code>p_idot[0, :]</code></pre>
+<pre><code>array([0.49961861])</code></pre>
+<pre class="python"><code>p_dotj</code></pre>
+<pre><code>array([[0.05797101, 0.94202899]])</code></pre>
+<pre class="python"><code>p_idot[0, :] * p_dotj[:, 1]</code></pre>
+<pre><code>array([0.47065521])</code></pre>
+<p><strong>Exercise 16.7.6</strong>. Analyse the data on the variables Age and Financial Status from:</p>
+<p><a href="http://lib.stat.cmu.edu/DASL/Datafiles/montanadat.html" class="uri">http://lib.stat.cmu.edu/DASL/Datafiles/montanadat.html</a></p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import pandas as pd
+
+data = pd.read_csv(&#39;data/montana.csv&#39;)
+
+# Select wanted columns and remove missing data
+data = data[[&#39;AGE&#39;, &#39;FIN&#39;]].replace(&#39;*&#39;, np.nan).dropna().astype(int)
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+AGE
+</th>
+<th>
+FIN
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+3
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+2
+</td>
+<td>
+3
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+1
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+3
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+3
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+203
+</th>
+<td>
+1
+</td>
+<td>
+3
+</td>
+</tr>
+<tr>
+<th>
+205
+</th>
+<td>
+1
+</td>
+<td>
+3
+</td>
+</tr>
+<tr>
+<th>
+206
+</th>
+<td>
+3
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+207
+</th>
+<td>
+3
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+208
+</th>
+<td>
+2
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+207 rows × 2 columns
+</p>
+</div>
+<pre class="python"><code># Count occurrences in each cell
+X_ij = np.zeros((3, 3)).astype(int)
+
+for index, row in data.iterrows():
+     X_ij[row[&#39;AGE&#39;] - 1, row[&#39;FIN&#39;] - 1] += 1
+           
+X_ij</code></pre>
+<pre><code>array([[21, 16, 34],
+       [17, 23, 26],
+       [22, 37, 11]])</code></pre>
+<pre class="python"><code>X_idot = X_ij.sum(axis = 1).reshape(3, 1)
+X_dotj = X_ij.sum(axis = 0).reshape(1, 3)
+n = X_ij.sum()
+E_ij = X_idot @ X_dotj / n
+
+# Log-likelihood test statistic
+T = 2 * (X_ij * np.log(X_ij / E_ij)).sum()
+
+# Pearson&#39;s \chi^2 test statistic
+U = ((X_ij - E_ij)**2 / E_ij).sum()</code></pre>
+<pre class="python"><code>from scipy.stats import chi2
+
+p_value_log_likelihood = 1 - chi2.cdf(T, 4)
+p_value_pearson = 1 - chi2.cdf(U, 4)
+
+print(&#39;T test statistic: \t\t%.3f&#39;% T)
+print(&#39;Pearson chi^2 statistic: \t%.3f&#39;% U)
+
+print(&#39;p-value log likelihood:\t\t %.3f&#39; % p_value_log_likelihood)
+print(&#39;p-value Pearson: \t\t %.3f&#39; % p_value_pearson)</code></pre>
+<pre><code>T test statistic:       22.064
+Pearson chi^2 statistic:    20.679
+p-value log likelihood:      0.000
+p-value Pearson:         0.000</code></pre>
+<p>Both tests indicate correlation between the two sequences.</p>
+<pre class="python"><code>from itertools import product
+
+p = X_ij / n
+p_idot = X_idot / n
+p_dotj = X_dotj / n
+
+delta = sum([abs(p[i, j] - p_idot[i, :] * p_dotj[:, j]) for (i, j) in product(range(3), range(3))]) / 2
+
+print(&#39;delta(X, Y): %.3f&#39; % delta)</code></pre>
+<pre><code>delta(X, Y): 0.128</code></pre>
+<p><span class="math inline">\(\delta(X, Y) &gt; 0.1\)</span> indicates a strong correlation between these variables.</p>
+<p><strong>Exercise 16.7.7</strong>. Estimate the correlation between temperature and latitude using the data from</p>
+<p><a href="http://lib.stat.cmu.edu/DASL/Datafiles/USTemperatures.html" class="uri">http://lib.stat.cmu.edu/DASL/Datafiles/USTemperatures.html</a></p>
+<p>Use the correlation coefficient and Spearman rank correlation. Provide estimates, tests, and confidence intervals.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import math
+import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/USTemperatures.txt&#39;, sep=&#39;\t&#39;)
+filtered_data = data[[&#39;lat&#39;, &#39;JanTF&#39;]].dropna()
+X, Y = filtered_data[&#39;lat&#39;], filtered_data[&#39;JanTF&#39;]
+data.head()</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+city
+</th>
+<th>
+lat
+</th>
+<th>
+long
+</th>
+<th>
+JanTF
+</th>
+<th>
+JulyTF
+</th>
+<th>
+RelHum
+</th>
+<th>
+Rain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+Akron, OH
+</td>
+<td>
+41.05
+</td>
+<td>
+81.30
+</td>
+<td>
+27
+</td>
+<td>
+71
+</td>
+<td>
+59
+</td>
+<td>
+36
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+Albany-Schenectady-Troy, NY
+</td>
+<td>
+42.40
+</td>
+<td>
+73.50
+</td>
+<td>
+23
+</td>
+<td>
+72
+</td>
+<td>
+57
+</td>
+<td>
+35
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Allentown, Bethlehem, PA-NJ
+</td>
+<td>
+40.35
+</td>
+<td>
+75.30
+</td>
+<td>
+29
+</td>
+<td>
+74
+</td>
+<td>
+54
+</td>
+<td>
+44
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Atlanta, GA
+</td>
+<td>
+33.45
+</td>
+<td>
+84.23
+</td>
+<td>
+45
+</td>
+<td>
+79
+</td>
+<td>
+56
+</td>
+<td>
+47
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Baltimore, MD
+</td>
+<td>
+39.20
+</td>
+<td>
+76.38
+</td>
+<td>
+35
+</td>
+<td>
+77
+</td>
+<td>
+55
+</td>
+<td>
+43
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>from scipy.stats import rankdata
+from tqdm import notebook
+
+def get_pearson_correlation(xx, yy):
+    mu_1 = xx.mean()
+    mu_2 = yy.mean()
+    sigma2_1 = ((xx - mu_1)**2).mean()
+    sigma2_2 = ((yy - mu_2)**2).mean()
+    
+    return ((xx - mu_1) * (yy - mu_2)).mean() / math.sqrt(sigma2_1 * sigma2_2)
+
+def get_spearman_correlation(xx, yy):
+    return get_pearson_correlation(rankdata(xx), rankdata(yy))
+
+def bootstrap_correlation(xx, yy, corr_fun, B=10000, alpha=0.05):
+    n = len(xx)
+    assert len(yy) == n, &#39;Sequences must have same length&#39;
+    
+    t_boot = np.empty(B)
+    for i in notebook.tqdm(range(B)):
+        #random.randint(low, high=None, size=None, dtype=int)
+        #Return random integers from low (inclusive) to high (exclusive)
+        indexes = np.random.randint(0, n, size=n)
+        xx_selected, yy_selected = xx.iloc[indexes], yy.iloc[indexes]
+        t_boot[i] = corr_fun(xx_selected, yy_selected)
+        
+    confidence_interval = (np.quantile(t_boot, alpha / 2), np.quantile(t_boot, 1 - alpha / 2))
+    return confidence_interval</code></pre>
+<pre class="python"><code>pearson_rho = get_pearson_correlation(X, Y)
+pearson_rho_confidence = bootstrap_correlation(X, Y, corr_fun = get_pearson_correlation, B = 10000, alpha=0.05)
+
+spearman_rho = get_spearman_correlation(X, Y)
+spearman_rho_confidence = bootstrap_correlation(X, Y, corr_fun = get_spearman_correlation, B = 10000, alpha=0.05)</code></pre>
+<pre><code>  0%|          | 0/10000 [00:00&lt;?, ?it/s]
+
+
+
+  0%|          | 0/10000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>print(&#39;Pearson confidence: \t %.3f&#39; % pearson_rho)
+print(&#39;95%% confidence interval: %.3f, %.3f&#39; % pearson_rho_confidence)
+print()
+print(&#39;Spearman confidence: \t %.3f&#39; % spearman_rho)
+print(&#39;95%% confidence interval: %.3f, %.3f&#39; % spearman_rho_confidence)</code></pre>
+<pre><code>Pearson confidence:      -0.857
+95% confidence interval: -0.963, -0.688
+
+Spearman confidence:     -0.834
+95% confidence interval: -0.953, -0.650</code></pre>
+<p><strong>Exercise 16.7.8</strong>. Test whether calcium intake and drop in blood pressure are associated. Use the data in</p>
+<p><a href="http://lib.stat.cmu.edu/DASL/Datafiles/Calcium.html" class="uri">http://lib.stat.cmu.edu/DASL/Datafiles/Calcium.html</a></p>
+<p><strong>Solution</strong>.</p>
+<p>We intend to use Theorem 16.16 here:</p>
+<p>Let</p>
+<p><span class="math display">\[ H(t) = 1 - 2 \sum_{j=1}^\infty (-1)^{j-1} e^{-2j^2t^2} \]</span></p>
+<p>Under the null hypothesis that <span class="math inline">\(F_1 = F_2\)</span>,</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P} \left( \sqrt{\frac{n_1 n_2}{n_1 + n_2}} D \leq t \right) = H(t) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ D = \sup_x | \hat{F}_1(x) - \hat{F}_2(x) |\]</span></p>
+<p>It follows from the theorem than an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when</p>
+<p><span class="math display">\[ \sqrt{\frac{n_1 n_2}{n_1 + n_2}} D &gt; H^{-1}(1 - \alpha) \]</span></p>
+<pre class="python"><code>import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv(&#39;data/calcium.txt&#39;, sep=&#39;\t&#39;)
+X, Y = data[&#39;Treatment&#39;], data[&#39;Decrease&#39;]
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Treatment
+</th>
+<th>
+Begin
+</th>
+<th>
+End
+</th>
+<th>
+Decrease
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+Calcium
+</td>
+<td>
+107
+</td>
+<td>
+100
+</td>
+<td>
+7
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+Calcium
+</td>
+<td>
+110
+</td>
+<td>
+114
+</td>
+<td>
+-4
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+Calcium
+</td>
+<td>
+123
+</td>
+<td>
+105
+</td>
+<td>
+18
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+Calcium
+</td>
+<td>
+129
+</td>
+<td>
+112
+</td>
+<td>
+17
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+Calcium
+</td>
+<td>
+112
+</td>
+<td>
+115
+</td>
+<td>
+-3
+</td>
+</tr>
+<tr>
+<th>
+5
+</th>
+<td>
+Calcium
+</td>
+<td>
+111
+</td>
+<td>
+116
+</td>
+<td>
+-5
+</td>
+</tr>
+<tr>
+<th>
+6
+</th>
+<td>
+Calcium
+</td>
+<td>
+107
+</td>
+<td>
+106
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+7
+</th>
+<td>
+Calcium
+</td>
+<td>
+112
+</td>
+<td>
+102
+</td>
+<td>
+10
+</td>
+</tr>
+<tr>
+<th>
+8
+</th>
+<td>
+Calcium
+</td>
+<td>
+136
+</td>
+<td>
+125
+</td>
+<td>
+11
+</td>
+</tr>
+<tr>
+<th>
+9
+</th>
+<td>
+Calcium
+</td>
+<td>
+102
+</td>
+<td>
+104
+</td>
+<td>
+-2
+</td>
+</tr>
+<tr>
+<th>
+10
+</th>
+<td>
+Placebo
+</td>
+<td>
+123
+</td>
+<td>
+124
+</td>
+<td>
+-1
+</td>
+</tr>
+<tr>
+<th>
+11
+</th>
+<td>
+Placebo
+</td>
+<td>
+109
+</td>
+<td>
+97
+</td>
+<td>
+12
+</td>
+</tr>
+<tr>
+<th>
+12
+</th>
+<td>
+Placebo
+</td>
+<td>
+112
+</td>
+<td>
+113
+</td>
+<td>
+-1
+</td>
+</tr>
+<tr>
+<th>
+13
+</th>
+<td>
+Placebo
+</td>
+<td>
+102
+</td>
+<td>
+105
+</td>
+<td>
+-3
+</td>
+</tr>
+<tr>
+<th>
+14
+</th>
+<td>
+Placebo
+</td>
+<td>
+98
+</td>
+<td>
+95
+</td>
+<td>
+3
+</td>
+</tr>
+<tr>
+<th>
+15
+</th>
+<td>
+Placebo
+</td>
+<td>
+114
+</td>
+<td>
+119
+</td>
+<td>
+-5
+</td>
+</tr>
+<tr>
+<th>
+16
+</th>
+<td>
+Placebo
+</td>
+<td>
+119
+</td>
+<td>
+114
+</td>
+<td>
+5
+</td>
+</tr>
+<tr>
+<th>
+17
+</th>
+<td>
+Placebo
+</td>
+<td>
+112
+</td>
+<td>
+114
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+18
+</th>
+<td>
+Placebo
+</td>
+<td>
+110
+</td>
+<td>
+121
+</td>
+<td>
+-11
+</td>
+</tr>
+<tr>
+<th>
+19
+</th>
+<td>
+Placebo
+</td>
+<td>
+117
+</td>
+<td>
+118
+</td>
+<td>
+-1
+</td>
+</tr>
+<tr>
+<th>
+20
+</th>
+<td>
+Placebo
+</td>
+<td>
+130
+</td>
+<td>
+133
+</td>
+<td>
+-3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.hist(data[data[&#39;Treatment&#39;] == &#39;Placebo&#39;][&#39;Decrease&#39;], 
+         density=True, bins=50, color=&#39;red&#39;, label=&#39;Placebo&#39;)
+plt.hist(data[data[&#39;Treatment&#39;] == &#39;Calcium&#39;][&#39;Decrease&#39;], 
+         density=True, bins=50, color=&#39;blue&#39;, label=&#39;Calcium&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2016%20-%20Inference%20about%20Independence_files/Chapter%2016%20-%20Inference%20about%20Independence_88_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>First, let’s calculate D – creating the empirical CDFs <span class="math inline">\(\hat{F}_1\)</span> and <span class="math inline">\(\hat{F}_2\)</span>, and then testing the value of <span class="math inline">\(D\)</span> for each possible <span class="math inline">\(x\)</span> in the empirical distributions:</p>
+<pre class="python"><code>f1 = data[data[&#39;Treatment&#39;] == &#39;Placebo&#39;][&#39;Decrease&#39;].to_numpy()
+f2 = data[data[&#39;Treatment&#39;] == &#39;Calcium&#39;][&#39;Decrease&#39;].to_numpy()
+
+def f1_hat(x):
+    return sum(f1 &lt;= x) / len(f1)
+
+def f2_hat(x):
+    return sum(f2 &lt;= x) / len(f2)
+
+xx = np.linspace(min(data[&#39;Decrease&#39;]) - 1, max(data[&#39;Decrease&#39;]) + 1, 100)
+
+fig, (ax1, ax2) = plt.subplots(2, sharex=True, figsize=(12, 8))
+ax1.plot(xx, [f1_hat(x) for x in xx], color=&#39;red&#39;, label=&#39;Placebo empirical distribution&#39;)
+ax1.plot(xx, [f2_hat(x) for x in xx], color=&#39;blue&#39;, label=&#39;Calcium empirical distribution&#39;)
+ax1.legend(loc=&#39;upper left&#39;)
+
+ax2.plot(xx, [abs(f1_hat(x) - f2_hat(x)) for x in xx], color=&#39;purple&#39;, label=&#39;|Placebo - Calcium|&#39;)
+ax2.legend(loc=&#39;upper left&#39;)
+
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2016%20-%20Inference%20about%20Independence_files/Chapter%2016%20-%20Inference%20about%20Independence_90_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>D = max([abs(f1_hat(x) - f2_hat(x)) for x in data[&#39;Decrease&#39;]])
+
+n1 = len(f1)
+n2 = len(f2)
+test_statistic = np.sqrt(n1 * n2 / (n1 + n2)) * D
+
+print(&#39;D: %.3f&#39; % D)
+print(&#39;Test statistic: %.3f&#39; % test_statistic)</code></pre>
+<pre><code>D: 0.409
+Test statistic: 0.936</code></pre>
+<p>Given that</p>
+<p><span class="math display">\[ 
+\begin{align}
+H(t) &amp;= 1 - 2 \sum_{j=1}^\infty (-1)^{j-1} e^{-2j^2t^2}
+\end{align}
+\]</span></p>
+<p>let’s create an approximation for <span class="math inline">\(H^{-1}(1 - \alpha)\)</span> – so that we may find the p-value for <span class="math inline">\(\alpha\)</span> such that $  D &gt; H^{-1}(1 - ) $.</p>
+<pre class="python"><code>def H(t, xtol=1e-8):
+    assert t != 0, &quot;t must be non-zero&quot;
+    t2 = t * t
+    j_max = int(np.ceil(np.sqrt(- np.log(xtol / 2) / (2 * t2) )))
+    jj = np.arange(1, j_max+1)
+
+    return 1 + 2 * sum((-1)**(jj) * np.exp(-2 * (jj**2) * t2))</code></pre>
+<pre class="python"><code># Let&#39;s plot some values for H(t)
+
+tt = np.logspace(-3, 0.25, 100)
+ht = [H(t) for t in tt]
+
+plt.figure(figsize=(6, 4))
+plt.plot(tt, ht)
+plt.title(&#39;H(t)&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2016%20-%20Inference%20about%20Independence_files/Chapter%2016%20-%20Inference%20about%20Independence_94_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>from scipy.optimize import minimize
+
+def H_inv(q):
+    def loss_function(x):
+        return (H(x) - q)**2
+    
+    x0 = 1.0
+    return minimize(loss_function, x0, method=&#39;nelder-mead&#39;).x</code></pre>
+<pre class="python"><code># Let&#39;s plot some values for H_inv(q)
+
+qq = np.linspace(1e-5, 1 - 1e-5, 200)
+xx = [H_inv(q) for q in qq]
+
+plt.figure(figsize=(6, 4))
+plt.plot(qq, xx)
+plt.title(r&#39;$H^{-1}(q)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2016%20-%20Inference%20about%20Independence_files/Chapter%2016%20-%20Inference%20about%20Independence_96_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>h_inv_test_statistic = H_inv(test_statistic)
+
+print(&#39;Test statistic: \t\t%.3f&#39; % test_statistic)
+print(&#39;H^{-1}(test_statistic): \t%.3f&#39; % h_inv_test_statistic)</code></pre>
+<pre><code>Test statistic:         0.936
+H^{-1}(test_statistic):     1.313</code></pre>
+<p>Given that the inverse of the test statistic is greater than 1, we have that the test from Theorem 16.16 rejects the null hypothesis for any <span class="math inline">\(\alpha &gt; 0\)</span> – so it claims the distributions are distinct at any approximate <span class="math inline">\(\alpha\)</span> level – so, by Theorem 16.15, they are associated.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

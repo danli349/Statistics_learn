@@ -6,7 +6,17 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 24 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter16 Inference about Independence</title>
+      <link>/2021/04/25/aos-chapter16-inference-about-independence/</link>
+      <pubDate>Sun, 25 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/25/aos-chapter16-inference-about-independence/</guid>
+      <description>16. Inference about Independence16.1 Two Binary Variables16.2 Interpreting the Odds Ratios16.3 Two Discrete Variables16.4 Two Continuous Variables16.5 One Continuous Variable and One Discrete16.7 ExercisesReferences16. Inference about IndependenceThis chapter addresses two questions:
+How do we test if two random variables are independent?How do we estimate the strength of dependence between two random variables?Recall we write \(Y \text{ ⫫ } Z\) to mean that \(Y\) and \(Z\) are independent.</description>
+    </item>
+    
     <item>
       <title>AOS chapter15 Multivariate Models</title>
       <link>/2021/04/24/aos-chapter15-multivariate-models/</link>

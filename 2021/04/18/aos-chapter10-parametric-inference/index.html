@@ -147,6 +147,53 @@ Y = (X, X^2, \dots, X^k)^T, \quad g = (g_1, \dots, g_k) \quad \text{and} \quad g
 <p>The likelihood function is just the joint density of the data, except we treat is as a function of parameter <span class="math inline">\(\theta\)</span>. Thus <span class="math inline">\(\mathcal{L}_n : \Theta \rightarrow [0, \infty)\)</span>. The likelihood function is not a density function; in general it is not true that <span class="math inline">\(\mathcal{L}_n\)</span> integrates to 1.</p>
 <p>The <strong>maximum likelihood estimator</strong> MLE, denoted by <span class="math inline">\(\hat{\theta}_n\)</span>, is the value of <span class="math inline">\(\theta\)</span> that maximizes <span class="math inline">\(\mathcal{L}_n(\theta)\)</span>.</p>
 <p>The maximum of <span class="math inline">\(\ell_n(\theta)\)</span> occurs at the same place as the maximum of <span class="math inline">\(\mathcal{L}_n(\theta)\)</span>, so maximizing either leads to the same answer. Often it’s easier to maximize the log-likelihood.</p>
+<pre class="python"><code>%load_ext rpy2.ipython</code></pre>
+<pre class="r"><code>%%R
+### Figure 9.2
+
+n = 10
+x = runif(n)
+m = 100
+
+par(mfrow=c(2,2),pty=&quot;s&quot;)
+f    = rep(0,m)
+grid = seq(0,2,length=m)
+f[grid &lt; .75] = 1/.75
+plot(grid,f,type=&quot;l&quot;,ylim=c(0,1.5),xlab=&quot;&quot;,ylab=&quot;&quot;,lwd=3,cex.lab=1.5)
+points(x,rep(.5,n))
+for(i in 1:n){
+     lines(c(x[i],x[i]),c(0,.5),lty=2,col=2)
+     }
+
+
+f    = rep(0,m)
+grid = seq(0,2,length=m)
+f[grid &lt; 1] = 1
+plot(grid,f,type=&quot;l&quot;,ylim=c(0,1.5),xlab=&quot;&quot;,ylab=&quot;&quot;,lwd=3,cex.lab=1.5)
+points(x,rep(.5,n))
+for(i in 1:n){
+     lines(c(x[i],x[i]),c(0,.5),lty=2,col=2)
+     }
+
+f    = rep(0,m)
+grid = seq(0,2,length=m)
+f[grid &lt; 1.25] = 1/1.25
+plot(grid,f,type=&quot;l&quot;,ylim=c(0,1.5),xlab=&quot;&quot;,ylab=&quot;&quot;,lwd=3,cex.lab=1.5)
+points(x,rep(.5,n))
+for(i in 1:n){
+     lines(c(x[i],x[i]),c(0,.5),lty=2,col=2)
+     }
+
+theta = seq(.6,1.5,length=m)     
+lik   = rep(0,m)
+lik   = 1/theta^n
+lik[theta &lt; max(x)] =0
+plot(theta,lik,type=&quot;l&quot;,lwd=3,xlab=&quot;&quot;,ylab=&quot;&quot;,
+     cex.lab=1.5)</code></pre>
+<div class="figure">
+<img src="Chapter%2010%20-%20Parametric%20Inference_files/Chapter%2010%20-%20Parametric%20Inference_12_0.png" alt="" />
+<p class="caption">png</p>
+</div>
 </div>
 <div id="properties-of-maximum-likelihood-estimators" class="section level3">
 <h3>10.4 Properties of Maximum Likelihood Estimators</h3>
