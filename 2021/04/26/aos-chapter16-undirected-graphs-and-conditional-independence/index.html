@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter17 Undirected Graphs and Conditional Independence - A Hugo website</title>
+<meta property="og:title" content="AOS chapter17 Undirected Graphs and Conditional Independence - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">12 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter17 Undirected Graphs and Conditional Independence</h1>
+
+    
+    <span class="article-date">2021-04-26</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/26/aos-chapter16-undirected-graphs-and-conditional-independence/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#undirected-graphs-and-conditional-independence">17. Undirected Graphs and Conditional Independence</a>
+<ul>
+<li><a href="#conditional-independence">17.1 Conditional Independence</a></li>
+<li><a href="#undirected-graphs">17.2 Undirected Graphs</a></li>
+<li><a href="#probability-and-graphs">17.3 Probability and Graphs</a></li>
+<li><a href="#fitting-graphs-to-data">17.4 Fitting Graphs to Data</a></li>
+<li><a href="#exercises">17.6 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="undirected-graphs-and-conditional-independence" class="section level2">
+<h2>17. Undirected Graphs and Conditional Independence</h2>
+<p><span class="math inline">\(k\)</span> binary variables <span class="math inline">\(Y_1, \dots, Y_k\)</span> correspond to a multinomial with <span class="math inline">\(N = 2^k\)</span> categories. Even for moderately large <span class="math inline">\(k\)</span>, <span class="math inline">\(2^k\)</span> will be huge. It can be shown in this case that the MLE is a poor estimator, because the data are <strong>sparse</strong>.</p>
+<p>Graphical models often require fewer parameters and may lead to estimators with smaller risk. There are two main types of graphical models: undirected and directed. Here we introduce undirected graphs.</p>
+<div id="conditional-independence" class="section level3">
+<h3>17.1 Conditional Independence</h3>
+<p>Let <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span> be discrete random variables. We say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>conditionally independent given <span class="math inline">\(Z\)</span></strong>, written <span class="math inline">\(X \text{⫫} Y \;|\; Z\)</span>, if</p>
+<p><span class="math display">\[ \mathbb{P}(X = x, Y = y | Z = z) = \mathbb{P}(X = x | Z = z) \mathbb{P}(Y = y | Z = z)\]</span></p>
+<p>for all <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, <span class="math inline">\(z\)</span>. If <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span> are continuous random variables, we say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are conditionally independent given <span class="math inline">\(Z\)</span> if</p>
+<p><span class="math display">\[ f_{X, Y | Z}(x, y | z) = f_{X | Z}(x | z) f_{Y | Z}(y | z) \]</span></p>
+<p>for all <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, <span class="math inline">\(z\)</span>.</p>
+<p>Intuitively, this means that once you know <span class="math inline">\(Z\)</span>, <span class="math inline">\(Y\)</span> provides no extra information about <span class="math inline">\(X\)</span>.</p>
+<p><strong>Theorem 17.2</strong>. The following implications hold:</p>
+<p><span class="math display">\[
+\begin{align}
+X \text{ ⫫ } Y \;|\; Z &amp; \Longrightarrow Y \text{ ⫫ } X \;|\; Z \\
+X \text{ ⫫ } Y \;|\; Z \; \text{and} \; U = h(X) &amp; \Longrightarrow U \text{ ⫫ } Y \;|\; Z \\
+X \text{ ⫫ } Y \;|\; Z \; \text{and} \; U = h(X) &amp; \Longrightarrow X \text{ ⫫ } Y \;|\; (Z, U)  \\
+X \text{ ⫫ } Y \;|\; Z \; \text{and} \; X \text{ ⫫ } W \;|\; (Y, Z) &amp; \Longrightarrow X \text{ ⫫ } (W, Y) \;|\; Z \\
+X \text{ ⫫ } Y \;|\; Z \; \text{and} \; X \text{ ⫫ } Z \;|\; Y \; &amp; \Longrightarrow X \text{ ⫫ } (Y, Z)
+\end{align}
+\]</span></p>
+<p>The last property requires the assumption that all events have positive probability; the first four do not.</p>
+</div>
+<div id="undirected-graphs" class="section level3">
+<h3>17.2 Undirected Graphs</h3>
+<p>An <strong>undirected graph</strong> <span class="math inline">\(\mathcal{G} = (V, E)\)</span> has a finite set <span class="math inline">\(V\)</span> of <strong>vertices</strong> (or <strong>nodes</strong>) and a set <span class="math inline">\(E\)</span> of <strong>edges</strong> (or <strong>arcs</strong>) consisting of pairs of vertices. The vertices correspond to random variables <span class="math inline">\(X, Y, Z, \dots\)</span> and the edges are written as unordered pairs. For example, <span class="math inline">\((X, Y) \in E\)</span> means that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are joined by an edge.</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;Y&#39;, &#39;X&#39;)
+g.edge(&#39;Y&#39;, &#39;Z&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_8_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em>A graph with vertices <span class="math inline">\(V = \{X, Y, Z\}\)</span>. The edge set is <span class="math inline">\(E = \{(X, Y), (Y, Z)\}\)</span>.</em></p>
+<p>Two vertices are <strong>adjacent</strong>, written <span class="math inline">\(X \sim Y\)</span>, if there is an edge between them. A sequence <span class="math inline">\(X_0, \dots, X_n\)</span> is called a <strong>path</strong> if <span class="math inline">\(X_{i-1} \sim X_i\)</span> for each <span class="math inline">\(i\)</span>. A graph is <strong>complete</strong> if there is an edge between every pair of vertices. A subset <span class="math inline">\(U \subset V\)</span> of vertices together with their edges is called a <strong>subgraph</strong>.</p>
+<p>If <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are three distinct subsets in <span class="math inline">\(V\)</span>, we say that <strong><span class="math inline">\(C\)</span> separates <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span></strong> if every path from a variable in <span class="math inline">\(A\)</span> to a variable in <span class="math inline">\(B\)</span> intersects a variable in <span class="math inline">\(C\)</span>.</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;W&#39;, &#39;X&#39;)
+g.edge(&#39;W&#39;, &#39;Y&#39;)
+g.edge(&#39;X&#39;, &#39;Z&#39;)
+g.edge(&#39;X&#39;, &#39;Y&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_11_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em><span class="math inline">\(\{Y, W\}\)</span> and <span class="math inline">\(\{Z\}\)</span> are separated by <span class="math inline">\(\{X\}\)</span>. Also, <span class="math inline">\(W\)</span> and <span class="math inline">\(Z\)</span> are separated by <span class="math inline">\(\{X, Y\}\)</span>.</em></p>
+</div>
+<div id="probability-and-graphs" class="section level3">
+<h3>17.3 Probability and Graphs</h3>
+<p>Let <span class="math inline">\(V\)</span> be a set of random variables with distribution <span class="math inline">\(\mathbb{P}\)</span>. Construct a graph with one vertex for each random variable in <span class="math inline">\(V\)</span>. Suppose we omit the edge between a pair of variables if they are independent given the rest of the variables:</p>
+<p><span class="math display">\[ \text{no edge between } X \text{ and } Y \Leftrightarrow X \text{⫫} Y \;|\; \text{rest} \]</span></p>
+<p>where “rest” refers to all the other variables besides <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. This type of graph is called a <strong>pairwise Markov graph</strong>.</p>
+<p>The graph encodes a set of pairwise conditional independence relations. These relations imply other conditional independence relations. Fortunately we can read these other conditional independence relations from the graph as well, as is explained in the next theorem.</p>
+<p><strong>Theorem 17.3</strong>. Let <span class="math inline">\(\mathcal{G} = (V, E)\)</span> be a pairwise Markov graph for a distribution <span class="math inline">\(\mathbb{P}\)</span>. Let <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> be distinct subsets of <span class="math inline">\(V\)</span> such that <span class="math inline">\(C\)</span> separates <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>. Then <span class="math inline">\(A \text{ ⫫ } B \;|\; C\)</span>.</p>
+<p>Remark: if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are not connected, we can regard them as separated by the empty set. Then it follows from the theorem that <span class="math inline">\(A \text{ ⫫ } B\)</span>.</p>
+<p>The independence property in Theorem 17.3 is called the <strong>global Markov property</strong>. We thus see that the pairwise and global Markov properties are equivalent.</p>
+<p>More precisely: given a graph <span class="math inline">\(\mathcal{G}\)</span>,</p>
+<ul>
+<li>Let <span class="math inline">\(M_\text{pair}(\mathcal{G})\)</span> be the set of distributions that satisfy the pairwise Markov property; thus <span class="math inline">\(\mathbb{P} \in M_\text{pair}(\mathcal{G})\)</span> if, under <span class="math inline">\(\mathbb{P}\)</span>, <span class="math inline">\(X \text{⫫} Y \;|\; \text{rest}\)</span> if and only if there is no edge between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</li>
+<li>Let <span class="math inline">\(M_\text{global}(\mathcal{G})\)</span> be the set of distributions that satisfy the global Markov property; thus <span class="math inline">\(\mathbb{P} \in M_\text{global}(\mathcal{G})\)</span> if, under <span class="math inline">\(\mathbb{P}\)</span>, <span class="math inline">\(A \text{⫫} B \;|\; C\)</span> if and only if <span class="math inline">\(C\)</span> separates <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</li>
+</ul>
+<p><strong>Theorem 17.5</strong>. Let <span class="math inline">\(\mathcal{G}\)</span> be a graph. Then <span class="math inline">\(M_\text{pair}(\mathcal{G}) = M_\text{global}(\mathcal{G})\)</span>.</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X&#39;, &#39;Y&#39;)
+g.edge(&#39;Y&#39;, &#39;Z&#39;)
+g.edge(&#39;Z&#39;, &#39;X&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_20_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em>No implied independence relations</em></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X&#39;, &#39;Y&#39;)
+g.edge(&#39;Y&#39;, &#39;Z&#39;)
+g.edge(&#39;Z&#39;, &#39;W&#39;)
+g.edge(&#39;W&#39;, &#39;X&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_22_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em><span class="math inline">\(X \text{ ⫫ } Z \;|\; \{Y, W\}\)</span> and <span class="math inline">\(Y \text{ ⫫ } W \;|\; \{X, Z\}\)</span></em></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X&#39;, &#39;Y&#39;)
+g.edge(&#39;Y&#39;, &#39;Z&#39;)
+g.edge(&#39;Z&#39;, &#39;W&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_24_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em><span class="math inline">\(X \text{ ⫫ } Z \;|\; Y\)</span> and <span class="math inline">\(Y \text{ ⫫ } W \;|\; Z\)</span></em></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;Y&#39;, &#39;Z&#39;)
+g.node(&#39;X&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_26_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em><span class="math inline">\(X \text{ ⫫ } Y\)</span>, <span class="math inline">\(X \text{ ⫫ } Z\)</span> and <span class="math inline">\(X \text{ ⫫ } (Y, Z)\)</span></em></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;Y&#39;, &#39;W&#39;)
+g.edge(&#39;W&#39;, &#39;Z&#39;)
+g.edge(&#39;Z&#39;, &#39;Y&#39;)
+g.edge(&#39;X&#39;, &#39;Y&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_28_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><em><span class="math inline">\(X \text{ ⫫ } W | (Y, Z)\)</span> and <span class="math inline">\(X \text{ ⫫ } Z | Y\)</span></em></p>
+</div>
+<div id="fitting-graphs-to-data" class="section level3">
+<h3>17.4 Fitting Graphs to Data</h3>
+<p>Given a dataset, how do we find a graphical model that fits the data? Some authors have devoted whole books to this subject. We will only treat the discrete case and we will consider a method based on <strong>log-linear models</strong> which are the subject of the next chapter.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>17.6 Exercises</h3>
+<p><strong>Exercise 17.6.1</strong>. Consider random variables <span class="math inline">\((X_1, X_2, X_3)\)</span>. In each of the following cases, draw a graph that has the given independence relations.</p>
+<p><strong>(i)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span></p>
+<p><strong>(ii)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_2 | X_3\)</span> and <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span></p>
+<p><strong>(iii)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_2 | X_3\)</span> and <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span> and <span class="math inline">\(X_2 \text{ ⫫ } X_3 | X_1\)</span></p>
+<p><strong>Solution</strong></p>
+<p><strong>(i)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_36_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(ii)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_2 | X_3\)</span> and <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.node(&#39;X1&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_38_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(iii)</strong> <span class="math inline">\(X_1 \text{ ⫫ } X_2 | X_3\)</span> and <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span> and <span class="math inline">\(X_2 \text{ ⫫ } X_3 | X_1\)</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.node(&#39;X1&#39;)
+g.node(&#39;X2&#39;)
+g.node(&#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_40_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Exercise 17.6.2</strong>. Consider random variables <span class="math inline">\((X_1, X_2, X_3, X_4)\)</span>. In each of the following cases, draw a graph that has the given independence relations.</p>
+<p><strong>(a)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span> and <span class="math display">\[X_1 \text{ ⫫ } X_4 |  X_2, X_3 \]</span> and <span class="math display">\[X_2 \text{ ⫫ } X_4 |  X_1, X_3\]</span></p>
+<p><strong>(b)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_2 |  X_3, X_4\]</span> and <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4 \]</span> and <span class="math display">\[X_2 \text{ ⫫ } X_3 |  X_1, X_4\]</span></p>
+<p><strong>(c)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span> and <span class="math display">\[X_2 \text{ ⫫ } X_4 |  X_1, X_3 \]</span></p>
+<p><strong>Solution</strong></p>
+<p><strong>(a)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span> and <span class="math display">\[X_1\text{ ⫫ } X_4 |  X_2, X_3\]</span> and <span class="math display">\[X_2 \text{ ⫫ } X_4 |  X_1, X_3\]</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_44_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(b)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_2 |  X_3, X_4 \]</span> and <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span> and
+<span class="math display">\[X_2\text{ ⫫ } X_3 | X_1, X_4\]</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X4&#39;)
+g.edge(&#39;X2&#39;, &#39;X4&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_46_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(c)</strong> <span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span> and <span class="math display">\[X_2\text{ ⫫ } X_4 | X_1, X_3\]</span></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+g.edge(&#39;X1&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_48_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Exercise 17.6.3</strong>. A conditional independence between a pair of variables is <strong>minimal</strong> if it is not possible to use the Separation Theorem to eliminate any variable from the conditioning set, i.e. from the right side of the bar (Whittaker 1990). Write down the minimal conditioning independences from the given figures.</p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X2&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_51_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Solution</strong></p>
+<ul>
+<li><span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2 \]</span></li>
+<li><span class="math display">\[X_1 \text{ ⫫ } X_4 |  X_2 \]</span></li>
+<li><span class="math display">\[X_3 \text{ ⫫ } X_4 |  X_2 \]</span></li>
+</ul>
+<p><strong>(b)</strong></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_54_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Solution</strong></p>
+<ul>
+<li><span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2 \]</span></li>
+<li><span class="math display">\[X_2 \text{ ⫫ } X_4 |  X_3 \]</span></li>
+<li><span class="math display">\[X_1 \text{ ⫫ } X_4 |  X_2 \]</span> (or <span class="math inline">\(X_1\text{⫫}X_4|X_3\)</span>)</li>
+</ul>
+<p><strong>(c)</strong></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+g.edge(&#39;X4&#39;, &#39;X1&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_57_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Solution</strong></p>
+<ul>
+<li><span class="math display">\[X_1 \text{ ⫫ } X_3 |  X_2, X_4\]</span></li>
+<li><span class="math display">\[X_2 \text{ ⫫ } X_4 |  X_1, X_3\]</span></li>
+</ul>
+<p><strong>(d)</strong></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X1&#39;)
+
+g.edge(&#39;X2&#39;, &#39;X4&#39;)
+g.edge(&#39;X4&#39;, &#39;X5&#39;)
+g.edge(&#39;X5&#39;, &#39;X2&#39;)
+
+g.edge(&#39;X3&#39;, &#39;X5&#39;)
+g.edge(&#39;X5&#39;, &#39;X6&#39;)
+g.edge(&#39;X6&#39;, &#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_60_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Solution</strong></p>
+<p><strong>(d)</strong></p>
+<ul>
+<li><span class="math inline">\(X_1\text{ ⫫ }X_4|X_2,X_3\)</span> ( or <span class="math inline">\(X_1\text{ ⫫ }X_4|X_2, X_5\)</span>)</li>
+<li><span class="math inline">\(X_1\text{ ⫫ } X_5|X_2, X_3\)</span></li>
+<li><span class="math inline">\(X_1\text{ ⫫ } X_6|X_2, X_3\)</span> ( or <span class="math inline">\(X_1\text{⫫}X_6|X_2,X_5\)</span>)</li>
+<li><span class="math inline">\(X_2\text{ ⫫ } X_6|X_3, X_5\)</span></li>
+<li><span class="math inline">\(X_3\text{ ⫫ } X_4|X_2, X_5\)</span></li>
+<li><span class="math inline">\(X_4\text{ ⫫ } X_6|X_2, X_5\)</span> ( or <span class="math inline">\(X_4\text{⫫}X_6|X_3,X_5\)</span>)</li>
+</ul>
+<p><strong>Exercise 17.6.4</strong>. Here are the breast cancer data on diagnosic center (<span class="math inline">\(X_1\)</span>), nuclear grade (<span class="math inline">\(X_2\)</span>) and survival (<span class="math inline">\(X_3\)</span>):</p>
+<p><span class="math display">\[
+\begin{array}{cccccc} 
+    &amp; X_2 &amp; \text{malignant} &amp; \text{malignant} &amp; \text{benign} &amp; \text{benign}   \\
+    &amp; X_3 &amp; \text{died}      &amp; \text{survived}  &amp; \text{died}   &amp; \text{survived} \\
+\hline
+X_1 &amp; \text{Boston}    &amp; 35 &amp; 59 &amp; 47 &amp; 112 \\
+    &amp; \text{Glamorgan} &amp; 42 &amp; 77 &amp; 26 &amp; 76 \\
+\hline
+\end{array}
+\]</span></p>
+<p><strong>(a)</strong> Treat this as a multinomial and find the maximum likelihood estimator.</p>
+<p><strong>(b)</strong> If someone has a tumour classified as benign at the Glamorgan clinic, what is the estimated probability that they will die? Find the standard error for this estimate.</p>
+<p><strong>(c)</strong> Test the following hypothesis:</p>
+<p><span class="math display">\[
+\begin{align}
+X_1 \text{ ⫫ } X_2 |  X_3 \quad &amp;\text{versus} \quad \text{not} (X_1 \text{ ⫫ } X_2 |  X_3 ) \\
+X_1 \text{ ⫫ } X_3 |  X_2 \quad &amp;\text{versus} \quad \text{not} (X_1 \text{ ⫫ } X_3 |  X_2 ) \\
+X_2 \text{ ⫫ } X_3 |  X_1 \quad &amp;\text{versus} \quad \text{not} (X_2 \text{ ⫫ } X_3 |  X_1 ) \\
+\end{align}
+\]</span></p>
+<p>Based on the results of your tests, draw and interpret the resulting graph.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>import numpy as np
+
+X = np.array([[[35, 59], [47, 112]], [[42, 77], [26, 76]]])
+X</code></pre>
+<pre><code>array([[[ 35,  59],
+        [ 47, 112]],
+
+       [[ 42,  77],
+        [ 26,  76]]])</code></pre>
+<pre class="python"><code>p_hat = X / X.sum()
+
+p_hat</code></pre>
+<pre><code>array([[[0.07383966, 0.12447257],
+        [0.09915612, 0.23628692]],
+
+       [[0.08860759, 0.16244726],
+        [0.05485232, 0.16033755]]])</code></pre>
+<pre class="python"><code>np.sqrt(0.001862)</code></pre>
+<pre><code>0.043150898020782834</code></pre>
+<p><strong>(b)</strong> The question asks for <span class="math inline">\(\mathbb{P}( X_3 = \text{died} | X_1 = \text{Glamorgan}, X_2 = \text{benign})\)</span>. The MLE estimate is:</p>
+<p><span class="math display">\[\hat{p} = \frac{26}{26 + 76} \approx 0.2594\]</span></p>
+<p>The distribution is a binomial distribution on only <span class="math inline">\(X_3\)</span>, conditioned on the other variables.</p>
+<p>The variance is</p>
+<p><span class="math display">\[\mathbb{V}(\hat{p}) = \frac{1}{n}\hat{p} (1 - \hat{p}) = \frac{1}{26 + 76} \frac{26}{26 + 76} \frac{76}{26 + 76}  \approx 0.001862\]</span></p>
+<p>so the standard deviation of this estimate is approximately <span class="math inline">\(0.0431\)</span>.</p>
+<p><strong>(c)</strong></p>
+<p>We will test conditional independence <span class="math inline">\(A \text{ ⫫ } B \;|\; C\)</span> over discrete variables <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> by testing independence between <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> for each value of <span class="math inline">\(C = c\)</span> and then selecting the largest / worst p-value.</p>
+<p><strong>(Pearson’s <span class="math inline">\(\chi^2\)</span> test for Independence in a 2-by-2 table)</strong>. Let</p>
+<p><span class="math display">\[ U = \sum_{i=0}^1 \sum_{j=0}^1 \frac{(X_{ij} - E_{ij})^2}{E_{ij}} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ E_{ij} = \frac{X_{i\text{·}} X_{\text{·}j}}{n}\]</span></p>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(U \leadsto \chi_1^2\)</span>. Thus, an approximate level <span class="math inline">\(\alpha\)</span> test is obtained by rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(U &gt; \chi_{1, \alpha}^2\)</span>.</p>
+<p>Pearson’s <span class="math inline">\(\chi^2\)</span> test statistic is</p>
+<p><span class="math display">\[ U = \sum_{i=1}^I \sum_{j=1}^J \frac{(n_{ij} - E_{ij})^2}{E_{ij}}\]</span></p>
+<pre class="python"><code>from scipy.stats import chi2_contingency
+
+def get_p_value(table):
+    # Implement Pearson&#39;s chi squared independence test
+    chi2, p, dof, expected = chi2_contingency(table)
+    return p</code></pre>
+<pre class="python"><code>X</code></pre>
+<pre><code>array([[[ 35,  59],
+        [ 47, 112]],
+
+       [[ 42,  77],
+        [ 26,  76]]])</code></pre>
+<pre class="python"><code>X[:, :, 0]</code></pre>
+<pre><code>array([[35, 47],
+       [42, 26]])</code></pre>
+<pre class="python"><code>X[:, :, 1]</code></pre>
+<pre><code>array([[ 59, 112],
+       [ 77,  76]])</code></pre>
+<pre class="python"><code>X.shape</code></pre>
+<pre><code>(2, 2, 2)</code></pre>
+<pre class="python"><code>p_12 = max([get_p_value(X[:, :, k]) for k in range(X.shape[2])])
+p_13 = max([get_p_value(X[:, k, :]) for k in range(X.shape[1])])
+p_23 = max([get_p_value(X[k, :, :]) for k in range(X.shape[1])])
+
+print(&quot;X_1 ⫫ X_2 | X_3:  %.3f&quot; % p_12)
+print(&quot;X_1 ⫫ X_3 | X_2:  %.3f&quot; % p_13)
+print(&quot;X_2 ⫫ X_3 | X_1:  %.3f&quot; % p_23)</code></pre>
+<pre><code>X_1 ⫫ X_2 | X_3:  0.030
+X_1 ⫫ X_3 | X_2:  0.882
+X_2 ⫫ X_3 | X_1:  0.262</code></pre>
+<p>At a confidence level of 5%, we can certify the first hypothesis, but not the other two.</p>
+<p>The resulting graph would be:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1 (diagnostic center)&#39;, &#39;X3 (survival)&#39;)
+g.edge(&#39;X3 (survival)&#39;, &#39;X2 (nuclear grade)&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_files/Chapter%2017%20-%20Undirected%20Graphs%20and%20Conditional%20Independence_79_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p>These results can be interpreted to mean that the nuclear grade is independent of the diagnostic center given the survival – that is, no diagnostic center is more optimistic or pessimistic in its classification of tumors given their severity.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,7 +6,16 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter17 Undirected Graphs and Conditional Independence</title>
+      <link>/2021/04/26/aos-chapter16-undirected-graphs-and-conditional-independence/</link>
+      <pubDate>Mon, 26 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/26/aos-chapter16-undirected-graphs-and-conditional-independence/</guid>
+      <description>17. Undirected Graphs and Conditional Independence17.1 Conditional Independence17.2 Undirected Graphs17.3 Probability and Graphs17.4 Fitting Graphs to Data17.6 ExercisesReferences17. Undirected Graphs and Conditional Independence\(k\) binary variables \(Y_1, \dots, Y_k\) correspond to a multinomial with \(N = 2^k\) categories. Even for moderately large \(k\), \(2^k\) will be huge. It can be shown in this case that the MLE is a poor estimator, because the data are sparse.</description>
+    </item>
+    
     <item>
       <title>AOS chapter16 Inference about Independence</title>
       <link>/2021/04/25/aos-chapter16-inference-about-independence/</link>
