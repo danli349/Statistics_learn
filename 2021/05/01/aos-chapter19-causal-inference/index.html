@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter19 Causal Inference - A Hugo website</title>
+<meta property="og:title" content="AOS chapter19 Causal Inference - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">17 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter19 Causal Inference</h1>
+
+    
+    <span class="article-date">2021-05-01</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/05/01/aos-chapter19-causal-inference/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#causal-inference">19. Causal Inference</a>
+<ul>
+<li><a href="#the-counterfactual-model">19.1 The Counterfactual Model</a></li>
+<li><a href="#beyond-binary-treatments">19.2 Beyond Binary Treatments</a></li>
+<li><a href="#observational-studies-and-confounding">19.3 Observational Studies and Confounding</a></li>
+<li><a href="#simpsons-paradox">19.4 Simpson’s Paradox</a></li>
+<li><a href="#exercises">19.6 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="causal-inference" class="section level2">
+<h2>19. Causal Inference</h2>
+<p>In this chapter we discuss causation. Roughly speaking “<span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>” means that changing the value of <span class="math inline">\(X\)</span> will change the distribution of <span class="math inline">\(Y\)</span>. When <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> will be associated but the reverse is not, in general, true.</p>
+<p>We will consider two frameworks for discussing causation. The first uses notation of <strong>counterfactual</strong> random variables. The second, used in the next chapter, uses <strong>directed acyclic graphs</strong>.</p>
+<div id="the-counterfactual-model" class="section level3">
+<h3>19.1 The Counterfactual Model</h3>
+<p>Suppose that <span class="math inline">\(X\)</span> is a binary treatment variable where <span class="math inline">\(X = 1\)</span> means “treated” and <span class="math inline">\(X = 0\)</span> means “not treated.”</p>
+<p>Let <span class="math inline">\(Y\)</span> be some outcome variable such as the presence or absence of disease. To distinguish the statement “<span class="math inline">\(X\)</span> is associated with <span class="math inline">\(Y\)</span>” from the statement “<span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>” we need to enrich our probabilistic vocabulary. We will decompose the response <span class="math inline">\(Y\)</span> into a more fine-grained object.</p>
+<p>We introduce two new random variables <span class="math inline">\((C_0, C_1)\)</span> called <strong>potential outcomes</strong> with the following interpretation: <span class="math inline">\(C_0\)</span> is the outcome if the subject is not treated (<span class="math inline">\(X = 0\)</span>) and <span class="math inline">\(C_1\)</span> is the outcome if the subject is treated (<span class="math inline">\(X = 1\)</span>). Then,</p>
+<p><span class="math display">\[ Y = \begin{cases}
+C_0 &amp; \text{if } X = 0 \\
+C_1 &amp; \text{if } X = 1
+\end{cases}\]</span></p>
+<p>We can express the relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\((C_0, C_1)\)</span> more succintly by</p>
+<p><span class="math display">\[ Y = C_X \]</span></p>
+<p>This equation is called the <strong>consistency relationship</strong>.</p>
+<p>Here is a toy dataset to make the relationship clear:</p>
+<p><span class="math display">\[
+\begin{array}{cccc}
+X &amp; Y &amp; C_0 &amp; C_1 \\
+\hline
+0 &amp; 4 &amp; 4 &amp; * \\
+0 &amp; 7 &amp; 7 &amp; * \\
+0 &amp; 2 &amp; 2 &amp; * \\
+0 &amp; 8 &amp; 8 &amp; * \\
+\hline
+1 &amp; 3 &amp; * &amp; 3 \\
+1 &amp; 5 &amp; * &amp; 5 \\
+1 &amp; 8 &amp; * &amp; 8 \\
+1 &amp; 9 &amp; * &amp; 9
+\end{array}
+\]</span></p>
+<p>The asterisks denote unobserved values. When <span class="math inline">\(X = 0\)</span> we don’t observe <span class="math inline">\(C_1\)</span> in which case we say that <span class="math inline">\(C_1\)</span> is a <strong>counterfactual</strong> since it is the outcome you would have had if, counter to the fact, you had been treated (<span class="math inline">\(X = 1\)</span>). Similarly, when <span class="math inline">\(X = 1\)</span> we don’t observe <span class="math inline">\(C_0\)</span> and we say that <span class="math inline">\(C_0\)</span> is counterfactual.</p>
+<p>Notice that there are four types of subjects:</p>
+<p><span class="math display">\[
+\begin{array}{lcc}
+\text{Type} &amp; C_0 &amp; C_1 \\
+\hline
+\text{Survivors}       &amp; 1 &amp; 1 \\
+\text{Responders}      &amp; 0 &amp; 1 \\
+\text{Anti-responders} &amp; 1 &amp; 0 \\
+\text{Doomed}          &amp; 0 &amp; 0
+\end{array}
+\]</span></p>
+<p>Think of all of the potential outcomes <span class="math inline">\((C_0, C_1)\)</span> as hidden variables that contain all the relevant information about the subject.</p>
+<p>Define the <strong>average causal effect</strong> or <strong>average treatment effect</strong> to be</p>
+<p><span class="math display">\[ \theta = \mathbb{E}(C_1) - \mathbb{E}(C_0) \]</span></p>
+<p>The parameter <span class="math inline">\(\theta\)</span> has the following interpretation: <span class="math inline">\(\theta\)</span> is the mean if everyone were treated (<span class="math inline">\(X = 1\)</span>) minus the mean if everyone were not treated (<span class="math inline">\(X = 0\)</span>). There are other ways of measuring the causal effect. For example, if <span class="math inline">\(C_0\)</span> and <span class="math inline">\(C_1\)</span> are binary, we define the <strong>causal odds ratio</strong></p>
+<p><span class="math display">\[ \frac{\mathbb{P}(C_1 = 1)}{\mathbb{P}(C_1 = 0)} \div \frac{\mathbb{P}(C_0 = 1)}{\mathbb{P}(C_0 = 0)}\]</span></p>
+<p>and the <strong>causal relative risk</strong></p>
+<p><span class="math display">\[ \frac{\mathbb{P}(C_1 = 1)}{\mathbb{P}(C_0 = 1)} \]</span></p>
+<p>The main ideas will be the same whatever causal effect we use. For simplicity, we shall work with the average causal effect <span class="math inline">\(\theta\)</span>.</p>
+<p>Define the <strong>association</strong> to be</p>
+<p><span class="math display">\[ \alpha = \mathbb{E}(Y | X = 1) - \mathbb{E}(Y | X = 0)\]</span></p>
+<p>Again we could use the odds ratio or other summaries if we wish.</p>
+<p><strong>Theorem 19.1 (Association is not equal to Causation)</strong>. In general, <span class="math inline">\(\theta \neq \alpha\)</span>.</p>
+<p><strong>Theorem 19.3</strong>. Suppose we randomly assign subjects to treatment and that <span class="math inline">\(\mathbb{P}(X = 0) &gt; 0\)</span> and <span class="math inline">\(\mathbb{P}(X = 1) &gt; 0\)</span>. Then <span class="math inline">\(\alpha = \theta\)</span>. Hence, any consistent estimator of <span class="math inline">\(\alpha\)</span> is a consistent estimator of <span class="math inline">\(\theta\)</span>. In particular, a consistent estimator is</p>
+<p><span class="math display">\[ \hat{\theta} = \hat{\mathbb{E}}(Y | X = 1) - \hat{\mathbb{E}}(Y | X = 0) = \overline{Y}_1 - \overline{Y}_0 \]</span></p>
+<p>is a consistent estimator of <span class="math inline">\(\theta\)</span>, where</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+\overline{Y}_1 = \frac{1}{n_1} \sum_{i: X_i = 1} Y_i
+&amp;
+\overline{Y}_0 = \frac{1}{n_0} \sum_{i: X_i = 0} Y_i \\
+n_1 = \sum_{i=1}^n X_i
+&amp;
+n_0 = \sum_{i=1}^n (1 - X_i)
+\end{array}
+\]</span></p>
+<p><strong>Proof</strong>. Since <span class="math inline">\(X\)</span> is randomly assigned, <span class="math inline">\(X\)</span> is independent of <span class="math inline">\((C_0, C_1)\)</span>. Hence,</p>
+<p><span class="math display">\[
+\begin{align}
+\theta &amp;= \mathbb{E}(C_1) - \mathbb{E}(C_0) \\
+&amp;= \mathbb{E}(C_1 | X = 1) - \mathbb{E}(C_0 | X = 0) \\
+&amp;= \mathbb{E}(Y | X = 1) - \mathbb{E}(Y | X = 0) \\
+&amp;= \alpha
+\end{align}
+\]</span></p>
+<p>The consistency follows from the law of large numbers.</p>
+<p>If <span class="math inline">\(Z\)</span> is a covariate, we define the <strong>conditional causal effect</strong> by</p>
+<p><span class="math display">\[ \theta_z = \mathbb{E}(C_1 | Z = z) - \mathbb{E}(C_0 | Z = z) \]</span></p>
+<p>In a randomized experiment, <span class="math inline">\(\theta_z = \mathbb{E}(Y | X = 1, Z = z) - \mathbb{E}(Y | X = 0, Z = z)\)</span> and we can estimate the conditional causal effect using appropriate sample averages.</p>
+<p><strong>Summary</strong></p>
+<ul>
+<li>Random variables: <span class="math inline">\((C_0, C_1, X, Y)\)</span></li>
+<li>Consistency relationship: <span class="math inline">\(Y = C_X\)</span></li>
+<li>Causal Effect: <span class="math inline">\(\theta = \mathbb{E}(C_1) - \mathbb{E}(C_0)\)</span></li>
+<li>Association: <span class="math inline">\(\alpha = \mathbb{E}(Y | X = 1) - \mathbb{E}(Y | X = 0)\)</span></li>
+<li>Random Assignment: <span class="math inline">\((C_0, C_1) \text{ ⫫ } X \Longrightarrow \theta = \alpha\)</span></li>
+</ul>
+</div>
+<div id="beyond-binary-treatments" class="section level3">
+<h3>19.2 Beyond Binary Treatments</h3>
+<p>Suppose that <span class="math inline">\(X \in \mathcal{X}\)</span>. The counterfactual vector <span class="math inline">\((C_0, C_1)\)</span> now becomes the <strong>counterfactual process</strong></p>
+<p><span class="math display">\[ \{ C(x) : x \in \mathcal{X} \} \]</span></p>
+<p>where <span class="math inline">\(C(x)\)</span> is the outcome a subject would have if subjected to treatment <span class="math inline">\(x\)</span>. The observed response is given by the consistency relation</p>
+<p><span class="math display">\[ Y \equiv C(X) \]</span></p>
+<p>The <strong>causal regression function</strong> is</p>
+<p><span class="math display">\[ \theta(x) = \mathbb{E}(C(x)) \]</span></p>
+<p>The regression function, which measures association, is <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span>.</p>
+<p><strong>Theorem 19.4</strong>. In general, <span class="math inline">\(\theta(x) \neq r(x)\)</span>. However, when <span class="math inline">\(X\)</span> is randomly assigned, <span class="math inline">\(\theta(x) = r(x)\)</span>.</p>
+</div>
+<div id="observational-studies-and-confounding" class="section level3">
+<h3>19.3 Observational Studies and Confounding</h3>
+<p>A study in which treatment (or exposure) is not randomly assigned is called an <strong>observational study</strong>. In these studies, subjects select their own value of the exposure <span class="math inline">\(X\)</span>. Association and causation could be quite different. This discrepancy occurs in non-randomized studies because the potential outcome <span class="math inline">\(C\)</span> is not independent of treatment <span class="math inline">\(X\)</span>.</p>
+<p>However, suppose we could find groupings of subjects such that, within each group, <span class="math inline">\(X\)</span> and <span class="math inline">\(\{ C(x) : x \in \mathcal{X} \}\)</span> are independent. This would happen if the subjects are very similar within groups. For example, suppose we find people who are very similar in age, gender, educational background and ethnic background. Among those people we might feel it is reasonable to assume that the choice of <span class="math inline">\(X\)</span> is essentially random. These other variables are called <strong>confounding variables</strong>. If we denote these variables collectively as <span class="math inline">\(Z\)</span>, then we can express this idea by saying that</p>
+<p><span class="math display">\[ \{ C(x) : x \in \mathcal{X} \} \text{ ⫫ } X | Z\]</span></p>
+<p>If this holds and we observe <span class="math inline">\(Z\)</span> then we say there is <strong>no unmeasured confounding</strong>.</p>
+<p><strong>Theorem 19.6</strong>. Suppose that $ { C(x) : x  }  X | Z$. Then,</p>
+<p><span class="math display">\[ \theta(x) = \int \mathbb{E}(Y | X = x, Z = z) d F_Z(z) dz \]</span></p>
+<p>If <span class="math inline">\(\hat{r}(x, z)\)</span> is a consistent estimate of the regression function <span class="math inline">\(\mathbb{E}(Y | X = x, Z = z)\)</span>, then a consistent estimate of <span class="math inline">\(\theta(x)\)</span> is</p>
+<p><span class="math display">\[ \hat{\theta}(x) = \frac{1}{n} \sum_{i=1}^n \hat{r}(x, Z_i) \]</span></p>
+<p>In particular, if <span class="math inline">\(r(x, z) = \beta_0 + \beta_1 x + \beta_2 z\)</span> is linear, then a consistent estimate of <span class="math inline">\(\theta(x)\)</span> is</p>
+<p><span class="math display">\[ \hat{\theta}(x) = \hat{\beta}_0 + \hat{\beta}_2 x + \hat{\beta}_2 \overline{Z}_n \]</span></p>
+<p>where <span class="math inline">\((\hat{\beta}_0, \hat{\beta}_1, \hat{\beta}_2)\)</span> are the least squares estimators.</p>
+<p>Epidemiologists call this definition of <span class="math inline">\(\theta(x)\)</span> the <strong>adjusted treatment effect</strong>. The process of computing adjusted treatment effects is called <strong>adjusting (or controlling) for confounding</strong>. The selection of what confounders <span class="math inline">\(Z\)</span> to measure and control for requires scientic insight. Even after adjusting for confounders, we cannot be sure that there are not other confounding variables that we missed. This is why observational studies must be treated with healthy skepticism. Results from observational studies start to become believable when: (i) the results are replicated in many studies, (ii) each of the studies controlled for plausible confounding variables, (iii) there is a plausible scientic explanation for the existence of a causal relationship.</p>
+<p>A good example is smoking and cancer. Numerous studies have shown a relationship between smoking and cancer even after adjusting for many confouding variables. Moreover, in laboratory studies, smoking has been shown to damage lung cells. Finally, a causal link between smoking and cancer has been found in randomized animal studies. It is this collection of evidence over many years that makes this a convincing case. One single observational study is not, by itself, strong evidence. Remember that when you read the newspaper.</p>
+</div>
+<div id="simpsons-paradox" class="section level3">
+<h3>19.4 Simpson’s Paradox</h3>
+<p>Let <span class="math inline">\(X\)</span> be a binary treatment variable, <span class="math inline">\(Y\)</span> a binary outcome and <span class="math inline">\(Z\)</span> a third binary variable such as gender. Suppose the joint distribution of <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span> is</p>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+       &amp; Y = 1 &amp; Y = 0 &amp; Y = 1 &amp; Y = 0 \\
+\hline
+X = 1 &amp; .1500 &amp; .2250 &amp; .1000 &amp; .0250 \\
+X = 0 &amp; .0375 &amp; .0875 &amp; .2625 &amp; .1125 \\
+\hline
+      &amp; Z = 1 &amp; &amp; Z = 0 &amp;
+\end{array}
+\]</span></p>
+<p>The marginal distribution for <span class="math inline">\((X, Y)\)</span> is</p>
+<p><span class="math display">\[
+\begin{array}{c|cc|c}
+       &amp; Y = 1 &amp; Y = 0 &amp; \\
+\hline
+X = 1 &amp; .25 &amp; .25 &amp; .50 \\
+X = 0 &amp; .30 &amp; .20 &amp; .50 \\
+\hline
+      &amp; .55 &amp; .45 &amp; 1
+\end{array}
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(Y = 1 | X = 1) - \mathbb{P}(Y = 1 | X = 0) 
+&amp;= \frac{\mathbb{P}(Y = 1, X = 1)}{\mathbb{P}(X = 1)} - \frac{\mathbb{P}(Y = 1, X = 0)}{\mathbb{P}(X = 0)} \\
+&amp;= \frac{.25}{.50} - \frac{.30}{.50} \\
+&amp;= -0.1
+\end{align}
+\]</span></p>
+<p>We might naively interpret this to mean that the treatment is bad for you since $(Y = 1 | X = 1) &lt; (Y = 1 | X = 0) <span class="math inline">\(. Furthermore, among men (\)</span>Z = 1$),</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(Y = 1 | X = 1, Z = 1) &amp;- \mathbb{P}(Y = 1 | X = 0, Z = 1) \\
+&amp;= \frac{\mathbb{P}(Y = 1, X = 1, Z = 1)}{\mathbb{P}(X = 1, Z = 1)} - \frac{\mathbb{P}(Y = 1, X = 0, Z = 1)}{\mathbb{P}(X = 0, Z = 1)} \\
+&amp;= \frac{.15}{.3570} - \frac{.0375}{.1250} \\
+&amp;= 0.1
+\end{align}
+\]</span></p>
+<p>Also, among women (<span class="math inline">\(Z = 0\)</span>),</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(Y = 1 | X = 1, Z = 0) &amp;- \mathbb{P}(Y = 1 | X = 0, Z = 0) \\
+&amp;= \frac{\mathbb{P}(Y = 1, X = 1, Z = 0)}{\mathbb{P}(X = 1, Z = 0)} - \frac{\mathbb{P}(Y = 1, X = 0, Z = 0)}{\mathbb{P}(X = 0, Z = 0)} \\
+&amp;= \frac{.1}{.1250} - \frac{.2625}{.3750} \\
+&amp;= 0.1
+\end{align}
+\]</span></p>
+<p>To summarize, it seems we have:</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+\text{Mathematical Statement} &amp; \text{English Statement?} \\
+\hline
+\mathbb{P}(Y = 1 | X = 1) &lt; \mathbb{P}(Y = 1 | X = 0) &amp; \text{treatment is harmful} \\
+\mathbb{P}(Y = 1 | X = 1, Z = 1) &gt; \mathbb{P}(Y = 1 | X = 0, Z = 1) &amp; \text{treatment is beneficial to men} \\
+\mathbb{P}(Y = 1 | X = 1, Z = 0) &gt; \mathbb{P}(Y = 1 | X = 0, Z = 0) &amp; \text{treatment is beneficial to women}
+\end{array}
+\]</span></p>
+<p>Clearly something is amiss. We can’t have a treatment that is good for men, good for women, but bad overall. The problem is with the set of English statements. <strong>The inequality <span class="math inline">\(\mathbb{P}(Y = 1 | X = 1) &lt; \mathbb{P}(Y = 1 | X = 0)\)</span> does not mean that the treatment is harmful</strong>.</p>
+<p>The phrase “treatment is harmful” should be written as <span class="math inline">\(\mathbb{P}(C_1 = 1) &lt; \mathbb{P}(C_0 = 1)\)</span>. The phrase “treatment is harmful for men” should be written <span class="math inline">\(\mathbb{P}(C_1 = 1 | Z = 1) &lt; \mathbb{P}(C_0 = 1 | Z = 0)\)</span>. The three mathematical statements in the table are not contradictory, but the english statements are.</p>
+<p>Let us now show that a real Simpson’s paradox cannot happen, that is, there cannot be a treatment that is beneficial for men and women but harmful overall. Suppose treatment is beneficial for each subgroup. Then</p>
+<p><span class="math display">\[ \mathbb{P}(C_1 = 1 | Z = z) &gt; \mathbb{P}(C_0 = 1 | Z = z) \]</span></p>
+<p>for all <span class="math inline">\(z\)</span>. It then follows that</p>
+<p><span class="math display">\[\mathbb{P}(C_1 = 1) = \sum_z \mathbb{P}(C_1 = 1 | Z = z) \mathbb{P}(Z = z) &gt; \sum_z \mathbb{P}(C_0 = 1 | Z = z) \mathbb{P}(Z = z) = \mathbb{P}(C_0 = 1) \]</span></p>
+<p>so <span class="math inline">\(\mathbb{P}(C_1 = 1) &gt; \mathbb{P}(C_0 = 1)\)</span> and the treatment is overall beneficial.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>19.6 Exercises</h3>
+<p><strong>Exercise 19.6.1</strong>. Create an example like Example 19.2 in which <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\theta &lt; 0\)</span>.</p>
+<p>Example:</p>
+<p><span class="math display">\[
+\begin{array}{cccc}
+X &amp; Y &amp; C_0 &amp; C_1 \\
+\hline
+0 &amp; 0 &amp; 0 &amp; 0* \\
+0 &amp; 0 &amp; 0 &amp; 0* \\
+0 &amp; 0 &amp; 0 &amp; 0* \\
+0 &amp; 0 &amp; 0 &amp; 0* \\
+\hline
+1 &amp; 1 &amp; 1* &amp; 1 \\
+1 &amp; 1 &amp; 1* &amp; 1 \\
+1 &amp; 1 &amp; 1* &amp; 1 \\
+1 &amp; 1 &amp; 1* &amp; 1
+\end{array}
+\]</span></p>
+<p><span class="math display">\[ 
+\begin{align}
+\theta &amp;= \mathbb{E}(C_1) - \mathbb{E}(C_0) = 1/2 - 1/2 = 0 \\
+\alpha &amp;= \mathbb{E}(Y | X = 1) - \mathbb{E}(Y | X = 0) = 1 - 0 = 1
+\end{align}
+\]</span></p>
+<p><strong>Solution</strong>. Consider the following data for the whole population:</p>
+<p><span class="math display">\[
+\begin{array}{cccc}
+X &amp; Y &amp; C_0 &amp; C_1 \\
+\hline
+0 &amp; 0 &amp; 0 &amp; 0* \\
+0 &amp; 1 &amp; 1 &amp; 0* \\
+\hline
+1 &amp; 1 &amp; 1* &amp; 1
+\end{array}
+\]</span></p>
+<p><span class="math display">\[ 
+\begin{align}
+\theta &amp;= \mathbb{E}(C_1) - \mathbb{E}(C_0) = 1/3 - 2/3 = -1/3 \\
+\alpha &amp;= \mathbb{E}(Y | X = 1) - \mathbb{E}(Y | X = 0) = 1 - 1/2 = 1/2
+\end{align}
+\]</span></p>
+<p><strong>Exercise 19.6.2</strong>. Prove Theorem 19.4.</p>
+<p>In general, <span class="math inline">\(\theta(x) \neq r(x)\)</span>. However, when <span class="math inline">\(X\)</span> is randomly assigned, <span class="math inline">\(\theta(x) = r(x)\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\theta(x) &amp;= \mathbb{E}(C(x)) \\
+r(x) &amp;= \mathbb{E}(Y | X = x)
+\end{align}
+\]</span></p>
+<p>We can show the inequality by providing an example where it holds:</p>
+<p>Let <span class="math inline">\(C_i(x) \equiv i\)</span> for each population sample <span class="math inline">\(i\)</span> be constant. Then <span class="math display">\[\theta(x) = \frac{1}{n} \sum_i C_i(x) = n(n+1) /(2n)= (n+1) /2\]</span> is a constant that does not depend on <span class="math inline">\(x\)</span>. On the other hand, if we have samples <span class="math inline">\((X_i, Y_i) = (i, i)\)</span>, then <span class="math inline">\(r(x) = x\)</span>, which does depend on <span class="math inline">\(x\)</span>, and the inequality holds.</p>
+<p>Now, when <span class="math inline">\(X\)</span> is randomly assigned, we have:</p>
+<p><span class="math display">\[
+\theta(x) = \mathbb{E}(C(x)) = \mathbb{E}(C(x) | X = x) = \mathbb{E}(Y | X = x) = r(x)
+\]</span></p>
+<p>where <span class="math inline">\(\mathbb{E}(C(x)) = \mathbb{E}(C(x) | X = x)\)</span> since <span class="math inline">\(X \text{ ⫫  } \{ C(x) : x \in \mathcal{X} \}\)</span> (i.e. <span class="math inline">\(X\)</span> is randomly assigned) and <span class="math inline">\(\mathbb{E}(C(x) | X = x) = \mathbb{E}(Y | X = x)\)</span> since <span class="math inline">\(Y \equiv C(X)\)</span> by definition.</p>
+<p>Note that this demonstration is analogous to the demonstration for the binary case in Theorem 19.3.</p>
+<p><strong>Exercise 19.6.3</strong>. Suppose you are given data <span class="math inline">\((X_1, Y_1), \dots, (X_n, Y_n)\)</span> from an observational study, where <span class="math inline">\(X_i \in \{0, 1\}\)</span> and <span class="math inline">\(Y_i \in \{0, 1\}\)</span>. Although it is not possible to estimate the causal effect <span class="math inline">\(\theta\)</span>, it is possible to put bounds on <span class="math inline">\(\theta\)</span>. Find upper and lower bounds on <span class="math inline">\(\theta\)</span> that can be consistently estimated from the data. Show that the bounds have width 1.</p>
+<p>Hint: note that <span class="math inline">\(\mathbb{E}(C_1) = \mathbb{E}(C_1 | X = 1) \mathbb{P}(X = 1) + \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0)\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\theta &amp;= \mathbb{E}(C_1) - \mathbb{E}(C_0) \\
+&amp;= \mathbb{E}(C_1 | X = 1) \mathbb{P}(X = 1) + \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0)
+ - \Big( \mathbb{E}(C_0 | X = 1) \mathbb{P}(X = 1) + \mathbb{E}(C_0 | X = 0) \mathbb{P}(X = 0) \Big) \\
+&amp;= \mathbb{E}(C_1 | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(C_0 | X = 0) \mathbb{P}(X = 0)
+ + \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0) - \mathbb{E}(C_0 | X = 1) \mathbb{P}(X = 1) \\
+&amp;= \Big( \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) \Big)
+ + \Big( \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0) - \mathbb{E}(C_0 | X = 1) \mathbb{P}(X = 1) \Big)
+\end{align}
+\]</span></p>
+<p>The first terms in this expression can be estimated: <span class="math inline">\(Y \equiv C_X\)</span>, so <span class="math inline">\(\mathbb{E}(C_x | X = x) = \mathbb{E}(Y | X = x)\)</span>. On the other hand, the unobserved terms <span class="math inline">\(\mathbb{E}(C_1 | X = 0)\)</span> and <span class="math inline">\(\mathbb{E}(C_0 | X = 1)\)</span> cannot be estimated from data. Since <span class="math inline">\(C_j \in \{0, 1\}\)</span>, however, we can bound these expected values to the interval <span class="math inline">\([0, 1]\)</span>. This means that:</p>
+<p><span class="math display">\[ 0 \cdot \mathbb{P}(X = 0) - 1 \cdot \mathbb{P}(X = 1) \leq \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0) - \mathbb{E}(C_0 | X = 1) \mathbb{P}(X = 1) \\
+\leq 1 \cdot \mathbb{P}(X = 0) - 0 \cdot \mathbb{P}(X = 1)\]</span></p>
+<p>or, simplifying,</p>
+<p><span class="math display">\[ - \mathbb{P}(X = 1) \leq \mathbb{E}(C_1 | X = 0) \mathbb{P}(X = 0) - \mathbb{E}(C_0 | X = 1) \mathbb{P}(X = 1) \leq \mathbb{P}(X = 0) \]</span></p>
+<p>which is a bound of width 1 (since <span class="math inline">\(\mathbb{P}(X = 0) + \mathbb{P}(X = 1) = 1\)</span>).</p>
+<p>Therefore, we have</p>
+<p><span class="math display">\[ \Big( \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) \Big) - \mathbb{P}(X = 1)\\
+ \leq \theta \leq
+ \Big( \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) \Big) + \mathbb{P}(X = 0)
+\]</span></p>
+<p>Given <span class="math inline">\(Y\)</span> is binary, we have:</p>
+<p><span class="math display">\[ \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) =  \mathbb{P}(Y = 1 | X = 1) \mathbb{P}(X = 1) =  \mathbb{P}(X = 1, Y = 1) \\
+\mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) =  \mathbb{P}(Y = 0 | X = 0) \mathbb{P}(X = 0) =  \mathbb{P}(X = 0, Y = 0) \]</span></p>
+<p>and so the estimates for the bounds are:</p>
+<p><span class="math display">\[
+\begin{align}
+\Big( \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) \Big) - \mathbb{P}(X = 1)\\
+\approx \frac{1}{n} \sum_{i = 1}^n \left( I(X_i = 1, Y_i = 1) - I(X_i = 0, Y_i = 0) - I(X_i = 1)\right) \\
+\Big( \mathbb{E}(Y | X = 1) \mathbb{P}(X = 1) - \mathbb{E}(Y | X = 0) \mathbb{P}(X = 0) \Big) + \mathbb{P}(X = 0)\\
+\approx \frac{1}{n} \sum_{i = 1}^n \left( I(X_i = 1, Y_i = 1) - I(X_i = 0, Y_i = 0) + I(X_i = 0)\right)
+\end{align}
+\]</span></p>
+<p><strong>Exercise 19.6.4</strong>. Suppose that <span class="math inline">\(X \in \mathbb{R}\)</span> and that, for each subject <span class="math inline">\(i\)</span>, <span class="math inline">\(C_i(x) = \beta_{1i}x\)</span>. Each subject has their own slope <span class="math inline">\(\beta_{1i}\)</span>. Construct a joint distribution on <span class="math inline">\((\beta_1, X)\)</span> such that <span class="math inline">\(\mathbb{P}(\beta_1 &gt; 0) = 1\)</span> but <span class="math inline">\(\mathbb{E}(Y | X = x)\)</span> is a decreasing function of <span class="math inline">\(x\)</span>, where <span class="math inline">\(Y = C(X)\)</span>. Interpret.</p>
+<p>Hint: Write <span class="math inline">\(f(\beta_1, x) = f(\beta_1)f(x | \beta_1)\)</span>. Choose <span class="math inline">\(f(x | \beta_1)\)</span> so that when <span class="math inline">\(\beta_1\)</span> is large, <span class="math inline">\(x\)</span> is small and when <span class="math inline">\(\beta_1\)</span> is small <span class="math inline">\(x\)</span> is large.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let’s construct a very simple joint distribution to develop this intuition. Let <span class="math inline">\(\beta_1\)</span> have a probability mass function with mass 1/2 on values 1/2 and 2. Now let’s pick points <span class="math inline">\((X, \beta_1)\)</span> with the following mass distribution:</p>
+<p><span class="math display">\[\begin{array}{c|cc}
+\mathbb{P} &amp; X = 1 &amp; X = 2 \\
+\hline
+\beta_1 = 1/2 &amp; 0 &amp; 0.5 \\
+\beta_1 = 2 &amp; 0.5 &amp; 0 \\
+\end{array}
+\quad \text{or} \quad
+\begin{array}{c|cc}
+\mathbb{P} &amp; X = 1 &amp; X = 2 \\
+\hline
+Y = 1 &amp; 0 &amp; 0.5 \\
+Y = 2 &amp; 0.5 &amp; 0 \\
+\end{array}
+\]</span></p>
+<p>For this toy example, <span class="math inline">\(\mathbb{E}(Y | X = x) = 3 - x\)</span> is decreasing in <span class="math inline">\(x\)</span>.</p>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot([0, 4], [0, 2], color=&#39;darkblue&#39;, label=&#39;beta_1 = 1/2&#39;)
+plt.plot(2, 1, &#39;go&#39;, color=&#39;blue&#39;, label=&#39;(X, Y) = (2, 1)&#39;)
+plt.plot([0, 4], [0, 8], color=&#39;darkgreen&#39;, label=&#39;beta_1 = 2&#39;)
+plt.plot(1, 2, &#39;go&#39;, color=&#39;green&#39;, label=&#39;(X, Y) = (1, 2)&#39;)
+plt.plot([0, 3], [3, 0], color=&#39;red&#39;, label=&#39;E[Y | X = x]&#39;)
+plt.legend()
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2019%20-%20Causal%20Inference_files/Chapter%2019%20-%20Causal%20Inference_39_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Generally, what we want to do to make <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span> is to ensure the distribution generates points that have a lower <span class="math inline">\(X\)</span> for a larger <span class="math inline">\(Y\)</span>, by selecting a smaller value of <span class="math inline">\(X\)</span> when <span class="math inline">\(Y\)</span> is larger.</p>
+<p>Let’s choose a joint probability distribution as <span class="math inline">\(\mathbb{P}(\beta_1, x) = \mathbb{P}(\beta_1) \mathbb{P}(x | \beta_1)\)</span>, and let’s choose distribution of <span class="math inline">\(x | \beta_1\)</span> as a discrete probability mass function with all its mass on a single value:</p>
+<p><span class="math display">\[
+\mathbb{P}(x | \beta_1) = \begin{cases}
+1 &amp; \text{if } x + y = 1, \text{ where } y = \beta_1 x\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Now, by construction all points <span class="math inline">\((X, Y)\)</span> lie on the line <span class="math inline">\(X + Y = 1\)</span>, so <span class="math inline">\(\mathbb{E}(X + Y) = 1\)</span> and <span class="math inline">\(\mathbb{E}(Y | X = x) = 1 - x\)</span>, which is decreasing in <span class="math inline">\(x\)</span>.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter18 Loglinear Models - A Hugo website</title>
+<meta property="og:title" content="AOS chapter18 Loglinear Models - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">30 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter18 Loglinear Models</h1>
+
+    
+    <span class="article-date">2021-04-30</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/04/30/aos-chapter18-loglinear-models/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#loglinear-models">18. Loglinear Models</a>
+<ul>
+<li><a href="#the-loglinear-model">18.1 The Loglinear Model</a></li>
+<li><a href="#graphical-log-linear-models">18.2 Graphical Log-Linear Models</a></li>
+<li><a href="#hierarchical-log-linear-models">18.3 Hierarchical Log-Linear Models</a></li>
+<li><a href="#model-generators">18.4 Model Generators</a></li>
+<li><a href="#lattices">18.5 Lattices</a></li>
+<li><a href="#fitting-log-linear-models-to-data">18.6 Fitting Log-Linear Models to Data</a></li>
+<li><a href="#exercises">18.8 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="loglinear-models" class="section level2">
+<h2>18. Loglinear Models</h2>
+<div id="the-loglinear-model" class="section level3">
+<h3>18.1 The Loglinear Model</h3>
+<p>Let <span class="math inline">\(X = (X_1, \dots, X_m)\)</span> be a random vector with probability</p>
+<p><span class="math display">\[ f(x) = \mathbb{P}(X = x) = \mathbb{P}(X_1 = x_1, \dots, X_m = x_m) \]</span></p>
+<p>Let <span class="math inline">\(r_j\)</span> be the number of values that <span class="math inline">\(X_j\)</span> takes; without loss of generality, assume <span class="math inline">\(X_j \in \{ 0, 1, \dots, r_j - 1 \}\)</span>. Suppose we have <span class="math inline">\(n\)</span> such vectors.</p>
+<p>We can think of the data as a sample from a Multinomial with <span class="math inline">\(N = r_1 \times r_2 \times \dots \times r_m\)</span> categories. The data can be represented as counts in a <span class="math inline">\(r_1 \times r_2 \times \dots \times r_m\)</span> table. Let <span class="math inline">\(p = \{ p_1, \dots, p_N \}\)</span> denote the multinomial parameter.</p>
+<p>Let <span class="math inline">\(S = \{ 1, \dots, m \}\)</span>. Given a vector <span class="math inline">\(x = (x_1, \dots, x_m)\)</span> and a subset <span class="math inline">\(A \subset S\)</span>, let <span class="math inline">\(x_A = (x_j : j \in A)\)</span>. For example, if <span class="math inline">\(A = \{1, 3\}\)</span> then <span class="math inline">\(x_A = (x_1, x_3)\)</span>.</p>
+<p><strong>Theorem 18.1</strong>. The joint probability function <span class="math inline">\(f(x)\)</span> of a single random vector <span class="math inline">\(X = (X_1, \dots, X_m)\)</span> can be written as</p>
+<p><span class="math display">\[ \log f(x) = \sum_{A \subset S} \psi_A(x) \]</span></p>
+<p>where the sum is over all subsets <span class="math inline">\(A\)</span> of <span class="math inline">\(S = \{1, \dots, m \}\)</span> and the <span class="math inline">\(\psi\)</span>’s satisfy the following conditions:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\psi_\varnothing(x)\)</span> is a constant;</li>
+<li>For every <span class="math inline">\(A \subset S\)</span>, <span class="math inline">\(\psi_A(x)\)</span> is only a function of <span class="math inline">\(x_A\)</span> and not the rest of the <span class="math inline">\(x_j\)</span>’s.</li>
+<li>If <span class="math inline">\(i \in A\)</span> and <span class="math inline">\(x_i = 0\)</span>, then <span class="math inline">\(\psi_A(x) = 0\)</span>.</li>
+</ol>
+<p>The formula in this theorem is known as the <strong>log-linear expansion</strong> of <span class="math inline">\(f\)</span>. Note that this is the probability function for a single draw. Each <span class="math inline">\(\psi_A(x)\)</span> will depend on some unknown parameters <span class="math inline">\(\beta_A\)</span>. Let <span class="math inline">\(\beta = (\beta_A : A \subset S)\)</span> be the set of all these parameters. We will write <span class="math inline">\(f(x) = f(x; \beta)\)</span> when we want to estimate the dependence on the unknown parameters <span class="math inline">\(\beta\)</span>.</p>
+<p>In terms of the multinomial, the parameter space is</p>
+<p><span class="math display">\[ \mathcal{P} = \left\{ p = (p_1, \dots, p_N) : p_j \geq 0, \sum_{j=1}^N p_j = 1 \right\} \]</span></p>
+<p>This is an <span class="math inline">\(N - 1\)</span> dimensional space. In the log-linear representation, the parameter space is</p>
+<p><span class="math display">\[ \Theta = \Bigg\{ \beta = (\beta_1, \dots, \beta_N) : \beta = \beta(p), p \in \mathcal{P} \Bigg\} \]</span></p>
+<p>where <span class="math inline">\(\beta(p)\)</span> is the set of <span class="math inline">\(\beta\)</span> values associated with <span class="math inline">\(p\)</span>. The set <span class="math inline">\(\Theta\)</span> is a <span class="math inline">\(N - 1\)</span> dimensional surface in <span class="math inline">\(\mathbb{R}^N\)</span>. We can always go back and forth between the two parametrizations by writing <span class="math inline">\(\beta = \beta(p)\)</span> and <span class="math inline">\(p = p(\beta)\)</span>.</p>
+<p><strong>Theorem 18.14</strong>. Let <span class="math inline">\((X_a, X_b, X_c)\)</span> be a partition of vectors <span class="math inline">\((X_1, \dots, X_m)\)</span>. Then <span class="math inline">\(X_b \text{ ⫫ } X_c \; | \; X_a\)</span> if and only if all the <span class="math inline">\(\psi\)</span>-terms in the log-linear expansion that have at least one coordinate in <span class="math inline">\(b\)</span> and one coordinate in <span class="math inline">\(c\)</span> are 0.</p>
+<p>To prove this Theorem, we will use the following Lemma whose proof follows from the definition of conditional independence.</p>
+<p><strong>Lemma 18.5</strong>. A partition <span class="math inline">\((X_a, X_b, X_c)\)</span> satisfies <span class="math inline">\(X_b \text{ ⫫ } X_c \; | \; X_a\)</span> if and only if <span class="math inline">\(f(x_a, x_b, x_c) = g(x_a, x_b) h(x_a, x_c)\)</span> for some functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span>.</p>
+<p><strong>Proof of Theorem 18.14</strong>. Suppose that <span class="math inline">\(\psi_t\)</span> is 0 whenever <span class="math inline">\(t\)</span> has coordinates in <span class="math inline">\(b\)</span> and <span class="math inline">\(c\)</span>. Hence, <span class="math inline">\(\psi_t\)</span> is 0 if <span class="math inline">\(t\)</span> is not a subset of <span class="math inline">\(a \cup b\)</span> or <span class="math inline">\(t\)</span> is not a subset of <span class="math inline">\(a \cup c\)</span>. Therefore,</p>
+<p><span class="math display">\[ \log f(x) = \sum_{t \subset a \cup b} \psi_t(x) + \sum_{t \subset a \cup c} \psi_t(x) - \sum_{t \subset a} \psi_t(x) \]</span></p>
+<p>Exponentiating, we see that the joint density is of the form <span class="math inline">\(g(x_a, x_b) h(x_a, x_c)\)</span>. By Lemma 18.5, <span class="math inline">\(X_b \text{ ⫫ } X_c \; | \; X_a\)</span>. The converse follows by reversing the argument.</p>
+</div>
+<div id="graphical-log-linear-models" class="section level3">
+<h3>18.2 Graphical Log-Linear Models</h3>
+<p>Let <span class="math inline">\(\log f(x) = \sum_{A \subset S} \psi_A(x)\)</span> be a log-linear model. Then <span class="math inline">\(f\)</span> is <strong>graphical</strong> if all <span class="math inline">\(\psi\)</span>-terms are non-zero except for any pair of coordinates not in the edge set for some graph <span class="math inline">\(\mathcal{G}\)</span>. In other words, <span class="math inline">\(\psi_A(x) = 0\)</span> if and only if <span class="math inline">\(\{i, j\} \subset A\)</span> and <span class="math inline">\((i, j)\)</span> is not an edge.</p>
+<p>Here is a way to think about this definition: if you can add a term to the model and the graph does not change, then the model is not graphical.</p>
+</div>
+<div id="hierarchical-log-linear-models" class="section level3">
+<h3>18.3 Hierarchical Log-Linear Models</h3>
+<p>There is a set of log-linear models that is larger than the set of graphical models and that are used quite a bit. These are hierarchical log-linear models.</p>
+<p>A log-linear model is <strong>hierarchical</strong> if <span class="math inline">\(\psi_a = 0\)</span> and <span class="math inline">\(a \subset t\)</span> implies that <span class="math inline">\(\psi_t = 0\)</span>.</p>
+<p><strong>Lemma 18.9</strong>. A graphical model is hierarchical but the reverse need not be true.</p>
+</div>
+<div id="model-generators" class="section level3">
+<h3>18.4 Model Generators</h3>
+<p>Hierarchical models can be written succintly using <strong>generators</strong>. This is most easily explained by example. Suppose that <span class="math inline">\(X = (X_1, X_2, X_3)\)</span>. Then, <span class="math inline">\(M = 1.2 + 1.3\)</span> stands for:</p>
+<p><span class="math display">\[ \log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 + \psi_{12} + \psi_{13}\]</span></p>
+<p>The formula <span class="math inline">\(M = 1.2 + 1.3\)</span> says: “include <span class="math inline">\(\psi_{12}\)</span> and <span class="math inline">\(\psi_{13}\)</span>.” We have to also include the lower terms or it won’t be hierarchical. The generator <span class="math inline">\(M = 1.2.3\)</span> is the <strong>saturated</strong> model</p>
+<p><span class="math display">\[ \log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 + \psi_{12} + \psi_{13} + \psi_{23} + \psi_{123}\]</span></p>
+<p>The saturated models corresponds to fitting and unconstrained multinomial. Consider <span class="math inline">\(M = 1 + 2 + 3\)</span> which means</p>
+<p><span class="math display">\[ \log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 \]</span></p>
+<p>This is the mutual independence model. Finally, consider <span class="math inline">\(M = 1.2\)</span> which has log-linear expansion</p>
+<p><span class="math display">\[ \log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_{12} \]</span></p>
+<p>This models makes <span class="math inline">\(X_3 | X_2 = x_2, X_1 = x_1\)</span> a uniform distribution.</p>
+</div>
+<div id="lattices" class="section level3">
+<h3>18.5 Lattices</h3>
+<p>Hierarchical models can be organized into something called a <strong>lattice</strong>. This is the set of all hierarchical models partially ordered by inclusion. The set of all hierarchical models for two variables can be illustrated as in the figure below.</p>
+<pre class="python"><code>from graphviz import Digraph
+
+d = Digraph()
+
+d.edge(&#39;1.2&#39;, &#39;1 + 2&#39;)
+d.edge(&#39;1 + 2&#39;, &#39;1&#39;)
+d.edge(&#39;1 + 2&#39;, &#39;2&#39;)
+d.edge(&#39;1&#39;, &#39;0&#39;)
+d.edge(&#39;2&#39;, &#39;0&#39;)
+
+d</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_20_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><span class="math inline">\(M = 1.2\)</span> is the saturated model, <span class="math inline">\(M = 1 + 2\)</span> is the independence model, <span class="math inline">\(M = 1\)</span> is the independence model plus <span class="math inline">\(X_2 | X_1\)</span> is uniform, <span class="math inline">\(M = 2\)</span> is the independence model plus <span class="math inline">\(X_1 | X_2\)</span> is uniform, <span class="math inline">\(M = 0\)</span> is the uniform distribution.</p>
+<p>The lattice of trivariate models is shown in the figure below:</p>
+<pre class="python"><code>from graphviz import Digraph
+
+d = Digraph()
+
+d.edge(&#39;1.2.3&#39;, &#39;1.2 + 1.3 + 2.3&#39;)
+
+d.edge(&#39;1.2 + 1.3 + 2.3&#39;, &#39;1.2 + 1.3&#39;)
+d.edge(&#39;1.2 + 1.3 + 2.3&#39;, &#39;1.2 + 2.3&#39;)
+d.edge(&#39;1.2 + 1.3 + 2.3&#39;, &#39;1.3 + 2.3&#39;)
+
+d.edge(&#39;1.2 + 1.3&#39;, &#39;1.2 + 3&#39;)
+d.edge(&#39;1.2 + 2.3&#39;, &#39;1.2 + 3&#39;)
+
+d.edge(&#39;1.2 + 1.3&#39;, &#39;1.3 + 2&#39;)
+d.edge(&#39;1.3 + 2.3&#39;, &#39;1.3 + 2&#39;)
+
+d.edge(&#39;1.2 + 2.3&#39;, &#39;2.3 + 1&#39;)
+d.edge(&#39;1.3 + 2.3&#39;, &#39;2.3 + 1&#39;)
+
+d.edge(&#39;1.2 + 3&#39;, &#39;1 + 2 + 3&#39;)
+d.edge(&#39;1.3 + 2&#39;, &#39;1 + 2 + 3&#39;)
+d.edge(&#39;2.3 + 1&#39;, &#39;1 + 2 + 3&#39;)
+
+d.edge(&#39;1.2 + 3&#39;, &#39;1.2&#39;)
+d.edge(&#39;1.3 + 2&#39;, &#39;1.3&#39;)
+d.edge(&#39;2.3 + 1&#39;, &#39;2.3&#39;)
+
+d.edge(&#39;1.2&#39;, &#39;1 + 2&#39;)
+d.edge(&#39;1.3&#39;, &#39;1 + 3&#39;)
+d.edge(&#39;2.3&#39;, &#39;2 + 3&#39;)
+
+d.edge(&#39;1 + 2 + 3&#39;, &#39;1 + 2&#39;)
+d.edge(&#39;1 + 2 + 3&#39;, &#39;1 + 3&#39;)
+d.edge(&#39;1 + 2 + 3&#39;, &#39;2 + 3&#39;)
+
+d.edge(&#39;1 + 2&#39;, &#39;1&#39;)
+d.edge(&#39;1 + 2&#39;, &#39;2&#39;)
+d.edge(&#39;1 + 3&#39;, &#39;1&#39;)
+d.edge(&#39;1 + 3&#39;, &#39;3&#39;)
+d.edge(&#39;2 + 3&#39;, &#39;2&#39;)
+d.edge(&#39;2 + 3&#39;, &#39;3&#39;)
+
+d.edge(&#39;1&#39;, &#39;0&#39;)
+d.edge(&#39;2&#39;, &#39;0&#39;)
+d.edge(&#39;3&#39;, &#39;0&#39;)
+
+d</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_23_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+</div>
+<div id="fitting-log-linear-models-to-data" class="section level3">
+<h3>18.6 Fitting Log-Linear Models to Data</h3>
+<p>Let <span class="math inline">\(\beta\)</span> denote all the parameters in a log-linear model <span class="math inline">\(M\)</span>. The log-likelihood for <span class="math inline">\(\beta\)</span> is:</p>
+<p><span class="math display">\[ \ell(\beta) = \sum_j x_j \log p_j(\beta) \]</span></p>
+<p>where the sum is over the cells and <span class="math inline">\(p(\beta)\)</span> denotes the cell probabilities corresponding to <span class="math inline">\(\beta\)</span>. The MLE <span class="math inline">\(\hat{\beta}\)</span> generally has to be found numerically. The model with all possible <span class="math inline">\(\psi\)</span>-terms is called the <strong>saturated models</strong>. We can also fit any <strong>sub-model</strong> which corresponds to setting some subset of <span class="math inline">\(\psi\)</span> terms to 0.</p>
+<p>For any submodel <span class="math inline">\(M\)</span>, define the <strong>deviance</strong> <span class="math inline">\(\text{dev}(M)\)</span> by</p>
+<p><span class="math display">\[ \text{dev}(M) = 2 (\hat{\ell}_\text{sat} - \hat{\ell}_M) \]</span></p>
+<p>where <span class="math inline">\(\ell_\text{sat}\)</span> is the log-likelihood of the saturated model evaluated at the MLE and <span class="math inline">\(\hat{\ell}_M\)</span> is the log-likelihood of the model <span class="math inline">\(M\)</span> evaluated at its MLE.</p>
+<p><strong>Theorem 18.14</strong>. The deviance is the likelihood test statistic for</p>
+<p><span class="math display">\[
+H_0 : \text{the model is } M
+\quad \text{versus} \quad
+H_1 : \text{the model is not } M
+\]</span></p>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\text{dev}(M) \leadsto \chi^2_\nu\)</span> with <span class="math inline">\(\nu\)</span> degrees of freedom equal to the difference in the number of parameters between the saturated model and <span class="math inline">\(M\)</span>.</p>
+<p>One way to find a good model is to use the deviance to test every sub-model. Every model that is not rejected by this test is then considered a plausible model. However, this is not a good strategy for two reasons. First, we will end up doing many tests, which means there is ample opportunity for making Type I and Type II errors. Second, we will end up using models where we failed to reject <span class="math inline">\(H_0\)</span>. But we might fail to reject <span class="math inline">\(H_0\)</span> due to low power. The result is that we end up with a bad model just due to low power.</p>
+<p>There are many model searching strategies. A common approach is to use some form of <em>penalized likelihood</em>. One version of penalized is the AIC that we used in regression. For any model <span class="math inline">\(M\)</span> define</p>
+<p><span class="math display">\[ \text{AIC}(M) = -2 \left( \hat{\ell}(M) - |M|\right) \]</span></p>
+<p>where <span class="math inline">\(|M|\)</span> is the number of parameters.</p>
+<p>Consider a set of models <span class="math inline">\(\{ M_1, M_2, \dots \}\)</span>. Let <span class="math inline">\(\hat{f}_j(x)\)</span> denote the estimated probability function obtained by using the maximum likelihood estimator of model <span class="math inline">\(M_j\)</span>. Thus, <span class="math inline">\(\hat{f}_j(x) = \hat{f}(x; \hat{\beta}_j)\)</span> where <span class="math inline">\(\hat{\beta}_j\)</span> is the MLE of the set of parameters <span class="math inline">\(\beta_j\)</span> for model <span class="math inline">\(M_j\)</span>. We will use the loss function <span class="math inline">\(D(f, \hat{f})\)</span> where</p>
+<p><span class="math display">\[ D(f, g) = \sum_x f(x) \log \frac{f(x)}{g(x)} \]</span></p>
+<p>is the Kullback-Leibler divergence between two probability density functions. The corresponding risk function is <span class="math inline">\(R(f, \hat{f}) = \mathbb{E}(D(f, \hat{f}))\)</span>.</p>
+<p>Notice that <span class="math inline">\(D(f, \hat{f}) = c - A(f, \hat{f})\)</span> where <span class="math inline">\(c = \sum_x f(x) \log f(x)\)</span> does not depend on <span class="math inline">\(\hat{f}\)</span> and</p>
+<p><span class="math display">\[ A(f, \hat{f}) = \sum_x f(x) \log \hat{f}(x) \]</span></p>
+<p>Thus minimizing the risk is equivalent to minimizing <span class="math inline">\(a(f, \hat{f}) = \mathbb{E}(A(f, \hat{f}))\)</span>.</p>
+<p>It is tempting to estimate <span class="math inline">\(a(f, \hat{f})\)</span> by <span class="math inline">\(\sum_x \log \hat{f}(x)\)</span> but, just as the training error in regression is highly biased estimate of prediction risk, it is also the case that <span class="math inline">\(\sum_x \log \hat{f}(x)\)</span> is a highly biased estimate of <span class="math inline">\(a(f, \hat{f})\)</span>. In fact, the bias is approximately equal to <span class="math inline">\(|M_j|\)</span>. Thus:</p>
+<p><strong>Theorem 18.15</strong>. <span class="math inline">\(\text{AIC}(M_j)\)</span> is an approximately unbiased estimate of <span class="math inline">\(a(f, \hat{f})\)</span>.</p>
+<p>After finding a “best model” this way we can draw the corresponding graph. We can also check the overall fit of the selected model using the deviance as described above.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>18.8 Exercises</h3>
+<p><strong>Exercise 18.8.1</strong>. Solve for the <span class="math inline">\(p_{ij}\)</span>’s in terms of the <span class="math inline">\(\beta\)</span>’s in Example 18.3:</p>
+<p><em>Example</em>: Let <span class="math inline">\(X = (X_1, X_2)\)</span> where <span class="math inline">\(X_1 \in \{0, 1\}\)</span> and <span class="math inline">\(X_2 \in \{ 0, 1, 2 \}\)</span>. The joint distribution of <span class="math inline">\(n\)</span> such random vectors is a multinomial with 6 categories. The multinomial parameters can be written as a 2-by-3 table as follows:</p>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+\hline
+\text{multinomial} &amp; x_2 &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+x_1 &amp; 0 &amp; p_{00} &amp; p_{01} &amp; p_{02} \\
+    &amp; 1 &amp; p_{10} &amp; p_{11} &amp; p_{12} \\
+\hline
+\end{array}
+\]</span></p>
+<p>The <span class="math inline">\(n\)</span> data vectors can be summarized as follows:</p>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+\hline
+\text{multinomial} &amp; x_2 &amp; 0 &amp; 1 &amp; 2 \\
+\hline
+x_1 &amp; 0 &amp; C_{00} &amp; C_{01} &amp; C_{02} \\
+    &amp; 1 &amp; C_{10} &amp; C_{11} &amp; C_{12} \\
+\hline
+\end{array}
+\]</span></p>
+<p>For <span class="math inline">\(x = (x_1, x_2)\)</span>, the log-linear expansion takes the form</p>
+<p><span class="math display">\[ \log f(x) = \psi_\varnothing(x) + \psi_1(x) + \psi_2(x) + \psi_{12}(x) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align}
+&amp; \psi_\varnothing(x) = \log p_{00} \\
+&amp; \psi_1(x) = x_1 \log \left( \frac{p_{10}}{p_{00}} \right) \\
+&amp; \psi_2(x) = I(x_2 = 1) \log \left( \frac{p_{01}}{p_{00}} \right) 
+            + I(x_2 = 2) \log \left( \frac{p_{02}}{p_{00}} \right) \\
+&amp; \psi_{12}(x) = I(x_1 = 1, x_2 = 1) \log \left( \frac{p_{11}p_{00}}{p_{01}p_{10}} \right)
+               + I(x_1 = 1, x_2 = 2) \log \left( \frac{p_{12}p_{00}}{p_{02}p_{10}} \right)
+\end{align}
+\]</span></p>
+<p>The six parameters of this model are:</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\beta_1 = \log p_{00} &amp;
+\beta_2 = \log \left( \frac{p_{10}}{p_{00}} \right) &amp;
+\beta_3 = \log \left( \frac{p_{01}}{p_{00}} \right) \\
+\beta_4 = \log \left( \frac{p_{02}}{p_{00}} \right) &amp;
+\beta_5 = \log \left( \frac{p_{11}p_{00}}{p_{01}p_{10}} \right) &amp;
+\beta_6 = \log \left( \frac{p_{12}p_{00}}{p_{02}p_{10}} \right)
+\end{array}
+\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>Exponentiate the six definitions for <span class="math inline">\(\beta_k\)</span> above and get:</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+p_{00} = \exp \beta_1 &amp;
+\frac{p_{10}}{p_{00}} = \exp \beta_2 &amp;
+\frac{p_{01}}{p_{00}} = \exp \beta_3 \\
+\frac{p_{02}}{p_{00}} = \exp \beta_4 &amp;
+\frac{p_{11}p_{00}}{p_{01}p_{10}} = \exp \beta_5 &amp;
+\frac{p_{12}p_{00}}{p_{02}p_{10}} = \exp \beta_6
+\end{array}
+\]</span></p>
+<p>and then, isolating the <span class="math inline">\(p_{ij}\)</span>s,</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+p_{00} = \exp \beta_1 &amp;
+p_{10} = \exp \left( \beta_1 + \beta_2 \right) &amp;
+p_{01} = \exp \left( \beta_1 + \beta_3 \right) \\
+p_{02} = \exp \left( \beta_1 + \beta_4 \right) &amp;
+p_{11} = \exp \left( \beta_1 + \beta_2 + \beta_3 + \beta_5 \right) &amp;
+p_{12} = \exp \left( \beta_1 + \beta_2 + \beta_4 + \beta_6 \right)
+\end{array}
+\]</span></p>
+<p><strong>Exercise 18.8.2</strong>. Repeat example 18.17 using 7 covariates and <span class="math inline">\(n = 1000\)</span>. To avoid numerical problems, replace any zero count with a one.</p>
+<p><em>Example</em>: Here is a synthetic example. We generate <span class="math inline">\(n = 100\)</span> random vectors <span class="math inline">\(X = (X_1, \dots, X_5)\)</span> of length 5. We generated the data as follows:</p>
+<p><span class="math display">\[ X_1 \sim \text{Bernoulli}(1/2)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[ X_j | X_1, \dots, X_{j-1} = \begin{cases}
+1/4 &amp; \text{if } X_{j-1} = 0 \\
+3/4 &amp; \text{if } X_{j-1} = 1
+\end{cases}\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[
+\begin{align}
+f(x_1, \dots, x_5) &amp;= 
+\left( \frac{1}{2} \right) \left( \frac{3}{4} \right)^{x_1} \left( \frac{1}{4} \right)^{1 - x_1} \left( \frac{3}{4} \right)^{x_2} \left( \frac{1}{4} \right)^{1 - x_2} \left( \frac{3}{4} \right)^{x_3} \left( \frac{1}{4} \right)^{1 - x_3} \left( \frac{3}{4} \right)^{x_4} \left( \frac{1}{4} \right)^{1 - x_4} \\
+&amp;= \left( \frac{1}{2} \right) \left( \frac{3}{4} \right)^{x_1 + x_2 + x_3 + x_4} \left( \frac{1}{4} \right)^{4 - (x_1 + x_2 + x_3 + x_4)} 
+\end{align}
+\]</span></p>
+<p>We estimated <span class="math inline">\(f\)</span> using three methods: (i) maximum likelihood treating this as a multinomial with 32 categories (ii) maximum likelihood from the best loglinear model using AIC and forward selection and (iii) maximum likelihood from the best loglinear model using BIC and forward selection. We estimated the risk by simulating the sample 100 times. The average risks were:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MLE</td>
+<td>0.63</td>
+</tr>
+<tr class="even">
+<td>AIC</td>
+<td>0.54</td>
+</tr>
+<tr class="odd">
+<td>BIC</td>
+<td>0.53</td>
+</tr>
+</tbody>
+</table>
+<p>In this example, there is little difference between AIC and BIC. Both are better than maximum likelihood.</p>
+<p><strong>Solution</strong>.</p>
+<p>Let’s generate <span class="math inline">\(n = 1000\)</span> random vectors <span class="math inline">\(X = (X_1, \dots, X_k)\)</span> of length <span class="math inline">\(k = 7\)</span> as follows:</p>
+<p><span class="math display">\[ X_1 \sim \text{Bernoulli}(1/2) 
+\quad \text{and} \quad
+X_j | X_1, \dots, X_{j-1} = \begin{cases}
+1/4 &amp; \text{if } X_{j-1} = 0 \\
+3/4 &amp; \text{if } X_{j-1} = 1
+\end{cases}
+\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[ f(x) = \frac{1}{2} \left( \frac{3}{4} \right)^{\sum_{i=1}^{k - 1} x_i} \left( \frac{1}{4} \right)^{(k - 1) - \left(\sum_{i=1}^{k - 1} x_i \right)} \]</span></p>
+<p>We will use the KL divergence as our loss function:</p>
+<p><span class="math display">\[ D(f, g) = \sum_{x \in \Omega} f(x) \log \frac{f(x)}{g(x)} \]</span></p>
+<p>and estimate the risk function <span class="math inline">\(R(f, \hat{f}) = \mathbb{E}[D(f, \hat{f})]\)</span> by bootstraping the estimation process and calculating the average of the loss functions in each bootstrap step.</p>
+<div id="mle-estimate" class="section level4">
+<h4>MLE estimate</h4>
+<p>The MLE estimate for the full multinomial model is relatively simple: consider the adjusted counts <span class="math inline">\(\tilde{C}_{\xi}\)</span> to be the number of times an observation <span class="math inline">\(\xi\)</span> appears, or 1 if that number of observations is 0. There are <span class="math inline">\(2^k = 128\)</span> possible observations, so we get <span class="math inline">\(2^k\)</span> adjusted counts <span class="math inline">\(\tilde{C}_1, \dots, \tilde{C}_{2^k}\)</span>. The MLE estimate is then computed as <span class="math inline">\(\hat{p} = (\hat{p}_1, \dots, \hat{p}_{2^k})\)</span>, with <span class="math inline">\(\hat{p}_i = \frac{\tilde{C}_i}{\sum_\xi \tilde{C}_\xi}\)</span>.</p>
+<p>The function density estimate corresponding to the MLE estimate is a simple lookup table <span class="math inline">\(\hat{f}(\xi) = \hat{p}_\xi\)</span>, as we already have a probability estimate associated with every single possible event. The function density estimate can then be used to compute the loss function <span class="math inline">\(D(f, \hat{f})\)</span>, which is the KL divergence computed over the universe. Repeating this process gives us the risk estimate.</p>
+<pre class="python"><code>import numpy as np
+from itertools import chain, combinations
+from tqdm import notebook
+
+
+# Recipe from itertools documentation, https://docs.python.org/2.7/library/itertools.html#recipes
+def powerset(iterable):
+    &quot;powerset([1,2,3]) --&gt; () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)&quot;
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
+
+
+def generate_samples(n, k):
+    &quot;&quot;&quot;
+    Generates n samples of size k according to the synthetic distribution
+    
+    Args:
+       n:  number of samples
+       k:  sample size
+       
+    Returns:
+       X:  2D array of shape (n, k), representing n samples of size k
+    &quot;&quot;&quot;
+    
+    # Generate a random unifom value between 0 and 1 for each variable in each sample
+    random_seeds = np.random.uniform(low=0, high=1, size=(k, n))
+    
+    # Create a variable to store the generated samples
+    output = np.empty_like(random_seeds).astype(int)
+    
+    # Generate x_1&#39;s as Bernoulli(1/2)
+    output[0] = random_seeds[0] &gt; 0.5
+    for j in range(1, k):
+        # Generate x_j&#39;s recursively
+        output[j] = random_seeds[j] &gt; (output[j - 1] == 0) * (1/4) + (output[j - 1] == 1) * (3/4)
+        
+    return output.T
+
+
+def generate_universe(k):
+    &quot;&quot;&quot;
+    Generates 2**k samples of size k iterating through the valid universe
+    
+    Args:
+       k: sample size
+       
+    Returns:
+       X_universe:  2D array of shape (2**k, k), representing the universe of all samples of size k
+    &quot;&quot;&quot;
+    X_universe = np.zeros(shape=(2**k, k), dtype=int)
+    for i, line in enumerate(powerset(range(k))):
+        X_universe[i, line] = 1
+        
+    return X_universe
+
+
+def row_to_binary(x):
+    &quot;&quot;&quot;
+    Translates a single row into a binary low-endian representation
+    
+    Args:
+       x:  1D array of 0s and 1s
+       
+    Returns:
+       sum(x[i] * (2**i) for index i)
+    &quot;&quot;&quot;
+    
+    # Translate a row of 0s and 1s into a binary representation (low-endian)
+    return sum([x[i] * (2**i) for i in range(len(x))])
+
+
+def samples_to_count(X):
+    &quot;&quot;&quot;
+    Counts the number of occurrences of each sample in the dataset
+    
+    Args:
+       X:   2D array  n samples of size k
+       
+    Returns:
+       count:  1D array of size 2**k, where count[i] is the number of
+               occurrences of i as a row in binary (low-endian) in X,
+               or 1 if the count would be 0.
+    &quot;&quot;&quot;
+    
+    binary_samples = np.apply_along_axis(row_to_binary, 1, X)
+    k = X.shape[1]
+    count = np.zeros(2**k)
+    for sample in binary_samples:
+        count[sample] += 1
+    
+    # Replace all zeroes with ones
+    return np.where(count == 0, 1, count)
+
+
+def true_density(x):
+    &quot;&quot;&quot;
+    True density function for the synthetic distribution.
+    
+    Args:
+       x:  1D array  sample
+       
+    Returns:
+       value of PDF = (1/2) * (3/4)**(sum(x)) * (1/4)**(len(x) - sum(x))
+    &quot;&quot;&quot;
+    
+    s = sum(x)
+    k = len(x)
+    return (1/2) * ((3/4)**s) * ((1/4)**(k - s))
+
+
+def KL_divergence(f, g, X):
+    &quot;&quot;&quot;
+    Returns the KL divergence between f and g calculated on universe X
+    
+    Args:
+       f:  1D array =&gt; double  probability density function
+       g:  1D array =&gt; double  probability density function
+       X:  2D array (n, k) of n samples of size k
+       
+    Returns:  D(f, g) = sum over samples of f(x) * log(f(x) / g(x))
+    &quot;&quot;&quot;
+    
+    def term(x):
+        &quot;&quot;&quot; 
+        Return f(x) * log(f(x) / g(x)) 
+        
+        Args:
+           x:  1D array sample of values
+        &quot;&quot;&quot;
+        fx = f(x)
+        gx = g(x)
+        return fx * np.log(fx / gx)
+    
+    return sum(np.apply_along_axis(term, 1, X))</code></pre>
+<pre class="python"><code># We can now calculate the expected value of the loss function by simulation
+
+def p_hat_mle(X):
+    &quot;&quot;&quot; MLE estimate for the multinomial (replacing zeros with ones) &quot;&quot;&quot;
+    count = samples_to_count(X)
+    return count / sum(count)
+
+
+def f_hat_mle(p_hat_mle):
+    &quot;&quot;&quot; Density function for the estimated multinomial &quot;&quot;&quot;
+    return lambda x : p_hat_mle[row_to_binary(x)]</code></pre>
+<pre class="python"><code># Wrapper for parallel processing on progress bars
+# Source: https://stackoverflow.com/a/58936697
+
+import contextlib
+import joblib
+from joblib import Parallel, delayed
+
+@contextlib.contextmanager
+def tqdm_joblib(tqdm_object):
+    &quot;&quot;&quot;Context manager to patch joblib to report into tqdm progress bar given as argument&quot;&quot;&quot;
+    class TqdmBatchCompletionCallback:
+        def __init__(self, time, index, parallel):
+            self.index = index
+            self.parallel = parallel
+
+        def __call__(self, index):
+            tqdm_object.update()
+            if self.parallel._original_iterator is not None:
+                self.parallel.dispatch_next()
+
+    old_batch_callback = joblib.parallel.BatchCompletionCallBack
+    joblib.parallel.BatchCompletionCallBack = TqdmBatchCompletionCallback
+    try:
+        yield tqdm_object
+    finally:
+        joblib.parallel.BatchCompletionCallBack = old_batch_callback
+        tqdm_object.close()  </code></pre>
+<pre class="python"><code># Bootstrap MLE
+import multiprocessing
+
+B = 500
+n = 1000
+k = 7
+
+X_universe = generate_universe(k=k)
+
+n_jobs = max(multiprocessing.cpu_count() - 1, 1)
+
+def bootstrap_step_mle(i):
+    XX = generate_samples(n=n, k=k)
+    p_hat = p_hat_mle(XX)
+    f_hat = f_hat_mle(p_hat)
+    return KL_divergence(true_density, f_hat, X_universe)
+
+with tqdm_joblib(notebook.tqdm(desc=&quot;MLE&quot;, total=B)) as progress_bar:
+    risk_mle = np.array(Parallel(n_jobs=n_jobs)(delayed(bootstrap_step_mle)(i) for i in range(B)))
+
+print(&#39;MLE mean: %.2f&#39; % risk_mle.mean())</code></pre>
+<pre><code>MLE:   0%|          | 0/500 [00:00&lt;?, ?it/s]
+
+
+MLE mean: 0.75</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.hist(risk_mle, bins=100, label=&#39;MLE&#39;, density=True, histtype=&#39;step&#39;, color=&#39;darkblue&#39;)
+plt.legend(loc=&#39;upper left&#39;)
+plt.title(&#39;Risk estimates&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_46_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="parametrizing-and-fitting-log-linear-models" class="section level4">
+<h4>Parametrizing and fitting log-linear models</h4>
+<p>A log-linear model <span class="math inline">\(M_S\)</span> has density of the form:</p>
+<p><span class="math display">\[ \log f(x) = \sum_{A \subset S} \psi_A(x) \]</span></p>
+<p>where <span class="math inline">\(\psi_A\)</span> depends on <span class="math inline">\(x_i\)</span> only if <span class="math inline">\(i \in A\)</span>. Since x = <span class="math inline">\((x_1, \dots, x_k)\)</span> has its components with values <span class="math inline">\(x_i \in \{ 0, 1 \}\)</span>, we can express that as</p>
+<p><span class="math display">\[ \psi_A(x) = \sum_{B \subset A} c_{B, A} g_A(x) = \sum_{B \subset A} c_{B, A} \left( \prod_{j \in B} x_j \right) \]</span></p>
+<p>for some constants <span class="math inline">\(c_{B, A}\)</span>, and where <span class="math inline">\(g_A(x) = \prod_{j \in A} x_j\)</span>. We can then write the log-likelihood for a parameter <span class="math inline">\(\beta = \left\{ \beta_A | A \subset S \right\}\)</span> as the sum of the log density evaluated at each observation:</p>
+<p><span class="math display">\[ \ell(\beta) = \sum_{x \in \text{obs}} \log f(x; \beta) =  \sum_{x \in \text{obs}} \sum_{A \subset S} \sum_{B \subset A} c_{B, A} g_A(x) = \sum_{x \in \text{obs}} \sum_{A \subset S} \beta_A g_A(x) = \sum_{A \subset S} \beta_A \sum_{x \in \text{obs}} g_A(x) \]</span></p>
+<p>We will want to find the MLE <span class="math inline">\(\hat{\beta}\)</span> subject to the constraint that <span class="math inline">\(f(x)\)</span> is a probability density function which adds up to one, that is, <span class="math inline">\(\sum_{x \in \Omega} f(x) = 1\)</span> over the random variable universe <span class="math inline">\(\Omega = \{ 0, 1 \}^k\)</span>.</p>
+<p>We can now explicitly frame this as an optimization problem, with target being the maximization of the log likelihood, and a nonlinear equality constraint that the density function adds up to 1:</p>
+<p><span class="math display">\[
+\hat{\beta} = \text{argmax}_\beta \left\{ \sum_{A \subset S} \beta_A \sum_{x \in \text{obs}} g_A(x) 
+\;\Bigg|\;  \sum_{x \in \Omega} \exp \left( \sum_{A \subset S} \beta_A g_A(x) \right) = 1
+\right\}
+\]</span></p>
+</div>
+<div id="matrix-representation" class="section level4">
+<h4>Matrix representation</h4>
+<p>We can use matrix multiplications to speed up the function and constraint evaluations during optimization. If <span class="math inline">\(X\)</span> is a matrix of <span class="math inline">\(n\)</span> samples by <span class="math inline">\(k\)</span> dimensions, containing <span class="math inline">\(n\)</span> observations, we define the matrix <span class="math inline">\(h_S(X)\)</span>, where</p>
+<p><span class="math display">\[ (h_S(X))_{i, j} = \begin{cases}
+1 &amp; \text{if } X_{r}^j = 1 \text{ for all } r \in A \text{, where the } j \text{-th element of } X \text{ is } X^j = (X^j_1, \dots, X^j_k) \text{ and } A \text{ is the } i \text{-th subset of } S \\
+0 &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<p>By definition, the log-likelihood then becomes the sum of the elements of the matrix product <span class="math inline">\(\beta \cdot h_S(X_\text{obs})\)</span>:</p>
+<p><span class="math display">\[ \ell(\beta) = \sum_{A \in S} \sum_{x \in \text{obs}} \beta_A g_A(x) = \sum_i \left( \beta \cdot h_S(X_\text{obs}) \right)_i \]</span></p>
+<p>The constraint can also be computed using a matrix multiplication, first defining a matrix <span class="math inline">\(X_\Omega\)</span> of shape <span class="math inline">\((2^k, k)\)</span> that contains one row for each possible observation:</p>
+<p><span class="math display">\[ (X_\Omega)_{i, j} = \begin{cases}
+1 &amp; \text{if the } j \text{-th digit in the binary representation of } i \text{ is } 1 \\
+0 &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<p>Then the sum of the density functions is the sum of the element-wise exponentials resulting from a matrix product <span class="math inline">\(\beta \cdot h_S(X_\Omega)\)</span>:</p>
+<p><span class="math display">\[ \sum_{x \in \Omega} f(x) = \sum_{x \in \Omega} \exp \left(\sum_{A \subset S} \beta_A g_A(x) \right) 
+= \sum_{i} \exp \left( \beta \cdot h_S(X_\Omega) \right)_i\]</span></p>
+<p>Now, after pre-computing <span class="math inline">\(h_S(X_\text{obs})\)</span> and <span class="math inline">\(h_S(X_\Omega)\)</span>, an optimizer will only need to perform sums, matrix multiplications and exponentiations to compute the target function and constraint penalty at each step.</p>
+<p>Finally, note that <span class="math inline">\(\sum_{x \in \Omega} = 1\)</span> if and only if <span class="math inline">\(\log \sum_{x \in \Omega} f(x) = 0\)</span>, so we can use scipy’s <code>logsumexp</code> function to represent the total probability density function constraint.</p>
+</div>
+<div id="model-selection-and-bootstraping" class="section level4">
+<h4>Model selection and bootstraping</h4>
+<p><strong>Model selection</strong> is to be performed using forward selection with AIC or BIC scores. This means that, for each observation set <span class="math inline">\(X\)</span>, given a scoring process to pick between models, we will:</p>
+<ol style="list-style-type: decimal">
+<li>Fit the uniform model <span class="math inline">\(M_\varnothing\)</span>;</li>
+<li>Given the current best model <span class="math inline">\(M_{S_0}\)</span>, fit all models <span class="math inline">\(M_{S}\)</span> where <span class="math inline">\(S = S_0 \cup \{ i \}\)</span> for each <span class="math inline">\(i\)</span> not in <span class="math inline">\(S_0\)</span>;</li>
+<li>If a new model was found as an improvement, select it as the new best model and return to step 2. Otherwise, keep the current best model and stop.</li>
+</ol>
+<p><strong>AIC</strong> will be computed as the log likelihood of the candidate model at its MLE minus its number of parameters:</p>
+<p><span class="math display">\[ \text{AIC}(M_S) = \hat{\ell}_S - |M_S| \]</span></p>
+<p><strong>BIC</strong> will be computed as the log likelihood of the candidate model at its MLE minus the BIC penalty on this formulation (half times number of parameters times log sample size):</p>
+<p><span class="math display">\[ \text{BIC}(M_S) = \hat{\ell}_S - \frac{1}{2} |M_S| \log n \]</span></p>
+<p>Once a model is selected, we can compute its loss <span class="math inline">\(D(f, \hat{f})\)</span>, the KL divergence over the universe of observations for the fitted density function.</p>
+<p><strong>Bootstraping</strong> means repeating this process multiple times, observing the loss at each point and reporting its average and distribution. Note that the model selection itself is a part of the bootstraping process – different model formulations could potentially be chosen for different observations, even though they come from the same synthetic data generation process.</p>
+<pre class="python"><code>from scipy.optimize import minimize
+from scipy.special import logsumexp
+
+def get_loglinear_mle(X, subsets):
+    &quot;&quot;&quot;
+    Estimates a loglinear model for observations X given variables S via maximizing the likelihood estimator.
+    
+    Args:
+       X:  2D array, shape (n, k), of samples and observations (0 or 1)
+       S:  iterable of variables between 0 and k-1 inclusive
+       
+    Returns:
+       beta_hat:  1D array of size 2**|S| with estimated parameters via MLE
+       log_likelihood:  Value of the log-likelihood of the model estimated at the MLE
+    &quot;&quot;&quot;
+    k = X.shape[1]
+    
+    n_subsets = len(subsets)
+    
+    # Speed up calculation of gA operations with vector operations
+    def get_h(XX):
+        &quot;&quot;&quot;
+        Calculate the matrix gA(XX) of shape (2**|S|, XX.shape[0]), where
+        gA(XX){i, j} = 1 if all elements of the i-th subset A of S are in the j-th sample of XX
+                       0 otherwise
+        &quot;&quot;&quot;
+        h = np.zeros(shape=(len(subsets), XX.shape[0]), dtype=int)
+        for i, A in enumerate(subsets):
+            h[i] = XX[:, A].all(axis = 1)
+            
+        return h
+    
+    h_obs = get_h(X)
+    h_universe = get_h(generate_universe(k))
+    
+    def neg_log_likelihood(beta):
+        return -np.sum(beta @ h_obs)
+    
+    def log_density_sum(beta):
+        # Use scipy&#39;s logsumexp to avoid overflows
+        # exp(sum(beta @ h_universe)) - 1 == 0 iff logsumexp(beta @ h_universe) == 0
+        return logsumexp(beta @ h_universe)
+    
+    # Constraint: PDF adds up to 1
+    pdf_constraint = {&#39;type&#39;: &#39;eq&#39;, &#39;fun&#39;: log_density_sum}
+    
+    # Get initial guess: all values zero other than first
+    beta0 = np.zeros(len(subsets))
+    beta0[0] = -k * np.log(2)
+    
+    res = minimize(neg_log_likelihood, beta0, constraints=[pdf_constraint])
+    beta_hat = res.x
+    log_likelihood = -res.fun
+    
+    return beta_hat, log_likelihood
+
+
+def f_loglinear(subsets, beta):
+    &quot;&quot;&quot;
+    Computes the density function for a given set of variables S and corresponding parameters beta.
+    
+    f(x) = exp ( \sum_{A in S} \beta(A) * g_A(x) )
+    &quot;&quot;&quot;
+    def f(x):
+        return np.exp(np.sum([x[A].all() * beta[i] for i, A in enumerate(subsets)]))
+    
+    return f
+
+
+def get_AIC(X, subsets):
+    &quot;&quot;&quot; 
+    Calculates AIC using the loglinear model log likelihood function.
+    
+    Args:
+       X:        2D array (n, k), observed data for log-likelihood function
+       subsets:  iterable, list of subsets for log-likelihood function
+       
+    Returns:
+       AIC score for the given submodel:  ll - |subsets|
+    &quot;&quot;&quot;
+    _, log_likelihood = get_loglinear_mle(X, subsets)
+    penalty = len(subsets)
+    
+    return log_likelihood - penalty
+
+
+def get_BIC(X, subsets):
+    &quot;&quot;&quot; 
+    Calculates BIC using the loglinear model log likelihood function.
+    
+    Args:
+       X:        2D array (n, k), observed data for log-likelihood function
+       subsets:  iterable, list of subsets for log-likelihood function
+       
+    Returns:
+       BIC score for the given submodel:  ll - (|subsets| log n) / 2
+    &quot;&quot;&quot;
+    _, log_likelihood = get_loglinear_mle(X, subsets)
+    n = X.shape[0]
+    penalty = len(subsets) * np.log(n) / 2
+    
+    return log_likelihood - penalty</code></pre>
+<pre class="python"><code>def forward_selection(score_func, S):
+    &quot;&quot;&quot;
+    Uses forward selection to select a subset A of S, in a search to maximize score_func(A).
+
+    Args:
+       score_func:  (A) =&gt; score, a function to score subsets
+       S:           iterable to select a subset from
+       
+    Returns:
+       A:           a subset of S resulting from forward selection
+       
+    &quot;&quot;&quot;
+    all_subsets = [list(s) for s in powerset(S)]
+    current_subset = [[]]
+    current_score = score_func(current_subset)
+    
+    while True:
+        best_subset, best_score = current_subset, current_score
+        improved = False
+        for s in all_subsets:
+            if s not in current_subset:
+                candidate_subset = current_subset.copy()
+                candidate_subset.append(s)
+                candidate_subset.sort()
+                candidate_score = score_func(candidate_subset)
+                
+                if candidate_score &gt; best_score:
+                    improved = True
+                    best_subset, best_score = candidate_subset, candidate_score
+        
+        if not improved:
+            break
+        current_subset, current_score = best_subset, best_score
+    
+    return current_subset</code></pre>
+<pre class="python"><code># AIC bootstrapping
+
+B = 10
+
+n = 1000
+k = 7
+
+S_full = [i for i in range(k)]
+X_universe = generate_universe(k=k)
+
+n_jobs = max(multiprocessing.cpu_count() - 1, 1)
+
+def bootstrap_step_aic(i):
+    XX = generate_samples(n=n, k=k)    
+    score_func = lambda S: get_AIC(XX, S)
+    best_subset = forward_selection(score_func, S_full)
+    beta_hat, _ = get_loglinear_mle(XX, best_subset)
+    f_hat = f_loglinear(best_subset, beta_hat)
+    return KL_divergence(true_density, f_hat, X_universe)
+
+with tqdm_joblib(notebook.tqdm(desc=&quot;AIC&quot;, total=B)) as progress_bar:
+    risk_aic = np.array(Parallel(n_jobs=n_jobs)(delayed(bootstrap_step_aic)(i) for i in range(B)))
+
+print(&#39;AIC mean: %.2f&#39; % risk_aic.mean())</code></pre>
+<pre><code>AIC:   0%|          | 0/10 [00:00&lt;?, ?it/s]
+
+
+AIC mean: 2.67</code></pre>
+<pre class="python"><code># BIC bootstrapping
+
+B = 10
+
+n = 1000
+k = 7
+
+S_full = [i for i in range(k)]
+X_universe = generate_universe(k=k)
+
+n_jobs = max(multiprocessing.cpu_count() - 1, 1)
+
+def bootstrap_step_bic(i):
+    XX = generate_samples(n=n, k=k)    
+    score_func = lambda S: get_BIC(XX, S)
+    best_subset = forward_selection(score_func, S_full)
+    beta_hat, _ = get_loglinear_mle(XX, best_subset)
+    f_hat = f_loglinear(best_subset, beta_hat)
+    return KL_divergence(true_density, f_hat, X_universe)
+
+with tqdm_joblib(notebook.tqdm(desc=&quot;BIC&quot;, total=B)) as progress_bar:
+    risk_bic = np.array(Parallel(n_jobs=n_jobs)(delayed(bootstrap_step_bic)(i) for i in range(B)))
+
+print(&#39;BIC mean: %.2f&#39; % risk_bic.mean())</code></pre>
+<pre><code>BIC:   0%|          | 0/10 [00:00&lt;?, ?it/s]
+
+
+BIC mean: 1.05</code></pre>
+<pre class="python"><code># Remove samples with unsuccessful optimization
+risk_aic = risk_aic[np.isfinite(risk_aic)]
+
+print(&#39;MLE mean: %.2f&#39; % risk_mle.mean())
+print(&#39;AIC mean: %.2f&#39; % risk_aic.mean())
+print(&#39;BIC mean: %.2f&#39; % risk_bic.mean())</code></pre>
+<pre><code>MLE mean: 0.75
+AIC mean: 2.67
+BIC mean: 1.05</code></pre>
+<p>In this scenario, the best risk is obtained by the MLE, followed by the BIC and the AIC.</p>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+r = (0.5, 5.0)
+plt.figure(figsize=(12, 8))
+plt.hist(risk_mle, bins=50, range=r, label=&#39;MLE&#39;, density=True, histtype=&#39;step&#39;, color=&#39;blue&#39;)
+plt.hist(risk_aic, bins=50, range=r, label=&#39;AIC&#39;, density=True, histtype=&#39;step&#39;, color=&#39;green&#39;)
+plt.hist(risk_bic, bins=50, range=r, label=&#39;BIC&#39;, density=True, histtype=&#39;step&#39;, color=&#39;red&#39;)
+plt.legend(loc=&#39;upper left&#39;)
+plt.title(&#39;Risk estimates&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_56_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 18.8.3</strong>. Prove Lemma 18.5.</p>
+<p>A partition <span class="math inline">\((X_a, X_b, X_c)\)</span> satisfies <span class="math inline">\(X_b \text{ ⫫ } X_c \; | \; X_a\)</span> if and only if <span class="math inline">\(f(x_a, x_b, x_c) = g(x_a, x_b) h(x_a, x_c)\)</span> for some functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span>.</p>
+<p><strong>Solution</strong>. We have <span class="math inline">\(X_b \text{ ⫫ } X_c \; | \; X_a\)</span> if and only if <span class="math inline">\(\mathbb{P}(X_b = b, X_c = c | X_a = a) = \mathbb{P}(X_b = b | X_a = a) \mathbb{P}(X_c = c | X_a = a)\)</span> for every <span class="math inline">\(a\)</span>.</p>
+<p>Let <span class="math inline">\(\mathbb{P}(X_b = b, X_c = c | X_a = a) = f_a(b, c)\)</span>, <span class="math inline">\(\mathbb{P}(X_b = b | X_a = a) = g_a(b)\)</span> and <span class="math inline">\(\mathbb{P}(X_c = c | X_a = a) = h_a(c)\)</span>. Then the statement is equivalent to <span class="math inline">\(f_a(b, c) = g_a(b) h_a(c)\)</span> for all <span class="math inline">\(a, b, c\)</span>. The result follows by defining <span class="math inline">\(f(a, b, c) = f_a(b, c)\)</span>, <span class="math inline">\(g_a(b) = g(a, b)\)</span> and <span class="math inline">\(h_a(c) = h(a, c)\)</span>.</p>
+<p><strong>Exercise 18.8.4</strong>. Prove Lemma 18.9.</p>
+<p>A graphical model is hierarchical but the reverse need not be true.</p>
+<p><strong>Solution</strong>.</p>
+<p>A log-linear model <span class="math inline">\(\log f(x) = \sum_{A \subset S} \psi_A(x)\)</span> is graphical if <span class="math inline">\(\psi_A(x) \neq 0\)</span> except for any pair of coordinates not in the edge set for some graph <span class="math inline">\(\mathcal{G}\)</span>.</p>
+<p>A log-linear model <span class="math inline">\(\log f(x) = \sum_{A \subset S} \psi_A(x)\)</span> is hierarchical if <span class="math inline">\(\psi_A = 0\)</span> and <span class="math inline">\(A \subset B\)</span> implies <span class="math inline">\(\psi_B = 0\)</span>.</p>
+<p>If, on a graphical model with associated graph <span class="math inline">\(\mathcal{G}\)</span>, <span class="math inline">\(\psi_A = 0\)</span>, then by definition there exists <span class="math inline">\(\{ i, j \} \subset A\)</span> such that <span class="math inline">\((i, j)\)</span> is not an edge of <span class="math inline">\(\mathcal{G}\)</span>. But then, for any <span class="math inline">\(B\)</span> containing <span class="math inline">\(A\)</span>, we also have that <span class="math inline">\(\{ i, j \} \subset B\)</span>, and since the model is graphical we must have <span class="math inline">\(\psi_B = 0\)</span>. Therefore a graphical model is hierarchical.</p>
+<p>We can prove that hierarchical models are not all graphical with a counterexample, namely the book’s Example 18.11. This is the hierarchical model with generator <span class="math inline">\(1.2 + 1.3 + 2.3\)</span>:</p>
+<p><span class="math display">\[\log f(x) = \psi_\varnothing(x) + \psi_1(x) + \psi_2(x) + \psi_3(x) + \psi_{12}(x) + \psi_{13}(x) + \psi_{23}(x)\]</span></p>
+<p>This model is hierarchical, but it is not graphical since <span class="math inline">\(\psi_{123} = 0\)</span>.</p>
+<p><strong>Exercise 18.8.5</strong>. Consider random variables <span class="math inline">\((X_1, X_2, X_3, X_4)\)</span>. Suppose the log-density is</p>
+<p><span class="math display">\[\log f(x) = \psi_\varnothing(x) + \psi_{12}(x) + \psi_{13}(x) + \psi_{24}(x) + \psi_{34}(x) \]</span></p>
+<p><strong>(a)</strong> Draw the graph <span class="math inline">\(\mathcal{G}\)</span> for these variables.</p>
+<p><strong>(b)</strong> Write down all the independence and conditional independence relations implied by the graph.</p>
+<p><strong>(c)</strong> Is this model graphical? Is it hierarchical?</p>
+<p><strong>Solution</strong></p>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X1&#39;, &#39;X3&#39;)
+g.edge(&#39;X2&#39;, &#39;X4&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_63_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(b)</strong></p>
+<ul>
+<li>$X_1  X_4 | X_2, X_3 $</li>
+<li>$X_2  X_3 | X_1, X_4 $</li>
+</ul>
+<p><strong>(c)</strong> The model is not graphical, since <span class="math inline">\(\psi_1 = 0\)</span> but the definition of a graphical model requires all <span class="math inline">\(\psi_A\)</span> to be non-zero unless an edge from <span class="math inline">\(\mathcal{G}\)</span> is contained in <span class="math inline">\(A\)</span> – and <span class="math inline">\(A = \{ 1 \}\)</span> contains no edges.</p>
+<p>Since the model is not graphical, it is not hierarchical either.</p>
+<p><strong>Exercise 18.8.6</strong>. Suppose that parameters <span class="math inline">\(p(x_1, x_2, x_3)\)</span> are proportional to the following values:</p>
+<p><span class="math display">\[
+\begin{array}{cccccc}
+\hline
+    &amp; x_2 &amp; 0  &amp; 0   &amp; 1  &amp; 1 \\
+    &amp; x_3 &amp; 0  &amp; 1   &amp; 0  &amp; 1 \\
+\hline
+x_1 &amp; 0   &amp; 2  &amp;   8 &amp;  4 &amp; 16 \\
+    &amp; 1   &amp; 16 &amp; 128 &amp; 32 &amp; 256 \\
+\hline
+\end{array}
+\]</span></p>
+<p>Find the <span class="math inline">\(\psi\)</span>-terms for the log-linear expansion. Comment on the model.</p>
+<p><strong>Solution</strong>. Rewriting the given parameters table, where <span class="math inline">\(p&#39;\)</span> are the given values,</p>
+<p><span class="math display">\[
+\begin{array}{ccc | c | c}
+x_1 &amp; x_2 &amp; x_3 &amp; p&#39;   &amp; \log_2 p&#39;\\
+\hline
+0   &amp;   0  &amp;  0 &amp; 2   &amp; 1\\
+0   &amp;   0  &amp;  1 &amp; 8   &amp; 3\\
+0   &amp;   1  &amp;  0 &amp; 4   &amp; 2\\
+0   &amp;   1  &amp;  1 &amp; 16  &amp; 4\\
+1   &amp;   0  &amp;  0 &amp; 16  &amp; 4\\
+1   &amp;   0  &amp;  1 &amp; 128 &amp; 7\\
+1   &amp;   1  &amp;  0 &amp; 32  &amp; 5\\
+1   &amp;   1  &amp;  1 &amp; 256 &amp; 8\\
+\hline
+\end{array}
+\]</span></p>
+<p>and by inspection we can verify that</p>
+<p><span class="math display">\[ \log_2 p&#39; = 1 + 3 x_1 + x_2 + 2 x_3 + x_1 x_3 \]</span></p>
+<p>Now, since <span class="math inline">\(f(x_1, x_2, x_3) \propto p&#39;(x_1, x_2, x_3)\)</span>, then the log density is the value above plus a constant:</p>
+<p><span class="math display">\[ \log f(x) = c + \frac{3}{\log 2} x_1 + \frac{1}{\log 2} x_2 + \frac{2}{\log 2} x_3 + \frac{1}{\log 2} x_1 x_3  = \psi_\varnothing + \psi_1(x) + \psi_2(x) + \psi_3(x) + \psi_{13}(x)\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \psi_\varnothing(x) = c
+\quad
+\psi_1(x) = \frac{3}{\log 2} x_1
+\quad
+\psi_2(x) = \frac{1}{\log 2} x_2
+\quad
+\psi_3(x) = \frac{2}{\log 2} x_3
+\quad
+\psi_{13}(x) = \frac{1}{\log 2} x_1 x_3
+\]</span></p>
+<p>All that remains is finding <span class="math inline">\(c = \psi_\varnothing(x)\)</span> so that the probability density adds up to 1. But <span class="math inline">\(f(0, 0, 0) = \frac{p&#39;(0, 0, 0)}{\sum_x p&#39;(x)} = \frac{1}{231}\)</span>, so</p>
+<p><span class="math display">\[ \psi_\varnothing(x) = - \log 231\]</span></p>
+<p>This is a graphical model with generator <span class="math inline">\(1.3 + 2\)</span>; we have <span class="math inline">\(X_1 \text{ ⫫ } X_3 | X_2\)</span> and the following graph:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_68_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>Exercise 18.8.7</strong>. Let <span class="math inline">\(X_1, \dots, X_4\)</span> be binary. Draw the independence graphs corresponding to the following log-linear models. Also, identify whether each is graphical and/or hierarchical (or neither).</p>
+<p><strong>(a)</strong> <span class="math inline">\(\log f = 7 + 11 x_1 + 2 x_2 + 1.5 x_3 + 17 x_4\)</span></p>
+<p><strong>(b)</strong> <span class="math inline">\(\log f = 7 + 11 x_1 + 2 x_3 + 1.5 x_3 + 17 x_4 + 12 x_2 x_3 + 78 x_2 x_4 + 3 x_3 x_4 + 32 x_2 x_3 x_4\)</span></p>
+<p><strong>(c)</strong> <span class="math inline">\(\log f = 7 + 11 x_1 + 2 x_3 + 1.5 x_3 + 17 x_4 + 12 x_2 x_3 + 3 x_3 x_4 + x_1 x_4 + 2 x_1 x_2\)</span></p>
+<p><strong>(d)</strong> <span class="math inline">\(\log f = 7 + 5055 x_1 x_2 x_3 x_4\)</span></p>
+<p><strong>Solution</strong>. Let’s assume these are valid density functions – that is, that a constant is added to each of these so that the densities add up to 1, or that the log is applied in an applicable base. In either scenario, we just need the zero or non-zero properties of each coefficient to determine the answers for this exercise.</p>
+<p><strong>(a)</strong> <span class="math inline">\(\log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 + \psi_4\)</span></p>
+<p>This is a graphical model with mutual independence across all variables. It is graphical and hierarchical, corresponding to model generator <span class="math inline">\(1 + 2 + 3 + 4\)</span>. The graph is as follows:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.node(&#39;X1&#39;)
+g.node(&#39;X2&#39;)
+g.node(&#39;X3&#39;)
+g.node(&#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_72_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(b)</strong> <span class="math inline">\(\log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 + \psi_4 + \psi_{23} + \psi_{24} + \psi_{34} + \psi_{234}\)</span></p>
+<p>This is a graphical model with independence between 1 and all other variables. It is graphical and hierarchical, corresponding the model generator <span class="math inline">\(1 + 2.3.4\)</span>. The graph is as follows:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.node(&#39;X1&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+g.edge(&#39;X4&#39;, &#39;X2&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_74_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(c)</strong> <span class="math inline">\(\log f = \psi_\varnothing + \psi_1 + \psi_2 + \psi_3 + \psi_4 + \psi_{23} + \psi_{34} + \psi_{14} + \psi_{12}\)</span></p>
+<p>This is a graphical and hierarchical model. It corresponds to model generator <span class="math inline">\(1.2 + 2.3 + 3.4 + 4.1\)</span>; the only conditional independences require the other two given variables. The graph is as follows:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X1&#39;, &#39;X4&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_76_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p><strong>(d)</strong> <span class="math inline">\(\log f = \psi_\varnothing + \psi_{1234}\)</span></p>
+<p>This model has dependencies between all variables, but it is not graphical nor hierarchical; <span class="math inline">\(\psi_{12} = 0\)</span> but <span class="math inline">\(\psi_{1234} \neq 0\)</span>. We can nonetheless draw a graph that would include this model without including all of its independence information by drawing a fully saturated graph:</p>
+<pre class="python"><code>from graphviz import Graph
+
+g = Graph()
+
+g.edge(&#39;X1&#39;, &#39;X2&#39;)
+g.edge(&#39;X1&#39;, &#39;X3&#39;)
+g.edge(&#39;X1&#39;, &#39;X4&#39;)
+g.edge(&#39;X2&#39;, &#39;X3&#39;)
+g.edge(&#39;X2&#39;, &#39;X4&#39;)
+g.edge(&#39;X3&#39;, &#39;X4&#39;)
+
+g</code></pre>
+<div class="figure">
+<img src="Chapter%2018%20-%20Loglinear%20Models_files/Chapter%2018%20-%20Loglinear%20Models_78_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+</div>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
