@@ -6,7 +6,25 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Density Estimation</title>
+      <link>/2021/05/05/density-estimation/</link>
+      <pubDate>Wed, 05 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/05/density-estimation/</guid>
+      <description>1. INTROUCTION2. SURVEY OF EXISTING METHODS2.2. Histograms2.3. The naive estimatorReferences1. INTROUCTIONThe probability density function is a fundamental concept in statistics. Consider any random quantity \(X\) that has probability density function \(f\). Specifying the function \(f\) gives a natural description of the distribution of \(X\), and allows probabilities associated with \(X\) to be found from the relation\[P(a&amp;lt;X&amp;lt;b)=\int_{a}^{b}f(d)dx\quad\text{for all } a&amp;lt;b\]Suppose, now, that we have a set of observed data points assumed to be a sample from an unknown probability density function.</description>
+    </item>
+    
+    <item>
+      <title>AOS chapter20 Directed Graphs</title>
+      <link>/2021/05/03/aos-chapter20-directed-graphs/</link>
+      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/03/aos-chapter20-directed-graphs/</guid>
+      <description>20. Directed Graphs20.1 Introduction20.2 DAG’s20.3 Probability and DAG’s20.4 More Independence Relations20.5 Estimation for DAG’s20.6 Causation Revisited20.8 Exercises20. Directed Graphs20.1 IntroductionDirected graphs are similar to undirected graphs, but there are arrows between vertices instead of edges. Like undirected graphs, directed graphs can be used to represent independence relations. They can also be used as an alternative to counterfactuals to represent causal relationships.</description>
+    </item>
+    
     <item>
       <title>AOS chapter19 Causal Inference</title>
       <link>/2021/05/01/aos-chapter19-causal-inference/</link>
