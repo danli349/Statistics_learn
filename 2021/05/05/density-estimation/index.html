@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">22 min read</span>
+    <span class="article-duration">17 min read</span>
     
 
     <h1 class="article-title">Density Estimation</h1>
@@ -74,11 +74,8 @@
 
 <div id="TOC">
 <ul>
-<li><a href="#introuction">1. INTROUCTION</a></li>
-<li><a href="#survey-of-existing-methods">2. SURVEY OF EXISTING METHODS</a>
+<li><a href="#introuction">1. INTROUCTION</a>
 <ul>
-<li><a href="#histograms">2.2. Histograms</a></li>
-<li><a href="#the-naive-estimator">2.3. The naive estimator</a></li>
 <li><a href="#references">References</a></li>
 </ul></li>
 </ul>
@@ -86,6 +83,7 @@
 
 <div id="introuction" class="section level1">
 <h1>1. INTROUCTION</h1>
+<div style="text-align: justify">
 <p>The <strong>probability density function</strong> is a fundamental concept in statistics. Consider any random quantity <span class="math inline">\(X\)</span> that has probability density function <span class="math inline">\(f\)</span>. Specifying the function <span class="math inline">\(f\)</span> gives a natural description of the distribution of <span class="math inline">\(X\)</span>, and allows probabilities associated with <span class="math inline">\(X\)</span> to be found from the relation
 <span class="math display">\[P(a&lt;X&lt;b)=\int_{a}^{b}f(d)dx\quad\text{for all } a&lt;b\]</span>
 Suppose, now, that we have a set of observed data points assumed to be a sample from an unknown probability density function. <strong>Density estimation</strong>, is the construction of an estimate of the density function from the observed data.
@@ -98,9 +96,11 @@ The two main aims are to explain</p>
 One approach to density estimation is <strong>parametric</strong>. Assume that the data are drawn from one of a known parametric family of distributions, for example the normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. The density <span class="math inline">\(f\)</span> underlying the data could then be estimated by finding estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> from the data and substituting these estimates into the formula for the normal density.</p>
 <p>In <strong>nonparametric estimation</strong>, less rigid assumptions will be made about the distribution of the observed data. Although it will be assumed that the
 distribution has a probability density <span class="math inline">\(f\)</span>, the data will be allowed to speak for themselves in determining the estimate of <span class="math inline">\(f\)</span> more than would be the case if <span class="math inline">\(f\)</span> were constrained to fall in a given parametric family.</p>
-</div>
 <div id="survey-of-existing-methods" class="section level1">
 <h1>2. SURVEY OF EXISTING METHODS</h1>
+<div id="introduction" class="section level2">
+<h2>2.1 Introduction</h2>
+</div>
 <div id="histograms" class="section level2">
 <h2>2.2. Histograms</h2>
 <p>The oldest and most widely used density estimator is the histogram. Given an origin <span class="math inline">\(x_0\)</span> and a bin width <span class="math inline">\(h\)</span>,we definethe bins of the histogram to be the intervals <span class="math inline">\([x_0 + mh, x_0 +(m +1)h]\)</span> for positive and negative integers <span class="math inline">\(m\)</span>. The intervals have been chosen closed on the left and open on the right for definiteness.</p>
@@ -122,313 +122,145 @@ we shall call this the <strong>naive estimator</strong>.</p>
 <span class="math display">\[w(x)=\begin{cases}
 1/2,  &amp; \text{if }|x|&lt;1 \\
 0, &amp; \text{otherwise}
-\end{cases}\]</span> (2.1)</p>
+\end{cases} \quad (2.1)\]</span></p>
 <p>Then it is easy to see that the naive estimator can be written
-<span class="math display">\[\hat f(x)=\lim_{h\to0}\frac{1}{2hn}\times\lbrace\text{no. of }X_i\text{ falling in the same bin as }(x-h,x+h)\rbrace\]</span> ()</p>
-<p>It follows from (2.1) that the estimate is constructed by placing a <code>box' of width 2h and height (2nh)-1 on each observation and then summing to obtain the estimate. We shall return to this interpretation below, but it is instructive first to consider a connection with histograms. Consider the histogram constructed from the data using bins ofwidth 2h. Assume that no observations lie exactly at the edge of abin. If x happens to be at the centre of one of the histogram bins, it follows at once from (2.1) that the naive estimate (x) will be exactly the ordinate of the histogram at x. Thus the naive estimate can be seen to be an attempt to construct a histogram where every point is the centre of a sampling interval, thus freeing the histogram from a particular choice of bin positions. The choice of bin width still remains and is governed by the parameter h, which controls the amount by which the data are smoothed to produce the estimate. The naive estimator is not wholly satisfactory from the point of view of using density estimates for presentation. It follows from the definition that is not a continuous function, but has jumps at the points Xi ± h and has zero derivative everywhere else. This gives the estimates a somewhat ragged character which is not only aesthetically undesirable, but, more seriously, could provide the untrained observer with a misleading impression. Partly to overcome this difficulty, and partly for other technical reasons given later, it is of interest to consider the generalization of the naive estimator given in the following section. A density estimated using the naive estimator is given in Fig. 2.3. The</code>stepwise’ nature of the estimate is clear. The boxes used
-to construct the estimate have the same width as the histogram bins in Fig. 2.1.
-8of22
-03/15/2002 2:18 PM
-﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman
-<a href="file:///e%7C/moe/HTML/March02/Silverman/Silver.html" class="uri">file:///e|/moe/HTML/March02/Silverman/Silver.html</a>
-Fig. 2.3 Naive estimate constructed from Old Faithful geyser data,
-h = 0.25.
-2.4. The kernel estimator
-It is easy to generalize the naive estimator to overcome some of the difficulties discussed above. Replace the weight function w
-by a kernel function Kwhich satisfies the condition
-(2.2)
-Usually, but not always, K will be a symmetric probability density function, the normal density, for instance, or the weight
-function w used in the definition of the naive estimator. By analogy with the definition of the naive estimator, the kernel
-estimator with kernel K is defined by
-(2.2a)
-where h is the window width, also called the smoothing parameter or bandwidth by some authors. We shall consider some
-mathematical properties of the kernel estimator later, but first of all an intuitive discussion with some examples may be helpful.
-Just as the naive estimator can be considered as a sum of <code>boxes' centred at the observations, the kernel estimator is a sum of</code>bumps’ placed at the observations. The kernel function K determines the shape of the bumps while the window width h
-determines their width. An illustration is given in Fig. 2.4, where the individual bumps n-1 h-1 K{(x - Xi)/h}are shown as well as
-the estimate constructed by adding them up. It should be stressed that it is not usually appropriate to construct a density
-estimate from such a small sample, but that a sample of size 7 has been used here for the sake of clarity.
-Fig. 2.4 Kernel estimate showing individual kernels. Window width 0.4.
-9of22
-03/15/2002 2:18 PM</p>
-<p>2.5. The nearest neighbour method
-The nearest neighbour class of estimators represents an attempt to adapt the amount of smoothing to the <code>local' density of data. The degree of smoothing is controlled by an integer k, chosen to be considerably smaller than the sample size; typically kn1/2. Define the distance d (x, y) between two points on the line to be |x - y| in the usual way, and for each t define to be the distances, arranged in ascending order, from t to the points of the sample. The kth nearest neighbour density estimate is then defined by (2.3) In order to understand this definition, suppose that the density at t is f(t). Then, of a sample of size n, one would expect about 2r nf(t) observations to fall in the interval [t - r, t + r] for each r &gt; 0; see the discussion of the naive estimator in Section 2.3 above. Since, by definition, exactly k observations fall in the interval [t - dk(t), t + dk(t)], an estimate of the density at t may be obtained by putting this can be rearranged to give the definition of the kth nearest neighbour estimate. While the naive estimator is based on the number of observations falling in a box of fixed width centred at the point of interest, the nearest neighbour estimate is inversely proportional to the size of the box needed to contain a given number of observations. In the tails of the distribution, the distance dk(t) will be larger than in the main part of the distribution, and so the problem of undersmoothing in the tails should be reduced. Like the naive estimator, to which it is related, the nearest choice neighbour estimate as defined in (2.3) is not a smooth curve. The function dk(t) can easily be seen to be continuous, but its derivative will have a discontinuity at every point of the form 1/2(X(j) + X(j+k)), where X(j) are the order statistics of the sample. It follows at once from these remarks and from the definition 13 of22 03/15/2002 2:18 PM ﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman file:///e|/moe/HTML/March02/Silverman/Silver.html that will be positive and continuous everywhere, but will have discontinuous derivative at all the same points as dk.In contrast to the kernel estimate, the nearest neighbour estimate will not itself be a probability density, since it will not integrate to unity. For t less than the smallest data point, we will have dk(t)= X(n-k+1) and for t &gt; X(n) we will have dk(t)= t - X(n-k+1). Substituting into (2.3), it follows that - the nearest neighbour estimate is unlikely to be appropriate if an estimate of the entire density is required. Figure 2.10 gives a nearest neighbour density estimate for the Old Faithful data. The heavy tails and the discontinuities in the derivative are clear. (t)dt is infinite and that the tails of die away at rate t-1, in other words extremely slowly. Thus Fig. 2.10 Nearest neighbour estimate for Old Faithful geyser data, k = 20. It is possible to generalize the nearest neighbour estimate to provide an estimate related to the kernel estimate. As in Section 2.4, let K(x) be a kernel function integrating to one. Then the generalized kth nearest neighbour estimate is defined by (2.4) It can be seen at once that (t) is precisely the kernel estimate evaluated at t with window width dk(t). Thus the overall amount of smoothing is governed by the choice of the integer k, but the window width used at any particular point depends on the density of observations near that point. The ordinary kth nearest neighbour estimate is the special case of (2.4) when K is the uniform kernel w of (2.1); thus (2.4) stands in the to same relation to (2.3) as the kernel estimator does to the naive ed. estimator. However, the derivative of the generalized nearest neighbour estimate will be discontinuous at all the points where the function dk( t) has discontinuous derivative. The precise integrability and tail properties will depend on the exact form of the kernel, and to will not be discussed further here. Further discussion of the nearest neighbour approach will be given in Section 5.2. 2.6. The variable kernel method The variable kernel method is somewhat related to the nearest neighbour approach and is another method which adapts the amount of smoothing to the local density of data. The estimate is constructed similarly to the classical kernel estimate, but the scale parameter of the 'bumps' placed on the data points is allowed to vary from one data point to another. Let K be a kernel function and k a positive integer. Define dj, k to be the distance from Xj to the kth nearest point in the set comprising the other n - 1 data points. Then the variable kernel estimate with smoothing parameter h is defined by (2.5) 14 of22 03/15/2002 2:18 PM ﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman file:///e|/moe/HTML/March02/Silverman/Silver.html The window width of the kernel placed on the point Xj is proportional to dj, k, so that data points in regions where the data are sparse will have flatter kernels associated with them. For any fixed k, the overall degree of smoothing will depend on the parameter h. The choice ofk determines how responsive the window width choice will be to very local detail. Some comparison of the variable kernel estimate with the generalized nearest neighbour estimate (2.4) may be instructive. In (2.4) the window width used to construct the estimate at t depends on the distances from t to the data points; in (2.5) the window widths are independent of the point t at which the density is being estimated, and depend only on the distances between the data points. In contrast with the generalized nearest neighbour estimate, the variable kernel estimate will itself be a probability density function provided the kernel K is; that is an immediate consequence of the definition. Furthermore, as with the ordinary kernel estimator, all the local smoothness properties of the kernel will be inherited by the estimate. In Fig. 2.11 the methodis usedto obtain an estimate for the suicide data. The noise in the tail of the curve has been eliminated, but it is interesting to note that the method exposes some structure in the main part of the distribution which is not really visible even in the undersmoothed curve in Figure 2.9. Fig. 2.11 Variable kernel estimate for suicide study data, k =8, h =5. In Section 5.3, the variable kernel method will be considered in greater detail, and in particular an important generalization, called the adaptive kernel method, will be introduced. 2.7. Orthogonal series estimators Orthogonal series estimators approach the density estimation problem from quite a different point of view. They are best explained by a specific example. Suppose that we are trying to estimate a density fon the unit interval [0, 1]. The idea of the orthogonal series method is then to estimate fby estimating the coefficients of its Fourier expansion. Define the sequence (x)by Then, by standard mathematical analysis, fcan be represented as the Fourier series =0 f , where, for each 0, (2.6) 15 of22 03/15/2002 2:18 PM ﻿ PDFTron PDF2Text: This page is skipped when running in the demo mode. ﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman file:///e|/moe/HTML/March02/Silverman/Silver.html For instance, for data resealed to have zero mean and unit variance, a(x) might be the function e-x2/2 and the multiples of the Hermite polynomials; for details see Kreider et al. (1966). The sample coefficients will then be defined by but otherwise the estimates will be defined as above; possible estimates are (2.9) or (2.10) The properties of estimates obtained by the orthogonal series method depend on the details of the series being used and on the system ofweights. The Fourier series estimates will integrate to unity, provided 0 =1, since and 0 will always be equal to one. However, except for rather special choices of the weights , cannot be guaranteed to be non-negative. The local smoothness properties of the estimates will again depend on the particular case; estimates obtained from (2.8) will have derivatives of all orders. 2.8. Maximum penalized likelihood estimators The methods discussed so far are all derived in an ad hoc way from the definition of a density. It is interesting to ask whether it is possible to apply standard statistical techniques, like maximum likelihood, to density estimation. The likelihood of a curve g as density underlying a set of independent identically distributed observations is given by This likelihood has no finite maximum over the class of all densities. To see this, let window width 1/2 h; then, for each i, h be the naive density estimate with and so Thus the likelihood can be made arbitrarily large by taking densities approaching the sum of delta functions as defined in (2.7) above, and it is not possible to use maximum likelihood directly for density estimation without placing restrictions on the class of densities over which the likelihood is to be maximized. 17 of22 03/15/2002 2:18 PM ﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman file:///e|/moe/HTML/March02/Silverman/Silver.html There are, nevertheless, possible approaches related to maximum likelihood. One method is to incorporate into the likelihood a term which describes the roughness - in some sense - of the curve under consideration. Suppose R(g) is a functional which quantifies the roughness of g. One possible choice of such a functional is (2.11) Define the penalized log likelihood by (2.12) where is a positive smoothing parameter. The penalized log likelihood can be seen as a way of quantifying the conflict between smoothness and goodness-of-fit to the data, since the log likelihood term log g(Xi) measures how well g fits the data. The probability density function is said to be a maximum penalized likelihood density estimate if it maximizes l (g) over the class of all curves g which satisfy - g =1, g(x)0 for all x,and R(g) &lt; . The parameter controls the amount of smoothing since it determines the</code>rate of exchange’
-between smoothness and goodness-of-fit; the smaller the value of , the rougher - in terms of R( ) - will be the corresponding
-maximum penalized likelihood estimator. Estimates obtained by the maximum penalized likelihood method will, by definition,
-be probability densities. Further details of these estimates will be given in Section 5.4.
-2.9. General weight function estimators
-It is possible to define a general class of density estimators which includes several of the estimators discussed above. Suppose
-that w(x, y) is a function of two arguments, which in most cases will satisfy the conditions
-(2.13)
-and
-(2.14)
-We should think of w as being defined in such a way that most of the weight of the probability density w(x, .) falls near x.An
-estimate of the density underlying the data may be obtained by putting
-(2.15)
-We shall refer to estimates of the form (2.15) as general weight function estimates. It is clear from (2.15) that the conditions
-(2.13) and (2.14) will be sufficient to ensure that is a probability density function, and that the smoothness properties of will
-be inherited from those of the functions w(x,
-.). This class of estimators can be thought of in two ways. Firstly, it is a unifying
-concept which makes it possible, for example, to obtain theoretical results applicable to a whole range of apparently distinct
-estimators. On the other hand, it is possible to define useful estimators which do not fall into any of the classes discussed in
-previous sections but which are nevertheless of the form (2.15). We shall discuss such an estimator later in this section.
-To obtain the histogram as a special case of (2.15), set
-18 of22
-03/15/2002 2:18 PM
-﻿
-PDFTron PDF2Text: This page is skipped when running in the demo mode.
-﻿
-PDFTron PDF2Text: This page is skipped when running in the demo mode.
-﻿
-PDFTron PDF2Text: This page is skipped when running in the demo mode.
-﻿
-PDFTron PDF2Text: This page is skipped when running in the demo mode.
-﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman
-<a href="file:///e%7C/moe/HTML/March02/Silverman/Silver.html" class="uri">file:///e|/moe/HTML/March02/Silverman/Silver.html</a>
-2.11. Discussion and bibliography
-A brief survey of the kind conducted in this chapter of course asks far more questions than it answers, and some of these
-questions will be the subject of discussion in subsequent chapters. The overriding problems are the choice ofwhat method to use
-in any given practical context and, given that a particular method is being used, how to choose the various parameters needed by
-the method. The remarks already made about the mathematical properties of the estimates obtained by various procedures will of
-course be important in making these decisions. To obtain a fuller understanding of the importance and consequences of the
-various choices it is essential to investigate the statistical properties of the various methods and also to consider the difficulties
-involved in computing the estimates.
-This chapter has by no means considered all the methods available for density estimation. Generalizations and other approaches
-are considered in later chapters of this book, and in the other books and surveys mentioned in Section 1.3.
-The naive estimator was introduced by Fix and Hodges (1951) in an unpublished report; the first published paper to deal
-explicitly with probability density estimation was by Rosenblatt (1956), who discussed both the naive estimator and the more
-general kernel estimator. Whittle (1958) formulated the general weight function class of estimators, while the orthogonal series
-estimator was introduced by Cencov (1962). The nearest neighbour estimate was first considered by Loftsgaarden and
-Quesenberry (1965), while the variable kernel method is due to Breiman, Meisel and Purcell (1977), though Wertz (1978, p. 59)
-refers to presumably independent but related work by Victor. The maximum penalized likelihood approach was first applied to
-density estimation by Good and Gaskins (1971). The reflection and replication techniques of Section 2.10 were introduced and
-illustrated by Boneva, Kendall and Stefanov (1971), while the transformation technique is discussed by Copas and Fryer (1980).
-22 of22
-03/15/2002 2:18 PM
-﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman
-<a href="file:///e%7C/moe/HTML/March02/Silverman/Silver.html" class="uri">file:///e|/moe/HTML/March02/Silverman/Silver.html</a>
-Fig. 1.2 Density estimate constructed from observations of the
-height of a steel surface. After Silverman (1980) with the
-permission ofAcademic Press, Inc. This version reproduced from
-Silverman (1981a) with the permission of John Wiley &amp; Sons
-Ltd.
-A third example is given in Fig. 1.3. The data used to construct this curve are a standard directional data set and consist of the
-directions in which each of 76 turtles was observed to swim when released. It is clear that most of the turtles show a preference
-for swimming approximately in the 60° direction, while a small proportion prefer exactly the opposite direction. Although
-further statistical modelling of these data is possible (see Mardia 1972) the density estimate really gives all the useful
-conclusions tobedrawn from thedataset.
-Fig. 1.3 Density estimate constructed from turtle data. After
-Silverman (1978a) with the permission of the Biometrika
-Trustees. This version reproduced from Silverman (1981a) with
-the permission of John Wiley &amp; Sons Ltd.
-An important aspect of statistics, often neglected nowadays, is the presentation of data back to the client in order to provide
-explanation and illustration of conclusions that may possibly have been obtained by other means. Density estimates are ideal for
-this purpose, for the simple reason that they are fairly easily comprehensible to non-mathematicians. Even those statisticians
-who are sceptical about estimating densities would no doubt explain a normal distribution by drawing a bell-shaped curve rather
-than by one of the other methods illustrated in Fig. 1.4. In all the examples given in this section, the density estimates are as
-valuable for explaining conclusions as for drawing these conclusions in the first place. More examples illustrating the use of
-density estimates for exploratory and presentational purposes, including the important case of bivariate data, will be given in
-later chapters.
-3of22
-03/15/2002 2:18 PM
-﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman
-<a href="file:///e%7C/moe/HTML/March02/Silverman/Silver.html" class="uri">file:///e|/moe/HTML/March02/Silverman/Silver.html</a>
-Fig. 1.4 Four ways of explaining the normal distribution: a graph of
-the density function; a graph of the cumulative distribution function;
-a straight line on probability paper, the formula for the density
-function.
-1.3. Further reading
-There is a vast literature on density estimation, much of it concerned with asymptotic results not covered in any detail in this
-book.
-Prakasa Rao’s (1983) book offers a comprehensive treatment of the theoretical aspects of the subject. Journal papers providing
-surveys and bibliography include Rosenblatt (1971), Fryer (1977), Wertz and Schneider (1979), and Bean and Tsokos (1980).
-Tapia and Thompson (1978) give an interesting perspective paying particular attention to their own version of the penalized
-likelihood approach described in Sections 2.8 and 5.4 below. A thorough treatment, rather technical in nature, of a particular
-question and its ramifications is given by Devroye and Gyorfi (1985). Other texts on the subject are Wertz (1978) and Delecroix
-(1983). Further references relevant to specific topics will be given, as they arise, later in this book.
-2. SURVEY OF EXISTING METHODS
-2.1. Introduction
-In this chapter a brief summary is given of the main methods available for univariate density estimation. Some of the methods
-will be discussed in greater detail in later chapters, but it is helpful to have a general view of the subject before examining any
-particular method in detail. Many of the important applications of density estimation are to multivariate data, but since all the
-multivariate methods are generalizations of univariate methods, it is worth getting a feel for the univariate case first.
-Two data sets will be used to help illustrate some of the methods. The first comprises the lengths of 86 spells of psychiatric
-treatment undergone by patients used as controls in a study of suicide risks reported by Copas and Fryer (1980). The data are
-given in Table 2.1. The second data set, observations of eruptions ofOld Faithful geyser in Yellowstone National Park, USA, is
-taken from Weisberg (1980), and is reproduced in Table 2.2. I am most grateful to John Copas and to Sanford Weisberg for
-making these data sets available to me.
-4of22
-03/15/2002 2:18 PM
-﻿Density Estimation for Statistics and Data Analysis - B.W. Silverman
-<a href="file:///e%7C/moe/HTML/March02/Silverman/Silver.html" class="uri">file:///e|/moe/HTML/March02/Silverman/Silver.html</a>
-Table 2.1 Lengths of treatment spells (in days) of control patients in
-suicide study.
-1 25
-1 27
-1 27
-5 30
-7 30
-8 31
-8 31
-13 32
-14 34
-14 35
-17 36
-18 37
-21 38
-21 39
-22 39
-40
-49
-49
-54
-56
-56
-62
-63
-65
-65
-67
-75
-76
-79
-82
-83 123
-84 126
-84 129
-84 134
-90 144
-91 147
-92 153
-93 163
-93 167
-103 175
-103 228
-111 231
-112 235
-119 242
-122 256
-256
-257
-311
-314
-322
-369
-415
-573
-609
-640
-737
-Table 2.2 Eruption lengths (in minutes) of 107 eruptions of Old Faithful geyser.
-4.37
-4.70
-1.68
-1.75
-4.35
-1.77
-4.25
-4.10
-4.05
-1.90
-4.00
-4.42
-1.83
-1.83
-3.95
-4.83
-3.87
-1.73
-3.92
-3.20
-2.33
-4.57
-3.58
-3.70
-4.25
-3.58
-3.67
-1.90
-4.13
-4.53
-4.10
-4.12
-4.00
-4.93
-3.68
-1.85
-3.83
-1.85
-3.80
-3.80
-3.33
-3.73
-1.67
-4.63
-1.83
-2.03
-2.72
-4.03
-1.73
-3.10
-4.62
-1.88
-3.52
-3.77
-3.43
-2.00
-3.73
-4.60
-2.93
-4.65
-4.18
-4.58
-3.50
-4.62
-4.03
-1.97
-4.60
-4.00
-3.75
-4.00
-4.33
-1.82
-1.67
-3.50
-4.20
-4.43
-1.90
-4.08
-3.43
-1.77
-4.50
-1.80
-3.70
-2.50
-2.27
-2.93
-4.63
-4.00
-1.97
-3.93
-4.07
-4.50
-2.25
-4.25
-4.08
-3.92
-4.73
-3.72
-4.50
-4.40
-4.58
-3.50
-1.80
-4.28
-4.33
-4.13
-1.95
-It is convenient to define some standard notation. Except where otherwise stated, it will be assumed that we are given a sample
-of n real observations X1, … , Xn whose underlying density is to be estimated. The symbol will be used to denote whatever
-density estimator is currently being considered.</p>
+<span class="math display">\[\hat f(x)=\frac{1}{n}\sum_{i+1}^{n}\frac{1}{h}w\left(\frac{x-X_i}{h}\right)\]</span></p>
+<p>It follows from (2.1) that the estimate is constructed by placing a `box’ of width <span class="math inline">\(2h\)</span> and height <span class="math inline">\((2nh)-1\)</span> on each observation and then summing to obtain the estimate. We shall return to this interpretation below, but it is instructive first to consider a connection with histograms.</p>
+<p>Consider the histogram constructed from the data using bins of width <span class="math inline">\(2h\)</span>. Assume that no observations lie exactly at the edge of a bin. If <span class="math inline">\(x\)</span> happens to be at the center of one of the histogram bins, it follows at once from (2.1) that the naive estimate <span class="math inline">\(\hat f(x)\)</span> will
+be exactly the ordinate of the histogram at <span class="math inline">\(x\)</span>. Thus the naive estimate can be seen to be an attempt to construct a histogram where every point is the center of a sampling interval, thus freeing the histogram from a particular choice of bin positions.</p>
+<p>The choice of bin width still remains and is governed by the parameter <span class="math inline">\(h\)</span>, which controls the amount by which the data are smoothed to produce the estimate.</p>
+<p>The naive estimator is not wholly satisfactory from the point of view of using density estimates for presentation. It follows from the definition that <span class="math inline">\(\hat f\)</span> is not a continuous function, but has jumps at the points <span class="math inline">\(X_i \pm h\)</span> and has zero derivative everywhere else. This gives the estimates a somewhat ragged character which is not only aesthetically undesirable, but, more seriously, could provide the untrained observer with a misleading impression. Partly to overcome this difficulty, and partly for other technical
+reasons given later, it is of interest to consider the generalization of the naive estimator given in the following section.</p>
+</div>
+<div id="the-kernel-estimator" class="section level2">
+<h2>2.4. The kernel estimator</h2>
+<p>It is easy to generalize the naive estimator to overcome some of the difficulties discussed above. Replace the weight function <span class="math inline">\(w\)</span> by a kernel function <span class="math inline">\(K\)</span> which satisfies the condition <span class="math display">\[\int_{-\infty}^{\infty}K(x)dx=1 \quad (2.2)\]</span></p>
+<p>Usually, but not always, <span class="math inline">\(K\)</span> will be a symmetric probability density function, the normal density, for instance, or the weight function <span class="math inline">\(w\)</span> used in the definition of the naive estimator. By analogy with the definition of the naive estimator, the kernel
+estimator with kernel <span class="math inline">\(K\)</span> is defined by
+<span class="math display">\[\hat f(x)=\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-X_i}{h}\right)\quad  (2.2a)\]</span>
+where <span class="math inline">\(h\)</span> is the window width, also called the smoothing parameter or bandwidth by some authors.</p>
+<p>Just as the naive estimator can be considered as a sum of <em>boxes</em> centered at the observations, the kernel estimator is a sum of <em>bumps</em> placed at the observations. The kernel function <span class="math inline">\(K\)</span> determines the shape of the bumps while the window width <span class="math inline">\(h\)</span> determines their width. <img src="2.4.png" alt="Fig. 2.4" /></p>
+<p>An illustration is given in Fig. 2.4, where the individual bumps <span class="math display">\[\frac{1}{nh} K\left(\frac{x-X_i}{h}\right)\]</span> are shown as well as the estimate constructed by adding them up. It should be stressed that it is not usually appropriate to construct a density estimate from such a small sample, but that a sample of size 7 has been used here for the sake of clarity.</p>
+<div class="figure">
+<img src="2.5.png" alt="" />
+<p class="caption">Fig. 2.5</p>
+</div>
+<p>The effect of varying the window width is illustrated in Fig. 2.5. The limit as <span class="math inline">\(h\)</span> tends to zero is (in a sense) a sum of Dirac delta function spikes at the observations, while as <span class="math inline">\(h\)</span> becomes large, all detail, spurious or otherwise, is obscured.</p>
+<p>Some elementary properties of kernel estimates follow at once from the definition. Provided the kernel <span class="math inline">\(K\)</span> is everywhere
+non-negative and satisfies the condition <span class="math display">\[\int_{-\infty}^{\infty}K(x)dx=1\]</span> in other words is a probability density function - it will follow at once from the
+definition that <span class="math inline">\(\hat f\)</span> will itself be a probability density. Furthermore, <span class="math inline">\(\hat f\)</span> will inherit all the continuity and differentiability properties of the kernel <span class="math inline">\(K\)</span>, so that if, for example, <span class="math inline">\(K\)</span> is the normal density function, then <span class="math inline">\(\hat f\)</span> will be a smooth curve having derivatives of all orders.</p>
+</div>
+<div id="the-nearest-neighbour-method" class="section level2">
+<h2>2.5. The nearest neighbour method</h2>
+<p>The nearest neighbour class of estimators represents an attempt to adapt the amount of smoothing to the <em>local</em> density of data.
+The degree of smoothing is controlled by an integer <span class="math inline">\(k\)</span>, chosen to be considerably smaller than the sample size; typically <span class="math inline">\(k\approx n^{1/2}\)</span>.
+Define the distance <span class="math inline">\(d(x, y)\)</span> between two points on the line to be <span class="math inline">\(|x - y|\)</span> in the usual way, and for each <span class="math inline">\(t\)</span> define <span class="math display">\[d_1(t)\le d_2(t)\le\cdots\le d_n(t)\]</span>
+to be the distances, arranged in ascending order, from <span class="math inline">\(t\)</span> to the points of the sample.
+The <strong><span class="math inline">\(k\)</span>th nearest neighbour density estimate</strong> is then defined by <span class="math display">\[\hat f(t)=\frac{k}{2nd_k(t)}\quad (2.3) \]</span></p>
+<p>In order to understand this definition, suppose that the density at <span class="math inline">\(t\)</span> is <span class="math inline">\(f(t)\)</span>. Then, of a sample of size <span class="math inline">\(n\)</span>, one would expect about <span class="math inline">\(2rnf(t)\)</span> observations to fall in the interval <span class="math display">\[[t - r, t + r] \text{ for each } r &gt; 0\]</span> Since, by definition, exactly <span class="math inline">\(k\)</span> observations fall in the interval <span class="math inline">\([t - d_k(t), t + d_k(t)]\)</span>, an estimate of the density at <span class="math inline">\(t\)</span> may be obtained by putting <span class="math display">\[k=2d_k(t)n\hat f(t)\]</span> this can be rearranged to give the definition of the <span class="math inline">\(k\)</span>th nearest neighbour estimate.</p>
+<p>While the naive estimator is based on the number of observations falling in a box of fixed width centred at the point of interest,
+the nearest neighbour estimate is inversely proportional to the size of the box needed to contain a given number of observations.
+In the tails of the distribution, the distance <span class="math inline">\(d_k(t)\)</span> will be larger than in the main part of the distribution, and so the problem of undersmoothing in the tails should be reduced.</p>
+<p>Like the naive estimator, to which it is related, the nearest choice neighbour estimate as defined in (2.3) is not a smooth curve. The function <span class="math inline">\(d_k(t)\)</span> can easily be seen to be continuous, but its derivative will have a discontinuity at every point of the form <span class="math display">\[\frac{1}{2}(X_{(j)} + X_{(j+k)})\]</span>, where <span class="math inline">\(X_{(j)}\)</span> are the <strong>order statistics</strong> of the sample.</p>
+<blockquote>
+<p>In statistics, the <span class="math inline">\(k\)</span>th order statistic of a statistical sample is equal to its kth-smallest value. Together with rank statistics, order statistics are among the most fundamental tools in non-parametric statistics and inference.
+Important special cases of the order statistics are the minimum and maximum value of a sample, and the sample median and other sample quantiles.
+When using probability theory to analyze order statistics of random samples from a continuous distribution, the cumulative distribution function is used to reduce the analysis to the case of order statistics of the uniform distribution.
+<a href="https://www.wikiwand.com/en/Order_statistic">https://www.wikiwand.com/en/Order_statistic</a></p>
+</blockquote>
+<p>It follows at once from these remarks and from the definition that <span class="math inline">\(\hat f\)</span> will be positive and continuous everywhere, but will have discontinuous derivative at all the same points as <span class="math inline">\(d_k\)</span>. In contrast to the kernel estimate, the nearest neighbour estimate will not itself be a probability density, since it will not integrate to unity. For <span class="math inline">\(t\)</span> less than the smallest data point, we will have <span class="math inline">\(d_k(t)= X_{(n-k+1)}\)</span> and for <span class="math inline">\(t &gt; X_{(n)}\)</span> we will have <span class="math inline">\(d_k(t)= t - X_{(n-k+1)}\)</span>. Substituting into (2.3), it follows that
+<span class="math inline">\(\int_{-\infty}^{\infty}(t)dt\)</span> is infinite and that the tails of <span class="math inline">\(\hat f\)</span> die away at rate <span class="math inline">\(t^{-1}\)</span>, in other words extremely slowly.</p>
+<p><img src="2.10.png" /></p>
+<p>Thus the nearest neighbour estimate is unlikely to be appropriate if an estimate of the entire density is required. Figure 2.10 gives a nearest neighbour density estimate for the Old Faithful data. The heavy tails and the discontinuities in the derivative are clear.</p>
+<p>It is possible to generalize the nearest neighbour estimate to provide an estimate related to the kernel estimate. As in Section 2.4, let <span class="math inline">\(K(x)\)</span> be a kernel function integrating to one. Then the <strong>generalized <span class="math inline">\(k\)</span>th nearest neighbour estimate</strong> is defined by <span class="math display">\[\hat f(t)=\frac{1}{nd_k(t)}\sum_{i=1}^{n}K\left(\frac{t-X_i}{d_k(t)}\right)\quad (2.4)\]</span>
+It can be seen at once that <span class="math inline">\(\hat f(t)\)</span> is precisely the kernel estimate evaluated at <span class="math inline">\(t\)</span> with window width <span class="math inline">\(d_k(t)\)</span>. Thus the overall amount of smoothing is governed by the choice of the integer <span class="math inline">\(k\)</span>, but the window width used at any particular point depends on the density of observations near that point.</p>
+<p>The ordinary <span class="math inline">\(k\)</span>th nearest neighbour estimate is the special case of (2.4) when <span class="math inline">\(K\)</span> is the uniform kernel <span class="math inline">\(w\)</span> of <span class="math display">\[w(x)=\begin{cases}
+1/2,  &amp; \text{if }|x|&lt;1 \\
+0, &amp; \text{otherwise}
+\end{cases} \quad (2.1)\]</span> thus (2.4) stands
+in the to same relation to (2.3) as the kernel estimator does to the naive ed. estimator. However, the derivative of the generalized nearest neighbour estimate will be discontinuous at all the points where the function <span class="math inline">\(d_k(t)\)</span> has discontinuous derivative. The precise integrability and tail properties will depend on the exact form of the kernel.</p>
+</div>
+<div id="the-variable-kernel-method" class="section level2">
+<h2>2.6. The variable kernel method</h2>
+<p>The variable kernel method is somewhat related to the nearest neighbour approach and is another method which adapts the
+amount of smoothing to the local density of data. The estimate is constructed similarly to the classical kernel estimate, but the
+scale parameter of the <em>bumps</em> placed on the data points is allowed to vary from one data point to another.</p>
+<p>Let <span class="math inline">\(K\)</span> be a kernel function and <span class="math inline">\(k\)</span> a positive integer. Define <span class="math inline">\(d_{j, k}\)</span> to be the distance from <span class="math inline">\(X_j\)</span> to the <span class="math inline">\(k\)</span>th nearest point in the set comprising the other <span class="math inline">\(n - 1\)</span> data points. Then the <strong>variable kernel estimate</strong> with smoothing parameter <span class="math inline">\(h\)</span> is defined by <span class="math display">\[\hat f(t)=\frac{1}{n}\sum_{j=1}^{n}\frac{1}{hd_{j,k}}K\left(\frac{t-X_j}{hd_{j,k}}\right)\quad (2.5)\]</span></p>
+<p>The window width of the kernel placed on the point <span class="math inline">\(X_j\)</span> is proportional to <span class="math inline">\(d_{j, k}\)</span>, so that data points in regions where the data are sparse will have flatter kernels associated with them. For any fixed <span class="math inline">\(k\)</span>, the overall degree of smoothing will depend on the parameter <span class="math inline">\(h\)</span>. The choice of <span class="math inline">\(k\)</span> determines how responsive the window width choice will be to very local detail.</p>
+<p>Some comparison of the variable kernel estimate with the generalized nearest neighbour estimate <span class="math display">\[\hat f(t)=\frac{1}{nd_k(t)}\sum_{i=1}^{n}K\left(\frac{t-X_i}{d_k(t)}\right)\quad (2.4)\]</span> may be instructive. In (2.4) the window width used to construct the estimate at <span class="math inline">\(t\)</span> depends on the distances from <span class="math inline">\(t\)</span> to the data points; in (2.5) the window
+widths are independent of the point <span class="math inline">\(t\)</span> at which the density is being estimated, and depend only on the distances between the data
+points.</p>
+<p>In contrast with the generalized nearest neighbour estimate, the variable kernel estimate will itself be a probability density
+function provided the kernel <span class="math inline">\(K\)</span> is; that is an immediate consequence of the definition. Furthermore, as with the ordinary kernel estimator, all the local smoothness properties of the kernel will be inherited by the estimate.</p>
+</div>
+<div id="orthogonal-series-estimators" class="section level2">
+<h2>2.7. Orthogonal series estimators</h2>
+<p>Orthogonal series estimators approach the density estimation problem from quite a different point of view. They are best
+explained by a specific example. Suppose that we are trying to estimate a density <span class="math inline">\(f\)</span> on the unit interval <span class="math inline">\([0, 1]\)</span>. The idea of the orthogonal series method is then to estimate <span class="math inline">\(f\)</span> by estimating the coefficients of its Fourier expansion.</p>
+<p>Define the sequence <span class="math inline">\(\phi_{V}(x)\)</span> by
+<span class="math display">\[\begin{align}
+\left.
+\begin{array}{l}
+\phi_0(x)&amp;=1\\
+\phi_{2r-1}(x)&amp;=\sqrt{2}\cos2\pi rx\\
+\phi_{2r}(x)&amp;=\sqrt{2}\sin2\pi rx\\
+\end{array}
+\right\}
+r=1,2,\cdots
+\end{align}\]</span>
+Then, by standard mathematical analysis, <span class="math inline">\(f\)</span> can be represented as the Fourier series <span class="math display">\[\sum_{v=0}^{\infty}f_v\phi_V\]</span>, where, for each <span class="math inline">\(V\ge 0\)</span>, <span class="math display">\[f_v=\int_{0}^{1}f(x)\phi_v(x)dx\quad (2.6)\]</span></p>
+<p>Suppose <span class="math inline">\(X\)</span> is a random variable with density <span class="math inline">\(f\)</span>. Then <span class="math display">\[f_v=\int_{0}^{1}f(x)\phi_v(x)dx\quad (2.6)\]</span> can be written
+<span class="math display">\[f_V=E\phi_V(X)\]</span>
+and hence a natural, and unbiased, estimator of <span class="math inline">\(f\)</span> based on a sample <span class="math inline">\(X_1,\cdots, X_n\)</span> from <span class="math inline">\(f\)</span> is <span class="math display">\[\hat f_v=\frac{1}{n}\sum_{i=1}^{n}\phi_v(X_i)\]</span>
+Unfortunately, the <span class="math inline">\(sum = 0\)</span> will not be a good estimate of <span class="math inline">\(f\)</span>, but will <em>converge</em> to a sum of delta functions at the
+observations; to see this, let <span class="math display">\[w(x)=\frac{1}{n}\sum_{i=1}^{n}\delta(x-X_i)\quad (2.7)\]</span></p>
+<p>where <span class="math inline">\(\delta\)</span> is the Dirac delta function. Then, for each <span class="math inline">\(V\)</span>,
+<span class="math display">\[\hat f_V=\int_{0}^{1}w(x)\phi_v(x)dx\]</span> and so the <span class="math inline">\(\hat f_V\)</span> are exactly the Fourier coefficients of the function <span class="math inline">\(w\)</span>.</p>
+<p>In order to obtain a useful estimate of the density <span class="math inline">\(f\)</span>, it is necessary to smooth <span class="math inline">\(w\)</span> by applying a low-pass filter to the sequence of coefficients <span class="math inline">\(\hat f_v\)</span>. The easiest way to do this is to truncate the expansion <span class="math inline">\(\sum \hat f_v\phi_v\)</span> at some point. Choose an integer <span class="math inline">\(K\)</span> and define the density estimate <span class="math inline">\(\hat f\)</span> by
+<span class="math display">\[\hat f(x)=\sum_{v=0}^{K}\hat f_v\phi_v(x)\quad (2.8)\]</span></p>
+<p>The choice of the cutoff point <span class="math inline">\(K\)</span> determines the amount of smoothing.</p>
+<p>A more general approach is to taper the series by a sequence of weights <span class="math inline">\(\lambda_v\)</span>, which satisfy <span class="math inline">\(\lambda_v\to 0\)</span> as <span class="math inline">\(v\to\infty\)</span>, to obtain the estimate <span class="math display">\[\hat f(x)=\sum_{v=0}^{\infty}\lambda_v\hat f_v\phi_v(x)\]</span>
+The rate at which the weights <span class="math inline">\(\lambda_v\)</span> converge to zero will determine the amount of smoothing.</p>
+<p>Other orthogonal series estimates, no longer necessarily confined to data lying on a finite interval, can be obtained by using
+different orthonormal sequences of functions. Suppose <span class="math inline">\(a(x)\)</span> is a weighting function and <span class="math inline">\((\psi_v)\)</span> is a series satisfying, for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(v\ge 0\)</span>, <span class="math display">\[\int_{-\infty}^{\infty}\psi_{\mu}(x)\psi_{v}(x)a(x)dx=\begin{cases}
+1,  &amp; \mu=v \\
+0, &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<p>For instance, for data resealed to have zero mean and unit variance, <span class="math inline">\(a(x)\)</span> might be the function <span class="math inline">\(e^{-x2/2}\)</span> and the <span class="math inline">\(\psi_v\)</span> multiples of the Hermite polynomials.</p>
+<p>The sample coefficients will then be defined by
+<span class="math display">\[\hat f_v=\frac{1}{n}\sum_{i}\psi_v(X_i)a(X_i)
+\]</span> but otherwise the estimates will be defined as above; possible estimates are <span class="math display">\[\hat f(x)=\sum_{v=0}^{K}\hat f_v\psi_v(x)\quad (2.9)\]</span> or <span class="math display">\[\hat f(x)=\sum_{v=0}^{K}\lambda_v\hat f_v\psi_v(x)\quad (2.10)\]</span></p>
+<p>The properties of estimates obtained by the orthogonal series method depend on the details of the series being used and on the
+system of weights. The Fourier series estimates will integrate to unity, provided <span class="math inline">\(\lambda_0 =1\)</span>, since <span class="math display">\[\int_{0}^{1}\phi_v(x)dx=0\quad\text{for all } v&gt;0\]</span>
+and <span class="math inline">\(\hat f_0\)</span> will always be equal to one. However, except for rather special choices of the weights <span class="math inline">\(\lambda_v\)</span>, <span class="math inline">\(\hat f\)</span> cannot be guaranteed to be non-negative. The local smoothness properties of the estimates will again depend on the particular case; estimates obtained from <span class="math display">\[\hat f(x)=\sum_{v=0}^{K}\hat f_v\phi_v(x)\quad (2.8)\]</span> will have derivatives of all orders.</p>
+</div>
+<div id="maximum-penalized-likelihood-estimators" class="section level2">
+<h2>2.8. Maximum penalized likelihood estimators</h2>
+<p>The methods discussed so far are all derived in an <em>ad hoc</em> way from the definition of a density. It is interesting to ask whether it is possible to apply standard statistical techniques, like maximum likelihood, to density estimation. The <strong>likelihood</strong> of a curve <span class="math inline">\(g\)</span> as density underlying a set of independent identically distributed observations is given by <span class="math display">\[L(g|X_1,\cdots,X_n)=\prod_{i=1}^{n}g(X_i)\]</span>
+This likelihood has no finite maximum over the class of all densities. To see this, let <span class="math inline">\(\hat f\)</span> be the naive density estimate with window width $ h$; then, for each <span class="math inline">\(i\)</span>, <span class="math display">\[\hat f_h(X_i)\ge\frac{1}{nh}\]</span> and so <span class="math display">\[\prod \hat f_h(X_i)\ge n^{-n}h^{-n}\to\infty\quad \text{as }h\to 0\]</span></p>
+<p>Thus the likelihood can be made arbitrarily large by taking densities approaching the sum of delta functions <span class="math inline">\(w\)</span> as defined in
+<span class="math display">\[w(x)=\frac{1}{n}\sum_{i=1}^{n}\delta(x-X_i)\quad (2.7)\]</span> above, and it is not possible to use maximum likelihood directly for density estimation without placing restrictions on the
+class of densities over which the likelihood is to be maximized.</p>
+<p>There are, nevertheless, possible approaches related to maximum likelihood. One method is to incorporate into the likelihood a
+term which describes the roughness - in some sense - of the curve under consideration. Suppose <span class="math inline">\(R(g)\)</span> is a functional which
+quantifies the roughness of <span class="math inline">\(g\)</span>. One possible choice of such a functional is <span class="math display">\[R(g)=\int_{-\infty}^{\infty}(g&#39;&#39;)^2\quad (2.11)\]</span></p>
+<p>Define the <strong>penalized log likelihood</strong> by <span class="math display">\[l_{\alpha}(g)=\sum_{i=1}^{n}\log(X_i)-\alpha R(g)\quad (2.12)\]</span> where <span class="math inline">\(\alpha\)</span> is a positive smoothing parameter.</p>
+<p>The penalized log likelihood can be seen as a way of quantifying the conflict between smoothness and goodness-of-fit to the
+data, since the log likelihood term <span class="math inline">\(\sum\log g(X_i)\)</span> measures how well <span class="math inline">\(g\)</span> fits the data. The probability density function <span class="math inline">\(\hat f\)</span> is said to be a <strong>maximum penalized likelihood density estimate</strong> if it maximizes <span class="math inline">\(l_{\alpha}(g)\)</span> over the class of all curves <span class="math inline">\(g\)</span> which satisfy <span class="math inline">\(\int_{-\infty}^{\infty}g =1\)</span>, <span class="math inline">\(g(x)\ge 0\)</span> for all <span class="math inline">\(x\)</span>,and <span class="math inline">\(R(g) &lt; \infty\)</span>. The parameter <span class="math inline">\(\alpha\)</span> controls the amount of smoothing since it determines the <em>rate of exchange</em>
+between smoothness and goodness-of-fit; the smaller the value of <span class="math inline">\(\alpha\)</span>, the rougher - in terms of <span class="math inline">\(R(\hat f)\)</span> - will be the corresponding maximum penalized likelihood estimator. Estimates obtained by the maximum penalized likelihood method will, by definition, be probability densities.</p>
+</div>
+<div id="general-weight-function-estimators" class="section level2">
+<h2>2.9. General weight function estimators</h2>
+<p>It is possible to define a general class of density estimators which includes several of the estimators discussed above. Suppose
+that <span class="math inline">\(w(x, y)\)</span> is a function of two arguments, which in most cases will satisfy the conditions <span class="math display">\[\int_{-\infty}^{\infty}w(x, y)dy=1\quad (2.13)\]</span>
+and <span class="math display">\[w(x, y)\ge0\quad \text{for all }x \text{ and }y\quad (2.14)\]</span>
+We should think of <span class="math inline">\(w\)</span> as being defined in such a way that most of the weight of the probability density <span class="math inline">\(w(x, \cdot)\)</span> falls near <span class="math inline">\(x\)</span>. An
+estimate of the density underlying the data may be obtained by putting <span class="math display">\[\hat f(t)=\frac{1}{n}\sum_{i=1}^{n}w(X_i,t)\quad (2.15)\]</span></p>
+<p>We shall refer to estimates of the form (2.15) as <strong>general weight function estimates</strong>. It is clear from (2.15) that the conditions
+(2.13) and (2.14) will be sufficient to ensure that <span class="math inline">\(\hat f\)</span> is a probability density function, and that the smoothness properties of <span class="math inline">\(\hat f\)</span> will be inherited from those of the functions
+<span class="math inline">\(w(x,\cdot)\)</span>. This class of estimators can be thought of in two ways. Firstly, it is a unifying concept which makes it possible, for example, to obtain theoretical results applicable to a whole range of apparently distinct estimators. On the other hand, it is possible to define useful estimators which do not fall into any of the classes discussed in previous sections but which are nevertheless of the form (2.15).</p>
+</div>
+</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
