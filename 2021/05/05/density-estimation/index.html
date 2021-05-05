@@ -74,8 +74,18 @@
 
 <div id="TOC">
 <ul>
-<li><a href="#introuction">1. INTROUCTION</a>
+<li><a href="#introuction">1. INTROUCTION</a></li>
+<li><a href="#survey-of-existing-methods">2. SURVEY OF EXISTING METHODS</a>
 <ul>
+<li><a href="#introduction">2.1 Introduction</a></li>
+<li><a href="#histograms">2.2. Histograms</a></li>
+<li><a href="#the-naive-estimator">2.3. The naive estimator</a></li>
+<li><a href="#the-kernel-estimator">2.4. The kernel estimator</a></li>
+<li><a href="#the-nearest-neighbour-method">2.5. The nearest neighbour method</a></li>
+<li><a href="#the-variable-kernel-method">2.6. The variable kernel method</a></li>
+<li><a href="#orthogonal-series-estimators">2.7. Orthogonal series estimators</a></li>
+<li><a href="#maximum-penalized-likelihood-estimators">2.8. Maximum penalized likelihood estimators</a></li>
+<li><a href="#general-weight-function-estimators">2.9. General weight function estimators</a></li>
 <li><a href="#references">References</a></li>
 </ul></li>
 </ul>
@@ -83,7 +93,6 @@
 
 <div id="introuction" class="section level1">
 <h1>1. INTROUCTION</h1>
-<div style="text-align: justify">
 <p>The <strong>probability density function</strong> is a fundamental concept in statistics. Consider any random quantity <span class="math inline">\(X\)</span> that has probability density function <span class="math inline">\(f\)</span>. Specifying the function <span class="math inline">\(f\)</span> gives a natural description of the distribution of <span class="math inline">\(X\)</span>, and allows probabilities associated with <span class="math inline">\(X\)</span> to be found from the relation
 <span class="math display">\[P(a&lt;X&lt;b)=\int_{a}^{b}f(d)dx\quad\text{for all } a&lt;b\]</span>
 Suppose, now, that we have a set of observed data points assumed to be a sample from an unknown probability density function. <strong>Density estimation</strong>, is the construction of an estimate of the density function from the observed data.
@@ -96,6 +105,7 @@ The two main aims are to explain</p>
 One approach to density estimation is <strong>parametric</strong>. Assume that the data are drawn from one of a known parametric family of distributions, for example the normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. The density <span class="math inline">\(f\)</span> underlying the data could then be estimated by finding estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> from the data and substituting these estimates into the formula for the normal density.</p>
 <p>In <strong>nonparametric estimation</strong>, less rigid assumptions will be made about the distribution of the observed data. Although it will be assumed that the
 distribution has a probability density <span class="math inline">\(f\)</span>, the data will be allowed to speak for themselves in determining the estimate of <span class="math inline">\(f\)</span> more than would be the case if <span class="math inline">\(f\)</span> were constrained to fall in a given parametric family.</p>
+</div>
 <div id="survey-of-existing-methods" class="section level1">
 <h1>2. SURVEY OF EXISTING METHODS</h1>
 <div id="introduction" class="section level2">
@@ -259,8 +269,6 @@ estimate of the density underlying the data may be obtained by putting <span cla
 <p>We shall refer to estimates of the form (2.15) as <strong>general weight function estimates</strong>. It is clear from (2.15) that the conditions
 (2.13) and (2.14) will be sufficient to ensure that <span class="math inline">\(\hat f\)</span> is a probability density function, and that the smoothness properties of <span class="math inline">\(\hat f\)</span> will be inherited from those of the functions
 <span class="math inline">\(w(x,\cdot)\)</span>. This class of estimators can be thought of in two ways. Firstly, it is a unifying concept which makes it possible, for example, to obtain theoretical results applicable to a whole range of apparently distinct estimators. On the other hand, it is possible to define useful estimators which do not fall into any of the classes discussed in previous sections but which are nevertheless of the form (2.15).</p>
-</div>
-</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
