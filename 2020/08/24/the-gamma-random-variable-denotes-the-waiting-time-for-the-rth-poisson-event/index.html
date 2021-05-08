@@ -71,8 +71,6 @@
     <div class="article-content">
       
 <script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="../../../../rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="../../../../rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <p><strong><span style="color: red;">The Gamma random variable denotes the waiting time for the <span class="math inline">\(r^{th}\)</span> Poisson event, and also denotes the sum of r Exponential random variables. The sum of m Gamma random variables (shared the same parameter <span class="math inline">\(\lambda\)</span>) is a Gamma random variable, which denotes the waiting time for the <span class="math inline">\((\sum_{i=1}^{m} r_i)^{th}\)</span> Poisson event, and also denotes the sum of <span class="math inline">\(\sum_{i=1}^{m} r_i\)</span> Exponential random variables.</span></strong></p>
@@ -92,6 +90,8 @@ f_Y(y)=\frac{d}{dy}F_Y(y)&amp;=\frac{d}{dy}\Biggl(1-\sum_{k=0}^{r-1}e^{-\lambda 
 &amp;=\frac{\lambda^r}{(r-1)!}y^{r-1}e^{-\lambda y}\\
 &amp;=\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}, \quad y&gt;0
 \end{align}\]</span>, this is the Gamma distribution.</p>
+<p>The waiting time for the first Poisson event <span class="math inline">\(S_1\)</span> is: let <span class="math inline">\(r=1\)</span>, <span class="math display">\[f_Y(y)=\lambda e^{-\lambda y}, \quad y\ge 0\]</span> which is the density of Exponential Distribution. Then the possibility that the waiting time for the first Poisson event <span class="math inline">\(S_1\)</span> is longer than time <span class="math inline">\(t\)</span> is <span class="math display">\[\mathbb P(S_1 &gt; t)=\int_{t}^{\infty}\lambda e^{-\lambda y}dy=-e^{-\lambda y}\big |_{t}^{\infty}=-0+e^{-\lambda t}=e^{-\lambda t}\]</span> and the CDF for <span class="math inline">\(S_1\)</span> is <span class="math display">\[\mathbb P(S_1 \le t)=\int_{0}^{t}\lambda e^{-\lambda y}dy=-e^{-\lambda y}\big |_{0}^{t}=1-e^{-\lambda t}\]</span></p>
+<p>The waiting time for the <span class="math inline">\(i\)</span>th Poisson event <span class="math inline">\(S_i\)</span> also follows Exponential Distribution <span class="math display">\[f_Y(y)=\lambda e^{-\lambda y}, \quad y\ge 0\]</span> which is independent of <span class="math inline">\(S_{i-1}\)</span>.</p>
 <p>The moment-generating function for a Gamma random variable Y is:
 <span class="math display">\[\begin{align}
 M_X(t)=E(e^{tY})&amp;=\int_{0}^{+\infty}e^{ty}\frac{\lambda^r}{\Gamma(r)}y^{r-1}e^{-\lambda y}dy\\
