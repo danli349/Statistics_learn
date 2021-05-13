@@ -6,14 +6,23 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter21 Nonparametric Curve Estimation</title>
+      <link>/2021/05/09/aos-chapter21-nonparametric-curve-estimation/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/09/aos-chapter21-nonparametric-curve-estimation/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Density Estimation</title>
       <link>/2021/05/05/density-estimation/</link>
       <pubDate>Wed, 05 May 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/05/05/density-estimation/</guid>
-      <description>1. INTROUCTION2. SURVEY OF EXISTING METHODS2.1 Introduction2.2. Histograms2.3. The naive estimator2.4. The kernel estimator2.5. The nearest neighbour method2.6. The variable kernel method2.7. Orthogonal series estimators2.8. Maximum penalized likelihood estimators2.9. General weight function estimatorsReferences1. INTROUCTIONThe probability density function is a fundamental concept in statistics. Consider any random quantity \(X\) that has probability density function \(f\).</description>
+      <description>1. INTROUCTION2. SURVEY OF EXISTING METHODS2.1 Introduction2.2. Histograms2.3. The naive estimator2.4. The kernel estimator2.5. The nearest neighbour method2.6. The variable kernel method2.7. Orthogonal series estimators2.8. Maximum penalized likelihood estimators2.9. General weight function estimators1. INTROUCTIONReferences1. INTROUCTIONThe probability density function is a fundamental concept in statistics. Consider any random quantity \(X\) that has probability density function \(f\).</description>
     </item>
     
     <item>

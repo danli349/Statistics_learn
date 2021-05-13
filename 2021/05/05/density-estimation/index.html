@@ -86,6 +86,9 @@
 <li><a href="#orthogonal-series-estimators">2.7. Orthogonal series estimators</a></li>
 <li><a href="#maximum-penalized-likelihood-estimators">2.8. Maximum penalized likelihood estimators</a></li>
 <li><a href="#general-weight-function-estimators">2.9. General weight function estimators</a></li>
+</ul></li>
+<li><a href="#introuction-1">1. INTROUCTION</a>
+<ul>
 <li><a href="#references">References</a></li>
 </ul></li>
 </ul>
@@ -134,8 +137,8 @@ we shall call this the <strong>naive estimator</strong>.</p>
 0, &amp; \text{otherwise}
 \end{cases} \quad (2.1)\]</span></p>
 <p>Then it is easy to see that the naive estimator can be written
-<span class="math display">\[\hat f(x)=\frac{1}{n}\sum_{i+1}^{n}\frac{1}{h}w\left(\frac{x-X_i}{h}\right)\]</span></p>
-<p>It follows from (2.1) that the estimate is constructed by placing a `box’ of width <span class="math inline">\(2h\)</span> and height <span class="math inline">\((2nh)-1\)</span> on each observation and then summing to obtain the estimate. We shall return to this interpretation below, but it is instructive first to consider a connection with histograms.</p>
+<span class="math display">\[\hat f(x)=\frac{1}{n}\sum_{i=1}^{n}\frac{1}{h}w\left(\frac{x-X_i}{h}\right)\]</span></p>
+<p>It follows from (2.1) that the estimate is constructed by placing a `box’ of width <span class="math inline">\(2h\)</span> and height <span class="math inline">\(\frac{1}{2nh}\)</span> on each observation and then summing to obtain the estimate. We shall return to this interpretation below, but it is instructive first to consider a connection with histograms.</p>
 <p>Consider the histogram constructed from the data using bins of width <span class="math inline">\(2h\)</span>. Assume that no observations lie exactly at the edge of a bin. If <span class="math inline">\(x\)</span> happens to be at the center of one of the histogram bins, it follows at once from (2.1) that the naive estimate <span class="math inline">\(\hat f(x)\)</span> will
 be exactly the ordinate of the histogram at <span class="math inline">\(x\)</span>. Thus the naive estimate can be seen to be an attempt to construct a histogram where every point is the center of a sampling interval, thus freeing the histogram from a particular choice of bin positions.</p>
 <p>The choice of bin width still remains and is governed by the parameter <span class="math inline">\(h\)</span>, which controls the amount by which the data are smoothed to produce the estimate.</p>
@@ -270,6 +273,9 @@ estimate of the density underlying the data may be obtained by putting <span cla
 (2.13) and (2.14) will be sufficient to ensure that <span class="math inline">\(\hat f\)</span> is a probability density function, and that the smoothness properties of <span class="math inline">\(\hat f\)</span> will be inherited from those of the functions
 <span class="math inline">\(w(x,\cdot)\)</span>. This class of estimators can be thought of in two ways. Firstly, it is a unifying concept which makes it possible, for example, to obtain theoretical results applicable to a whole range of apparently distinct estimators. On the other hand, it is possible to define useful estimators which do not fall into any of the classes discussed in previous sections but which are nevertheless of the form (2.15).</p>
 </div>
+</div>
+<div id="introuction-1" class="section level1">
+<h1>1. INTROUCTION</h1>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body">
