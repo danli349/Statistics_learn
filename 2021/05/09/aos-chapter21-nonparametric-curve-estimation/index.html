@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="../../../../css/fonts.css" media="all">
 <link rel="stylesheet" href="../../../../css/main.css" media="all">
 
@@ -59,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">0 min read</span>
+    <span class="article-duration">41 min read</span>
     
 
     <h1 class="article-title">AOS chapter21 Nonparametric Curve Estimation</h1>
@@ -72,7 +77,1169 @@
       
 <script src="../../../../2021/05/09/aos-chapter21-nonparametric-curve-estimation/index_files/header-attrs/header-attrs.js"></script>
 
+<div id="TOC">
+<ul>
+<li><a href="#nonparametric-curve-estimation">21. Nonparametric Curve Estimation</a>
+<ul>
+<li><a href="#the-bias-variance-tradeoff">21.1 The Bias-Variance Tradeoff</a></li>
+<li><a href="#histograms">21.2 Histograms</a></li>
+<li><a href="#kernel-density-estimation">21.3 Kernel Density Estimation</a></li>
+<li><a href="#nonparametric-regression">21.4 Nonparametric Regression</a></li>
+<li><a href="#appendix-confidence-sets-and-bias">21.5 Appendix: Confidence Sets and Bias</a></li>
+<li><a href="#exercises">21.7 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
 
+<div id="nonparametric-curve-estimation" class="section level2">
+<h2>21. Nonparametric Curve Estimation</h2>
+<p>In this Chapter we discuss the nonparametric estimation of probability density functions and regression functions, which we refer to a <strong>curve estimation</strong>.</p>
+<p>In Chapter 8 we saw it is possible to consistently estimate a cumulative distribution function <span class="math inline">\(F\)</span> without making any assumptions about <span class="math inline">\(F\)</span>. If we want to estimate a probability density function <span class="math inline">\(f(x)\)</span> or a regression function <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span> the situation is different. We cannot estimate these functions consistently without making some smoothness assumptions. Correspondingly, we will perform some sort of smoothing operation with the data.</p>
+<p>A simple example of a density estimator is a <strong>histogram</strong>. To form a histogram estimator of a density <span class="math inline">\(f\)</span>, we divide the real line into disjoint sets called <strong>bins</strong>. The histogram estimator is a piecewise constant function where the height of the function is proportional to the number of observations in each bin. The number of bins is an example of a <strong>smoothing parameter</strong>. If we smooth too much (large bins) we get a highly biased estimator while if smooth too little (small bins) we get a highly variable estimator. Much of curve estimation is concerned with trying to optimally balance variance and bias.</p>
+<div id="the-bias-variance-tradeoff" class="section level3">
+<h3>21.1 The Bias-Variance Tradeoff</h3>
+<p>Let <span class="math inline">\(g\)</span> denote an unknown function and let <span class="math inline">\(\hat{g}_n\)</span> denote an estimator of <span class="math inline">\(g\)</span>. Bear in mind that <span class="math inline">\(\hat{g}_n(x)\)</span> is a random function evaluated at a point <span class="math inline">\(x\)</span>; <span class="math inline">\(\hat{g}_n\)</span> is random because it depends on the data. Indeed, we could be more explicit and write <span class="math inline">\(\hat{g}_n(x) = h_x(X_1, \dots, X_n)\)</span> to show that <span class="math inline">\(\hat{g}_n(x)\)</span> is a function of the data <span class="math inline">\(X_1, \dots, X_n\)</span> and that the function could be different for each <span class="math inline">\(x\)</span>.</p>
+<p>As a loss function, we will use the <strong>integrated square error (ISE)</strong>:</p>
+<p><span class="math display">\[ L(g, \hat{g}_n) = \int (g(u) - \hat{g}_n(u))^2 du\]</span></p>
+<p>The <strong>risk</strong> or <strong>mean integrated square error (MISE)</strong> is:</p>
+<p><span class="math display">\[ R(g, \hat{g}) = \mathbb{E}\left(L(g, \hat{g}) \right) \]</span></p>
+<p><strong>Lemma 21.1</strong>. The risk can be written as</p>
+<p><span class="math display">\[ R(g, \hat{g}) = \int b^2(x) dx + \int v(x) dx \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ b(x) = \mathbb{E}(\hat{g}_n(x)) - g(x) \]</span></p>
+<p>is the bias of <span class="math inline">\(\hat{g}_n(x)\)</span> at a fixed <span class="math inline">\(x\)</span> and</p>
+<p><span class="math display">\[ v(x) = \mathbb{V}(\hat{g}_n(x)) = \mathbb{E}\left( \hat{g}_n(x) - \mathbb{E}(\hat{g}_n(x))\right)^2 \]</span></p>
+<p>is the variance of <span class="math inline">\(\hat{g}_n(x)\)</span> at a fixed <span class="math inline">\(x\)</span>.</p>
+<p>In summary,</p>
+<p><span class="math display">\[ \text{RISK} = \text{BIAS}^2 + \text{VARIANCE} \]</span></p>
+<p>When the data is over-smoothed, the bias term is large and the variance is small. When the data are under-smoothed the opposite is true. This is called the <strong>bias-variance trade-off</strong>. Minimizing risk corresponds to balancing bias and variance.</p>
+</div>
+<div id="histograms" class="section level3">
+<h3>21.2 Histograms</h3>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID on <span class="math inline">\([0, 1]\)</span> with density <span class="math inline">\(f\)</span>. The restriction on <span class="math inline">\([0, 1]\)</span>is not crucial; we can always rescale the data to be on this interval. Let <span class="math inline">\(m\)</span> be an integer and define bins</p>
+<p><span class="math display">\[ B_1 = \left[0, \frac{1}{m} \right), B_2 = \left[\frac{1}{m}, \frac{2}{m} \right), \dots, B_m = \left[\frac{m - 1}{m}, 1 \right] \]</span></p>
+<p>Define the <strong>binwidth</strong> <span class="math inline">\(h = 1 / m\)</span>, let <span class="math inline">\(v_j\)</span> be the number of observations in <span class="math inline">\(B_j\)</span>, let <span class="math inline">\(\hat{p}_j = v_j / n\)</span> and let <span class="math inline">\(p_j = \int_{B_j} f(u) du\)</span>.</p>
+<p>The <strong>histogram estimator</strong> is defined by</p>
+<p><span class="math display">\[
+\hat{f}_n(x) = \begin{cases}
+\hat{p}_1 / h &amp; x \in B_1 \\
+\hat{p}_2 / h &amp; x \in B_2 \\
+\vdots &amp; \vdots\\
+\hat{p}_m / h &amp; x \in B_m
+\end{cases}
+\]</span></p>
+<p>which we can write more succinctly as</p>
+<p><span class="math display">\[ \hat{f}_n(x) = \frac{\hat{p}_j}{h} I(x \in B_j) \]</span></p>
+<p>To understand the motivation for this estimator, let <span class="math inline">\(p_j = \int_{B_j} f(u) du\)</span> and note that, for <span class="math inline">\(x \in B_j\)</span> and <span class="math inline">\(h\)</span> small,</p>
+<p><span class="math display">\[ \hat{f}_n(x) = \frac{\hat{p}_j}{h} \approx \frac{p_j}{h} = \frac{\int_{B_j} f(u) du}{h} \approx \frac{f(x) h}{h} = f(x) \]</span></p>
+<p>The mean and the variance of <span class="math inline">\(\hat{f}_n(x)\)</span> are given in the following Theorem.</p>
+<p><strong>Theorem 21.3</strong>. Consider fixed <span class="math inline">\(x\)</span> and fixed <span class="math inline">\(m\)</span>, and let <span class="math inline">\(B_j\)</span> be the bin containing <span class="math inline">\(x\)</span>. Then,</p>
+<p><span class="math display">\[ 
+\mathbb{E}(\hat{f}_n(x)) = \frac{p_j}{h} 
+\quad \text{and} \quad
+\mathbb{V}(\hat{f}_n(x)) = \frac{p_j (1 - p_j)}{nh^2}
+\]</span></p>
+<p>Let’s take a closer look at the bias-variance tradeoff. Consider some <span class="math inline">\(x \in B_j\)</span>. For any other <span class="math inline">\(u \in B_j\)</span>,</p>
+<p><span class="math display">\[ f(u) \approx f(x) + (u - x) f&#39;(x) \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ 
+\begin{align}
+p_j = \int_{B_j} f(u) du &amp;\approx \int_{B_j} (f(x) + (u - x) f&#39;(x)) du \\
+&amp;= f(x) h + \frac{1}{2} f&#39;(x) u^2|_{j}^{j+h} - xh f&#39;(x)\\
+&amp;= f(x) h + h f&#39;(x) \left(j + \frac{h}{2} - x \right)
+\end{align}
+\]</span></p>
+<p>Therefore, the bias <span class="math inline">\(b(x)\)</span> is</p>
+<p><span class="math display">\[
+\begin{align}
+b(x) &amp;= \mathbb{E}(\hat{f}_n(x)) - f(x) = \frac{p_j}{h} - f(x) \\
+&amp;\approx \frac{f(x) h + h f&#39;(x) \left(j + \frac{h}{2} - x \right)}{h} - f(x) \\
+&amp;= f&#39;(x) \left(j + \frac{h}{2} - x \right)
+\end{align}
+\]</span></p>
+<p>If <span class="math inline">\(\tilde{x}_j\)</span> is the center of the bin, then</p>
+<p><span class="math display">\[
+\begin{align}
+\int_{B_j} b^2(x) dx &amp;= \int_{B_j} (f&#39;(x))^2 \left(j + \frac{h}{2} - x \right)^2 dx \\
+&amp;\approx (f&#39;(\tilde{x}_j))^2 \int_{B_j} \left(j + \frac{h}{2} - x \right)^2 dx \\
+&amp;= (f&#39;(\tilde{x}_j))^2 \frac{h^3}{12}
+\end{align}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\begin{align}
+\int_0^1 b^2(x) dx &amp;= \sum_{j=1}^m \int_{B_j} b^2(x) dx \approx \sum_{j=1}^m (f&#39;(\tilde{x}_j))^2 \frac{h^3}{12} \\
+&amp;= \frac{h^2}{12} \sum_{j=1}^m h(f&#39;(\tilde{x}_j))^2 \approx \frac{h^2}{12} \int_0^1 h(f&#39;(\tilde{x}_j))^2 dx
+\end{align}
+\]</span></p>
+<p>Note that this increases as a function of <span class="math inline">\(h\)</span>.</p>
+<p>Now consider the variance. For <span class="math inline">\(h\)</span> small, <span class="math inline">\(1 - p_j \approx 1\)</span>, so</p>
+<p><span class="math display">\[
+\begin{align}
+v(x) &amp;\approx \frac{p_j}{nh^2}\\
+&amp;= \frac{f(x)h + h f&#39;(x)\left(j + \frac{h}{2} - x \right)}{nh^2} \\
+&amp;\approx \frac{f(x)}{nh}
+\end{align}
+\]</span></p>
+<p>when we keep the dominant term. So</p>
+<p><span class="math display">\[
+\int_0^1 v(x) dx \approx \frac{1}{nh}
+\]</span></p>
+<p>Note that this decreases with <span class="math inline">\(h\)</span>. Putting this all together, we get:</p>
+<p><strong>Theorem 21.4</strong>. Suppose that <span class="math inline">\(\int (f&#39;(u))^2 du &lt; \infty\)</span>. Then</p>
+<p><span class="math display">\[ R(\hat{f}_n, f) \approx \frac{h^2}{12} \int (f&#39;(u))^2 du + \frac{1}{nh}\]</span></p>
+<p>The value <span class="math inline">\(h^*\)</span> that minimizes this expression is</p>
+<p><span class="math display">\[ h^* = \frac{1}{n^{1/3}} \left( \frac{6}{\int (f&#39;(u))^2 du} \right)^{1/3}\]</span></p>
+<p>With this choice of binwidth,</p>
+<p><span class="math display">\[ R(\hat{f}_n, f) \approx \frac{C}{n^{2/3}} \]</span></p>
+<p>where <span class="math inline">\(C = (3/4)^{2/3} \left( \int (f&#39;(u))^2 du \right)^{1/3}\)</span>.</p>
+<p>Theorem 21.4 is quite revealing. We see that with an optimally chosen bandwidth, the MISE decreases to 0 at rate <span class="math inline">\(n^{-2/3}\)</span>. By comparison, most parametric estimators converge at rate <span class="math inline">\(n^{-1}\)</span>. The formula for optimal binwidth <span class="math inline">\(h^*\)</span> is of theoretical interest but it is not useful in practice since it depends on the unknown function <span class="math inline">\(f\)</span>.</p>
+<p>A practical way of choosing the binwidth is to estimate the risk function and minimize over <span class="math inline">\(h\)</span>. Recall that the loss function, which we now write as a function of <span class="math inline">\(h\)</span>, is</p>
+<p><span class="math display">\[
+\begin{align}
+L(h) &amp;= \int \left( \hat{f}_n(x) - f(x) \right)^2 dx \\
+&amp;= \int \hat{f}_n^2(x) dx - 2 \int \hat{f}_n(x) f(x) dx + \int f^2(x) dx
+\end{align}
+\]</span></p>
+<p>The last term does not depend on the binwidth <span class="math inline">\(h\)</span> so minimizing the risk is equivalent to minimizing the expected value of</p>
+<p><span class="math display">\[ J(h) = \int \hat{f}_n^2(x) dx - 2 \int \hat{f}_n(x) f(x) dx \]</span></p>
+<p>We shall refer to <span class="math inline">\(\mathbb{E}(J(h))\)</span> as the risk, although it differs from the true risk by the constant term <span class="math inline">\(\int f^2(x) dx\)</span>.</p>
+<p>The <strong>cross-validation estimator of risk</strong> is</p>
+<p><span class="math display">\[ \hat{J}(h) = \int \left( \hat{f}_n(x) \right)^2 dx - \frac{2}{n} \sum_{i=1}^n \hat{f}_{(-i)}(X_i)\]</span></p>
+<p>where <span class="math inline">\(\hat{f}_{(-i)}\)</span> is the histogram estimator obtained after removing the <span class="math inline">\(i\)</span>-th observation. We refer to <span class="math inline">\(\hat{J}(h)\)</span> as the cross-validation score or estimated risk.</p>
+<p><strong>Theorem 21.6</strong>. The cross-validation estimator is nearly unbiased:</p>
+<p><span class="math display">\[ \mathbb{E}(\hat{J}(x)) \approx \mathbb{E}(J(x)) \]</span></p>
+<p>In principle, we need to recompute the histogram <span class="math inline">\(n\)</span> times to compute <span class="math inline">\(\hat{J}(x)\)</span>. Moreover, this has to be done for all values of <span class="math inline">\(h\)</span>. Fortunately, there is a shortcut formula.</p>
+<p><strong>Theorem 21.7</strong>. The following identity holds:</p>
+<p><span class="math display">\[ \hat{J}(h) = \frac{2}{(n - 1)h} + \frac{n+1}{n-1} \sum_{j=1}^m \hat{p}_j^2 \]</span></p>
+<p>Next we want some sort of confidence set for <span class="math inline">\(f\)</span>. Suppose <span class="math inline">\(\hat{f}_n\)</span> is a histogram with <span class="math inline">\(m\)</span> bins and binwidth <span class="math inline">\(h = 1 / m\)</span>. We cannot realistically make confidence statements about the fine details of true density <span class="math inline">\(f\)</span>. Instead, we make confidence statements about <span class="math inline">\(f\)</span> at the resolution of the histogram. To this end, define</p>
+<p><span class="math display">\[ \tilde{f}(x) = \frac{p_j}{h} \quad \text{for } x \in B_j \]</span></p>
+<p>where <span class="math inline">\(p_j = \int_{B_j} f(u) du\)</span> which is a “histogramized” version of <span class="math inline">\(f\)</span>.</p>
+<p><strong>Theorem 21.9</strong>. Let <span class="math inline">\(m = m(n)\)</span> be the number of bins in the histogram <span class="math inline">\(\hat{f}_n\)</span>. Assume that <span class="math inline">\(m(n) \rightarrow \infty\)</span> and <span class="math inline">\(m(n) \log m / n \rightarrow 0\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>. Define</p>
+<p><span class="math display">\[
+\ell(x) = \left( \text{max} \left\{\sqrt{\hat{f}_n(x)} - c, 0\right\} \right)^2
+\quad \text{and} \quad
+u(x) = \left(\sqrt{\hat{f}_n(x)} + c \right)^2
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+c = \frac{z_{\alpha / (2 m)}}{2} \sqrt{\frac{m}{n}}
+\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[
+\lim_{n \rightarrow \infty} \mathbb{P} \left( \ell(x) \leq \tilde{f}(x) \leq u(x) \text{ for all } x \right) \geq 1 - \alpha
+\]</span></p>
+<p><strong>Proof</strong>. Here is an outline of the proof. A rigorous proof requires fairly sophisticated tools. From the central limit theorem, <span class="math inline">\(\hat{p}_j \approx N\left(p_j, p_j (1 - p_j) / n\right)\)</span>. By the delta method, <span class="math inline">\(\sqrt{\hat{p}_j} \approx N\left(\sqrt{p_j}, 1 / (4n)\right)\)</span>. Moreover, it can be shown that the <span class="math inline">\(\sqrt{\hat{p}_j}\)</span>’s are approximately independent. Therefore,</p>
+<p><span class="math display">\[ 2 \sqrt{n} \left( \sqrt{\hat{p}_j} - \sqrt{p_j} \right) \approx Z_j \]</span></p>
+<p>where <span class="math inline">\(Z_1, \dots, Z_m \sim N(0, 1)\)</span>. Let <span class="math inline">\(A\)</span> be the event that <span class="math inline">\(\ell(x) \leq \overline{f}(x) \leq u(x)\)</span> for all <span class="math inline">\(x\)</span>. So,</p>
+<p><span class="math display">\[
+\begin{align}
+A &amp;= \left\{ \ell(x) \leq \tilde{f}(x) \leq u(x) \text{ for all } x \right\} \\
+&amp;= \left\{ \sqrt{\ell(x)} \leq \sqrt{\tilde{f}(x)} \leq \sqrt{u(x)} \text{ for all } x \right\} \\
+&amp;= \left\{ \sqrt{\hat{f}_n(x)} - c \leq \sqrt{\tilde{f}(x)} \leq \sqrt{\hat{f}_n(x)} + c \text{ for all } x \right\} \\
+&amp;= \left\{ \max_x \left| \sqrt{\hat{f}_n(x)} - \sqrt{\tilde{f}(x)} \right| \leq c \right\}
+\end{align}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(A^c) &amp;= \mathbb{P} \left( \max_x \left| \sqrt{\hat{f}_n(x)} - \sqrt{\tilde{f}(x)} \right| &gt; c\right)
+= \mathbb{P} \left( \max_j \left| \sqrt{\frac{\hat{p}_j}{h}} - \sqrt{\frac{p_j}{h}} \right| &gt; c\right) \\
+&amp;= \mathbb{P} \left( \max_j \left| \sqrt{\hat{p}_j} - \sqrt{p_j} \right| &gt; c \sqrt{h} \right)
+= \mathbb{P} \left( \max_j 2 \sqrt{n} \left| \sqrt{\hat{p}_j} - \sqrt{p_j} \right| &gt; 2 c \sqrt{hn} \right) \\
+&amp;= \mathbb{P} \left( \max_j 2 \sqrt{n} \left| \sqrt{\hat{p}_j} - \sqrt{p_j} \right| &gt; z_{\alpha / (2m)} \right) \\
+&amp;\approx \mathbb{P} \left( \max_j \left| Z_j \right| &gt; z_{\alpha / (2m)} \right)
+ \leq \sum_{j=1}^m \mathbb{P} \left( \max_j \left| Z_j \right| &gt; z_{\alpha / (2m)} \right) \\
+&amp;= \sum_{j=1}^m \frac{\alpha}{m} = \alpha
+\end{align}
+\]</span></p>
+</div>
+<div id="kernel-density-estimation" class="section level3">
+<h3>21.3 Kernel Density Estimation</h3>
+<p>Histograms are discontinuous. <strong>Kernel density estimators</strong> are smoother and they converge faster to the true density than histograms.</p>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> denote the observed data, a sample from <span class="math inline">\(f\)</span>. In this chapter, a <strong>kernel</strong> is defined to be any smooth function <span class="math inline">\(K\)</span> such that <span class="math inline">\(K(x) \geq 0\)</span>, <span class="math inline">\(\int K(x) dx = 1\)</span>, <span class="math inline">\(\int x K(x) dx = 0\)</span> and <span class="math inline">\(\sigma_K^2 \equiv \int x^2 K(x) dx &gt; 0\)</span>. Two examples of kernels are the <strong>Epanechnikov kernel</strong></p>
+<p><span class="math display">\[ K(x) = \begin{cases}
+\frac{3}{4} \left(1 - x^2 / 5 \right) / \sqrt{5} &amp; \text{if } |x| &lt; \sqrt{5} \\
+0 &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<p>and the Gaussian (Normal) kernel <span class="math inline">\(K(x) = (2\pi)^{-1/2} e^{-x^2/2}\)</span>.</p>
+<p>Given a kernel <span class="math inline">\(K\)</span> and a positive number <span class="math inline">\(h\)</span>, called the <strong>bandwidth</strong>, the <strong>kernel density estimator</strong> is defined to be</p>
+<p><span class="math display">\[ \hat{f}(x) = \frac{1}{n} \sum_{i=1}^n \frac{1}{h} K \left( \frac{x - X_i}{h} \right) \]</span></p>
+<p>The kernel density estimator effectively puts a smoothed out lump of mass <span class="math inline">\(1 / n\)</span> over each data point <span class="math inline">\(X_i\)</span>. The bandwidth <span class="math inline">\(h\)</span> controls the amount of smoothing. When <span class="math inline">\(h\)</span> is close to 0, <span class="math inline">\(\hat{f}_n\)</span> consists of a set of spikes, one at each data point. The height of the spikes tends to infinity as <span class="math inline">\(h \rightarrow 0\)</span>. When <span class="math inline">\(h \rightarrow 0\)</span>, <span class="math inline">\(\hat{f}_n\)</span> tends to a uniform density.</p>
+<p>To construct a kernel density estimator, we need to choose a kernel <span class="math inline">\(K\)</span> and a bandwidth <span class="math inline">\(h\)</span>. It can be shown theoretically and empirically that the choice of <span class="math inline">\(K\)</span> is not crucial. However, the choice of bandwidth <span class="math inline">\(h\)</span> is very important. As with the histogram, we can make a theoretical statement about how the risk of the estimator depends on the bandwidth.</p>
+<p><strong>Theorem 21.13</strong>. Under weak assumptions on <span class="math inline">\(f\)</span> and <span class="math inline">\(K\)</span>,</p>
+<p><span class="math display">\[ R(f, \hat{f}_n) \approx \frac{1}{4} \sigma_K^4 h^4 \int \left(f&#39;&#39;(x)\right)^2 dx + \frac{\int K^2(x) dx}{nh} \]</span></p>
+<p>where <span class="math inline">\(\sigma_K^2 = \int x^2 K(x) dx\)</span>. The optimal bandwidth is</p>
+<p><span class="math display">\[ h^* = \frac{c_1^{-2/5} c_2^{1/5} c_3^{-1/5}}{n^{1/5}} \]</span></p>
+<p>where <span class="math inline">\(c_1 = \int x^2 K(x) dx\)</span>, <span class="math inline">\(c_2 = \int K(x)^2 dx\)</span> and <span class="math inline">\(c_3 = \int \left( f&#39;&#39;(x) \right)^2 dx\)</span>. With this choice of bandwidth,</p>
+<p><span class="math display">\[ R(f, \hat{f}_n) \approx \frac{c_4}{n^{4/5}} \]</span></p>
+<p>for some constant <span class="math inline">\(c_4 &gt; 0\)</span>.</p>
+<p><strong>Proof</strong>. Let</p>
+<p><span class="math display">\[ K_h(x, X) = \frac{1}{h} K\left( \frac{x - X}{h} \right)
+\quad \text{and} \quad
+\hat{f}_n(x) = \frac{1}{n} \sum_{i=1}^n K_h(x, X_i)
+\]</span></p>
+<p>Thus, <span class="math display">\[
+\begin{align}
+\mathbb{E}[\hat{f}_n(x)] &amp;= \mathbb{E}[K_h(x, X)] \\
+\mathbb{V}[\hat{f}_n(x)] &amp;= \frac{1}{n} \mathbb{V}[K_h(x, X)]
+\end{align}
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[K_h(x, X)] &amp;= \int \frac{1}{h} K\left( \frac{x - t}{h} \right) f(t) dt \\
+&amp;= \int K(u) f(x - hu) du \\
+&amp;= \int K(u) \left[ f(x) - hu f&#39;(x) + \frac{1}{2} h^2u^2 f&#39;&#39;(x) + \dots \right] du \\
+&amp;= f(x) + \frac{1}{2} h^2 f&#39;&#39;(x) \int u^2 K(u) du + \dots
+\end{align}
+\]</span></p>
+<p>since <span class="math inline">\(\int K(u) du = 1\)</span> and <span class="math inline">\(\int u K(u) du = 0\)</span>. The bias is</p>
+<p><span class="math display">\[ \mathbb{E}[K_h(x, X)] - f(x) \approx \frac{1}{2} \sigma_K^2 h^2 f&#39;&#39;(x) \]</span></p>
+<p><span class="math display">\[\begin{align}
+\mathbb{V}[K_h(x, X)]&amp;\approx\int\left(\frac{1}{h} K\left( \frac{x - t}{h} \right)-\frac{1}{2} \sigma_K^2 h^2 f&#39;&#39;(x)-f(x)\right)^2f(t)dt\\
+&amp;=h\int\left(\frac{1}{h}K\left( u \right)-\frac{1}{2} \sigma_K^2 h^2 f&#39;&#39;(x)-f(x)\right)^2f(x-hu)du\\
+\end{align}\]</span></p>
+<p>By a similar calculation,</p>
+<p><span class="math display">\[ \mathbb{V}[\hat{f}_n(x)] \approx \frac{f(x) \int K^2(u) du}{n h_n} \]</span></p>
+<p>The second result follows from integrating the bias squared plus variance.</p>
+<p>We see that kernel estimators converge at rate <span class="math inline">\(n^{-4/5}\)</span> while histograms converge at rate <span class="math inline">\(n^{-2/3}\)</span>. It can be shown that, under weak assumptions, there does not exist a nonparametric estimator that converges faster than <span class="math inline">\(n^{-4/5}\)</span>.</p>
+<p>The expression for <span class="math inline">\(h^*\)</span> depends on the unknown density <span class="math inline">\(f\)</span> which makes the result of little practical use. As with the histograms, we shall use cross-validation to find a bandwidth. Thus, we estimate the risk (up to a constant) by</p>
+<p><span class="math display">\[ \hat{J}(h) = \int \hat{f}^2(x) dx - 2 \frac{1}{n} \sum_{i=1}^n \hat{f}_{-i}(X_i) \]</span></p>
+<p>where <span class="math inline">\(\hat{f}_{-i}\)</span> is the kernel density estimator after omitting the <span class="math inline">\(i\)</span>-th observation.</p>
+<p><strong>Theorem 21.14</strong>. For any <span class="math inline">\(h &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{E} \left[ \hat{J}(h) \right] = \mathbb{E} \left[ J(h) \right] \]</span></p>
+<p>Also,</p>
+<p><span class="math display">\[ \hat{J}(h) \approx \frac{1}{hn^2}\sum_{i, j} K^* \left( \frac{X_i - X_j}{h} \right) + \frac{2}{nh} K(0) \]</span></p>
+<p>where <span class="math inline">\(K^*(x) = K^{(2)}(x) - 2 K(x)\)</span> and <span class="math inline">\(K^{(2)}(z) = \int K(z - y) K(y) dy\)</span>. In particular, if <span class="math inline">\(K\)</span> is a <span class="math inline">\(N(0, 1)\)</span> Gaussian kernel then <span class="math inline">\(K^{(2)}(z)\)</span> is the <span class="math inline">\(N(0, 2)\)</span> density.</p>
+<p>We then choose the bandwidth <span class="math inline">\(h_n\)</span> that maximizes <span class="math inline">\(\hat{J}(h)\)</span>. A justification for this method is given by the following remarkable theorem due to Stone.</p>
+<p><strong>Theorem 21.15 (Stone’s Theorem)</strong>. Suppose that <span class="math inline">\(f\)</span> is bounded. Let <span class="math inline">\(\hat{f}_h\)</span> denote the kernel estimator with bandwidth <span class="math inline">\(h\)</span> and let <span class="math inline">\(h_n\)</span> denote the bandwidth chosen by cross-validation. Then,</p>
+<p><span class="math display">\[ \frac{\int \left( f(x) - \hat{f}_{h_n}(x)\right)^2 dx}{\inf_h \int \left( f(x) - \hat{f}_h(x) \right)^2 dx} \xrightarrow{\text{P}} 1\]</span></p>
+<p>To construct confidence bands, we use something similar to histograms although the details are more complicated. The version described here is from Chaudhuri and Marron (1999).</p>
+<p><strong>Confidence Band for Kernel Density Estimator</strong></p>
+<ol style="list-style-type: decimal">
+<li>Choose an evenly spaced grid of points <span class="math inline">\(\mathcal{V} = \{ v_1, \dots, v_N \}\)</span>. For every <span class="math inline">\(v \in \mathcal{V}\)</span>, define</li>
+</ol>
+<p><span class="math display">\[ Y_i(v) = \frac{1}{h} K \left( \frac{v - X_i}{h} \right) \]</span></p>
+<p>Note that <span class="math inline">\(\hat{f}_n(v) = \overline{Y}_n(v)\)</span>, the average of the <span class="math inline">\(Y_i(v)\)</span>’s.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Define</li>
+</ol>
+<p><span class="math display">\[ \text{se}(v) = \frac{s(v)}{\sqrt{n}} \]</span></p>
+<p>where <span class="math inline">\(s^2(v) = (n - 1)^{-1} \sum_{i=1}^n ( Y_i(v) - \overline{Y}_n(v) )^2\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Compute the effective sample size</li>
+</ol>
+<p><span class="math display">\[ \text{ESS}(v) = \frac{\sum_{i=1}^n K\left( \frac{v - X_i}{h} \right)}{K(0)} \]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Let <span class="math inline">\(\mathcal{V}^* = \left\{ v \in \mathcal{V} : \text{ESS}(v) \geq 5 \right\}\)</span>. Now define the number of independent blocks <span class="math inline">\(m\)</span> by</li>
+</ol>
+<p><span class="math display">\[ \frac{1}{m} = \frac{\overline{\text{ESS}}}{n} \]</span></p>
+<p>where <span class="math inline">\(\overline{\text{ESS}}\)</span> is the average of <span class="math inline">\(\text{ESS}\)</span> over <span class="math inline">\(\mathcal{V}^*\)</span>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ q = \Phi^{-1} \left( \frac{1 + (1 + \alpha)^{1/m}}{2} \right) \]</span></p>
+<p>and define</p>
+<p><span class="math display">\[ \ell(v) = \text{max} \left\{ \hat{f}_n(v) - q \cdot \text{se}(v), 0 \right\}
+\quad \text{and} \quad
+u(v) = \hat{f}_n(v) + q \cdot \text{se}(v)\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \mathbb{P} \Big\{ \ell(v) \leq f(v) \leq u(v) \text{ for all } v \Big\} \approx 1 - \alpha \]</span></p>
+<p>Suppose now that the data <span class="math inline">\(X_i = \{ X_{i1}, \dots, X_{id} \}\)</span> are <span class="math inline">\(d\)</span>-dimensional. The kernel estimator can easily be generalized to <span class="math inline">\(d\)</span> dimensions. Let <span class="math inline">\(h = (h_1, \dots, h_d)\)</span> be a vector of bandwidths and define</p>
+<p><span class="math display">\[ \hat{f}_n(x) = \frac{1}{n} \sum_{i=1}^n K_h(x - X_i) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ K_h(x - X_i) = \frac{1}{n \prod_{j=1}^d h_j} \left\{ \prod_{j=1}^d K \left( \frac{x_i - X_{ij}}{h_j} \right) \right\} \]</span></p>
+<p>For simplicity, we might take <span class="math inline">\(h_j = s_j h\)</span> where <span class="math inline">\(s_j\)</span> is the standard deviation of the <span class="math inline">\(j\)</span>-th variable. There is now only a single bandwidth to choose. Using calculations like the ones in the one-dimensional case, the risk is given by</p>
+<p><span class="math display">\[
+R(f, \hat{f}_n) 
+\approx \frac{1}{4} \sigma_K^4 \left[ \sum_{j=1}^d h_j^4 \int f_{jj}^2(x) dx + \sum_{j \neq k} h_j^2 h_k^2 \int f_{jj}(x) f_{kk}(x) dx \right] + \frac{\left( \int K^2(x) dx\right)^d}{n \prod_{j=1}^d h_j}
+\]</span></p>
+<p>where <span class="math inline">\(f_{jj}\)</span> is the second partial derivative of <span class="math inline">\(f\)</span>.</p>
+<p>The optimal bandwidth satisfies <span class="math inline">\(h_i \approx c_1 n^{-1/(4 + d)}\)</span> leading to a risk of order <span class="math inline">\(n^{-4/(4+d)}\)</span>. From this fact, we see that the risk increases quickly with dimension, a problem usually called the <strong>curse of dimensionality</strong>. To get a sense of how serious this problem is, consider the following table from Silverman (1986) which shows the sample size required to ensure a relative mean squared error less than 0.1 at 0 when the density is a multivariate normal and the optimal bandwidth is selected.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Sample Size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>19</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>67</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>223</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>768</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2790</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>10700</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>43700</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>187000</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>842000</td>
+</tr>
+</tbody>
+</table>
+<p>This is bad news indeed. it says that having 842,000 observations in a ten dimensional problem is really like having 4 observations.</p>
+</div>
+<div id="nonparametric-regression" class="section level3">
+<h3>21.4 Nonparametric Regression</h3>
+<p>Consider pairs of points <span class="math inline">\((x_1, Y_1), \dots, (x_n, Y_n)\)</span> related by</p>
+<p><span class="math display">\[ Y_i = r(x_i) + \epsilon_i \]</span></p>
+<p>where <span class="math inline">\(\mathbb{E}(\epsilon_i) = 0\)</span> and we are treating the <span class="math inline">\(x_i\)</span>’s as fixed. In nonparametric regression, we want to estimate the regression function <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span>.</p>
+<p>There are many nonparametric regression estimators. Most involve estimating <span class="math inline">\(r(x)\)</span> by taking some sort of weighted average of the <span class="math inline">\(Y_i\)</span>’s, giving higher weight to those points near <span class="math inline">\(x\)</span>. In particular, the <strong>Nadaraya-Watson kernel estimator</strong> is defined by</p>
+<p><span class="math display">\[ \hat{r}(x) = \sum_{i=1}^n w_i(x) Y_i\]</span></p>
+<p>where the weights <span class="math inline">\(w_i(x)\)</span> are given by</p>
+<p><span class="math display">\[ w_i(x) = \frac{K\left(\frac{x - x_i}{h}\right)}{\sum_{j=1}^n K\left(\frac{x - x_j}{h}\right) } \]</span></p>
+<p>The form of this estimators comes from first estimating the joint density <span class="math inline">\(f(x, y)\)</span> using kernel density estimation and then inserting this into:</p>
+<p><span class="math display">\[ r(x) = \mathbb{E}(Y | X = x) = \int y f(y | x) dy = \frac{\int y f(x, y) dy}{\int f(x, y) dy} \]</span></p>
+<p><strong>Theorem 21.19</strong>. Suppose that <span class="math inline">\(\mathbb{V}(\epsilon_i) = \sigma^2\)</span>. The risk of the Nadaraya-Watson kernel estimator is</p>
+<p><span class="math display">\[ R(\hat{r}_n, r) \approx \frac{h^4}{4} 
+\left( \int x^2 K^2(x) dx\right)^4
+\int \left( r&#39;&#39;(x) + 2 r&#39;(x) \frac{f&#39;(x)}{f(x)} \right)^2 dx
++ \int \frac{\sigma^2 \int K^2(x) dx}{nh f(x)} dx
+\]</span></p>
+<p>The optimal bandwidth decreases at rate <span class="math inline">\(n^{-1/5}\)</span> and with this choice the risk decreases at rate <span class="math inline">\(n^{-4/5}\)</span>.</p>
+<p>In practice, to choose the bandwidth <span class="math inline">\(h\)</span> we minimize the cross-validation score</p>
+<p><span class="math display">\[ \hat{J}(h) = \sum_{i=1}^n (Y_i - \hat{r}_{-i}(x_i))^2\]</span></p>
+<p>where <span class="math inline">\(\hat{r}_{-i}\)</span> is the estimator we get by omitting the <span class="math inline">\(i\)</span>-th variable. An approximation to <span class="math inline">\(\hat{J}\)</span> is given by</p>
+<p><span class="math display">\[ \hat{J}(h) \approx \sum_{i=1}^n (Y_i - \hat{r}(x_i))^2 \left( 1 - \frac{K(0)}{\sum_{j=1}^n K \left( \frac{x_i - x_j}{h} \right)} \right)^{-2}\]</span></p>
+<p>The procedure for finding confidence bands is similar to that for density estimation. However, we first need to estimate <span class="math inline">\(\sigma^2\)</span>. Suppose that the <span class="math inline">\(x_i\)</span>’s are ordered. Assuming <span class="math inline">\(r(x)\)</span> is smooth, we have <span class="math inline">\(r(x_{i+1}) - r(x) \approx 0\)</span> and hence</p>
+<p><span class="math display">\[Y_{i+1} - Y_i = \left[ r(x_{i+1} + \epsilon_{i+1} \right] - \left[ r(x_{i} + \epsilon_{i} \right] \approx \epsilon_{i+1} - \epsilon_i \]</span></p>
+<p>and hence</p>
+<p><span class="math display">\[ \mathbb{V}(Y_{i+1} - Y_i) \approx \mathbb{V}(\epsilon_{i+1} - \epsilon{i}) = \mathbb{V}(\epsilon_{i+1}) + \mathbb{V}(\epsilon_i) = 2\sigma^2\]</span></p>
+<p>We can thus use the average of the differences of consecutive <span class="math inline">\(Y_i\)</span>’s to estimate <span class="math inline">\(\sigma^2\)</span>. Define</p>
+<p><span class="math display">\[ \hat{\sigma}^2 = \frac{1}{2(n - 1)} \sum_{i=1}^{n-1} (Y_{i+1} - Y_i)^2\]</span></p>
+<p><strong>Confidence Bands for Kernel Regression</strong></p>
+<p>Follow the same procedure as for kernel density estimation, except change the defition of the standard error <span class="math inline">\(\text{se}(v)\)</span> to</p>
+<p><span class="math display">\[ \text{se}(v) = \hat{\sigma} \sqrt{\sum_{i=1}^n w^2_i(v)} \]</span></p>
+<p>The extension to multiple regressors <span class="math inline">\(X = (X_1, \dots, X_p)\)</span> is straightforward. As with kernel density estimation we just replace the kernel with a multivariate kernel. However, the same caveats about the curse of dimensionality apply.</p>
+<p>In some cases, we may consider putting some restrictions on the regression function which will then reduce the curse of dimensionality. For example, <strong>additive regression</strong> is based on the model</p>
+<p><span class="math display">\[ Y = \sum_{j=1}^p r_j(X_j) + \epsilon\]</span></p>
+<p>Now we only need to fit <span class="math inline">\(p\)</span> one-dimensional functions. The model can be enriched by adding various interactions, for example</p>
+<p><span class="math display">\[ Y = \sum_{j=1}^p r_j(X_j) + \sum_{j &lt; k} r_{jk}(X_j X_k) + \epsilon\]</span></p>
+<p>Additive models are usually fit by an algorithm called <strong>backfitting</strong>.</p>
+<p><strong>Backfitting</strong></p>
+<ol style="list-style-type: decimal">
+<li>Initialize <span class="math inline">\(r_1(x_1), \dots, r_p(x_p)\)</span>.</li>
+<li>For <span class="math inline">\(j = 1, \dots, p\)</span>:</li>
+</ol>
+<ul>
+<li>Let <span class="math inline">\(\epsilon_i = Y_i - \sum_{s \neq j} r_s(x_i)\)</span><br />
+</li>
+<li>Let <span class="math inline">\(r_j\)</span> be the function estimate obtained by regressing the <span class="math inline">\(\epsilon_i\)</span>’s on the <span class="math inline">\(j\)</span>-th covariate.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>If converged, stop. Otherwise, go back to step 2.</li>
+</ol>
+<p>Additive models have the advantage that they avoid the curse of dimensionality and they can be fit quickly but they have one disadvantage: the model is not fully nonparametric. In other words, the true regression function <span class="math inline">\(r(x)\)</span> may not be of the fitted form.</p>
+</div>
+<div id="appendix-confidence-sets-and-bias" class="section level3">
+<h3>21.5 Appendix: Confidence Sets and Bias</h3>
+<p>The confidence bands we computed are for the smoothed function, rather than the density function or regression function. For example, the confidence band for a kernel density estimate with bandwidth <span class="math inline">\(h\)</span> is a band for the function one gets by smoothing the true function with a kernel with the same bandwidth. Getting a confidence band for the true function is complicated for reasons we now explain.</p>
+<p>First, let’s review the parametric case. When estimating a scalar quantity <span class="math inline">\(\theta\)</span> with an estimator <span class="math inline">\(\hat{\theta}\)</span>, the usual confidence interval is of the form <span class="math inline">\(\hat{\theta} \pm z_{\alpha / 2} s_n\)</span>, where <span class="math inline">\(\hat{\theta}\)</span> is the maximum likelihood estimator and <span class="math inline">\(s_n = \sqrt{\mathbb{V}(\hat{\theta})}\)</span> is the estimated standard error of the estimator. Under standard regularity conditions, <span class="math inline">\(\hat{\theta} \approx N(\theta, s_n)\)</span> and</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} \mathbb{P} \left( \hat{\theta} - z_{\alpha / 2} s_n \leq \theta \leq \hat{\theta} + z_{\alpha / 2} s_n \right) = 1 - \alpha \]</span></p>
+<p>But let’s take a closer look.</p>
+<p>Let <span class="math inline">\(b_n = \mathbb{E}(\hat{\theta}_n) - \theta\)</span>. This is a bias term we usually ignore in large sample calculations, but let’s keep track of it; <span class="math inline">\(\hat{\theta} \approx N(\theta + b_n, s_n)\)</span>. The coverage of the usual confidence interval is</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}\left(\hat{\theta} - z_{\alpha / 2} s_n \leq \theta \leq \hat{\theta} + z_{\alpha / 2} s_n \right)
+&amp;= \mathbb{P}\left(- z_{\alpha / 2}  \leq \frac{\theta - \hat{\theta}}{s_n} \leq z_{\alpha / 2}\right) \\
+&amp;= \mathbb{P}\left(- z_{\alpha / 2}  \leq \frac{N(b_n, s_n)}{s_n} \leq z_{\alpha / 2}\right) \\
+&amp;= \mathbb{P}\left(- z_{\alpha / 2}  \leq N\left(\frac{b_n}{s_n}, 1\right) \leq z_{\alpha / 2}\right)
+\end{align}
+\]</span></p>
+<p>In a well-behaved parametric model, <span class="math inline">\(s_n\)</span> is of size <span class="math inline">\(n^{-1/2}\)</span> and <span class="math inline">\(b_n\)</span> is of size <span class="math inline">\(n^{-1}\)</span>. Hence, <span class="math inline">\(b_n / s_n \rightarrow 0\)</span> and the last probability statement becomes <span class="math inline">\(\mathbb{P}\left(- z_{\alpha / 2} \leq N\left(0, 1\right) \leq z_{\alpha / 2}\right) = 1 - \alpha\)</span>. What makes parametric confidence intervals have the right coverage is the fact that <span class="math inline">\(b_n / s_n \rightarrow 0\)</span>.</p>
+<p>The situation is more complicated for kernel methods. Consider estimating a density <span class="math inline">\(f(x)\)</span> at a single point <span class="math inline">\(x\)</span> with a kernel density estimator. Since <span class="math inline">\(\hat{f}(x)\)</span> is a sum of iid random variables, the central limit theorem implies that</p>
+<p><span class="math display">\[ \hat{f}(x) \approx N \left( f(x) + b_n(x), \frac{c_2 f(x)}{nh} \right) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ b_n(x) = \frac{1}{2} h^2 f&#39;&#39;(x) c_1 \]</span></p>
+<p>is the bias, <span class="math inline">\(c_1 = \int x^2 K(x) dx\)</span>, and <span class="math inline">\(c_2 = \int K^2(x) dx\)</span>. The estimated standard error is</p>
+<p><span class="math display">\[ s_n(x) = \left\{ \frac{c_2 \hat{f}(x)}{nh} \right\}^{1/2} \]</span></p>
+<p>Suppose we use the usual interval <span class="math inline">\(\hat{f}(x) \pm z_{\alpha/2} s_n(x)\)</span>. Arguing as before, the coverage is approximately</p>
+<p><span class="math display">\[ \mathbb{P}\left(-z_{\alpha/2} \leq N\left(\frac{b_n(x)}{s_n(x)}, 1\right) \leq z_{\alpha/2} \right) \]</span></p>
+<p>The optimal bandwidth is of the form <span class="math inline">\(h^* = cn^{-1/5}\)</span> for some constant <span class="math inline">\(c\)</span>. if we plug <span class="math inline">\(h = cn^{-1/5}\)</span> into the definitions of <span class="math inline">\(b_n(x)\)</span> and <span class="math inline">\(s_n(x)\)</span> we see that <span class="math inline">\(b_n(x) / s_n(x)\)</span> does not tend to 0. Thus, the confidence interval will have coverage less than <span class="math inline">\(1 - \alpha\)</span>.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>21.7 Exercises</h3>
+<p><strong>Exercise 21.7.1</strong>. Let <span class="math inline">\(X_1, \dots, X_n \sim f\)</span> and let <span class="math inline">\(\hat{f}_n\)</span> be the kernel density estimator using the boxcar kernel:</p>
+<p><span class="math display">\[ K(x) = \begin{cases}
+1 &amp; \text{if } -\frac{1}{2} &lt; x &lt; \frac{1}{2} \\
+0 &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<p><strong>(a)</strong> Show that</p>
+<p><span class="math display">\[\mathbb{E}(\hat{f}(x)) = \frac{1}{h} \int_{x-(h/2)}^{x+(h/2)} f(y) dy\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\mathbb{V}(\hat{f}(x)) = \frac{1}{nh^2} \left[ \int_{x-(h/2)}^{x+(h/2)} f(y) dy  - \left( \int_{x-(h/2)}^{x+(h/2)} f(y) dy \right)^2\right]\]</span></p>
+<p><strong>(b)</strong> Show that if <span class="math inline">\(h \rightarrow 0\)</span> and <span class="math inline">\(nh \rightarrow \infty\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span> then <span class="math inline">\(f_n(x) \xrightarrow{\text{P}} f(x)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> We have:</p>
+<p><span class="math display">\[ \hat{f}(x) = \frac{1}{n} \sum_{i=1}^n \frac{1}{h} K\left( \frac{x - X_i}{h} \right) = \frac{1}{n} \sum_{i=1}^n K_h(x, X_i)\]</span></p>
+<p>where <span class="math inline">\(K_h(x, X_i) = \frac{1}{h} K\left( \frac{x - X_i}{h} \right)\)</span>. Also note that the kernel only assumes values 0 or 1, so <span class="math inline">\(K_h^2(x, X_i) = \frac{1}{h} K_h(x, X_i)\)</span>.</p>
+<p>Then</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[K_h(x, X)] &amp;= \int \frac{1}{h} K\left( \frac{x - t}{h} \right) f(t) dt \\
+&amp;= \frac{1}{h} \int I \left(t - \frac{h}{2} &lt; x &lt; t + \frac{h}{2} \right) f(t) dt \\
+&amp;= \frac{1}{h} \int_{x - (h/2)}^{x + (h/2)} f(t) dt
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}[K_h(x, X)] &amp;= \mathbb{E}[K_h^2(x, X)] - \mathbb{E}[K_h(x, X)]^2 \\
+&amp;= \frac{1}{h} \mathbb{E}[K_h(x, X)] - \mathbb{E}[K_h(x, X)]^2 \\
+&amp;= \frac{1}{h} \left(\frac{1}{h} \int_{x - (h/2)}^{x + (h/2)} f(t) dt - \left(\frac{1}{h} \int_{x - (h/2)}^{x + (h/2)} f(t) dt \right)^2 \right)
+\end{align}
+\]</span></p>
+<p>therefore</p>
+<p><span class="math display">\[\mathbb{E}(\hat{f}(x)) = \mathbb{E} \left( \frac{1}{n} \sum_{i=1}^n K_h(x, X) \right) = \frac{1}{n} \sum_{i=1}^n  \mathbb{E} \left( K_h(x, X)  \right) = \frac{1}{h} \int_{x - (h/2)}^{x + (h/2)} f(y) dy \]</span></p>
+<p><span class="math display">\[\mathbb{V}(\hat{f}(x)) = \mathbb{V}\left[\frac{1}{n}\sum_{i=1}^n K_h(x, X)\right] = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n K_h(x, X)\right]^2-\left(\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n K_h(x, X)\right]\right)^2 \\
+= \frac{1}{nh^2} \left[ \int_{x-(h/2)}^{x+(h/2)} f(y) dy  - \left( \int_{x-(h/2)}^{x+(h/2)} f(y) dy \right)^2\right] \]</span></p>
+<p><strong>(b)</strong> From theorem 21.13, the risk in approximating with this kernel is</p>
+<p><span class="math display">\[ R(f, \hat{f}_n) \approx \frac{1}{4} \sigma_K^4 h^4 \int (f&#39;&#39;(x))^2 dx + \frac{\int K^2(x)dx}{nh} \]</span></p>
+<p>where <span class="math inline">\(\sigma_K^2 = \int x^2 K(x) dx = \int_{-1/2}^{1/2} x^2 dx = 1/12\)</span>, and <span class="math inline">\(\int K^2(x) dx = \int_{-1/2}^{1/2} dx = 1\)</span>. As <span class="math inline">\(h \rightarrow 0\)</span> and <span class="math inline">\(nh \rightarrow \infty\)</span>, the first term goes to 0 and the second term also goes to 0, so the risk goes to 0.</p>
+<p>But</p>
+<p><span class="math display">\[ R(f, \hat{f}_n) = \int b^2(x) dx + \int v(x) dx \]</span></p>
+<p>and since the risk goes to 0, both integrals (which are non-negative) go to 0:</p>
+<p><span class="math display">\[ b^2(x) = (\mathbb{E}(\hat{f}_n(x) - f(x)))^2 \rightarrow 0\]</span></p>
+<p><span class="math display">\[ v(x) = \mathbb{E}(\hat{f}_n(x) - f(x))^2 \rightarrow 0\]</span></p>
+<p>So <span class="math inline">\(\mathbb{E}((\hat{f}_n(x) - f(x))^2) = v(x) - b^2(x) \rightarrow 0\)</span>, which implies convergence in quadratic means – which implies convergence in probability.</p>
+<p><strong>Exercise 21.7.2</strong>. Get the data on fragments of glass collected in forensic work. You need to download the MASS library for R then:</p>
+<pre><code>library(MASS)
+data(fgl)
+x &lt;- fgl[[1]]
+help(fgl)</code></pre>
+<p>The data are also on my website. Estimate the density of the first variable (refractive index) using a histogram and use a kernel density estimator. Use cross-validation to choose the amount of smoothing. Experiment with different binwidths and bandwidths. Comment on the similarities and differences. Construct 95% confidence bands for your estimators.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/glass.txt&#39;, delim_whitespace=True)
+X = data[&#39;RI&#39;]
+X</code></pre>
+<pre><code>1      3.01
+2     -0.39
+3     -1.82
+4     -0.34
+5     -0.58
+       ... 
+210   -1.77
+211   -1.15
+212    2.65
+213   -1.49
+214   -0.89
+Name: RI, Length: 214, dtype: float64</code></pre>
+<p>Let’s use the estimated risks to select a histogram number of bins and a KDE bandwidth.</p>
+<p>Histogram estimated risk:</p>
+<p><span class="math display">\[ \hat{J}(h) = \frac{2}{(n - 1)h} + \frac{n+1}{n-1} \sum_{j=1}^m \hat{p}_j^2 \]</span></p>
+<pre class="python"><code>from itertools import product
+from scipy.stats import norm
+
+
+def rescale(X):
+    &quot;&quot;&quot;
+    Return X rescaled between 0 and 1
+    &quot;&quot;&quot;
+    X_min, X_max = X.min(), X.max()
+    if X_max == X_min:
+        return X - X_min
+    return (X - X_min) / (X_max - X_min)
+
+
+def j_hat_histogram(X, m):
+    &quot;&quot;&quot;
+    Calculate the approximated estimated histogram risk J_hat:
+    
+       \hat{J}(h) = \frac{2}{(n - 1)h} + \frac{n + 1}{n - 1} \sum_{j=1}^m \hat{p}_j^2
+    
+    where:
+      n is the dataset size
+      m is the number of bins
+      h is the binwidth for the rescaled [0, 1] dataset
+      \hat{p}_j^2 is the number of elements in the $j$-th bin
+    &quot;&quot;&quot;
+    n = len(X)
+    h = 1 / m
+    xx = rescale(X)
+    phat = np.array([np.sum(np.where((j / m &lt;= xx) &amp; (xx &lt; (j + 1) / m), 1, 0)) for j in range(m)])
+    phat[-1] += np.sum(np.where(xx == 1, 1, 0))
+    phat = phat / n
+    return 2 / ((n - 1) * h) + (n + 1) / (n - 1) * np.sum(phat **2)</code></pre>
+<p>KDE estimated risk:</p>
+<p><span class="math display">\[ \hat{J}(h) = \frac{1}{hn^2}\sum_{i, j} K^* \left( \frac{X_i - X_j}{h} \right) + \frac{2}{nh} K(0) \]</span></p>
+<p>Histogram confidence bands (theorem 21.9):</p>
+<p><span class="math display">\[
+\ell(x) = \left( \text{max} \left\{\sqrt{\hat{f}_n(x)} - c, 0\right\} \right)^2
+\quad \text{and} \quad
+u(x) = \left(\sqrt{\hat{f}_n(x)} + c \right)^2
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+c = \frac{z_{\alpha / (2 m)}}{2} \sqrt{\frac{m}{n}}
+\]</span></p>
+<pre class="python"><code>def j_hat_kde(X, h):
+    &quot;&quot;&quot;
+    Calculate the approximated estimated KDE risk J_hat for a N(0, 1) Gaussian kernel
+    
+      \hat{J}(h) = \frac{1}{hn^2}\sum_{i, j} K^* \left( \frac{X_i - X_j}{h} \right) + \frac{2}{nh} K(0)
+      
+    where:
+      n is the dataset size
+      h is the binwidth for the rescaled [0, 1] dataset
+      K^* is K^{(2)}(x) - 2 K(x), and K^{(2)} is the convolved kernel, K^{(2)}(z) = \int K(z - y) K(y) dy
+      K is the original kernel
+    &quot;&quot;&quot;
+    n = len(X)
+    Kstar_args = np.array([X.iloc[i] - X.iloc[j] for i, j in product(range(n), range(n))]) / h
+    sum_value = np.sum(norm.pdf(Kstar_args, loc=0, scale=2) - 2 * norm.pdf(Kstar_args))
+    return sum_value / (h * n * n) + 2 * norm.pdf(0) / (n * h)</code></pre>
+<pre class="python"><code>def create_histogram(X, m, alpha):
+    n = len(X)
+    X_min, X_max = X.min(), X.max()
+    xx = rescale(X)
+    phat = np.array([np.sum(np.where((j / m &lt;= xx) &amp; (xx &lt; (j + 1) / m), 1, 0)) for j in range(m)])
+    phat[-1] += np.sum(np.where(xx == 1, 1, 0))
+    z = norm.ppf(1 - alpha / (2 * m))
+    c = z * np.sqrt(m / n) / 2
+    
+    def get_bin(t):
+        return np.maximum(np.minimum(np.floor(m * (t - X_min) / (X_max - X_min)).astype(int), m - 1), 0)
+    
+    def get_values(t):
+        x = np.where((t &gt;= X_min) &amp; (t &lt;= X_max), phat[get_bin(t)], 0)
+        lower = (np.maximum(np.sqrt(x) - c, 0))**2
+        upper = (np.sqrt(x) + c)**2
+        return x, lower, upper
+    
+    return get_values</code></pre>
+<p>KDE confidence bands:</p>
+<ol style="list-style-type: decimal">
+<li>Choose an evenly spaced grid of points <span class="math inline">\(\mathcal{V} = \{ v_1, \dots, v_N \}\)</span>. For every <span class="math inline">\(v \in \mathcal{V}\)</span>, define</li>
+</ol>
+<p><span class="math display">\[ Y_i(v) = \frac{1}{h} K \left( \frac{v - X_i}{h} \right) \]</span></p>
+<p>Note that <span class="math inline">\(\hat{f}_n(v) = \overline{Y}_n(v)\)</span>, the average of the <span class="math inline">\(Y_i(v)\)</span>’s.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Define</li>
+</ol>
+<p><span class="math display">\[ \text{se}(v) = \frac{s(v)}{\sqrt{n}} \]</span></p>
+<p>where <span class="math inline">\(s^2(v) = (n - 1)^{-1} \sum_{i=1}^n ( Y_i(v) - \overline{Y}_n(v) )^2\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Compute the effective sample size</li>
+</ol>
+<p><span class="math display">\[ \text{ESS}(v) = \frac{\sum_{i=1}^n K\left( \frac{v - X_i}{h} \right)}{K(0)} \]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Let <span class="math inline">\(\mathcal{V}^* = \left\{ v \in \mathcal{V} : \text{ESS}(v) \geq 5 \right\}\)</span>. Now define the number of independent blocks <span class="math inline">\(m\)</span> by</li>
+</ol>
+<p><span class="math display">\[ \frac{1}{m} = \frac{\overline{\text{ESS}}}{n} \]</span></p>
+<p>where <span class="math inline">\(\overline{\text{ESS}}\)</span> is the average of <span class="math inline">\(\text{ESS}\)</span> over <span class="math inline">\(\mathcal{V}^*\)</span>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ q = \Phi^{-1} \left( \frac{1 + (1 + \alpha)^{1/m}}{2} \right) \]</span></p>
+<p>and define</p>
+<p><span class="math display">\[ \ell(v) = \text{max} \left\{ \hat{f}_n(v) - q \cdot \text{se}(v), 0 \right\}
+\quad \text{and} \quad
+u(v) = \hat{f}_n(v) + q \cdot \text{se}(v)\]</span></p>
+<pre class="python"><code>def create_kde(X, bandwidth, alpha):
+    n = len(X)
+    
+    def get_x(t):
+        XX = np.repeat(X.to_numpy().reshape(-1, 1), len(t), axis=1)
+        tt = np.repeat(t.reshape(1, -1), n, axis=0)
+        return np.sum(norm.pdf((tt - XX) / bandwidth), axis=0) / (n * bandwidth)
+    
+    def get_se_q(V):
+        XX = np.repeat(X.to_numpy().reshape(-1, 1), len(V), axis=1)
+        VV = np.repeat(V.reshape(1, -1), n, axis=0)
+        Y = norm.pdf((VV - XX) / bandwidth) / bandwidth
+        s2_V = ((Y - Y.mean(axis=0))**2).sum(axis=0) / (n - 1)
+        se_V = np.sqrt(s2_V / n)
+
+        ESS = Y.sum(axis=0) * bandwidth / norm.pdf(0)
+        ESS_bar = ESS[np.where(ESS &gt;= 5)].mean()
+
+        q = norm.ppf((1 + (1 - alpha)**(ESS_bar / n)) / 2)
+    
+        return se_V, q
+    
+    def get_values(t):
+        x = get_x(t)
+        se_V, q = get_se_q(t)
+        lower = np.maximum(x - q * se_V, 0)
+        upper = x + q * se_V
+        
+        return x, lower, upper
+        
+    return get_values</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Calculate and plot estimated risk for various numbers of bins
+m_values = [m for m in range(1, 101)]
+j_hat = [j_hat_histogram(X, m) for m in m_values]
+
+best_m = m_values[np.argmin(j_hat)]
+best_risk = min(j_hat)</code></pre>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.plot(m_values, j_hat)
+plt.xlabel(&#39;# bins&#39;)
+plt.ylabel(&#39;J_hat&#39;)
+plt.title(&#39;Histogram estimated risk by bins&#39;)
+plt.show()
+
+print(&#39;Best number of bins:\t%i&#39; % best_m)
+print(&#39;Risk with %i bins: \t%.3f&#39; % (best_m, best_risk))</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_78_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Best number of bins:    17
+Risk with 17 bins:  0.350</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Calculate and plot estimated risk for various bandwidths
+h_values = [m / 20 for m in range(1, 21)]
+j_hat = [j_hat_kde(X, h) for h in h_values]</code></pre>
+<pre class="python"><code># Find bandwidth that minimizes risk
+# Using scipy rather than extensive search, since we are looking over a continuous interval
+
+from scipy.optimize import minimize
+
+res = minimize(fun = lambda h: j_hat_kde(X, h), x0 = 0.2, options={&#39;maxiter&#39;: 10})
+
+best_h = res.x[0]
+best_risk = res.fun</code></pre>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.plot(h_values, j_hat)
+plt.xlabel(&#39;bandwidth&#39;)
+plt.ylabel(r&#39;$\hat{J}$&#39;)
+plt.title(&#39;KDE estimated risk by bandwidth&#39;)
+plt.show()
+
+print(&#39;Best bandwidth:\t\t\t%.3f&#39; % best_h)
+print(&#39;Risk with selected bandwidth: \t%.3f&#39; % best_risk)</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_81_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Best bandwidth:         0.252
+Risk with selected bandwidth:   -0.141</code></pre>
+<pre class="python"><code>def plot_histogram(X, bins, ax):
+    X_min, X_max = X.min(), X.max()
+    x_plot_vals = np.arange(X_min - 0.05 * (X_max - X_min), X_max + 0.05 * (X_max - X_min), step=(X_max - X_min)/1000)
+    
+    # Draw the plot
+    vals, lower_vals, upper_vals = create_histogram(X, m=bins, alpha=0.05)(x_plot_vals)
+    ax.plot(x_plot_vals, vals, color=&#39;darkblue&#39;, label=&#39;Histogram&#39;)
+    ax.plot(x_plot_vals, upper_vals, color=&#39;darkgreen&#39;, alpha=0.5, label=&#39;95% upper confidence&#39;)
+    ax.plot(x_plot_vals, lower_vals, color=&#39;darkred&#39;, alpha=0.5, label=&#39;95% lower confidence&#39;)
+    ax.legend()
+    
+    # Title and labels
+    ax.set_title(&#39;bins = %d&#39; % bins)
+    ax.set_xlabel(&#39;Refractive Index&#39;)
+
+    
+# Show 4 different bin counts
+plt.figure(figsize=(12, 8))
+for i, bins in enumerate([5, 15, 25, 50]):
+    
+    # Set up the plot
+    ax = plt.subplot(2, 2, i + 1)
+    plot_histogram(X, bins, ax)
+
+plt.tight_layout()
+plt.show()
+
+# Best risk
+plt.figure(figsize=(14.5, 8))
+plot_histogram(X, bins=17, ax=plt.gca())
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_82_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_82_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>def plot_kde(X, bandwidth, ax):
+    X_min, X_max = X.min(), X.max()
+    x_plot_vals = np.arange(X_min - 0.05 * (X_max - X_min), X_max + 0.05 * (X_max - X_min), step=(X_max - X_min)/1000)
+      
+    # Draw the plot
+    vals, lower_vals, upper_vals = create_kde(X, bandwidth=bandwidth, alpha=0.05)(x_plot_vals)
+    ax.plot(x_plot_vals, vals, color=&#39;darkblue&#39;, label=&#39;KDE&#39;)
+    ax.plot(x_plot_vals, upper_vals, color=&#39;darkgreen&#39;, alpha=0.5, label=&#39;95% upper confidence&#39;)
+    ax.plot(x_plot_vals, lower_vals, color=&#39;darkred&#39;, alpha=0.5, label=&#39;95% lower confidence&#39;)
+    ax.legend()
+    
+    # Title and labels
+    ax.set_title(&#39;bandwidth = %.3f&#39; % bandwidth)
+    ax.set_xlabel(&#39;Refractive Index&#39;)    
+
+# Show 4 different bandwidths
+plt.figure(figsize=(12, 8))
+for i, bandwidth in enumerate([0.05, 0.1, 0.5, 1.0]):
+    
+    # Set up the plot
+    ax = plt.subplot(2, 2, i + 1)
+    plot_kde(X, bandwidth, ax)
+
+plt.tight_layout()
+plt.show()
+
+# Best risk
+plt.figure(figsize=(14.5, 8))
+plot_kde(X, bandwidth=best_h, ax=plt.gca())
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_83_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_83_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>In both scenarios the risk estimates helped choose a hyperparameter for the estimator that produces a convincing and visually pleasing result for the estimate.</p>
+<p>The confidence bands in both examples make it clear that the confidence bands are around the <strong>smoothed function</strong> rather than the true distribution function itself – there is not a clear relation between confidence bands for distinct bin sizes, in histograms, or bandwidths, for KDEs.</p>
+<p><strong>Exercise 21.7.3</strong>. Consider the data from question 2. Let <span class="math inline">\(Y\)</span> be the refractive index and let <span class="math inline">\(x\)</span> be the aluminium content (the fourth variable). Do a nonparametric regression to fit the model <span class="math inline">\(Y = f(x) + \epsilon\)</span>. Use cross-validation to estimate the bandwidth. Construct 95% confidence bands for your estimate.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/glass.txt&#39;, delim_whitespace=True)
+X, Y = data[&#39;RI&#39;], data[&#39;Al&#39;]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.scatter(X, Y, marker=&#39;x&#39;)
+plt.xlabel(&#39;Refractive Index&#39;)
+plt.ylabel(&#39;Al content&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_88_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The approximate risk when using the Nadaraya-Watson kernel estimator is:</p>
+<p><span class="math display">\[ \hat{J}(h) = \sum_{i=1}^n (Y_i - \hat{r}(x_i))^2 \left( 1 - \frac{K(0)}{\sum_{j=1}^n K \left( \frac{x_i - x_j}{h} \right)} \right)^{-2}\]</span></p>
+<p>for a regression given by</p>
+<p><span class="math display">\[ \hat{r}(x) = \sum_{i=1}^n w_i(x) Y_i \]</span></p>
+<p>with point weights</p>
+<p><span class="math display">\[ w_i(x) = \frac{K\left( \frac{x - x_i}{h} \right)}{\sum_{j=1}^n K\left( \frac{x - x_j}{h} \right)} \]</span></p>
+<p>The confidence bands are computed as with kernel density estimation, except change the defition of the standard error <span class="math inline">\(\text{se}(v)\)</span> to</p>
+<p><span class="math display">\[ \text{se}(v) = \hat{\sigma} \sqrt{\sum_{i=1}^n w^2_i(v)} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \hat{\sigma}^2 = \frac{1}{2(n - 1)} \sum_{i=1}^{n-1} (Y_{i+1} - Y_i)^2\]</span></p>
+<pre class="python"><code>def create_nagaraya_watson(X, Y, bandwidth, alpha):
+    n = len(X)
+    sigma2_hat = np.sum(np.diff(np.sort(Y))**2) / (2 * (n - 1))
+    
+    def get_values(t):
+        XX = np.repeat(X.to_numpy().reshape(-1, 1), len(t), axis=1)
+        tt = np.repeat(t.reshape(1, -1), n, axis=0)
+        
+        # W_ij = w_i(t_j)
+        W_unscaled = norm.pdf((tt - XX) / bandwidth) 
+        W = W_unscaled / W_unscaled.sum(axis=0)
+        
+        # R_j = \sum_i W_ji Y_i
+        R_j = W.T @ Y
+        
+        se_V = np.sqrt(sigma2_hat * (W.T**2).sum(axis=1))
+        
+        Z = norm.pdf((tt - XX) / bandwidth) / bandwidth
+        ESS = Z.sum(axis=0) * bandwidth / norm.pdf(0)
+        ESS_bar = ESS[np.where(ESS &gt;= 5)].mean()
+        q = norm.ppf((1 + (1 - alpha)**(ESS_bar / n)) / 2)
+        
+        lower = np.maximum(R_j - q * se_V, 0)
+        upper = R_j + q * se_V
+        
+        return R_j, lower, upper
+        
+    return get_values</code></pre>
+<pre class="python"><code>def j_hat_nadaraya_watson(X, Y, h):
+    &quot;&quot;&quot;
+    Approximates the risk on a regression using the Nadaraya-Watson kernel estimator:
+    
+      \hat{J}(h) = \sum_{i=1}^n (Y_i - \hat{r}(x_i))^2 ( 1 - \frac{K(0)}{\sum_{j=1}^n K( \frac{x_i - x_j}{h} )} )^{-2}
+      
+    where:
+      Y_i is the i-th target point
+      \hat{r}(x_i) is the estimated regressed value for the i-th point
+      K is the regression kernel (assumed to be N(0, 1))
+      h is the regression bandwidth
+    &quot;&quot;&quot;
+    XX = np.repeat(X.to_numpy().reshape(-1, 1), len(X), axis=1)
+    K_values = norm.pdf((XX - X.to_numpy().reshape(1, -1)) / h)
+    K_values_sum = K_values.sum(axis=1)
+    
+    # W_ij = w_i(x_j)
+    W = K_values / K_values_sum
+    
+    # R_j = \sum_i W_ji Y_i 
+    R = W.T @ Y
+    
+    terms = ((Y - R) / (1 - (norm.pdf(0) / K_values_sum)))**2
+    
+    # Skip NaNs due to zero denominators
+    if np.isnan(terms).any():
+        return np.nan
+    
+    return np.sum(terms)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Calculate and plot estimated risk for various bandwidths
+h_values = np.array([m / 100 for m in range(1, 101)])
+j_hat = np.array([j_hat_nadaraya_watson(X, Y, h) for h in h_values])</code></pre>
+<pre class="python"><code># Find bandwidth that minimizes risk
+# Using scipy rather than extensive search, since we are looking over a continuous interval
+
+from scipy.optimize import minimize
+
+res = minimize(fun = lambda h: j_hat_nadaraya_watson(X, Y, h), x0 = 0.35, options={&#39;maxiter&#39;: 100}, method = &#39;Nelder-Mead&#39;)
+
+best_h = res.x[0]
+best_risk = res.fun</code></pre>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.plot(h_values[~np.isnan(j_hat)], j_hat[~np.isnan(j_hat)])
+plt.xlabel(&#39;bandwidth&#39;)
+plt.ylabel(r&#39;$\hat{J}$&#39;)
+plt.title(&#39;Nagaraya-Watson estimated risk by bandwidth&#39;)
+plt.show()
+
+print(&#39;Best bandwidth:\t\t\t%.3f&#39; % best_h)
+print(&#39;Risk with selected bandwidth: \t%.3f&#39; % best_risk)</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_95_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Best bandwidth:         0.326
+Risk with selected bandwidth:   39.204</code></pre>
+<pre class="python"><code>def plot_nagaraya_watson(X, Y, bandwidth, ax):
+    X_min, X_max = X.min(), X.max()
+    x_plot_vals = np.arange(X_min - 0.05 * (X_max - X_min), X_max + 0.05 * (X_max - X_min), step=(X_max - X_min)/1000)
+      
+    # Draw the plot
+    vals, lower_vals, upper_vals = create_nagaraya_watson(X, Y, bandwidth=bandwidth, alpha=0.05)(x_plot_vals)
+    ax.scatter(X, Y, color=&#39;black&#39;, marker=&#39;x&#39;, alpha=0.2, label=&#39;Data&#39;)
+    ax.plot(x_plot_vals, vals, color=&#39;darkblue&#39;, label=&#39;Regression (Nagaraya-Watson)&#39;)
+    ax.plot(x_plot_vals, upper_vals, color=&#39;darkgreen&#39;, alpha=0.5, label=&#39;95% upper confidence&#39;)
+    ax.plot(x_plot_vals, lower_vals, color=&#39;darkred&#39;, alpha=0.5, label=&#39;95% lower confidence&#39;)
+    ax.legend()
+    
+    # Title and labels
+    ax.set_title(&#39;bandwidth = %.3f&#39; % bandwidth)
+    ax.set_xlabel(&#39;Refractive Index&#39;)    
+    ax.set_ylabel(&#39;Al content&#39;)
+
+# Show 4 different bandwidths
+plt.figure(figsize=(12, 8))
+for i, bandwidth in enumerate([0.05, 0.1, 0.5, 1.0]):
+    
+    # Set up the plot
+    ax = plt.subplot(2, 2, i + 1)
+    plot_nagaraya_watson(X, Y, bandwidth, ax)
+
+plt.tight_layout()
+plt.show()
+
+# Best risk
+plt.figure(figsize=(14.5, 8))
+plot_nagaraya_watson(X, Y, bandwidth=best_h, ax=plt.gca())
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_96_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_files/Chapter%2021%20-%20Nonparametric%20Curve%20Estimation_96_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 21.7.4</strong>. Prove Lemma 21.1.</p>
+<p>The risk can be written as</p>
+<p><span class="math display">\[ R(g, \hat{g}) = \int b^2(x) dx + \int v(x) dx \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ b(x) = \mathbb{E}(\hat{g}_n(x)) - g(x) \]</span></p>
+<p>is the bias of <span class="math inline">\(\hat{g}_n(x)\)</span> at a fixed <span class="math inline">\(x\)</span> and</p>
+<p><span class="math display">\[ v(x) = \mathbb{V}(\hat{g}_n(x)) = \mathbb{E}\left( \hat{g}_n(x) - \mathbb{E}(\hat{g}_n(x))^2\right) \]</span></p>
+<p>is the variance of <span class="math inline">\(\hat{g}_n(x)\)</span> at a fixed <span class="math inline">\(x\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The risk is defined as</p>
+<p><span class="math display">\[ R(g, \hat{g}) = \mathbb{E}\left(L(g, \hat{g}) \right) \]</span></p>
+<p>for the loss function</p>
+<p><span class="math display">\[ L(g, \hat{g}) = \int (g(u) - \hat{g}(u))^2 du\]</span></p>
+<p>But we have</p>
+<p><span class="math display">\[
+\begin{align}
+\int b^2(x) dx + \int v(x) dx &amp;= \int (b^2(x) + v(x)) dx \\
+&amp;= \int \mathbb{E}(\hat{g}(x) - g(x))^2 + \mathbb{V}(\hat{g}(x)) dx \\
+&amp;= \int \mathbb{E}(\hat{g}(x) - g(x))^2 + \mathbb{V}(\hat{g}(x) - g(x)) dx \\
+&amp;= \int \mathbb{E}((\hat{g}(x) - g(x))^2) dx \\
+&amp;= \mathbb{E}\left(\int (\hat{g}(x) - g(x))^2 dx \right) \\
+&amp;= \mathbb{E}(L(g, \hat{g})) \\
+&amp;=  R(g, \hat{g})
+\end{align}
+\]</span></p>
+<p>which proves the lemma.</p>
+<p><strong>Exercise 21.7.5</strong>. Prove Theorem 21.3.</p>
+<p><span class="math display">\[ 
+\mathbb{E}(\hat{f}_n(x)) = \frac{p_j}{h} 
+\quad \text{and} \quad
+\mathbb{V}(\hat{f}_n(x)) = \frac{p_j (1 - p_j)}{nh^2}
+\]</span></p>
+<p>for the histogram estimator
+<span class="math display">\[ \hat{f}_n(x) = \sum_{j=1}^m \frac{\hat{p}_j}{h} I(x \in B_j) \]</span></p>
+<p><span class="math display">\[ \hat{p}_j = \frac{\sum_{i=1}^n I(X_i \in B_j)}{n}
+\quad \text{and} \quad
+p_j = \int_{B_j} f(u) du \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>For <span class="math inline">\(x \in B_j\)</span>, <span class="math inline">\(\hat{f}_n(x) = \hat{p}_j / h\)</span>, since the <span class="math inline">\(B_j\)</span> are all disjoint, and only one term of the sum is non-zero. But <span class="math inline">\(\hat{p}_j\)</span> is the maximum likelihood estimator for <span class="math inline">\(p_j\)</span>, which is unbiased, so <span class="math inline">\(\mathbb{E}(\hat{p}_j) = p_j\)</span> and so</p>
+<p><span class="math display">\[\mathbb{E}(\hat{f}_n(x)) = \frac{1}{h} \mathbb{E}(\hat{p}_j) = \frac{p_j}{h}\]</span></p>
+<p>Similarly, <span class="math inline">\(\mathbb{V}(\hat{f}_n(x)) = \mathbb{V}(\hat{p}_j) / h^2\)</span>. But since <span class="math inline">\(n \hat{p}_j = \sum_i I(X_i \in B_j) \sim \text{Binomial}(n, p_j)\)</span>,</p>
+<p><span class="math display">\[\mathbb{V}(\hat{f}_n(x)) = \frac{1}{h^2} \mathbb{V}(\hat{p}_j) = \frac{1}{n^2h^2} \mathbb{V}\left( \sum_i I(X_i \in B_j) \right) = \frac{1}{n^2h^2} n p_j (1 - p_j) = \frac{p_j (1 - p_j)}{nh^2} \]</span></p>
+<p><strong>Exercise 21.7.6</strong>. Prove Theorem 21.7.</p>
+<p><span class="math display">\[ \hat{J}(h) = \frac{2}{(n - 1)h} + \frac{n+1}{n-1} \sum_{j=1}^m \hat{p}_j^2 \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[ \hat{J}(h) = \int \left( \hat{f}_n(x) \right)^2 dx - \frac{2}{n} \sum_{i=1}^n \hat{f}_{(-i)}(X_i)\]</span></p>
+<p>where <span class="math inline">\(\hat{f}_{(-i)}\)</span> is the histogram estimator obtained after removing the <span class="math inline">\(i\)</span>-th observation.</p>
+<p>Let <span class="math inline">\(v_j\)</span> be the number of samples within the <span class="math inline">\(j\)</span>-th bin, <span class="math inline">\(v_j = \sum_{i=1}^n I(X_i \in B_j)\)</span>.</p>
+<p>The first term of the cross-validation risk estimator is</p>
+<p><span class="math display">\[
+\begin{align}
+\int \left( \hat{f}_n(x) \right)^2 dx &amp;= \int \left( \sum_{j=1}^m \frac{\hat{p}_j}{h} I(x \in B_j) \right)^2 dx\\
+&amp;= \int \left( \frac{1}{nh}  \sum_{j=1}^m \sum_{i=1}^n I(X_i \in B_j) I(x \in B_j) \right)^2 dx \\
+&amp;= \frac{1}{n^2h^2} \int \left( \sum_{j=1}^m v_j I(x \in B_j) \right)^2 dx \\
+&amp;= \frac{1}{n^2h^2} \left( \int \sum_{j=1}^m v_j^2 I(x \in B_j)^2 dx  + \int \sum_{a, b; a \neq b}  v_a v_b I(x \in B_a) I(x \in B_b) dx\right) \\
+&amp;= \frac{1}{n^2h^2} \int \sum_{j=1}^m v_j^2 I(x \in B_j) dx \\
+&amp;= \frac{1}{n^2h^2} \sum_{j=1}^m \int_{B_j} v_j^2 dx = \frac{1}{n^2h^2} \sum_{j=1}^m \left| B_j \right| v_j^2 = \frac{1}{n^2h^2} \sum_{j=1}^m h v_j^2 = \frac{1}{n^2h} \sum_{j=1}^m v_j^2
+\end{align}
+\]</span></p>
+<p>since <span class="math inline">\(I(s)^2 = I(s)\)</span> and <span class="math inline">\(B_a, B_b\)</span> are disjoint for <span class="math inline">\(a \neq b\)</span>, so <span class="math inline">\(I(x \in B_a) I(x \in B_b) = 0\)</span>.</p>
+<p>The leave-one-out estimator is:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\hat{f}_{(-i)}(x) &amp;= \sum_{j=1}^m \frac{\hat{p}_{j, (-i)}}{h} I(x \in B_j) \\
+&amp;= \sum_{j=1}^m \frac{1}{h} \left( \sum_{k=1, i \neq k}^n \frac{1}{n - 1} I(X_k \in B_j) \right) I(x \in B_j) \\
+&amp;= \frac{1}{(n - 1)h} \sum_{j=1}^m \sum_{k=1, i \neq k}^n I(X_k \in B_j) I(x \in B_j)
+\end{align}
+\]</span></p>
+<p>Then, the sum over the leave-one-out estimators is:</p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{i=1}^n \hat{f}_{(-i)}(X_i) &amp;= \frac{1}{(n - 1)h} \sum_{i=1}^n \sum_{j=1}^m \sum_{k=1, i \neq k}^n I(X_i \in B_j) I(X_k \in B_j) \\
+&amp;= \frac{1}{(n - 1)h} \sum_{j=1}^m \sum_{i=1}^n I(X_i \in B_j)\left( \sum_{k=1, i \neq k}^n I(X_k \in B_j) \right)
+\end{align}
+\]</span></p>
+<p>Note that the inner term <span class="math inline">\(\sum_{k=1, i \neq k}^n I(X_k \in B_j)\)</span> counts the number of samples other than <span class="math inline">\(X_i\)</span> belonging to the bin <span class="math inline">\(B_j\)</span>, so it is equal to <span class="math inline">\(v_j - I(X_i \in B_j)\)</span>. Replacing that into the expression,</p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{i=1}^n \hat{f}_{(-i)}(X_i) &amp;= \frac{1}{(n - 1)h} \sum_{j=1}^m \sum_{i=1}^n I(X_i \in B_j) (v_j - I(X_i \in B_j)) \\
+&amp;= \frac{1}{(n - 1)h} \sum_{j=1}^m \left( v_j \sum_{i=1}^n I(X_i \in B_j) - \sum_{i=1}^n I(X_i \in B_j)^2 \right) \\
+&amp;= \frac{1}{(n - 1)h} \sum_{j=1}^m \left( v_j^2 - v_j \right)
+\end{align}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{J}(h) &amp;= \int \left( \hat{f}_n(x) \right)^2 dx - \frac{2}{n} \sum_{i=1}^n \hat{f}_{(-i)}(X_i) \\
+&amp;= \sum_{j=1}^m \left( \frac{1}{n^2h} v_j^2 - \frac{2}{n} \frac{1}{(n - 1)h} \left( v_j^2 - v_j \right) \right)\\
+&amp;= \sum_{j=1}^m \left( \frac{(n - 1) v_j^2 - 2n(v_j^2 - v_j)}{n^2(n - 1)h} \right) \\
+&amp;= - \frac{n+1}{n^2(n - 1)h} \sum_{j=1}^m v_j^2 + \frac{2n}{n^2(n - 1)h} \sum_{j=1}^m v_j
+\end{align}
+\]</span></p>
+<p>But we also have that <span class="math inline">\(\sum_{j=1}^m v_j = n\)</span>, since this is a count of the total number of samples, and that <span class="math inline">\(v_j = n \hat{p}_j\)</span>, so this expression is equivalent to:</p>
+<p><span class="math display">\[ \hat{J}(h) = \frac{2}{(n - 1)h} - \frac{n + 1}{n - 1} \sum_{j=1}^m \hat{p}_j\]</span></p>
+<p>which is the desired result.</p>
+<p><strong>Exercise 21.7.7</strong>. Prove Theorem 21.14.</p>
+<p>For KDE, for any <span class="math inline">\(h &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{E} \left[ \hat{J}(h) \right] = \mathbb{E} \left[ J(h) \right] \]</span></p>
+<p>Also,</p>
+<p><span class="math display">\[ \hat{J}(h) \approx \frac{1}{hn^2}\sum_{i, j} K^* \left( \frac{X_i - X_j}{h} \right) + \frac{2}{nh} K(0) \]</span></p>
+<p>where <span class="math inline">\(K^*(x) = K^{(2)}(x) - 2 K(x)\)</span> and <span class="math inline">\(K^{(2)}(z) = \int K(z - y) K(y) dy\)</span>.</p>
+<p><strong>Solution</strong>. The definitions of <span class="math inline">\(J(h)\)</span> and <span class="math inline">\(\hat{J}(h)\)</span> are:</p>
+<p><span class="math display">\[ J(h) = \int \hat{f}^2(x) dx - 2 \int \hat{f}(x) f(x) dx 
+\quad \text{and} \quad
+\hat{J}(h) = \int \hat{f}^2(x) dx - 2 \frac{1}{n} \sum_{i=1}^n \hat{f}_{-i}(X_i) \]</span></p>
+<p>where <span class="math inline">\(\hat{f}_{-i}\)</span> is the kernel density estimator after omitting the <span class="math inline">\(i\)</span>-th observation, and the kernel density estimator is</p>
+<p><span class="math display">\[ \hat{f}(x) = \frac{1}{nh} \sum_{i=1}^n K\left( \frac{x - X_i}{h} \right) \]</span></p>
+<p>The leave-one-out estimator is</p>
+<p><span class="math display">\[ \hat{f}_{-i}(x) = \frac{1}{(n - 1) h} \sum_{j=1; i \neq j}^n K \left( \frac{x - X_j}{h} \right) \]</span></p>
+<p>We have that</p>
+<p><span class="math display">\[ 
+\begin{align}
+\int \hat{f}(x) f(x) dx &amp;=  \mathbb{E}_x \left[ \mathbb{E}_{X}\left[\hat{f}(x)\right] \right] \\
+&amp;= \frac{1}{nh} \sum_{i=1}^n \mathbb{E}_x\left[\mathbb{E}_{X_i}\left[K \left( \frac{x - X_i}{h} \right) \right] \right]  \\
+&amp;= \frac{1}{nh} \sum_{i=1}^n \mathbb{E}_x\left[ \int K \left( \frac{x - y}{h} \right) f(y) dy \right] \\
+&amp;= \frac{1}{h} \int \int K \left( \frac{x - y}{h} \right) f(x) f(y) dx  dy
+\end{align}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_X\left[ \hat{f}_{-i}(X_i) \right] &amp;=
+\frac{1}{(n - 1) h} \sum_{j=1; i \neq j}^n \mathbb{E}_{X_i}\left[ \mathbb{E}_{X_j}\left[ K \left( \frac{X_i - X_j}{h} \right) \right] \right] \\
+&amp;= \frac{1}{(n - 1)} \sum_{j=1; i \neq j}^n \frac{1}{h} \mathbb{E}_{X_i}\left[ \int K \left( \frac{X_i - y}{h} \right) f(y) dy \right] \\
+&amp; = \frac{1}{h} \int \int K \left( \frac{x - y}{h} \right) f(x) f(y) dx  dy
+\end{align}
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_X\left[ \int \hat{f}(x) f(x) dx \right] &amp;= \mathbb{E}_X\left[ \frac{1}{n} \sum_{i=1}^n \hat{f}_{-i}(X_i) \right] \\
+\mathbb{E}\left[ \int \hat{f}^2(x) dx - 2 \int \hat{f}(x) f(x) dx \right] &amp;= \mathbb{E}\left[ \int \hat{f}^2(x) dx - 2 \frac{1}{n} \sum_{i=1}^n \hat{f}_{-i}(X_i) \right] \\
+\mathbb{E}[J(h)] &amp;= \mathbb{E}[\hat{J}(h)]
+\end{align}
+\]</span></p>
+<p>as desired.</p>
+<p>Next, let’s look at the expression for the approximation of <span class="math inline">\(\hat{J}(h)\)</span>.</p>
+<p>The first term of the cross-risk validation is</p>
+<p><span class="math display">\[ 
+\begin{align}
+\int \left(\hat{f}(x)\right)^2 dx &amp;= \int \left( \frac{1}{nh} \sum_{i=1}^n K\left( \frac{x - X_i}{h} \right) \right)^2 dx \\
+&amp;= \frac{1}{h^2n^2} \int \sum_{i, j} K \left(\frac{x - X_i}{h}\right) K\left(\frac{x - X_j}{h}\right) dx \\
+&amp;= \frac{1}{h^2n^2} \sum_{i, j} \int  K \left(\frac{x - X_i}{h}\right) K\left(\frac{x - X_j}{h}\right) dx \\
+&amp;= \frac{1}{h^2n^2} \sum_{i, j} \int  K(-y) K\left(-y + \frac{X_i - X_j}{h} \right) h dy \\
+&amp;= \frac{1}{hn^2} \sum_{i, j} \int  K\left(\frac{X_i - X_j}{h} - y \right) K(-y) dy \\
+&amp;= \frac{1}{hn^2} \sum_{i, j} K^{(2)} \left(\frac{X_i - X_j}{h} \right)
+\end{align}
+\]</span></p>
+<p>assuming a symmetric kernel, that is, <span class="math inline">\(K(-y) = K(y)\)</span>.</p>
+<p>The second term of the cross validation is</p>
+<p><span class="math display">\[
+\begin{align}
+- 2 \frac{1}{n} \sum_{i=1}^n \hat{f}_{-i}(X_i)
+&amp;= -2 \frac{1}{n} \sum_{i=1}^n \frac{1}{(n - 1) h} \sum_{j=1; i \neq j}^n K \left( \frac{X_i - X_j}{h} \right) \\
+&amp;= -2 \frac{1}{n} \frac{1}{(n - 1) h} \left( \sum_{i, j} K \left( \frac{X_i - X_j}{h} \right) - n K(0)\right) \\
+&amp;= \frac{-2}{n (n - 1) h} \sum_{i, j} K \left( \frac{X_i - X_j}{h} \right)
++ \frac{2}{(n - 1) h} K(0) \\
+&amp;\approx \frac{-2}{h n^2} \sum_{i, j} K \left( \frac{X_i - X_j}{h} \right)
++ \frac{2}{nh} K(0)
+\end{align}
+\]</span></p>
+<p>by approximating <span class="math inline">\(n - 1 \approx n\)</span>.</p>
+<p>Therefore, the sum of both terms is approximately</p>
+<p><span class="math display">\[
+\begin{align}
+&amp;\frac{1}{hn^2} \sum_{i, j} K^{(2)} \left(\frac{X_i - X_j}{h} \right) + \frac{-2}{h n^2} \sum_{i, j} K \left( \frac{X_i - X_j}{h} \right)
++ \frac{2}{nh} K(0) \\
+&amp;= \frac{1}{hn^2} \sum_{i, j} \left( K^{(2)} \left(\frac{X_i - X_j}{h} \right) - 2 K \left( \frac{X_i - X_j}{h} \right) \right) + \frac{2}{nh} K(0) \\
+&amp;= \frac{1}{hn^2} \sum_{i, j} K^* \left(\frac{X_i - X_j}{h} \right) + \frac{2}{nh} K(0)
+\end{align}
+\]</span></p>
+<p>as desired.</p>
+<p><strong>Exercise 21.7.8</strong>. Consider regression data <span class="math inline">\((x_1, Y_1), \dots, (x_n, Y_n)\)</span>. Suppose that <span class="math inline">\(0 \leq x_i \leq 1\)</span> for all <span class="math inline">\(i\)</span>. Define bins <span class="math inline">\(B_j\)</span> as in equation 21.7. For <span class="math inline">\(x \in B_j\)</span> define</p>
+<p><span class="math display">\[ \hat{r}_n(x) = \overline{Y}_j \]</span></p>
+<p>where <span class="math inline">\(\overline{Y}_j\)</span> is the mean of all the <span class="math inline">\(Y_i\)</span>’s corresponding to those <span class="math inline">\(x_i\)</span>’s in <span class="math inline">\(B_j\)</span>. Find the approximate risk of this estimator. From this expression for the risk, find the optimal bandwidth. At what rate does the risk go to zero?</p>
+<p><strong>Solution</strong>.</p>
+<p>The <span class="math inline">\(m\)</span> bins partition the <span class="math inline">\([0, 1]\)</span> interval in equal sets as follows:</p>
+<p><span class="math display">\[ B_1 = \left[0, \frac{1}{m} \right), B_2 = \left[\frac{1}{m}, \frac{2}{m} \right), \dots, B_m = \left[\frac{m - 1}{m}, 1 \right] \]</span></p>
+<p>The true regression estimator is</p>
+<p><span class="math display">\[ r(x) = \mathbb{E}(Y | X = x) \]</span></p>
+<p>and the risk is the bias squared plus the variance,</p>
+<p><span class="math display">\[ R(r, \hat{r}) = \int b^2(x) dx + \int v(x) dx\]</span></p>
+<p>We can now estimate the risk in the same way it was done for the histogram estimation.</p>
+<p>Define a probability distribution function proportional to the true regression function (shifted to a minimum of 0):</p>
+<p><span class="math display">\[ f(x) = \frac{r(x) - r_0}{A} \quad \text{where} \quad A = \int_0^1 r(y) dy - r_0, \quad r_0 = \inf_x r(x) \]</span></p>
+<p>Now, the regression estimator is a scaled up version of the histogram estimator for <span class="math inline">\(f\)</span>. Therefore,</p>
+<p><span class="math display">\[ R(r, \hat{r}) = A^2 R(f, \hat{f}) \]</span></p>
+<p>and we can reuse the results from the histogram estimator in Theorem 21.4.</p>
+<p><span class="math display">\[ R(r, \hat{r}) = A^2 R(f, \hat{f}) \approx A^2 \left( \frac{h^2}{12} \int (f&#39;(u))^2 du + \frac{1}{nh} \right) = \frac{h^2}{12} \int (r&#39;(u))^2 du + \frac{A^2}{nh} \]</span></p>
+<p>The value that minimizes it is still</p>
+<p><span class="math display">\[ h^* = \frac{1}{n^{1/3}} \left( \frac{6}{\int (f&#39;(u))^2 du} \right)^{1/3} = \frac{1}{n^{1/3}} \left( \frac{6A^2}{\int (r&#39;(u))^2 du} \right)^{1/3}\]</span></p>
+<p>With this choice of bandwidth,</p>
+<p><span class="math display">\[ R(r, \hat{r}) = A^2 R(f, \hat{f}) = O(n^{-2/3}) \]</span></p>
+<p><strong>Exercise 21.7.9</strong>. Show that with suitable smoothness assumptions on <span class="math inline">\(r(x)\)</span>, <span class="math inline">\(\hat{\sigma}^2\)</span> in equation (21.41) is a consistent estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
+<p><strong>Solution</strong>. The definition of <span class="math inline">\(\hat{\sigma}^2\)</span> is</p>
+<p><span class="math display">\[ \hat{\sigma}^2 = \frac{1}{2(n - 1)} \sum_{i=1}^{n-1} (Y_{i+1} - Y_i)^2\]</span></p>
+<p>in the context of the Nagaraya-Watson kernel regression estimator, with sorted <span class="math inline">\(Y_i\)</span>’s.</p>
+<p>The difference between consecutive <span class="math inline">\(Y_i\)</span>’s is:</p>
+<p><span class="math display">\[ Y_{i+1} - Y_i = r(X_{i+1}) - r(X_i) + (\epsilon_{i+1} - \epsilon_i) \approx r&#39;(X_i) (X_{i+1} - X_i) + (\epsilon_{i+1} - \epsilon_i) \]</span></p>
+<p>Assume <span class="math inline">\(r&#39;(x)\)</span> is finite and bounded, i.e. <span class="math inline">\(\sup_x r&#39;(x) &lt; \infty\)</span>.</p>
+<p>As <span class="math inline">\(n \rightarrow \infty\)</span>, <span class="math inline">\(X_{i+1} - X_i \rightarrow 0\)</span> while <span class="math inline">\(r&#39;(X_i)\)</span> is bounded, so</p>
+<p><span class="math display">\[ (Y_{i+1} - Y_i)^2 \rightarrow (\epsilon_{i+1} - \epsilon_i)^2 = \epsilon_{i+1}^2 + \epsilon_i^2 - 2\epsilon_i \epsilon_{i+1} \]</span></p>
+<p><span class="math display">\[ 
+\begin{align}
+\hat{\sigma}^2 &amp;\rightarrow \frac{1}{2(n - 1)} \left(\sum_{i = 1}^{n - 1} \epsilon_i^2 + \sum_{i = 2}^n \epsilon_i^2 -2 \sum_{i = 1}^{n - 1} \epsilon_i \epsilon_{i+1} \right) \\
+&amp;\approx \frac{1}{n - 1} \left( \sum_{i = 1}^{n - 1} \epsilon_i^2 - \sum_{i = 1}^{n - 1} \epsilon_i \epsilon_{i+1} \right) \\
+&amp;= \frac{\sigma^2}{n - 1} \left( \sum_{i = 1}^{n - 1} Z_i^2 - \sum_{i = 1}^{n - 1} Z_i Z_{i+1} \right) \\
+&amp;= \frac{\sigma^2}{n - 1} \left( \chi_{n - 1}^2 - \sum_{i = 1}^{n - 1} Z_i Z_{i+1} \right)
+\end{align}
+\]</span></p>
+<p>since the sum of <span class="math inline">\(n - 1\)</span> squares of independent standard normals has a <span class="math inline">\(\chi_{n-1}^2\)</span> distribution, and <span class="math inline">\(Z_j = \epsilon_j / \sigma \sim N(0, 1)\)</span>.</p>
+<p>We have that <span class="math inline">\(\mathbb{E}(\chi_{n-1}^2) = n - 1\)</span> and <span class="math inline">\(\mathbb{E}(Z_i Z_{i+1}) = 0\)</span> since the errors are independent, so <span class="math inline">\(\mathbb{E}(\hat{\sigma}^2) \rightarrow \sigma^2\)</span>.</p>
+<p>Now, let <span class="math inline">\(\Delta_i = \epsilon_i ( \epsilon_i - \epsilon_{i+1})\)</span>. The expectations of <span class="math inline">\(\Delta_i\)</span> and <span class="math inline">\(\Delta_i^2\)</span> are:</p>
+<p><span class="math display">\[ \mathbb{E}(\Delta_i) = \mathbb{E}(\epsilon_i^2) - \mathbb{E}(\epsilon_i \epsilon_{i+1}) = \sigma^2 \]</span></p>
+<p><span class="math display">\[ \mathbb{E}(\Delta_i^2) = \mathbb{E}(\epsilon_i^4) -  \mathbb{E}(\epsilon_i^2 \epsilon_{i+1}^2) = \mathbb{E}(\epsilon_i^4) - \mathbb{E}(\epsilon_i^2) \mathbb{E}(\epsilon_{i+1}^2) = 3\sigma^4 - \sigma^4 = 2\sigma^4\]</span></p>
+<p>We can then compute the variance:</p>
+<p><span class="math display">\[ \mathbb{V}(\Delta_i) = \mathbb{E}(\Delta_i^2) - \mathbb{E}(\Delta_i)^2 = 2 \sigma^4 - \sigma^4 = \sigma^4 \]</span></p>
+<p>The covariance between distinct, non-adjacent terms <span class="math inline">\(\Delta_i, \Delta_j\)</span> where <span class="math inline">\(|i - j| &gt; 1\)</span> is 0 since the underlying variables are all drawn from independent variables. The covariance between consecutive variables <span class="math inline">\(\Delta_i, \Delta_{i+1}\)</span> is:</p>
+<p><span class="math display">\[ \text{Cov}(\Delta_i, \Delta_{i+1}) = \mathbb{E}(\Delta_i \Delta_{i+1}) - \mathbb{E}(\Delta_i) \mathbb{E}(\Delta_{i+1})\]</span></p>
+<p>But</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}(\Delta_i \Delta_{i+1}) &amp;= \mathbb{E}(\epsilon_i \epsilon_{i+1} (\epsilon_i - \epsilon_{i+1}) (\epsilon_{i+1} - \epsilon_{i+2})) \\
+&amp;= \mathbb{E}(\epsilon_i \epsilon_{i+1} (\epsilon_i \epsilon_{i+1} - \epsilon_{i+1}^2 - \epsilon_i \epsilon_{i+2} + \epsilon_{i+1} \epsilon_{i+2}) ) \\
+&amp;= \mathbb{E}(\epsilon_i^2 \epsilon_{i+1}^2) - \mathbb{E}(\epsilon_i \epsilon_{i+1} \epsilon_{i+2}^2) - \mathbb{E}(\epsilon_i^2 \epsilon_{i+1} \epsilon_{i+2}) + \mathbb{E}(\epsilon_i \epsilon_{i+1}^2 \epsilon_{i+2}) \\
+&amp;= \mathbb{E}(\epsilon_i^2) \mathbb{E}(\epsilon_{i+1}^2) - \mathbb{E}(\epsilon_i) \mathbb{E}(\epsilon_{i+1}) \mathbb{E}(\epsilon_{i+2}^2) - \mathbb{E}(\epsilon_i) \mathbb{E}(\epsilon_{i+1}^2) \mathbb{E}(\epsilon_{i+2}) + \mathbb{E}(\epsilon_i) \mathbb{E}(\epsilon_{i+1}^2) \mathbb{E}(\epsilon_{i+2}) \\
+&amp;= \mathbb{E}(\epsilon_i^2) \mathbb{E}(\epsilon_{i+1}^2) \\
+&amp;= \sigma^4
+\end{align}
+\]</span></p>
+<p>since all other terms have an odd exponent in one of the <span class="math inline">\(\epsilon_j\)</span>, and <span class="math inline">\(\mathbb{E}(\epsilon_j) = 0\)</span>. So</p>
+<p><span class="math display">\[ \text{Cov}(\Delta_i, \Delta_{i+1}) = \sigma^4 - \sigma^4 = 0\]</span></p>
+<p>The variance of the sum of <span class="math inline">\(\Delta_i\)</span> is:</p>
+<p><span class="math display">\[ \mathbb{V}\left( \sum_{i=1}^{n-1} \Delta_i \right) = \sum_{i=1}^{n-1} \mathbb{V}(\Delta_i) + 2 \sum_{i=1}^{n-2} \text{Cov}(\Delta_i, \Delta_{i+1}) = (n-1) \sigma^4\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{V}(\hat{\sigma}) \rightarrow \frac{1}{(n-1)^2} \mathbb{V}\left( \sum_{i=1}^{n-1} \Delta_i \right) = \frac{1}{n-1} \sigma^4 \]</span></p>
+<p>which goes to 0 as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p>Since <span class="math inline">\(\mathbb{E}(\hat{\sigma}^2) \rightarrow \sigma^2\)</span> and <span class="math inline">\(\mathbb{V}(\hat{\sigma}) \rightarrow 0\)</span>, <span class="math inline">\(\hat{\sigma}^2\)</span> is a consistent estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
 
     </div>
   </article>
@@ -94,7 +1261,22 @@
     </div>
     
 
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>

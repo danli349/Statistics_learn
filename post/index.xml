@@ -13,7 +13,8 @@
       <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/05/09/aos-chapter21-nonparametric-curve-estimation/</guid>
-      <description></description>
+      <description>21. Nonparametric Curve Estimation21.1 The Bias-Variance Tradeoff21.2 Histograms21.3 Kernel Density Estimation21.4 Nonparametric Regression21.5 Appendix: Confidence Sets and Bias21.7 ExercisesReferences21. Nonparametric Curve EstimationIn this Chapter we discuss the nonparametric estimation of probability density functions and regression functions, which we refer to a curve estimation.
+In Chapter 8 we saw it is possible to consistently estimate a cumulative distribution function \(F\) without making any assumptions about \(F\).</description>
     </item>
     
     <item>
