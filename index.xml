@@ -6,7 +6,17 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter22 Smoothing Using Orthogonal Functions</title>
+      <link>/2021/05/17/aos-chapter22-smoothing-using-orthogonal-functions/</link>
+      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/17/aos-chapter22-smoothing-using-orthogonal-functions/</guid>
+      <description>22. Smoothing Using Orthogonal Functions22.1 Orthogonal Functions and \(L_2\) Spaces22.2 Density Estimation22.3 Regression22.4 Wavelets22.6 ExercisesReferences22. Smoothing Using Orthogonal FunctionsIn this Chapter we study a different approach to nonparametric curve estimation based on orthogonal functions. We begin with a brief introduction to the theory of orthogonal functions. Then we turn to density estimation and regression.
+22.1 Orthogonal Functions and \(L_2\) SpacesLet \(v = (v_1, v_2, v_3)\) denote a three dimensional vector.</description>
+    </item>
+    
     <item>
       <title>AOS chapter21 Nonparametric Curve Estimation</title>
       <link>/2021/05/09/aos-chapter21-nonparametric-curve-estimation/</link>
