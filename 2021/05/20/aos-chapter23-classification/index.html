@@ -1,0 +1,3128 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter23 Classification - A Hugo website</title>
+<meta property="og:title" content="AOS chapter23 Classification - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">57 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter23 Classification</h1>
+
+    
+    <span class="article-date">2021-05-20</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/05/20/aos-chapter23-classification/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#classification">23. Classification</a>
+<ul>
+<li><a href="#introduction">23.1 Introduction</a></li>
+<li><a href="#error-rates-and-the-bayes-classifier">23.2 Error Rates and The Bayes Classifier</a></li>
+<li><a href="#gaussian-and-linear-classifiers">23.3 Gaussian and Linear Classifiers</a></li>
+<li><a href="#linear-regression-and-logistic-regression">23.4 Linear Regression and Logistic Regression</a></li>
+<li><a href="#relationship-between-logistic-regression-and-lda">23.5 Relationship Between Logistic Regression and LDA</a></li>
+<li><a href="#density-estimation-and-naive-bayes">23.6 Density Estimation and Naive Bayes</a></li>
+<li><a href="#trees">23.7 Trees</a></li>
+<li><a href="#assessing-error-rates-and-choosing-a-good-classifier">23.8 Assessing Error Rates and Choosing a Good Classifier</a></li>
+<li><a href="#support-vector-machines">23.9 Support Vector Machines</a></li>
+<li><a href="#kernelization">23.10 Kernelization</a></li>
+<li><a href="#other-classifiers">23.11 Other Classifiers</a></li>
+<li><a href="#exercises">23.13 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="classification" class="section level2">
+<h2>23. Classification</h2>
+<div id="introduction" class="section level3">
+<h3>23.1 Introduction</h3>
+<p>The problem of predicting a discrete variable <span class="math inline">\(Y\)</span> from another random variable <span class="math inline">\(X\)</span> is called <strong>classfication</strong>, <strong>supervised learning</strong>, <strong>discrimination</strong> or <strong>pattern recognition</strong>.</p>
+<p>In more detail, consider IID data <span class="math inline">\((X_1, Y_1), \dots, (X_n, Y_n)\)</span> where</p>
+<p><span class="math display">\[ X_i = (X_{i1}, \dots, X_{id}) \in \mathcal{X} \subset \mathbb{R}^d \]</span></p>
+<p>is a <span class="math inline">\(d\)</span>-dimensional vector and <span class="math inline">\(Y_i\)</span> takes values in some finite set <span class="math inline">\(\mathcal{Y}\)</span>. A <strong>classification rule</strong> is a function $h :   $. When we observe a new <span class="math inline">\(X\)</span>, we predict <span class="math inline">\(Y\)</span> to be <span class="math inline">\(h(X)\)</span>.</p>
+<p>It is worth revisiting the vocabulary:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Statistics</th>
+<th>Computer Science</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>classification</td>
+<td>supervised learning</td>
+<td>predicting a discrete <span class="math inline">\(Y\)</span> from <span class="math inline">\(X\)</span></td>
+</tr>
+<tr class="even">
+<td>data</td>
+<td>training sample</td>
+<td><span class="math inline">\((X_1, Y_1), \dots, (X_n, Y_n)\)</span></td>
+</tr>
+<tr class="odd">
+<td>covariates</td>
+<td>features</td>
+<td>the <span class="math inline">\(X_i\)</span>’s</td>
+</tr>
+<tr class="even">
+<td>classifier</td>
+<td>hypothesis</td>
+<td>map <span class="math inline">\(h: \mathcal{X} \rightarrow \mathcal{Y}\)</span></td>
+</tr>
+<tr class="odd">
+<td>estimation</td>
+<td>learning</td>
+<td>finding a good classifier</td>
+</tr>
+</tbody>
+</table>
+<p>In most cases with this chapter, we deal with the case <span class="math inline">\(\mathcal{Y} = \{ 0, 1 \}\)</span>.</p>
+</div>
+<div id="error-rates-and-the-bayes-classifier" class="section level3">
+<h3>23.2 Error Rates and The Bayes Classifier</h3>
+<p>The <strong>true error rate</strong> of a classifier is</p>
+<p><span class="math display">\[ L(h) = \mathbb{P}( \{ h(X) \neq Y\} ) \]</span></p>
+<p>and the <strong>empirical error rate</strong> or <strong>training error rate</strong> is</p>
+<p><span class="math display">\[ \hat{L}_n(h) = \frac{1}{n} \sum_{i=1}^n I(h(X_i) \neq Y_i) \]</span></p>
+<p>Consider the special case where <span class="math inline">\(\mathcal{Y} = \{0, 1\}\)</span>. Let</p>
+<p><span class="math display">\[ r(x) = \frac{\pi f_1(x)}{\pi f_1(x) + (1 - \pi) f_0(x)} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ f_0(x) = f(x | Y = 0)
+\quad \text{and} \quad
+f_1(x) = f(x | Y = 1)\]</span></p>
+<p>and <span class="math inline">\(\pi = \mathbb{P}(Y = 1)\)</span>.</p>
+<p>The <strong>Bayes classification rule</strong> <span class="math inline">\(h^*\)</span> is defined to be</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp; \text{if } r(x) &gt; \frac{1}{2} \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>The set <span class="math inline">\(\mathcal{D}(h) = \{ x : \mathbb{P}(Y = 1 | X = x) = \mathbb{P}(Y = 0 | X = x) \}\)</span> is called the <strong>decision boundary</strong>.</p>
+<p><strong>Warning</strong>: the Bayes rule has nothing to do with Bayesian inference. We could estimate the Bayes rule using either frequentist or Bayesian methods.</p>
+<p>The Bayes rule may be written in several different forms:</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp; \text{if } \mathbb{P}(Y = 1 | X = x) &gt; \mathbb{P}(Y = 0 | X  = x)\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp; \text{if } \pi f_1(x) &gt; (1 - \pi) f_0(x) \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p><strong>Theorem 23.5</strong>. The Bayes rule is optimal, that is, if <span class="math inline">\(h\)</span> is any classification rule then <span class="math inline">\(L(h^*) \leq L(h)\)</span>.</p>
+<p>The Bayes rule depends on unknown quantities so we need to use the data to find some approximation to the Bayes rule. At the risk of oversimplifying, there are three main approaches:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Empirical Risk Maximization</strong>. Choose a set of classifiers <span class="math inline">\(\mathcal{H}\)</span> and find <span class="math inline">\(\hat{h} \in \mathcal{H}\)</span> that minimizes some estimate of <span class="math inline">\(L(h)\)</span>.</p></li>
+<li><p><strong>Regression</strong>. Find an estimate <span class="math inline">\(\hat{r}\)</span> of the regression function <span class="math inline">\(r\)</span> and define</p></li>
+</ol>
+<p><span class="math display">\[ 
+\hat{h}(x) = \begin{cases}
+1 &amp; \text{if } \hat{r} &gt; \frac{1}{2} \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Density Estimation</strong>. Estimate <span class="math inline">\(f_0\)</span> from the <span class="math inline">\(X_i\)</span>’s for which <span class="math inline">\(Y_i = 0\)</span>, estimate <span class="math inline">\(f_1\)</span> from the <span class="math inline">\(X_i\)</span>’s for which <span class="math inline">\(Y_i = 1\)</span>, and let <span class="math inline">\(\hat{\pi} = n^{-1} \sum_{i=1}^n Y_i\)</span>. Define</li>
+</ol>
+<p><span class="math display">\[ \hat{r}(x) = \hat{\mathbb{P}}(Y = 1 | X = x) = \frac{\hat{\pi} \hat{f}_1(x)}{\hat{\pi} \hat{f}_1(x) + (1 - \hat{\pi}) \hat{f}_0(x)} \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ 
+\hat{h}(x) = \begin{cases}
+1 &amp; \text{if } \hat{r} &gt; \frac{1}{2} \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Now to generalize to the case where <span class="math inline">\(Y\)</span> takes more than two values:</p>
+<p><strong>Theorem 23.6</strong>. Suppose that <span class="math inline">\(Y \in \mathcal{Y} = \{ 1, \dots, K \}\)</span>. The optimal rule is</p>
+<p><span class="math display">\[ h(x) = \text{argmax}_h \mathbb{P}(Y = k | X = x) = \text{argmax}_h \pi_k f_k(x) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \mathbb{P}(Y = k | X = x) = \frac{f_k(x) \pi_k}{\sum_r f_r(x) \pi_r} \]</span></p>
+<p>and $ _r = (Y = r)$, <span class="math inline">\(f_r(x) = f(x | Y = r)\)</span>.</p>
+</div>
+<div id="gaussian-and-linear-classifiers" class="section level3">
+<h3>23.3 Gaussian and Linear Classifiers</h3>
+<p>Perhaps the simplest approach to classification is to use the density estimation strategy and assume a parametric model for the densities. Suppose that <span class="math inline">\(\mathcal{Y} = \{ 0, 1 \}\)</span> and that <span class="math inline">\(f_0(x) = f(x | Y = 0)\)</span> and <span class="math inline">\(f_1(x) = f(x | Y = 1)\)</span> are both multivariate Gaussians:</p>
+<p><span class="math display">\[ f_k(x) = \frac{1}{(2\pi)^{d/2} | \Sigma_k |^{1/2}} \exp \left\{ -\frac{1}{2} (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k) \right\}, \quad k = 0, 1\]</span></p>
+<p>Thus, <span class="math inline">\(X | Y = 0 \sim N(\mu_0, \Sigma_0)\)</span> and <span class="math inline">\(X | Y = 1 \sim N(\mu_1, \Sigma_1)\)</span>.</p>
+<p><strong>Theorem 23.7</strong>. If <span class="math inline">\(X | Y = 0 \sim N(\mu_0, \Sigma_0)\)</span> and <span class="math inline">\(X | Y = 1 \sim N(\mu_1, \Sigma_1)\)</span>, then the Bayes rule is</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp; \text{if } r_1^2 &lt; r_0^2 + 2 \log \left( \frac{\pi_1}{\pi_0} \right) + \log \left( \frac{| \Sigma_0 | }{ | \Sigma_1| }
+\right) \\
+0 &amp; \text{otherwise} 
+\end{cases}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ r_i^2 = (x - \mu_i)^T \Sigma_i^{-1}(x - \mu_i), \quad i = 1, 2 \]</span></p>
+<p>is the <strong>Manalahobis distance</strong>. An equivalent way of expressing Bayes’ rule is</p>
+<p><span class="math display">\[ h(x) = \text{argmax}_k \delta_k(x) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \delta_k(x) = -\frac{1}{2} \log | \Sigma_k | - \frac{1}{2} (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k) + \log \pi_k \]</span></p>
+<p>and <span class="math inline">\(|A|\)</span> denotes the determinant of matrix <span class="math inline">\(A\)</span>.</p>
+<p>The decision boundary of the above classifier is quadratic so this procedure is often called <strong>quadratic discriminant analysis (QDA)</strong>. In practice, we use sample estimates of <span class="math inline">\(\pi, \mu_0, \mu_1, \Sigma_0, \Sigma_1\)</span> in place of the true value, namely:</p>
+<p><span class="math display">\[
+\begin{array}{cc}
+\hat{\pi}_0 = \frac{1}{n} \sum_{i=1}^n (1 - Y_i) &amp; \hat{\pi}_1 = \frac{1}{n} \sum_{i=1}^n Y_i \\
+\hat{\mu}_0 = \frac{1}{n_0} \sum_{i: Y_i = 0} X_i &amp; \hat{\mu}_1 = \frac{1}{n_0} \sum_{i: Y_i = 1} X_i \\
+S_0 = \frac{1}{n_0} \sum_{i: Y_i = 0} (X_i - \hat{\mu}_0) (X_i - \hat{\mu}_0)^T &amp; 
+S_1 = \frac{1}{n_1} \sum_{i: Y_i = 1} (X_i - \hat{\mu}_1) (X_i - \hat{\mu}_1)^T
+\end{array}
+\]</span></p>
+<p>where <span class="math inline">\(n_0 = \sum_i (1 - Y_i)\)</span> and <span class="math inline">\(n_1 = \sum_i Y_i\)</span> are the number of <span class="math inline">\(Y_i\)</span> variables equal to 0 or 1, respectively.</p>
+<p>A simplification occurs if we assume <span class="math inline">\(\Sigma_0 = \Sigma_1 = \Sigma\)</span>. In that case, the Bayes rule is</p>
+<p><span class="math display">\[ h(x) = \text{argmax}_k \delta_k(x) \]</span></p>
+<p>where now</p>
+<p><span class="math display">\[ \delta_k(x) = x^T \Sigma^{-1} \mu_k - \frac{1}{2} \mu_k^T \Sigma^{-1} \mu_k + \log \pi_k \]</span></p>
+<p>The parameters are estimated as before, except the MLE of <span class="math inline">\(\Sigma\)</span> now is</p>
+<p><span class="math display">\[ S = \frac{n_0 S_0 + n_1 S_1}{n_0 + n_1} \]</span></p>
+<p>The classification rule is</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp;\text{if } \delta_1(x) &gt; \delta_0(x) \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \delta_j(x) = x^T S^{-1} \hat{\mu}_j - \frac{1}{2} \hat{\mu}_j^T S^{-1} \hat{\mu}_j + \log \hat{\pi}_j \]</span></p>
+<p>is called the <strong>discriminant function</strong>. The decision boundary $ { x : _0(x) = _1(x) }$ is linear so this method is called <strong>linear discrimination analysis (LDA)</strong>.</p>
+<p>Now we generalize to the case where <span class="math inline">\(Y\)</span> takes on more than two values.</p>
+<p><strong>Theorem 23.9</strong>. Suppose that <span class="math inline">\(Y \in \{ 1, \dots, K \}\)</span>. If <span class="math inline">\(f_k(x) = f(x | Y = k)\)</span> is Gaussian, the Bayes rule is</p>
+<p><span class="math display">\[ h(x) = \text{argmax}_k \delta_k(x) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \delta_k(x) = -\frac{1}{2} \log | \Sigma_k | - \frac{1}{2} (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k) + \log \pi_k \]</span></p>
+<p>If the variances of the Gaussians are equal then</p>
+<p><span class="math display">\[ \delta_k(x) = x^T \Sigma^{-1} \mu_k - \frac{1}{2} \mu_k^T \Sigma^{-1} \mu_k + \log \pi_k \]</span></p>
+<p>We estimate <span class="math inline">\(\delta_k(x)\)</span> by inserting estimates of <span class="math inline">\(\mu_k\)</span>, <span class="math inline">\(\Sigma_k\)</span>, and <span class="math inline">\(\pi_k\)</span>.</p>
+<p>There is another version of LDA due to Fisher. The idea is to first reduce the dimension of the covariates to one dimension by projecting the data onto a line. Algebraically, this means replacing the covariate <span class="math inline">\(X = (X_1, \dots, X_d)\)</span> with a linear combination <span class="math inline">\(U = w^T X = \sum_{j=1}^d w_j X_j\)</span>. The goal is to choose the vector <span class="math inline">\(w = (w_1, \dots, w_d)\)</span> that “best separates the data.” Then we perform classification with the new covariate <span class="math inline">\(U\)</span> instead of <span class="math inline">\(X\)</span>.</p>
+<p>We need to define what we mean by separation of the groups. We would like the two groups to have means that are far apart relative to their spread. Let <span class="math inline">\(\mu_j\)</span> denote the mean of <span class="math inline">\(X\)</span> for <span class="math inline">\(Y = j\)</span> and let <span class="math inline">\(\Sigma\)</span> be the variance matrix of <span class="math inline">\(X\)</span>. Then <span class="math inline">\(\mathbb{E}(U | Y = j) = \mathbb{E}(w^T X | Y = j) = w^T \mu_j\)</span> and <span class="math inline">\(\mathbb{V}(U) = w^T \Sigma w\)</span>. Define the separation by</p>
+<p><span class="math display">\[
+\begin{align}
+J(w) &amp;= \frac{(\mathbb{E}(U | Y = 0) - \mathbb{E}(U | Y = 1))^2}{w^T \Sigma w} \\
+&amp;= \frac{(w^T \mu_0 - w^T \mu_1)^2}{w^T \Sigma w} \\
+&amp;= \frac{w^T (\mu_0 - \mu_1)(\mu_0 - \mu_1)^T w}{w^T \Sigma w}
+\end{align}
+\]</span></p>
+<p><em>The quantity <span class="math inline">\(J\)</span> arises in physics, where it is called the Rayleight coefficient.</em></p>
+<p>We estimate <span class="math inline">\(J\)</span> as follows. Let <span class="math inline">\(n_j = \sum_{i=1}^n I(Y_i = j)\)</span> be the number of observations in group <span class="math inline">\(j\)</span>, let <span class="math inline">\(\overline{X}_j = n_j^{-1} \sum_{i: Y_i = j} X_j\)</span> be the sample mean vetor of <span class="math inline">\(X\)</span>’s for group <span class="math inline">\(j\)</span>, and let $S_j = (n_j - 1)^{-1} _{i: Y_i = j} (X_i - _j)(X_i - _j)^T $ be the sample covariance matrix in group <span class="math inline">\(j\)</span>. Define</p>
+<p><span class="math display">\[ \hat{J}(w) = \frac{w^T S_B w}{w^T S_W w} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ 
+S_B = (\overline{X}_0 - \overline{X}_1) (\overline{X}_0 - \overline{X}_1)^T
+\quad \text{and} \quad
+S_W = \frac{(n_0 - 1) S_0 + (n_1 - 1) S_1}{(n_0 - 1) + (n_1 -1)}
+\]</span></p>
+<p><strong>Theorem 23.10</strong>. The vector</p>
+<p><span class="math display">\[ w = S_W^{-1}(\overline{X}_0 - \overline{X}_1) \]</span></p>
+<p>is a minimizer of <span class="math inline">\(\hat{J}(w)\)</span>. We call</p>
+<p><span class="math display">\[ U = w^T X = (\overline{X}_0 - \overline{X}_1)^T S_W^{-1} X \]</span></p>
+<p>the <strong>Fisher linear discriminant function</strong>. The midpoint <span class="math inline">\(m\)</span> between <span class="math inline">\(\overline{X}_0\)</span> and <span class="math inline">\(\overline{X}_1\)</span> is</p>
+<p><span class="math display">\[ m = \frac{1}{2} (\overline{X}_0 + \overline{X}_1) = \frac{1}{2}  (\overline{X}_0 - \overline{X}_1)^T S_B^{-1}  (\overline{X}_0 + \overline{X}_1)\]</span></p>
+<p>Fisher’s classification rule is</p>
+<p><span class="math display">\[
+h(x) = \begin{cases}
+0 &amp; \text{if } w^T X \geq m \\
+1 &amp; \text{if } w^T X &lt; m
+\end{cases}
+= \begin{cases}
+0 &amp; \text{if } (\overline{X}_0 - \overline{X}_1)^T S_W^{-1}x \geq m \\
+1 &amp; \text{if } (\overline{X}_0 - \overline{X}_1)^T S_W^{-1}x &lt; m
+\end{cases}
+\]</span></p>
+<p>Fisher’s rule is the same as the Bayes linear classifier when <span class="math inline">\(\hat{\pi} = 1/2\)</span>.</p>
+</div>
+<div id="linear-regression-and-logistic-regression" class="section level3">
+<h3>23.4 Linear Regression and Logistic Regression</h3>
+<p>A more direct approach to classification is to estimate the regression function <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span> without bothering to estimate the densities <span class="math inline">\(f_k\)</span>. For the rest of this section we will only consider the case where <span class="math inline">\(\mathcal{Y} = \{ 0, 1 \}\)</span>. Thus, <span class="math inline">\(r(x) = \mathbb{P}(Y = 1 | X = x)\)</span> and once we have an estimate <span class="math inline">\(\hat{r}\)</span>, we will use the classification rule</p>
+<p><span class="math display">\[ 
+h(x) = \begin{cases}
+1 &amp;\text{if } \hat{r}(x) &gt; \frac{1}{2} \\
+0 &amp;\text{otherwise}
+\end{cases} 
+\]</span></p>
+<p>The simplest regression is the linear regression model</p>
+<p><span class="math display">\[ Y = r(x) + \epsilon = \beta_0 + \sum_{j=1}^d \beta_j X_j + \epsilon \]</span></p>
+<p>where <span class="math inline">\(\mathbb{E}(\epsilon) = 0\)</span>. This model can’t be correct since it doesn’t force <span class="math inline">\(Y \in \mathcal{Y}\)</span>. Nonetheless, it can sometimes lead to a decent classifier.</p>
+<p>Recall that the least square estimate of <span class="math inline">\(\beta = (\beta_0, \beta_1, \dots, \beta_d)^T\)</span> minimizes the residual sum of squares</p>
+<p><span class="math display">\[ \text{RSS}(\beta) = \sum_{i=1}^n \left( Y_i - \left( \beta_0  + \sum_{j=1}^d X_{ij} \beta_j \right) \right)^2 \]</span></p>
+<p>Briefly reviewing this estimator: let</p>
+<p><span class="math display">\[ 
+X = \begin{bmatrix}
+1 &amp; X_{11} &amp; \cdots &amp; X_{1d} \\
+1 &amp; X_{21} &amp; \cdots &amp; X_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; X_{n1} &amp; \cdots &amp; X_{nd}
+\end{bmatrix}
+\quad \text{and} \quad
+Y = (Y_1, \dots, Y_n)^T
+\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \text{RSS}(\beta) = (Y - X \beta)^T (Y - X \beta) \]</span></p>
+<p>and the model can be written as</p>
+<p><span class="math display">\[ Y = X \beta + \epsilon \]</span></p>
+<p>where $ = (_1, , _n)^T$. The least squares solution <span class="math inline">\(\hat{\beta}\)</span> that minimizes RSS is given by</p>
+<p><span class="math display">\[ \hat{\beta} = (X^T X)^{-1} X^T Y \]</span></p>
+<p>and the predicted values are</p>
+<p><span class="math display">\[ \hat{Y} = X \hat{\beta} \]</span></p>
+<p>Now we can use <span class="math inline">\(h(x)\)</span> to classify, by taking <span class="math inline">\(\hat{r}(x) = \hat{\beta}_0 + \sum_k \hat{\beta}_k x_j\)</span>.</p>
+<p>It seems sensible to use a regression model that takes into account that <span class="math inline">\(Y \in \{ 0, 1 \}\)</span>. The most common method for doing so is <strong>logistic regression</strong>. Recall that the model is</p>
+<p><span class="math display">\[ r(x) = \mathbb{P}(Y = 1 | X = x) = \frac{\exp \left\{ \beta_0 + \sum_j \beta_j x_j \right\} }{1 + \exp \left\{ \beta_0 + \sum_j \beta_j x_j \right\} } \]</span></p>
+<p>We may write this as</p>
+<p><span class="math display">\[ \text{logit} \; \mathbb{P}(Y = 1 | X = x) = \beta_0 + \sum_j \beta_j x_j \]</span></p>
+<p>where <span class="math inline">\(\text{logit}(a) = \log (a / (1 - a))\)</span>. Under this model, each <span class="math inline">\(Y_i\)</span> is a Bernoulli with success probability</p>
+<p><span class="math display">\[ p_i(\beta) = \frac{\exp \left\{ \beta_0 + \sum_j \beta_j X_{ij} \right\} }{1 + \exp \left\{ \beta_0 + \sum_j \beta_j X_{ij} \right\} } \]</span></p>
+<p>The likelihood function for the data set is</p>
+<p><span class="math display">\[ \mathcal{L}(\beta) = \prod_{i=1}^n p_i(\beta)^{Y_i} (1 - p_i(\beta))^{1 - Y_i}\]</span></p>
+<p>We obtain the MLE numerically.</p>
+<p>We can get a better classifier by fitting a richer model. For example we could fit</p>
+<p><span class="math display">\[ \text{logit} \; \mathbb{P}(Y = 1 | X = x) = \beta_0 + \sum_j \beta_j x_j + \sum_{j, k} \beta_{jk} x_j x_k \]</span></p>
+<p>More generally, we could add terms of up to order <span class="math inline">\(r\)</span> for some integer <span class="math inline">\(r\)</span>. Large values of <span class="math inline">\(r\)</span> give a more complicated model which should fit the data better. But there is a bias-variance tradeoff which we’ll discuss later.</p>
+<p>The logistic regression can be easily extend to <span class="math inline">\(k\)</span> groups but we shall not give the details here.</p>
+<p><em>(Student note: multiple treatments are easily found searching for “multinomial logistic regression”)</em></p>
+</div>
+<div id="relationship-between-logistic-regression-and-lda" class="section level3">
+<h3>23.5 Relationship Between Logistic Regression and LDA</h3>
+<p>LDA and logistic regression are almost the same thing.</p>
+<p>If we assume each group is Gaussian with the same covariance matrix then</p>
+<p><span class="math display">\[ 
+\begin{align}
+\log \left( \frac{\mathbb{P}(Y = 1 | X = x)}{\mathbb{P}(Y = 0 | X = x)} \right) 
+&amp;= \log \left( \frac{\pi_0}{\pi_1} \right) - \frac{1}{2} (\mu_0 + \mu_1)^T \Sigma^{-1} (\mu_1 - \mu_0) + x^T \Sigma^{-1}( \mu_1 - \mu_0) \\
+&amp;\equiv \alpha_0 + \alpha^T x
+\end{align}
+\]</span></p>
+<p>On the other hand, the logistic model is, by assumption,</p>
+<p><span class="math display">\[ \log \left( \frac{\mathbb{P}(Y = 1 | X = x)}{\mathbb{P}(Y = 0 | X = x)} \right) = \beta_0 + \beta^T x \]</span></p>
+<p>These are the same model since they both lead to classification rules that are linear in <span class="math inline">\(x\)</span>. The difference is in how we estimate the parameters.</p>
+<p>The joint density of a single observation is <span class="math inline">\(f(x, y) = f(x | y) f(y) = f(y | x) f(x)\)</span>. In LDA we estimated the whole distribution by estimating <span class="math inline">\(f(x | y)\)</span> and <span class="math inline">\(f(y)\)</span>; specifically, we estimated <span class="math inline">\(f_k(x) = f(x | Y = k)\)</span>, <span class="math inline">\(\pi_k = f_Y(k)\)</span>. We maximized the likelihood</p>
+<p><span class="math display">\[ \prod_i f(x_i, y_i) = \underbrace{\prod_i f(x_i | y_i)}_\text{Gaussian} \underbrace{ \prod_i f(y_i) }_\text{Bernoulli}\]</span></p>
+<p>In logistic regression, we maximized the conditional likelihood <span class="math inline">\(\prod_i f(y_i | x_i)\)</span> but we ignored the second term <span class="math inline">\(f(x_i)\)</span>:</p>
+<p><span class="math display">\[ \prod_i f(x_i, y_i) = \underbrace{\prod_i f(y_i | x_i)}_\text{logistic} \underbrace{ \prod_i f(x_i) }_\text{ignored}\]</span></p>
+<p>Since classification requires only knowing <span class="math inline">\(f(y | x)\)</span>, we don’t really need to estimate the whole joint distribution. Logistic regression leaves the marginal distribution <span class="math inline">\(f(x)\)</span> unspecified so it is more nonparametric than LDA.</p>
+<p>To summarize: LDA and logistic regression both lead to a linear classification rule. In LDA we estimate the whole joint distribution <span class="math inline">\(f(x, y) = f(x | y) f(y)\)</span>. In logistic regression we only estimate <span class="math inline">\(f(y | x)\)</span> and we don’t bother estimating <span class="math inline">\(f(x)\)</span>.</p>
+</div>
+<div id="density-estimation-and-naive-bayes" class="section level3">
+<h3>23.6 Density Estimation and Naive Bayes</h3>
+<p>Recall that the Bayes rule is <span class="math inline">\(h(x) = \text{argmax}_k \pi_k f_k(x)\)</span>. If we can estimate <span class="math inline">\(\pi_k\)</span> and <span class="math inline">\(f_k\)</span> then we can estimate the Bayes classification rule. Estimating <span class="math inline">\(\pi_k\)</span> is easy, but what about <span class="math inline">\(f_k\)</span>? We did it previously by assuming <span class="math inline">\(f_k\)</span> was Gaussian. Another strategy is to estimate <span class="math inline">\(f_k\)</span> with some nonparametric density estimator <span class="math inline">\(\hat{f}_k\)</span> such as a kernel estimator. But if <span class="math inline">\(x = (x_1, \dots, x_d)\)</span> is high dimensional, nonparametric density estimation is not very reliable. The problem is ameliorated if we assume that <span class="math inline">\(X_1, \dots, X_d\)</span> are independent, for then <span class="math inline">\(f_k(x_1, \dots, x_d) = \prod_{j=1}^d f_{kj}(x_j)\)</span>. This reduces the problem to <span class="math inline">\(d\)</span> one-dimensional density estimation problems, within each of the <span class="math inline">\(k\)</span> groups. The resulting classifier is called the <strong>naive Bayes classifier</strong>. The assumption that the components of <span class="math inline">\(X\)</span> are independent is usually wrong yet the resulting classifier might still be accurate.</p>
+<p><strong>Naive Bayes Classifier</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>For each group <span class="math inline">\(k\)</span>, compute an estimate <span class="math inline">\(\hat{f}_{kj}\)</span> of the density <span class="math inline">\(f_{kj}\)</span> for <span class="math inline">\(X_j\)</span>, using the data for which <span class="math inline">\(Y_i = k\)</span>.</p></li>
+<li><p>Let</p></li>
+</ol>
+<p><span class="math display">\[ \hat{f}_k(x) = \hat{f}_k(x_1, \dots, x_d) = \prod_{j=1}^d \hat{f}_{kj}(x_j) \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ \hat{\pi}_k = \frac{1}{n} \sum_{i=1}^n I(Y_i = k) \]</span></p>
+<p>where <span class="math inline">\(I(t) = 1\)</span> if <span class="math inline">\(t\)</span> and <span class="math inline">\(I(t) = 0\)</span> otherwise.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ h(x) = \text{argmax}_k \hat{\pi}_k \hat{f}_k(x) \]</span></p>
+<p>The naive Bayes classifier is especially popular when <span class="math inline">\(x\)</span> is high dimensional and discrete. In that case, <span class="math inline">\(\hat{f}_{kj}(x_k)\)</span> is especially simple.</p>
+</div>
+<div id="trees" class="section level3">
+<h3>23.7 Trees</h3>
+<p>Trees are classification methods that partition the covariate space <span class="math inline">\(\mathcal{X}\)</span> into disjoint pieces and then classify the observations according to which partition element they fall in. As the name implies, the classifier can be represented as a tree.</p>
+<p>Here is how a tree is constructed. For simplicity, we focus on the case where <span class="math inline">\(\mathcal{Y} = \{ 0, 1 \}\)</span>. First, suppose there is a single covariate <span class="math inline">\(X\)</span>. We choose a split point <span class="math inline">\(t\)</span> that divides the real line into two sets, <span class="math inline">\(A_1 = (-\infty, t]\)</span> and <span class="math inline">\(A_2 = (t, \infty)\)</span>. Let <span class="math inline">\(\hat{p}_s(j)\)</span> be the proportion of observations in <span class="math inline">\(A_s\)</span> such that <span class="math inline">\(Y_i = j\)</span>:</p>
+<p><span class="math display">\[ \hat{p}_s(j) = \frac{\sum_{i=1}^n I(Y_i = j, X_i \in A_s)}{\sum_{i=1}^n I(X_i \in A_s)} \]</span></p>
+<p>for <span class="math inline">\(s = 1, 2\)</span> and <span class="math inline">\(j = 0, 1\)</span>. The <strong>impurity</strong> of the split <span class="math inline">\(t\)</span> is defined to be</p>
+<p><span class="math display">\[ I(t) = \sum_{s=1}^2 \gamma_s \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \gamma_s = 1 - \sum_{j=0}^1 \hat{p}_s(j)^2 \]</span></p>
+<p>This measure of impurity is known as the <strong>Gini index</strong>. If a partition element <span class="math inline">\(A_s\)</span> contains all 0s or all 1s, then <span class="math inline">\(\gamma_s = 0\)</span>. Otherwise, <span class="math inline">\(\gamma_s &gt; 0\)</span>. We choose the split point <span class="math inline">\(t\)</span> to minimize the impurity. (Other indices of impurity may be used besides the Gini index.)</p>
+<p>When there are several covariates, we choose whatever covariate and split that leads to the lowest impurity. This process is continued until some stopping criteria is met. For example, we might stop when every partition element has fewer than <span class="math inline">\(n_0\)</span> data points, where <span class="math inline">\(n_0\)</span> is some fixed number. The bottom nodes of the tree are called <strong>leaves</strong>. Each leaf is assigned a 0 or 1 depending on whether there are more data points with <span class="math inline">\(Y = 0\)</span> or <span class="math inline">\(Y = 1\)</span> in the partition element.</p>
+<p>This procedure is easily generalized to the multiclass case, <span class="math inline">\(\mathcal{Y} = \{ 1, \dots, K \}\)</span>. We simply define the impurity by</p>
+<p><span class="math display">\[ \gamma_s = 1 - \sum_{j=1}^K \hat{p}_s(j)^2 \]</span></p>
+<p>where <span class="math inline">\(\hat{p}_s(j)\)</span> is the proportion of observations in the partition element for which <span class="math inline">\(Y = j\)</span>.</p>
+<p>Our description of how to build trees is incomplete. If we keep splitting until there are few cases in each leaf of the tree, we are likely to overfit the data. We should choose the complexity of the tree in such a way that the estimated true error rate is low. In the next section, we discuss estimation of the error rate.</p>
+</div>
+<div id="assessing-error-rates-and-choosing-a-good-classifier" class="section level3">
+<h3>23.8 Assessing Error Rates and Choosing a Good Classifier</h3>
+<p>We would like to have a classifier <span class="math inline">\(h\)</span> with a low true error rate <span class="math inline">\(L(h)\)</span>. Usually, we can’t use the training error rate <span class="math inline">\(\hat{L}_n(h)\)</span> as an estimate of the true error rate because it is biased downward.</p>
+<p>There are many ways to estimate the error rate. We’ll consider two: <strong>cross-validation</strong> and <strong>probability inequalities</strong>.</p>
+<div id="cross-validation" class="section level4">
+<h4>Cross-validation</h4>
+<p>The basic idea of cross-validation is to leave out some of the data when fitting a model. The simplest version involves randomly splitting the data into two pieces: the <strong>training set <span class="math inline">\(\mathcal{T}\)</span></strong> and the <strong>validation set <span class="math inline">\(\mathcal{V}\)</span></strong>. Often, about 10 percent of the data might be set aside as the validation set. The classifier <span class="math inline">\(h\)</span> is constructed from the training set. We then estimate the error by</p>
+<p><span class="math display">\[ \hat{L}(h) = \frac{1}{m} \sum_{X_i \in \mathcal{V}} I(h(X_i) \neq Y_i) \]</span></p>
+<p>where <span class="math inline">\(m\)</span> is the size of the validation set.</p>
+<p>Another approach to cross-validation is <strong>K-fold cross-validation</strong> which is obtained as follows:</p>
+<p><strong>K-fold cross-validation</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Randomly divide the data into <span class="math inline">\(K\)</span> chunks of approximately equal size. A common choice is <span class="math inline">\(K = 10\)</span>.</p></li>
+<li><p>For <span class="math inline">\(k = 1\)</span> to <span class="math inline">\(K\)</span> do the following:</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><p>Delete chunk <span class="math inline">\(k\)</span> from the data.</p></li>
+<li><p>Compute the classifier <span class="math inline">\(\hat{h}_{(k)}\)</span> from the rest of the data.</p></li>
+<li><p>Use <span class="math inline">\(\hat{h}_{(k)}\)</span> to predict the data in chunk <span class="math inline">\(k\)</span>. Let <span class="math inline">\(\hat{L}_{(k)}\)</span> denote the observed error rate.</p></li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li>Let</li>
+</ol>
+<p><span class="math display">\[ \hat{L}(h) = \frac{1}{K} \sum_{k=1}^K \hat{L}_{(k)} \]</span></p>
+<p>Cross-validation can be applied to any classification method. To apply it to trees, one begins by fitting an initial tree. Smaller trees are obtained by pruning tree. We can do this for trees of various sizes, where size refers to the number of terminal nodes on the tree. Cross-validation is then used to estimate error rate as a function of tree size.</p>
+</div>
+<div id="probability-inequalities" class="section level4">
+<h4>Probability Inequalities</h4>
+<p>Another approach to estimating the error rate is to find a confidence interval for <span class="math inline">\(\hat{L}_n(h)\)</span> using probability inequalities. This method is useful in the context of <strong>empirical risk estimation</strong>.</p>
+<p>Let <span class="math inline">\(\mathcal{H}\)</span> be a set of classifiers, for example, all linear classifiers. Empirical risk minimization means choosing the classifier <span class="math inline">\(\hat{h} \in \mathcal{H}\)</span> to minimize the training error <span class="math inline">\(\hat{L}_n(h)\)</span>, also called the empirical risk. Thus,</p>
+<p><span class="math display">\[ \hat{h} = \text{argmin}_{h \in \mathcal{H}} \hat{L}_n(h) 
+= \text{argmin}_{h \in \mathcal{H}} \left( \frac{1}{n} \sum_i I(h(X_i) \neq Y_i) \right) \]</span></p>
+<p>Typically, <span class="math inline">\(\hat{L}_n(\hat{h})\)</span> underestimates the true error rate <span class="math inline">\(L(\hat{h})\)</span> because <span class="math inline">\(\hat{h}\)</span> was chosen to minimize <span class="math inline">\(\hat{L}_n(\hat{h})\)</span>. Our goal is to assess how much underestimation is taking place. Our main tool for this analysis is <strong>Hoeffding’s inequality</strong>. Recall that if <span class="math inline">\(X_1, \dots, X_n \sim \text{Bernoulli}(p)\)</span>, then, for any <span class="math inline">\(\epsilon &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(|\hat{p} - p| &gt; \epsilon) \leq 2 e^{ -2 n \epsilon^2 } \]</span></p>
+<p>where <span class="math inline">\(\hat{p} = n^{-1} \sum_{i=1}^n X_i\)</span>.</p>
+<p>First, suppose that <span class="math inline">\(\mathcal{H} = \{ h_1, \dots, h_m \}\)</span> consists of finitely many classifiers. For any fixed <span class="math inline">\(h\)</span>, <span class="math inline">\(\hat{L}_n(h)\)</span> converges in almost surely to <span class="math inline">\(L(h)\)</span> by the law of large numbers. We will now establish a stronger result.</p>
+<p><strong>Theorem 23.16 (Uniform Convergence)</strong>. Assume <span class="math inline">\(\mathcal{H}\)</span> is finite and has <span class="math inline">\(m\)</span> elements. Then,</p>
+<p><span class="math display">\[ \mathbb{P} \left( \max_{h \in \mathcal{H}} |\hat{L}_n(h) - L(h) | &gt; \epsilon \right) \leq 2 m e^{-2 n \epsilon^2} \]</span></p>
+<p><strong>Proof</strong>. We will use Hoeffding’s inequality and we will also use the fact that if <span class="math inline">\(A_1, \dots, A_m\)</span> is a set of events then <span class="math inline">\(\mathbb{P}(\bigcup_{i=1}^m A_i) \leq \sum_{i=1}^m \mathbb{P}(A_i)\)</span>. Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P} \left( \max_{h \in \mathcal{H}} |\hat{L}_n(h) - L(h) | &gt; \epsilon \right)
+&amp;= \mathbb{P} \left( \bigcup_{h \in \mathcal{H}} |\hat{L}_n(h) - L(h) | &gt; \epsilon \right) \\
+&amp; \leq \sum_{h \in \mathcal{H}} \mathbb{P} \left( |\hat{L}_n(h) - L(h) | &gt; \epsilon \right) \\
+&amp; \leq \sum_{h \in \mathcal{H}} 2 e^{-2 n \epsilon^2} = 2 m e^{-2 n \epsilon^2}
+\end{align}
+\]</span></p>
+<p><strong>Theorem 23.17</strong>. Let</p>
+<p><span class="math display">\[ \epsilon = \sqrt{\frac{2}{n} \log \left( \frac{2m}{\alpha} \right) } \]</span></p>
+<p>Then <span class="math inline">\(\hat{L}_n(\hat{h}) \pm \epsilon\)</span> is a <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(L(\hat{h})\)</span>.</p>
+<p><strong>Proof</strong>. This follows from the fact that</p>
+<p><span class="math display">\[
+\mathbb{P}(|\hat{L}_n(\hat{h}) - L(\hat{h})| &gt; \epsilon) 
+\leq \mathbb{P}( \max_{h \in \mathcal{H}} |\hat{L}_n(h) - L(h) | &gt; \epsilon )
+\leq 2 m e^{-2 n \epsilon^2} = \alpha
+\]</span></p>
+<p>When <span class="math inline">\(\mathcal{H}\)</span> is large the confidence interval for <span class="math inline">\(L(\hat{h})\)</span> is large. The more functions there are in <span class="math inline">\(\mathcal{H}\)</span> the more likely it is we have “overfit” which we compensate for by having a larger confidence interval.</p>
+<p>In practice, we usually use sets <span class="math inline">\(\mathcal{H}\)</span> that are infinite, such as the set of linear classifiers. To extend our analysis to these cases we want to be able to say something like</p>
+<p><span class="math display">\[ \mathbb{P} \left( \sup_{h \in \mathcal{H}} |\hat{L}_n(h) - L(h) | &gt; \epsilon \right) \leq \text{something not too big} \]</span></p>
+<p>All the other results followed from this inequality. One way to develop such a generalization is by way of the <strong>Vapnik-Chervonenkis</strong> or <strong>VC dimension</strong>. We now consider the main ideas in VC theory.</p>
+<p>Let <span class="math inline">\(\mathcal{A}\)</span> be a class of sets. Given a finite set <span class="math inline">\(F = \{ x_1, \dots, x_n \}\)</span> let</p>
+<p><span class="math display">\[ N_\mathcal{A}(F) = \# \Big\{ F \cap A : A \in \mathcal{A} \Big\} \]</span></p>
+<p>be the number of subsets F “picked out” by <span class="math inline">\(\mathcal{A}\)</span>. Here <span class="math inline">\(\#(B)\)</span> denotes the number of elements of set <span class="math inline">\(B\)</span>. The <strong>shatter coefficient</strong> is defined by</p>
+<p><span class="math display">\[ s(\mathcal{A}, n) = \max_{F \in \mathcal{F}_n} N_\mathcal{A}(F) \]</span></p>
+<p>where <span class="math inline">\(\mathcal{F}_n\)</span> consists of all finite sets of size <span class="math inline">\(n\)</span>. Now let <span class="math inline">\(X_1, \dots, X_n \sim \mathbb{P}\)</span> and let</p>
+<p><span class="math display">\[ \mathbb{P}_n(A) = \frac{1}{n} \sum_i I(X_i \in A) \]</span></p>
+<p>denote the empirical probability measure. The following remarkable theorem bounds the distance between <span class="math inline">\(\mathbb{P}\)</span> and <span class="math inline">\(\mathbb{P}_n\)</span>.</p>
+<p><strong>Theorem 23.18 (Vapnik and Chervonenkis (1971))</strong>. For any <span class="math inline">\(\mathbb{P}\)</span>, <span class="math inline">\(n\)</span>, and <span class="math inline">\(\epsilon &gt; 0\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P} \left\{ \sup_{A \in \mathcal{A}} | \mathbb{P}_n(A) - \mathbb{P}(A) | &gt; \epsilon \right\} \leq 8 s(\mathcal{A}, n) e^{-n \epsilon^2 / 32} \]</span></p>
+<p>The proof, though very elegant, is long and we omit it. If <span class="math inline">\(\mathcal{H}\)</span> is a set of classifiers, define <span class="math inline">\(\mathcal{A}\)</span> to be the class of sets of the form <span class="math inline">\(\{ x : h(x) = 1 \}\)</span>. Then we define <span class="math inline">\(s(\mathcal{H}, n) = s(\mathcal{A}, n)\)</span>.</p>
+<p><strong>Theorem 23.19</strong>.</p>
+<p><span class="math display">\[ \mathbb{P} \left\{ \sup_{h \in \mathcal{H}} | \hat{L}_n(h) - L(h) | &gt; \epsilon \right\} \leq 8 s(\mathcal{H}, n) e^{-n \epsilon^2 / 32} \]</span></p>
+<p>A <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(L(\hat{h})\)</span> is <span class="math inline">\(\hat{L}_n(\hat{h}) \pm \epsilon_n\)</span> where</p>
+<p><span class="math display">\[ \epsilon_n^2 = \frac{32}{n} \log \left( \frac{8 s(\mathcal{H}, n)}{\alpha} \right) \]</span></p>
+<p>These theorems are only useful if the shatter coefficients do not grow too quickly with <span class="math inline">\(n\)</span>. This is where the VC dimension enters.</p>
+<p>The <strong>VC (Vapnik-Chervonenkis) dimension</strong> of a class of sets <span class="math inline">\(\mathcal{A}\)</span> is defined as follows. If <span class="math inline">\(s(\mathcal{A}, n) = 2^n\)</span> for all <span class="math inline">\(n\)</span> set <span class="math inline">\(\text{VC}(\mathcal{A}) = \infty\)</span>. Otherwise, define <span class="math inline">\(\text{VC}(\mathcal{A})\)</span> to be the largest <span class="math inline">\(k\)</span> for which <span class="math inline">\(s(\mathcal{A}, n) = 2^k\)</span>.</p>
+<p>Thus, the VC-dimension is the size of the largest finite set <span class="math inline">\(F\)</span> that can be <strong>shattered by <span class="math inline">\(\mathcal{A}\)</span></strong>, meaning that <span class="math inline">\(\mathcal{A}\)</span> picks out each subset of <span class="math inline">\(F\)</span>. If <span class="math inline">\(\mathcal{H}\)</span> is a set of classifiers we define <span class="math inline">\(\text{VC}(\mathcal{H}) = \text{VC}(\mathcal{A})\)</span> where <span class="math inline">\(\mathcal{A}\)</span> is the class of sets of the form <span class="math inline">\(\{ x : h(x) = 1 \}\)</span> as <span class="math inline">\(h\)</span> varies in <span class="math inline">\(\mathcal{H}\)</span>. The following theorem shows that if <span class="math inline">\(\mathcal{A}\)</span> has finite VC-dimension then the shatter coefficients grow as a polynomial in <span class="math inline">\(n\)</span>.</p>
+<p><strong>Theorem 23.21</strong>. If <span class="math inline">\(\mathcal{A}\)</span> has finite VC-dimension <span class="math inline">\(v\)</span>, then</p>
+<p><span class="math display">\[ s(\mathcal{A}, n) \leq n^v + 1 \]</span></p>
+<p><strong>Theorem 23.26</strong>. Let <span class="math inline">\(x\)</span> have dimension <span class="math inline">\(d\)</span> and let <span class="math inline">\(\mathcal{H}\)</span> be the set of linear classifiers. The VC dimension of <span class="math inline">\(\mathcal{H}\)</span> is <span class="math inline">\(d + 1\)</span>. Hence, a <span class="math inline">\(1 - \alpha\)</span> confidence interval for the true error rate is <span class="math inline">\(\hat{L}(\hat{h}) \pm \epsilon\)</span> where</p>
+<p><span class="math display">\[ \epsilon_n^2 = \frac{32}{n} \log \left( \frac{8 (n^{d + 1} + 1)}{\alpha} \right) \]</span></p>
+</div>
+</div>
+<div id="support-vector-machines" class="section level3">
+<h3>23.9 Support Vector Machines</h3>
+<p>In this section we consider a class of linear classifiers called <strong>support vector machines</strong>. Throughout this section, we assume that <span class="math inline">\(Y\)</span> is binary. It will be convenient to label the outcomes as <span class="math inline">\(+1\)</span> and <span class="math inline">\(-1\)</span> instead of <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. A linear classifier can then be written as</p>
+<p><span class="math display">\[ h(x) = \text{sign}( H(x) ) \]</span></p>
+<p>where <span class="math inline">\(x = (x_1, \dots, x_d)\)</span>,</p>
+<p><span class="math display">\[ H(x) = a_0 + \sum_{i=1}^d a_i x_i \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \text{sign}(z) = \begin{cases}
+-1 &amp;\text{if } z &lt; 0 \\
+0  &amp;\text{if } z = 0 \\
+1  &amp;\text{if } z &gt; 0
+\end{cases}\]</span></p>
+<p>First, suppose that the data are <strong>linearly separable</strong>, that is, there exists a hyperplane that perfectly separates the two classes.</p>
+<p><strong>Lemma 23.27</strong>. The data can be separated by some hyperplane if and only if there exists a hyperplane $H(x) = a_0 + _{i=1}^d a_i x_i $ such that</p>
+<p><span class="math display">\[ Y_i H(x_i) \geq 1, \quad i = 1, \dots, n \]</span></p>
+<p><strong>Proof</strong>. Suppose that the data can be separated by a hyperplane <span class="math inline">\(W(x) = b_0 + \sum_{i=1}^d b_i x_i\)</span>. It follows that there exists some constant <span class="math inline">\(c\)</span> such that <span class="math inline">\(Y_i = 1\)</span> implies<span class="math inline">\(W(X_i) \geq c\)</span> and <span class="math inline">\(Y_i = -1\)</span> implies <span class="math inline">\(W(X_i) \leq -c\)</span>. Therefore, <span class="math inline">\(Y_i W(X_i) \geq c\)</span> for all i. Let <span class="math inline">\(H(x) = a_0 + \sum_{i=1} a_i x_i\)</span> where <span class="math inline">\(a_i = b_i / c\)</span>. Then <span class="math inline">\(Y_i H(X_i) \geq 1\)</span> for all <span class="math inline">\(i\)</span>. The reverse direction is straightforward.</p>
+<p>In the separable case, there will be many separating hyperplanes. Intuitively, it seems reasonable to choose the hyperplane “furthest” from the data in the sense that it separates the +1s and -1s and maximizes the distance to the closest point. This hyperplane is called the <strong>maximum margin hyperplane</strong>. The margin is the distance from the hyperplane to the nearest point. Points on the boundary of the margin are called <strong>support vectors</strong>.</p>
+<p><strong>Theorem 23.28</strong>. The hyperplane <span class="math inline">\(\hat{H}(x) = \hat{a}_0 + \sum_{i=1}^d \hat{a}_i x_i\)</span> that separates the data and maximizes the margin is given by minimizing <span class="math inline">\((1/2) \sum_{j=1}^d b_j^2\)</span> subject to <span class="math inline">\(Y_i H(x_i) \geq 1\)</span>.</p>
+<p>It turns out that this problem can be recast as a quadratic programming problem. Recall that <span class="math inline">\(\langle X_i, X_k \rangle = X_i^T X_k\)</span> is the inner product of <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_k\)</span>.</p>
+<p><strong>Theorem 23.29</strong>. Let <span class="math inline">\(\hat{H}(x) = \hat{a}_0 + \sum_{i=1}^d \hat{a}_i x_i\)</span> denote the optimal (largest margin) hyperplane. Then, for <span class="math inline">\(j = 1, \dots, d\)</span>,</p>
+<p><span class="math display">\[ \hat{a}_j = \sum_{i=1}^n \hat{\alpha}_i Y_i X_j(i) \]</span></p>
+<p>where <span class="math inline">\(X_j(i)\)</span> is the value of the covariate <span class="math inline">\(X_j\)</span> for the <span class="math inline">\(i\)</span>-th data point, and <span class="math inline">\(\hat{\alpha} = (\hat{\alpha}_1, \dots, \hat{\alpha}_n)\)</span> is the vector that maximizes</p>
+<p><span class="math display">\[ \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{k=1}^n \alpha_i \alpha_j Y_i Y_k \langle X_i, X_k \rangle \]</span></p>
+<p>subject to</p>
+<p><span class="math display">\[ \alpha_i \geq 0 \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ 0 = \sum_i \alpha_i Y_i \]</span></p>
+<p>The points <span class="math inline">\(X_i\)</span> for which <span class="math inline">\(\hat{\alpha}_i \neq 0\)</span> are called <strong>support vectors</strong>. <span class="math inline">\(\hat{\alpha}_0\)</span> can be found by solving</p>
+<p><span class="math display">\[ \hat{\alpha_i}(Y_i (X_i^T \hat{\alpha} + \hat{\beta}_0)) = 0\]</span></p>
+<p>for any support point <span class="math inline">\(X_i\)</span>. <span class="math inline">\(\hat{H}\)</span> may be written as</p>
+<p><span class="math display">\[ \hat{H}(x) = \hat{a}_0 + \sum_{i=1}^n \hat{\alpha}_i Y_i \langle x, X_i \rangle \]</span></p>
+<p>There are many software packages that will solve this problem quickly. If there is no perfect linear classifier, then one allows overlap between the groups by replacing the condition <span class="math inline">\(Y_i H(x_i) \geq 1\)</span> with</p>
+<p><span class="math display">\[ Y_i H(x_i) \geq 1 - \xi_i,
+\quad \xi_i \geq 0,
+\quad i = 1, \dots, n
+\]</span></p>
+<p>The variables <span class="math inline">\(\xi_1, \dots, \xi_n\)</span> are called <strong>slack variables</strong>.</p>
+<p>We now maximize <span class="math inline">\(\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{k=1}^n \alpha_i \alpha_j Y_i Y_k \langle X_i, X_k \rangle\)</span> subject to</p>
+<p><span class="math display">\[ 0 \leq \xi_i \leq c, \quad i = 1, \dots, n \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \sum_{i=1}^n \alpha_i Y_i = 0 \]</span></p>
+<p>The constant <span class="math inline">\(c\)</span> is a tuning parameter that controls the amount of overlap.</p>
+</div>
+<div id="kernelization" class="section level3">
+<h3>23.10 Kernelization</h3>
+<p>There is a trick for improving a computationally simpler classifier <span class="math inline">\(h\)</span> called <strong>kernelization</strong>. The idea is to map the covariate <span class="math inline">\(X\)</span> – which takes values in <span class="math inline">\(\mathcal{X}\)</span> – into a higher dimensional space <span class="math inline">\(\mathcal{Z}\)</span> and apply the classifier in the bigger space <span class="math inline">\(Z\)</span>. This can yield a more flexible classifier while retaining computational complexity.</p>
+<p>The standard example of this is illustrated in the figure below. Let the covariate be <span class="math inline">\(x = (x_1, x_2)\)</span>. The <span class="math inline">\(Y_i\)</span>’s can be separated into two groups using an ellipse. Define a mapping <span class="math inline">\(\phi\)</span> by</p>
+<p><span class="math display">\[ z = (z_1, z_2, z_3) = \phi(x) = (x_1^2, \sqrt{2} x_1 x_2, x_2^2) \]</span></p>
+<p>This <span class="math inline">\(\phi\)</span> maps <span class="math inline">\(\mathcal{X} = \mathbb{R}^2\)</span> into <span class="math inline">\(\mathcal{Z} = \mathbb{R}^3\)</span>. In the higher dimensional space <span class="math inline">\(\mathcal{Z}\)</span>, the <span class="math inline">\(Y_i\)</span>’s are separable by a linear decision boundary. In other words, a linear classifier in a higher dimensional space corresponds to a non-linear classifier in the original space.</p>
+<pre class="python"><code>import numpy as np
+
+
+# Fixing random state for reproducibility
+np.random.seed(0)
+
+# Generate data
+X = np.random.uniform(low=-1, high=1, size=(2, 200))
+
+def true_classifier(xx):
+    return xx[0]**2 + 2 * xx[1]**2 &lt;= 1
+
+indexes = true_classifier(X)
+A = X.T[indexes].T
+B = X.T[~indexes].T
+
+def phi(X):
+    xx, yy = X[0].reshape(-1, 1), X[1].reshape(-1, 1)
+    return np.concatenate([xx**2, np.sqrt(2) * xx * yy, yy**2], axis=1).T
+
+phi_A, phi_B = phi(A), phi(B)</code></pre>
+<pre class="python"><code>print(X.shape)
+print(indexes.shape)
+print(A.shape)
+print(B.shape)
+print(phi_A.shape)
+print(phi_B.shape)</code></pre>
+<pre><code>(2, 200)
+(200,)
+(2, 108)
+(2, 92)
+(3, 108)
+(3, 92)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+from mpl_toolkits.mplot3d import Axes3D  # Registers 3D projection
+
+%matplotlib inline
+
+fig = plt.figure(figsize=(15, 8))
+ax = plt.subplot(1, 2, 1)
+
+ax.scatter(A[0], A[1], color=&#39;C0&#39;, marker=&#39;x&#39;)
+ax.scatter(B[0], B[1], color=&#39;C1&#39;, marker=&#39;x&#39;)
+ellipse = Ellipse(xy=[0,0], width=2, height=np.sqrt(2), angle=0,
+              edgecolor=&#39;C0&#39;, lw=2, facecolor=&#39;none&#39;)
+ax.add_patch(ellipse)
+ax.set_xlabel(r&#39;$x_1$&#39;)
+ax.set_ylabel(r&#39;$x_2$&#39;)
+
+ax = plt.subplot(1, 2, 2, projection=&#39;3d&#39;)
+
+ax.scatter(phi_A[0], phi_A[1], phi_A[2], marker=&#39;x&#39;)
+ax.scatter(phi_B[0], phi_B[1], phi_B[2], marker=&#39;x&#39;)
+
+xx, yy = np.meshgrid(np.arange(0, 1, step=0.1), np.arange(-1, 1, step=0.1))
+zz = (1 - xx) / 2
+
+ax.plot_surface(xx, yy, zz, alpha=0.4)
+
+ax.set_xlabel(r&#39;$x_1^2$&#39;)
+ax.set_ylabel(r&#39;$\sqrt{2} x_1 x_2$&#39;)
+ax.set_zlabel(r&#39;$x_2^2$&#39;)
+
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_72_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>There is a potential drawback. If we significantly expand the dimension of the problem, we might increase the computational burden. For example, if <span class="math inline">\(x\)</span> has dimension <span class="math inline">\(d = 256\)</span> and we wanted to use all fourth order terms, then <span class="math inline">\(z = \phi(x)\)</span> has dimension 183,181,376. What saves us is two observations. First, many classifiers do not require that we know the values of the individual points but, rather, just the inner product between pairs of points. Second, notice in our example that the inner product in <span class="math inline">\(\mathcal{Z}\)</span> can be written</p>
+<p><span class="math display">\[ 
+\begin{align}
+\langle z, \tilde{z} \rangle &amp;= \langle \phi(x), \phi(\tilde{x}) \rangle \\
+&amp;= x_1^2 \tilde{x}_1^2 + 2 x_1 \tilde{x_1} x_2 \tilde{x}_2 + x_2^2 \tilde{x}_2^2 \\
+&amp;= ( \langle x, \tilde{x} \rangle )^2 \\
+&amp;\equiv K(x, \tilde{x})
+\end{align}
+\]</span></p>
+<p>Thus, we can compute <span class="math inline">\(\langle z, \tilde{z} \rangle\)</span> without ever computing <span class="math inline">\(Z_i = \phi(X_i)\)</span>.</p>
+<p>To summarize, kernelization means finding a mapping <span class="math inline">\(\phi: \mathcal{X} \rightarrow \mathcal{Z}\)</span> such that:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(\mathcal{Z}\)</span> has higher dimension that <span class="math inline">\(\mathcal{X}\)</span> and so leads to a richer set of classifiers.</p></li>
+<li><p>The classifier only requires computing inner products.</p></li>
+<li><p>There is a function <span class="math inline">\(K\)</span>, called a kernel, such that <span class="math inline">\(\langle \phi(x), \phi(\tilde{x}) \rangle = K(x, \tilde{x})\)</span></p></li>
+</ol>
+<p>Then, everywhere the term <span class="math inline">\(\langle x, \tilde{x} \rangle\)</span> appears in the algorithm, replace it with <span class="math inline">\(K(x, \tilde{x})\)</span>.</p>
+<p>In fact, we never need to construct the mapping <span class="math inline">\(\phi\)</span> at all. We only need to specify a kernel <span class="math inline">\(K(x, \tilde{x})\)</span> that corresponds to <span class="math inline">\(\langle \phi(x), \phi(\tilde{x}) \rangle\)</span> for some <span class="math inline">\(\phi\)</span>. This raises an interesting question: given a function of two variables <span class="math inline">\(K(x, y)\)</span>, does exist a function <span class="math inline">\(\phi(x)\)</span> such that <span class="math inline">\(K(x, y) = \langle \phi(x), \phi(\tilde{x}) \rangle\)</span> ? The answer is provided by <strong>Mercer’s theorem</strong> which says, roughly, that if <span class="math inline">\(K\)</span> is positive definite – meaning that</p>
+<p><span class="math display">\[ \int \int K(x, y) f(x) f(y) dx dy \geq 0 \]</span></p>
+<p>for square integrable functions <span class="math inline">\(f\)</span> – then such a <span class="math inline">\(\phi\)</span> exists. Examples of commonly used kernels are:</p>
+<ul>
+<li>polynomial: <span class="math inline">\(K(x, \tilde{x}) = (\langle x, \tilde{x} \rangle + a)^r\)</span></li>
+<li>sigmoid: <span class="math inline">\(K(x, \tilde{x}) = \text{tanh} (a \langle x, \tilde{x} \rangle + b)\)</span></li>
+<li>Gaussian: <span class="math inline">\(K(x, \tilde{x}) = -\exp \left( - \Vert x - \tilde{x} \Vert^2 / (2 \sigma^2) \right)\)</span></li>
+</ul>
+<p>Let us now see how we can use this trick in LDA and in support vector machines.</p>
+<p>Recall that the Fisher linear discriminant method replaces <span class="math inline">\(X\)</span> with <span class="math inline">\(U = w^T X\)</span> where <span class="math inline">\(w\)</span> is chosen to maximize the Rayleigh coefficient</p>
+<p><span class="math display">\[ J(w) = \frac{w^T S_B w}{w^T S_W w} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ S_B = (\overline{X}_0 - \overline{X}_1)(\overline{X}_0 - \overline{X}_1)^T \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ S_W = \left( \frac{(n_0 - 1) S_0}{(n_0 - 1) + (n_1 - 1)} \right) + \left( \frac{(n_1 - 1) S_1}{(n_0 - 1) + (n_1 - 1)} \right) \]</span></p>
+<p>In the kernelized version, we replace <span class="math inline">\(X_i\)</span> with <span class="math inline">\(Z_i = \phi(X_i)\)</span> and find <span class="math inline">\(w\)</span> to maximize</p>
+<p><span class="math display">\[ J(w) = \frac{w^T S_B w}{w^T S_W w} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ S_B = (\overline{Z}_0 - \overline{Z}_1)(\overline{Z}_0 - \overline{Z}_1)^T \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ S_W = \left( \frac{(n_0 - 1) \tilde{S}_0}{(n_0 - 1) + (n_1 - 1)} \right) + \left( \frac{(n_1 - 1) \tilde{S}_1}{(n_0 - 1) + (n_1 - 1)} \right) \]</span></p>
+<p>Here, <span class="math inline">\(\tilde{S}_j\)</span> is the sample covariance of the <span class="math inline">\(Z_i\)</span>’s for which <span class="math inline">\(Y_i = j\)</span>. However, to take advantage of kernelization, we need to reexpress this in terms of inner products and then replace the inner products with kernels.</p>
+<p>It can be shown that the maximizing vector <span class="math inline">\(w\)</span> is a linear combination of the <span class="math inline">\(Z_i\)</span>’s. Then we can write</p>
+<p><span class="math display">\[ w = \sum_{i=1}^n \alpha_i Z_i \]</span></p>
+<p>Also,</p>
+<p><span class="math display">\[ \overline{Z}_j = \frac{1}{n_j} \sum_{i=1}^n \phi(X_i) I(Y_i = j) \]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\begin{align}
+w^T \overline{Z}_j &amp;= \left( \sum_{i=1}^n \alpha_i Z_i \right)^T \left( \frac{1}{n_j} \sum_{i=1}^n \phi(X_i) I(Y_i = j) \right) \\
+&amp;= \frac{1}{n_j} \sum_{i=1}^n \sum_{s=1}^n \alpha_i I(Y_s = j) Z_i^T Z_s \\
+&amp;= \frac{1}{n_j} \sum_{i=1}^n \alpha_i \sum_{s=1}^n I(Y_s = j) \phi(X_i)^T \phi(X_s) \\
+&amp;= \frac{1}{n_j} \sum_{i=1}^n \alpha_i \sum_{s=1}^n I(Y_s = j) K(X_i, X_s) \\
+&amp;= \alpha^T M_j
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(M_j\)</span> is a vector whose <span class="math inline">\(i\)</span>-th component is</p>
+<p><span class="math display">\[ M_j(i) = \frac{1}{n_j} \sum_{s=1}^n K(X_i, X_s) I(Y_s = j) \]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[ w^T \tilde{S}_B w = \alpha^T M \alpha \]</span></p>
+<p>where <span class="math inline">\(M = (M_0 - M_1)(M_0 - M_1)^T\)</span>. By similar calculations, we can write</p>
+<p><span class="math display">\[ w^T \tilde{S}_W w = \alpha^T N \alpha \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ N = K_0\left( I - \frac{1}{n_0}\mathbf{1}\right) K_0^T + K_1\left( I - \frac{1}{n_1}\mathbf{1}\right) K_1^T\]</span></p>
+<p><span class="math inline">\(I\)</span> is the identity matrix, <span class="math inline">\(\mathbf{1}\)</span> is a matrix of all 1s, and <span class="math inline">\(K_j\)</span> is the <span class="math inline">\(n \times n_j\)</span> matrix with entries <span class="math inline">\((K_j)_{rs} = K(x_r, x_s)\)</span> with <span class="math inline">\(x_s\)</span> varying over the observations in group <span class="math inline">\(j\)</span>. Hence, we now find <span class="math inline">\(\alpha\)</span> to maximize</p>
+<p><span class="math display">\[ J(\alpha) = \frac{\alpha^T M \alpha}{\alpha^T N \alpha} \]</span></p>
+<p>Notice that all the quantities are expressed in terms of the kernel. Formally, the solution is <span class="math inline">\(\alpha = N^{-1}(M_0 - M_1)\)</span>. However, <span class="math inline">\(N\)</span> might be non-invertible. In this case, one replaces <span class="math inline">\(N\)</span> by <span class="math inline">\(N + bI\)</span> for some constant <span class="math inline">\(b\)</span>. Finally, the projection onto the new subspace can be written as</p>
+<p><span class="math display">\[ U = w^T \phi(x) = \sum_{i=1}^N \alpha_i K(x_i, x) \]</span></p>
+<p>The support vector machine can be similarly kernelized. We simply replace <span class="math inline">\(\langle X_i, X_j \rangle\)</span> with <span class="math inline">\(K(X_i, X_j)\)</span>. The hyperplane can be written as <span class="math inline">\(\hat{H}(X) = \hat{\alpha}_0 + \sum_{i=1}^n \hat{\alpha}_i Y_i K(X, X_i)\)</span>.</p>
+</div>
+<div id="other-classifiers" class="section level3">
+<h3>23.11 Other Classifiers</h3>
+<p>There are many other classifiers and space precludes a full discussion of them. Let us briefly mention a few.</p>
+<p>The <strong>k-nearest neighbors</strong> classifier is very simple. Given a point <span class="math inline">\(x\)</span>, find the <span class="math inline">\(k\)</span> data points closest to <span class="math inline">\(x\)</span>. Classify <span class="math inline">\(x\)</span> using the majority vote of these <span class="math inline">\(k\)</span> neighbors. Ties can be broken randomly; the parameter <span class="math inline">\(k\)</span> can be chosen by cross-validation.</p>
+<p><strong>Bagging</strong> is a method for reducing the variability of a classifier. It is most helpful for highly non-linear classifiers such as a tree. We draw <span class="math inline">\(B\)</span> bootstrap samples from the data. The <span class="math inline">\(b\)</span>-th bootstrap sample yields a classifier <span class="math inline">\(h_b\)</span>. The final classifier is</p>
+<p><span class="math display">\[ 
+\hat{x} = \begin{cases}
+1 &amp; \text{if } \frac{1}{B} \sum_{b=1}^B h_b(x) \geq \frac{1}{2} \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p><strong>Boosting</strong> is a method for starting with a simple classifier and gradually improving it by refitting the data giving higher weight to misclassified samples. Suppose that <span class="math inline">\(\mathcal{H}\)</span> is a collection of classifiers, for example, trees with only one split. Assume that <span class="math inline">\(Y_i \in \{ -1, 1 \}\)</span> and that each tree classifier <span class="math inline">\(h\)</span> is such that <span class="math inline">\(h(x) \in \{ -1, 1 \}\)</span>. We usually give equal weight to all data points in the methods we have discussed. But one can incorporate unequal weights quite easily in most algorithms. For example, in constructing a tree, we could replace the impurity measure with a weighted impurity measure. The original version of boosting, called AdaBoost, is as follows.</p>
+<ol style="list-style-type: decimal">
+<li><p>Set the weights <span class="math inline">\(w_i = 1 / n\)</span>, <span class="math inline">\(i = 1, \dots, n\)</span>.</p></li>
+<li><p>For <span class="math inline">\(j = 1, \dots, J\)</span>, do the following steps:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Construct a classifier <span class="math inline">\(h_J\)</span> from the data using weights <span class="math inline">\(w_1, \dots, w_n\)</span>.</p></li>
+<li><p>Compute the weighted error estimate:</p></li>
+</ol>
+<p><span class="math display">\[ \hat{L}_j = \frac{\sum_{i=1}^n w_i I(Y_i \neq h_j(X_i) }{\sum_{i=1}^n w_i} \]</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>Let <span class="math inline">\(\alpha_j = \log (( 1 - \hat{L}_j) / \hat{L}_j)\)</span></p></li>
+<li><p>Update the weights:</p></li>
+</ol>
+<p><span class="math display">\[ w_i \leftarrow w_i e^{\alpha_j I(Y_i \neq h_j(X_i)} \]</span></p></li>
+<li><p>The final classifier is</p>
+<p><span class="math display">\[ \hat{h}(x) = \text{sign} \left( \sum_{j=1}^J \alpha_j h_j(x) \right) \]</span></p></li>
+</ol>
+<p>There is an enormous literature trying to explain and improve on boosting. Whereas bagging is a variance reduction technique, boosting can be thought of as a bias reduction technique. We starting with a simple – and hence highly biased – classifier, and we gradually reduce the bias. The disadvantage of boosting is that the final classifier is quite complicated.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>23.13 Exercises</h3>
+<p><strong>Exercise 23.13.1</strong>. Prove Theorem 23.5.</p>
+<p>The Bayes rule is optimal, that is, if <span class="math inline">\(h\)</span> is any classification rule then <span class="math inline">\(L(h^*) \leq L(h)\)</span>.</p>
+<p><strong>Solution</strong>. We have:</p>
+<p><span class="math display">\[ 
+L(h) - L(h^*) = \mathbb{P}(h(X) \neq Y) - \mathbb{P}(h^*(X) \neq Y) 
+= \int_\mathcal{X} \left( \mathbb{P}(h(X) \neq Y | X = x) - \mathbb{P}(h^*(X) \neq Y | X = x) \right) d\mathbb{P}_X(x)
+\]</span></p>
+<p>We will show that the integrand is non-negative,</p>
+<p><span class="math display">\[ \mathbb{P}(h(X) \neq Y | X = x) - \mathbb{P}(h^*(X) \neq Y | X = x) \geq 0 \]</span></p>
+<p>For any classifier <span class="math inline">\(h\)</span>,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(h(X) \neq Y | X = x) &amp;= \mathbb{P}(h(X) = 0, Y = 1 | X = x) + \mathbb{P}(h(X) = 1, Y = 0 | X = x) \\
+&amp;= I(h(x) = 0) \mathbb{P}(Y = 1 | X = x) + I(h(x) = 1) \mathbb{P}(Y = 0 | X = x) \\
+&amp;= I(h(x) = 0) r(x) + (1 - I(h(x) = 0)) (1 - r(x)) \\
+&amp;= I(h(x) = 0) (2 r(x) - 1) + (1 - r(x))
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(r(x) = \mathbb{E}(Y | X = x)\)</span>. We can then write:</p>
+<p><span class="math display">\[ 
+\begin{align}
+&amp;\mathbb{P}(h(X) \neq Y | X = x) - \mathbb{P}(h^*(X) \neq Y | X = x) \\
+&amp;= \left(I(h(x) = 0) (2 r(x) - 1) + (1 - r(x)) \right) - \left(I(h^*(x) = 0) (2 r(x) - 1) + (1 - r(x)) \right) \\
+&amp;= (2 r(x) - 1) \left( I(h(x) = 0) - I(h^*(x) = 0) \right)
+\end{align}
+\]</span></p>
+<p>Now:</p>
+<ul>
+<li>If <span class="math inline">\(h(x) = h^*(x)\)</span>, the second term in this product is 0, so the integrand is zero (and thus non-negative).</li>
+<li>If <span class="math inline">\(h(x) = 0\)</span> and <span class="math inline">\(h^*(x) = 1\)</span>, then <span class="math inline">\(r(x) \geq 1/2\)</span>, so the integrand is non-negative.</li>
+<li>If <span class="math inline">\(h(x)= 1\)</span> and <span class="math inline">\(h^*(x) = 0\)</span>, then <span class="math inline">\(r(x) \leq 1/2\)</span>, so the integrand is non-negative.</li>
+</ul>
+<p>Since the integrand is always non-negative, the integral is non-negative, and <span class="math inline">\(L(h^*) \leq L(h)\)</span>.</p>
+<p><strong>Exercise 23.13.2</strong>. Prove Theorem 23.7.</p>
+<p>If <span class="math inline">\(X | Y = 0 \sim N(\mu_0, \Sigma_0)\)</span> and <span class="math inline">\(X | Y = 1 \sim N(\mu_1, \Sigma_1)\)</span>, then the Bayes rule is</p>
+<p><span class="math display">\[
+h^*(x) = \begin{cases}
+1 &amp; \text{if } r_1^2 &lt; r_0^2 + 2 \log \left( \frac{\pi_1}{\pi_0} \right) + \log \left( \frac{| \Sigma_0 | }{ | \Sigma_1| }
+\right) \\
+0 &amp; \text{otherwise} 
+\end{cases}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ r_i^2 = (x - \mu_i)^T \Sigma_i^{-1}(x - \mu_i), \quad i = 1, 2 \]</span></p>
+<p>is the <strong>Manalahobis distance</strong>. An equivalent way of expressing Bayes’ rule is</p>
+<p><span class="math display">\[ h(x) = \text{argmax}_k \delta_k(x) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \delta_k(x) = -\frac{1}{2} \log | \Sigma_k | - \frac{1}{2} (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k) + \log \pi_k \]</span></p>
+<p>and <span class="math inline">\(|A|\)</span> denotes the determinant of matrix <span class="math inline">\(A\)</span>.</p>
+<p><strong>Solution</strong>. The joint distribution of <span class="math inline">\(X, Y\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+f_{X, Y}(x, y) &amp;= f_{X | Y}(x | y) f_Y(y) \\
+&amp;= \sum_j \left( (2 \pi)^{k / 2} |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\} \right) \left( I(y = j) \pi_j \right)
+\end{align}
+\]</span></p>
+<p>so the distribution of <span class="math inline">\(Y | X\)</span> is</p>
+<p><span class="math display">\[
+\begin{align}
+f_{Y | X}(y | x) &amp;= \frac{f_{X, Y}(x, y)}{f_X(x)} = \frac{f_{X, Y}(x, y)}{\sum_{y_j} f_{X, Y}(x, y_j)} \\
+&amp;= \frac{\sum_j I(y = j) \pi_j (2 \pi)^{k / 2} |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\}}{\sum_j \pi_j (2 \pi)^{k / 2} |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\}} \\
+&amp;= \frac{\sum_j I(y = j) \pi_j |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\}}{\sum_j \pi_j |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\}}
+\end{align}
+\]</span></p>
+<p>Let</p>
+<p><span class="math display">\[ a_j(x) = \pi_j |\Sigma_j|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_j)^T \Sigma_j^{-1} (x - \mu_j) \right\} \]</span></p>
+<p>Then we can write:</p>
+<p><span class="math display">\[
+f_{Y | X}(y | x) = \frac{a_y(x)}{a_0(x) + a_1(x)}
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[ r(x) = \mathbb{E}[Y | X = x] = \sum_{y \in \mathcal{Y}} y \mathbb{P}(Y = y | X = x) = \mathbb{P}(Y = 1 | X = x) = \frac{a_1(x)}{a_0(x) + a_1(x)}\]</span></p>
+<p>so <span class="math inline">\(r(x) &gt; \frac{1}{2}\)</span> is equivalent to <span class="math inline">\(a_1(x) &gt; a_0(x)\)</span>, or</p>
+<p><span class="math display">\[
+\begin{align}
+\pi_1 |\Sigma_1|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1) \right\}
+&amp;&gt;
+\pi_0 |\Sigma_0|^{-1/2} \exp \left\{ -\frac{1}{2} (x - \mu_1)^T \Sigma_0^{-1} (x - \mu_0) \right\} \\
+\log \pi_1 - \frac{1}{2} \log |\Sigma_1| - \frac{1}{2} r_1^2
+&amp;&gt;
+\log \pi_0 - \frac{1}{2} \log |\Sigma_0| -\frac{1}{2} r_0^2 \\
+r_1^2 &amp;&lt; r_0^2 + 2 \log \left( \frac{\pi_1}{\pi_0} \right) + \log \left( \frac{| \Sigma_0 | }{ | \Sigma_1| }
+\right)
+\end{align}
+\]</span></p>
+<p>which is the desired result. The inequalities above also show that the two formulations of the rule are equivalent.</p>
+<p><strong>Exercise 23.13.3</strong>. Download the spam data from:</p>
+<p><a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/index.htm" class="uri">http://www-stat.stanford.edu/~tibs/ElemStatLearn/index.htm</a></p>
+<p>The data file can also be found on the course web page. The data contain 57 covariates relating to email messages. Each email message was classified as spam (Y=1) or not spam (Y=0). The outcome Y is the last column in the file. The goal is to predict whether an email is spam or not.</p>
+<p><strong>(a)</strong> Construct classification rules using (i) LDA, (ii) QDA, (iii) logistic regression and (iv) a classification tree. For each, report the observed misclassification error rate and construct a 2-by-2 table of the form</p>
+<p><span class="math display">\[
+\begin{array}{c|cc}
+ &amp; \hat{h}(x) = 0 &amp; \hat{h}(x) = 1 \\
+\hline
+Y = 0 \\
+Y = 1
+\end{array}
+\]</span></p>
+<p><strong>(b)</strong> Use 5-fold cross-validation to estimate the prediction accuracy of LDA and logistic regression.</p>
+<p><strong>(c)</strong> Sometimes it helps to reduce the number of covariates. One strategy is to compare <span class="math inline">\(X_i\)</span> for the spam and email group. For each of the 57 covariates, test whether the mean of the covariate is the same or different between the two groups. Keep the 10 covariates with the smallest p-values. Try LDA and logistic regression using only these 10 variables.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+0
+</th>
+<th>
+1
+</th>
+<th>
+2
+</th>
+<th>
+3
+</th>
+<th>
+4
+</th>
+<th>
+5
+</th>
+<th>
+6
+</th>
+<th>
+7
+</th>
+<th>
+8
+</th>
+<th>
+9
+</th>
+<th>
+…
+</th>
+<th>
+48
+</th>
+<th>
+49
+</th>
+<th>
+50
+</th>
+<th>
+51
+</th>
+<th>
+52
+</th>
+<th>
+53
+</th>
+<th>
+54
+</th>
+<th>
+55
+</th>
+<th>
+56
+</th>
+<th>
+57
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0.00
+</td>
+<td>
+0.64
+</td>
+<td>
+0.64
+</td>
+<td>
+0.0
+</td>
+<td>
+0.32
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.778
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.756
+</td>
+<td>
+61
+</td>
+<td>
+278
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+0.21
+</td>
+<td>
+0.28
+</td>
+<td>
+0.50
+</td>
+<td>
+0.0
+</td>
+<td>
+0.14
+</td>
+<td>
+0.28
+</td>
+<td>
+0.21
+</td>
+<td>
+0.07
+</td>
+<td>
+0.00
+</td>
+<td>
+0.94
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.132
+</td>
+<td>
+0.0
+</td>
+<td>
+0.372
+</td>
+<td>
+0.180
+</td>
+<td>
+0.048
+</td>
+<td>
+5.114
+</td>
+<td>
+101
+</td>
+<td>
+1028
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+0.06
+</td>
+<td>
+0.00
+</td>
+<td>
+0.71
+</td>
+<td>
+0.0
+</td>
+<td>
+1.23
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.12
+</td>
+<td>
+0.64
+</td>
+<td>
+0.25
+</td>
+<td>
+…
+</td>
+<td>
+0.010
+</td>
+<td>
+0.143
+</td>
+<td>
+0.0
+</td>
+<td>
+0.276
+</td>
+<td>
+0.184
+</td>
+<td>
+0.010
+</td>
+<td>
+9.821
+</td>
+<td>
+485
+</td>
+<td>
+2259
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.63
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.137
+</td>
+<td>
+0.0
+</td>
+<td>
+0.137
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.537
+</td>
+<td>
+40
+</td>
+<td>
+191
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.63
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.135
+</td>
+<td>
+0.0
+</td>
+<td>
+0.135
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.537
+</td>
+<td>
+40
+</td>
+<td>
+191
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+4596
+</th>
+<td>
+0.31
+</td>
+<td>
+0.00
+</td>
+<td>
+0.62
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.232
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.142
+</td>
+<td>
+3
+</td>
+<td>
+88
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4597
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.353
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.555
+</td>
+<td>
+4
+</td>
+<td>
+14
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4598
+</th>
+<td>
+0.30
+</td>
+<td>
+0.00
+</td>
+<td>
+0.30
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.102
+</td>
+<td>
+0.718
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.404
+</td>
+<td>
+6
+</td>
+<td>
+118
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4599
+</th>
+<td>
+0.96
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.32
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.057
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.147
+</td>
+<td>
+5
+</td>
+<td>
+78
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4600
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.65
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.125
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.250
+</td>
+<td>
+5
+</td>
+<td>
+40
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+4601 rows × 58 columns
+</p>
+</div>
+<p><strong>(a)</strong></p>
+<pre class="python"><code>def run_classifier(classifier, X, Y):
+    classifier.fit(X, Y)
+    Y_pred = classifier.predict(X)
+    n = len(Y)
+    
+    true_positives = np.sum((Y_pred == 1) &amp; (Y == 1))
+    false_positives = np.sum((Y_pred == 1) &amp; (Y == 0))
+    false_negatives = np.sum((Y_pred == 0) &amp; (Y == 1))
+    true_negatives = np.sum((Y_pred == 0) &amp; (Y == 0))
+
+    return {
+        &#39;misclassification_rate&#39;: (false_positives + false_negatives) / n,
+        &#39;confusion_matrix&#39;: np.array([[true_positives, false_positives], [false_negatives, true_negatives]])
+    }
+
+def print_results(classifier_name, results):
+    print(&#39;%s misclassification rate: %.3f&#39; % (classifier_name, results[&#39;misclassification_rate&#39;]))
+    print(&#39;%s confusion matrix:&#39; % classifier_name)
+    print(results[&#39;confusion_matrix&#39;])</code></pre>
+<pre class="python"><code>from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+classifier_name = &#39;LDA&#39;
+classifier = LinearDiscriminantAnalysis()
+results = run_classifier(classifier, X, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>LDA misclassification rate: 0.111
+LDA confusion matrix:
+[[1426  125]
+ [ 387 2663]]</code></pre>
+<pre class="python"><code>from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+
+classifier_name = &#39;QDA&#39;
+classifier = QuadraticDiscriminantAnalysis()
+results = run_classifier(classifier, X, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>QDA misclassification rate: 0.167
+QDA confusion matrix:
+[[1731  687]
+ [  82 2101]]</code></pre>
+<pre class="python"><code>from sklearn.linear_model import LogisticRegression
+
+classifier_name = &#39;Logistic Regression&#39;
+classifier = LogisticRegression(max_iter=2000, random_state=0)
+results = run_classifier(classifier, X, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>Logistic Regression misclassification rate: 0.068
+Logistic Regression confusion matrix:
+[[1623  121]
+ [ 190 2667]]</code></pre>
+<pre class="python"><code>from sklearn.tree import DecisionTreeClassifier
+
+classifier_name = &#39;Decision Tree Classifier&#39;
+classifier = DecisionTreeClassifier(random_state=0)
+results = run_classifier(classifier, X, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>Decision Tree Classifier misclassification rate: 0.001
+Decision Tree Classifier confusion matrix:
+[[1810    0]
+ [   3 2788]]</code></pre>
+<p><strong>(b)</strong></p>
+<p>Use 5-fold cross-validation to estimate the prediction accuracy of LDA and logistic regression.</p>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+def run_classifier_kfold(classifier, X, Y, n_splits=5):
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    accuracy = np.empty(n_splits)
+    for i, (train_index, test_index) in enumerate(kf.split(X)):
+        classifier.fit(X[train_index], Y[train_index])
+        Y_pred = classifier.predict(X[test_index])
+        accuracy[i] = np.sum(Y_pred == Y[test_index]) / len(Y_pred)
+    
+    return accuracy.mean()</code></pre>
+<pre class="python"><code>classifier_name = &#39;LDA&#39;
+classifier = LinearDiscriminantAnalysis()
+
+accuracy = run_classifier_kfold(classifier, X, Y, n_splits=5)
+
+print(&#39;%s accuracy (5-fold): %.3f&#39; % (classifier_name, accuracy))</code></pre>
+<pre><code>LDA accuracy (5-fold): 0.816</code></pre>
+<pre class="python"><code>classifier_name = &#39;Logistic Regression&#39;
+classifier = LogisticRegression(max_iter=2000, random_state=0)
+
+accuracy = run_classifier_kfold(classifier, X, Y, n_splits=5)
+
+print(&#39;%s accuracy (5-fold): %.3f&#39; % (classifier_name, accuracy))</code></pre>
+<pre><code>Logistic Regression accuracy (5-fold): 0.858</code></pre>
+<p><strong>(c)</strong></p>
+<p>Sometimes it helps to reduce the number of covariates. One strategy is to compare <span class="math inline">\(X_i\)</span> for the spam and email group. For each of the 57 covariates, test whether the mean of the covariate is the same or different between the two groups. Keep the 10 covariates with the smallest p-values. Try LDA and logistic regression using only these 10 variables.</p>
+<pre class="python"><code>from scipy.stats import ttest_ind
+
+X0 = X[Y == 0]
+X1 = X[Y == 1]
+
+num_features = X.shape[1]
+num_selected = 10
+
+pvalues = np.empty(num_features)
+
+for k in range(num_features):
+    # ttest_ind: Calculate the T-test for the means of two independent samples of scores.
+    _, pvalues[k] = ttest_ind(X0[:, k], X1[:, k])
+
+#np.argpartition() Perform an indirect partition along the given axis using the algorithm specified by the kind keyword. 
+#Element index to partition by. The k-th element will be in its final sorted position and all smaller elements will be 
+#moved before it and all larger elements behind it. The order all elements in the partitions is undefined. 
+#If provided with a sequence of k-th it will partition all of them into their sorted position at once.
+#It returns an array of indices of the same shape as &quot;pvalues&quot; that index data along the given axis in partitioned order.
+
+selected_features = np.argpartition(pvalues, num_selected)[:num_selected]
+
+X_filtered = X[:, selected_features]</code></pre>
+<pre class="python"><code>from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+classifier_name = &#39;LDA&#39;
+classifier = LinearDiscriminantAnalysis()
+results = run_classifier(classifier, X_filtered, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>LDA misclassification rate: 0.159
+LDA confusion matrix:
+[[1229  149]
+ [ 584 2639]]</code></pre>
+<pre class="python"><code>from sklearn.linear_model import LogisticRegression
+
+classifier_name = &#39;Logistic Regression&#39;
+classifier = LogisticRegression(max_iter=2000, random_state=0)
+results = run_classifier(classifier, X_filtered, Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>Logistic Regression misclassification rate: 0.120
+Logistic Regression confusion matrix:
+[[1416  154]
+ [ 397 2634]]</code></pre>
+<pre class="python"><code>classifier_name = &#39;LDA&#39;
+classifier = LinearDiscriminantAnalysis()
+
+accuracy = run_classifier_kfold(classifier, X_filtered, Y, n_splits=5)
+
+print(&#39;%s accuracy (5-fold): %.3f&#39; % (classifier_name, accuracy))</code></pre>
+<pre><code>LDA accuracy (5-fold): 0.780</code></pre>
+<pre class="python"><code>classifier_name = &#39;Logistic Regression&#39;
+classifier = LogisticRegression(max_iter=2000, random_state=0)
+
+accuracy = run_classifier_kfold(classifier, X_filtered, Y, n_splits=5)
+
+print(&#39;%s accuracy (5-fold): %.3f&#39; % (classifier_name, accuracy))</code></pre>
+<pre><code>Logistic Regression accuracy (5-fold): 0.817</code></pre>
+<p><strong>Exercise 23.13.4</strong>. Let <span class="math inline">\(\mathcal{A}\)</span> be the set of two-dimensional spheres. That is, <span class="math inline">\(A \in \mathcal{A}\)</span> if <span class="math inline">\(A = \{ (x, y) : (x - a)^2 + (y - b)^2 \leq c \}\)</span> for some <span class="math inline">\(a, b, c\)</span>. Find the VC dimension of <span class="math inline">\(\mathcal{A}\)</span>.</p>
+<p><strong>Solution</strong>. The VC dimension is 3.</p>
+<p>Note that <span class="math inline">\(\mathcal{A}\)</span> shatters any set of 3 non-collinear points in a plane:</p>
+<ul>
+<li>A sufficiently small circle centered at any point will select just it, so we can always separate sets of size 1.</li>
+<li>For separating a set of size 2, consider all circles with center <span class="math inline">\(C\)</span> equidistant from points <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, on the half plane that does not contain <span class="math inline">\(Z\)</span>. Any circle with radius <span class="math inline">\(r\)</span> such that <span class="math inline">\(|CZ| &gt; r &gt; |CX| = |CY|\)</span> will separate <span class="math inline">\(\{ X, Y \}\)</span> from <span class="math inline">\(Z\)</span>. Note that for sufficiently far away center <span class="math inline">\(C\)</span> this will be the case, since <span class="math inline">\(|CX| = |CY|\)</span> converges monotonically to <span class="math inline">\(|C\overline{X}|\)</span> and <span class="math inline">\(|CZ|\)</span> converges monotonically to <span class="math inline">\(|C\overline{Z}|\)</span>, where <span class="math inline">\(\overline{Q}\)</span> is the projection of point <span class="math inline">\(Q\)</span> on the line containing the centers / the line equidistant from <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Since <span class="math inline">\(|C\overline{X}| &lt; |C\overline{Z}|\)</span>, such circles must exist.</li>
+</ul>
+<p>For 4 points, note that:</p>
+<ul>
+<li>If the 4 points are not in a convex hull, they cannot be shattered by <span class="math inline">\(\mathcal{A}\)</span>: any circle containing the 3 outermost points will need to contain all points inside the triangle set by them, so it will also need to contain the fourth point.</li>
+<li>If the 4 points are in a convex hull, they form a convex quadrilateral. Let the points be <span class="math inline">\(X, Y, Z, W\)</span>, and assume without loss of generality that <span class="math inline">\(\angle X + \angle Z \leq 180^\circ\)</span>. Note that there is no circle that contains <span class="math inline">\(X, Z\)</span> but not <span class="math inline">\(Y\)</span> nor <span class="math inline">\(W\)</span>: we can reduce the radius of the circle and shift its center until <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are on its circumference. Assuming that both <span class="math inline">\(Y\)</span> and <span class="math inline">\(W\)</span> are outside of the circle implies that <span class="math inline">\(\angle Y + \angle W &lt; 180^\circ\)</span>, which is a contradiction with the quadrilateral being convex.</li>
+</ul>
+<p>Yet another argument can be build based on the fact that the VC dimension of half-planes is also 3: Assume there is a set of 4 points <span class="math inline">\(U\)</span> that can be shattered by circles. Then for any set <span class="math inline">\(S \subset U\)</span>, there exists a circle <span class="math inline">\(C\)</span> such that <span class="math inline">\(C \cap U = S\)</span> and a circle <span class="math inline">\(C&#39;\)</span> such that <span class="math inline">\(C&#39; \cap U = U \setminus S\)</span>. Therefore, <span class="math inline">\(C \cap C&#39;\)</span> contains no points of <span class="math inline">\(U\)</span>. If <span class="math inline">\(C \cap C&#39; = \emptyset\)</span>, <span class="math inline">\(C\)</span> and <span class="math inline">\(C&#39;\)</span> can be separated by a line. Otherwise, there is a line that passes through the intersection of <span class="math inline">\(C\)</span> and <span class="math inline">\(C&#39;\)</span>, and it separates <span class="math inline">\(S\)</span> from <span class="math inline">\(U \setminus S\)</span>. This implies that <span class="math inline">\(U\)</span> can be shattered by half-planes, a contradiction.</p>
+<p>Reference for second argument: <a href="https://cstheory.stackexchange.com/a/11089" class="uri">https://cstheory.stackexchange.com/a/11089</a> (applied to spheres and half-spaces in <span class="math inline">\(\mathbb{R}^3\)</span>, instead of circles and half-planes in <span class="math inline">\(\mathbb{R}^2\)</span>)</p>
+<p><strong>Exercise 23.13.5</strong>. Classify the spam data using support vector machines.</p>
+<p><em>(instructions on using SVM software for R omitted)</em></p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()</code></pre>
+<pre class="python"><code>def run_classifier(classifier, X, Y):
+    classifier.fit(X, Y)
+    Y_pred = classifier.predict(X)
+    n = len(Y)
+    
+    true_positives = np.sum((Y_pred == 1) &amp; (Y == 1))
+    false_positives = np.sum((Y_pred == 1) &amp; (Y == 0))
+    false_negatives = np.sum((Y_pred == 0) &amp; (Y == 1))
+    true_negatives = np.sum((Y_pred == 0) &amp; (Y == 0))
+
+    return {
+        &#39;misclassification_rate&#39;: (false_positives + false_negatives) / n,
+        &#39;confusion_matrix&#39;: np.array([[true_positives, false_positives], [false_negatives, true_negatives]])
+    }
+
+def print_results(classifier_name, results):
+    print(&#39;%s misclassification rate: %.3f&#39; % (classifier_name, results[&#39;misclassification_rate&#39;]))
+    print(&#39;%s confusion matrix:&#39; % classifier_name)
+    print(results[&#39;confusion_matrix&#39;])</code></pre>
+<pre class="python"><code>from sklearn.svm import LinearSVC
+from sklearn.preprocessing import StandardScaler
+
+classifier_name = &#39;SVC&#39;
+classifier = LinearSVC(max_iter=100000, random_state=0)
+
+#StandardScaler() Standardize features by removing the mean and scaling to unit variance
+#.fit_transform() Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+results = run_classifier(classifier, StandardScaler().fit_transform(X), Y)
+print_results(classifier_name, results)</code></pre>
+<pre><code>SVC misclassification rate: 0.073
+SVC confusion matrix:
+[[1603  124]
+ [ 210 2664]]</code></pre>
+<p><strong>Exercise 23.13.6</strong>. Use VC theory to get a confidence interval on the true error rate of the LDA classifier in question 3. Suppose that the covariate <span class="math inline">\(X = (X_1, \dots, X_d)\)</span> has <span class="math inline">\(d\)</span> dimensions. Assume that each variable has a continuous distribution.</p>
+<p><strong>Solution</strong>. Using Theorem 23.19, a <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(L(\hat{h})\)</span> is <span class="math inline">\(\hat{L}_n(\hat{h}) \pm \epsilon_n\)</span> where</p>
+<p><span class="math display">\[ \epsilon_n^2 = \frac{32}{n} \log \left( \frac{8 s(\mathcal{H}, n)}{\alpha} \right) \]</span></p>
+<p>From theorem 23.21, and assuming the VC dimension is <span class="math inline">\(v = d\)</span>,</p>
+<p><span class="math display">\[ s(\mathcal{H}, n) \leq n^d + 1 \]</span></p>
+<p>This gives us</p>
+<p><span class="math display">\[ \epsilon_n^2 \leq \frac{32}{n} \log \left( \frac{8 (n^d + 1)}{\alpha} \right) \approx \frac{32}{n} \left( \log \left( \frac{8}{\alpha} \right) + d \log n\right) \]</span></p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()</code></pre>
+<pre class="python"><code>n, d = X.shape
+alpha = 0.05</code></pre>
+<pre class="python"><code>epsilon = np.sqrt((np.log(8 / alpha) + d * np.log(n)) * 32 / n)
+print(epsilon)</code></pre>
+<pre><code>1.8381639894860362</code></pre>
+<p>… which is as large as to be useless, since we already know that the loss function is bound between 0 and 1.</p>
+<p>If instead we limit ourselves to only 10 dimensions,</p>
+<pre class="python"><code>epsilon = np.sqrt((np.log(8 / alpha) + 10 * np.log(n)) * 32 / n)
+print(epsilon)</code></pre>
+<pre><code>0.7885971226771238</code></pre>
+<p>… which is still rather large, but at least it doesn’t cover the whole interval. Given the initial error rate estimate of <span class="math inline">\(L(\hat{h}) = 0.159\)</span>, this gives a 95% confidence interval of <span class="math inline">\([0, .947)\)</span>.</p>
+<p><strong>Exercise 23.13.7</strong>. Suppose that <span class="math inline">\(X_i \in \mathbb{R}\)</span> and that <span class="math inline">\(Y_i = 1\)</span> whenever <span class="math inline">\(|X_i| \leq 1\)</span> and <span class="math inline">\(Y_i = 0\)</span> whenever <span class="math inline">\(|X_i| &gt; 1\)</span>. Show that no linear classifier can perfectly classify these data. Show that the kernelized data <span class="math inline">\(Z_i = (X_i, X_i^2)\)</span> can be linearly separated.</p>
+<p><strong>Solution</strong>. No linear classifier can perfectly classify this data; any linear classifier in 1 dimension will be of the form <span class="math inline">\(h(x) = I(x \geq c)\)</span>, <span class="math inline">\(h(x) = I(x &gt; c)\)</span>, <span class="math inline">\(h(x) = I(x \leq c)\)</span>, or <span class="math inline">\(h(x) = I(x &lt; c)\)</span> for some constant <span class="math inline">\(c\)</span>. Therefore, whenever <span class="math inline">\(|X_i| &gt; \max \{ 1, c \}\)</span>, <span class="math inline">\(Y_i = 1\)</span>, but the classifier will necessarily mark the positive and the negative <span class="math inline">\(X_i\)</span>s with distinct labels.</p>
+<p>The kernelized data can be trivially separated: use <span class="math inline">\(h(x_1, x_2) = I(x_2 \leq 1)\)</span>. Due to the mapping <span class="math inline">\(\phi(x) = (x, x^2)\)</span>, <span class="math inline">\(x_2 = x^2\)</span>, so <span class="math inline">\(|X_i| \leq 1\)</span> if and only if <span class="math inline">\(Z_{i2} = X_i^2 \leq 1\)</span>.</p>
+<p><strong>Exercise 23.13.8</strong>. Repeat question 5 using the kernel <span class="math inline">\(K(x, \tilde{x}) = (1 + x^T\tilde{x})^p\)</span>. Choose <span class="math inline">\(p\)</span> by cross-validation.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()</code></pre>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+def run_classifier_kfold(classifier, X, Y, n_splits=5):
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    accuracy = np.empty(n_splits)
+    for i, (train_index, test_index) in enumerate(kf.split(X)):
+        classifier.fit(X[train_index], Y[train_index])
+        Y_pred = classifier.predict(X[test_index])
+        accuracy[i] = np.sum(Y_pred == Y[test_index]) / len(Y_pred)
+    
+    return accuracy.mean()</code></pre>
+<pre class="python"><code># Custom kernel, K(x, y) = (1 + x^T y)^p
+def p_kernel(p):
+    def f(x, y):
+        # Help numpy handle fractional powers for negative numbers
+        a = (1 + x @ y.T)
+        return np.sign(a) * (np.abs(a))**p
+        
+    return f</code></pre>
+<pre class="python"><code>from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
+
+# Pre-scale data to assist SVC
+X_scaled = StandardScaler().fit_transform(X)
+
+# Compute accuracy based on cross-validation for a given p
+def get_accuracy(p):
+    classifier = SVC(kernel=p_kernel(p), max_iter=1000000, random_state=0)
+    return run_classifier_kfold(classifier, X_scaled, Y, n_splits=5)</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+accuracy_results = {}
+
+step = 0.1
+for p in notebook.tqdm(np.arange(-3, 3 + step, step=step)):
+    accuracy_results[p] = get_accuracy(p)
+    
+accuracy_results = np.array([(a, b) for a, b in accuracy_results.items()]).T</code></pre>
+<pre><code>  0%|          | 0/61 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(accuracy_results[0], accuracy_results[1])
+plt.xlabel(&#39;p&#39;)
+plt.ylabel(&#39;Accuracy&#39;)
+plt.show()
+
+selected_index = np.argmax(accuracy_results[1])
+selected_p = accuracy_results[0, selected_index]
+selected_accuracy = accuracy_results[1, selected_index]
+print(&#39;Selected hyperparameter p: %.1f&#39; % selected_p)
+print(&#39;Cross-validation accuracy: %.3f&#39; % selected_accuracy)</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_129_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Selected hyperparameter p: 1.0
+Cross-validation accuracy: 0.869</code></pre>
+<p><strong>Exercise 23.13.9</strong>. Apply the <span class="math inline">\(k\)</span>-nearest neighbors classifier to the “iris data.” Get the data in R from the command <code>data(iris)</code>. Choose k by cross-validation.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code># Load data from Python scikit-learn
+from sklearn import datasets
+
+iris = datasets.load_iris()
+X, Y = iris.data, iris.target</code></pre>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+def run_classifier_kfold(classifier, X, Y, n_splits=5):
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    accuracy = np.empty(n_splits)
+    for i, (train_index, test_index) in enumerate(kf.split(X)):
+        classifier.fit(X[train_index], Y[train_index])
+        Y_pred = classifier.predict(X[test_index])
+        accuracy[i] = np.sum(Y_pred == Y[test_index]) / len(Y_pred)
+    
+    return accuracy.mean()</code></pre>
+<pre class="python"><code>from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+
+# Pre-scale data to assist classifier
+X_scaled = StandardScaler().fit_transform(X)
+
+# Compute accuracy based on cross-validation for a given p
+def get_accuracy(k):
+    classifier = KNeighborsClassifier(n_neighbors=k)
+    return run_classifier_kfold(classifier, X_scaled, Y, n_splits=5)</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+accuracy_results = {}
+
+for k in notebook.tqdm(range(1, 121)):
+    accuracy_results[k] = get_accuracy(k)
+    
+accuracy_results = np.array([(a, b) for a, b in accuracy_results.items()]).T</code></pre>
+<pre><code>  0%|          | 0/120 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(accuracy_results[0], accuracy_results[1])
+plt.xlabel(&#39;k&#39;)
+plt.ylabel(&#39;Accuracy&#39;)
+plt.show()
+
+selected_index = np.argmax(accuracy_results[1])
+selected_k = accuracy_results[0, selected_index]
+selected_accuracy = accuracy_results[1, selected_index]
+print(&#39;Selected hyperparameter k: %i&#39; % selected_k)
+print(&#39;Cross-validation accuracy: %.3f&#39; % selected_accuracy)</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_136_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Selected hyperparameter k: 1
+Cross-validation accuracy: 0.913</code></pre>
+<p><strong>Exercise 21.13.10 (Curse of Dimensionality)</strong>. Suppose that <span class="math inline">\(X\)</span> has a uniform distribution on the <span class="math inline">\(d\)</span>-dimensional cube <span class="math inline">\([-1/2, 1/2]^d\)</span>. Let <span class="math inline">\(R\)</span> be the distance from the origin to the closest neighbor. Show that the median of <span class="math inline">\(R\)</span> is</p>
+<p><span class="math display">\[ \left( \frac{1 - \left(\frac{1}{2}\right)^{1/n}}{v_d(1)} \right)^{1/d}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ v_d(r) = r^d \frac{\pi^{d/2}}{\Gamma((d/2) + 1)} \]</span></p>
+<p>is the volume of a sphere of radius <span class="math inline">\(r\)</span>. When does <span class="math inline">\(R\)</span> exceed the edge of the cube when <span class="math inline">\(n = 100, 1000, 10000\)</span>?</p>
+<p><strong>Solution</strong>.</p>
+<p>The probability that <span class="math inline">\(R\)</span> is greater than or equal to some variable <span class="math inline">\(x\)</span> is the probability that all <span class="math inline">\(X_i\)</span> are at a distance greater than to <span class="math inline">\(x\)</span> from the origin,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(R &gt; x) &amp;= \mathbb{P}(\{ d(X_i, 0) &gt; x : i = 1, \dots, n \}) \\
+&amp;= \prod_{i=1}^n \mathbb{P}( d(X_i, 0) &gt; x  ) \\
+&amp;= \prod_{i=1}^n \mathbb{P}\left( \sum_{j=1}^d X_{ij}^2 &gt; x^2  \right) \\
+&amp;= \prod_{i=1}^n \int \int \dots \int I \left( \sum_{j=1}^d x_{ij}^2 &gt; x^2 \right) dx_{i1} dx_{i2} \dots dx_{id} \\
+&amp;= \prod_{i=1}^n (1 - v_d(x)) \\
+&amp;= \left(1 - v_d(1) x^d\right)^n
+\end{align}
+\]</span></p>
+<p>since the integral above represents the area in the <span class="math inline">\(d\)</span>-dimensional cube outside of the hypersphere of radius <span class="math inline">\(x\)</span> centered in the origin, and the <span class="math inline">\(d\)</span>-sphere of radius <span class="math inline">\(x\)</span> has volume <span class="math inline">\(v_d(x) = v_d(1) x^d\)</span>.</p>
+<p>This means that the cumulative distribution function for <span class="math inline">\(R\)</span> is</p>
+<p><span class="math display">\[F(x) = \mathbb{P}(R \leq x) = 1 - \mathbb{P}(R &gt; x) = 1 - \left(1 - v_d(1) x^d\right)^n\]</span></p>
+<p>The inverse cumulative distribution function, then, is obtained by replacing <span class="math inline">\(F(x) = y\)</span> and solving for <span class="math inline">\(x = F^{-1}(y)\)</span>:</p>
+<p><span class="math display">\[ F^{-1}(y) = \left( \frac{1 - (1 - y)^{1/n}}{v_d(1)} \right)^{1/d} \]</span></p>
+<p>The median value is <span class="math inline">\(F^{-1}(1/2)\)</span>, so the result follows,</p>
+<p><span class="math display">\[ F^{-1}\left( \frac{1}{2} \right) = \left( \frac{1 - \left( \frac{1}{2} \right)^{1/n}}{v_d(1)} \right)^{1/d}\]</span></p>
+<p>Let’s also provide a proof for the volume formula, and for the surface area formula (below).</p>
+<p><span class="math display">\[ a_d(r) = r^d \frac{2 \pi^{(d + 1)/2}}{\Gamma \left( \frac{d + 1}{2}\right)}  \]</span></p>
+<p>Multiple proofs are available at <a href="https://en.wikipedia.org/wiki/Volume_of_an_n-ball" class="uri">https://en.wikipedia.org/wiki/Volume_of_an_n-ball</a>; in keeping with the theme of this book, let’s follow the proof using Gaussian integers.</p>
+<p>Consider the density function in <span class="math inline">\(d\)</span> dimensions:</p>
+<p><span class="math display">\[ f(x_1, \dots, x_d) = \exp \left\{ -\frac{1}{2} \sum_{i=1}^d x_i^2 \right\} \]</span></p>
+<p>This density function is proportional to the probability density function of a multivariate Gaussian <span class="math inline">\(N(0, I_d)\)</span> by a factor of <span class="math inline">\((2 \pi)^{d/2}\)</span> and a PDF integrates to 1, so its volume integral is</p>
+<p><span class="math display">\[ \int_{\mathbb{R}^d} f dV = (2 \pi)^{d/2}\]</span></p>
+<p>Computing the same integral in spherical coordinates, on the <span class="math inline">\(\mathbb{S}^{d - 1}\)</span> sphere of <span class="math inline">\(d - 1\)</span> dimensions,</p>
+<p><span class="math display">\[ \int_{\mathbb{R}^d} f dV = \int_0^\infty \int_{\mathbb{S}^{d - 1}} \exp \left\{ -\frac{1}{2} r^2 \right\} dA dr \]</span></p>
+<p>Using the fact that the surface area is proportional to the radius to the power of the dimension of its space, <span class="math inline">\(a_{d-1}(r) = a_{d-1}(1) r^{d-1}\)</span>, we get:</p>
+<p><span class="math display">\[ a_{d-1}(1) \int_0^\infty \exp \left\{ -\frac{1}{2} r^2 \right\} r^{d - 1} dr \]</span></p>
+<p>Replacing <span class="math inline">\(t = r^2 / 2\)</span> to clean up the exponent, we end up with</p>
+<p><span class="math display">\[ a_{d-1}(1) 2^{\frac{d}{2} - 1} \int_0^\infty t^{\frac{d}{2} - 1} e^{-t}  dt = a_{d-1}(1) 2^{\frac{d}{2} - 1} \Gamma \left( \frac{d}{2} \right)\]</span></p>
+<p>Therefore, equating this to <span class="math inline">\((2 \pi)^{d/2}\)</span>, we prove the area formula for radius 1 and dimension <span class="math inline">\(d - 1\)</span>, from which the formula above for the area follows:</p>
+<p><span class="math display">\[ a_{d - 1}(1) = \frac{2 \pi^{d/2}}{\Gamma \left( \frac{d}{2}\right)} \Longrightarrow a_d(r) = r^d \frac{2 \pi^{(d + 1)/2}}{\Gamma \left( \frac{d + 1}{2}\right)} \]</span></p>
+<p>Now, to get the volume for the <span class="math inline">\(d\)</span>-dimensional ball, we integrate the surface area of dimension <span class="math inline">\(d-1\)</span> and radius <span class="math inline">\(R\)</span>, and use that <span class="math inline">\(\Gamma(z + 1) = z \Gamma(z)\)</span>:</p>
+<p><span class="math display">\[ v_d(R) = \int_0^R a_{d-1}(r) dr = \int_0^R \frac{2 \pi^{d/2}}{\Gamma \left( \frac{d}{2}\right)} r^{d - 1} dr = R^d \frac{2 \pi^{d / 2}}{d \Gamma \left( \frac{d}{2} \right) } = R^d \frac{\pi^{d/2}}{\Gamma\left(\frac{d}{2} + 1\right)} \]</span></p>
+<p>which is the desired expression.</p>
+<p><span class="math inline">\(R\)</span> exceeds the edge of the cube when <span class="math inline">\(R &gt; 1/2\)</span>; this occurs with probability <span class="math inline">\(1 - F(1/2) = \left(1 - v_d(1) (1/2)^d\right)^n\)</span> – which is a function of <span class="math inline">\(d\)</span> and <span class="math inline">\(n\)</span>. Let’s plot the curves over <span class="math inline">\(n\)</span> for a few values of <span class="math inline">\(d\)</span>:</p>
+<pre class="python"><code>import numpy as np
+from scipy.special import gamma
+
+def v(d):
+    &#39;&#39;&#39; Returns the d-volume of a d-sphere of radius 1. &#39;&#39;&#39;
+    return np.pi**(d / 2) / gamma(d/2 + 1)
+
+def F(x, d, n):
+    return 1 - (1 - v(d) * x**d)**n</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(1, 10001)
+plt.figure(figsize=(14.5, 8))
+for d in range(1, 17):
+    plt.plot(nn, 1 - F(x=1/2, d=d, n=nn), label=&#39;d = %i&#39; % d)
+
+plt.xscale(&#39;log&#39;)
+plt.xlabel(&#39;n&#39;)
+plt.ylabel(&#39;Probability of R outside cube&#39;)
+plt.legend(framealpha=0.4)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_142_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Note that as <span class="math inline">\(d\)</span> increases, it takes exponentially more samples to have the probability of <span class="math inline">\(R\)</span> staying inside the hypercube. This is the case since the volume of the hyperball of radius 1 is exponential on <span class="math inline">\(n\)</span>, using Stirling’s approximation on the Gamma function:</p>
+<p><span class="math display">\[ v_d(1) \approx \frac{1}{\sqrt{n \pi}} \left( \frac{2 \pi e}{n}\right)^{n/2} \]</span></p>
+<p><strong>Exercise 23.13.11</strong>. Fit a tree to the data in question 3. Now apply bagging and report your results.</p>
+<p><strong>Solution</strong>.</p>
+<p>We will use 5-fold cross-validation to select a number of base decision tree classifiers to use in bagging.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+0
+</th>
+<th>
+1
+</th>
+<th>
+2
+</th>
+<th>
+3
+</th>
+<th>
+4
+</th>
+<th>
+5
+</th>
+<th>
+6
+</th>
+<th>
+7
+</th>
+<th>
+8
+</th>
+<th>
+9
+</th>
+<th>
+…
+</th>
+<th>
+48
+</th>
+<th>
+49
+</th>
+<th>
+50
+</th>
+<th>
+51
+</th>
+<th>
+52
+</th>
+<th>
+53
+</th>
+<th>
+54
+</th>
+<th>
+55
+</th>
+<th>
+56
+</th>
+<th>
+57
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0.00
+</td>
+<td>
+0.64
+</td>
+<td>
+0.64
+</td>
+<td>
+0.0
+</td>
+<td>
+0.32
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.778
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.756
+</td>
+<td>
+61
+</td>
+<td>
+278
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+0.21
+</td>
+<td>
+0.28
+</td>
+<td>
+0.50
+</td>
+<td>
+0.0
+</td>
+<td>
+0.14
+</td>
+<td>
+0.28
+</td>
+<td>
+0.21
+</td>
+<td>
+0.07
+</td>
+<td>
+0.00
+</td>
+<td>
+0.94
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.132
+</td>
+<td>
+0.0
+</td>
+<td>
+0.372
+</td>
+<td>
+0.180
+</td>
+<td>
+0.048
+</td>
+<td>
+5.114
+</td>
+<td>
+101
+</td>
+<td>
+1028
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+0.06
+</td>
+<td>
+0.00
+</td>
+<td>
+0.71
+</td>
+<td>
+0.0
+</td>
+<td>
+1.23
+</td>
+<td>
+0.19
+</td>
+<td>
+0.19
+</td>
+<td>
+0.12
+</td>
+<td>
+0.64
+</td>
+<td>
+0.25
+</td>
+<td>
+…
+</td>
+<td>
+0.010
+</td>
+<td>
+0.143
+</td>
+<td>
+0.0
+</td>
+<td>
+0.276
+</td>
+<td>
+0.184
+</td>
+<td>
+0.010
+</td>
+<td>
+9.821
+</td>
+<td>
+485
+</td>
+<td>
+2259
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.63
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.137
+</td>
+<td>
+0.0
+</td>
+<td>
+0.137
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.537
+</td>
+<td>
+40
+</td>
+<td>
+191
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.63
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+0.31
+</td>
+<td>
+0.63
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.135
+</td>
+<td>
+0.0
+</td>
+<td>
+0.135
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+3.537
+</td>
+<td>
+40
+</td>
+<td>
+191
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+4596
+</th>
+<td>
+0.31
+</td>
+<td>
+0.00
+</td>
+<td>
+0.62
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.31
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.232
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.142
+</td>
+<td>
+3
+</td>
+<td>
+88
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4597
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.353
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.555
+</td>
+<td>
+4
+</td>
+<td>
+14
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4598
+</th>
+<td>
+0.30
+</td>
+<td>
+0.00
+</td>
+<td>
+0.30
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.102
+</td>
+<td>
+0.718
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.404
+</td>
+<td>
+6
+</td>
+<td>
+118
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4599
+</th>
+<td>
+0.96
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.0
+</td>
+<td>
+0.32
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.057
+</td>
+<td>
+0.0
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.147
+</td>
+<td>
+5
+</td>
+<td>
+78
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+4600
+</th>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.65
+</td>
+<td>
+0.0
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+0.00
+</td>
+<td>
+…
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+0.0
+</td>
+<td>
+0.125
+</td>
+<td>
+0.000
+</td>
+<td>
+0.000
+</td>
+<td>
+1.250
+</td>
+<td>
+5
+</td>
+<td>
+40
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+4601 rows × 58 columns
+</p>
+</div>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+def run_classifier_kfold(classifier, X, Y, n_splits=5):
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    accuracy = np.empty(n_splits)
+    for i, (train_index, test_index) in enumerate(kf.split(X)):
+        classifier.fit(X[train_index], Y[train_index])
+        Y_pred = classifier.predict(X[test_index])
+        accuracy[i] = np.sum(Y_pred == Y[test_index]) / len(Y_pred)
+    
+    return accuracy.mean()</code></pre>
+<pre class="python"><code>from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import BaggingClassifier
+
+def run_bagging_classifier(n_estimators):
+    tree_classifier = DecisionTreeClassifier(random_state=0)
+    bagging_classifier = BaggingClassifier(base_estimator=tree_classifier, n_estimators=n_estimators, random_state=0)
+    return run_classifier_kfold(bagging_classifier, X, Y, n_splits=5)</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+accuracy_results = {}
+
+for n_estimators in notebook.tqdm(range(1, 101)):
+    accuracy_results[n_estimators] = run_bagging_classifier(n_estimators)
+    
+accuracy_results = np.array([(a, b) for a, b in accuracy_results.items()]).T</code></pre>
+<pre><code>  0%|          | 0/100 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(accuracy_results[0], accuracy_results[1])
+plt.xlabel(&#39;n_estimators&#39;)
+plt.ylabel(&#39;Accuracy&#39;)
+plt.show()
+
+selected_index = np.argmax(accuracy_results[1])
+selected_n = accuracy_results[0, selected_index]
+selected_accuracy = accuracy_results[1, selected_index]
+print(&#39;Selected hyperparameter n_estimators: %i&#39; % selected_n)
+print(&#39;Cross-validation accuracy: %.3f&#39; % selected_accuracy)</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_150_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Selected hyperparameter n_estimators: 32
+Cross-validation accuracy: 0.879</code></pre>
+<p><strong>Exercise 23.13.12</strong>. Fit a tree that uses only one split in one variable to the data in question 3. Now apply boosting.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/spam.txt&#39;, header=None, delim_whitespace=True)
+X, Y = data.loc[:, data.columns != 57].to_numpy(), data.loc[:, 57].to_numpy()</code></pre>
+<pre class="python"><code>from sklearn.model_selection import KFold
+
+def run_classifier_kfold(classifier, X, Y, n_splits=5):
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    accuracy = np.empty(n_splits)
+    for i, (train_index, test_index) in enumerate(kf.split(X)):
+        classifier.fit(X[train_index], Y[train_index])
+        Y_pred = classifier.predict(X[test_index])
+        accuracy[i] = np.sum(Y_pred == Y[test_index]) / len(Y_pred)
+    
+    return accuracy.mean()</code></pre>
+<pre class="python"><code>from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+
+def run_boosting_classifier(n_estimators):
+    tree_classifier = DecisionTreeClassifier(max_depth=2, random_state=0)
+    boosting_classifier = AdaBoostClassifier(base_estimator=tree_classifier, n_estimators=n_estimators, random_state=0)
+    return run_classifier_kfold(boosting_classifier, X, Y, n_splits=5)</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+accuracy_results = {}
+
+for n_estimators in notebook.tqdm(range(1, 101)):
+    accuracy_results[n_estimators] = run_boosting_classifier(n_estimators)
+    
+accuracy_results = np.array([(a, b) for a, b in accuracy_results.items()]).T</code></pre>
+<pre><code>  0%|          | 0/100 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(accuracy_results[0], accuracy_results[1])
+plt.xlabel(&#39;n_estimators&#39;)
+plt.ylabel(&#39;Accuracy&#39;)
+plt.show()
+
+selected_index = np.argmax(accuracy_results[1])
+selected_n = accuracy_results[0, selected_index]
+selected_accuracy = accuracy_results[1, selected_index]
+print(&#39;Selected hyperparameter n_estimators: %i&#39; % selected_n)
+print(&#39;Cross-validation accuracy: %.3f&#39; % selected_accuracy)</code></pre>
+<div class="figure">
+<img src="Chapter%2023%20-%20Classification_files/Chapter%2023%20-%20Classification_157_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Selected hyperparameter n_estimators: 55
+Cross-validation accuracy: 0.890</code></pre>
+<p><strong>Exercise 23.13.13</strong>. Let <span class="math inline">\(r(x) = \mathbb{P}(Y = 1 | X = x)\)</span> and let <span class="math inline">\(\hat{r}(x)\)</span> be an estimate of <span class="math inline">\(r(x)\)</span>. Consider the classifier</p>
+<p><span class="math display">\[
+h(x) = \begin{cases}
+1 &amp;\text{if } \hat{r}(x) \geq 1/2 \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Assume that <span class="math inline">\(\hat{r}(x) \approx N(\overline{r}(x), \sigma^2(x))\)</span> for some functions <span class="math inline">\(\overline{r}(x)\)</span> and <span class="math inline">\(\sigma^2(x)\)</span>. Show that, for fixed <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[ \mathbb{P}(Y \neq h(x)) \approx \mathbb{P}(Y \neq h^*(x)) + 
+\left| 2 r(x) - 1 \right| \times \left[ 1 - \Phi \left( \frac{\text{sign} \left( (r(x) - 1/2) (\overline{r}(x) - 1/2) \right)}{\sigma(x)} \right) \right]\]</span></p>
+<p>where <span class="math inline">\(\Phi\)</span> is the standard normal CDF and <span class="math inline">\(h^*\)</span> is the Bayes rule. Regard <span class="math inline">\(\text{sign} \left( (r(x) - 1/2) (\overline{r}(x) - 1/2) \right)\)</span> as a type of bias term. Explain the implications for the bias-variance trade-off in classification. (Friedman, 1997).</p>
+<p>Hint: First show that</p>
+<p><span class="math display">\[ \mathbb{P}(Y \neq h(x)) = |2 r(x) - 1| \mathbb{P}(h(x) \neq h^*(x)) + \mathbb{P}(Y \neq h^*(x))\]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>As in exercise 1, note that for any classifier <span class="math inline">\(h\)</span>,</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}(h(X) \neq Y | X = x) &amp;= \mathbb{P}(h(X) = 0, Y = 1 | X = x) + \mathbb{P}(h(X) = 1, Y = 0 | X = x) \\
+&amp;= I(h(x) = 0) \mathbb{P}(Y = 1 | X = x) + I(h(x) = 1) \mathbb{P}(Y = 0 | X = x) \\
+&amp;= I(h(x) = 0) r(x) + (1 - I(h(x) = 0)) (1 - r(x)) \\
+&amp;= I(h(x) = 0) (2 r(x) - 1) + (1 - r(x))
+\end{align}
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbb{P}(Y \neq h(X) | X = x) - \mathbb{P}(Y \neq h^*(X) | X = x) = (2 r(x) - 1) \left(I(h(x) = 0) - I(h^*(x) = 0)\right)
+\]</span></p>
+<ul>
+<li>When <span class="math inline">\(h(x) = h^*(x)\)</span>, the left term is zero, and the hint statement holds.</li>
+<li>When <span class="math inline">\(h(x) = 1, h^*(x) = 0\)</span>, then <span class="math inline">\(r(x) \leq 1/2\)</span> and <span class="math inline">\(I(h(x) = 0) - I(h^*(x) = 0) = -1\)</span>, so the hint statement holds.</li>
+<li>When <span class="math inline">\(h(x) = 0, h^*(x) = 1\)</span>, then <span class="math inline">\(r(x) \geq 1/2\)</span> and <span class="math inline">\(I(h(x) = 0) - I(h^*(x) = 0) = 1\)</span>, so the hint statement holds.</li>
+</ul>
+<p>This proves the hint statement.</p>
+<p>It now suffices to show that</p>
+<p><span class="math display">\[ \mathbb{P}(h(x) \neq h^*(x)) \approx 1 - \Phi \left( \frac{\text{sign} \left( (r(x) - 1/2) (\overline{r}(x) - 1/2) \right)}{\sigma(x)} \right) \]</span></p>
+<p>or its complement,</p>
+<p><span class="math display">\[ \mathbb{P}(h(x) = h^*(x)) \approx \Phi \left( \frac{\text{sign} \left( (r(x) - 1/2) (\overline{r}(x) - 1/2) \right)}{\sigma(x)} \right) \]</span></p>
+<p>But <span class="math inline">\(h(x)\)</span> is a binomial variable, with</p>
+<p><span class="math display">\[ \mathbb{P}(h(x) = 1) = \mathbb{P}\left(\hat{r}(x) \geq \frac{1}{2} \right) \approx \mathbb{P}\left( Z \geq \frac{\frac{1}{2} - \overline{r}(x)}{\sigma(x)} \right) = 1 - \Phi\left( \frac{\frac{1}{2} - \overline{r}(x)}{\sigma(x)} \right) = \Phi\left( \frac{\overline{r}(x) - \frac{1}{2}}{\sigma(x)} \right)\]</span></p>
+<p>where <span class="math inline">\(Z \sim N(0, 1)\)</span> and <span class="math inline">\(\hat{r}(x) \approx N(\overline{r}(x), \sigma^2(x))\)</span>. Similarly,</p>
+<p><span class="math display">\[ \mathbb{P}(h(x) = 0) \approx 1 - \Phi\left( \frac{\overline{r}(x) - \frac{1}{2}}{\sigma(x)} \right) = \Phi\left( \frac{\frac{1}{2} - \overline{r}(x)}{\sigma(x)} \right)\]</span></p>
+<p>The result that follows applies the sign operator to the <strong>first</strong> term in the product,</p>
+<p><span class="math display">\[ \mathbb{P}(h(x) = h^*(x)) \approx \Phi \left( \frac{\text{sign} \Big\{ r(x) - 1/2 \Big\} (\overline{r}(x) - 1/2) }{\sigma(x)} \right) \]</span></p>
+<p>I assume that the provided exercise meant this and has a typo. Alternatively, take the poor approximation of moving the term outside of the sign operator inside.</p>
+<p>Implications for bias-variance tradeoff in classification are that both better bias (<span class="math inline">\(\overline{r}(x)\)</span> closer to <span class="math inline">\(r(x)\)</span>) and smaller variance lead to better bounds on the errors – and the tradeoff for this bound can be quantified by their ratio.</p>
+<p><strong><em>Implementation note re: decision trees:</em></strong> <em>scikit-learn decision tree algorithms are good for API purposes, but if you are looking to fit decision forests in larger problems consider using a more specialized library, such as XGBoost or LightGBM, with more modern algorithms and support for GPU. For much larger scale problems, consider cloud-based machine learning providers, such as AWS’s Sagemaker or Google’s ML Engine.</em></p>
+<p><em>Also consider more specific k-fold search strategies for problems with imbalanced classes, such as stratified k-fold, and consider a more formalized approach to hyperparameter search rather than an extensive grid search.</em></p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

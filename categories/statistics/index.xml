@@ -6,7 +6,25 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter24 Stochastic Processes</title>
+      <link>/2021/05/22/aos-chapter24-stochastic-processes/</link>
+      <pubDate>Sat, 22 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/22/aos-chapter24-stochastic-processes/</guid>
+      <description>24. Stochastic Processes24.1 Introduction24.2 Markov Chains24.3 Poisson Process24.6 ExercisesReferences24. Stochastic Processes24.1 IntroductionA stochastic process \(\{ X_t : t \in T \}\) is a collection of random variables. We shall sometimes write \(X(t)\) instead of \(X_t\). The variables \(X_t\) take values in some set \(\mathcal{X}\) called the state space. The set \(T\) is called the index set and for our purposes can be thought of as time.</description>
+    </item>
+    
+    <item>
+      <title>AOS chapter23 Classification</title>
+      <link>/2021/05/20/aos-chapter23-classification/</link>
+      <pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/20/aos-chapter23-classification/</guid>
+      <description>23. Classification23.1 Introduction23.2 Error Rates and The Bayes Classifier23.3 Gaussian and Linear Classifiers23.4 Linear Regression and Logistic Regression23.5 Relationship Between Logistic Regression and LDA23.6 Density Estimation and Naive Bayes23.7 Trees23.8 Assessing Error Rates and Choosing a Good Classifier23.9 Support Vector Machines23.10 Kernelization23.11 Other Classifiers23.13 ExercisesReferences23. Classification23.1 IntroductionThe problem of predicting a discrete variable \(Y\) from another random variable \(X\) is called classfication, supervised learning, discrimination or pattern recognition.</description>
+    </item>
+    
     <item>
       <title>AOS chapter22 Smoothing Using Orthogonal Functions</title>
       <link>/2021/05/17/aos-chapter22-smoothing-using-orthogonal-functions/</link>

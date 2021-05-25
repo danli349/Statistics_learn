@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter24 Stochastic Processes - A Hugo website</title>
+<meta property="og:title" content="AOS chapter24 Stochastic Processes - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">34 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter24 Stochastic Processes</h1>
+
+    
+    <span class="article-date">2021-05-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/05/22/aos-chapter24-stochastic-processes/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#stochastic-processes">24. Stochastic Processes</a>
+<ul>
+<li><a href="#introduction">24.1 Introduction</a></li>
+<li><a href="#markov-chains">24.2 Markov Chains</a></li>
+<li><a href="#poisson-process">24.3 Poisson Process</a></li>
+<li><a href="#exercises">24.6 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="stochastic-processes" class="section level2">
+<h2>24. Stochastic Processes</h2>
+<div id="introduction" class="section level3">
+<h3>24.1 Introduction</h3>
+<p>A <strong>stochastic process</strong> <span class="math inline">\(\{ X_t : t \in T \}\)</span> is a collection of random variables. We shall sometimes write <span class="math inline">\(X(t)\)</span> instead of <span class="math inline">\(X_t\)</span>. The variables <span class="math inline">\(X_t\)</span> take values in some set <span class="math inline">\(\mathcal{X}\)</span> called the <strong>state space</strong>. The set <span class="math inline">\(T\)</span> is called the <strong>index set</strong> and for our purposes can be thought of as time. The index set can be discrete, <span class="math inline">\(T = \{0, 1, 2, \dots \}\)</span> or continuous <span class="math inline">\(T = [0, \infty)\)</span> depending on the application.</p>
+<p>Recall that if <span class="math inline">\(X_1, \dots, X_n\)</span> are random variables then we can write the joint density as</p>
+<p><span class="math display">\[ f(x_1, \dots, x_n) = f(x_1) f(x_2 | x_1) \dots f(x_n | x_1, \dots, x_{n-1}) = \prod_{i=1}^n f(x_i | \text{past}_i) \]</span></p>
+<p>where <span class="math inline">\(\text{past}_i\)</span> refers to all variables before <span class="math inline">\(X_i\)</span>.</p>
+</div>
+<div id="markov-chains" class="section level3">
+<h3>24.2 Markov Chains</h3>
+<p>The process <span class="math inline">\(\{ X_n : n \in T \}\)</span> is a <strong>Markov Chain</strong> if</p>
+<p><span class="math display">\[ \mathbb{P}(X_n = x | X_0, \dots, X_{n-1}) = \mathbb{P}(X_n = x | X_{n-1})\]</span></p>
+<p>for all <span class="math inline">\(n\)</span> and for all <span class="math inline">\(x \in \mathcal{X}\)</span>.</p>
+<p>For a Markov chain, the joint density function can be written as</p>
+<p><span class="math display">\[ f(x_1, \dots, x_n) = f(x_1) f(x_2 | x_1) f(x_3 | x_2) \dots f(x_n | x_{n - 1}) \]</span></p>
+<p>A Markov chain can be represented by the following DAG:</p>
+<p><span class="math display">\[ X_1 \longrightarrow X_2 \longrightarrow X_3 \longrightarrow \cdots \longrightarrow X_n \longrightarrow \cdots \]</span></p>
+<p>Each variable has a single parent, namely, the previous observation.</p>
+<p>The theory of Markov chains is very rich and complex. Our goal is to answer the following questions:</p>
+<ol style="list-style-type: decimal">
+<li><p>When does a Markov chain “settle down” into some sort of equilibrium?</p></li>
+<li><p>How do we estimate the parameters of a Markov chain?</p></li>
+<li><p>How can we construct Markov chains that converge to a given equilibrium and why would we want to do that?</p></li>
+</ol>
+<p>Questions 1 and 2 will be approached this chapter, question 3 in the next chapter.</p>
+<pre class="python"><code>import numpy as np
+
+def generate_random_walk(n, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+    
+    X = np.empty(n)
+    X[0] = 0
+    for i in range(1, n):
+        X[i] = X[i - 1] + np.random.uniform(low=-1, high=1)
+    
+    return X
+
+def generate_random_walk_bound(n, drift=-0.4, min_value=-10, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+    
+    X = np.empty(n)
+    X[0] = 0
+    for i in range(1, n):
+        X[i] = max(X[i - 1] + drift, min_value) + np.random.uniform(low=-1, high=1)
+    
+    return X</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+A = generate_random_walk(1000, seed=0)
+B = generate_random_walk_bound(1000, drift=-1, seed=0)
+
+ax = plt.subplot(2, 1, 1)
+ax.plot(np.arange(0, len(A)), A)
+ax.set_title(&#39;Does not settle into equilibrium&#39;)
+
+ax = plt.subplot(2, 1, 2)
+ax.plot(np.arange(0, len(B)), B)
+ax.set_title(&#39;Does settle into equilibrium&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2024%20-%20Stochastic%20Processes_files/Chapter%2024%20-%20Stochastic%20Processes_9_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div id="transition-probabilities" class="section level4">
+<h4>Transition Probabilities</h4>
+<p>The key quantities of a Markov chain are the probabilities of jumping from one state into another state.</p>
+<p>We call</p>
+<p><span class="math display">\[ \mathbb{P}(X_{n+1} = j | X_n = i) \]</span></p>
+<p>the <strong>transition probabilities</strong>. If the transition probabilities do not change with time, we say the chain is <strong>homogeneous</strong>. In this case we define <span class="math inline">\(p_{ij} = \mathbb{P}(X_{n+1} = j | X_n = i)\)</span>. The matrix <span class="math inline">\(P\)</span> whose <span class="math inline">\((i, j)\)</span> element is <span class="math inline">\(p_{ij}\)</span> is called the <strong>transition matrix</strong>.</p>
+<p>We will only consider homogeneous chains. Notice how each <span class="math inline">\(P\)</span> has two properties: (i) <span class="math inline">\(p_{ij} \geq 0\)</span> and (ii) <span class="math inline">\(\sum_i p_{ij} = 1\)</span>. Each row is a probability mass function. A matrix with these properties is called a <strong>stochastic matrix</strong>.</p>
+<p>Let</p>
+<p><span class="math display">\[ p_{ij}(n) = \mathbb{P}(X_{m + n} = j | X_{m} = i) \]</span></p>
+<p>be the probability of going from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span> in <span class="math inline">\(n\)</span> steps. Let <span class="math inline">\(P_n\)</span> be the matrix whose <span class="math inline">\((i, j)\)</span> element is <span class="math inline">\(p_{ij}(n)\)</span>. These are called the <strong><span class="math inline">\(n\)</span>-step transition probabilities</strong>.</p>
+<p><strong>Theorem 24.9 (The Chapman-Kolmogorov equations)</strong>. The <span class="math inline">\(n\)</span>-step probabilities satisfy</p>
+<p><span class="math display">\[ p_{ij}(m + n) = \sum_k p_{ik}(m) p_{kj}(n) \]</span></p>
+<p><strong>Proof</strong>. Recall that, in general,</p>
+<p><span class="math display">\[ \mathbb{P}(X = x, Y = y) = \mathbb{P}(X = x) \mathbb{P}(Y = y | X = x) \]</span></p>
+<p>This fact is true when conditioned in another variable,</p>
+<p><span class="math display">\[ \mathbb{P}(X = x, Y = y | Z = z) = \mathbb{P}(X = x | Z = z) \mathbb{P}(Y = y | X = x, Z = z) \]</span></p>
+<p>Also, recall the law of total probability:</p>
+<p><span class="math display">\[ \mathbb{P}(X = x) = \sum_y \mathbb{P}(X = x, Y = y) \]</span></p>
+<p>Using these facts and the Markov property we have:</p>
+<p><span class="math display">\[
+\begin{align}
+p_{ij}(m + n) &amp;= \mathbb{P}(X_{m + n} = j | X_0 = i) \\
+&amp;= \sum_k \mathbb{P}(X_{m + n} = j, X_m = k | X_0 = i) \\
+&amp;= \sum_k \mathbb{P}(X_{m + n} = j | X_m = k, X_0 = i) \mathbb{P}(X_m = k | X_0 = i) \\
+&amp;= \sum_k \mathbb{P}(X_{m + n} = j | X_m = k) \mathbb{P}(X_m = k | X_0 = i) \\
+&amp;= \sum_k p_{ik}(m) p_{kj}(n)
+\end{align}
+\]</span></p>
+<p>Note that this definition is equivalent to matrix multiplication; hence we have shown that</p>
+<p><span class="math display">\[ P_{m + n} = P_m P_n \]</span></p>
+<p>By definition, <span class="math inline">\(P_1 = P\)</span>. Using the above theorem, we get</p>
+<p><span class="math display">\[ P_n = P^n \equiv \underbrace{P \times P \times \cdots \times P}_{\text{multiply matrix } n \text{ times}} \]</span></p>
+<p>Let <span class="math inline">\(\mu_n = (\mu_n(1), \dots, \mu_n(N))\)</span> be a row vector where</p>
+<p><span class="math display">\[ \mu_n(i) = \mathbb{P}(X_n = i) \]</span></p>
+<p>is the marginal probability that the chain is in state <span class="math inline">\(i\)</span> at time <span class="math inline">\(n\)</span>. In particular, <span class="math inline">\(\mu_0\)</span> is called the <strong>initial distribution</strong>. To simulate a Markov chain, all you need to know is <span class="math inline">\(\mu_0\)</span> and <span class="math inline">\(P\)</span>. The simulation would look like this:</p>
+<ol style="list-style-type: decimal">
+<li>Draw <span class="math inline">\(X_0 \sim \mu_0\)</span>. Thus, <span class="math inline">\(\mathbb{P}(X_0 = i) = \mu_0(i)\)</span>.</li>
+<li>Suppose the outcome of step 1 is <span class="math inline">\(i\)</span>. Draw <span class="math inline">\(X_1 \sim P\)</span>. In other words, <span class="math inline">\(\mathbb{P}(X_1 = j | X_0 = i) = p_{ij}\)</span>.</li>
+<li>Suppose the outcome of step 2 is <span class="math inline">\(j\)</span>. Draw <span class="math inline">\(X_2 \sim P\)</span>. In other words, <span class="math inline">\(\mathbb{P}(X_2 = k | X_1 = j) = p_{jk}\)</span>.</li>
+</ol>
+<p>and so on.</p>
+<p>It might be difficult to understand the meaning of <span class="math inline">\(\mu_n\)</span>. Imagine simulating the chain many times. Collect all of the outcomes at time <span class="math inline">\(n\)</span> from all the chains. This histogram would look approximately like <span class="math inline">\(\mu_n\)</span>. A consequence of the previous theorem is the following:</p>
+<p><strong>Lemma 24.10</strong>. The marginal probabilities are given by</p>
+<p><span class="math display">\[ \mu_n = \mu_0 P^n \]</span></p>
+<p><strong>Proof</strong>.</p>
+<p><span class="math display">\[ \mu_n(j) = \mathbb{P}(X_n = j) = \sum_i \mathbb{P}(X_n = j | X_0 = i) \mathbb{P}(X_0 = i) = \sum_i \mu_0(i) p_{ij}(n) = \mu_0 P^n \]</span></p>
+<p><strong>Summary</strong></p>
+<ol style="list-style-type: decimal">
+<li>Transition matrix: <span class="math inline">\(P(i, j) = \mathbb{P}(X_{n+1} = j | X_n = i)\)</span></li>
+<li><span class="math inline">\(n\)</span>-step matrix: <span class="math inline">\(P_n(i, j) = \mathbb{P}(X_{m+n} = j | X_m = i)\)</span></li>
+<li><span class="math inline">\(P_n = P^n\)</span></li>
+<li>Marginal probabilities: <span class="math inline">\(\mu_n(i) = \mathbb{P}(X_n = i)\)</span></li>
+<li><span class="math inline">\(\mu_n = \mu_0 P^n\)</span></li>
+</ol>
+</div>
+<div id="states" class="section level4">
+<h4>States</h4>
+<p>The states of a Markov chain can be classified according to various properties.</p>
+<p>We say that <span class="math inline">\(i\)</span> <strong>reaches</strong> <span class="math inline">\(j\)</span> (or <span class="math inline">\(j\)</span> is <strong>accessible</strong> from <span class="math inline">\(i\)</span>) if <span class="math inline">\(p_{ij}(n) &gt; 0\)</span> for some <span class="math inline">\(n\)</span>, and we write <span class="math inline">\(i \rightarrow j\)</span>. If <span class="math inline">\(i \rightarrow j\)</span> and <span class="math inline">\(j \rightarrow i\)</span> then we write <span class="math inline">\(i \leftrightarrow j\)</span> and we say that <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> <strong>communicate</strong>.</p>
+<p><strong>Theorem 24.12</strong>. The communication relation satisfies the following properties:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(i \leftrightarrow i\)</span>.</li>
+<li>If <span class="math inline">\(i \leftrightarrow j\)</span> then <span class="math inline">\(j \leftrightarrow i\)</span>.</li>
+<li>If <span class="math inline">\(i \leftrightarrow j\)</span> and <span class="math inline">\(j \leftrightarrow k\)</span> then <span class="math inline">\(i \leftrightarrow k\)</span>.</li>
+<li>The set of states <span class="math inline">\(\mathcal{X}\)</span> can be written as a disjoint union of <strong>classes</strong> <span class="math inline">\(\mathcal{X} = \mathcal{X}_1 \cup \mathcal{X}_2 \cup \cdots\)</span> where two states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> communicate with each other if and only if they are in the same class.</li>
+</ol>
+<p>If all states communicate with each other then the chain is called <strong>irreducible</strong>. A set of states is <strong>closed</strong> if once you enter that set states you never leave. A closet set consisting of a single state is called an <strong>absorbing state</strong>.</p>
+<p>Suppose we start a chain in state <span class="math inline">\(i\)</span>. Will the chain ever return to state <span class="math inline">\(i\)</span>? If so, that state is called persistent or recurrent.</p>
+<p>State <span class="math inline">\(i\)</span> is <strong>recurrent</strong> or <strong>persistent</strong> if</p>
+<p><span class="math display">\[ \mathbb{P}(X_n = i \text{ for some } n \geq 1 | X_0 = i) = 1 \]</span></p>
+<p>Otherwise, state <span class="math inline">\(i\)</span> is <strong>transient</strong>.</p>
+<p><strong>Theorem 24.15</strong>. A state <span class="math inline">\(i\)</span> is recurrent if and only if</p>
+<p><span class="math display">\[ \sum_n p_{ii}(n) = \infty \]</span></p>
+<p>A state <span class="math inline">\(i\)</span> is transient if and only if</p>
+<p><span class="math display">\[ \sum_n p_{ii}(n) &lt; \infty \]</span></p>
+<p><strong>Proof</strong>. Define</p>
+<p><span class="math display">\[ 
+I_n = \begin{cases}
+1 &amp; \text{if } X_n = i \\
+0 &amp; \text{if } X_n \neq i
+\end{cases}
+\]</span></p>
+<p>The number of times that the chain is in state <span class="math inline">\(i\)</span> is <span class="math inline">\(Y = \sum_{n=0}^\infty I_n\)</span>. The mean of <span class="math inline">\(Y\)</span>, given that the chain starts in state <span class="math inline">\(i\)</span>, is</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(Y | X_0 = i) &amp;= \sum_{n=0}^\infty \mathbb{E}(I_n | X_0 = i) \\
+&amp;= \sum_{n=0}^\infty \mathbb{P}(X_n = i | X_0 = i) \\
+&amp;= \sum_{n=0}^\infty p_{ii}(n)
+\end{align}
+\]</span></p>
+<p>Define <span class="math inline">\(a_i = \mathbb{P}(X_n = i \text{ for some } n \geq 1 | X_0 = i)\)</span>. If <span class="math inline">\(i\)</span> is recurrent, <span class="math inline">\(a_i = 1\)</span>. Thus, the chain will eventually return to <span class="math inline">\(i\)</span>. Once it does, we argue again that since <span class="math inline">\(a_i = 1\)</span>, the chain will return to state <span class="math inline">\(i\)</span> again. By repeating this argument, we conclude that <span class="math inline">\(\mathbb{E}(Y | X_0 = i) = \infty\)</span>.</p>
+<p>If <span class="math inline">\(i\)</span> is transient, then <span class="math inline">\(a_i &lt; 1\)</span>. When the chain is in state <span class="math inline">\(i\)</span>, there is a probability <span class="math inline">\(1 - a_i &gt; 0\)</span> that it will never return to state <span class="math inline">\(i\)</span>. Thus, the probability that the chain is in state <span class="math inline">\(i\)</span> exactly <span class="math inline">\(n\)</span> times is <span class="math inline">\(a_i^{n - 1}(1 - a_i)\)</span>. This is a geometric distribution that has finite mean.</p>
+<p><strong>Theorem 24.16</strong>. Facts about recurrence:</p>
+<ol style="list-style-type: decimal">
+<li>If a state <span class="math inline">\(i\)</span> is recurrent and <span class="math inline">\(i \leftrightarrow j\)</span> then <span class="math inline">\(j\)</span> is recurrent.</li>
+<li>If a state <span class="math inline">\(i\)</span> is transient and <span class="math inline">\(i \leftrightarrow j\)</span> then <span class="math inline">\(j\)</span> is transient.</li>
+<li>A finite Markov chain must have at least one recurrent state.</li>
+<li>The states of a finite, irreducible Markov chain are all recurrent.</li>
+</ol>
+<p><strong>Theorem 24.17 (Decomposition Theorem)</strong>. The state space <span class="math inline">\(\mathcal{X}\)</span> can be written as the disjoint union</p>
+<p><span class="math display">\[ \mathcal{X} = \mathcal{X}_{T} \cup \mathcal{X}_{1} \cup \mathcal{X}_{2} \cup \cdots \]</span></p>
+<p>where the <span class="math inline">\(\mathcal{X}_T\)</span> are the transient states and each <span class="math inline">\(\mathcal{X}_i\)</span> is a closed, irreducible set of recurrent states.</p>
+</div>
+<div id="convergence-of-markov-chains" class="section level4">
+<h4>Convergence of Markov Chains</h4>
+<p>Suppose that <span class="math inline">\(X_0 = i\)</span>. Define the <strong>recurrence time</strong></p>
+<p><span class="math display">\[ T_{ij} = \min \{ n &gt; 0 : X_n = j \} \]</span></p>
+<p>assuming <span class="math inline">\(X_n\)</span> ever returns to the state <span class="math inline">\(i\)</span>, otherwise define <span class="math inline">\(T_{ij} = \infty\)</span>. The <strong>mean recurrence time</strong> of a recurrent state <span class="math inline">\(i\)</span> is</p>
+<p><span class="math display">\[ m_i = \mathbb{E}(T_{ii}) = \sum_n n f_{ii}(n) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ f_{ij}(n) = \mathbb{P}(X_1 \neq j, X_2 \neq j, \dots, X_{n-1} \neq j, X_n = j | X_0 = i) \]</span></p>
+<p>A recurrent state is <strong>null</strong> if <span class="math inline">\(m_i = \infty\)</span>, otherwise it is called <strong>non-null</strong> or <strong>positive</strong>.</p>
+<p><strong>Lemma 24.18</strong>. If a state is null and recurrent, then <span class="math inline">\(p_{ii}^n \rightarrow 0\)</span>.</p>
+<p><strong>Lemma 24.19</strong>. In a finite state Markov chain, all recurrent states are positive.</p>
+<p>Consider a three state chain with transition matrix</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1 \\
+1 &amp; 0 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p>Suppose we start the chain in state 1. Then we will be in state 3 at times <span class="math inline">\(3, 6, 9, \dots\)</span>. This is an example of a periodic chain. Formally, the <strong>period</strong> of state <span class="math inline">\(i\)</span> is <span class="math inline">\(d\)</span> is <span class="math inline">\(p_{ii}(n) = 0\)</span> whenever <span class="math inline">\(n\)</span> is not divisible by <span class="math inline">\(d\)</span> and <span class="math inline">\(d\)</span> is the largest integer with this property. Thus, <span class="math inline">\(d = \text{gcd} \{ n : p_{ii}(n) &gt; 0 \}\)</span>, where gcd means “greatest common divisor.” State <span class="math inline">\(i\)</span> is <strong>periodic</strong> if <span class="math inline">\(d(i) &gt; 1\)</span> and <strong>aperiodic</strong> if <span class="math inline">\(d(i) = 1\)</span>.</p>
+<p><strong>Lemma 24.20</strong>. If a state <span class="math inline">\(i\)</span> has period <span class="math inline">\(d\)</span> and <span class="math inline">\(i \leftrightarrow j\)</span> then <span class="math inline">\(j\)</span> has period <span class="math inline">\(d\)</span>.</p>
+<p>A state is <strong>ergodic</strong> if it is recurrent, non-null and aperiodic. A chain is ergodic if all its states are ergodic.</p>
+<p>Let <span class="math inline">\(\pi = (\pi_i : i \in \mathcal{X})\)</span> be a vector of non-negative numbers that sum to one. Thus <span class="math inline">\(\pi\)</span> can be thought of as a probability mass function.</p>
+<p>We say that <span class="math inline">\(\pi\)</span> is a <strong>stationary</strong> (or <strong>invariant</strong>) distribution if <span class="math inline">\(\pi = \pi P\)</span>.</p>
+<p>Here is the intuition. Draw <span class="math inline">\(X_0\)</span> from distribution <span class="math inline">\(\pi\)</span> and suppose that <span class="math inline">\(\pi\)</span> is a stationary distribution. Now draw <span class="math inline">\(X_1\)</span> according to the transition probability of the chain. The distribution of <span class="math inline">\(X_1\)</span> is then <span class="math inline">\(\mu_1 = \mu_0 P = \pi P = \pi\)</span>. Continuing this way, the distribution of <span class="math inline">\(X_n\)</span> is <span class="math inline">\(\mu_n = \mu_0 P^n = \pi P^n = \pi\)</span>. In other words: if at any time the chain has distribution <span class="math inline">\(\pi\)</span>, then it will continue to have distribution <span class="math inline">\(\pi\)</span> forever.</p>
+<p>We say that a chain has <strong>limiting distribution</strong> if</p>
+<p><span class="math display">\[ P^n \rightarrow \begin{bmatrix}
+\pi \\ \pi \\ \vdots \\ \pi
+\end{bmatrix}\]</span></p>
+<p>for some <span class="math inline">\(\pi\)</span>. In other words, <span class="math inline">\(\pi_j = \lim_{n \rightarrow \infty} P_{ij}^n\)</span> exists and is independent of <span class="math inline">\(i\)</span>.</p>
+<p><strong>Theorem 24.24</strong>. An irreducible, ergodic Markov chain has a unique stationary distribution <span class="math inline">\(\pi\)</span>. The limiting distribution exists and is equal to <span class="math inline">\(\pi\)</span>. If <span class="math inline">\(g\)</span> is any bounded function, then, with probabiity 1,</p>
+<p><span class="math display">\[ \lim_{N \rightarrow \infty} \frac{1}{N} \sum_{n=1}^N g(X_n) = \mathbb{E}_\pi(g) \equiv \sum_j g(j) \pi_j \]</span></p>
+<p>The last statement of the theorem is the law of large numbers for Markov chains. It says that sample averages converge to their expectations. Finally, there is a special condition which will be useful later. We say that <span class="math inline">\(\pi\)</span> satisfies <strong>detailed balance</strong> if</p>
+<p><span class="math display">\[ \pi_i p_{ij} = p_{ji} \pi_j \]</span></p>
+<p>Detailed balance guarantees that <span class="math inline">\(\pi\)</span> is a stationary distribution.</p>
+<p><strong>Theorem 24.25</strong>. If <span class="math inline">\(\pi\)</span> satisfies detailed balance then <span class="math inline">\(\pi\)</span> is a stationary distribution.</p>
+<p><strong>Proof</strong>. We need to show that <span class="math inline">\(\pi P = \pi\)</span>. The <span class="math inline">\(j\)</span>-th element of <span class="math inline">\(\pi P\)</span> is <span class="math inline">\(\sum_i \pi_i p_{ij} = \sum_i p_{ji}\pi_j = \pi_j \sum_i p_{ji} = \pi_j\)</span>.</p>
+<p>The importance of detailed balance will become clear when we discuss Markov chain Monte Carlo methods.</p>
+<p><strong>Warning</strong>: Just because a chain has a stationary distribution does not mean it converges.</p>
+</div>
+<div id="inference-for-markov-chains" class="section level4">
+<h4>Inference for Markov Chains</h4>
+<p>Consider a chain with finite state space $ = { 1, 2, , N } $. Suppose we observe <span class="math inline">\(n\)</span> observations <span class="math inline">\(X_1, \dots, X_n\)</span> from this chain. The unknown parameters of a Markov chain are the initial probabilities <span class="math inline">\(\mu_0 = (\mu_0(1), \mu_0(2), \dots)\)</span> and the elements of the transition matrix <span class="math inline">\(P\)</span>. Each row of <span class="math inline">\(P\)</span> is a multinomial distribution, so we are essentially estimating <span class="math inline">\(N\)</span> distributions (plus the initial probabilities). Let <span class="math inline">\(n_{ij}\)</span> be the observed number of transitions from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span>. The likelihood function is</p>
+<p><span class="math display">\[ \mathcal{L}(\mu_0, P) = \mu_0(x_0) \prod_{r=1}^n p_{X_{r - 1}, X_r} = \mu_0(x_0) \prod_{i=1}^N \prod_{j=1}^N p_{ij}^{n_{ij}} \]</span></p>
+<p>There is only one observation on <span class="math inline">\(\mu_0\)</span> so we can’t estimate that. Rather, we focus on estimating <span class="math inline">\(P\)</span>. The MLE is obtained by maximizing the likelihood subject to the constraint that the elements are non-negative and the rows sum to 1. The solution is</p>
+<p><span class="math display">\[ \hat{p}_{ij} = \frac{n_{ij}}{n_i} \]</span></p>
+<p>where <span class="math inline">\(n_i = \sum_{j=1}^N n_{ij}\)</span>. Here we are assuming that <span class="math inline">\(n_i &gt; 0\)</span>. If not, we set <span class="math inline">\(\hat{p}_{ij} = 0\)</span> by convention.</p>
+<p><strong>Theorem 24.30 (Consistency and Asymptotic Normality of the MLE)</strong>. Assume that the chain is ergodic. Let <span class="math inline">\(\hat{p}_{ij}(n)\)</span> denote the MLE after <span class="math inline">\(n\)</span> observations. Then <span class="math inline">\(\hat{p}_{ij}(n) \xrightarrow{\text{P}} p_{ij}\)</span>. Also,</p>
+<p><span class="math display">\[ \left[ \sqrt{N_i(n)} (\hat{p}_{ij} - p_{ij})  \right] \leadsto N(0, \Sigma) \]</span></p>
+<p>where the left hand side is a matrix, $ N_i(n) = _{r=1}^n I(X_r = i)$ is the count of observations at state <span class="math inline">\(i\)</span> up to time <span class="math inline">\(n\)</span>, and the covariance matrix <span class="math inline">\(\Sigma\)</span> is a <span class="math inline">\(t \times t\)</span> matrix, where <span class="math inline">\(t\)</span> is the number of transitions from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>, with elements</p>
+<p><span class="math display">\[ 
+\Sigma_{ij, k\ell} = \begin{cases}
+p_{ij}(1 - p_{ij}) &amp;\text{if } (i, j) = (k, \ell) \\
+-p_{ij} p_{i\ell} &amp;\text{if } i = k, j \neq \ell \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+</div>
+</div>
+<div id="poisson-process" class="section level3">
+<h3>24.3 Poisson Process</h3>
+<p>As the name suggests, the Poisson process is intimately related to the Poisson distribution. Let’s first review the Poisson distribution.</p>
+<p>Recall that <span class="math inline">\(X\)</span> has a Poisson distribution with parameter <span class="math inline">\(\lambda\)</span>, written <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>, if</p>
+<p><span class="math display">\[ \mathbb{P}(X = x) \equiv p(x; \lambda) = \frac{e^{-\lambda} \lambda^x}{x!}, \quad = 0, 1, 2, \dots \]</span></p>
+<p>Also recall that:
+- <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span> distribution has mean <span class="math inline">\(\mathbb{E}(X) = \lambda\)</span> and variance <span class="math inline">\(\mathbb{V}(X) = \lambda\)</span>.
+- If <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>, <span class="math inline">\(Y \sim \text{Poisson}(\nu)\)</span> and <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, then <span class="math inline">\(X + Y \sim \text{Poisson}(\lambda + \nu)\)</span>.
+- If <span class="math inline">\(N \sim \text{Poisson}(\lambda)\)</span> and <span class="math inline">\(Y | N = n \sim \text{Binomial}(n, p)\)</span> then the marginal distribution of <span class="math inline">\(Y\)</span> is <span class="math inline">\(Y \sim \text{Poisson}(\lambda p)\)</span>.</p>
+<p>Now we describe the Poisson process. Imagine that whenever an event occurs you record its timestamp. Let <span class="math inline">\(X_t\)</span> be the number of events that occured up until time <span class="math inline">\(t\)</span>. Then, <span class="math inline">\(\{ X_t : t \in [0, \infty) \}\)</span> is a stochastic process with state space <span class="math inline">\(\mathcal{X} = \{ 0, 1, 2, \dots \}\)</span>. A process of this form is called a <strong>counting process</strong>.</p>
+<p>In what follows, we will sometimes write <span class="math inline">\(X(t)\)</span> instead of <span class="math inline">\(X_t\)</span>. Also, we will need little-o notation: write <span class="math inline">\(f(h) = o(h)\)</span> if <span class="math inline">\(f(h) / h \rightarrow 0\)</span> as <span class="math inline">\(h \rightarrow 0\)</span>. This means that <span class="math inline">\(f(h)\)</span> is smaller than <span class="math inline">\(h\)</span> when <span class="math inline">\(h\)</span> is close to 0. For example, <span class="math inline">\(h^2 = o(h)\)</span>.</p>
+<p>A <strong>Poisson process</strong> is a stochastic process <span class="math inline">\(\{ X_t : t \in [0, \infty) \}\)</span> with state space <span class="math inline">\(\mathcal{X} = \{ 0, 1, 2, \dots \}\)</span> such that</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(X(0) = 0\)</span></li>
+<li>For any increasing times <span class="math inline">\(0 = t_0 &lt; t_1 &lt; t_2 &lt; \dots &lt; t_n\)</span>, the count increments</li>
+</ol>
+<p><span class="math display">\[ X(t_1) - X(t_0), X(t_2) - X(t_1), \dots, X(t_n) - X(t_{n - 1})\]</span></p>
+<p>are independent.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>There is a function <span class="math inline">\(\lambda(t)\)</span> such that</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}\left(X(t + h) - X(t) = 1\right) &amp;= \lambda(t)h + o(h) \\
+\mathbb{P}\left(X(t + h) - X(t) \geq 2\right) &amp;= o(h)
+\end{align}
+\]</span></p>
+<p>We call <span class="math inline">\(\lambda(t)\)</span> the <strong>intensity function</strong>.</p>
+<p><strong>Theorem 24.32</strong>. If <span class="math inline">\(X_t\)</span> is a Poisson process with intensity function <span class="math inline">\(\lambda(t)\)</span>, then</p>
+<p><span class="math display">\[ X(s + t) - X(s) \sim \text{Poisson}\left( m(s + t) - m(s) \right) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ m(t) = \int_0^t \lambda(s) ds \]</span></p>
+<p>In particular, <span class="math inline">\(X(t) \sim \text{Poisson}(m(t))\)</span>. Hence, <span class="math inline">\(\mathbb{E}(X(t)) = m(t)\)</span> and <span class="math inline">\(\mathbb{V}(X(t)) = m(t)\)</span>.</p>
+<p>A Poisson process with constant intensity function <span class="math inline">\(\lambda(t) \equiv \lambda\)</span> for some <span class="math inline">\(\lambda &gt; 0\)</span> is called a <strong>homogeneous Poisson process</strong> with rate <span class="math inline">\(\lambda\)</span>. In this case,</p>
+<p><span class="math display">\[ X(t) \sim \text{Poisson}(\lambda t) \]</span></p>
+<p>Let <span class="math inline">\(X(t)\)</span>be a homogeneous Poisson process with rate <span class="math inline">\(\lambda\)</span>. Let <span class="math inline">\(W_n\)</span> be the time at which the <span class="math inline">\(n\)</span>-th event occurs and set <span class="math inline">\(W_0 = 0\)</span>. The random variables <span class="math inline">\(W_0, W_1, \dots\)</span> are called <strong>waiting times</strong>. Let <span class="math inline">\(S_n = W_{n + 1} - W_n\)</span>. Then <span class="math inline">\(S_0, S_1, \dots\)</span> are called <strong>sojourn times</strong> or <strong>interarrival times</strong>.</p>
+<p><strong>Theorem 24.34</strong>. The sojourn times <span class="math inline">\(S_0, S_1, \dots\)</span> are IID random variables. Their distribution is exponential with mean <span class="math inline">\(1 / \lambda\)</span>, that is, they have density</p>
+<p><span class="math display">\[ f(s) = \lambda e^{-\lambda s}, \quad s \geq 0 \]</span></p>
+<p>The waiting time has distribution <span class="math inline">\(W_n \sim \text{Gamma}(n, 1 / \lambda)\)</span>, that is, it has density</p>
+<p><span class="math display">\[ f(w) = \frac{1}{\Gamma(n)} \lambda^n w^{n - 1}e^{-\lambda w} \]</span></p>
+<p>Hence, <span class="math inline">\(\mathbb{E}(W_n) = n / \lambda\)</span> and <span class="math inline">\(\mathbb{V}(W_n) = n / \lambda^2\)</span>.</p>
+<p><strong>Proof</strong>. First, we have</p>
+<p><span class="math display">\[ \begin{align}
+\mathbb{P}(S_1 &gt; t) &amp;= \mathbb{P}(X(t) = 0) \\
+&amp;=\int_{t}^{\infty}\lambda e^{-\lambda s}ds\\
+&amp;=-e^{-\lambda s}\big|_{t}^{\infty}\\
+&amp;= e^{-\lambda t}
+\end{align}\]</span></p>
+<p>which shows that the CDF for <span class="math inline">\(S_1\)</span> is <span class="math inline">\(1 - e^{-\lambda t}\)</span>. This shows the result for <span class="math inline">\(S_1\)</span>. Now,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(S_2 | t | S_1 = s) &amp;= \mathbb{P}\left(\text{no events in } (s, s+t] | S_1 = s\right) \\
+&amp;= \mathbb{P}\left(\text{no events in } (s, s+t]\right) \quad \text{(increments are independent)} \\
+&amp;= e^{-\lambda t}
+\end{align}
+\]</span></p>
+<p>Hence, <span class="math inline">\(S_2\)</span> has an exponential distribution and is independent of <span class="math inline">\(S_1\)</span>. The result follows by repeating the argument. The result for <span class="math inline">\(W_n\)</span> follows since a sum of exponentials has a Gamma distribution.</p>
+</div>
+<div id="exercises" class="section level3">
+<h3>24.6 Exercises</h3>
+<p><strong>Exercise 24.6.1</strong> Let <span class="math inline">\(X_0, X_1, \dots\)</span> be a Markov chain with states <span class="math inline">\(\{ 0, 1, 2 \}\)</span> and transition matrix</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+0.1 &amp; 0.2 &amp; 0.7 \\
+0.9 &amp; 0.1 &amp; 0.0 \\
+0.1 &amp; 0.8 &amp; 0.1
+\end{bmatrix}\]</span></p>
+<p>Assume that <span class="math inline">\(\mu_0 = (0.3, 0.4, 0.3)\)</span>. Find <span class="math inline">\(\mathbb{P}(X_0 = 0, X_1 = 1, X_2 = 2)\)</span> and <span class="math inline">\(\mathbb{P}(X_0 = 0, X_1 = 1, X_2 = 1)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(X_0 = 0, X_1 = 1, X_2 = 2) &amp;= \mathbb{P}(X_0 = 0) \mathbb{P}(X_1 = 1 | X_0 = 0) \mathbb{P}(X_2 = 2 | X_1 = 1) \\
+&amp;= \mu_0(1) P_{12} P_{23} \\
+&amp; = 0.3 \cdot 0.2 \cdot 0.0 \\
+&amp; = 0
+\end{align}
+\]</span></p>
+<p>which can also be seen since there is no probability for a transition from state 1 to state 2 (the corresponding value in the <span class="math inline">\(P\)</span> matrix is zero).</p>
+<p>We also have:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{P}(X_0 = 0, X_1 = 1, X_2 = 1) &amp;= \mathbb{P}(X_0 = 0) \mathbb{P}(X_1 = 1 | X_0 = 0) \mathbb{P}(X_2 = 1 | X_1 = 1) \\
+&amp;= \mu_0(1) P_{12} P_{22} \\
+&amp; = 0.3 \cdot 0.2 \cdot 0.1 \\
+&amp; = 0.006
+\end{align}
+\]</span></p>
+<p><strong>Exercise 24.6.2</strong>. Let <span class="math inline">\(Y_1, Y_2, \dots\)</span> be a sequence of iid observations such that <span class="math inline">\(\mathbb{P}(Y = 0) = 0.1\)</span>, <span class="math inline">\(\mathbb{P}(Y = 1) = 0.3\)</span>, <span class="math inline">\(\mathbb{P}(Y = 2) = 0.2\)</span>, <span class="math inline">\(\mathbb{P}(Y = 3) = 0.4\)</span>. Let <span class="math inline">\(X_0 = 0\)</span> and let</p>
+<p><span class="math display">\[ X_n = \max \{ Y_1, \dots, Y_n \} \]</span></p>
+<p>Show that <span class="math inline">\(X_0, X_1, \dots\)</span> is a Markov chain and find the transition matrix.</p>
+<p><strong>Solution</strong>. By definition,</p>
+<p><span class="math display">\[ X_{n + 1} = \max \{Y_1, \dots, Y_{n+1} \} = \max \{ X_n, Y_{n + 1} \} \]</span></p>
+<p>so <span class="math inline">\(X_{n + 1}\)</span> is defined based only on its predecessor and on a IID variable <span class="math inline">\(Y_{n+1} \sim Y\)</span>. Thus:</p>
+<p><span class="math display">\[ \mathbb{P}(X_{n + 1} = j | X_n = i) = \begin{cases}
+\frac{\mathbb{P}(Y = j)}{\sum_{k \geq i} \mathbb{P}(Y = k)} &amp; \text{if } j \geq i \\
+0 &amp;\text{if } j &lt; i
+\end{cases} \]</span></p>
+<p>This, paired with a state space $ = { 0, 1, 2, 3 } $ and initial probabilities <span class="math inline">\(\mu_0 = (1, 0, 0, 0)\)</span>, defines a Markov chain for the <span class="math inline">\(X_i\)</span>’s. The explicit transition matrix is:</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+1/10 &amp; 3/10 &amp; 1/5 &amp; 2/5 \\
+0   &amp; 1/3 &amp; 2/9 &amp; 4/9 \\
+0   &amp; 0   &amp; 1/3 &amp; 2/3 \\
+0   &amp; 0   &amp; 0   &amp; 1
+\end{bmatrix}\]</span></p>
+<p><strong>Exercise 24.6.3</strong>. Consider a two state Markov chain with states <span class="math inline">\(\mathcal{X} = \{ 1, 2 \}\)</span> and transition matrix</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+1 - a &amp; a \\
+b &amp; 1 - b
+\end{bmatrix} \]</span></p>
+<p>where <span class="math inline">\(0 &lt; a &lt; 1\)</span> and <span class="math inline">\(0 &lt; b &lt; 1\)</span>. Prove that</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} P^n = \begin{bmatrix}
+\frac{b}{a + b} &amp; \frac{a}{a + b} \\
+\frac{b}{a + b} &amp; \frac{a}{a + b}
+\end{bmatrix} \]</span></p>
+<p><strong>Solution</strong>. Note that the Markov chain is irreducible and ergodic, given the bounds on <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. Note also that it has a stationary distribution</p>
+<p><span class="math display">\[ \pi = \left( \frac{b}{a + b}, \frac{a}{a + b} \right) \]</span></p>
+<p>since <span class="math inline">\(\pi = \pi P\)</span>:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\pi P &amp;= 
+\begin{bmatrix} 
+\frac{b}{a + b} &amp; \frac{a}{a + b}
+\end{bmatrix} \begin{bmatrix}
+1 - a &amp; a \\
+b &amp; 1 - b
+\end{bmatrix} \\
+&amp;= \frac{1}{a + b} \begin{bmatrix}
+ b (1 - a) + ab &amp;
+ ab + (1 - b) a 
+\end{bmatrix} \\
+&amp;= \begin{bmatrix} \frac{b}{a + b} &amp; \frac{a}{a + b} \end{bmatrix}\\
+&amp;= \pi
+\end{align}
+\]</span></p>
+<p>By theorem 24.24, the limit of <span class="math inline">\(P^n\)</span> is as given,</p>
+<p><span class="math display">\[ \lim_{n \rightarrow \infty} P^n = 
+\begin{bmatrix}
+\pi \\ \pi
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{b}{a + b} &amp; \frac{a}{a + b} \\
+\frac{b}{a + b} &amp; \frac{a}{a + b}
+\end{bmatrix} \]</span></p>
+<p><strong>Exercise 24.6.4</strong>. Consider the chain from question 3 and set <span class="math inline">\(a = .1\)</span> and <span class="math inline">\(b = .3\)</span>. Simulate the chain. Let</p>
+<p><span class="math display">\[
+\hat{p}_n(1) = \frac{1}{n} \sum_{i=1}^n I(X_i = 1)
+\quad \text{and} \quad
+\hat{p}_n(2) = \frac{1}{n} \sum_{i=1}^n I(X_i = 2)
+\]</span></p>
+<p>be the proportion of times the chain is in state 1 and state 2. Plot <span class="math inline">\(\hat{p}_n(1)\)</span> and <span class="math inline">\(\hat{p}_n(2)\)</span> versus <span class="math inline">\(n\)</span> and verify that they converge to the values predicted from the answer in the previous question.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+
+a, b = 0.1, 0.3
+P = np.array([[1 - a, a], [b, 1 - b]])</code></pre>
+<pre class="python"><code># Do a *single* simulation starting from, say, state 1
+
+def generate_series(n, seed=None, initial_state=1):
+    if seed is not None:
+        np.random.seed(0)
+
+    random_values = np.random.uniform(low=0, high=1, size=n)
+
+    X = np.empty(n, dtype=int)
+    X[0] = initial_state
+    for i in range(1, n):
+        X[i] = 1 if random_values[i] &lt; P[X[i - 1] - 1, 0] else 2
+        
+    return X
+
+n = 10000
+X = generate_series(n, seed=0)
+p1 = np.cumsum(X == 1) / np.arange(1, n + 1)
+p2 = np.cumsum(X == 2) / np.arange(1, n + 1)</code></pre>
+<pre class="python"><code>import pandas as pd
+pd.Index(X).value_counts()</code></pre>
+<pre><code>1    7561
+2    2439
+dtype: int64</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(np.arange(1, n+1), p1, label=r&#39;$\hat{p}_n(1)$&#39;)
+plt.plot(np.arange(1, n+1), p2, label=r&#39;$\hat{p}_n(2)$&#39;)
+plt.legend()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2024%20-%20Stochastic%20Processes_files/Chapter%2024%20-%20Stochastic%20Processes_71_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Note that the values do converge to <span class="math inline">\(\pi = (0.75, 0.25)\)</span>.</p>
+<p><strong>Exercise 24.6.5</strong>. An important Markov chain is the <strong>branching process</strong> which is used in biology, genetics, nuclear physics and many other fields. Suppose that an animal has <span class="math inline">\(Y\)</span> children. Let <span class="math inline">\(p_k = \mathbb{P}(Y = k)\)</span>. Hence <span class="math inline">\(p_k \geq 0\)</span> for all <span class="math inline">\(k\)</span> and <span class="math inline">\(\sum_{k = 0}^\infty p_k = 1\)</span>. Assume each animal has the same lifespan and that they produce offspring according to the distribution <span class="math inline">\(p_k\)</span>. Let <span class="math inline">\(X_n\)</span> be the number of animals in the <span class="math inline">\(n\)</span>-th generation. Let <span class="math inline">\(Y_1^{(n)}, \dots, Y_{X_n}^{(n)}\)</span> be the offspring produced in the <span class="math inline">\(n\)</span>-th generation. Note that</p>
+<p><span class="math display">\[ X_{n+1} = Y_1^{(n)} + \dots + Y_{X_n}^{(n)}\]</span></p>
+<p>Let <span class="math inline">\(\mu = \mathbb{E}(Y)\)</span> and <span class="math inline">\(\sigma^2 = \mathbb{V}(Y)\)</span>. Assume throughout this question that <span class="math inline">\(X_0 = 1\)</span>. Let <span class="math inline">\(M(n) = \mathbb{E}(X_n)\)</span> and <span class="math inline">\(V(n) = \mathbb{V}(X_n)\)</span>.</p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(M(n + 1) = \mu M(n)\)</span> and that $V(n + 1) = ^2 M(n) + ^2 V(n) $.</p>
+<p><strong>(b)</strong> Show that <span class="math inline">\(M(n) = \mu^n\)</span> and that <span class="math inline">\(V(n) = \sigma^2 \mu^{n-1} (1 + \mu + \dots + \mu^{n - 1})\)</span>.</p>
+<p><strong>(c)</strong> What happens to the variance if <span class="math inline">\(\mu &gt; 1\)</span>? What happens to the variance if <span class="math inline">\(\mu = 1\)</span>? What happens to the variance if <span class="math inline">\(\mu &lt; 1\)</span>?</p>
+<p><strong>(d)</strong> The population goes extinct if <span class="math inline">\(X_n = 0\)</span> for some <span class="math inline">\(n\)</span>. Let us thus define the extinction time <span class="math inline">\(N\)</span> by</p>
+<p><span class="math display">\[ N = \min \{ n : X_n = 0 \} \]</span></p>
+<p>Let <span class="math inline">\(F(n) = \mathbb{P}(N \leq n)\)</span> be the CDF of the random variable <span class="math inline">\(N\)</span>. Show that</p>
+<p><span class="math display">\[ F(n) = \sum_{k=0}^\infty p_k \left( F(n - 1) \right)^k, \quad n = 1, 2, \dots \]</span></p>
+<p>Hint: note that the event <span class="math inline">\(\{ N \leq n \}\)</span> is the same event as <span class="math inline">\(\{ X_n = 0 \}\)</span>. Thus <span class="math inline">\(\mathbb{P}(N \leq n) = \mathbb{P}(X_n = 0)\)</span>. Let <span class="math inline">\(k\)</span> be the number of offspring of the original event. The population becomes extinct at time <span class="math inline">\(n\)</span> if and only if each of the <span class="math inline">\(k\)</span> sub-populations generated from the <span class="math inline">\(k\)</span> offspring goes extinct in <span class="math inline">\(n - 1\)</span> generations.</p>
+<p><strong>(e)</strong> Suppose that <span class="math inline">\(p_0 = 1/4\)</span>, <span class="math inline">\(p_1 = 1/2\)</span>, <span class="math inline">\(p_2 = 1/4\)</span>. Use the formula from (d) to compute the CDF <span class="math inline">\(F(n)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> We have:</p>
+<p><span class="math display">\[ M(n + 1) = \mathbb{E}[X_{n + 1}] = \mathbb{E}\left[ \sum_{i = 1}^{X_n} Y_i^{(n)} \right] = \mathbb{E}\left[ \sum_{i = 1}^{X_n} \mathbb{E}[Y_i^{(n)}] \right] = \mathbb{E}\left[ \sum_{i = 1}^{X_n} \mu \right]  = \mu \mathbb{E}[X_n] = \mu M(n)\]</span></p>
+<p>We also have:</p>
+<p><span class="math display">\[
+\begin{align}
+V(n + 1) &amp;= \mathbb{V}[X_{n + 1}] = \mathbb{E}[X_{n + 1}^2] - \mathbb{E}[X_{n + 1}]^2 \\
+&amp;= \mathbb{E}\left[\left( \sum_{i = 1}^{X_n} Y_i^{(n)} \right)^2\right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E}\left[ \sum_{i = 1}^{X_n} \left( Y_i^{(n)} \right)^2 + \sum_{i = 1}^{X_n} \sum_{j = 1, j \neq i}^{X_n} Y_i^{(n)} Y_j^{(n)} \right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E}\left[ \sum_{i = 1}^{X_n} \mathbb{E}\left[\left( Y_i^{(n)} \right)^2\right] + \sum_{i = 1}^{X_n} \sum_{j = 1, j \neq i}^{X_n} \mathbb{E}\left[ Y_i^{(n)} Y_j^{(n)} \right] \right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E}\left[ \sum_{i = 1}^{X_n} \left( \mathbb{V}[Y_i^{(n)}] +  \mathbb{E}\left[ Y_i^{(n)} \right]^2 \right) + \sum_{i = 1}^{X_n} \sum_{j = 1, j \neq i}^{X_n} \mathbb{E}\left[ Y_i^{(n)} \right] \mathbb{E} \left[ Y_j^{(n)} \right] \right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E}\left[ \sum_{i = 1}^{X_n} \left( \sigma^2 + \mu^2 \right) + \sum_{i = 1}^{X_n} \sum_{j = 1, j \neq i}^{X_n} \mu^2 \right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E} \left[ X_n (\sigma^2 + \mu^2) + X_n (X_n - 1) \mu^2 \right] - \mu^2 M(n)^2 \\
+&amp;= \mathbb{E} \left[ X_n \sigma^2 + X_n^2 \mu^2 \right] - \mu^2 M(n)^2 \\
+&amp;= \sigma^2 \mathbb{E} [ X_n ] + \mu^2 \mathbb{E} [ X_n^2 ] - \mu^2 M(n)^2 \\
+&amp;= \sigma^2 M(n) + \mu^2 (V(n) + M(n)^2) - \mu^2 M(n)^2 \\
+&amp;= \sigma^2 M(n) + \mu^2 V(n)
+\end{align}
+\]</span></p>
+<p><strong>(b)</strong></p>
+<p>Since the initial population is 1, <span class="math inline">\(M(0) = 1\)</span>; since <span class="math inline">\(M(n + 1) = \mu M(n)\)</span>, it follows by induction that <span class="math inline">\(M(n) = \mu^n\)</span>.</p>
+<p>Now, we also have that the initial population is known, so <span class="math inline">\(V(0) = 0\)</span>. By induction,</p>
+<p><span class="math display">\[
+\begin{align}
+V(n + 1) &amp;= \sigma^2 M(n) + \mu^2 V(n) \\
+&amp;= \sigma^2 \mu^n + \mu^2 \left( \sigma^2 \mu^{n - 1} \left( 1 + \mu + \dots + \mu^{n - 1}\right) \right) \\
+&amp;= \sigma^2 \mu^n \left(1 + \mu \left( 1 + \mu + \dots + \mu^{n - 1} \right) \right) \\
+&amp;= \sigma^2 \mu^n \left(1 + \mu + \dots + \mu^n \right)
+\end{align}
+\]</span></p>
+<p><strong>(c)</strong> If <span class="math inline">\(\mu \neq 1\)</span>, we can add up the geometric sum and write</p>
+<p><span class="math display">\[ V(n) = \sigma^2 \mu^n \frac{1 - \mu^{n}}{1 - \mu}\]</span></p>
+<ul>
+<li>For <span class="math inline">\(\mu &gt; 1\)</span>, <span class="math inline">\(V(n)\)</span> grows exponentially.<br />
+</li>
+<li>For <span class="math inline">\(\mu &lt; 1\)</span>, <span class="math inline">\(V(n)\)</span> converges to 0.<br />
+</li>
+<li>For <span class="math inline">\(\mu = 1\)</span>, we have <span class="math inline">\(V(n) = n \sigma^2\)</span>, which grows linearly.</li>
+</ul>
+<p><strong>(d)</strong> Following the reasoning in the hint,</p>
+<p><span class="math display">\[
+\begin{align}
+F(n) &amp;= \mathbb{P}(N \leq n) = \mathbb{P}(X_n = 0) \\
+&amp;= \sum_{k=0}^\infty \mathbb{P}(X_n = 0 | X_1 = k) \mathbb{P}(X_1 = k) \\
+&amp;= \sum_{k=0}^\infty \mathbb{P}(Y_i^{(n - 1)} = 0 \text{ for all } i | X_1 = k) \mathbb{P}(X_1 = k) \\
+&amp;= \sum_{k=0}^\infty \left( \prod_{i=1}^k \mathbb{P}(Y_i^{(n - 1)} = 0 | X_1 = k) \right) \mathbb{P}(X_1 = k) \\
+&amp;= \sum_{k=0}^\infty \left( \prod_{i=1}^k F(n-1) \right) p_k \\
+&amp;= \sum_{k=0}^\infty p_k \left( F(n - 1)\right)^k
+\end{align}
+\]</span></p>
+<p><strong>(e)</strong> The recurrence formula is:</p>
+<p><span class="math display">\[ F(n + 1) = p_0 + p_1 F(n) + p_2 F(n)^2 = \frac{1}{4} + \frac{1}{2} F(n) + \frac{1}{4} F(n)^2 = \frac{1}{4} (F(n) + 1)^2\]</span></p>
+<p>with initial value <span class="math inline">\(F(0) = 0\)</span> (since we start with a non-extinct population).</p>
+<pre class="python"><code>import numpy as np
+
+N = 1000
+F = np.empty(N)
+
+F[0] = 0
+for n in range(1, N):
+    F[n] = (F[n - 1] + 1)**2 / 4</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(np.arange(1, N + 1), F)
+plt.xlabel(&#39;N&#39;)
+plt.ylabel(&#39;F(N)&#39;)
+plt.xscale(&#39;log&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2024%20-%20Stochastic%20Processes_files/Chapter%2024%20-%20Stochastic%20Processes_81_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 24.6.6</strong>. Let</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+0.40 &amp; 0.50 &amp; 0.10 \\
+0.05 &amp; 0.70 &amp; 0.25 \\
+0.05 &amp; 0.50 &amp; 0.45
+\end{bmatrix}\]</span></p>
+<p>Find the stationary distribution <span class="math inline">\(\pi\)</span>.</p>
+<p><strong>Solution</strong>. The stationary distribution <span class="math inline">\(\pi\)</span> satisfies <span class="math inline">\(\pi = \pi P\)</span>, so it is a (normalized) left eigenvector of <span class="math inline">\(P\)</span>, or a right eigenvector of <span class="math inline">\(P^T\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from numpy.linalg import eig
+
+P = np.array([[0.4, 0.5, 0.1], [0.05, 0.7, 0.25], [0.05, 0.5, 0.45]])</code></pre>
+<pre class="python"><code>w, v = eig(P.T)
+pi = v[:, 0]
+print(pi)</code></pre>
+<pre><code>[0.11041049 0.89708523 0.42784065]</code></pre>
+<pre class="python"><code>print(pi @ P)</code></pre>
+<pre><code>[0.11041049 0.89708523 0.42784065]</code></pre>
+<p><strong>Exercise 24.6.7</strong>. Show that if <span class="math inline">\(i\)</span> is a recurrent state and <span class="math inline">\(i \leftrightarrow j\)</span>, then <span class="math inline">\(j\)</span> is a recurrent state.</p>
+<p><strong>Solution</strong>.</p>
+<p>Since <span class="math inline">\(i\)</span> is recurrent, <span class="math inline">\(\sum_n p_{ii}(n) = \infty\)</span>. But</p>
+<p><span class="math display">\[\sum_n p_{jj}(n) \geq \sum_{a, b, c} p_{ji}(a) p_{ii}(b) p_{ij}(c) \geq \sum_b p_{ji}(a&#39;) p_{ii}(b) p_{ij}(c&#39;)\]</span></p>
+<p>for some <span class="math inline">\(a&#39;\)</span> such that <span class="math inline">\(p_{ji}(a&#39;) &gt; 0\)</span> (which exists because <span class="math inline">\(j \rightarrow i\)</span>) and some <span class="math inline">\(c&#39;\)</span> such that <span class="math inline">\(p_{ij}(c&#39;) &gt; 0\)</span> (which exists because <span class="math inline">\(i \rightarrow j\)</span>). Then this sum is lower bounded by</p>
+<p><span class="math display">\[\frac{1}{p_{ji}(a&#39;) p_{ij}(c&#39;)} \sum_b p_{ii}(b)\]</span></p>
+<p>which diverges because <span class="math inline">\(\sum_n p_{ii}(n) = \infty\)</span>, so <span class="math inline">\(j\)</span> must be a recurrent state.</p>
+<p><strong>Exercise 24.6.8</strong>. Let</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+1/3 &amp; 0   &amp; 1/3 &amp; 0 &amp; 0 &amp; 1/3 \\
+1/2 &amp; 1/4 &amp; 1/4 &amp; 0 &amp; 0 &amp; 0   \\
+0   &amp; 0   &amp; 0   &amp; 0 &amp; 1 &amp; 0   \\
+1/4 &amp; 1/4 &amp; 1/4 &amp; 0 &amp; 0 &amp; 1/4 \\
+0   &amp; 0  &amp; 1    &amp; 0 &amp; 0 &amp; 0   \\
+0   &amp; 0  &amp; 0    &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]</span></p>
+<p>Which states are transient? Which states are recurrent?</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>from graphviz import Digraph
+
+d = Digraph()
+
+d.edge(&#39;1&#39;, &#39;1&#39;, label=&#39;1/3&#39;)
+d.edge(&#39;1&#39;, &#39;3&#39;, label=&#39;1/3&#39;)
+d.edge(&#39;1&#39;, &#39;6&#39;, label=&#39;1/3&#39;)
+
+d.edge(&#39;2&#39;, &#39;1&#39;, label=&#39;1/2&#39;)
+d.edge(&#39;2&#39;, &#39;2&#39;, label=&#39;1/4&#39;)
+d.edge(&#39;2&#39;, &#39;3&#39;, label=&#39;1/4&#39;)
+
+d.edge(&#39;3&#39;, &#39;5&#39;, label=&#39;1&#39;)
+
+d.edge(&#39;4&#39;, &#39;1&#39;, label=&#39;1/4&#39;)
+d.edge(&#39;4&#39;, &#39;2&#39;, label=&#39;1/4&#39;)
+d.edge(&#39;4&#39;, &#39;3&#39;, label=&#39;1/4&#39;)
+d.edge(&#39;4&#39;, &#39;6&#39;, label=&#39;1/4&#39;)
+
+d.edge(&#39;5&#39;, &#39;3&#39;, label=&#39;1&#39;)
+
+d.edge(&#39;6&#39;, &#39;6&#39;, label=&#39;1&#39;)
+
+d</code></pre>
+<div class="figure">
+<img src="Chapter%2024%20-%20Stochastic%20Processes_files/Chapter%2024%20-%20Stochastic%20Processes_91_0.svg" alt="" />
+<p class="caption">svg</p>
+</div>
+<p>States 3, 5, 6 are recurrent:</p>
+<ul>
+<li>A chain starting on state 6 will forever stay in state 6.</li>
+<li>A chain starting on states 3 or 5 will bounce between states 3 and 5 forever.</li>
+</ul>
+<p>Other states are not recurrent, as they may eventually fall into state 6 and never reach other state after.</p>
+<p><strong>Exercise 24.6.9</strong>. Let</p>
+<p><span class="math display">\[ P = \begin{bmatrix}
+0 &amp; 1 \\
+1 &amp; 0
+\end{bmatrix}\]</span></p>
+<p>Show that <span class="math inline">\(\pi = (1/2, 1/2)\)</span> is a stationary distribution. Does this chain converge? Why / why not?</p>
+<p><strong>Solution</strong>. The distribution is stationary if and only if <span class="math inline">\(\pi = \pi P\)</span>, and</p>
+<p><span class="math display">\[ \pi P = \begin{bmatrix} 1/2 &amp; 1/2 \end{bmatrix}
+\begin{bmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
+= \begin{bmatrix} 1/2 &amp; 1/2 \end{bmatrix} = \pi
+\]</span></p>
+<p>This chain does not converge: it will always oscillate between states 1 and 2 with probability 1.</p>
+<p><strong>Exercise 24.6.10</strong>. Let <span class="math inline">\(0 &lt; p &lt; 1\)</span> and <span class="math inline">\(q = 1 - p\)</span>. Let</p>
+<p><span class="math display">\[ P = 
+\begin{bmatrix}
+q &amp; p &amp; 0 &amp; 0 &amp; 0 \\
+q &amp; 0 &amp; p &amp; 0 &amp; 0 \\
+q &amp; 0 &amp; 0 &amp; p &amp; 0 \\
+q &amp; 0 &amp; 0 &amp; 0 &amp; p \\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p>Find the limiting distribution of the chain.</p>
+<p><strong>Solution</strong>.</p>
+<p>Solving <span class="math inline">\(\pi P = \pi\)</span>, we get:</p>
+<p><span class="math display">\[ \pi = \begin{bmatrix} 
+\frac{1 - p}{p^4(1 - p^5)} &amp;
+\frac{1 - p}{p^3(1 - p^5)} &amp;
+\frac{1 - p}{p^2(1 - p^5)} &amp;
+\frac{1 - p}{p(1 - p^5)} &amp;
+\frac{1 - p}{1 - p^5}
+\end{bmatrix} \]</span></p>
+<p>We can verify this is the limiting distribution:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\pi P &amp;= \begin{bmatrix} \frac{1 - p}{p^4(1 - p^5)} &amp;
+\frac{1 - p}{p^3(1 - p^5)} &amp;
+\frac{1 - p}{p^2(1 - p^5)} &amp;
+\frac{1 - p}{p(1 - p^5)} &amp;
+\frac{1 - p}{1 - p^5}
+\end{bmatrix}
+\begin{bmatrix}
+1 - p &amp; p &amp; 0 &amp; 0 &amp; 0 \\
+1 - p &amp; 0 &amp; p &amp; 0 &amp; 0 \\
+1 - p &amp; 0 &amp; 0 &amp; p &amp; 0 \\
+1 - p &amp; 0 &amp; 0 &amp; 0 &amp; p \\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix} \\
+&amp;= \begin{bmatrix} 
+\frac{(1 - p)^2}{p^4(1 - p^5)}
++ \frac{(1 - p)^2}{p^3(1 - p^5)}
++ \frac{(1 - p)^2}{p^2(1 - p^5)}
++ \frac{(1 - p)^2}{p(1 - p^5)}
++ \frac{1 - p}{1 - p^5} &amp;
+\frac{1 - p}{p^3(1 - p^5)} &amp;
+\frac{1 - p}{p^2(1 - p^5)} &amp;
+\frac{1 - p}{p(1 - p^5)} &amp;
+\frac{1 - p}{1 - p^5}
+\end{bmatrix} \\
+&amp;= \begin{bmatrix} 
+\frac{(1 - p)^2(1 + p + p^2 + p^3) + p^4(1 - p)}{p^4(1 - p^5)} &amp;
+\frac{1 - p}{p^3(1 - p^5)} &amp;
+\frac{1 - p}{p^2(1 - p^5)} &amp;
+\frac{1 - p}{p(1 - p^5)} &amp;
+\frac{1 - p}{1 - p^5}
+\end{bmatrix} \\
+&amp;= \begin{bmatrix} 
+\frac{1 - p}{p^4(1 - p^5)} &amp;
+\frac{1 - p}{p^3(1 - p^5)} &amp;
+\frac{1 - p}{p^2(1 - p^5)} &amp;
+\frac{1 - p}{p(1 - p^5)} &amp;
+\frac{1 - p}{1 - p^5}
+\end{bmatrix} \\
+&amp;= \pi
+\end{align}
+\]</span></p>
+<p><strong>Exercise 24.6.11</strong>. Let <span class="math inline">\(X(t)\)</span> be an inhomogeneous Poisson process with intensity function <span class="math inline">\(\lambda(t) &gt; 0\)</span>. Let <span class="math inline">\(\Lambda(t) = \int_0^t \lambda(u) du\)</span>. Define <span class="math inline">\(Y(s) = X(t)\)</span> where <span class="math inline">\(s = \Lambda(t)\)</span>. Show that <span class="math inline">\(Y(s)\)</span> is a homogeneous Poisson process with intensity <span class="math inline">\(\lambda = 1\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>We have: <span class="math inline">\(Y(s) = X(\Lambda^{-1}(s))\)</span> and <span class="math inline">\(X(t) \sim \text{Poisson}(\Lambda(t))\)</span>, so</p>
+<p><span class="math display">\[Y(s) \sim \text{Poisson}(\Lambda(\Lambda^{-1}(s)) = \text{Poisson}(s) = \text{Poisson}(\lambda_Y \cdot s)\]</span></p>
+<p>which is the desired result with <span class="math inline">\(\lambda_Y = 1\)</span>.</p>
+<p><strong>Exercise 24.6.12</strong>. Let <span class="math inline">\(X(t)\)</span> be a Poisson process with intensity <span class="math inline">\(\lambda\)</span>. Find the conditional distribution of <span class="math inline">\(X(t)\)</span> given that <span class="math inline">\(X(t + s) = n\)</span>.</p>
+<p><strong>Solution</strong>. The random variables <span class="math inline">\(X(t) - X(0) = X(t)\)</span> and <span class="math inline">\(Y(s) = X(t + s) - X(t)\)</span> are independent, as they are both count increments, with <span class="math inline">\(X(t) \sim \text{Poisson}(\lambda t)\)</span> and <span class="math inline">\(Y(s) \sim \text{Poisson}(\lambda s)\)</span>. Then:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{P}\left(X(t) = x | X(t + s) = n\right) &amp;= \mathbb{P}\left(X(t) = x | X(t) + Y(s) = n\right) \\
+&amp;= \frac{\mathbb{P}\left(X(t) = x, X(t) + Y(s) = n\right)}{\mathbb{P}\left(X(t) + Y(s) = n\right)} \\
+&amp;= \frac{\mathbb{P}\left(X(t) = x, Y(s) = n - x\right)}{\sum_{0 \leq j \leq n} \mathbb{P}\left(X(t) = j, Y(s) = n - j\right)} \\
+&amp;= \frac{\mathbb{P}\left(X(t) = x\right) \mathbb{P}\left(Y(s) = n - x\right)}{\sum_{j=0}^n \mathbb{P}\left(X(t) = j\right) \mathbb{P}\left( Y(s) = n - j\right)} \\
+&amp;= \frac{f(x)}{\sum_{j=0}^n f(j) }
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(f(x) = \mathbb{P}\left(X(t) = x\right) \mathbb{P}\left( Y(s) = n - x\right)\)</span>. But we have:</p>
+<p><span class="math display">\[ f(x) = \frac{(\lambda t)^x e^{-\lambda t}}{x!}\frac{(\lambda s)^{n - x} e^{-\lambda s}}{(n - x)!} = \frac{\lambda^n e^{-\lambda (t + s)}}{n!} \binom{n}{x} t^x s^{n - x} \]</span></p>
+<p>Replacing on the expression above and cancelling the factors that do not depend on <span class="math inline">\(x\)</span>, we get</p>
+<p><span class="math display">\[ \mathbb{P}\left(X(t) = x | X(t + s) = n\right) = \frac{f(x)}{\sum_{j=0}^n f(j) } = \frac{\binom{n}{x} t^x s^{n - x}}{\sum_{j=0}^n \binom{n}{j} t^j s^{n - j}} 
+= \frac{\binom{n}{x} t^x s^{n - x}}{(t + s)^n} = \binom{n}{x} \left( \frac{t}{t + s} \right)^x \left( \frac{s}{t + s}\right)^{n - x}\]</span></p>
+<p>using the binomial expansion <span class="math inline">\((t + s)^n = \sum_{j=0}^n \binom{n}{j} t^j s^{n - j}\)</span>. Therefore, the conditional distribution follows a Binomial distribution,</p>
+<p><span class="math display">\[ X(t)=x | X(t + s)=n \sim \text{Binomial}\left(n, \frac{t}{t + s} \right)\]</span></p>
+<p><strong>Exercise 24.6.13</strong>. Let <span class="math inline">\(X\)</span> be a Poisson process with intensity <span class="math inline">\(\lambda\)</span>. Find the probability that <span class="math inline">\(X(t)\)</span> is odd, i.e. <span class="math inline">\(\mathbb{P}(X(t) = 1, 3, 5, \dots)\)</span>.</p>
+<p><strong>Solution</strong>. Expanding using the probability mass function,</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{P}(X(t) \text{ is odd}) &amp;= \sum_{k=0}^\infty \frac{(\lambda t)^{2k + 1} e^{-\lambda t}}{(2k + 1)!} \\
+&amp;=e^{-\lambda t}\frac{1}{2}\left(\sum_{0}^{+\infty}\frac{(\lambda t)^n}{n!}-\sum_{0}^{+\infty}\frac{(-\lambda t)^n}{n!}\right)\\
+&amp;=e^{-\lambda t}\frac{1}{2}\left(e^{(\lambda t)}-e^{-(\lambda t)}\right)\\
+&amp;=e^{-\lambda t} \text{sinh} (\lambda t) \\
+&amp;= \frac{1}{2}\left( 1 - e^{-2 \lambda t}\right)
+\end{align}\]</span></p>
+<p><strong>Exercise 24.6.14</strong>. Suppose that people logging in to the University computer system is described by a Poisson process <span class="math inline">\(X(t)\)</span> with intensity <span class="math inline">\(\lambda\)</span>. Assume that a person stays logged in for some random time with CDF <span class="math inline">\(G\)</span>. Assume these times are all independent. Let <span class="math inline">\(Y(t)\)</span> be the number of people on the system at time <span class="math inline">\(t\)</span>. Find the distribution of <span class="math inline">\(Y(t)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p>The number of people arriving at time period <span class="math inline">\(j\)</span> is <span class="math inline">\(A(j) \equiv X(j) - X(j-1)\)</span>, where <span class="math inline">\(X(0) = 0\)</span>. Let <span class="math inline">\(W_i^{(j)}\)</span> be the amount of time spent by the <span class="math inline">\(i\)</span>-th person that arrived at time period <span class="math inline">\(j\)</span>. Then, the total number of people at time <span class="math inline">\(t\)</span> is:</p>
+<p><span class="math display">\[ Y(t) = \sum_{j=1}^t \sum_{i=1}^{A(j)} I\left(W_i^{(j)} \geq t - j\right) \]</span></p>
+<p>where <span class="math inline">\(I(x) = 1\)</span> if <span class="math inline">\(x\)</span> is true and <span class="math inline">\(0\)</span> otherwise, and the terms count only the people who are still logged in after an extra time <span class="math inline">\(t - j\)</span> elapsed.</p>
+<p>Each value <span class="math inline">\(I\left(W_i^{(j)} \geq x\right)\)</span> follows a distribution given by <span class="math inline">\(1 - G(x)\)</span>, measuring the probability of a person staying longer than time <span class="math inline">\(x\)</span>, and they are all independent.</p>
+<p>We can write the sum above as:</p>
+<p><span class="math display">\[ Y(t) = \sum_{j=1}^t B(j), \quad B(j) =\sum_{i = 1}^{A(j)} I\left(W_i^{(j)} \geq t - j\right) \]</span></p>
+<p>Note that this implies that <span class="math inline">\(B(j) | A(j) = n\)</span> follows a binomial distribution with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(\mathbb{P}\left(W_i^{(j)} \geq t - j \right) = 1 - G(t - j)\)</span>.</p>
+<p>Since <span class="math inline">\(A(j) \sim \text{Poisson}(\lambda)\)</span> and <span class="math inline">\(B(j) | A(j) = n \sim \text{Binomial}(n, 1 - G(t - j))\)</span>, the marginal distribution of <span class="math inline">\(B(j)\)</span> is <span class="math inline">\(B(j) \sim \text{Poisson}\left(\lambda (1 - G(t - j))\right)\)</span>. Therefore, <span class="math inline">\(Y\)</span> being the sum of independent Poisson variables <span class="math inline">\(B(j)\)</span>, we get that <span class="math inline">\(Y\)</span> is a Poisson process with inhomogeneous rate <span class="math inline">\(\lambda_Y(t)\)</span>,</p>
+<p><span class="math display">\[ Y(t) \sim \text{Poisson}\left( \lambda_Y(t) \right), \quad \lambda_Y(t) = \lambda \left[ \sum_{j=1}^t(1 - G(t - j)) \right]\]</span></p>
+<p><strong>Exercise 24.6.15</strong>. Let <span class="math inline">\(X(t)\)</span> be a Poisson process with intensity <span class="math inline">\(\lambda\)</span>. Let <span class="math inline">\(W_1, W_2, \dots\)</span> be the waiting times. Let <span class="math inline">\(f\)</span> be an arbitrary function. Show that</p>
+<p><span class="math display">\[ \mathbb{E} \left[ \sum_{i=1}^{X(t)} f(W_i) \right] = \lambda \int_0^t f(w) dw \]</span></p>
+<p><strong>Solution</strong>.</p>
+<p>When conditioning on <span class="math inline">\(X(t) = n\)</span>, the waiting times are uniformly distributed on the interval <span class="math inline">\([0, t]\)</span>, so <span class="math inline">\(\sum_{i=1}^n f(W_i)\)</span> has the same distribution as <span class="math inline">\(\sum_{i=1}^n f\left(U_i^{(n)}\right)\)</span>, for <span class="math inline">\(U_i^{(n)} \sim \text{Uniform}(0, t)\)</span>. Then the expectation of <span class="math inline">\(f\left(U_i^{(n)}\right)\)</span> is</p>
+<p><span class="math display">\[\mathbb{E}\left[ f\left(U_i^{(n)}\right) \right] = \int_0^t f(w) f_{U_i^{(n)}}(w) dw = \frac{1}{t} \int_0^t f(w) dw\]</span></p>
+<p>Then, we have:</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathbb{E}\left[ \sum_{i=1}^{X(t)} f(W_i) \right] 
+&amp;= \sum_{n = 0}^\infty \mathbb{E}\left[ \sum_{i=1}^{X(t)} f(W_i) \; \Bigg| \; X(t) = n\right] \mathbb{P} \left[ X(t) = n \right] \\
+&amp;= \sum_{n = 0}^\infty \mathbb{E}\left[ \sum_{i=1}^n f\left(U_i^{(n)}\right) \right] \mathbb{P} \left[ X(t) = n \right] \\
+&amp;= \sum_{n = 0}^\infty \frac{n}{t} \left( \int_0^t f(w) dw \right) \mathbb{P} \left[ X(t) = n \right] \\
+&amp;= \frac{1}{t} \left( \int_0^t f(w) dw \right) \sum_{n=0}^\infty n \; \mathbb{P} \left[ X(t) = n \right] \\
+&amp;= \frac{1}{t} \left( \int_0^t f(w) dw \right) \mathbb{E} \left[ X(t) \right] \\
+&amp;= \frac{1}{t} \left( \int_0^t f(w) dw \right) \lambda t \\
+&amp;= \lambda \int_0^t f(w) dw
+\end{align}
+\]</span></p>
+<p><strong>Exercise 24.6.16</strong>. A two dimensional Poisson process is a process of random points in the plane such that (i) for any set <span class="math inline">\(A\)</span>, the number of points falling in <span class="math inline">\(A\)</span> is Poisson with mean <span class="math inline">\(\lambda \mu(A)\)</span> where <span class="math inline">\(\mu(A)\)</span> is the area of <span class="math inline">\(A\)</span>, (ii) the number of points in nonoverlapping regions is independent. Consider an arbitrary point <span class="math inline">\(x_0\)</span> in the plane. Let <span class="math inline">\(X\)</span> denote the distance from <span class="math inline">\(x_0\)</span> to the nearest point. Show that</p>
+<p><span class="math display">\[ \mathbb{P}(X &gt; t) = e^{-\lambda \pi t^2} \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ \mathbb{E}(X) = \frac{1}{2 \sqrt{\lambda}} \]</span></p>
+<p><strong>Solution</strong>. The distance <span class="math inline">\(X\)</span> from <span class="math inline">\(x_0\)</span> to the nearest point is at least <span class="math inline">\(t\)</span> if and only if no points lie within a circle of radius <span class="math inline">\(t\)</span> centered in <span class="math inline">\(x_0\)</span>. This circle <span class="math inline">\(C\)</span> has area <span class="math inline">\(\mu(C) = \pi t^2\)</span>, and so</p>
+<p><span class="math display">\[ \mathbb{P}(X &gt; t) = \mathbb{P}(\# \{\text{points in C} \} = 0) = f_C(0) = \frac{\lambda_C^0 e^{-\lambda_C}}{0!} = e^{-\lambda_C} = e^{-\lambda \pi t^2} \]</span></p>
+<p>Given that <span class="math inline">\(X\)</span> has a CDF of <span class="math inline">\(F_X(x) = 1 - e^{-\lambda \pi x^2}\)</span> for <span class="math inline">\(x \geq 0\)</span>, its PDF is <span class="math inline">\(f_X(x) = 2 \lambda \pi x e^{-\lambda \pi x^2}\)</span>, and its mean is</p>
+<p><span class="math display">\[\begin{align}
+\mathbb{E}(X) &amp;= \int_0^\infty x f_X(x) \; dx  \\
+&amp;= \int_0^\infty 2 \lambda \pi x^2 e^{- \lambda \pi x^2} \; dx \\
+&amp;=-\int_0^\infty xe^{- \lambda \pi x^2}d(- \lambda \pi x^2)\\
+&amp;=-xe^{- \lambda \pi x^2}\big|_{0}^{\infty}+\int_0^\infty e^{- \lambda \pi x^2}dx\\
+&amp;=\int_0^\infty e^{- \lambda \pi x^2}dx\\
+&amp;=\frac{1}{\sqrt{\lambda \pi}}\int_0^\infty e^{- (\sqrt{\lambda \pi} x)^2}d(\sqrt{\lambda \pi} x)\\
+&amp;= \frac{1}{\sqrt{\lambda \pi}}\sqrt{\pi}/2\\
+&amp;= \frac{1}{2 \sqrt{\lambda}}
+\end{align}\]</span></p>
+<p>Since <span class="math display">\[\int_{-\infty}^{+\infty}e^{-x^2}dx=\sqrt{\pi}\]</span>
+Let <span class="math display">\[\int_{-\infty}^{+\infty}e^{-x^2}dx=I\]</span>
+<span class="math display">\[\begin{align}
+I^2&amp;=\left(\int_{-\infty}^{+\infty}e^{-x^2}dx\right)×\left(\int_{-\infty}^{+\infty}e^{-y^2}dy\right)\\
+&amp;=\int_{-\infty}^{+\infty}\left(\int_{-\infty}^{+\infty}e^{−(x^2+y^2)}dx\right)dy\\
+&amp;=\int\int e^{−(r^2)}rd\theta dr\\
+&amp;=\int_0^{2\pi} \left(\int_{0}^{+\infty}re^{−r^2}dr\right)d\theta\\
+&amp;=2\pi\int_{0}^{+\infty}re^{−r^2}dr\\
+&amp;=\pi\int_{0}^{+\infty}2re^{−r^2}dr\\
+&amp;=\pi\int_{0}^{+\infty}e^{−r^2}d(r^2)\\
+&amp;=\pi
+\end{align}\]</span></p>
+<p>The polar form: <span class="math display">\[x^2+y^2=r^2, dxdy=dA=rd\theta dr\]</span></p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
