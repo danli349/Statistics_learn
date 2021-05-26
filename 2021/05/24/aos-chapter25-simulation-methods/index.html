@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>AOS chapter25 Simulation Methods - A Hugo website</title>
+<meta property="og:title" content="AOS chapter25 Simulation Methods - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">53 min read</span>
+    
+
+    <h1 class="article-title">AOS chapter25 Simulation Methods</h1>
+
+    
+    <span class="article-date">2021-05-24</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/05/24/aos-chapter25-simulation-methods/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#simulation-methods">25. Simulation Methods</a>
+<ul>
+<li><a href="#bayesian-inference-revisited">25.1 Bayesian Inference Revisited</a></li>
+<li><a href="#basic-monte-carlo-integration">25.2 Basic Monte Carlo Integration</a></li>
+<li><a href="#importance-sampling">25.3 Importance Sampling</a></li>
+<li><a href="#mcmc-part-i-the-metropolis-hastings-algorithm">25.4 MCMC Part I: The Metropolis-Hastings Algorithm</a></li>
+<li><a href="#mcmc-part-ii-different-flavors">25.5 MCMC Part II: Different Flavors</a></li>
+<li><a href="#exercises">25.7 Exercises</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="simulation-methods" class="section level2">
+<h2>25. Simulation Methods</h2>
+<p>In this chapter we will see that by generating data in a clever way, we can solve a number of problems such as integrating or maximizing a complicated function. For integration, we will study 3 methods:</p>
+<ul>
+<li>basic Monte Carlo integration</li>
+<li>importance sampling</li>
+<li>Markov chain Monte Carlo (MCMC)</li>
+</ul>
+<div id="bayesian-inference-revisited" class="section level3">
+<h3>25.1 Bayesian Inference Revisited</h3>
+<p>Simulation methods are specially useful in Bayesian inference so let us briefly review the main ideas. Given a prior <span class="math inline">\(f(\theta)\)</span> and data <span class="math inline">\(X^n = (X_1, \dots, X_n)\)</span> the posterior density is</p>
+<p><span class="math display">\[ f(\theta | X^n) = \frac{\mathcal{L}(\theta) f(\theta)}{ \int \mathcal{L}(u) f(u) \; du} \]</span></p>
+<p>where <span class="math inline">\(\mathcal{L}(\theta)\)</span> is the likelihood function. The posterior mean is</p>
+<p><span class="math display">\[ \overline{\theta} = \int \theta f(\theta | X^n) \; d\theta = \frac{\int \theta \mathcal{L}(\theta) f(\theta) \; d\theta}{\int \mathcal{L}(\theta) f(\theta) \; d\theta} \]</span></p>
+<p>If <span class="math inline">\(\theta = (\theta_1, \dots, \theta_k)\)</span> is multidimensional, then we might be interested in the posterior for one the components, <span class="math inline">\(\theta_1\)</span>, say. This marginal posterior density is</p>
+<p><span class="math display">\[ f(\theta_1 | X^n) = \int \int \cdots \int f(\theta_1, \dots, \theta_k | X^n) \; d\theta_2 \cdots d\theta_k\]</span></p>
+<p>which involves high dimensional integration.</p>
+<p>You can see that integrals play a big role in Bayesian inference. When <span class="math inline">\(\theta\)</span> is high dimensional, it may not be feasible to calculate these integrals analytically. Simulation methods will often be very helpful.</p>
+</div>
+<div id="basic-monte-carlo-integration" class="section level3">
+<h3>25.2 Basic Monte Carlo Integration</h3>
+<p>Suppose you want to evaluate the integral <span class="math inline">\(I = \int_a^b h(x) dx\)</span> for some function <span class="math inline">\(h\)</span>. If <span class="math inline">\(h\)</span> is an “easy” function like a polynomial or a trigonometric function then we can do the integral in closed form. In practice, <span class="math inline">\(h\)</span> can be very complicated and there may be no known closed form expression for <span class="math inline">\(I\)</span>. There are many numerical techniques for evaluating <span class="math inline">\(I\)</span> such as Simpson’s rule, the trapezoidal rule, Gaussian quadrature and so on. In some cases these techniques work very well. But other times they might not work so well. In particular, it is hard to extend them to higher dimensions. Monte Carlo integration is another approach to evaluating <span class="math inline">\(I\)</span> which is notable for its simplicity, generality, and scalability.</p>
+<p>Let us begin by writing</p>
+<p><span class="math display">\[ I = \int_a^b h(x) dx = \int_a^b h(x) (b - a) \frac{1}{b - a} dx = \int_a^b w(x) f(x) dx\]</span></p>
+<p>where <span class="math inline">\(w(x) = h(x)(b - a)\)</span> and <span class="math inline">\(f(x) = 1 / (b - a)\)</span>. Notice that <span class="math inline">\(f\)</span> is the density for a uniform random variable over <span class="math inline">\((a, b)\)</span>. Hence,</p>
+<p><span class="math display">\[ I = \mathbb{E}_f(w(X)) \]</span></p>
+<p>where <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>.</p>
+<p>Suppose we generate <span class="math inline">\(X_1, \dots, X_n \sim \text{Uniform}(a, b)\)</span> where <span class="math inline">\(N\)</span> is large. By the law of large numbers,</p>
+<p><span class="math display">\[ \hat{I} \equiv \frac{1}{N} \sum_{i=1}^N w(X_i) \xrightarrow{\text{P}} \mathbb{E}(w(X)) = I \]</span></p>
+<p>This is the <strong>basic monte carlo integration method</strong>. We can also compute the standard error of the estimate,</p>
+<p><span class="math display">\[ \hat{\text{se}} = \frac{s}{\sqrt{N}} 
+\quad \text{where} \quad
+s^2 = \frac{\sum_i (Y_i - \hat{I})^2}{N - 1},
+\quad Y_i = w(X_i)
+\]</span></p>
+<p>A <span class="math inline">\(1 - \alpha\)</span> confidence interval for <span class="math inline">\(I\)</span> is <span class="math inline">\(\hat{I} \pm z_{\alpha / 2} \hat{\text{se}}\)</span>. We can take <span class="math inline">\(N\)</span> as large as we want and hence make the length of the confidence interval very small.</p>
+<p>A simple generalization of the basic method is to consider integrals of the form</p>
+<p><span class="math display">\[ I = \int h(x) f(x) \; dx \]</span></p>
+<p>where <span class="math inline">\(f(x)\)</span> is a probability density function. Taking <span class="math inline">\(f\)</span> to be <span class="math inline">\(\text{Uniform}(a, b)\)</span> gives us the special case above. The only difference is that now we draw <span class="math inline">\(X_1, \dots, X_N \sim f\)</span> and take</p>
+<p><span class="math display">\[ \hat{I} \equiv \frac{1}{N} \sum_{i=1}^N h(X_i) \]</span></p>
+<p>as before.</p>
+<p><strong>Example 25.1</strong>. Let’s try this on an example where we know the true answer. Let <span class="math inline">\(h(x) = x^3\)</span>. Hence, <span class="math inline">\(I = \int_0^1 x^3\;dx = 1/4\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+N = 100000
+
+true_value = 1/4
+def h(x):
+    return x**3
+
+X = np.random.uniform(low=0, high=1, size=N)
+Y = h(X)
+
+I_hat = np.empty(N)
+se_hat = np.empty(N)
+for n in notebook.tqdm(range(N)):
+    I_hat[n] = Y[:n+1].mean()
+    if n &lt; 2:
+        se_hat[n] = np.inf
+    else:
+        s2 = np.sum((Y[:n+1] - I_hat[n])**2) / n
+        se_hat[n] = np.sqrt(s2 / (n + 1))
+
+        
+z = norm.ppf(0.975)
+
+I_lower = I_hat - z * se_hat
+I_upper = I_hat + z * se_hat</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(100, N + 1)
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, I_hat[nn - 1], label=r&#39;$\hat{I}$&#39;)
+plt.plot(nn, I_lower[nn - 1], label=&#39;95% confidence lower bound&#39;, color=&#39;darkred&#39;, alpha=0.3)
+plt.plot(nn, I_upper[nn - 1], label=&#39;95% confidence upper bound&#39;, color=&#39;darkgreen&#39;, alpha=0.3)
+plt.hlines(true_value, xmin=min(nn), xmax=max(nn), label=&#39;True value&#39;, color=&#39;purple&#39;)
+plt.xlabel(&#39;N&#39;)
+plt.ylabel(&#39;I&#39;)
+plt.xscale(&#39;log&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_9_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Example 25.2</strong>. Let</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\sqrt{2 \pi}} e^{-x^2 / 2} \]</span></p>
+<p>be the standard normal PDF. Suppose we want to compute the CDF at some point,</p>
+<p><span class="math display">\[ I = \int_{-\infty}^x f(s) ds = \Phi(x) \]</span></p>
+<p>Of course, you could look up the value in a table or a computing library, but let’s use the simulation method instead.</p>
+<pre class="python"><code>import numpy as np
+import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+N = 100000
+
+true_value = norm.cdf(2)
+
+def h(x):
+    return np.where(x &lt; 2, 1, 0)
+
+X = np.random.normal(loc=0.0, scale=1.0, size=N)
+Y = h(X)
+
+I_hat = np.empty(N)
+se_hat = np.empty(N)
+for n in notebook.tqdm(range(N)):
+    I_hat[n] = Y[:n+1].mean()
+    if n &lt; 2:
+        se_hat[n] = np.inf
+    else:
+        s2 = np.sum((Y[:n+1] - I_hat[n])**2) / n
+        se_hat[n] = np.sqrt(s2 / (n + 1))
+        
+z = norm.ppf(0.975)
+
+I_lower = I_hat - z * se_hat
+I_upper = I_hat + z * se_hat</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(100, N + 1)
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, I_hat[nn - 1], label=r&#39;$\hat{I}$&#39;)
+plt.plot(nn, I_lower[nn - 1], label=&#39;95% confidence lower bound&#39;, color=&#39;darkred&#39;, alpha=0.3)
+plt.plot(nn, I_upper[nn - 1], label=&#39;95% confidence upper bound&#39;, color=&#39;darkgreen&#39;, alpha=0.3)
+plt.hlines(true_value, xmin=min(nn), xmax=max(nn), label=&#39;True value&#39;, color=&#39;purple&#39;)
+plt.xlabel(&#39;N&#39;)
+plt.ylabel(&#39;I&#39;)
+plt.xscale(&#39;log&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_12_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Example 25.3 (Two Binomials)</strong>. Let <span class="math inline">\(X \sim \text{Binomial}(n, p_1)\)</span> and <span class="math inline">\(Y \sim \text{Binomial}(n, p_2)\)</span>. We would like to estimate <span class="math inline">\(\delta = p_2 - p_1\)</span>. The MLE is <span class="math inline">\(\hat{\theta} = \hat{p}_2 - \hat{p}_1 = (Y / m) - (X / n)\)</span>. We can get the standard error <span class="math inline">\(\hat{\text{se}}\)</span> using the delta method which yields</p>
+<p><span class="math display">\[ \hat{\text{se}} = \sqrt{\frac{\hat{p}_1 (1 - \hat{p}_1)}{n} + \frac{\hat{p}_2 (1 - \hat{p}_2)}{m}} \]</span></p>
+<p>and then construct a confidence interval using $ z_{/ 2}  $. Now consider a Bayesian analysis. Suppose we use the prior <span class="math inline">\(f(p_1, p_2) = f(p_1) f(p_2) = 1\)</span>, that is, a flat prior on <span class="math inline">\((p_1, p_2)\)</span>. The posterior is</p>
+<p><span class="math display">\[ f(p_1, p_2 | X, Y) \propto p_1^{X} (1 - p_1)^{n - X} p_2^Y (1 - p_2)^{m - Y}\]</span></p>
+<p>The posterior mean of <span class="math inline">\(\delta\)</span> is</p>
+<p><span class="math display">\[ \overline{\delta} = \int_0^1 \int_0^1 \delta(p_1, p_2) f(p_1, p_2 | X, Y) \; dp_1 dp_2 = \int_0^1 \int_0^1 (p_2 - p_1) f(p_1, p_2 | X, Y) \; dp_1 dp_2 \]</span></p>
+<p>If we want the posterior density of <span class="math inline">\(\delta\)</span> we can first get the posterior CDF</p>
+<p><span class="math display">\[ F(c | X, Y) = \mathbb{P}(\delta \leq c | X, Y) = \int_A f(p_1, p_2 | X, Y) \; dA \]</span></p>
+<p>where <span class="math inline">\(A = \{ (p_1, p_2) : p_2 - p_1 \leq c \}\)</span>. The density can then be obtained by differentiating <span class="math inline">\(F\)</span>.</p>
+<p>To avoid these integrals, let’s use simulation. Note that <span class="math inline">\(f(p_1, p_2 | X, Y) = f(p_1 | X) f(p_2 | Y)\)</span> which implies that <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> are independent under the posterior distribution. Also, we see that</p>
+<p><span class="math display">\[ 
+p_1 | X \sim \text{Beta}(X + 1, n - X + 1) 
+\quad \text{and} \quad
+p_2 | Y \sim \text{Beta}(Y + 1, m - Y + 1) 
+\]</span></p>
+<p>Hence, we can simulate <span class="math inline">\((P_1^{(1)}, P_2^{(1)}), \dots, (P_1^{(N)}, P_2^{(N)})\)</span> by drawing</p>
+<p><span class="math display">\[ 
+P_1^{(i)} \sim \text{Beta}(X + 1, n - X + 1) 
+\quad \text{and} \quad
+P_2^{(i)} \sim \text{Beta}(Y + 1, m - Y + 1) 
+\]</span></p>
+<p>Now let <span class="math inline">\(\delta^{(i)} = P_2^{(i)} - P_1^{(i)}\)</span>. Then,</p>
+<p><span class="math display">\[ \overline{\delta} \approx \frac{1}{N} \sum_i \delta^{(i)} \]</span></p>
+<p>We can also get a 95% posterior interval for <span class="math inline">\(\delta\)</span> by sorting the simulated values, and finding the 2.5% and 97.5% quantiles. The posterior density <span class="math inline">\(f(\delta | X, Y)\)</span> can be obtained by applying density estimation techniques to the <span class="math inline">\(\delta^{(i)}\)</span> or by simply plotting a histogram.</p>
+<p>For example, assume <span class="math inline">\(n = m = 10\)</span>, <span class="math inline">\(X = 8\)</span> and <span class="math inline">\(Y = 6\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from tqdm import notebook
+
+n, m = 10, 10
+X, Y = 8, 6
+
+N = 100000
+
+np.random.seed(0)
+P1 = np.random.beta(X + 1, n - X + 1, size=N)
+P2 = np.random.beta(Y + 1, m - Y + 1, size=N)
+delta = P2 - P1
+
+delta_mean = np.empty(N)
+delta_lower = np.empty(N)
+delta_upper = np.empty(N)
+for n in notebook.tqdm(range(N)):
+    delta_mean[n] = delta[:n+1].mean()
+    if n &lt; 2:
+        delta_lower[n], delta_upper[n] = np.inf, np.inf
+    else:
+        delta_lower[n], delta_upper[n] = np.quantile(delta[:n+1], [0.025, 0.975])</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(100, N + 1)
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, delta_mean[nn - 1], label=r&#39;$\overline{\delta}$&#39;)
+plt.plot(nn, delta_lower[nn - 1], label=&#39;95% confidence lower bound&#39;, color=&#39;darkred&#39;, alpha=0.3)
+plt.plot(nn, delta_upper[nn - 1], label=&#39;95% confidence upper bound&#39;, color=&#39;darkgreen&#39;, alpha=0.3)
+plt.xlabel(&#39;N&#39;)
+plt.ylabel(r&#39;$\delta$&#39;)
+plt.xscale(&#39;log&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_15_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.hist(delta, bins=100, histtype=&#39;step&#39;, density=True, label=&#39;Histogram&#39;)
+plt.vlines(delta.mean(), ymin=0, ymax=2.5, label=&#39;Mean&#39;, color=&#39;purple&#39;)
+plt.title(&#39;Histogram of $\delta$ (density)&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_16_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Example 25.4 (Dose Response)</strong>. Suppose we conduct an experiment by giving rats one of ten possible doses of a drug, denoted by <span class="math inline">\(x_1 &lt; x_2 &lt; \cdots &lt; x_{10}\)</span>. For each dose level <span class="math inline">\(x\)</span>, we use <span class="math inline">\(n\)</span> rats and observe <span class="math inline">\(Y_i\)</span>, the number that die. Thus we have 10 independent binomials <span class="math inline">\(Y_i \sim \text{Binomial}(n, p_i)\)</span>. Suppose we know from biological considerations that higher doses should have higher probability of death. Thus, <span class="math inline">\(p_1 \leq p_2 \leq \cdots \leq p_{10}\)</span>. Suppose we want to estimate the dose at which animals have a 50% chance of dying. This is called the LD50. Formally, <span class="math inline">\(\delta = x_j\)</span> where</p>
+<p><span class="math display">\[ j = \min \{ i: p_i \geq .50 \} \]</span></p>
+<p>Notice that <span class="math inline">\(\delta\)</span> is implicitly a (complicated) function of <span class="math inline">\(p_1, \dots, p_{10}\)</span> so we can write <span class="math inline">\(\delta = g(p_1, \dots, p_{10})\)</span> for some <span class="math inline">\(g\)</span>. This just means that if we know the <span class="math inline">\(p_i\)</span> then we can find <span class="math inline">\(\delta\)</span>. The posterior mean of <span class="math inline">\(\delta\)</span> is</p>
+<p><span class="math display">\[ \overline{\delta} = \int \int \cdots \int_A g(p_1, \dots, p_{10}) f(p_1, \dots, p_{10} | Y_1, \dots, Y_{10} ) \; dp_1 dp_2 \dots dp_{10} \]</span></p>
+<p>The integral is over the region of valid parameter values,</p>
+<p><span class="math display">\[ A = \{ (p_1, \dots, p_{10}) : p_1 \leq \cdots \leq p_{10} \} \]</span></p>
+<p>Similarly, the posterior CDF of <span class="math inline">\(\delta\)</span> is</p>
+<p><span class="math display">\[
+F(c | Y_1, \dots, Y_{10}) = \mathbb{P}(\delta \leq c | Y_1, \dots, Y_{10}) = \int \int \cdots \int_B f(p_1, \dots, p_{10} | Y_1, \dots, Y_{10} ) \; dp_1 dp_2 \dots dp_{10}
+\]</span></p>
+<p>where the integral is over the valid parameter values given $ c$,</p>
+<p><span class="math display">\[ B = A \cap \{ (p_1, \dots, p_{10}) : g(p_1, \dots, p_{10}) \leq c \} \]</span></p>
+<p>We would need to do a 10 dimensional integral over a restricted region <span class="math inline">\(A\)</span>. Instead, let’s use simulation.</p>
+<p>Let us take a flat prior truncated over <span class="math inline">\(A\)</span>. Except for the truncation, each <span class="math inline">\(P_i\)</span> has once again a Beta distribution. To draw from the posterior, we do the following steps:</p>
+<ul>
+<li>Draw <span class="math inline">\(P_i \sim \text{Beta}(Y_i + 1, n - Y_i + 1)\)</span>, <span class="math inline">\(i = 1, \dots, 10\)</span>.</li>
+<li>If <span class="math inline">\(P_1 \leq P_2 \leq \cdots \leq P_{10}\)</span> keep this draw. Otherwise, throw it away and draw again until you get one you can keep.</li>
+<li>Let <span class="math inline">\(\delta = x_j\)</span> where <span class="math inline">\(j = \min \{ i : P_i &gt; .50 \}\)</span>.</li>
+</ul>
+<p>We repeat this <span class="math inline">\(N\)</span> times to get <span class="math inline">\(\delta^{(1)}, \dots, \delta^{(N)}\)</span> and take</p>
+<p><span class="math display">\[ \mathbb{E}(\delta | Y_1, \dots, Y_{10}) \approx \frac{1}{N} \sum_i \delta^{(i)} \]</span></p>
+<p><span class="math inline">\(\delta\)</span> is a discrete variable. We can estimate its probability mass function by</p>
+<p><span class="math display">\[ \mathbb{P}(\delta = x_j | Y_1, \dots, Y_{10}) \approx \frac{1}{N} I(\delta^{(i)} = j) \]</span></p>
+<pre class="python"><code>import numpy as np
+
+n = np.repeat(15, 10) # 10 doses 15 mice each dose
+X = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) # 10 doses
+Y = np.array([0, 1, 2, 6, 5, 12, 15, 15, 15, 15]) # survived mice</code></pre>
+<pre class="python"><code>np.diff(np.empty([2, 10]), axis=-1)</code></pre>
+<pre><code>array([[ 0.03734127,  0.27942389,  0.0075742 , -0.06392333,  0.07454106,
+         0.01185076, -0.16156096,  0.09800883, -0.0796103 ],
+       [ 0.07695544, -0.06460046,  0.01970296,  0.07168614,  0.01878298,
+         0.00469277,  0.01486267,  0.04780195,  0.05545917]])</code></pre>
+<pre class="python"><code>N = 1000000
+p = np.empty((N, 10))
+check = np.empty(N, dtype=bool)
+
+np.random.seed(0)
+for i in range(10):
+    p[:, i] = np.random.beta(Y[i] + 1, n[i] - Y[i] + 1, size=N)
+# np.diff: Calculate the n-th discrete difference along the given axis.
+# The first difference is given by out[i] = a[i+1] - a[i] along the given axis, 
+# higher differences are calculated by using diff recursively. The default axis is the last axis.
+# np.min(..., axis=1) the min of each row
+check = np.min(np.diff(p), axis=1) &gt;= 0
+
+p = p[check]
+N = p.shape[0]
+
+delta = np.empty(N)
+for i in range(N):
+    # np.argmax() In case of multiple occurrences of the maximum values, 
+    # the indices corresponding to the first occurrence are returned.
+    delta[i] = X[np.argmax(np.cumsum(p[i, :]) &gt; 0.5)]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(14, 8))
+
+ax = plt.subplot(2, 2, 1)
+ax.scatter(X, Y / n)
+ax.set_xlabel(&#39;dose&#39;)
+ax.set_ylabel(&#39;proportion who died&#39;)
+
+ax = plt.subplot(2, 2, 2)
+ax.violinplot(p)
+ax.set_xlabel(r&#39;$X$&#39;)
+ax.set_ylabel(r&#39;$P_i$&#39;)
+
+ax = plt.subplot(2, 2, 3)
+ax.bar(X, [(sum(delta == i) / N) for i in X])
+ax.set_xlabel(&#39;LD50&#39;)
+ax.set_ylabel(&#39;$P(\delta \;|\; data)$&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_21_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="importance-sampling" class="section level3">
+<h3>25.3 Importance Sampling</h3>
+<p>Consider the integral <span class="math inline">\(I = \int h(x) f(x) dx\)</span> where <span class="math inline">\(f\)</span> is a probability density. The basic Monte Carlo method involves sampling from <span class="math inline">\(f\)</span>. However, there are cases where we may not know how to sample from <span class="math inline">\(f\)</span>. For example, in Bayesian inference, the posterior density is obtained by multiplying the likelihood <span class="math inline">\(\mathcal{L}(\theta)\)</span> times the prior <span class="math inline">\(f(\theta)\)</span>. There is no guarantee that <span class="math inline">\(f(\theta | x)\)</span> will be a known distribution, such as a Normal or a Gamma.</p>
+<p>Importance sampling is a generalization of basic Monte Carlo which overcomes this problem. Let <span class="math inline">\(g\)</span> be a probability density that we know how to simulate from. Then</p>
+<p><span class="math display">\[ I = \int h(x) f(x) \; dx = \int \frac{h(x) f(x)}{g(x)} g(x) \; dx  = \mathbb{E}_g[Y] \]</span></p>
+<p>where <span class="math inline">\(Y = h(X) f(X) / g(X)\)</span> and the expectation <span class="math inline">\(\mathbb{E}_g[Y]\)</span> is with respect to <span class="math inline">\(g\)</span>. We can simulate <span class="math inline">\(X_1, \dots, X_N \sim g\)</span> and estimate <span class="math inline">\(I\)</span> by</p>
+<p><span class="math display">\[ \hat{I} = \frac{1}{N} \sum_i Y_i = \frac{1}{N} \sum_i \frac{h(X_i) f(X_i)}{g(X_i)} \]</span></p>
+<p>This is called <strong>importance sampling</strong>. By the law of large numbers, <span class="math inline">\(\hat{I} \xrightarrow{\text{P}} I\)</span>. However, there is a catch. It’s possible that <span class="math inline">\(\hat{I}\)</span> might have an infinite standard error. To see why, recall that <span class="math inline">\(I\)</span> is the mean of <span class="math inline">\(w(x) = h(x) f(x) / g(x)\)</span>. The second moment of this quantity is</p>
+<p><span class="math display">\[ \mathbb{E}_g[w^2(X)] = \int \left( \frac{h(x) f(x)}{g(x)} \right)^2 g(x) \; dx = \int \frac{h^2(x) f^2(x)}{g(x)} \; dx\]</span></p>
+<p>If <span class="math inline">\(g\)</span> has thinner tails than <span class="math inline">\(f\)</span>, this integral might be infinite. To avoid this, a basic rule in importance sampling is to sample from a density <span class="math inline">\(g\)</span> with thicker tails than <span class="math inline">\(f\)</span>. Also, suppose that <span class="math inline">\(g(x)\)</span> is small over some set <span class="math inline">\(A\)</span> where <span class="math inline">\(f(x)\)</span> is large. Again, the ratio of <span class="math inline">\(f / g\)</span> could be large leading to a large variance. This implies that we should <span class="math inline">\(g\)</span> to be similar in shape to <span class="math inline">\(f\)</span>. In summary, a good choice for an importance sampling density <span class="math inline">\(g\)</span> should be similar to <span class="math inline">\(f\)</span> but with thicker tails. In fact, we can say what the optimal choice of <span class="math inline">\(g\)</span> is.</p>
+<p><strong>Theorem 25.5</strong>. The choice of <span class="math inline">\(g\)</span> that minimizes the variance of <span class="math inline">\(\hat{I}\)</span> is</p>
+<p><span class="math display">\[ g^*(x) = \frac{|h(x)| f(x) }{\int | h(s) | f(s)  ds} \]</span></p>
+<p><strong>Proof</strong>. The variance of <span class="math inline">\(w = f h / g\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_g[w^2] - (\mathbb{E}_g[w])^2 &amp;= \int w^2(x) g(x) dx - \left( \int w(x) g(x) dx \right)^2 \\
+&amp;= \int \frac{h^2(x) f^2(x)}{g^2(x)} g(x) dx - \left( \int \frac{h(x) f(x)}{g(x)} g(x) dx \right)^2 \\
+&amp;= \int \frac{h^2(x) f^2(x)}{g^2(x)} g(x) dx - \left( \int h(x) f(x) dx \right)^2
+\end{align}
+\]</span></p>
+<p>The second integral does not depend on <span class="math inline">\(g\)</span> so we only need to minimize the first integral. Now, from Jensen’s inequality we have</p>
+<p><span class="math display">\[ \mathbb{E}_g[W^2] \geq \left(\mathbb{E}_g[|W|]\right)^2 = \left( \int |h(x)| f(x) dx \right)^2 \]</span></p>
+<p>This establishes a lower bound on <span class="math inline">\(\mathbb{E}_g[W^2]\)</span>. However, <span class="math inline">\(\mathbb{E}_{g^*}[W^2]\)</span> equals this lower bound, which proves the claim.</p>
+<p>This theorem is interesting but only of theoretical interest. If we did not know how to sample from <span class="math inline">\(f\)</span> then it is unlikely that we could sample from <span class="math inline">\(g^*\)</span>. In practice, we try to find a thick tailed distribution <span class="math inline">\(g\)</span> which is similar to <span class="math inline">\(f |h|\)</span>.</p>
+<p><strong>Example 25.6 (Tail Probability)</strong>. Let’s estimate</p>
+<p><span class="math display">\[ I = \mathbb{P}(Z &gt; 3) \approx .0013
+\quad \text{where } Z \sim N(0, 1)\]</span></p>
+<p>Using the basic Monte Carlo estimator,</p>
+<p><span class="math display">\[ I = \int h(x) f(x) \; dx \quad \text{where} \quad h(x) = I(x &gt; 3), f \sim N(0, 1)\]</span></p>
+<p>and <span class="math display">\[ \hat{I} = \frac{1}{N} \sum_i h(X_i) \]</span></p>
+<pre class="python"><code>import numpy as np
+import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+B = 1000000
+N = 100
+
+true_value = 1 - norm.cdf(3)
+
+def h(x):
+    return np.where(x &gt; 3, 1, 0)
+
+I_bootstrap = np.empty(B)
+for b in notebook.tqdm(range(B)):
+    XX = np.random.normal(loc=0.0, scale=1.0, size=N)
+    YY = h(XX)
+    I_bootstrap[b] = YY.mean()
+
+E_I = I_bootstrap.mean()
+SE_I = I_bootstrap.std()
+
+print(&#39;True value: \t %.5f&#39; % true_value)
+print(&#39;Expected value of I: \t %.5f&#39; % E_I)
+print(&#39;Standard error of I: \t %.5f&#39; % SE_I)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+True value:      0.00135
+Expected value of I:     0.00135
+Standard error of I:     0.00368</code></pre>
+<p>Using importance sampling with <span class="math inline">\(g \sim N(4, 1)\)</span>, we get</p>
+<p><span class="math display">\[ I = \int \frac{h(x) f(x)}{g(x)} g(x) dx
+\quad \text{where} \quad h(x) = I(x &gt; 3), f \sim N(0, 1), g \sim N(4, 1)\]</span>
+and</p>
+<p><span class="math display">\[ \hat{I} = \frac{1}{N} \sum_i \frac{f(X_i) h(X_i)}{g(X_i)} \]</span></p>
+<pre class="python"><code>import numpy as np
+import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+B = 1000000
+N = 100
+
+true_value = 1 - norm.cdf(3)
+
+def h(x):
+    return np.where(x &gt; 3, 1, 0)
+
+def f_over_g(x):
+    return np.exp(-(1/2) * (x**2 - (x - 4)**2))
+
+I_bootstrap = np.empty(B)
+for b in notebook.tqdm(range(B)):
+    XX = np.random.normal(loc=4.0, scale=1.0, size=N)
+    YY = h(XX) * f_over_g(XX)
+    I_bootstrap[b] = YY.mean()
+
+E_I = I_bootstrap.mean()
+SE_I = I_bootstrap.std()
+
+print(&#39;True value: \t %.5f&#39; % true_value)
+print(&#39;Expected value of I: \t %.5f&#39; % E_I)
+print(&#39;Standard error of I: \t %.5f&#39; % SE_I)</code></pre>
+<pre><code>  0%|          | 0/1000000 [00:00&lt;?, ?it/s]
+
+
+True value:      0.00135
+Expected value of I:     0.00135
+Standard error of I:     0.00031</code></pre>
+<p>Note we have reduced the standard error by an order of magnitude.</p>
+<p><strong>Example 25.7 (Measurement Model with Outliers)</strong>. Suppose we have measurements <span class="math inline">\(X_1, \dots, X_n\)</span> of some physical quantity <span class="math inline">\(\theta\)</span>. We might model this as</p>
+<p><span class="math display">\[ X_i = \theta + \epsilon_i \]</span></p>
+<p>If we assume that <span class="math inline">\(\epsilon_i \sim N(0, 1)\)</span> then <span class="math inline">\(X_i \sim N(\theta_i, 1)\)</span>. However, when taking measurements, it is often the case that we get the occasional wild observation, or outlier. This suggests that a Normal might be a poor model since Normals have thin tails which implies that extreme observations are rare. One way to improve this model is to use a density for <span class="math inline">\(\epsilon_i\)</span> with a thicker tail, for example, at t-distribution with <span class="math inline">\(\nu\)</span> degrees of freedom which has the form</p>
+<p><span class="math display">\[ t(x) = \frac{\Gamma\left( \frac{\nu + 1}{2} \right)}{\Gamma \left( \frac{\nu}{2} \right)} \frac{1}{\nu \pi} \left( 1 + \frac{x^2}{\nu} \right)^{-(\nu + 1) / 2}\]</span></p>
+<p>Smaller values of <span class="math inline">\(\nu\)</span> correspond to thicker tails. For sake of illustration we will take <span class="math inline">\(\nu = 3\)</span>. Suppose we observe <span class="math inline">\(n\)</span> <span class="math inline">\(X_i = \theta + \epsilon_i\)</span>, <span class="math inline">\(i = 1, \dots, n\)</span> where <span class="math inline">\(\epsilon_i\)</span> has a t-distribution with <span class="math inline">\(\nu = 3\)</span>. We will take a flat prior on <span class="math inline">\(\theta\)</span>. The likelihood is <span class="math inline">\(\mathcal{L}(\theta) = \prod_{i=1}^n t(X_i - \theta)\)</span> and the posterior mean of <span class="math inline">\(\theta\)</span> is</p>
+<p><span class="math display">\[ \overline{\theta} = \frac{\int \theta \mathcal{L}(\theta) \; d\theta }{\int \mathcal{L}(\theta) \; d\theta} \]</span></p>
+<p>We can estimate the top and bottom integral using importance sampling. We draw <span class="math inline">\(\theta_1, \dots, \theta_N \sim g\)</span> and then</p>
+<p><span class="math display">\[ \overline{\theta} \approx \frac{ \frac{1}{N} \sum_{j=1}^n \frac{\theta_j \mathcal{L}(\theta_j)}{g(\theta_j)}}{\frac{1}{N} \sum_{j=1}^n \frac{\mathcal{L}(\theta_j)}{g(\theta_j)}} \]</span></p>
+</div>
+<div id="mcmc-part-i-the-metropolis-hastings-algorithm" class="section level3">
+<h3>25.4 MCMC Part I: The Metropolis-Hastings Algorithm</h3>
+<p>Consider again the problem of estimating the integral <span class="math inline">\(I = \int h(x) f(x) dx\)</span>. In this chapter we introduce the Markov chain Monte Carlo (MCMC) methods. The idea is to construct a Markov chain <span class="math inline">\(X_1, X_2, \dots\)</span> whose stationary distribution is <span class="math inline">\(f\)</span>. Under certain conditions it will then follow that</p>
+<p><span class="math display">\[ \frac{1}{N} \sum_{i=1}^N h(X_i) \xrightarrow{\text{P}} \mathbb{E}_f[h(x)] = I \]</span></p>
+<p>This works because there is a law of large numbers for Markov chains called <strong>the ergodic theorem</strong>.</p>
+<p>The <strong>Metropolis-Hastings</strong> algorithm is a specific MCMC method that works as follows. Let <span class="math inline">\(q(y | x)\)</span> be an arbitrary, friendly distribution (i.e. we know how to sample from <span class="math inline">\(q(y | x)\)</span>). The conditional density <span class="math inline">\(q(y | x)\)</span> is called the <strong>proposal distribution</strong>. The algorithm creates a sequence of observations as follows.</p>
+<p><strong>Metropolis-Hastings Algorithm</strong>.</p>
+<p>Choose <span class="math inline">\(X_0\)</span> arbitrarily. Suppose we have generated <span class="math inline">\(X_0, X_1, \dots, X_i\)</span>. To generate <span class="math inline">\(X_{i+1}\)</span> do:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a <strong>proposal</strong> or <strong>candidate</strong> value <span class="math inline">\(Y \sim q(y | X_i)\)</span>.</li>
+<li>Evaluate <span class="math inline">\(r \equiv r(X_i, Y)\)</span> where</li>
+</ol>
+<p><span class="math display">\[ r(x, y) = \min \left\{ \frac{f(y)}{f(x)} \frac{q(x | y)}{q(y | x)}, 1 \right\} \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Set</li>
+</ol>
+<p><span class="math display">\[
+X_{i+1} = \begin{cases}
+Y   &amp;\text{with probability } r \\
+X_i &amp;\text{with probability } 1 - r 
+\end{cases}
+\]</span></p>
+<p><em>Remark 1</em>: A simple way of executing step 3 is to generate <span class="math inline">\(U \sim \text{Uniform}(0, 1)\)</span>, then if <span class="math inline">\(U &lt; r\)</span> set <span class="math inline">\(X_{i + 1} = Y\)</span> else set <span class="math inline">\(X_{i + 1} = X_i\)</span>.</p>
+<p><em>Remark 2</em>: A common choice for <span class="math inline">\(q(y | x)\)</span> is <span class="math inline">\(N(x, b^2)\)</span> for some <span class="math inline">\(b &gt; 0\)</span>. This means that the proposal is drawn from a Normal centered at the current value.</p>
+<p><em>Remark 3</em>: if the proposal density <span class="math inline">\(q\)</span> is symmetric, <span class="math inline">\(q(x | y) = q(y | x)\)</span>, then <span class="math inline">\(r\)</span> simplifies to</p>
+<p><span class="math display">\[ r = \min \left\{ \frac{f(Y)}{f(X_i)}, 1\right\} \]</span></p>
+<p>The Normal proposal distribution in remark 2 is an example of a symmetric proposal density.</p>
+<p>By construction, <span class="math inline">\(X_0, X_1, \dots\)</span> is a Markov chain. But why does this Markov chain have <span class="math inline">\(f\)</span> as its stationary distribution? Before we explain why, let’s do an example.</p>
+<p><strong>Example 25.8</strong>. The Cauchy distribution has density</p>
+<p><span class="math display">\[ f(x) = \frac{1}{\pi} \frac{1}{1 + x^2} \]</span></p>
+<p>Our goal is to simulate a Markov chain whose stationary distribution is <span class="math inline">\(f\)</span>. As suggested in the remark above, we take <span class="math inline">\(q(y | x)\)</span> to be a <span class="math inline">\(N(x, b^2)\)</span>. So in this case,</p>
+<p><span class="math display">\[ r(x, y) = \min \left\{ \frac{f(y)}{f(x)}, 1 \right\} = \min \left\{ \frac{1 + x^2}{1 + y^2} , 1\right\} \]</span></p>
+<p>So the algorithm is to draw <span class="math inline">\(Y \sim N(X_i, b^2)\)</span> and set</p>
+<p><span class="math display">\[ 
+X_{i + 1} = \begin{cases}
+Y &amp; \text{with probability } r(X_i, Y) \\
+X &amp; \text{with probability } 1 - r(X_i, Y)
+\end{cases} 
+\]</span></p>
+<p>The simulator requires a choice of <span class="math inline">\(b\)</span>. Let’s plot 3 chains of length 1000 using <span class="math inline">\(b = .1\)</span>, <span class="math inline">\(b = 1\)</span> and <span class="math inline">\(b = 10\)</span>, as well as their histograms.</p>
+<pre class="python"><code>import numpy as np
+
+def generate_chain(X0=0, N=1000, b=1.0, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+        
+    U = np.random.uniform(low=0, high=1, size=N)
+    XX = np.empty(N + 1)
+    XX[0] = X0
+    for i in range(1, N + 1):
+        Xi = XX[i - 1]
+        Y = np.random.normal(loc=Xi, scale=b)
+        r = min((1 + Xi**2) / (1 + Y**2), 1)
+        XX[i] = Y if U[i - 1] &lt; r else Xi
+        
+    return XX</code></pre>
+<pre class="python"><code>N = 1000
+values = [
+    generate_chain(b=0.1, N=N, seed=0),
+    generate_chain(b=1, N=N, seed=0),
+    generate_chain(b=10, N=N, seed=0)
+]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+
+nn = np.arange(0, N + 1)
+
+ax = plt.subplot(3, 1, 1)
+ax.plot(nn, values[0])
+ax.set_title(&#39;b = 0.1&#39;)
+
+ax = plt.subplot(3, 1, 2)
+ax.plot(nn, values[1])
+ax.set_title(&#39;b = 1&#39;)
+
+ax = plt.subplot(3, 1, 3)
+ax.plot(nn, values[2])
+ax.set_title(&#39;b = 10&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_42_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+
+N = 1000
+nn = np.arange(0, N + 1)
+
+ax = plt.subplot(3, 1, 1)
+ax.hist(values[0], density=True, bins=20)
+ax.set_title(&#39;b = 0.1&#39;)
+
+ax = plt.subplot(3, 1, 2)
+ax.hist(values[1], density=True, bins=20)
+ax.set_title(&#39;b = 1&#39;)
+
+ax = plt.subplot(3, 1, 3)
+ax.hist(values[2], density=True, bins=20)
+ax.set_title(&#39;b = 10&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_43_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>Setting <span class="math inline">\(b = 0.1\)</span> forces the chain to take small steps. As a result, the chain doesn’t “explore” much of the sample space. The histogram from the sample does not approximate the true density very well. Setting <span class="math inline">\(b = 10\)</span> causes the proposals to often be in the tails, making <span class="math inline">\(r\)</span> small and hence we reject the proposal and keep the chain at the current position. The result is that the chain “gets stuck” at the same place often. Again, this means that the histogram does not approximate the true density well. The middle choice avoids both extremes and results in a Markov chain sample that better represents the density sooner. In summary, there are turning parameters and the efficiency of the chain depends on these parameters. We’ll discuss this in more detail later.</p>
+<p>If the sample of the Markov chain starts to “look like” the target distribution <span class="math inline">\(f\)</span> quickly, then we say that the chain is “mixing well.” Constructing a chain that mixes well is somewhat of an art.</p>
+<p><strong>Why it works</strong>. Recall from the previous chapter that a distribution <span class="math inline">\(\pi\)</span> satisfies <strong>detailed balance</strong> for a Markov chain if</p>
+<p><span class="math display">\[ p_{ij} \pi_i = p_{ji} \pi_j \]</span></p>
+<p>We then showed that if <span class="math inline">\(\pi\)</span> satisties detailed balance, then it is a stationary distribution for the chain.</p>
+<p>Because we are now dealing with continuous state Markov chains, we will change notation a little and write <span class="math inline">\(p(x, y)\)</span> for the probability of making a transition from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span>. Also, let’s use <span class="math inline">\(f(x)\)</span> instead of <span class="math inline">\(\pi\)</span> for a distribution. In this notation, <span class="math inline">\(f\)</span> is a stationary distribution if <span class="math inline">\(f(x) = \int f(y) p(y, x) dx\)</span> and detailed balance holds for <span class="math inline">\(f\)</span> if</p>
+<p><span class="math display">\[ f(x) p(x, y) = f(y) p(y, x) \]</span></p>
+<p>Detailed balance implies that <span class="math inline">\(f\)</span> is a stationary distribution since, if detailed balance holds, then</p>
+<p><span class="math display">\[ \int f(y) p(y, x) dx = \int f(x) p(x, y) dy = f(x) \int p(x, y) dy = f(x) \]</span></p>
+<p>which shows that <span class="math inline">\(f(x) = \int f(y) p(y, x) dx\)</span> as required. Our goal is to show that <span class="math inline">\(f\)</span> satisfies detailed balance, which will imply that <span class="math inline">\(f\)</span> is a stationary distribution for the chain.</p>
+<p>Consider two points <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Either</p>
+<p><span class="math display">\[
+f(x) q(y | x) &lt; f(y) q(y | x)
+\quad \text{or} \quad
+f(x) q(y | x) &gt; f(x) q(y | x)
+\]</span></p>
+<p>We will ignore ties which we can do in the continuous setting. Without loss of generality, assume that <span class="math inline">\(f(x) q(y | x) &gt; f(y) q(y | x)\)</span>. This implies that</p>
+<p><span class="math display">\[ r(x, y) = \frac{f(y)}{f(x)} \frac{q(x | y)}{q(y | x)} 
+\quad \text{and} \quad
+r(y, x) = 1
+\]</span></p>
+<p>Now <span class="math inline">\(p(x, y)\)</span> is the probability of jumping from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span>. This requires two things: (i) the proposal distribution must generate <span class="math inline">\(y\)</span> and (ii) we must accept <span class="math inline">\(y\)</span>. Thus,</p>
+<p><span class="math display">\[ p(x, y) = q(y | x) r(x, y) =  q(y | x) \frac{f(y)}{f(x)} \frac{q(x | y)}{q(y | x)} = \frac{f(y)}{f(x)} q(x | y)\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[ f(x) p(x, y) = f(y) q(x | y) \]</span></p>
+<p>On the other hand, <span class="math inline">\(p(y, x)\)</span> is the probability of jumping from <span class="math inline">\(y\)</span> to <span class="math inline">\(x\)</span>. This requires two things: (i) the proposal distribution must generate <span class="math inline">\(x\)</span> and (ii) we must accept <span class="math inline">\(x\)</span>. This occurs with probability <span class="math inline">\(p(y, x) = q(x | y) r(y, x) = q(x | y)\)</span>. Hence,</p>
+<p><span class="math display">\[ f(y) p(y, x) = f(y) q(x | y) \]</span></p>
+<p>Comparing the two last statements, we get that detailed balance holds:</p>
+<p><span class="math display">\[ f(x) p(x, y) = f(y) q(x | y) = f(y) p(y, x) \]</span></p>
+</div>
+<div id="mcmc-part-ii-different-flavors" class="section level3">
+<h3>25.5 MCMC Part II: Different Flavors</h3>
+<p>There are a few different types of MCMC algorithm. Here we will consider a few of the most popular versions.</p>
+<div id="random-walk-metropolis-hastings" class="section level4">
+<h4>Random-Walk Metropolis-Hastings</h4>
+<p>In the previous section we considered drawing a proposal <span class="math inline">\(Y\)</span> of the form</p>
+<p><span class="math display">\[ Y = X + \epsilon_i \]</span></p>
+<p>where <span class="math inline">\(\epsilon_i\)</span> comes from some distribution with density <span class="math inline">\(g\)</span>. In other words, <span class="math inline">\(q(y | x) = g(y - x)\)</span>. We saw that, in this case,</p>
+<p><span class="math display">\[ r(x, y) = \min \left\{ \frac{f(y)}{f(x)}, 1 \right\} \]</span></p>
+<p>This is called a <strong>random-walk-Metropolis-Hastings method</strong>. The reason for name is that, if we did not do the accept-reject step, we would be simulating a random walk. The most common choice for <span class="math inline">\(g\)</span> is <span class="math inline">\(N(0, b^2)\)</span>. The hard part is choosing <span class="math inline">\(b\)</span> so that the chain mixes well. A good rule of thumb is: choose <span class="math inline">\(b\)</span> so that you accept the proposals about 50% of the time.</p>
+<p><strong>Warning</strong>: This method doesn’t make sense unless <span class="math inline">\(X\)</span> takes values on the whole real line. If <span class="math inline">\(X\)</span> is restricted to some interval then it is best to transform <span class="math inline">\(X\)</span>, say, <span class="math inline">\(Y = m(X)\)</span> where <span class="math inline">\(Y\)</span> takes values on the whole real line. For example, if <span class="math inline">\(X \in (0, \infty)\)</span> then you might do <span class="math inline">\(Y = \log X\)</span> and simulate the distribution for <span class="math inline">\(Y\)</span> instead of <span class="math inline">\(X\)</span>.</p>
+</div>
+<div id="independence-metropolis-hastings" class="section level4">
+<h4>Independence-Metropolis-Hastings</h4>
+<p>This is an importance-sampling version of the MCMC. In this we draw a proposal from a fixed distribution <span class="math inline">\(g\)</span>. Generally <span class="math inline">\(g\)</span> is chosen to be an approximation to <span class="math inline">\(f\)</span>. The acceptance probability becomes</p>
+<p><span class="math display">\[ r(x, y) = \min \left\{ 1, \frac{f(y)}{f(x)} \frac{g(x)}{g(y)} \right\} \]</span></p>
+</div>
+<div id="gibbs-sampling" class="section level4">
+<h4>Gibbs Sampling</h4>
+<p>The two previous methods can be easily adapted, in principle, to work in higher dimensions. In practice, tuning the chains to make them mix well is hard. Gibbs sampling is a way to turn a high-dimensional problem into several one dimensional problems.</p>
+<p>Here’s how it works for a bivariate problem. Suppose that <span class="math inline">\((X, Y)\)</span> has density <span class="math inline">\(f_{X, Y}(x, y)\)</span>. First, suppose that it is possible to simulate from the conditional distributions <span class="math inline">\(f_{X|Y}(x | y)\)</span> and <span class="math inline">\(f_{Y | X}(y | x)\)</span>. Let <span class="math inline">\((X_0, Y_0)\)</span> be the starting values. Assume we have drawn <span class="math inline">\((X_0, Y_0), \dots, (X_n, Y_n)\)</span>. Then the Gibbs sampling algorithm for getting <span class="math inline">\((X_{n+1}, Y_{n+1})\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+X_{n + 1} &amp;\sim f_{X|Y}(x | Y_n) \\
+Y_{n + 1} &amp;\sim f_{Y|X}(y | X_{n + 1})
+\end{align}
+\]</span></p>
+<p>This generalizes in the obvious ways to higher dimensions.</p>
+<p><strong>Example 25.9 (Normal Hierarchical Model)</strong>. Gibbs sampling is very useful for a class of models called <strong>hierarchical models</strong>. Here is a simple case. Suppose we draw a sample of <span class="math inline">\(k\)</span> cities. From each city we draw <span class="math inline">\(n_i\)</span> people and observe how many people <span class="math inline">\(Y_i\)</span> have a disease. Thus, <span class="math inline">\(Y_i \sim \text{Binomial}(n_i, p_i)\)</span>. We are allowing for different disease rates in different cities. We can also think of the <span class="math inline">\(p_i\)</span>’s as random draws from some distribution <span class="math inline">\(F\)</span>. We can write this model in the following way:</p>
+<p><span class="math display">\[
+\begin{align}
+P_i &amp;\sim F \\
+Y_i | P_i = p_i &amp;\sim \text{Binomial}(n_i, p_i)
+\end{align}
+\]</span></p>
+<p>We are interested in estimating the <span class="math inline">\(p_i\)</span>’s and the overall disease rate <span class="math inline">\(\int p \; dF(p)\)</span>.</p>
+<p>To proceed, it will simplify matters if we make some transformations that will allow us to use some Normal approximations. Let <span class="math inline">\(\hat{p}_i = Y_i / n_i\)</span>. Recall that <span class="math inline">\(\hat{p}_i \approx N(p_i, s_i)\)</span> where <span class="math inline">\(s_i = \sqrt{\hat{p}_i (1 - \hat{p}_i) / n_i}\)</span>. Let <span class="math inline">\(\psi_i = \log (p_i / (1 - p_i))\)</span> and define <span class="math inline">\(Z_i \equiv \hat{\psi}_i = \log (\hat{p}_i / (1 - \hat{p}_i))\)</span>. By the delta method,</p>
+<p><span class="math display">\[ \hat{\psi}_i \approx N(\psi_i, \sigma_i^2) \quad \text{where} \quad \sigma_i^2 = \frac{1}{n \hat{p}_i (1 - \hat{p}_i)}\]</span></p>
+<p>Experience shows that the normal approximation for <span class="math inline">\(\psi\)</span> is more accurate than the normal approximation for <span class="math inline">\(p\)</span> so we shall work with <span class="math inline">\(\psi\)</span>. We shall treat the <span class="math inline">\(\sigma_i\)</span> as known. Furthermore, we shall take the distribution of the <span class="math inline">\(\psi_i\)</span>’s to be normal. The hierarchical model is now</p>
+<p><span class="math display">\[
+\begin{align}
+\psi_i &amp;\sim N(\mu, \tau^2) \\
+Z_i | \psi_i &amp;\sim N(\psi_i, \sigma_i^2)
+\end{align}
+\]</span></p>
+<p>As yet another simplication we take <span class="math inline">\(\tau = 1\)</span>. The unknown parameters are <span class="math inline">\(\theta = (\mu, \psi_1, \dots, \psi_k)\)</span>. The likelihood function is</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathcal{L}(\theta) 
+&amp;\propto \prod_i f(\psi_i | \mu) \prod_i f(Z_i | \psi) \\
+&amp;\propto \prod _i \exp \left\{-\frac{1}{2} (\psi_i - \mu)^2 \right\} \exp \left\{ -\frac{1}{2} (Z_i - \psi_i)^2 \right\}
+\end{align}
+\]</span></p>
+<p>If we use the prior <span class="math inline">\(f(\mu) \propto 1\)</span> then the posterior is proportional to the likelihood. To use Gibbs sampling, we need to find the conditional distribution of each parameter conditional on all the others. Let us begin by finding <span class="math inline">\(f(\mu | \text{rest})\)</span> where “rest” refers to all the other variables. We can throw away terms that don’t involve <span class="math inline">\(\mu\)</span>. Thus,</p>
+<p><span class="math display">\[ f(\mu | \text{rest}) \propto \prod_i \exp \left\{ -\frac{1}{2} (\psi_i - \mu)^2 \right\} \propto \exp \left\{ -\frac{k}{2} (\mu - b)^2 \right\} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ b = \frac{1}{k} \sum_i \psi_i \]</span></p>
+<p>Hence we see that <span class="math inline">\(\mu | \text{rest} \sim N(b, 1 / k)\)</span>.</p>
+<p>Next we will find <span class="math inline">\(f(\psi | \text{rest})\)</span>. Again, we can throw away any terms not involving <span class="math inline">\(\psi_i\)</span>, leaving us with</p>
+<p><span class="math display">\[ f(\psi_i | \text{rest}) \propto \exp \left\{-\frac{1}{2} (\psi_i - \mu)^2 \right\} \exp \left\{ -\frac{1}{2} (Z_i - \psi_i)^2 \right\} \propto \exp \left\{ -\frac{1}{2d_i^2}(\psi_i - e_i)^2 \right\} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ 
+e_i = \frac{\frac{Z_i}{\sigma_i^2} + \mu}{1 + \frac{1}{\sigma_i^2}}
+\quad \text{and} \quad
+d_i^2 = \frac{1}{1 + \frac{1}{\sigma_i^2}}
+\]</span></p>
+<p>and so <span class="math inline">\(\psi_i | \text{rest} \sim N(e_i, d_i^2)\)</span>.</p>
+<p>The Gibbs sampling algorithm then involves iterating the following steps <span class="math inline">\(N\)</span> times:</p>
+<p><span class="math display">\[
+\begin{align}
+\text{draw } \mu &amp;\sim N(b, v^2) \\
+\text{draw } \psi_1 &amp;\sim N(e_1, d_1^2) \\
+\vdots &amp; \quad \vdots \\
+\text{draw } \psi_k &amp;\sim N(e_k, d_k^2)
+\end{align}
+\]</span></p>
+<p>It is understood that, at each step, the most recent version of each variable is used.</p>
+<p>Let us now consider a numeric example. Suppose there are <span class="math inline">\(k = 20\)</span> cities and we sample <span class="math inline">\(n_i = 20\)</span> people from each city.</p>
+<pre class="python"><code>import numpy as np
+
+def gibbs(y, n, N):
+    k = len(y)
+    p_hat = y / n
+    Z = np.log(p_hat / (1 - p_hat))
+    sigma2 = 1 / (n * p_hat * (1 - p_hat))
+    v = np.sqrt(1 / np.sum(1 / sigma2))
+    mu = np.zeros(N)
+    psi = np.zeros((N, k))
+    
+    for i in range(1, N):
+        # draw mu given rest
+        b = v**2 * np.sum(psi[i - 1, :] / sigma2)
+        mu[i] = np.random.normal(loc=b, scale=v)
+        
+        # draw psi given rest
+        e = (Z + mu[i] / sigma2) / (1 + (1 / sigma2))
+        d = np.sqrt(1 / (1 + (1 / sigma2)))
+        psi[i, :] = np.random.normal(loc=e, scale=d)
+        
+    p = 1 - (1 / (1 + np.exp(psi)))
+    return {
+        &#39;mu&#39;: mu,
+        &#39;psi&#39;: psi,
+        &#39;p&#39;: p
+    }</code></pre>
+<pre class="python"><code>np.random.seed(0)
+
+true_p = np.arange(5, 15, step=0.25) / 20
+#np.random.shuffle: Modify a sequence in-place by shuffling its contents.
+#This function only shuffles the array along the first axis of a multi-dimensional array. 
+#The order of sub-arrays is changed but their contents remains the same.
+np.random.shuffle(true_p)
+Y = np.random.binomial(20, true_p)
+
+N = 1000
+results = gibbs(Y, 20, N)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(14.5, 12))
+
+nn = np.arange(0, N + 1)
+
+ax = plt.subplot(4, 1, 1)
+ax.plot(results[&#39;mu&#39;])
+ax.set_title(&#39;Simulated values of $\mu$&#39;)
+
+ax = plt.subplot(4, 1, 2)
+ax.plot(results[&#39;p&#39;][:, 0])
+ax.set_title(&#39;Simulated values of $p_1$&#39;)
+
+
+raw_estimate = Y / 20
+bayes_estimate = results[&#39;p&#39;].mean(axis=0)
+
+ax = plt.subplot(4, 1, 3)
+ax.hist(results[&#39;mu&#39;], density=True, histtype=&#39;step&#39;, bins=50)
+ax.set_xlabel(&#39;$\mu$&#39;)
+ax.set_title(&#39;Posterior histogram of $\mu$&#39;)
+
+ax = plt.subplot(4, 1, 4)
+for i in range(20):
+    ax.plot([raw_estimate[i], bayes_estimate[i]], [1, 2], color=&#39;C0&#39;)
+    
+ax.set_ylim(0, 3)
+ax.set_xlim(0, 1)
+ax.set_xlabel(&#39;$\hat{p}$&#39;)
+ax.set_title(&#39;Raw estimates and Bayes estimates&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_59_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>After running the chain, we convert each <span class="math inline">\(\psi_i\)</span> back into <span class="math inline">\(p_i = e^{\psi_i} / (1 + e^{\psi_i})\)</span>. Note that the Bayes estimates are “shrunk” together. The parameter <span class="math inline">\(\tau\)</span> controls the amount of shrinkage. We set <span class="math inline">\(\tau = 1\)</span> but, in practice, we should treat <span class="math inline">\(\tau\)</span> as another parameter and let the data determine how much shrinkage is needed.</p>
+<p>So far we assumed that we know how to draw samples from the conditionals <span class="math inline">\(f_{X | Y}(x | y)\)</span> and <span class="math inline">\(f_{Y | X}(y | x)\)</span>. If we don’t know how, we can still use Gibbs sampling algorithm by drawing each observation using a Metropolis-Hastings step. Let <span class="math inline">\(q\)</span> be a proposal distribution for <span class="math inline">\(x\)</span> and let <span class="math inline">\(\overline{q}\)</span> be a proposal distribution for <span class="math inline">\(y\)</span>. When we do a Metropolis step for <span class="math inline">\(X\)</span> we treat <span class="math inline">\(Y\)</span> as fixed. Similarly, when we do a Metropolis step for <span class="math inline">\(Y\)</span>, we treat <span class="math inline">\(X\)</span> as fixed. Here are the steps:</p>
+</div>
+<div id="metropolis-with-gibbs" class="section level4">
+<h4>Metropolis with Gibbs</h4>
+<p>(1a) Draw a proposal <span class="math inline">\(Z \sim q(z | X_n)\)</span>.</p>
+<p>(1b) Evaluate</p>
+<p><span class="math display">\[ r = \min \left\{ \frac{f(Z, Y_n)}{f(X_n, Y_n)} \frac{q(X_n | Z)}{q(Z | X_n)}, 1\right\} \]</span></p>
+<p>(1c) Set</p>
+<p><span class="math display">\[ X_{n+1} = \begin{cases}
+Z &amp;\text{with probability } r \\
+X_{n} &amp;\text{with probability } 1 - r
+\end{cases} \]</span></p>
+<p>(2a) Draw a proposal <span class="math inline">\(Y \sim \overline{q}(z | Y_n)\)</span>.</p>
+<p>(2b) Evaluate</p>
+<p><span class="math display">\[ \overline{r} = \min \left\{ \frac{f(X_{n+1}, Z)}{f(X_{n+1}, Y_n)} \frac{\overline{q}(Y_n | Z)}{\overline{q}(Z | Y_n)}, 1 \right\} \]</span></p>
+<p>(2c) Set</p>
+<p><span class="math display">\[ Y_{n+1} = \begin{cases}
+Z &amp;\text{with probability } r \\
+Y_n &amp;\text{with probability } 1 - r
+\end{cases}
+\]</span></p>
+<p>Again, this generalized to more than two dimensions.</p>
+</div>
+</div>
+<div id="exercises" class="section level3">
+<h3>25.7 Exercises</h3>
+<p><em>Exercises taken from latest edition</em></p>
+<p><strong>Exercise 25.7.1</strong>. Let</p>
+<p><span class="math display">\[ I = \int_1^2 \frac{e^{-x^2 / 2}}{\sqrt{2 \pi}} \; dx \]</span></p>
+<p><strong>(a)</strong> Estimate <span class="math inline">\(I\)</span> using the basic Monte Carlo method. Use <span class="math inline">\(N = 100,000\)</span>. Also, find the estimated standard error.</p>
+<p><strong>(b)</strong> Find an (analytical) expression for the standard error of your estimate in (a). Compare to the estimated standard error.</p>
+<p><strong>(c)</strong> Estimate <span class="math inline">\(I\)</span> using importance sampling. Take <span class="math inline">\(g\)</span> to be <span class="math inline">\(N(1.5, v^2)\)</span> with <span class="math inline">\(v = .1\)</span>, <span class="math inline">\(v = 1\)</span> and <span class="math inline">\(v = 10\)</span>. Compute the (true) standard errors in each case. Also, plot a histogram of the values you are averaging to see if there are any extreme values.</p>
+<p><strong>(d)</strong> Find the optimal importance sampling function <span class="math inline">\(g^*\)</span>. What is the standard error using <span class="math inline">\(g^*\)</span>?</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> We have:</p>
+<p><span class="math display">\[ I = \int_1^2 \phi(x) dx = \Phi(2) - \Phi(1) \]</span></p>
+<p>where <span class="math inline">\(\phi\)</span> is the probability density function of <span class="math inline">\(N(0, 1)\)</span> and <span class="math inline">\(\Phi\)</span> is the cumulative density function. The basic Monte Carlo method is to compute</p>
+<p><span class="math display">\[ I = \frac{1}{N} \sum_{i=1}^N Y_i,
+\quad Y_i = w(X_i) = I(1 \leq X_i \leq 2)
+\]</span></p>
+<p>where <span class="math inline">\(X_i\)</span> are drawn from <span class="math inline">\(N(0, 1)\)</span>, and the estimated standard error is given by</p>
+<p><span class="math display">\[ \hat{\text{se}} = \frac{s}{\sqrt{N}} 
+\quad \text{where} \quad
+s^2 = \frac{\sum_i (Y_i - \hat{I})^2}{N - 1}
+\]</span></p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+N = 100000
+true_value = norm.cdf(2) - norm.cdf(1)
+
+def h(x):
+    return np.where((1 &lt; x) &amp; (x &lt; 2), 1, 0)
+
+X = np.random.normal(loc=0.0, scale=1.0, size=N)
+Y = h(X)
+
+I_hat = np.empty(N)
+se_hat = np.empty(N)
+for n in notebook.tqdm(range(N)):
+    I_hat[n] = Y[:n+1].mean()
+    if n &lt; 2:
+        se_hat[n] = np.inf
+    else:
+        s2 = np.sum((Y[:n+1] - I_hat[n])**2) / n
+        se_hat[n] = np.sqrt(s2 / (n + 1))
+        
+z = norm.ppf(0.975)
+
+I_lower = I_hat - z * se_hat
+I_upper = I_hat + z * se_hat</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+nn = np.arange(100, N + 1)
+
+plt.figure(figsize=(12, 8))
+plt.plot(nn, I_hat[nn - 1], label=r&#39;$\hat{I}$&#39;)
+plt.plot(nn, I_lower[nn - 1], label=&#39;95% confidence lower bound&#39;, color=&#39;darkred&#39;, alpha=0.3)
+plt.plot(nn, I_upper[nn - 1], label=&#39;95% confidence upper bound&#39;, color=&#39;darkgreen&#39;, alpha=0.3)
+plt.hlines(true_value, xmin=min(nn), xmax=max(nn), label=&#39;True value&#39;, color=&#39;purple&#39;)
+plt.xlabel(&#39;N&#39;)
+plt.ylabel(&#39;I&#39;)
+plt.xscale(&#39;log&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_69_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>print(&#39;True value: \t %.8f&#39; % true_value)
+print(&#39;Estimated standard error: \t %.8f&#39; % se_hat[-1])</code></pre>
+<pre><code>True value:      0.13590512
+Estimated standard error:    0.00107918</code></pre>
+<p><strong>(b)</strong> This is an unbiased estimator, with error <span class="math inline">\(\epsilon_i = Y_i - I\)</span> having expectation 0. The variance of each error is $ [_i] = [Y_i] = [Y_i^2] - [Y_i]^2$. Buy by construction <span class="math inline">\(\mathbb{E}[Y_i] = I = \Phi(2) - \Phi(1)\)</span>, and <span class="math inline">\(Y_i = Y_i^2\)</span>, so <span class="math inline">\(\mathbb{E}[Y_i^2] = \mathbb{E}[Y_i] = I\)</span>. Then,</p>
+<p><span class="math display">\[ \mathbb{V}[\epsilon_i] = \mathbb{V}[Y_i] = \mathbb{E}[Y_i^2] - \mathbb{E}[Y_i]^2 = I - I^2 \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ \mathbb{E}[\text{se}^2] = \mathbb{E}\left[\frac{s^2}{N}\right] = \frac{1}{N(N - 1)} \sum_i \mathbb{E}[\epsilon^2] = \frac{1}{N(N - 1)} \sum_i \mathbb{V}[\epsilon_i] = \frac{1}{N - 1} (I - I^2) \]</span></p>
+<p>Let’s compare the difference in the estimated standard error and this analytic estimate (square root of expectation of variance):</p>
+<pre class="python"><code>analytic_se = np.sqrt((true_value - true_value**2) / (N - 1))
+
+print(&#39;Estimated standard error: \t\t %.8f&#39; % se_hat[-1])
+print(&#39;Analytic estimated standard error: \t %.8f&#39; % analytic_se)
+print(&#39;Difference between values: \t\t %.8f&#39; % (analytic_se - se_hat[-1]))</code></pre>
+<pre><code>Estimated standard error:        0.00107918
+Analytic estimated standard error:   0.00108368
+Difference between values:       0.00000450</code></pre>
+<p><strong>(c)</strong> For importance sampling, we do</p>
+<p><span class="math display">\[ \hat{I} = \frac{1}{N} \sum_i Y_i = \frac{1}{N} \sum_i \frac{h(X_i) f(X_i)}{g(X_i)} \]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(X\)</span> is drawn from <span class="math inline">\(N(0, 1)\)</span></li>
+<li><span class="math inline">\(f = \phi\)</span> is the density of the standard normal</li>
+<li><span class="math inline">\(h(x) = I(1 \leq x \leq 2)\)</span></li>
+<li><span class="math inline">\(g\)</span> is the density of <span class="math inline">\(N(1.5, v^2)\)</span>, for <span class="math inline">\(v = .1\)</span>, <span class="math inline">\(v = 1\)</span>, <span class="math inline">\(v = 10\)</span>.</li>
+</ul>
+<pre class="python"><code>import numpy as np
+import numpy as np
+from scipy.stats import norm
+from tqdm import notebook
+
+np.random.seed(0)
+
+B = 1000
+N = 100000
+
+true_value = 1 - norm.cdf(3)
+
+def f_over_g(mu_g, sigma_g):
+    def f(x):
+        with np.errstate(over=&#39;ignore&#39;):
+            return np.exp(-(1/2) * (x**2 - ((x - mu_g) / sigma_g)**2))
+    return f
+
+I_bootstrap = {}
+for v in [0.1, 1, 10]:    
+    I_bootstrap[v] = np.empty(B)
+    for b in notebook.tqdm(range(B)):
+        XX = np.random.normal(loc=0, scale=1.0, size=N)
+        YY = np.where((1 &lt; XX) &amp; (XX &lt; 2), f_over_g(1.5, v)(XX), 0)
+        I_bootstrap[v][b] = YY.mean()</code></pre>
+<pre><code>  0%|          | 0/1000 [00:00&lt;?, ?it/s]
+
+
+
+  0%|          | 0/1000 [00:00&lt;?, ?it/s]
+
+
+
+  0%|          | 0/1000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>for v in [0.1, 1, 10]:
+    E_I = I_bootstrap[v].mean()
+    print(&#39;Expected value of I | v = %.1f : \t %.5f&#39; % (v, E_I))</code></pre>
+<pre><code>Expected value of I | v = 0.1 :      834.69974
+Expected value of I | v = 1.0 :      0.05671
+Expected value of I | v = 10.0 :     0.05400</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(14.5, 8))
+
+for i, v in enumerate([0.1, 1, 10]):
+    
+    ax = plt.subplot(3, 1, i + 1)
+    ax.hist(I_bootstrap[v], density=True, bins=50)
+    ax.set_title(&#39;$v = $ &#39; + str(v))
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_76_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>There is obviously something unusual happening with <span class="math inline">\(v = 0.1\)</span> – the estimated values are off by orders of magnitude compared to the other values.</p>
+<p>The true variance of <span class="math inline">\(w = f h / g\)</span> is, in general,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}_g[w] = \mathbb{E}_g[w^2] - (\mathbb{E}_g[w])^2 &amp;= \int w^2(x) g(x) dx - \left( \int w(x) g(x) dx \right)^2 \\
+&amp;= \int \frac{h^2(x) f^2(x)}{g^2(x)} g(x) dx - \left( \int \frac{h(x) f(x)}{g(x)} g(x) dx \right)^2 \\
+&amp;= \int \frac{h^2(x) f^2(x)}{g^2(x)} g(x) dx - \left( \int h(x) f(x) dx \right)^2
+\end{align}
+\]</span></p>
+<p>and, in this specific case, <span class="math inline">\(h^2(x) = h(x) = I(1 \leq x \leq 2)\)</span>, and <span class="math inline">\(I = \int h(x) f(x) dx = \Phi(2) - \Phi(1)\)</span>, so</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}_g[w] &amp;= \int_1^2 \frac{f^2(x)}{g(x)} dx - I^2 \\
+&amp;= \int_1^2 \frac{\frac{1}{2 \pi} \exp \left\{-x^2 \right\}}{\frac{1}{\sigma_g \sqrt{2 \pi}} \exp \left\{-\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} } dx - I^2 \\
+&amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} dx - I^2
+\end{align}
+\]</span></p>
+<p>If <span class="math inline">\(2 \sigma_g^2 - 1 &gt; 0\)</span>, we can complete the square in the exponent to make it proportional to a Gaussian PDF. Rewrite the exponent as</p>
+<p><span class="math display">\[ 
+\begin{align}
+-x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 &amp;= -\frac{1}{2} \left( 2x^2 -  \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right) \\
+&amp;= -\frac{1}{2} \frac{1}{\sigma_g^2} \left( 2 \sigma_g^2 x^2  - x^2 - 2 \mu_g x + \mu_g^2 \right) \\
+&amp;= -\frac{1}{2} \frac{1}{\sigma_g^2} \left( x^2 (2\sigma_g^2 - 1) - 2x \mu_g + \mu_g^2 \right) \\
+&amp;= -\frac{1}{2} \frac{2\sigma_g^2 - 1}{\sigma_g^2} \left( x^2 - 2x \frac{\mu_g}{2\sigma_g^2 - 1} + \frac{\mu_g^2}{2\sigma_g^2 - 1} \right) \\
+&amp;= -\frac{1}{2} \frac{2\sigma_g^2 - 1}{\sigma_g^2} \left( \left( x - \frac{\mu_g}{2\sigma_g^2 - 1} \right)^2  + \frac{\mu_g^2}{2\sigma_g^2 - 1}\left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right) \\
+&amp;= -\frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right)
+\end{align}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \mu_a = \frac{\mu_g}{2\sigma_g^2 - 1} 
+\quad \text{and} \quad
+\sigma_a = \frac{\sigma_g}{\sqrt{2 \sigma_g^2 - 1}} \]</span></p>
+<p>Replacing above, we get</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}_g[w] &amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} dx - I^2 \\
+&amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 \right\} \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} dx - I^2 \\
+&amp;= \sigma_g \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 \right\} dx - I^2 \\
+&amp;= \sigma_g \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} \int_{\frac{1 - \mu_a}{\sigma_a}}^{\frac{2 - \mu_a}{\sigma_a}} \frac{1}{\sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} y^2 \right\} \frac{1}{\sigma_a} dy - I^2 \\
+&amp;= \frac{\sigma_g}{\sigma_a} \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\}  \left( \Phi\left(\frac{2 - \mu_a}{\sigma_a}\right) - \Phi\left(\frac{1 - \mu_a}{\sigma_a}\right) \right) - \left( \Phi(2) - \Phi(1) \right)^2
+\end{align}
+\]</span></p>
+<p>For the case where <span class="math inline">\(2 \sigma_g^2 - 1 &lt; 0\)</span>, the coefficient of <span class="math inline">\(x^2\)</span> in the exponent of</p>
+<p><span class="math display">\[ \int \frac{1}{\sqrt{2 \pi}} \exp \left\{ -x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} dx \]</span></p>
+<p>is positive, the indefinite integral does not diverge, and we can’t express this as a Gaussian PDF. Instead, we can express the definite integral as a function of the imaginary error function,</p>
+<p><span class="math display">\[ \text{erfi}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{t^2} dt \]</span></p>
+<p>The exponent becomes:</p>
+<p><span class="math display">\[ 
+-x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 = \frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right)
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \mu_a = \frac{\mu_g}{2\sigma_g^2 - 1} 
+\quad \text{and} \quad
+\sigma_a = \frac{\sigma_g}{\sqrt{1 - 2 \sigma_g^2}} \]</span></p>
+<p>and we get:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}_g[w] &amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} dx - I^2 \\
+&amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ \frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 \right\} \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} dx - I^2 \\
+&amp;= \sigma_g \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} \frac{1}{\sqrt{2 \pi}} \int_1^2 \exp \left\{ \frac{1}{2} \left( \frac{x - \mu_a}{\sigma_a} \right)^2 \right\} dx - I^2 \\
+&amp;= \sigma_g \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} \frac{1}{\sqrt{2 \pi}} \int_{\frac{1 - \mu_a}{\sigma_a}}^{\frac{2 - \mu_a}{\sigma_a}} \exp \left\{ \frac{1}{2} y^2 \right\} \frac{1}{\sigma_a} dy - I^2 \\
+&amp;= \sigma_g \exp \left\{ - \frac{1}{2} \frac{\mu_g^2}{\sigma_g^2} \left(1 - \frac{1}{2\sigma_g^2 - 1} \right) \right\} \sqrt{\frac{\pi}{2}} \sigma_a \left( \text{erfi}\left( \frac{\mu_a - 1}{\sqrt{2} \sigma_a} \right) - \text{erfi}\left( \frac{\mu_a - 2}{\sqrt{2} \sigma_a} \right) \right) - \left( \Phi(2) - \Phi(1) \right)^2
+\end{align}
+\]</span></p>
+<p>Finally, when <span class="math inline">\(\sigma_g = 1/\sqrt{2}\)</span>, the <span class="math inline">\(x^2\)</span> term on the exponent cancels out, and we get:</p>
+<p><span class="math display">\[
+\begin{align}
+-x^2 + \frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 &amp;= -2 \mu_g x + \mu_g^2
+\end{align}
+\]</span></p>
+<p>Replacing on the expression for the variance, we get:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{V}_g[w] &amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -x^2 +\frac{1}{2} \left(\frac{x - \mu_g}{\sigma_g}\right)^2 \right\} dx - I^2 \\
+&amp;= \sigma_g \int_1^2 \frac{1}{\sqrt{2 \pi}} \exp \left\{ -2 \mu_g x + \mu_g^2 \right\} dx - I^2 \\
+&amp;= \frac{\sigma_g }{\sqrt{2 \pi} \mu_g} \left( \exp \left\{ (\mu_g (\mu_g - 3) \right\} \; \text{sinh} (\mu_g) \right) - \left( \Phi(2) - \Phi(1) \right)^2
+\end{align}
+\]</span></p>
+<pre class="python"><code>from scipy.stats import norm
+from scipy.special import erfi
+
+def compute_variance(mu_g, sigma_g):
+    
+    # Shift sigma_g slightly rather than coding special case on limit
+    mu_a = mu_g / (2 * (sigma_g**2) - 1)
+    sigma_a = sigma_g / np.sqrt(np.maximum(1e-120, np.abs(2 * (sigma_g**2) - 1)))
+    
+    return np.where(
+        sigma_g &gt; np.sqrt(1 / 2),
+        sigma_g / sigma_a * \
+            np.exp(-(1/2) * (mu_g**2) / (sigma_g**2) * (1 - 1/(2 * (sigma_g**2) - 1))) * \
+            (norm.cdf((2 - mu_a) / sigma_a) - norm.cdf((1 - mu_a) / sigma_a)) \
+            - (norm.cdf(2) - norm.cdf(1))**2,
+        sigma_g * np.exp(-(1/2) * (mu_g**2) / (sigma_g**2) * (1 - 1/(2 * (sigma_g**2) - 1))) * \
+            np.sqrt(np.pi / 2) * sigma_a * \
+                (erfi((mu_a - 1) / (np.sqrt(2) * sigma_a)) - erfi((mu_a - 2) / (np.sqrt(2) * sigma_a)) ) \
+            - (norm.cdf(2) - norm.cdf(1))**2   
+    )
+    
+    return sigma_g / sigma_a * \
+        np.exp(-(1/2) * (mu_g**2) / (sigma_g**2) * (1 - 1/(2 * (sigma_g**2) - 1))) * \
+        (norm.cdf((2 - mu_a) / sigma_a) - norm.cdf((1 - mu_a) / sigma_a)) \
+        - (norm.cdf(2) - norm.cdf(1))**2 </code></pre>
+<pre class="python"><code>mu_g = 1.5
+sigma_g = np.logspace(-1, 1)
+standard_error = np.sqrt(compute_variance(mu_g, sigma_g))</code></pre>
+<pre class="python"><code>for v in [0.1, 1.0, 10]:
+    se = np.log10(np.sqrt(compute_variance(1.5, v)))
+    print(&#39;Log10 of standard error of I | v = %.1f:   %.5f&#39; % (v, se))</code></pre>
+<pre><code>Log10 of standard error of I | v = 0.1:   81.50661
+Log10 of standard error of I | v = 1.0:   -0.21918
+Log10 of standard error of I | v = 10.0:   0.01540</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(sigma_g, standard_error)
+plt.yscale(&#39;log&#39;)
+plt.xscale(&#39;log&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_85_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The variance (and the standard error) blows up as <span class="math inline">\(v = \sigma_g\)</span> becomes smaller, as we are integrating a diverging term (positive coefficient for <span class="math inline">\(x^2\)</span> on an exponential).</p>
+<p>The minimum true variance in this class of functions <span class="math inline">\(g \sim N(1.5, \sigma_g^2)\)</span> occurs on the edge case where <span class="math inline">\(\sigma_g = 1 / \sqrt{2}\)</span>.</p>
+<p><strong>(d)</strong> From theorem 25.5, the choice of <span class="math inline">\(g\)</span> that minimizes the variance is</p>
+<p><span class="math display">\[ g^*(x) = \frac{|h(x)| f(x) }{\int | h(s) | f(s)  ds} \]</span></p>
+<p>Since <span class="math inline">\(h(x) = I(1 &lt; x &lt; 2)\)</span>, <span class="math inline">\(f(x) = \phi(x)\)</span>, and the integral is <span class="math inline">\(I = \int_1^2 f(s) ds = \Phi(2) - \Phi(1)\)</span>, we can write</p>
+<p><span class="math display">\[ g^*(x) = \begin{cases}
+\frac{\phi(x)}{\Phi(2) - \Phi(1)} &amp;\text{if } 1 \leq x \leq 2 \\
+0 &amp;\text{otherwise }
+\end{cases}
+\]</span></p>
+<p>The minimum variance is</p>
+<p><span class="math display">\[ \int_1^2 \frac{f^2(x)}{g^*(x)} dx - I^2 = \int_1^2 \frac{\phi^2(x)}{\frac{\phi(x)}{I}} dx - I^2 = I \left( \int_1^2 \phi(x) dx \right) - I^2 = I \cdot I - I^2 = 0 \]</span></p>
+<p><strong>Exercise 25.7.2</strong>. Here is a way to use importance sampling to estimate a marginal density. Let <span class="math inline">\(f_{X, Y}(x, y)\)</span> be a bivariate density and let <span class="math inline">\((X_1, Y_1), \dots, (X_N, Y_N) \sim f_{X, Y}\)</span>.</p>
+<p><strong>(a)</strong> Let <span class="math inline">\(w(x)\)</span> be an arbitrary probability density function. Let</p>
+<p><span class="math display">\[ \hat{f}_X(x) = \frac{1}{N} \sum_{i=1}^N \frac{f_{X, Y}(x, Y_i)  w(X_i)}{f_{X, Y}(X_i, Y_i)} \]</span></p>
+<p>Show that, for each <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[ \hat{f}_X(x) \xrightarrow{\text{P}} f_X(x) \]</span></p>
+<p>Find an expression for the variance of this estimator.</p>
+<p><strong>(b)</strong> Let <span class="math inline">\(Y \sim N(0, 1)\)</span> and <span class="math inline">\(X | Y = y \sim N(y, 1 + y^2)\)</span>. Use the method in (a) to estimate <span class="math inline">\(f_X(x)\)</span>.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong></p>
+<p>The key idea for importance sampling is to change the probability measure based on which an expectation is calculated. We say that the expectation of a random variable <span class="math inline">\(X\)</span> under a probability density function <span class="math inline">\(f\)</span> is <span class="math inline">\(\mathbb{E}_f[X]\)</span> when</p>
+<p><span class="math display">\[ \mathbb{E}_f[X] = \int x f(x) dx\]</span></p>
+<p>If we pick any new random variable <span class="math inline">\(L \geq 0\)</span> with <span class="math inline">\(\mathbb{E}_{\mathbb{P}}[L] = 1\)</span> and almost everywhere <span class="math inline">\(L(\omega) \neq 0\)</span>, we can use it to define a new probability density function <span class="math inline">\(g\)</span> such that</p>
+<p><span class="math display">\[ \mathbb{E}_g\left[\frac{X}{L}\right] = \mathbb{E}_f[X] \]</span></p>
+<p>by defining a new density function <span class="math inline">\(g\)</span> such that</p>
+<p><span class="math display">\[ g\left(s\right) = \mathbb{P}\left[\frac{X}{L} = s\right] = \int \int_{\frac{a}{b} = s} f_X(a) f_L(b) \; da\; db \]</span></p>
+<p>which leads to</p>
+<p><span class="math display">\[ \mathbb{E}_g\left[\frac{X}{L}\right] = \int \frac{x}{\ell} g\left(\frac{x}{\ell}\right) d \left( \frac{x}{\ell} \right) = \int x f(x) \left( \int \frac{1}{\ell} f_L(\ell) d\ell \right) dx  = \int x f(x) dx  = \mathbb{E}_f[X]\]</span></p>
+<p>Then, if we want to estimate, for some function <span class="math inline">\(h\)</span>, <span class="math inline">\(\mathbb{E}_f[h(X)] = \int h(x) f(x) dx\)</span>, we can pick another arbitrary distribution <span class="math inline">\(g\)</span> for <span class="math inline">\(Z = h(X) / L\)</span>, sample <span class="math inline">\(Z_i \sim g\)</span>, and use the estimator</p>
+<p><span class="math display">\[ \hat{\mathbb{E}}_g\left[\frac{h(X)}{L}\right] = \frac{1}{N} \sum_{i=1}^N \frac{h(Z_i) f(Z_i)}{g(Z_i)} \]</span></p>
+<p>as it converges to <span class="math inline">\(\mathbb{E}_g\left[h(X) / L\right]\)</span> by the law of large numbers, and this expectation is the same as <span class="math inline">\(\mathbb{E}_f[h(X)]\)</span> by construction.</p>
+<p>Now, consider the bivariate distribution <span class="math inline">\(Z = (X, Y) \sim f_{X, Y}\)</span>, let <span class="math inline">\(g = f_{X, Y}\)</span>, and for some constant <span class="math inline">\(x_0\)</span> define</p>
+<p><span class="math display">\[ h(x, y) = \frac{f_{X, Y}(x_0, y) w(x) }{ f_{X, Y}(x, y) } \]</span></p>
+<p>The expected value of <span class="math inline">\(h(X, Y)\)</span> is:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}[h(X, Y)] &amp;= \int \int h(x, y) f_{X, Y}(x, y) \; dx dy \\
+&amp;= \int \int \frac{f_{X, Y}(x_0, y) w(x)}{f_{X, Y}(x, y)} f_{X, Y}(x, y) \; dx dy \\
+&amp;= \int \int f_{X, Y}(x_0, y) w(x) \; dx dy \\
+&amp;= \int \left(\int f_{X, Y}(x_0, y) \; dy \right) w(x) \; dx \\
+&amp;= \int f_X(x_0) w(x) \; dx \\
+&amp;= f_X(x_0) \left( \int w(x) \; dx \right) \\
+&amp;= f_X(x_0)
+\end{align}
+\]</span></p>
+<p>since <span class="math inline">\(w\)</span> is a PDF and integrates to 1. But, by construction, we have</p>
+<p><span class="math display">\[ 
+\frac{h(X_i, Y_i) f(X_i, Y_i)}{g(X_i, Y_i)}
+=
+\frac{f(x_0, Y_i) w(X_i)}{f(X_i, Y_i)}
+\]</span></p>
+<p>and so the estimator</p>
+<p><span class="math display">\[ \hat{f}_X(x_0) \equiv \frac{1}{N} \sum_{i=1}^N \frac{f_{X, Y}(x_0, Y_i)  w(X_i)}{f_{X, Y}(X_i, Y_i)} \]</span></p>
+<p>converges to <span class="math inline">\(\mathbb{E}_f[h(X, Y)] = f_X(x_0)\)</span>, which is our result.</p>
+<p>The variance of the estimator (which is unbiased) is</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_g\left[ \left(\frac{h(X, Y) f_{X, Y}(X, Y)}{g(X, Y)} \right)^2 \right]
+&amp;= \int \int \left( \frac{h(x, y) f_{X, Y}(x, y)}{g(x, y)} \right)^2 g(x, y) \; dx dy \\
+&amp;= \int \int \frac{h^2(x, y) f_{X, Y}^2(x, y)}{g(x, y)} \; dx dy
+\end{align}
+\]</span></p>
+<p>and, replacing our choices for <span class="math inline">\(h\)</span> and <span class="math inline">\(g\)</span>,</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}_g\left[ \left(\frac{h(X, Y) f_{X, Y}(X, Y)}{g(X, Y)} \right)^2 \right]
+&amp;= \int \int h^2(x, y) f_{X, Y}(x, y) \; dx dy \\
+&amp;= \int \int \frac{f_{X, Y}^2(x_0, y) w^2(x) }{ f_{X, Y}^2(x, y) } f_{X, Y}(x, y) \; dx dy \\
+&amp;= \int f_{X, Y}^2(x_0, y) \left( \int \left(\frac{w(x)}{f_{X, Y}(x, y)}\right)^2 f_{X, Y}(x, y) \; dx \right) \; dy \\
+&amp;= \int f_{X, Y}^2(x_0, y) \mathbb{E}_X\left[ \left(\frac{w(x)}{f_{X, Y}(x, y)}\right)^2 \right] dy \\
+&amp;= \int \mathbb{E}_X\left[ f_{X, Y}(x_0, y) \left(\frac{w(x)}{f_{X, Y}(x, y)}\right)^2 \right] f_{X, Y}(x_0, y) \; dy \\
+&amp;= \mathbb{E} \left[  f_{X, Y}(x_0, Y) \left(\frac{w(X)}{f_{X, Y}(X, Y)}\right)^2 \right]
+\end{align}
+\]</span></p>
+<p><strong>(b)</strong> The formula for the joint distribution PDF is</p>
+<p><span class="math display">\[ 
+\begin{align}
+f_{X, Y}(x, y) &amp;= f_Y(y) f_{X | Y}(x | y) \\
+&amp;= \left( \frac{1}{\sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} y^2 \right\} \right)
+\left( \frac{1}{\sqrt{1 + y^2} \sqrt{2 \pi}} \exp \left\{ -\frac{1}{2} \left( \frac{x - y}{\sqrt{1 + y^2}} \right)^2\right\} \right) \\
+&amp;= \frac{1}{(2 \pi) \sqrt{1 + y^2}} \exp \left\{ -\frac{1}{2} \left( y^2 + \frac{(x - y)^2}{1 + y^2} \right) \right\}
+\end{align}
+\]</span></p>
+<p>Let’s pick <span class="math inline">\(w\)</span> as a t-distribution with <span class="math inline">\(v = 5\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm, t
+
+np.random.seed(0)
+
+def f(x, y):
+    return 1 / (2 * np.pi * np.sqrt(1 + y**2)) * np.exp(-(1/2) * (y**2 + ((x - y)**2/(1 + y**2))))
+
+def w(x):
+    return t.pdf(x, df=5)
+
+def importance_sampling(x0, N, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+        
+    Y = norm.rvs(size=N)
+    X = norm.rvs(loc=Y, scale=np.sqrt(1 + Y**2), size=N)
+    
+    return np.array([np.mean(f(xx, Y) * w(X) / f(X, Y)) for xx in x0])</code></pre>
+<pre class="python"><code>x0 = np.arange(-10, 10, step=0.05)
+estimated_f = importance_sampling(x0, N=100000, seed=0)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(x0, estimated_f)
+plt.xlabel(&#39;x&#39;)
+plt.ylabel(&#39;$\hat{f}_X(x)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_94_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 25.7.3</strong>. Here is a method called <strong>accept-reject sampling</strong> for drawing observations from a distribution.</p>
+<p><strong>(a)</strong> Suppose that <span class="math inline">\(f\)</span> is some probability density function. Let <span class="math inline">\(g\)</span> be any other density and suppose that <span class="math inline">\(f(x) \leq M g(x)\)</span> for all <span class="math inline">\(x\)</span>, where <span class="math inline">\(M\)</span> is a known constant. Consider the following algorithm:</p>
+<ul>
+<li>Step 1: Draw <span class="math inline">\(X \sim g\)</span> and <span class="math inline">\(U \sim \text{Uniform}(0, 1)\)</span>.</li>
+<li>Step 2: If <span class="math inline">\(U \leq f(X) / (M g(X))\)</span> set <span class="math inline">\(Y = X\)</span>, otherwise go back to step 1. (Keep repeating until you finally get an observation).</li>
+</ul>
+<p>Show that the distribution of <span class="math inline">\(Y\)</span> is <span class="math inline">\(f\)</span>.</p>
+<p><strong>(b)</strong> Let <span class="math inline">\(f\)</span> be a standard normal density and let <span class="math inline">\(g(x) = 1 / (1 + x^2)\)</span> be the Cauchy density. Apply the method in (a) to draw 1,000 observations from the normal distribution. Draw a histogram of the sample to verify that the sample appears to be normal.</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong> The probability of accepting <span class="math inline">\(Y = y\)</span> is:</p>
+<p><span class="math display">\[ \mathbb{P}\left(X = y, U \leq \frac{f(X)}{(M g(X))} \right) = g(y) \frac{f(y)}{M g(y)} = \frac{1}{M} f(y) \]</span></p>
+<p>so the probability of the algorithm drawing <span class="math inline">\(Y = y\)</span> eventually is <span class="math inline">\(h(y) \propto \frac{1}{M} f(y)\)</span>, and so <span class="math inline">\(Y \sim f\)</span>.</p>
+<p><strong>(b)</strong></p>
+<p>The CDF of the Cauchy distribution is <span class="math inline">\(G(x) = \frac{1}{\pi} \text{arctan}\left( x \right) + \frac{1}{2}\)</span>, so its inverse distribution is <span class="math inline">\(G^{-1}(y) = \text{tan} \left( \pi \left( y - \frac{1}{2} \right) \right)\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+def accept_reject(N, M=1, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+        
+    def f(x):
+        return norm.pdf(x)
+
+    def g(x):
+        return 1 / (1 + x**2)
+    
+    def G_inv(q):
+        return np.tan(np.pi * (q - (1/2)))
+        
+    def draw_results(batch_size): 
+        U = np.random.uniform(low=0, high=1, size=batch_size)
+        Q = np.random.uniform(low=0, high=1, size=batch_size)
+        X = G_inv(Q)
+
+        return X[U &lt;= f(X) / (M * g(X))]
+    
+    X = np.empty(N)
+    cursor = 0
+    while (cursor &lt; N):
+        XX = draw_results(N)
+        nn = len(XX)
+        X[cursor: min(cursor + nn, N)] = XX[:min(nn, N - cursor)]
+        cursor += nn
+    
+    return X</code></pre>
+<pre class="python"><code>Y = accept_reject(N = 1000, M = 1, seed=0)
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.hist(Y, bins=25, density=True)
+plt.xlabel(&#39;x&#39;)
+plt.ylabel(r&#39;$\hat{f}(x)$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_99_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 25.7.4</strong>. A random variable <span class="math inline">\(Z\)</span> has an <strong>inverse Gaussian distribution</strong> if it has density</p>
+<p><span class="math display">\[ f(z) \propto z^{-3/2}  \exp \left\{ -\theta_1 z - \frac{\theta_2}{z} + 2 \sqrt{\theta_1 \theta_2}  + \log \left( \sqrt{2 \theta_2} \right) \right\}, \quad z &gt; 0\]</span></p>
+<p>where <span class="math inline">\(\theta_1 &gt; 0\)</span> and <span class="math inline">\(\theta_2 &gt; 0\)</span> are parameters. It can be shown that</p>
+<p><span class="math display">\[ 
+\mathbb{E}[Z] = \sqrt{\frac{\theta_2}{\theta_1}} 
+\quad \text{and} \quad
+\mathbb{E}\left[ \frac{1}{Z} \right] = \sqrt{\frac{\theta_1}{\theta_2}} + \frac{1}{2 \theta_2}
+\]</span></p>
+<p><strong>(a)</strong> Let <span class="math inline">\(\theta_1 = 1.5\)</span> and <span class="math inline">\(\theta_2 = 2\)</span>. Draw a sample of size 1,000 using the independence-Metropolis-Hastings method. Use a Gamma distribution as the proposal density. To assess the accuracy, compare the mean of <span class="math inline">\(Z\)</span> and <span class="math inline">\(1 / Z\)</span> from the sample to the theoretical means. Try different Gamma distributions to see if you can get an accurate sample.</p>
+<p><strong>(b)</strong> Draw a sample of size 1,000 using the random-walk-Metropolis-Hastings method. Sinze <span class="math inline">\(z &gt; 0\)</span> we cannot just use a normal density. One strategy is this. Let <span class="math inline">\(W = \log Z\)</span>. Find the density of <span class="math inline">\(W\)</span>. Use the random-walk-Metropolis-Hastings method to get a sample <span class="math inline">\(W_1, \dots, W_N\)</span> and let <span class="math inline">\(Z_i = e^{W_i}\)</span>. Assess the accuracy of the simulation as in part (a).</p>
+<p><strong>Solution</strong>.</p>
+<p><strong>(a)</strong>. The Independence-Metropolis-Hastings method is:</p>
+<p>Choose <span class="math inline">\(X_0\)</span> arbitrarily. Suppose we have generated <span class="math inline">\(X_0, X_1, \dots, X_i\)</span>. To generate <span class="math inline">\(X_{i+1}\)</span> do:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a <strong>proposal</strong> or <strong>candidate</strong> value <span class="math inline">\(Y \sim g\)</span>.</li>
+<li>Evaluate <span class="math inline">\(r \equiv r(X_i, Y)\)</span> where</li>
+</ol>
+<p><span class="math display">\[ r(x, y) = \min \left\{ 1, \frac{f(y)}{f(x)} \frac{g(x)}{g(y)} \right\} \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Set</li>
+</ol>
+<p><span class="math display">\[
+X_{i+1} = \begin{cases}
+Y   &amp;\text{with probability } r \\
+X_i &amp;\text{with probability } 1 - r 
+\end{cases}
+\]</span></p>
+<p>We will use a Gamma distribution for <span class="math inline">\(g\)</span>; it has probability density function</p>
+<p><span class="math display">\[ g_a(x) = \frac{x^{a - 1} e^{-x}}{\Gamma(a)} \]</span></p>
+<p>for some parameter <span class="math inline">\(a &gt; 0\)</span>.</p>
+<pre class="python"><code>import numpy as np
+from scipy.stats import gamma
+
+def independence_metropolis_hastings(N, theta1, theta2, gamma_a, seed=None):
+    if seed is not None:
+        np.random.seed(seed)
+            
+    def f(z):
+        return (z**(-3/2)) * np.exp(-theta1 * z - theta2 / z + 2 * np.sqrt(theta1 * theta2) + np.log(np.sqrt(2 * theta2)))
+        
+    def g(x):
+        return gamma.pdf(x=x, a=gamma_a)
+    
+    U = np.random.uniform(low=0, high=1, size=N)
+    X = np.empty(N+1)
+    X[0] = 1
+    Y = gamma.rvs(a=gamma_a, size=N+1)
+    
+    for i in range(1, N+1):
+        r = min(1, (f(Y[i - 1]) * g(X[i - 1])) / (f(X[i - 1]) * g(Y[i - 1])))
+        X[i] = Y[i - 1] if U[i - 1] &lt; r else X[i - 1]
+        
+    return X[1:]</code></pre>
+<pre class="python"><code>np.logspace(-1, 1, num=10)</code></pre>
+<pre><code>array([ 0.1       ,  0.16681005,  0.27825594,  0.46415888,  0.77426368,
+        1.29154967,  2.15443469,  3.59381366,  5.9948425 , 10.        ])</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+gamma_as = np.logspace(-1, 1, num=200)
+
+EZs = np.empty(len(gamma_as))
+E_invZs = np.empty(len(gamma_as))
+
+N = 1000
+theta1, theta2 = 1.5, 2
+for i, gamma_a in notebook.tqdm([(i, gamma_a) for i, gamma_a in enumerate(gamma_as)]):
+    Z = independence_metropolis_hastings(N=N, theta1=theta1, theta2=theta2, gamma_a=gamma_a, seed=0)
+    EZs[i] = Z.mean()
+    E_invZs[i] = (1 / Z).mean()</code></pre>
+<pre><code>  0%|          | 0/200 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+theta1, theta2 = 1.5, 2
+true_EZ = np.sqrt(theta2 / theta1)
+true_E_invZ = np.sqrt(theta1 / theta2) + 1/(2 * theta2)
+
+plt.figure(figsize=(12, 8))
+plt.plot(gamma_as, EZs, label=r&#39;$\hat{\mathbb{E}}[Z]$&#39;, color=&#39;darkblue&#39;, alpha=0.5)
+plt.plot(gamma_as, E_invZs, label=r&#39;$\hat{\mathbb{E}}[1 / Z]$&#39;, color=&#39;darkred&#39;, alpha=0.5)
+plt.xlabel(&#39;a&#39;)
+
+plt.hlines(true_EZ, xmin=min(gamma_as), xmax=max(gamma_as), label=r&#39;True $\mathbb{E}[Z]$&#39;, color=&#39;blue&#39;)
+plt.hlines(true_E_invZ, xmin=min(gamma_as), xmax=max(gamma_as), label=r&#39;True $\mathbb{E}[1 / Z]$&#39;, color=&#39;red&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_105_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># Selected hyperparameter by minimizing sum of square errors
+
+error_EZ = EZs - true_EZ
+error_E_InvZ = E_invZs - true_E_invZ
+
+MSE = error_EZ**2 + error_E_InvZ**2
+selected_gamma_a = gamma_as[np.argmin(MSE)]
+
+Z = independence_metropolis_hastings(N=100*N, theta1=theta1, theta2=theta2, gamma_a=selected_gamma_a, seed=0)</code></pre>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.hist(Z, density=True, bins=100)
+plt.xlabel(&#39;$f(z)$&#39;)
+plt.ylabel(&#39;Density&#39;)
+plt.title(&#39;Estimated density, a = %.3f&#39; % selected_gamma_a)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_107_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong> The random-walk-Hastings-Metropolis method is:</p>
+<p>Choose <span class="math inline">\(X_0\)</span> arbitrarily. Suppose we have generated <span class="math inline">\(X_0, X_1, \dots, X_i\)</span>. To generate <span class="math inline">\(X_{i+1}\)</span> do:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a <strong>proposal</strong> or <strong>candidate</strong> value <span class="math inline">\(Y \sim q(y | X_i) = g(y - X_i)\)</span>.</li>
+<li>Evaluate <span class="math inline">\(r \equiv r(X_i, Y)\)</span> where</li>
+</ol>
+<p><span class="math display">\[ r(x, y) = \min \left\{ \frac{f(y)}{f(x)} \frac{q(x | y)}{q(y | x)}, 1 \right\} = \min \left\{ \frac{f(y)}{f(x)}, 1 \right\} \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Set</li>
+</ol>
+<p><span class="math display">\[
+X_{i+1} = \begin{cases}
+Y   &amp;\text{with probability } r \\
+X_i &amp;\text{with probability } 1 - r 
+\end{cases}
+\]</span></p>
+<p>We will do the transformation <span class="math inline">\(W = \log Z\)</span>. The cumulative distribution function of <span class="math inline">\(W\)</span> is:</p>
+<p><span class="math display">\[ F_{W}(w) = \mathbb{P}\left( W \leq w \right) = \mathbb{P}\left( Z \leq e^{w} \right) = F_Z(e^{w}) \]</span></p>
+<p>and so, derivating on <span class="math inline">\(w\)</span>, the probability density function is:</p>
+<p><span class="math display">\[ f_W(w) = \frac{d}{dw} F_{W}(w) = \frac{d}{dw} F_Z(e^{w}) = \frac{d F_Z(e^{w})}{d e^{w}} \frac{d e^{w}}{ dw } = e^{w} f_Z(e^w) \]</span></p>
+<p>and so</p>
+<p><span class="math display">\[ f_W(w) \propto \exp \left\{ -\frac{w}{2}
+-\theta_1 e^{w} - \theta_2 e^{-w} \right\} \]</span></p>
+<p>We then translate back the generated values, <span class="math inline">\(Z_i = e^{W_i}\)</span> We will also use a Log-Gamma distribution for <span class="math inline">\(g\)</span> instead of a Gamma distribution. The Log-Gamma distribution has probability density function:</p>
+<p><span class="math display">\[ g_c(x) = \frac{\exp \{ cx - \exp \{ x \} \}}{\Gamma(c)} \]</span></p>
+<p>for some parameter <span class="math inline">\(c &gt; 0\)</span>.</p>
+<pre class="python"><code>from scipy.stats import loggamma
+
+def random_walk_hastings_metropolis(N, theta1, theta2, loggamma_c, seed=None):
+    if seed is not None:
+        np.random.seed(seed=seed)
+        
+    def f_w(w):
+        return np.exp(-w/2 - theta1 * np.exp(w) - theta2 * np.exp(-w))
+        
+    def g(x):
+        return loggamma.pdf(x=x, c=loggamma_c)
+    
+    U = np.random.uniform(low=0, high=1, size=N)
+    X = np.empty(N+1)
+    X[0] = 0
+    
+    for i in range(1, N+1):
+        Y = loggamma.rvs(c=loggamma_c, loc=X[i - 1])
+        r = min(1, f_w(Y) / f_w(X[i - 1]))
+        X[i] = Y if U[i - 1] &lt; r else X[i - 1]
+        
+    return np.exp(X[1:])</code></pre>
+<pre class="python"><code>from tqdm import notebook
+
+loggamma_cs = np.logspace(-1, 1, num=100)
+
+EZs = np.empty(len(loggamma_cs))
+E_invZs = np.empty(len(loggamma_cs))
+
+N = 1000
+theta1, theta2 = 1.5, 2
+for i, loggamma_c in notebook.tqdm([(i, loggamma_c) for i, loggamma_c in enumerate(loggamma_cs)]):
+    Z = random_walk_hastings_metropolis(N=N, theta1=theta1, theta2=theta2, loggamma_c=loggamma_c, seed=0)
+    EZs[i] = Z.mean()
+    E_invZs[i] = (1 / Z).mean()</code></pre>
+<pre><code>  0%|          | 0/100 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+theta1, theta2 = 1.5, 2
+true_EZ = np.sqrt(theta2 / theta1)
+true_E_invZ = np.sqrt(theta1 / theta2) + 1/(2 * theta2)
+
+plt.figure(figsize=(12, 8))
+plt.plot(loggamma_cs, EZs, label=r&#39;$\hat{\mathbb{E}}[Z]$&#39;, color=&#39;darkblue&#39;, alpha=0.5)
+plt.plot(loggamma_cs, E_invZs, label=r&#39;$\hat{\mathbb{E}}[1 / Z]$&#39;, color=&#39;darkred&#39;, alpha=0.5)
+plt.xlabel(&#39;c&#39;)
+
+plt.hlines(true_EZ, xmin=min(loggamma_cs), xmax=max(loggamma_cs), label=r&#39;True $\mathbb{E}[Z]$&#39;, color=&#39;blue&#39;)
+plt.hlines(true_E_invZ, xmin=min(loggamma_cs), xmax=max(loggamma_cs), label=r&#39;True $\mathbb{E}[1 / Z]$&#39;, color=&#39;red&#39;)
+plt.legend(loc=&#39;upper right&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_111_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code># Selected hyperparameter by minimizing sum of square errors
+
+error_EZ = EZs - true_EZ
+error_E_InvZ = E_invZs - true_E_invZ
+
+MSE = error_EZ**2 + error_E_InvZ**2
+selected_loggamma_c = loggamma_cs[np.argmin(MSE)]
+
+Z = random_walk_hastings_metropolis(N=100*N, theta1=theta1, theta2=theta2, loggamma_c=selected_loggamma_c, seed=0)</code></pre>
+<pre class="python"><code>plt.figure(figsize=(12, 8))
+plt.hist(Z, density=True, bins=100)
+plt.xlabel(&#39;$f(z)$&#39;)
+plt.ylabel(&#39;Density&#39;)
+plt.title(&#39;Estimated density, c = %.3f&#39; % selected_loggamma_c)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_113_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>Exercise 25.7.5</strong>. Get the heart disease data from the book website. Consider a Bayesian analysis of the logistic regression model</p>
+<p><span class="math display">\[ \mathbb{P}(Y = 1 | X = x) = \frac{e^{ \beta_0 + \sum_{j=1}^k \beta_j x_j } }{1 + e^{ \beta_0 + \sum_{j=1}^k \beta_j x_j }} \]</span></p>
+<p><strong>(a)</strong> Use the flat prior <span class="math inline">\(f(\beta_0, \dots, \beta_k) \propto 1\)</span>. Use the Gibbs-Metropolis algorithm to draw a sample of size 10,000 from the posterior <span class="math inline">\(f(\beta_0, \dots, \beta_k)\)</span>. Plot histograms of the posteriors for the <span class="math inline">\(\beta_j\)</span>’s. Get the posterior mean and a 95% posterior interval for each <span class="math inline">\(\beta_j\)</span>.</p>
+<p><strong>(b)</strong> Compare your analysis to a frequentist approach using maximum likelihood.</p>
+<p><strong>Solution</strong>.</p>
+<pre class="python"><code>import numpy as np
+import pandas as pd
+
+data = pd.read_csv(&#39;data/coris.csv&#39;)
+data</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+row.names
+</th>
+<th>
+sbp
+</th>
+<th>
+tobacco
+</th>
+<th>
+ldl
+</th>
+<th>
+adiposity
+</th>
+<th>
+famhist
+</th>
+<th>
+typea
+</th>
+<th>
+obesity
+</th>
+<th>
+alcohol
+</th>
+<th>
+age
+</th>
+<th>
+chd
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+1
+</td>
+<td>
+160
+</td>
+<td>
+12.00
+</td>
+<td>
+5.73
+</td>
+<td>
+23.11
+</td>
+<td>
+1
+</td>
+<td>
+49
+</td>
+<td>
+25.30
+</td>
+<td>
+97.20
+</td>
+<td>
+52
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+2
+</td>
+<td>
+144
+</td>
+<td>
+0.01
+</td>
+<td>
+4.41
+</td>
+<td>
+28.61
+</td>
+<td>
+0
+</td>
+<td>
+55
+</td>
+<td>
+28.87
+</td>
+<td>
+2.06
+</td>
+<td>
+63
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+3
+</td>
+<td>
+118
+</td>
+<td>
+0.08
+</td>
+<td>
+3.48
+</td>
+<td>
+32.28
+</td>
+<td>
+1
+</td>
+<td>
+52
+</td>
+<td>
+29.14
+</td>
+<td>
+3.81
+</td>
+<td>
+46
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+4
+</td>
+<td>
+170
+</td>
+<td>
+7.50
+</td>
+<td>
+6.41
+</td>
+<td>
+38.03
+</td>
+<td>
+1
+</td>
+<td>
+51
+</td>
+<td>
+31.99
+</td>
+<td>
+24.26
+</td>
+<td>
+58
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+5
+</td>
+<td>
+134
+</td>
+<td>
+13.60
+</td>
+<td>
+3.50
+</td>
+<td>
+27.78
+</td>
+<td>
+1
+</td>
+<td>
+60
+</td>
+<td>
+25.99
+</td>
+<td>
+57.34
+</td>
+<td>
+49
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+457
+</th>
+<td>
+459
+</td>
+<td>
+214
+</td>
+<td>
+0.40
+</td>
+<td>
+5.98
+</td>
+<td>
+31.72
+</td>
+<td>
+0
+</td>
+<td>
+64
+</td>
+<td>
+28.45
+</td>
+<td>
+0.00
+</td>
+<td>
+58
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+458
+</th>
+<td>
+460
+</td>
+<td>
+182
+</td>
+<td>
+4.20
+</td>
+<td>
+4.41
+</td>
+<td>
+32.10
+</td>
+<td>
+0
+</td>
+<td>
+52
+</td>
+<td>
+28.61
+</td>
+<td>
+18.72
+</td>
+<td>
+52
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+459
+</th>
+<td>
+461
+</td>
+<td>
+108
+</td>
+<td>
+3.00
+</td>
+<td>
+1.59
+</td>
+<td>
+15.23
+</td>
+<td>
+0
+</td>
+<td>
+40
+</td>
+<td>
+20.09
+</td>
+<td>
+26.64
+</td>
+<td>
+55
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+460
+</th>
+<td>
+462
+</td>
+<td>
+118
+</td>
+<td>
+5.40
+</td>
+<td>
+11.61
+</td>
+<td>
+30.79
+</td>
+<td>
+0
+</td>
+<td>
+64
+</td>
+<td>
+27.35
+</td>
+<td>
+23.97
+</td>
+<td>
+40
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<th>
+461
+</th>
+<td>
+463
+</td>
+<td>
+132
+</td>
+<td>
+0.00
+</td>
+<td>
+4.82
+</td>
+<td>
+33.41
+</td>
+<td>
+1
+</td>
+<td>
+62
+</td>
+<td>
+14.70
+</td>
+<td>
+0.00
+</td>
+<td>
+46
+</td>
+<td>
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+462 rows × 11 columns
+</p>
+</div>
+<pre class="python"><code>del data[&#39;row.names&#39;]
+
+X, Y = data[data.columns[data.columns != &#39;chd&#39;]], data[&#39;chd&#39;]</code></pre>
+<p><strong>(a)</strong> Given parameters <span class="math inline">\(\beta = (\beta_0, \dots, \beta_k)\)</span>, and assuming a flat prior <span class="math inline">\(f(\beta) \propto 1\)</span>, the posterior is</p>
+<p><span class="math display">\[ f(\beta | \text{data}) = \frac{\mathcal{L}(\beta) f(\beta)}{\int \mathcal{L}(u) f(u) du} = \frac{\mathcal{L}(\beta)}{\int \mathcal{L}(u) du} \propto \mathcal{L}(\beta) \]</span></p>
+<p>The likelihood is</p>
+<p><span class="math display">\[ 
+\begin{align}
+\mathcal{L}(\beta) &amp;= \prod_i \mathbb{P}(Y = Y_i | X = X_i)  \\
+&amp;= \prod_{i: Y_i = 1} \frac{e^{ \beta X_i } }{1 + e^{ \beta X_i }} \prod_{i: Y_i = 0} \frac{1}{1 + e^{ \beta X_i }} \\
+&amp;= \prod_i \frac{e^{ \beta X_i Y_i } }{1 + e^{ \beta X_i }}
+\end{align}
+\]</span></p>
+<p>The Gibbs-Metropolis algorithm is:</p>
+<ul>
+<li><p>Start with an arbitrary variable <span class="math inline">\(B^{(0)} = (B^{(0)}_0, B^{(0)}_1, \dots, B^{(0)}_k)\)</span>.</p></li>
+<li><p>For each step <span class="math inline">\(i = 1, 2, \dots, N\)</span>, build <span class="math inline">\(B^{(i)}\)</span> as follows:</p>
+<ul>
+<li><p>For each variable <span class="math inline">\(\beta_j\)</span>, <span class="math inline">\(j = 0, 1, \dots, k\)</span>, set <span class="math inline">\(B_j^{(i)}\)</span> as follows:</p>
+<ul>
+<li>Draw a proposal <span class="math inline">\(Z\)</span> for <span class="math inline">\(B_j^{(i)}\)</span> from a proposal distribution <span class="math inline">\(q_{j}\)</span></li>
+<li>Evaluate
+<span class="math display">\[ r = \min \left\{ \frac{f\left(B_\text{proposal}\right)}{f\left(B_\text{current}\right)} \frac{q_{j}(Z | B_\text{current})}{q_{j}(B_\text{current} | Z)}, 1\right\} \]</span>
+where</li>
+</ul>
+<p><span class="math display">\[
+ \begin{align}
+ B_\text{proposal} &amp;= \left(B_0^{(i)}, \dots, B_{j-1}^{(i)}, Z, B_{j + 1}^{(i - 1)} \dots, B_k^{(i - 1)}\right) \\
+ B_\text{current} &amp;= \left(B_0^{(i)}, \dots, B_{j-1}^{(i)}, B_{j}^{(i - 1)}, B_{j + 1}^{(i - 1)} \dots, B_k^{(i - 1)}\right)
+ \end{align}
+ \]</span></p>
+<ul>
+<li>Set</li>
+</ul>
+<p><span class="math display">\[ 
+ B_j^{(i)} = \begin{cases}
+ Z &amp;\text{with probability } r \\
+ B_j^{(i - 1)} &amp;\text{with probability } 1 - r
+ \end{cases}
+ \]</span></p></li>
+</ul></li>
+</ul>
+<p>The distribution of the <span class="math inline">\(B^{(i)}\)</span> should converge to the distribution of <span class="math inline">\(\beta\)</span>.</p>
+<p>We can pick symmetric proposal distributions <span class="math inline">\(q_{j}\)</span> to cancel out the conditional probabilities, and make the accept probability simply</p>
+<p><span class="math display">\[ r = \min \left\{ \frac{f\left(B_\text{proposal}\right)}{f\left(B_\text{current}\right)}, 1\right\} \]</span></p>
+<p>For example, let’s make the proposals for <span class="math inline">\(\beta_j\)</span> be <span class="math inline">\(Z \sim N(0, \sigma_j^2)\)</span>, with <span class="math inline">\(\sigma_j\)</span> to be selected based on the data.</p>
+<pre class="python"><code>from scipy.stats import norm
+from scipy.special import expit
+from tqdm import notebook
+
+Xp = np.concatenate([np.ones((X.shape[0], 1)), X], axis=1)
+
+def likelihood(beta):
+    bx = beta @ Xp.T
+    return (1 - expit(-np.sum(np.where(Y, bx, 0)))) * expit(-np.sum(np.where(1 - Y, bx, 0)))
+
+def gibbs_metropolis(start, proposer, f, N, seed=None, show_progress=True):
+    if seed is not None:
+        np.random.seed(seed=seed)
+    
+    k = len(start)
+    X = np.empty((N + 1, k))
+    X[0] = start
+    U = np.random.uniform(size=(N, k))
+    
+    iterator = notebook.tqdm(range(N)) if show_progress else range(N)
+    
+    for i in iterator:
+        B_current = X[i].copy()
+        for j in range(k):
+            Z = proposer(j)
+            B_proposal = B_current.copy()
+            B_proposal[j] = Z
+            
+            r = min(f(B_proposal) / f(B_current), 1)
+            if U[i, j] &lt; r:
+                B_current[j] = Z
+                
+        X[i + 1] = B_current
+    
+    return X[1:]</code></pre>
+<pre class="python"><code># Select a sigma_j based on max likelihood
+
+sigma_js = np.logspace(-2, 0, num=20)
+B_likelihoods = np.empty(len(sigma_js))
+
+for i, sigma_j in notebook.tqdm([(i, sigma_j) for i, sigma_j in enumerate(sigma_js)]):
+    B = gibbs_metropolis(np.zeros(10), lambda j : norm.rvs(scale=sigma_j), likelihood, N=1000, seed=0, show_progress=False)
+    B_likelihoods[i] = likelihood(B.mean(axis = 0))</code></pre>
+<pre><code>  0%|          | 0/20 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.plot(sigma_js, B_likelihoods)
+plt.xscale(&#39;log&#39;)
+plt.xlabel(r&#39;$\sigma_j$&#39;)
+plt.ylabel(r&#39;$\mathcal{L}(\hat{\beta})$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_121_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>selected_sigma_j = sigma_js[np.argmax(B_likelihoods)]
+
+B = gibbs_metropolis(np.zeros(10), lambda j : norm.rvs(scale=selected_sigma_j), likelihood, N=100000, seed=0, 
+                     show_progress=True)</code></pre>
+<pre><code>  0%|          | 0/100000 [00:00&lt;?, ?it/s]</code></pre>
+<pre class="python"><code>posterior_mean = B.mean(axis = 0)
+posterior_confidence_bounds = np.quantile(B, [0.025, 0.975], axis=0)</code></pre>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.bar(np.arange(10), posterior_mean, yerr=np.abs(posterior_confidence_bounds - posterior_mean))
+plt.xlabel(&#39;i&#39;)
+plt.ylabel(r&#39;$\overline{\beta}_i$&#39;)
+plt.title(&#39;Estimated parameters (95% confidence bounds)&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_124_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 12))
+for i in range(0, 10):
+    
+    # Set up the plot
+    ax = plt.subplot(5, 2, i + 1)
+    ax.hist(B[:, i], density=True, bins=50)
+    ax.set_title(r&#39;$\hat{\beta}_&#39; + str(i) + &#39;$&#39;)
+
+plt.tight_layout()
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_125_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p><strong>(b)</strong>. For a frequentist approach, we would simply try to maximize the likelihood function.</p>
+<pre class="python"><code>from scipy.optimize import minimize
+
+res = minimize(fun = lambda beta: -likelihood(beta), x0=np.zeros(10))</code></pre>
+<pre class="python"><code>B_freq = res.x
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.figure(figsize=(12, 8))
+plt.bar(np.arange(10), B_freq)
+plt.xlabel(&#39;i&#39;)
+plt.ylabel(r&#39;$\overline{\beta}_i$&#39;)
+plt.show()</code></pre>
+<div class="figure">
+<img src="Chapter%2025%20-%20Simulation%20Methods_files/Chapter%2025%20-%20Simulation%20Methods_128_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-wasserman2013all" class="csl-entry">
+1. Wasserman L. All of statistics: A concise course in statistical inference. Springer Science &amp; Business Media; 2013.
+</div>
+<div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
+2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,7 +6,16 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AOS chapter25 Simulation Methods</title>
+      <link>/2021/05/24/aos-chapter25-simulation-methods/</link>
+      <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/24/aos-chapter25-simulation-methods/</guid>
+      <description>25. Simulation Methods25.1 Bayesian Inference Revisited25.2 Basic Monte Carlo Integration25.3 Importance Sampling25.4 MCMC Part I: The Metropolis-Hastings Algorithm25.5 MCMC Part II: Different Flavors25.7 ExercisesReferences25. Simulation MethodsIn this chapter we will see that by generating data in a clever way, we can solve a number of problems such as integrating or maximizing a complicated function. For integration, we will study 3 methods:</description>
+    </item>
+    
     <item>
       <title>AOS chapter24 Stochastic Processes</title>
       <link>/2021/05/22/aos-chapter24-stochastic-processes/</link>
