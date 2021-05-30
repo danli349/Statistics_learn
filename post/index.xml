@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bayesian Thinking</title>
+      <link>/2021/05/25/bayesian-thinking/</link>
+      <pubDate>Tue, 25 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/25/bayesian-thinking/</guid>
+      <description>1 The Basics of Bayesian StatisticsBayes’ RuleConditional Probabilities &amp;amp; Bayes’ RuleBayes’ Rule and Diagnostic TestingBayes UpdatingBayesian vs. Frequentist Definitions of ProbabilityInference for a Proportion: Frequentist ApproachInference for a Proportion: Bayesian ApproachEffect of Sample Size on the PosteriorFrequentist vs. Bayesian Inference2 Bayesian InferenceContinuous Variables and Eliciting Probability DistributionsFrom the Discrete to the ContinuousElicitationConjugacyInference on a Binomial ProportionThe Gamma-Poisson Conjugate FamiliesThe Normal-Normal Conjugate FamiliesNon-Conjugate PriorsCredible IntervalsPredictive Inference3 Losses and Decision MakingBayesian Decision MakingPosterior Probabilities of Hypotheses and Bayes Factors4 Inference and Decision-Making with Multiple ParametersConjugate Prior for \(\mu\) and \(\sigma^2\)Conjugate Posterior DistributionMarginal Distribution for \(\mu\): Student \(t\)Credible Intervals for \(\mu\)Example: TTHM in TapwaterSection Summary(Optional) DerivationsMonte Carlo InferenceMonte Carlo SamplingMonte Carlo Inference: Tap Water ExampleMonte Carlo Inference for Functions of ParametersSummaryPrior Predictive DistributionTap Water Example (continued)Sampling from the Prior Predictive in RPosterior PredictiveSummaryMarkov Chain Monte Carlo (MCMC)References1 The Basics of Bayesian StatisticsBayesian statistics mostly involves conditional probability, which is the the probability of an event A given event B, and it can be calculated using the Bayes rule.</description>
+    </item>
+    
     <item>
       <title>AOS chapter25 Simulation Methods</title>
       <link>/2021/05/24/aos-chapter25-simulation-methods/</link>
@@ -287,22 +296,21 @@ Proof.
     </item>
     
     <item>
-      <title>C</title>
-      <link>/2021/02/03/c/</link>
-      <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/02/03/c/</guid>
-      <description>Chapter 1 - A Tutorial IntroductionChapter 1 - A Tutorial IntroductionReferences
-1. Kernighan BW, Ritchie DM. The c programming language. 2006.</description>
-    </item>
-    
-    <item>
       <title>Single cell data analysis using scanpy</title>
       <link>/2021/02/03/single-cell-data-analysis-using-scanpy/</link>
       <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/02/03/single-cell-data-analysis-using-scanpy/</guid>
       <description>import numpy as npimport pandas as pdimport scanpy as sc# !mkdir data# !wget http://cf.10xgenomics.com/samples/cell-exp/1.1.0/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz -O data/pbmc3k_filtered_gene_bc_matrices.tar.gz# !cd data; tar -xzf pbmc3k_filtered_gene_bc_matrices.tar.gz# !mkdir writesc.settings.verbosity = 3 # verbosity: errors (0), warnings (1), info (2), hints (3)sc.logging.print_header()sc.settings.set_figure_params(dpi=80, facecolor=&amp;#39;white&amp;#39;)scanpy==1.6.1 anndata==0.7.5 umap==0.4.6 numpy==1.19.2 scipy==1.5.2 pandas==1.2.1 scikit-learn==0.23.2 statsmodels==0.12.1 python-igraph==0.8.3 leidenalg==0.8.3results_file = &amp;#39;write/pbmc3k.h5ad&amp;#39; # the file that will store the analysis resultsadata = sc.</description>
+    </item>
+    
+    <item>
+      <title>The C Programming Language</title>
+      <link>/2021/02/03/c/</link>
+      <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/03/c/</guid>
+      <description>CHAPTER 1: A Tutorial Introduction1.1 Getting Started1.2 Variables and Arithmetic Expressions1.3 The For Statement1.4 Symbolic Constants1.5 Character Input and Output1.5.1 File Copying1.5.2 Character Counting1.5.3 Line Counting1.5.4 Word Counting1.6 Arrays1.7 Functions1.8 Arguments—Call by Value1.9 Character Arrays1.10 External Variables and ScopeCHAPTER 1: A Tutorial IntroductionLet us begin with a quick introduction to C.</description>
     </item>
     
     <item>

@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.80.0" />
 
 
-<title>C - A Hugo website</title>
-<meta property="og:title" content="C - A Hugo website">
+<title>The C Programming Language - A Hugo website</title>
+<meta property="og:title" content="The C Programming Language - A Hugo website">
 
 
   <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
@@ -19,6 +19,11 @@
 
 
 
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
 
 
 
@@ -59,10 +64,10 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">61 min read</span>
     
 
-    <h1 class="article-title">C</h1>
+    <h1 class="article-title">The C Programming Language</h1>
 
     
     <span class="article-date">2021-02-03</span>
@@ -74,16 +79,2278 @@
 
 <div id="TOC">
 <ul>
-<li><a href="#chapter-1---a-tutorial-introduction">Chapter 1 - A Tutorial Introduction</a></li>
+<li><a href="#chapter-1-a-tutorial-introduction">CHAPTER 1: A Tutorial Introduction</a>
+<ul>
+<li><a href="#getting-started"><span id="GettingStarted4"></span>1.1 Getting Started</a></li>
+<li><a href="#variables-and-arithmetic-expressions">1.2 Variables and Arithmetic Expressions</a></li>
+<li><a href="#the-for-statement">1.3 The For Statement</a></li>
+<li><a href="#symbolic-constants">1.4 Symbolic Constants</a></li>
+<li><a href="#character-input-and-output">1.5 Character Input and Output</a>
+<ul>
+<li><a href="#file-copying">1.5.1 File Copying</a></li>
+<li><a href="#character-counting">1.5.2 Character Counting</a></li>
+<li><a href="#line-counting">1.5.3 Line Counting</a></li>
+<li><a href="#word-counting">1.5.4 Word Counting</a></li>
+<li><a href="#arrays">1.6 Arrays</a></li>
+<li><a href="#functions">1.7 Functions</a></li>
+<li><a href="#argumentscall-by-value">1.8 Arguments—Call by Value</a></li>
+<li><a href="#character-arrays">1.9 Character Arrays</a></li>
+<li><a href="#external-variables-and-scope">1.10 External Variables and Scope</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="chapter-1---a-tutorial-introduction" class="section level1">
-<h1>Chapter 1 - A Tutorial Introduction</h1>
+<div id="chapter-1-a-tutorial-introduction" class="section level1">
+<h1>CHAPTER 1: A Tutorial Introduction</h1>
+<p>Let us begin with a quick introduction to C. Our aim is to show the
+essential elements of the language in real programs, but without getting
+bogged down in details, rules, and exceptions. At this point, we are not
+trying to be complete or even precise (save that the examples are meant
+to be correct). We want to get you as quickly as possible to the point
+where you can write useful programs, and to do that we have to
+concentrate on the basics: variables and constants, arithmetic, control
+flow, functions, and the rudiments of input and output. We are
+intentionally leaving out of this chapter features of C that are
+important for writing bigger programs. These include pointers,
+structures, most of C’s rich set of operators, several control-flow
+statements, and the standard library.</p>
+<p>This approach has its drawbacks. Most notable is that the complete story
+on any particular language feature is not found here, and the tutorial,
+by being brief, may also be misleading. And because the examples do not
+use the full power of C, they are not as concise and elegant as they
+might be. We have tried to minimize these effects, but be warned.
+Another drawback is that later chapters will necessarily repeat some of
+this chapter. We hope that the repetition will help you more than it
+annoys.</p>
+<p>In any case, experienced programmers should be able to extrapolate from
+the material in this chapter to their own programming needs. Beginners
+should supplement it by writing small, similar programs of their own.
+Both groups can use it as a framework on which to hang the more detailed
+descriptions that begin in Chapter 2.</p>
+<div id="getting-started" class="section level2">
+<h2><span id="GettingStarted4"></span>1.1 Getting Started</h2>
+<p>The only way to learn a new programming language is by writing programs
+in it. The first program to write is the same for all languages:</p>
+<p>   <em>Print the words</em><br />
+            <span class="code">hello, world</span></p>
+<p>This is the big hurdle; to leap over it you have to be able to create
+the program <span id="page_6"></span>text somewhere, compile it
+successfully, load it, run it, and find out where your output went. With
+these mechanical details mastered, everything else is comparatively
+easy.</p>
+<p>In C, the program to print “<span class="code">hello, world</span>” is</p>
+<pre class="python"><code>\#include \&lt;stdio.h\&gt;  
+  
+main()  
+{  
+    printf(&quot;hello, world\\n&quot;);  
+}</code></pre>
+<p>Just how to run this program depends on the system you are using. As a
+specific example, on the UNIX operating system you must create the
+program in a file whose name ends in “<span class="code">.c</span>,”
+such as <span class="code">hello.c</span>, then compile it with the
+command</p>
+<p>cc hello.c</p>
+<p>If you haven’t botched anything, such as omitting a character or
+misspelling something, the compilation will proceed silently, and make
+an executable file called <span class="code">a.out</span>. If you run
+<span class="code">a.out</span> by typing the command</p>
+<p>a.out</p>
+<p>it will print</p>
+<pre class="python"><code>hello, world</code></pre>
+<p>On other systems, the rules will be different; check with a local
+expert.</p>
+<p>Now for some explanations about the program itself. A C program,
+whatever its size, consists of <em>functions</em> and <em>variables</em>. A function
+contains <em>statements</em> that specify the computing operations to be done,
+and variables store values used during the computation. C functions are
+like the subroutines and functions of Fortran or the procedures and
+functions of Pascal. Our example is a function named <span class="code">main</span>. Normally you are at liberty to give functions
+whatever names you like, but “<span class="code">main</span>” is
+special—your program begins executing at the beginning of <span class="code">main</span>. This means that every program must have a
+<span class="code">main</span> somewhere.</p>
+<p><span class="code">main</span> will usually call other functions to help
+perform its job, some that you wrote, and others from libraries that are
+provided for you. The first line of the program,</p>
+<pre class="python"><code>\#include \&lt;stdio.h\&gt;</code></pre>
+<p>tells the compiler to include information about the standard
+input/output library; this line appears at the beginning of many C
+source files. The standard library is described in Chapter 7 and Appendix
+B.</p>
+<p>One method of communicating data between functions is for the calling
+function to provide a list of values, called <em>arguments</em>, to the
+function it calls. The parentheses after the function name surround the
+argument list. In this <span id="page_7"></span>example, <span class="code">main</span> is defined to be a function that expects no
+arguments, which is indicated by the empty list <span class="code">()</span>.</p>
+<hr />
+<p><span class="code">#include &lt;stdio.h&gt;</span></p>
+<p><em>include information about standard library</em></p>
+<p><span class="code">main()</span></p>
+<p><em>define a function named</em> <span class="code">main</span><br />
+<em>that receives no argument values</em></p>
+<p><span class="code">{</span></p>
+<p><em>statements of</em> <span class="code">main</span> <em>are enclosed in braces</em></p>
+<p>        <span class="code">printf (</span><span class="code">"hello,
+world\n</span><span class="code">")</span>;<br />
+<span class="code">}</span></p>
+<p><span class="code">main</span> <em>calls library function</em> <span class="code">printf</span><br />
+<em>to print this sequence of characters;</em><br />
+<span class="code">\n</span> <em>represents the newline character</em></p>
+<p>The first C program.</p>
+<hr />
+<p>The statements of a function are enclosed in braces <span class="code">{}</span>. The function <span class="code">main</span>
+contains only one statement,</p>
+<pre class="python"><code>printf(&quot;hello, world\\n&quot;);</code></pre>
+<p>A function is called by naming it, followed by a parenthesized list of
+arguments, so this calls the function <span class="code">printf</span>
+with the argument <span class="code">“hello, world\n”</span>. <span class="code">printf</span> is a library function that prints output, in
+this case the string of characters between the quotes.</p>
+<p>A sequence of characters in double quotes, like <span class="code">“hello, world\n”</span>, is called a <em>character string</em> or
+<em>string constant.</em> For the moment our only use of character strings will
+be as arguments for <span class="code">printf</span> and other
+functions.</p>
+<p>The sequence <span class="code">\n</span> in the string is C notation
+for the <em>newline</em> <em>character</em>, which when printed advances the output to
+the left margin on the next line. If you leave out the <span class="code">\n</span> (a worthwhile experiment), you will find that
+there is no line advance after the output is printed. You must use <span class="code">\n</span> to include a newline character in the <span class="code">printf</span> argument; if you try something like</p>
+<pre class="python"><code>printf(&quot;hello, world  
+&quot;);</code></pre>
+<p>the C compiler will produce an error message.</p>
+<p><span class="code">printf</span> never supplies a newline automatically,
+so several calls may be used to build up an output line in stages. Our
+first program could just as well have been written<span id="page_8"></span></p>
+<pre class="python"><code>\#include \&lt;stdio.h\&gt;  
+  
+main()  
+{  
+    printf(&quot;hello, &quot;);  
+    printf(&quot;world&quot;);  
+    printf(&quot;\\n&quot;);  
+}</code></pre>
+<p>to produce identical output.</p>
+<p>Notice that <span class="code">\n</span> represents only a single
+character. An <em>escape sequence</em> like <span class="code">\n</span>
+provides a general and extensible mechanism for representing
+hard-to-type or invisible characters. Among the others that C provides
+are <span class="code">\t</span> for tab, <span class="code">\b</span>
+for backspace, <span class="code">\"</span> for the double quote, and
+<span class="code">\\</span> for the backslash itself. There is a
+complete list in Section 2.3</p>
+<p><strong>Exercise 1-1</strong>.</p>
+<p>Run the “<span class="code">hello, world</span>”
+program on your system. Experiment with leaving out parts of the
+program, to see what error messages you get.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-01/helloworld.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf(&quot;hello world!\n&quot;);
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-01/helloworld.c -o Chapter1/Exercise\ 1-01/helloworld</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-01/helloworld</code></pre>
+<pre><code>hello world!</code></pre>
+<p><strong>Exercise 1-2</strong>.</p>
+<p>Experiment to find out what happens when <span class="code">printf</span>’s argument string contains <span class="code">\</span><em>c</em>, where <em>c</em> is some character not listed above.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-02/escape_sequence.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf(&quot;tab: \t\n&quot;);
+    printf(&quot;backslash: \\\n&quot;);
+    printf(&quot;single quote: \&#39;\n&quot;);
+    printf(&quot;double quote: \&quot;\n&quot;);
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-02/escape_sequence.c -o Chapter1/Exercise\ 1-02/escape</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-02/escape</code></pre>
+<pre><code>tab:    
+backslash: \
+single quote: &#39;
+double quote: &quot;</code></pre>
+</div>
+<div id="variables-and-arithmetic-expressions" class="section level2">
+<h2>1.2 Variables and Arithmetic Expressions</h2>
+<p>The next program uses the formula °<em>C</em> = (5/9) (°<em>F</em>−32) to print the
+following table of Fahrenheit temperatures and their centigrade or
+Celsius equivalents:</p>
+<p>0   −17<br />
+20  −6<br />
+40  4<br />
+60  15<br />
+80  26<br />
+100 37<br />
+120 48<br />
+140 60<br />
+160 71<br />
+180 82<br />
+200 93<br />
+220 104<br />
+240 115<br />
+260 126<br />
+280 137<br />
+300 148</p>
+<p>The program itself still consists of the definition of a single function
+named <span class="code">main</span>. It is longer than the one that
+printed “<span class="code">hello, world</span>,” but not complicated.
+It introduces several new ideas, including comments, declarations,
+variables, arithmetic expressions, loops, and formatted output.</p>
+<p><span id="page_9"></span> #include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> print Fahrenheit-Celsius table<br />
+    for fahr = 0, 20, …, 300 <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int fahr, celsius;<br />
+    int lower, upper, step;</p>
+<p>    lower = 0;      /<span class="bottom">*</span> lower limit of temperature table <span class="bottom">*</span>/<br />
+    upper = 300;    /<span class="bottom">*</span> upper limit <span class="bottom">*</span>/<br />
+    step = 20;      /<span class="bottom">*</span> step size <span class="bottom">*</span>/</p>
+<p>    fahr = lower;<br />
+    while (fahr &lt;= upper) {<br />
+        celsius = 5 <span class="bottom">*</span> (fahr-32) / 9;<br />
+        printf(“%d\t%d\n,” fahr, celsius);<br />
+        fahr = fahr + step;<br />
+    }<br />
+}</p>
+<p>The two lines</p>
+<p>/<span class="bottom">*</span> print Fahrenheit-Celsius table<br />
+    for fahr = 0, 20, …, 300 <span class="bottom">*</span>/</p>
+<p>are a <em>comment,</em> which in this case explains briefly what the program
+does. Any characters between <span class="code">/<span class="bottom">*</span></span> and <span class="code"><span class="bottom">*</span>/</span> are ignored by the compiler; they may
+be used freely to make a program easier to understand. Comments may
+appear anywhere a blank or tab or newline can.</p>
+<p>In C, all variables must be declared before they are used, usually at
+the beginning of the function before any executable statements. A
+<em>declaration</em> announces the properties of variables; it consists of a
+type name and a list of variables, such as</p>
+<p>int fahr, celsius;<br />
+int lower, upper, step;</p>
+<p>The type <span class="code">int</span> means that the variables listed
+are integers, by contrast with <span class="code">float</span>, which
+means floating point, i.e., numbers that may have a fractional part. The
+range of both <span class="code">int</span> and <span class="code">float</span> depends on the machine you are using; 16-bit
+<span class="code">int</span>s, which lie between −32768 and +32767, are
+common, as are 32-bit <span class="code">int</span>s. A <span class="code">float</span> number is typically a 32-bit quantity, with at
+least six significant digits and magnitude generally between about
+10<sup>−38</sup> and 10<sup>+38</sup>.</p>
+<p>C provides several other basic data types besides <span class="code">int</span> and <span class="code">float</span>, including:</p>
+<p><span class="code">char</span>         character—a single byte<br />
+<span class="code">short</span>       short integer<br />
+<span class="code">long</span>          long integer<br />
+<span class="code">double</span>     double-precision floating point</p>
+<p><span id="page_10"></span>The sizes of these objects are also
+machine-dependent. There are also <em>arrays</em>, <em>structures</em> and <em>unions</em> of
+these basic types, <em>pointers</em> to them, and <em>functions</em> that return them,
+all of which we will meet in due course.</p>
+<p>Computation in the temperature conversion program begins with the
+<em>assignment statements</em></p>
+<p>lower = 0;<br />
+upper = 300;<br />
+step = 20;<br />
+fahr = lower;</p>
+<p>which set the variables to their initial values. Individual statements
+are terminated by semicolons.</p>
+<p>Each line of the table is computed the same way, so we use a loop that
+repeats once per output line; this is the purpose of the <span class="code">while</span> loop</p>
+<p>while (fahr &lt;= upper) {<br />
+    <span class="courem">…</span><br />
+}</p>
+<p>The <span class="code">while</span> loop operates as follows: The
+condition in parentheses is tested. If it is true (<span class="code">fahr</span> is less than or equal to <span class="code">upper</span>), the body of the loop (the three statements
+enclosed in braces) is executed. Then the condition is re-tested, and if
+true, the body is executed again. When the test becomes false (<span class="code">fahr</span> exceeds <span class="code">upper</span>) the
+loop ends, and execution continues at the statement that follows the
+loop. There are no further statements in this program, so it terminates.</p>
+<p>The body of a <span class="code">while</span> can be one or more
+statements enclosed in braces, as in the temperature converter, or a
+single statement without braces, as in</p>
+<p>while (i &lt; j)<br />
+    i = 2 <span class="bottom">*</span> i;</p>
+<p>In either case, we will always indent the statements controlled by the
+<span class="code">while</span> by one tab stop (which we have shown as
+four spaces) so you can see at a glance which statements are inside the
+loop. The indentation emphasizes the logical structure of the program.
+Although C compilers do not care about how a program looks, proper
+indentation and spacing are critical in making programs easy for people
+to read. We recommend writing only one statement per line, and using
+blanks around operators to clarify grouping. The position of braces is
+less important, although people hold passionate beliefs. We have chosen
+one of several popular styles. Pick a style that suits you, then use it
+consistently.</p>
+<p>Most of the work gets done in the body of the loop. The Celsius
+temperature is computed and assigned to the variable <span class="code">celsius</span> by the statement</p>
+<p>celsius = 5 <span class="bottom">*</span> (fahr-32) / 9;</p>
+<p>The reason for multiplying by 5 and then dividing by 9 instead of just
+multiplying by <span class="code">5/9</span> is that in C, as in many
+other languages, integer division <em>truncates</em>: any fractional part is
+discarded. Since <span class="code">5</span> and <span class="code">9</span> are integers, <span class="code">5/9</span> would
+be truncated to zero and so all the Celsius temperatures would be
+reported as zero.</p>
+<p><span id="page_11"></span>This example also shows a bit more of how
+<span class="code">printf</span> works. <span class="code">printf</span>
+is a general-purpose output formatting function, which we will describe
+in detail in Chapter 7.</p>
+<p>Its first argument is a string of characters to be printed, with each
+<span class="code">%</span> indicating where one of the other (second,
+third, …) arguments is to be substituted, and in what form it is to be
+printed. For instance, <span class="code">%d</span> specifies an integer
+argument, so the statement</p>
+<p>printf(“%d\t%d\n,” fahr, celsius);</p>
+<p>causes the values of the two integers <span class="code">fahr</span> and
+<span class="code">celsius</span> to be printed, with a tab (<span class="code">\t</span>) between them.</p>
+<p>Each <span class="code">%</span> construction in the first argument of
+<span class="code">printf</span> is paired with the corresponding second
+argument, third argument, etc.; they must match up properly by number
+and type, or you’ll get wrong answers.</p>
+<p>By the way, <span class="code">printf</span> is not part of the C
+language; there is no input or output defined in C itself. <span class="code">printf</span> is just a useful function from the standard
+library of functions that are normally accessible to C programs. The
+behavior of <span class="code">printf</span> is defined in the ANSI
+standard, however, so its properties should be the same with any
+compiler and library that conforms to the standard.</p>
+<p>In order to concentrate on C itself, we won’t talk much about input and
+output until <a href="https://learning.oreilly.com/library/view/the-c-programming/9780133086249/ch07.html">Chapter
+7</a>.
+In particular, we will defer formatted input until then. If you have to
+input numbers, read the discussion of the function <span class="code">scanf</span> in <a href="https://learning.oreilly.com/library/view/the-c-programming/9780133086249/ch07.html#FormattedInputmdashScanf82">Section
+7.4</a>.
+<span class="code">scanf</span> is like <span class="code">printf</span>, except that it reads input instead of
+writing output.</p>
+<p>There are a couple of problems with the temperature conversion program.
+The simpler one is that the output isn’t very pretty because the numbers
+are not right-justified. That’s easy to fix; if we augment each <span class="code">%d</span> in the <span class="code">printf</span> statement
+with a width, the numbers printed will be right-justified in their
+fields. For instance, we might say</p>
+<p>printf(“%3d %6d\n,” fahr, celsius);</p>
+<p>to print the first number of each line in a field three digits wide, and
+the second in a field six digits wide, like this:</p>
+<p>   0    −17<br />
+  20     −6<br />
+  40      4<br />
+  60     15<br />
+  80     26<br />
+ 100     37<br />
+<span class="courem">…</span></p>
+<p>The more serious problem is that because we have used integer
+arithmetic, the Celsius temperatures are not very accurate; for
+instance, 0°F is actually about −17.8°C, not −17. To get more accurate
+answers, we should use floating-point arithmetic instead of integer.
+This requires some changes in the program. Here is a second
+version:<span id="page_12"></span></p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> print Fahrenheit-Celsius table<br />
+    for fahr = 0, 20, …, 300; floating-point version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    float fahr, celsius;<br />
+    int lower, upper, step;</p>
+<p>    lower = 0;      /<span class="bottom">*</span> lower limit of temperature table <span class="bottom">*</span>/<br />
+    upper = 300;    /<span class="bottom">*</span> upper limit <span class="bottom">*</span>/<br />
+    step = 20;      /<span class="bottom">*</span> step size <span class="bottom">*</span>/</p>
+<p>    fahr = lower;<br />
+    while (fahr &lt;= upper) {<br />
+        celsius = (5.0/9.0) <span class="bottom">*</span> (fahr−32.0);<br />
+        printf(“%3.0f %6.1f\n,” fahr, celsius);<br />
+        fahr = fahr + step;<br />
+    }<br />
+}</p>
+<p>This is much the same as before, except that <span class="code">fahr</span> and <span class="code">celsius</span> are
+declared to be <span class="code">float</span>, and the formula for
+conversion is written in a more natural way. We were unable to use <span class="code">5/9</span> in the previous version because integer division
+would truncate it to zero. A decimal point in a constant indicates that
+it is floating point, however, so <span class="code">5.0/9.0</span> is
+not truncated because it is the ratio of two floating-point values.</p>
+<p>If an arithmetic operator has integer operands, an integer operation is
+performed. If an arithmetic operator has one floating-point operand and
+one integer operand, however, the integer will be converted to floating
+point before the operation is done. If we had written <span class="code">fahr−32</span>, the <span class="code">32</span> would be
+automatically converted to floating point. Nevertheless, writing
+floating-point constants with explicit decimal points even when they
+have integral values emphasizes their floating-point nature for human
+readers.</p>
+<p>The detailed rules for when integers are converted to floating point are
+in Chapter 2.
+For now, notice that the assignment</p>
+<p>fahr = lower;</p>
+<p>and the test</p>
+<p>while (fahr &lt;= upper)</p>
+<p>also work in the natural way—the <span class="code">int</span> is
+converted to <span class="code">float</span> before the operation is
+done.</p>
+<p>The <span class="code">printf</span> conversion specification <span class="code">%3.0f</span> says that a floating-point number (here <span class="code">fahr</span>) is to be printed at least three characters
+wide, with no decimal point and no fraction digits. <span class="code">%6.1f</span> describes another number (<span class="code">celsius</span>) that is to be printed at least six
+characters wide, with 1 digit after the decimal point. The output looks
+like this:<span id="page_13"></span></p>
+<p> 0  −17.8<br />
+20   −6.7<br />
+40    4.4<br />
+<span class="courem">…</span></p>
+<p>Width and precision may be omitted from a specification: <span class="code">%6f</span> says that the number is to be at least six
+characters wide; <span class="code">%.2f</span> specifies two characters
+after the decimal point, but the width is not constrained; and <span class="code">%f</span> merely says to print the number as floating
+point.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td><span class="code">%d</span></td>
+<td>print as decimal integer</td>
+</tr>
+<tr class="even">
+<td><span class="code">%6d</span></td>
+<td>print as decimal integer, at least 6 characters wide</td>
+</tr>
+<tr class="odd">
+<td><span class="code">%f</span></td>
+<td>print as floating point</td>
+</tr>
+<tr class="even">
+<td><span class="code">%6f</span></td>
+<td>print as floating point, at least 6 characters wide</td>
+</tr>
+<tr class="odd">
+<td><span class="code">%.2f</span></td>
+<td>print as floating point, 2 characters after decimal point</td>
+</tr>
+<tr class="even">
+<td><span class="code">%6.2f</span></td>
+<td>print as floating point, at least 6 wide and 2 after decimal point</td>
+</tr>
+</tbody>
+</table>
+<p>Among others, <span class="code">printf</span> also recognizes <span class="code">%o</span> for octal, <span class="code">%x</span> for
+hexadecimal, <span class="code">%c</span> for character, <span class="code">%s</span> for character string, and <span class="code">%%</span> for <span class="code">%</span> itself.</p>
+<p><strong>Exercise 1-3</strong>.</p>
+<p>Modify the temperature conversion program to print a heading above the table.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-03/temperature.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    float fahr, celsius;
+    float lower, upper, step;
+
+    lower = 0; /* lower limit of temperatuire scale */
+    upper = 300; /* upper limit */
+    step = 20; /* step size */
+
+    printf(&quot;  Fahr      Celsius\n&quot;);
+
+    fahr = lower;
+    while (fahr &lt;= upper) {
+        celsius = (5.0 / 9.0) * (fahr - 32.0);
+        printf(&quot;%3.0f %6.1f\n&quot;, fahr, celsius);
+        fahr = fahr + step;
+    }
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-03/temperature.c -o Chapter1/Exercise\ 1-03/temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-03/temperature</code></pre>
+<pre><code>  Fahr      Celsius
+  0  -17.8
+ 20   -6.7
+ 40    4.4
+ 60   15.6
+ 80   26.7
+100   37.8
+120   48.9
+140   60.0
+160   71.1
+180   82.2
+200   93.3
+220  104.4
+240  115.6
+260  126.7
+280  137.8
+300  148.9</code></pre>
+<p><strong>Exercise 1-4</strong>.</p>
+<p>Write a program to print the corresponding Celsius to
+Fahrenheit table.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-04/ctof.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    float fahr, celsius;
+    float lower, upper, step;
+
+    lower = -20; /* lower limit of temperatuire scale */
+    upper = 150; /* upper limit */
+    step = 10; /* step size */
+
+    printf(&quot;  celsius      fahr\n&quot;);
+
+    celsius = lower;
+    while (celsius &lt;= upper) {
+        fahr = celsius * (9.0 / 5.0) + 32.0;
+        printf(&quot;%3.0f %6.1f\n&quot;, celsius, fahr);
+        celsius = celsius + step;
+    }
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-04/ctof.c -o Chapter1/Exercise\ 1-04/ctof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-04/ctof</code></pre>
+<pre><code>  celsius      fahr
+-20   -4.0
+-10   14.0
+  0   32.0
+ 10   50.0
+ 20   68.0
+ 30   86.0
+ 40  104.0
+ 50  122.0
+ 60  140.0
+ 70  158.0
+ 80  176.0
+ 90  194.0
+100  212.0
+110  230.0
+120  248.0
+130  266.0
+140  284.0
+150  302.0</code></pre>
+</div>
+<div id="the-for-statement" class="section level2">
+<h2>1.3 The For Statement</h2>
+<p>There are plenty of different ways to write a program for a particular
+task. Let’s try a variation on the temperature converter.</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> print Fahrenheit-Celsius table <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int fahr;</p>
+<p>    for (fahr = 0; fahr &lt;= 300; fahr = fahr + 20)<br />
+        printf(“%3d %6.1f\n,” fahr, (5.0/9.0)<span class="bottom">*</span>(fahr-32));<br />
+}</p>
+<p>This produces the same answers, but it certainly looks different. One
+major change is the elimination of most of the variables; only <span class="code">fahr</span> remains, and we have made it an <span class="code">int</span>. The lower and upper limits and the step size
+appear only as constants in the <span class="code">for</span> statement,
+itself a new construction, and the expression that computes the Celsius
+temperature now appears as the third argument of <span class="code">printf</span> instead of as a separate assignment
+statement.</p>
+<p>This last change is an instance of a general rule—in any context where
+it is <span id="page_14"></span>permissible to use the value of a
+variable of some type, you can use a more complicated expression of that
+type. Since the third argument of <span class="code">printf</span> must
+be a floating-point value to match the <span class="code">%6.1f</span>,
+any floating-point expression can occur there.</p>
+<p>The <span class="code">for</span> statement is a loop, a generalization
+of the <span class="code">while</span>. If you compare it to the earlier
+<span class="code">while</span>, its operation should be clear. Within
+the parentheses, there are three parts, separated by semicolons. The
+first part, the initialization</p>
+<p>fahr = 0</p>
+<p>is done once, before the loop proper is entered. The second part is the
+test or condition that controls the loop:</p>
+<p>fahr &lt;= 300</p>
+<p>This condition is evaluated; if it is true, the body of the loop (here a
+single <span class="code">printf</span>) is executed. Then the increment
+step</p>
+<p>fahr = fahr + 20</p>
+<p>is executed, and the condition re-evaluated. The loop terminates if the
+condition has become false. As with the <span class="code">while</span>,
+the body of the loop can be a single statement, or a group of statements
+enclosed in braces. The initialization, condition, and increment can be
+any expressions.</p>
+<p>The choice between <span class="code">while</span> and <span class="code">for</span> is arbitrary, based on which seems clearer. The
+<span class="code">for</span> is usually appropriate for loops in which
+the initialization and increment are single statements and logically
+related, since it is more compact than <span class="code">while</span>
+and it keeps the loop control statements together in one place.</p>
+<p><strong>Exercise 1-5</strong>.</p>
+<p>Modify the temperature conversion program to print the
+table in reverse order, that is, from 300 degrees to 0.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-05/reverse_temperature.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    float fahr, celsius;
+    float lower, upper, step;
+
+    lower = 0; /* lower limit of temperatuire scale */
+    upper = 300; /* upper limit */
+    step = 20; /* step size */
+
+    printf(&quot;  fahr      celsius\n&quot;);
+
+    fahr = upper;
+    while (fahr &gt;= lower) {
+        celsius = (5.0 / 9.0) * (fahr - 32.0);
+        printf(&quot;%3.0f %6.1f\n&quot;, fahr, celsius);
+        fahr = fahr - step;
+    }
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-05/reverse_temperature.c -o Chapter1/Exercise\ 1-05/reverse_temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-05/reverse_temperature</code></pre>
+<pre><code>  fahr      celsius
+300  148.9
+280  137.8
+260  126.7
+240  115.6
+220  104.4
+200   93.3
+180   82.2
+160   71.1
+140   60.0
+120   48.9
+100   37.8
+ 80   26.7
+ 60   15.6
+ 40    4.4
+ 20   -6.7
+  0  -17.8</code></pre>
+</div>
+<div id="symbolic-constants" class="section level2">
+<h2>1.4 Symbolic Constants</h2>
+<p>A final observation before we leave temperature conversion forever. It’s
+bad practice to bury “magic numbers” like 300 and 20 in a program; they
+convey little information to someone who might have to read the program
+later, and they are hard to change in a systematic way. One way to deal
+with magic numbers is to give them meaningful names. A <span class="code">#define</span> line defines a <em>symbolic name</em> or <em>symbolic
+constant</em> to be a particular string of characters:</p>
+<p>#define  <span class="courem">name</span>  <span class="courem">replacement text</span></p>
+<p>Thereafter, any occurrence of <em>name</em> (not in quotes and not part of
+another name) will be replaced by the corresponding <em>replacement text</em>.
+The <em>name</em> has the same form as a variable name: a sequence of letters
+and digits that begins with a letter. The <em>replacement</em> <em>text</em> can be
+any sequence of characters; it is not limited to numbers.<span id="page_15"></span></p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#define   LOWER  0       /<span class="bottom">*</span> lower limit of table <span class="bottom">*</span>/<br />
+#define   UPPER  300     /<span class="bottom">*</span> upper limit <span class="bottom">*</span>/<br />
+#define   STEP   20      /<span class="bottom">*</span> step size <span class="bottom">*</span>/</p>
+<p>/<span class="bottom">*</span> print Fahrenheit-Celsius table <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int fahr;</p>
+<p>    for (fahr = LOWER; fahr &lt;= UPPER; fahr = fahr + STEP)<br />
+        printf(“%3d %6.1f\n,” fahr, (5.0/9.0)<span class="bottom">*</span>(fahr-32));<br />
+}</p>
+<p>The quantities <span class="code">LOWER</span>, <span class="code">UPPER</span> and <span class="code">STEP</span> are
+symbolic constants, not variables, so they do not appear in
+declarations. Symbolic constant names are conventionally written in
+upper case so they can be readily distinguished from lower case variable
+names. Notice that there is no semicolon at the end of a <span class="code">#define</span> line.</p>
+</div>
+<div id="character-input-and-output" class="section level2">
+<h2>1.5 Character Input and Output</h2>
+<p>We are now going to consider a family of related programs for processing
+character data. You will find that many programs are just expanded
+versions of the prototypes that we discuss here.</p>
+<p>The model of input and output supported by the standard library is very
+simple. Text input or output, regardless of where it originates or where
+it goes to, is dealt with as streams of characters. A <em>text stream</em> is a
+sequence of characters divided into lines; each line consists of zero or
+more characters followed by a newline character. It is the
+responsibility of the library to make each input or output stream
+conform to this model; the C programmer using the library need not worry
+about how lines are represented outside the program.</p>
+<p>The standard library provides several functions for reading or writing
+one character at a time, of which <span class="code">getchar</span> and
+<span class="code">putchar</span> are the simplest. Each time it is
+called, <span class="code">getchar</span> reads the <em>next input
+character</em> from a text stream and returns that as its value. That is,
+after</p>
+<p>c = getchar()</p>
+<p>the variable <span class="code">c</span> contains the next character of
+input. The characters normally come from the keyboard; input from files
+is discussed in Chapter 7.</p>
+<p>The function <span class="code">putchar</span> prints a character each
+time it is called:</p>
+<p>putchar(c)</p>
+<p>prints the contents of the integer variable <span class="code">c</span>
+as a character, usually on the screen. Calls to <span class="code">putchar</span> and <span class="code">printf</span> may be
+interleaved; the output will <span id="page_16"></span>appear in the
+order in which the calls are made.</p>
+<div id="file-copying" class="section level3">
+<h3>1.5.1 File Copying</h3>
+<p>Given <span class="code">getchar</span> and <span class="code">putchar</span>, you can write a surprising amount of useful
+code without knowing anything more about input and output. The simplest
+example is a program that copies its input to its output one character
+at a time:</p>
+<p><em>read a character</em><br />
+<span class="code">while </span>(<em>character is not end-of-file indicator</em>)<br />
+         <em>output the character just read</em><br />
+         <em>read a character</em></p>
+<p>Converting this into C gives</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> copy input to output; 1st version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int c;</p>
+<p>    c = getchar();<br />
+    while (c != EOF) {<br />
+        putchar(c);<br />
+        c = getchar();<br />
+    }<br />
+}</p>
+<p>The relational operator <span class="code">!=</span> means “not equal
+to.”</p>
+<p>What appears to be a character on the keyboard or screen is of course,
+like everything else, stored internally just as a bit pattern. The type
+<span class="code">char</span> is specifically meant for storing such
+character data, but any integer type can be used. We used <span class="code">int</span> for a subtle but important reason.</p>
+<p>The problem is distinguishing the end of the input from valid data. The
+solution is that <span class="code">getchar</span> returns a distinctive
+value when there is no more input, a value that cannot be confused with
+any real character. This value is called <span class="code">EOF</span>,
+for “end of file.” We must declare <span class="code">c</span> to be a
+type big enough to hold any value that <span class="code">getchar</span>
+returns. We can’t use <span class="code">char</span> since <span class="code">c</span> must be big enough to hold <span class="code">EOF</span> in addition to any possible <span class="code">char</span>. Therefore we use <span class="code">int</span>.</p>
+<p><span class="code">EOF</span> is an integer defined in <span class="code">&lt;stdio.h&gt;</span>, but the specific numeric value doesn’t
+matter as long as it is not the same as any <span class="code">char</span> value. By using the symbolic constant, we are
+assured that nothing in the program depends on the specific numeric
+value.</p>
+<p>The program for copying would be written more concisely by experienced C
+programmers. In C, any assignment, such as</p>
+<p>c = getchar()</p>
+<p><span id="page_17"></span>is an expression and has a value, which is the
+value of the left hand side after the assignment. This means that an
+assignment can appear as part of a larger expression. If the assignment
+of a character to <span class="code">c</span> is put inside the test
+part of a <span class="code">while</span> loop, the copy program can be
+written this way:</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> copy input to output; 2nd version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int c;</p>
+<p>    while ((c = getchar()) != EOF)<br />
+        putchar(c);<br />
+}</p>
+<p>The <span class="code">while</span> gets a character, assigns it to
+<span class="code">c</span>, and then tests whether the character was
+the end-of-file signal. If it was not, the body of the <span class="code">while</span> is executed, printing the character. The <span class="code">while</span> then repeats. When the end of the input is
+finally reached, the <span class="code">while</span> terminates and so
+does <span class="code">main</span>.</p>
+<p>This version centralizes the input—there is now only one reference to
+<span class="code">getchar</span>—and shrinks the program. The resulting
+program is more compact, and, once the idiom is mastered, easier to
+read. You’ll see this style often. (It’s possible to get carried away
+and create impenetrable code, however, a tendency that we will try to
+curb.)</p>
+<p>The parentheses around the assignment within the condition are
+necessary. The <em>precedence</em> of <span class="code">!=</span> is higher
+than that of <span class="code">=</span>, which means that in the
+absence of parentheses the relational test <span class="code">!=</span>
+would be done before the assignment <span class="code">=</span>. So the
+statement</p>
+<p>c = getchar() != EOF</p>
+<p>is equivalent to</p>
+<p>c = (getchar() != EOF)</p>
+<p>This has the undesired effect of setting <span class="code">c</span> to
+0 or 1, depending on whether or not the call of <span class="code">getchar</span> encountered end of file. (More on this in Chapter
+2.)</p>
+<p><strong>Exercise 1-6</strong>.</p>
+<p>Verify that the expression <span class="code">getchar() != EOF</span> is 0 or 1.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-06/eof.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf(&quot;Please enter a character:\n&quot;);
+    printf(&quot;The expression \&quot;getchar() != EOF\&quot; is %d.\n&quot;, getchar() != EOF);
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-06/eof.c -o Chapter1/Exercise\ 1-06/eof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-06/eof</code></pre>
+<pre><code>Please enter a character:</code></pre>
+<p><strong>Exercise 1-7</strong>.</p>
+<p>Write a program to print the value of <span class="code">EOF</span>.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-07/eof.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf(&quot;The value of EOF is %d.\n&quot;, EOF);
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-07/eof.c -o Chapter1/Exercise\ 1-07/eof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-07/eof</code></pre>
+<pre><code>The value of EOF is -1.</code></pre>
+</div>
+<div id="character-counting" class="section level3">
+<h3>1.5.2 Character Counting</h3>
+<p>The next program counts characters; it is similar to the copy
+program.<span id="page_18"></span></p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> count characters in input; 1st version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    long nc;</p>
+<p>    nc = 0;<br />
+    while (getchar() != EOF)<br />
+        ++nc;<br />
+    printf(“%ld\n,” nc);<br />
+}</p>
+<p>The statement</p>
+<p>++nc;</p>
+<p>presents a new operator, <span class="code">++</span>, which means
+<em>increment</em> <em>by one.</em> You could instead write <span class="code">nc = nc + 1 </span> but <span class="code">++nc</span> is more concise and often
+more efficient. There is a corresponding operator <span class="code">–</span> to decrement by 1. The operators <span class="code">++</span> and <span class="code">–</span> can be either
+prefix operators (<span class="code">++nc</span>) or postfix (<span class="code">nc++</span>); these two forms have different values in
+expressions, as will be shown in Chapter
+2,but <span class="code">++nc</span> and <span class="code">nc++</span>
+both increment <span class="code">nc</span>. For the moment we will
+stick to the prefix form.</p>
+<p>The character counting program accumulates its count in a <span class="code">long</span> variable instead of an <span class="code">int</span>. <span class="code">long</span> integers are at
+least 32 bits. Although on some machines, <span class="code">int</span>
+and <span class="code">long</span> are the same size, on others an <span class="code">int</span> is 16 bits, with a maximum value of 32767, and
+it would take relatively little input to overflow an <span class="code">int</span> counter. The conversion specification <span class="code">%ld</span> tells <span class="code">printf</span> that the
+corresponding argument is a <span class="code">long</span> integer.</p>
+<p>It may be possible to cope with even bigger numbers by using a <span class="code">double</span> (double precision <span class="code">float</span>). We will also use a <span class="code">for</span> statement instead of a <span class="code">while</span>, to illustrate another way to write the loop.</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> count characters in input; 2nd version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    double nc;</p>
+<p>    for (nc = 0; getchar() != EOF<span class="temp">;</span> ++nc)<br />
+        ;<br />
+    printf(“%.0f\n,” nc);<br />
+}</p>
+<p><span class="code">printf</span> uses <span class="code">%f</span> for
+both <span class="code">float</span> and <span class="code">double;
+%.0f</span> suppresses printing of the decimal point and the fraction
+part, which is zero.</p>
+<p>The body of this <span class="code">for</span> loop is empty, because
+all of the work is done in the test and increment parts. But the
+grammatical rules of C require that a <span class="code">for</span>
+statement have a body. The isolated semicolon, called a <em>null
+statement</em>, is there <span id="page_19"></span>to satisfy that
+requirement. We put it on a separate line to make it visible.</p>
+<p>Before we leave the character counting program, observe that if the
+input contains no characters, the <span class="code">while</span> or
+<span class="code">for</span> test fails on the very first call to <span class="code">getchar</span>, and the program produces zero, the right
+answer. This is important. One of the nice things about <span class="code">while</span> and <span class="code">for</span> is that they
+test at the top of the loop, before proceeding with the body. If there
+is nothing to do, nothing is done, even if that means never going
+through the loop body. Programs should act intelligently when given
+zero-length input. The <span class="code">while</span> and <span class="code">for</span> statements help ensure that programs do
+reasonable things with boundary conditions.</p>
+</div>
+<div id="line-counting" class="section level3">
+<h3>1.5.3 Line Counting</h3>
+<p>The next program counts input lines. As we mentioned above, the standard
+library ensures that an input text stream appears as a sequence of
+lines, each terminated by a newline. Hence, counting lines is just
+counting newlines:</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> count lines in input <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int c, nl;</p>
+<p>    nl = 0;<br />
+    while ((c = getchar()) != EOF)<br />
+        if (c == ′\n′)<br />
+            ++nl;<br />
+    printf(“%d\n,” nl);<br />
+}</p>
+<p>The body of the <span class="code">while</span> now consists of an <span class="code">if</span>, which in turn controls the increment <span class="code">++nl</span>. The <span class="code">if</span> statement
+tests the parenthesized condition, and if the condition is true,
+executes the statement (or group of statements in braces) that follows.
+We have again indented to show what is controlled by what.</p>
+<p>The double equals sign <span class="code">==</span> is the C notation
+for “is equal to” (like Pascal’s single <span class="code">=</span> or
+Fortran’s <span class="code">.EQ.</span>). This symbol is used to
+distinguish the equality test from the single <span class="code">=</span> that C uses for assignment. A word of caution:
+newcomers to C occasionally write <span class="code">=</span> when they
+mean <span class="code">==</span>. As we will see in Chapter 2,
+the result is usually a legal expression, so you will get no warning.</p>
+<p>A character written between single quotes represents an integer value
+equal to the numerical value of the character in the machine’s character
+set. This is called a <em>character constant,</em> although it is just another
+way to write a small integer. So, for example, <span class="code">′A′</span> is a character constant; in the ASCII character
+set its value is 65, the internal representation of the character <span class="code">A</span>. Of course <span class="code">′A′</span> is to be
+preferred over <span class="code">65</span>: its meaning is obvious, and
+it is independent of a particular character set.</p>
+<p>The escape sequences used in string constants are also legal in
+character <span id="page_20"></span>constants, so <span class="code">′\n′</span> stands for the value of the newline character,
+which is 10 in ASCII. You should note carefully that <span class="code">′\n′</span> is a single character, and in expressions is
+just an integer; on the other hand, <span class="code">“\n”</span> is a
+string constant that happens to contain only one character. The topic of
+strings versus characters is discussed further in Chapter 2.</p>
+<p><strong>Exercise 1-8</strong>. Write a program to count blanks, tabs, and newlines.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-08/count.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c, bl, tl, nl;
+    bl = 0;
+    tl = 0;
+    nl = 0;
+
+    printf(&quot;Input some characters, then press Ctrl+D.\n&quot;);
+    while ((c = getchar()) != EOF)
+        if (c == &#39; &#39;)
+            ++bl;
+        else if (c == &#39;\t&#39;)
+            ++tl;
+        else if (c == &#39;\n&#39;)
+            ++nl;
+
+    printf(&quot;Count of blanks is %d, count of tabs is %d, count of newlines is %d.\n&quot;, bl, tl, nl);
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-08/count.c -o Chapter1/Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-08/count</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+<p><strong>Exercise 1-9</strong>. Write a program to copy its input to its output,
+replacing each string of one or more blanks by a single blank.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-09/blank.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c, blank_recieved;
+    blank_recieved = 0;
+    printf(&quot;Input some characters, when you finishes, press Ctrl+D.\n&quot;);
+    while ((c = getchar()) != EOF)
+        if (c == &#39; &#39;) {
+            if (!blank_recieved) {
+                blank_recieved = 1;
+                putchar(c);
+            }
+        } else {
+            blank_recieved = 0;
+            putchar(c);
+        }
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-08/count.c -o Chapter1/Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-08/count</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+<p><strong>Exercise 1-10</strong>. Write a program to copy its input to its output,
+replacing each tab by <span class="code">\t</span>, each backspace by
+<span class="code">\b</span>, and each backslash by <span class="code">\\</span>. This makes tabs and backspaces visible in an
+unambiguous way.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-10/replace.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c;
+
+    printf(&quot;Input some characters, then press Ctrl+D.\n&quot;);
+    while ((c = getchar()) != EOF)
+        if (c == &#39;\t&#39;)
+            printf(&quot;\\t&quot;);
+        else if (c == &#39;\b&#39;)
+            printf(&quot;\\b&quot;);
+        else if (c == &#39;\\&#39;)
+            printf(&quot;\\\\&quot;);
+        else
+            printf(&quot;%c&quot;, c);
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-10/replace.c -o Chapter1/Exercise\ 1-10/replace</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-10/replace</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+</div>
+<div id="word-counting" class="section level3">
+<h3>1.5.4 Word Counting</h3>
+<p>The fourth in our series of useful programs counts lines, words, and
+characters, with the loose definition that a word is any sequence of
+characters that does not contain a blank, tab or newline. This is a
+bare-bones version of the UNIX program <span class="code">wc</span>.</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#define IN   1   /<span class="bottom">*</span> inside a word <span class="bottom">*</span>/<br />
+#define OUT  0   /<span class="bottom">*</span> outside a word <span class="bottom">*</span>/</p>
+<p>/<span class="bottom">*</span> count lines, words, and characters in input <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int c, nl, nw, nc, state;</p>
+<p>    state = OUT;<br />
+    nl = nw = nc = 0;<br />
+    while ((c = getchar()) != EOF) {<br />
+        ++nc;<br />
+        if (c == ′\n′)<br />
+            ++nl;<br />
+        if (c == ′ ′ || c == ′\n′ || c == ′\t′)<br />
+            state = OUT;<br />
+        else if (state == OUT) {<br />
+            state = IN;<br />
+            ++nw;<br />
+        }<br />
+    }<br />
+    printf(“%d %d %d\n,” nl, nw, nc);<br />
+}</p>
+<p>Every time the program encounters the first character of a word, it
+counts <span id="page_21"></span>one more word. The variable <span class="code">state</span> records whether the program is currently in a
+word or not; initially it is “not in a word,” which is assigned the
+value <span class="code">OUT</span>. We prefer the symbolic constants
+<span class="code">IN</span> and <span class="code">OUT</span> to the
+literal values 1 and 0 because they make the program more readable. In a
+program as tiny as this, it makes little difference, but in larger
+programs, the increase in clarity is well worth the modest extra effort
+to write it this way from the beginning. You’ll also find that it’s
+easier to make extensive changes in programs where magic numbers appear
+only as symbolic constants.</p>
+<p>The line</p>
+<p>nl = nw = nc = 0;</p>
+<p>sets all three variables to zero. This is not a special case, but a
+consequence of the fact that an assignment is an expression with a value
+and assignments associate from right to left. It’s as if we had written</p>
+<p>nl = (nw = (nc = 0));</p>
+<p>The operator <span class="code">¦¦</span> means OR, so the line</p>
+<p>if (c == ′ ′ || c == ′\n′ || c == ′\t′)</p>
+<p>says “if <span class="code">c</span> is a blank <em>or</em> <span class="code">c</span> is a newline <em>or</em> <span class="code">c</span> is a
+tab.” (Recall that the escape sequence <span class="code">\t</span> is
+a visible representation of the tab character.) There is a corresponding
+operator <span class="code">&amp;&amp;</span> for <span class="code">AND</span>;
+its precedence is just higher than <span class="code">||</span>.
+Expressions connected by <span class="code">&amp;&amp;</span> or <span class="code">||</span> are evaluated left to right, and it is guaranteed
+that evaluation will stop as soon as the truth or falsehood is known. If
+<span class="code">c</span> is a blank, there is no need to test whether
+it is a newline or tab, so these tests are not made. This isn’t
+particularly important here, but is significant in more complicated
+situations, as we will soon see.</p>
+<p>The example also shows an <span class="code">else</span>, which
+specifies an alternative action if the condition part of an <span class="code">if</span> statement is false. The general form is</p>
+<p><span class="code">if </span>(<em>expression</em>)<br />
+        <em>statement</em><sub><span class="small">1</span></sub><br />
+<span class="code">else</span><br />
+        <em>statement</em><sub><span class="small">2</span></sub></p>
+<p>One and only one of the two statements associated with an <span class="code">if-else</span> is performed. If the <em>expression</em> is true,
+<em>statement</em><sub><span class="small">1</span></sub> is executed; if not,
+<em>statement</em><sub><span class="small">2</span></sub> is executed. Each
+<em>statement</em> can be a single statement or several in braces. In the word
+count program, the one after the <span class="code">else</span> is an
+<span class="code">if</span> that controls two statements in braces.</p>
+<p><strong>Exercise 1-11</strong>. How would you test the word count program? What kinds
+of input are most likely to uncover bugs if there are any?</p>
+<p><strong>Exercise 1-12</strong>. Write a program that prints its input one word per
+line.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-12/one_word_per_line.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c, linestarted;
+
+    linestarted = 0;
+    printf(&quot;Input some characters, then press Ctrl+D.\n&quot;);
+    while ((c = getchar()) != EOF)
+        if (c == &#39; &#39; || c == &#39;\t&#39; || c == &#39;\n&#39;) {
+            if (!linestarted) {
+                putchar(&#39;\n&#39;);
+                linestarted = 1;
+            }
+        } else {
+            putchar(c);
+            linestarted = 0;
+        }
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-12/one_word_per_line.c -o Chapter1/Exercise\ 1-12/one_word_per_line</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-12/one_word_per_line</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+</div>
+<div id="arrays" class="section level3">
+<h3>1.6 Arrays</h3>
+<p>Let us write a program to count the number of occurrences of each digit,
+of white space characters (blank, tab, newline), and of all other
+characters. This is artificial, but it permits us to illustrate several
+aspects of C in one program.</p>
+<p>There are twelve categories of input, so it is convenient to use an
+array to hold the number of occurrences of each digit, rather than ten
+individual variables. Here is one version of the program:</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>/<span class="bottom">*</span> count digits, white space, others <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int c, i, nwhite, nother;<br />
+    int ndigit<span class="math display">\[10\]</span>;</p>
+<p>    nwhite = nother = 0;<br />
+    for (i = 0; i &lt; 10; ++i)<br />
+        ndigit<span class="math display">\[i\]</span> = 0;</p>
+<p>    while ((c = getchar()) != EOF)<br />
+        if (c &gt;= ′0′ &amp;&amp; c &lt;= ′9′)<br />
+            ++ndigit<span class="math display">\[c-′0′\]</span>;<br />
+        else if (c == ′ ′ || c == ′\n′ || c == ′\t′)<br />
+            ++nwhite;<br />
+        else<br />
+            ++nother;</p>
+<p>    printf(“digits =”);<br />
+    for (i = 0; i &lt; 10; ++i)<br />
+        printf(“ %d,” ndigit<span class="math display">\[i\]</span>);<br />
+    printf(“, white space = %d, other = %d\n,”<br />
+        nwhite, nother);<br />
+}</p>
+<p>The output of this program on itself is</p>
+<p>digits = 9 3 0 0 0 0 0 0 0 1, white space = 123, other = 345</p>
+<p>The declaration</p>
+<p>int ndigit<span class="math display">\[10\]</span>;</p>
+<p>declares <span class="code">ndigit</span> to be an array of 10 integers.
+Array subscripts always start at zero in C, so the elements are <span class="code">ndigit<span class="math display">\[0\]</span></span>, <span class="code">ndigit<span class="math display">\[1\]</span></span>,
+…, <span class="code">ndigit<span class="math display">\[9\]</span></span>. This is reflected in the
+<span class="code">for</span> loops that initialize and print the array.</p>
+<p>A subscript can be any integer expression, which includes integer
+variables like <span class="code">i</span>, and integer constants.</p>
+<p>This particular program relies on the properties of the character
+representation of the digits. For example, the test<span id="page_23"></span></p>
+<p>if (c &gt;= ′0′ &amp;&amp; c &lt;= ′9′) <span class="courem">…</span></p>
+<p>determines whether the character in <span class="code">c</span> is a
+digit. If it is, the numeric value of that digit is</p>
+<p>c - ′0′</p>
+<p>This works only if <span class="code">′0′</span>, <span class="code">′1′</span>, …, <span class="code">′9′</span> have
+consecutive increasing values. Fortunately, this is true for all
+character sets.</p>
+<p>By definition, <span class="code">char</span>s are just small integers,
+so <span class="code">char</span> variables and constants are identical
+to <span class="code">int</span>s in arithmetic expressions. This is
+natural and convenient; for example, <span class="code">c-</span><span class="code">′0′</span> is an integer expression with a value between 0
+and 9 corresponding to the character <span class="code">′0′</span> to
+<span class="code">′9′</span> stored in <span class="code">c</span>, and
+is thus a valid subscript for the array <span class="code">ndigit</span>.</p>
+<p>The decision as to whether a character is a digit, white space, or
+something else is made with the sequence</p>
+<p>if (c &gt;= ′0′ &amp;&amp; c &lt;= ′9′)<br />
+    ++ndigit<span class="math display">\[c-′0′\]</span>;<br />
+else if (c == ′ ′ || c == ′\n′ || c == ′\t′)<br />
+    ++nwhite;<br />
+else<br />
+    ++nother;</p>
+<p>The pattern</p>
+<p><span class="code">if</span>  (<em>condition</em><sub><span class="small">1</span></sub>)<br />
+         <em>statement</em><sub><span class="small">1</span></sub><br />
+<span class="code">else if </span>(<em>condition</em><sub><span class="small">2</span></sub>)<br />
+         <em>statement</em><sub><span class="small">2</span></sub><br />
+<em>…</em><br />
+          <em>…</em><br />
+<span class="code">else</span><br />
+         <em>statement</em><sub><span class="small"><em>n</em></span></sub></p>
+<p>occurs frequently in programs as a way to express a multi-way decision.
+The <em>condition</em>s are evaluated in order from the top until some
+<em>condition</em> is satisfied; at that point the corresponding <em>statement</em>
+part is executed, and the entire construction is finished. (Any
+<em>statement</em> can be several statements enclosed in braces.) If none of
+the conditions is satisfied, the <em>statement</em> after the final <span class="code">else</span> is executed if it is present. If the final
+<span class="code">else</span> and <em>statement</em> are omitted, as in the
+word count program, no action takes place. There can be any number of</p>
+<p><span class="code">else if </span>(<em>condition</em>)<br />
+           <em>statement</em></p>
+<p>groups between the initial <span class="code">if</span> and the final
+<span class="code">else</span>.</p>
+<p>As a matter of style, it is advisable to format this construction as we
+have shown; if each <span class="code">if</span> were indented past the
+previous <span class="code">else</span>, a long sequence of decisions
+would march off the right side of the page.</p>
+<p><span id="page_24"></span>The <span class="code">switch</span>
+statement, to be discussed in Chapter 3,
+provides another way to write a multi-way branch that is particularly
+suitable when the condition is whether some integer or character
+expression matches one of a set of constants. For contrast, we will
+present a <span class="code">switch</span> version of this program in
+Section 3.4.</p>
+<p><strong>Exercise 1-13</strong>. Write a program to print a histogram of the lengths
+of words in its input. It is easy to draw the histogram with the bars
+horizontal; a vertical orientation is more challenging.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-13/word_length.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAX_LENGTH 15
+#define IN_WORD 1
+#define OUT_WORD 0
+
+int main(void)
+{
+    int c, word_in_out;
+    int word_length[MAX_LENGTH + 1];
+    int l;
+    int i, j;
+    unsigned int max_count;
+
+    for (i = 0; i &lt;= MAX_LENGTH; ++i)
+        word_length[i] = 0;
+
+    word_in_out = OUT_WORD;
+    printf(&quot;Input some characters, then press Ctrl+D.\n&quot;);
+    while (1) {
+        c = getchar();
+        if ((c &gt;= &#39;a&#39; &amp;&amp; c &lt;= &#39;z&#39;) || (c &gt;= &#39;A&#39; &amp;&amp; c &lt;= &#39;Z&#39;)) {
+            if (word_in_out == OUT_WORD) {
+                l = 0;
+                word_in_out = IN_WORD;
+            }
+            ++l;
+        } else {
+            if (word_in_out == IN_WORD) {
+                if (l &lt;= MAX_LENGTH)
+                    ++word_length[l - 1];
+                else
+                    ++word_length[MAX_LENGTH];
+                word_in_out = OUT_WORD;
+            }
+            if (c == EOF)
+                break;
+        }
+    }
+
+    printf(&quot;\nHorizontal histogram:\n\n&quot;);
+    printf(&quot; length | graph\n&quot;);
+    for (i = 0; i &lt;= MAX_LENGTH; ++i) {
+        if (i != MAX_LENGTH)
+            printf(&quot;     %2d | &quot;, i + 1);
+        else
+            printf(&quot;    &gt;%2d | &quot;, MAX_LENGTH);
+        for (j = 0; j &lt; word_length[i]; ++j)
+            putchar(&#39;+&#39;);
+        putchar(&#39;\n&#39;);
+    }
+
+    printf(&quot;\nVertical histogram:\n\n&quot;);
+    max_count = 0;
+    for (i = 0; i &lt;= MAX_LENGTH; ++i)
+        if (word_length[i] &gt; max_count)
+            max_count = word_length[i];
+
+    for (i = 0; i &lt; max_count; ++i) {
+        printf(&quot;  %2u | &quot;, max_count - i);
+        for (j = 0; j &lt;= MAX_LENGTH; ++j)
+            if (word_length[j] &gt;= max_count - i)
+                printf(&quot;  +&quot;);
+            else
+                printf(&quot;   &quot;);
+        printf(&quot;\n&quot;);
+    }
+
+    printf(&quot; ------&quot;);
+    for (i = 0; i &lt;= MAX_LENGTH; ++i)
+        printf(&quot;---&quot;);
+    printf(&quot;--\n&quot;);
+
+    printf(&quot;       &quot;);
+    for (i = 0; i &lt; MAX_LENGTH;)
+        printf(&quot; %2u&quot;, ++i);
+    printf(&quot; &gt;%2u&quot;, MAX_LENGTH);
+    printf(&quot;\n&quot;);
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-13/word_length.c -o Chapter1/Exercise\ 1-13/word_length</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-13/word_length</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+<p><strong>Exercise 1-14</strong>. Write a program to print a histogram of the
+frequencies of different characters in its input.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-14/frequency.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define NUM_CHARS 128
+#define IN_WORD 1
+#define OUT_WORD 0
+
+int main(void)
+{
+    int c;
+    int char_frequencies[NUM_CHARS + 1];
+    int i;
+
+    for (i = 0; i &lt;= NUM_CHARS; ++i)
+        char_frequencies[i] = 0;
+
+    printf(&quot;Input some characters, then press Ctrl+D.\n&quot;);
+    while ((c = getchar()) != EOF)
+        ++char_frequencies[c];
+
+    printf(&quot;\n ASCII | Count\n&quot;);
+    for (i = 0; i &lt;= NUM_CHARS; ++i) 
+        if (char_frequencies[i] &gt; 0)
+            printf(&quot; %5d : %5d\n&quot;, i, char_frequencies[i]);
+
+    return 0;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-14/frequency.c -o Chapter1/Exercise\ 1-14/frequency</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-14/frequency</code></pre>
+<pre><code>Input some characters, then press Ctrl+D.</code></pre>
+</div>
+<div id="functions" class="section level3">
+<h3>1.7 Functions</h3>
+<p>In C, a function is equivalent to a subroutine or function in Fortran,
+or a procedure or function in Pascal. A function provides a convenient
+way to encapsulate some computation, which can then be used without
+worrying about its implementation. With properly designed functions, it
+is possible to ignore <em>how</em> a job is done; knowing <em>what</em> is done is
+sufficient. C makes the use of functions easy, convenient and efficient;
+you will often see a short function defined and called only once, just
+because it clarifies some piece of code.</p>
+<p>So far we have used only functions like <span class="code">printf</span>, <span class="code">getchar</span>, and <span class="code">putchar</span> that have been provided for us; now it’s
+time to write a few of our own. Since C has no exponentiation operator
+like the <span class="code"><span class="bottom">*</span><span class="bottom">*</span></span> of Fortran, let us illustrate the
+mechanics of function definition by writing a function <span class="code">power(m,n)</span> to raise an integer <span class="code">m</span> to a positive integer power <span class="code">n</span>. That is, the value of <span class="code">power(2,5)</span> is 32. This function is not a practical
+exponentiation routine, since it handles only positive powers of small
+integers, but it’s good enough for illustration. (The standard library
+contains a function <span class="code">pow(x,y)</span> that computes
+<span class="code">x<sup>y</sup></span>.)</p>
+<p>Here is the function <span class="code">power</span> and a main program
+to exercise it, so you can see the whole structure at once.<span id="page_25"></span></p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>int power(int m, int n);</p>
+<p>/<span class="bottom">*</span> test power function <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int i;</p>
+<p>    for (i = 0; i &lt; 10; ++i)<br />
+        printf(“%d %d %d\n,” i, power(2,i), power(-3,i));<br />
+    return 0;<br />
+}</p>
+<p>/<span class="bottom">*</span> power:  raise base to n-th power; n &gt;= 0 <span class="bottom">*</span>/<br />
+int power(int base, int n)<br />
+{<br />
+    int i, p;</p>
+<p>    p = 1;<br />
+    for (i = 1; i &lt;= n; ++i)<br />
+        p = p <span class="bottom">*</span> base;<br />
+    return p;<br />
+}</p>
+<p>A function definition has this form:</p>
+<p><em>return-type   function-name</em>(<em>parameter declarations, if any</em>)<br />
+{<br />
+          <em>declarations</em><br />
+          <em>statements</em><br />
+}</p>
+<p>Function definitions can appear in any order, and in one source file or
+several, although no function can be split between files. If the source
+program appears in several files, you may have to say more to compile
+and load it than if it all appears in one, but that is an operating
+system matter, not a language attribute. For the moment, we will assume
+that both functions are in the same file, so whatever you have learned
+about running C programs will still work.</p>
+<p>The function <span class="code">power</span> is called twice by <span class="code">main</span>, in the line</p>
+<p>printf(“%d %d %d\n,” i, power(2,i), power(-3,i));</p>
+<p>Each call passes two arguments to <span class="code">power</span>, which
+each time returns an integer to be formatted and printed. In an
+expression, <span class="code">power(2,i)</span> is an integer just as
+<span class="code">2</span> and <span class="code">i</span> are. (Not
+all functions produce an integer value; we will take this up in Chapter 4)</p>
+<p>The first line of <span class="code">power</span> itself,</p>
+<p>int power(int base, int n)</p>
+<p>declares the parameter types and names, and the type of the result that
+the function returns. The names used by <span class="code">power</span>
+for its parameters are local to <span class="code">power</span>, and are
+not visible to any other function: other routines can use the same names
+without conflict. This is also true of the variables <span class="code">i</span> and <span class="code">p</span>: the <span class="code">i</span> in <span class="code">power</span> is unrelated to
+the <span class="code">i</span> in <span class="code">main</span>.</p>
+<p>We will generally use <em>parameter</em> for a variable named in the
+parenthesized list in a function definition, and <em>argument</em> for the
+value used in a call of the function. The terms <em>formal argument</em> and
+<em>actual argument</em> are sometimes used for the same distinction.</p>
+<p>The value that <span class="code">power</span> computes is returned to
+<span class="code">main</span> by the <span class="code">return</span>
+statement. Any expression may follow <span class="code">return</span>:</p>
+<p><span class="code">return</span> <em>expression</em><span class="code">;</span></p>
+<p><span id="page_26"></span>A function need not return a value; a <span class="code">return</span> statement with no expression causes control,
+but no useful value, to be returned to the caller, as does “falling off
+the end” of a function by reaching the terminating right brace. And the
+calling function can ignore a value returned by a function.</p>
+<p>You may have noticed that there is a <span class="code">return</span>
+statement at the end of <span class="code">main</span>. Since <span class="code">main</span> is a function like any other, it may return a
+value to its caller, which is in effect the environment in which the
+program was executed. Typically, a return value of zero implies normal
+termination; non-zero values signal unusual or erroneous termination
+conditions. In the interests of simplicity, we have omitted <span class="code">return</span> statements from our <span class="code">main</span> functions up to this point, but we will include
+them hereafter, as a reminder that programs should return status to
+their environment.</p>
+<p>The declaration</p>
+<p>int power(int m, int n);</p>
+<p>just before <span class="code">main</span> says that <span class="code">power</span> is a function that expects two <span class="code">int</span> arguments and returns an <span class="code">int</span>. This declaration, which is called a <em>function
+prototype</em>, has to agree with the definition and uses of <span class="code">power</span>. It is an error if the definition of a
+function or any uses of it do not agree with its prototype.</p>
+<p>Parameter names need not agree. Indeed, parameter names are optional in
+a function prototype, so for the prototype we could have written</p>
+<p>int power(int, int);</p>
+<p>Well-chosen names are good documentation, however, so we will often use
+them.</p>
+<p>A note of history: The biggest change between ANSI C and earlier
+versions is how functions are declared and defined. In the original
+definition of C, the <span class="code">power</span> function would have
+been written like this:</p>
+<p>/<span class="bottom">*</span> power:  raise base to n-th power; n &gt;= 0 <span class="bottom">*</span>/<br />
+/<span class="bottom">*</span>         (old-style version) <span class="bottom">*</span>/<br />
+power(base, n)<br />
+int base, n;<br />
+{<br />
+    int i, p;</p>
+<p>    p = 1;<br />
+    for (i = 1; i &lt;= n; ++i)<br />
+        p = p <span class="bottom">*</span> base;<br />
+    return p;<br />
+}</p>
+<p>The parameters are named between the parentheses, and their types are
+declared before the opening left brace; undeclared parameters are taken
+as <span class="code">int</span>. (The body of the function is the same
+as before.)</p>
+<p>The declaration of <span class="code">power</span> at the beginning of
+the program would have looked like this:<span id="page_27"></span></p>
+<p>int power();</p>
+<p>No parameter list was permitted, so the compiler could not readily check
+that <span class="code">power</span> was being called correctly. Indeed,
+since by default <span class="code">power</span> would have been assumed
+to return an <span class="code">int</span>, the entire declaration might
+well have been omitted.</p>
+<p>The new syntax of function prototypes makes it much easier for a
+compiler to detect errors in the number of arguments or their types. The
+old style of declaration and definition still works in ANSI C, at least
+for a transition period, but we strongly recommend that you use the new
+form when you have a compiler that supports it.</p>
+<p><strong>Exercise 1-15</strong>. Rewrite the temperature conversion program of
+Section 1.2 to use a function for conversion.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-15/temperature.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+float ftoc(float fahr);
+
+int main(void)
+{
+    float fahr, celsius;
+    float lower, upper, step;
+    lower = 0; /* lower limit of temperatuire scale */
+    upper = 300; /* upper limit */
+    step = 20; /* step size */
+    fahr = lower;
+
+    while (fahr &lt;= upper) {
+        celsius = ftoc(fahr);
+        printf(&quot;%3.0f %6.1f\n&quot;, fahr, celsius);
+        fahr = fahr + step;
+    }
+
+    return 0;
+}
+
+float ftoc(float fahr)
+{
+    float celsius;
+    celsius = (5.0 / 9.0) * (fahr - 32.0);
+    return celsius;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-15/temperature.c -o Chapter1/Exercise\ 1-15/temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-15/temperature</code></pre>
+<pre><code>  0  -17.8
+ 20   -6.7
+ 40    4.4
+ 60   15.6
+ 80   26.7
+100   37.8
+120   48.9
+140   60.0
+160   71.1
+180   82.2
+200   93.3
+220  104.4
+240  115.6
+260  126.7
+280  137.8
+300  148.9</code></pre>
+</div>
+<div id="argumentscall-by-value" class="section level3">
+<h3>1.8 Arguments—Call by Value</h3>
+<p>One aspect of C functions may be unfamiliar to programmers who are used
+to some other languages, particularly Fortran. In C, all function
+arguments are passed “by value.” This means that the called function is
+given the values of its arguments in temporary variables rather than the
+originals. This leads to some different properties than are seen with
+“call by reference” languages like Fortran or with <span class="code">var</span> parameters in Pascal, in which the called
+routine has access to the original argument, not a local copy.</p>
+<p>The main distinction is that in C the called function cannot directly
+alter a variable in the calling function; it can only alter its private,
+temporary copy.</p>
+<p>Call by value is an asset, however, not a liability. It usually leads to
+more compact programs with fewer extraneous variables, because
+parameters can be treated as conveniently initialized local variables in
+the called routine. For example, here is a version of <span class="code">power</span> that makes use of this property.</p>
+<p>/<span class="bottom">*</span> power:  raise base to n-th power; n&gt;=0; version 2 <span class="bottom">*</span>/<br />
+int power(int base, int n)<br />
+{<br />
+    int p;</p>
+<p>    for (p = 1; n &gt; 0; –n)<br />
+        p = p <span class="bottom">*</span> base;<br />
+    return p;<br />
+}</p>
+<p>The parameter <span class="code">n</span> is used as a temporary
+variable, and is counted down (a <span class="code">for</span> loop that
+runs backwards) until it becomes zero; there is no longer a need for the
+variable <span class="code">i</span>. Whatever is done to <span class="code">n</span> inside <span class="code">power</span> has no
+effect on the argument that <span class="code">power</span> was
+originally called with.</p>
+<p>When necessary, it is possible to arrange for a function to modify a
+variable <span id="page_28"></span>in a calling routine. The caller must
+provide the <em>address</em> of the variable to be set (technically a <em>pointer</em>
+to the variable), and the called function must declare the parameter to
+be a pointer and access the variable indirectly through it. We will
+cover pointers in Chapter 5.</p>
+<p>The story is different for arrays. When the name of an array is used as
+an argument, the value passed to the function is the location or address
+of the beginning of the array—there is no copying of array elements. By
+subscripting this value, the function can access and alter any element
+of the array. This is the topic of the next section.</p>
+</div>
+<div id="character-arrays" class="section level3">
+<h3>1.9 Character Arrays</h3>
+<p>The most common type of array in C is the array of characters. To
+illustrate the use of character arrays and functions to manipulate them,
+let’s write a program that reads a set of text lines and prints the
+longest. The outline is simple enough:</p>
+<p><span class="code">while</span>  (<em>there’s another line</em>)<br />
+         <span class="code">if</span>  (<em>it’s longer than the previous longest</em>)<br />
+                 <em>save it</em><br />
+                 <em>save its length</em><br />
+<em>print longest line</em></p>
+<p>This outline makes it clear that the program divides naturally into
+pieces. One piece gets a new line, another tests it, another saves it,
+and the rest controls the process.</p>
+<p>Since things divide so nicely, it would be well to write them that way
+too. Accordingly, let us first write a separate function <span class="code">getline</span> to fetch the next line of input. We will try
+to make the function useful in other contexts. At the minimum, <span class="code">getline</span> has to return a signal about possible end of
+file; a more useful design would be to return the length of the line, or
+zero if end of file is encountered. Zero is an acceptable end-of-file
+return because it is never a valid line length. Every text line has at
+least one character; even a line containing only a newline has length 1.</p>
+<p>When we find a line that is longer than the previous longest line, it
+must be saved somewhere. This suggests a second function, <span class="code">copy</span>, to copy the new line to a safe place.</p>
+<p>Finally, we need a main program to control <span class="code">getline</span> and <span class="code">copy</span>. Here is
+the result.<span id="page_29"></span></p>
+<p>#include &lt;stdio.h&gt;<br />
+#define MAXLINE 1000    /<span class="bottom">*</span> maximum input line size <span class="bottom">*</span>/</p>
+<p>int getline(char line[], int maxline);<br />
+void copy(char to[], char from[]);</p>
+<p>/<span class="bottom">*</span> print longest input line <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int len;            /<span class="bottom">*</span> current line length <span class="bottom">*</span>/<br />
+    int max;            /<span class="bottom">*</span> maximum length seen so far <span class="bottom">*</span>/<br />
+    char line<span class="math display">\[MAXLINE\]</span>;     /<span class="bottom">*</span> current input line <span class="bottom">*</span>/<br />
+    char longest<span class="math display">\[MAXLINE\]</span>;  /<span class="bottom">*</span> longest line saved here <span class="bottom">*</span>/</p>
+<p>    max = 0;<br />
+    while ((len = getline(line, MAXLINE)) &gt; 0)<br />
+        if (len &gt; max) {<br />
+            max = len;<br />
+            copy(longest, line);<br />
+        }<br />
+    if (max &gt; 0)    /<span class="bottom">*</span> there was a line <span class="bottom">*</span>/<br />
+        printf(“%s,” longest);<br />
+    return 0;<br />
+}</p>
+<p>/<span class="bottom">*</span> getline:  read a line into s, return length <span class="bottom">*</span>/<br />
+int getline(char s[], int lim)<br />
+{<br />
+    int c, i;</p>
+<p>    for (i=0; i&lt;lim-1 &amp;&amp; (c=getchar())!=EOF &amp;&amp; c!=′\n′; ++i)<br />
+        s<span class="math display">\[i\]</span> = c;<br />
+    if (c == ′\n′) {<br />
+        s<span class="math display">\[i\]</span> = c;<br />
+        ++i;<br />
+    }<br />
+    s<span class="math display">\[i\]</span> = ′\0′;<br />
+    return i;<br />
+}</p>
+<p>/<span class="bottom">*</span> copy:  copy ′from′ into ′to′; assume to is big enough <span class="bottom">*</span>/<br />
+void copy(char to[], char from[])<br />
+{<br />
+    int i;</p>
+<p>    i = 0;<br />
+    while ((to<span class="math display">\[i\]</span> = from<span class="math display">\[i\]</span>) != ′\0′)<br />
+        ++i;<br />
+}</p>
+<p><span id="page_30"></span>The functions <span class="code">getline</span> and <span class="code">copy</span> are
+declared at the beginning of the program, which we assume is contained
+in one file.</p>
+<p><span class="code">main</span> and <span class="code">getline</span>
+communicate through a pair of arguments and a returned value. In <span class="code">getline</span>, the arguments are declared by the line</p>
+<p>   int getline(char s[], int lim)</p>
+<p>which specifies that the first argument, <span class="code">s</span>, is
+an array, and the second, <span class="code">lim</span>, is an integer.
+The purpose of supplying the size of an array in a declaration is to set
+aside storage. The length of the array <span class="code">s</span> is
+not necessary in <span class="code">getline</span> since its size is set
+in <span class="code">main</span>. <span class="code">getline</span>
+uses <span class="code">return</span> to send a value back to the
+caller, just as the function <span class="code">power</span> did. This
+line also declares that <span class="code">getline</span> returns an
+<span class="code">int</span>; since <span class="code">int</span> is
+the default return type, it could be omitted.</p>
+<p>Some functions return a useful value; others, like <span class="code">copy</span>, are used only for their effect and return no
+value. The return type of <span class="code">copy</span> is <span class="code">void</span>, which states explicitly that no value is
+returned.</p>
+<p><span class="code">getline</span> puts the character <span class="code">′\0′</span> (the <em>null character</em>, whose value is zero) at
+the end of the array it is creating, to mark the end of the string of
+characters. This convention is also used by the C language: when a
+string constant like</p>
+<p>   “hello\n”</p>
+<p>appears in a C program, it is stored as an array of characters
+containing the characters of the string and terminated with a <span class="code">′\0′</span> to mark the end.</p>
+<p><span id="tch01_30"></span><img src="data:image/jpeg;base64,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ADhCSU0EBAAAAAAAFBwCAAACAAAcAgUACHVudGl0bGVkOEJJTQQlAAAAAAAQjP+hEUoa5CVseInK10sALzhCSU0D7QAAAAAAEABgAAAAAQACAGAAAAABAAI4QklNBCYAAAAAAA4AAAAAAAAAAAAAP4AAADhCSU0EDQAAAAAABAAAAB44QklNBBkAAAAAAAQAAAAeOEJJTQPzAAAAAAAJAAAAAAAAAAABADhCSU0nEAAAAAAACgABAAAAAAAAAAI4QklNA/UAAAAAAEgAL2ZmAAEAbGZmAAYAAAAAAAEAL2ZmAAEAoZmaAAYAAAAAAAEAMgAAAAEAWgAAAAYAAAAAAAEANQAAAAEALQAAAAYAAAAAAAE4QklNA/gAAAAAAHAAAP////////////////////////////8D6AAAAAD/////////////////////////////A+gAAAAA/////////////////////////////wPoAAAAAP////////////////////////////8D6AAAOEJJTQQIAAAAAAAQAAAAAQAAAkAAAAJAAAAAADhCSU0EHgAAAAAABAAAAAA4QklNBBoAAAAAA0UAAAAGAAAAAAAAAAAAAABQAAADEAAAAAgAdABjAGgAMAAxAF8AMwAwAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAMQAAAAUAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAbnVsbAAAAAIAAAAGYm91bmRzT2JqYwAAAAEAAAAAAABSY3QxAAAABAAAAABUb3AgbG9uZwAAAAAAAAAATGVmdGxvbmcAAAAAAAAAAEJ0b21sb25nAAAAUAAAAABSZ2h0bG9uZwAAAxAAAAAGc2xpY2VzVmxMcwAAAAFPYmpjAAAAAQAAAAAABXNsaWNlAAAAEgAAAAdzbGljZUlEbG9uZwAAAAAAAAAHZ3JvdXBJRGxvbmcAAAAAAAAABm9yaWdpbmVudW0AAAAMRVNsaWNlT3JpZ2luAAAADWF1dG9HZW5lcmF0ZWQAAAAAVHlwZWVudW0AAAAKRVNsaWNlVHlwZQAAAABJbWcgAAAABmJvdW5kc09iamMAAAABAAAAAAAAUmN0MQAAAAQAAAAAVG9wIGxvbmcAAAAAAAAAAExl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IHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIiB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyIgeG1wOkNyZWF0ZURhdGU9IjIwMTItMDUtMDFUMTA6NTQ6MDItMDQ6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDEyLTA4LTEwVDEwOjQ5OjA1KzA1OjMwIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIElsbHVzdHJhdG9yIENTNSIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxMi0wOC0xMFQxMDo0OTowNSswNTozMCIgcGRmOlByb2R1Y2VyPSJBY3JvYmF0IERpc3RpbGxlciA5LjIuMCAoTWFjaW50b3NoKSIgZGM6Zm9ybWF0PSJpbWFnZS9qcGVnIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkYwOURBMjMwMEUyMTY4MTE4MDgzREEyNzUwMzU3RjI4IiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkE2NzY2QkJGMEIyMDY4MTE4ODc0QThBNzEzRDMzQThCIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InV1aWQ6M2UyZmRkN2ItNTBiZS1lOTQ3LTgyZmMtMmJiZDIzYjliOTgzIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB0aWZmOk9yaWVudGF0aW9uPSIxIiB0aWZmOlhSZXNvbHV0aW9uPSI5NjAwMDAvMTAwMDAiIHRpZmY6WVJlc29sdXRpb249Ijk2MDAwMC8xMDAwMCIgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIgdGlmZjpOYXRpdmVEaWdlc3Q9IjI1NiwyNTcsMjU4LDI1OSwyNjIsMjc0LDI3NywyODQsNTMwLDUzMSwyODIsMjgzLDI5NiwzMDEsMzE4LDMxOSw1MjksNTMyLDMwNiwyNzAsMjcxLDI3MiwzMDUsMzE1LDMzNDMyO0JFRTQ4QkY3MUIzRTY2RUZBMTk3NUFGOUNGNzk3QUU2IiBleGlmOlBpeGVsWERpbWVuc2lvbj0iNzg0IiBleGlmOlBpeGVsWURpbWVuc2lvbj0iODAiIGV4aWY6Q29sb3JTcGFjZT0iNjU1MzUiIGV4aWY6TmF0aXZlRGlnZXN0PSIzNjg2NCw0MDk2MCw0MDk2MSwzNzEyMSwzNzEyMiw0MDk2Miw0MDk2MywzNzUxMCw0MDk2NCwzNjg2NywzNjg2OCwzMzQzNCwzMzQzNywzNDg1MCwzNDg1MiwzNDg1NSwzNDg1NiwzNzM3NywzNzM3OCwzNzM3OSwzNzM4MCwzNzM4MSwzNzM4MiwzNzM4MywzNzM4NCwzNzM4NSwzNzM4NiwzNzM5Niw0MTQ4Myw0MTQ4NCw0MTQ4Niw0MTQ4Nyw0MTQ4OCw0MTQ5Miw0MTQ5Myw0MTQ5NSw0MTcyOCw0MTcyOSw0MTczMCw0MTk4NSw0MTk4Niw0MTk4Nyw0MTk4OCw0MTk4OSw0MTk5MCw0MTk5MSw0MTk5Miw0MTk5Myw0MTk5NCw0MTk5NSw0MTk5Niw0MjAxNiwwLDIsNCw1LDYsNyw4LDksMTAsMTEsMTIsMTMsMTQsMTUsMTYsMTcsMTgsMjAsMjIsMjMsMjQsMjUsMjYsMjcsMjgsMzA7QjVEM0FDRjNFNzM3QUEyQjM3MzNDOTA2RDZEMUNFMDQiPiA8ZGM6dGl0bGU+IDxyZGY6QWx0PiA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiPnVudGl0bGVkPC9yZGY6bGk+IDwvcmRmOkFsdD4gPC9kYzp0aXRsZT4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkQyNjdGMEJGNjIwNjgxMTgwODNEQTI3NTAzNTdGMjgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkQyNjdGMEJGNjIwNjgxMTgwODNEQTI3NTAzNTdGMjgiIHN0UmVmOm9yaWdpbmFsRG9jdW1lbnRJRD0idXVpZDozZTJmZGQ3Yi01MGJlLWU5NDctODJmYy0yYmJkMjNiOWI5ODMiLz4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6RjkyNjdGMEJGNjIwNjgxMTgwODNEQTI3NTAzNTdGMjgiIHN0RXZ0OndoZW49IjIwMTItMDQtMzBUMjA6Mjg6NTQtMDQ6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIElsbHVzdHJhdG9yIENTNSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY29udmVydGVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJmcm9tIGFwcGxpY2F0aW9uL3Bvc3RzY3JpcHQgdG8gYXBwbGljYXRpb24vdm5kLmFkb2JlLmlsbHVzdHJhdG9yIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjb252ZXJ0ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImZyb20gYXBwbGljYXRpb24vcG9zdHNjcmlwdCB0byBhcHBsaWNhdGlvbi92bmQuYWRvYmUuaWxsdXN0cmF0b3IiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNvbnZlcnRlZCIgc3RFdnQ6cGFyYW1ldGVycz0iZnJvbSBhcHBsaWNhdGlvbi9wb3N0c2NyaXB0IHRvIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5pbGx1c3RyYXRvciIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6RkQyNjdGMEJGNjIwNjgxMTgwODNEQTI3NTAzNTdGMjgiIHN0RXZ0OndoZW49IjIwMTItMDUtMDFUMTA6Mjk6MDEtMDQ6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIElsbHVzdHJhdG9yIENTNSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY29udmVydGVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJmcm9tIGFwcGxpY2F0aW9uL3Bvc3RzY3JpcHQgdG8gYXBwbGljYXRpb24vdm5kLmFkb2JlLmlsbHVzdHJhdG9yIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpGMDlEQTIzMDBFMjE2ODExODA4M0RBMjc1MDM1N0YyOCIgc3RFdnQ6d2hlbj0iMjAxMi0wNS0wMVQxMDo1NDowMi0wNDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgSWxsdXN0cmF0b3IgQ1M1IiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo1MjVGNjRCRTBCMjA2ODExODg3NEE4QTcxM0QzM0E4QiIgc3RFdnQ6d2hlbj0iMjAxMi0wOC0xMFQxMDo0OTowNSswNTozMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENTNCBNYWNpbnRvc2giIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOkE2NzY2QkJGMEIyMDY4MTE4ODc0QThBNzEzRDMzQThCIiBzdEV2dDp3aGVuPSIyMDEyLTA4LTEwVDEwOjQ5OjA1KzA1OjMwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ1M0IE1hY2ludG9zaCIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPD94cGFja2V0IGVuZD0idyI/Pv/uAA5BZG9iZQBkQAAAAAH/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAQEBAQICAQICAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA//AABEIAFADEAMB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" width="784" height="80" alt="image" /></p>
+<p>The <span class="code">%s</span> format specification in <span class="code">printf</span> expects the corresponding argument to be a
+string represented in this form. <span class="code">copy</span> also
+relies on the fact that its input argument is terminated by <span class="code">′\0′</span>, and it copies this character into the output
+argument. (All of this implies that <span class="code">′\0′</span> is
+not a part of normal text.)</p>
+<p>It is worth mentioning in passing that even a program as small as this
+one presents some sticky design problems. For example, what should <span class="code">main</span> do if it encounters a line which is bigger than
+its limit? <span class="code">getline</span> works safely, in that it
+stops collecting when the array is full, even if no newline has been
+seen. By testing the length and the last character returned, <span class="code">main</span> can determine whether the line was too long,
+and then cope as it wishes. In the interests of brevity, we have ignored
+the issue.</p>
+<p>There is no way for a user of <span class="code">getline</span> to know
+in advance how long an input line might be, so <span class="code">getline</span> checks for overflow. On the other hand, the
+user of <span class="code">copy</span> already knows (or can find out)
+how big the strings are, so we have chosen not to add error checking to
+it.</p>
+<p><strong>Exercise 1-16</strong>. Revise the main routine of the longest-line program
+so it will correctly print the length of arbitrarily long input lines,
+and as much as possible of the text.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-16/longest_line.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000 /* maximum input line length */
+
+int get_line(char line[], int maxline);
+void copy(char to[], char from[]);
+
+/* print the longest input line */
+int main(void)
+{
+    int len; /* current line length */
+    int max; /* maximum length seen so far */
+    char line[MAXLINE]; /* current input line */
+    char longest[MAXLINE]; /* longest line saved here */
+
+    max = 0;
+    while ((len = get_line(line, MAXLINE)) &gt; 0)
+        if (len &gt; max) {
+            max = len;
+            copy(longest, line);
+        }
+    if (max &gt; 0) {
+        printf(&quot;The longest line is:\n&quot;);
+        printf(&quot;%s\n&quot;, longest);
+        printf(&quot;The length of it is %d.\n&quot;, max);
+    }
+        
+
+    return 0;
+}
+
+/* get_line: read a line into s, return length */
+int get_line(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i) {
+        if (i &lt; lim - 1)
+            s[l++] = c;
+    }
+    if (c == &#39;\n&#39;) {
+        if (l &lt; lim - 1)
+            s[l++] = c;
+        ++i;
+    }   
+    s[l] = &#39;\0&#39;;
+
+    return i;
+}
+
+/* copy: copy &#39;from&#39; into &#39;to&#39;; assume to is big enough */
+void copy(char to[], char from[])
+{
+    int i;
+
+    i = 0;
+    while ((to[i] = from[i]) != &#39;\0&#39;)
+        ++i;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-16/longest_line.c -o Chapter1/Exercise\ 1-16/longest_line</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-16/longest_line</code></pre>
+<p><strong>Exercise 1-17</strong>. Write a program to print
+all input lines that are longer than 80 characters.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-17/lines.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+#define MAXLENGTH 10
+
+int get_line(char line[], int maxline);
+
+int main(void)
+{
+    int len; /* current line length */
+    char line[MAXLINE]; /* current input line */
+
+    while ((len = get_line(line, MAXLINE)) &gt; 0)
+        if (len &gt; MAXLENGTH)
+            printf(&quot;%s\n&quot;, line);
+
+    return 0;
+}
+
+/* get_line: read a line into s, return length */
+int get_line(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i) {
+        if (i &lt; lim - 1)
+            s[l++] = c;
+    }
+    if (c == &#39;\n&#39;)
+        if (l &lt; lim - 1)
+            s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-17/lines.c -o Chapter1/Exercise\ 1-17/lines</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-17/lines</code></pre>
+<p><strong>Exercise 1-18</strong>. Write a program to remove trailing blanks and tabs
+from each line of input, and to delete entirely blank lines.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-18/lines.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+
+int get_line(char line[], int maxline);
+
+int main(void)
+{
+    int len; /* current line length */
+    char line[MAXLINE]; /* current input line */
+
+    while ((len = get_line(line, MAXLINE)) &gt; 0) {
+        if (len == 1 &amp;&amp; line[0] == &#39;\n&#39;)
+            continue;
+        printf(&quot;%s\n&quot;, line);
+    }
+
+    return 0;
+}
+
+int get_line(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i)
+        if (i &lt; lim - 1)
+            s[l++] = c;
+    if (c == &#39;\n&#39; &amp;&amp; l &lt; lim - 1)
+        s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-18/lines.c -o Chapter1/Exercise\ 1-18/lines</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-18/lines</code></pre>
+<p><strong>Exercise 1-19</strong>. Write a function <span class="code">reverse(s)</span>
+that reverses the character string <span class="code">s</span>. Use it
+to write a program that reverses its input a line at a time.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-19/reverse.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+
+int get_line(char line[], int maxline);
+void reverse(char s[]);
+
+int main(void)
+{
+    char line[MAXLINE]; /* current input line */
+
+    while (get_line(line, MAXLINE) &gt; 0) {
+        reverse(line);
+        printf(&quot;%s\n&quot;, line);
+    }
+
+    return 0;
+}
+
+int get_line(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i)
+        if (i &lt; lim - 1)
+            s[l++] = c;
+    if (c == &#39;\n&#39; &amp;&amp; l &lt; lim - 1)
+        s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}
+
+void reverse(char s[])
+{
+    int i, j;
+    int tmp;
+
+    for (j = 0; s[j] != &#39;\0&#39;; ++j)
+        ;
+    --j;
+    if (s[j - 1] == &#39;\n&#39;)
+        --j;
+
+    for (i = 0; i &lt; j; ++i, --j) {
+        tmp = s[i];
+        s[i] = s[j];
+        s[j] = tmp;
+    }
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-19/reverse.c -o Chapter1/Exercise\ 1-19/reverse</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-19/reverse</code></pre>
+</div>
+<div id="external-variables-and-scope" class="section level3">
+<h3>1.10 External Variables and Scope</h3>
+<p>The variables in <span class="code">main</span>, such as <span class="code">line</span>, <span class="code">longest</span>, etc., are
+private or local to <span class="code">main</span>. Because they are
+declared within <span class="code">main</span>, no other function can
+have direct access to them. The same is true of the variables in other
+functions; for example, the variable <span class="code">i</span> in
+<span class="code">getline</span> is unrelated to the <span class="code">i</span> in <span class="code">copy</span>. Each local
+variable in a function comes into existence only when the function is
+called, and disappears when the function is exited. This is why such
+variables are usually known as <em>automatic</em> variables, following
+terminology in other languages. We will use the term automatic
+henceforth to refer to these local variables. (Chapter 4
+discusses the <span class="code">static</span> storage class, in which
+local variables do retain their values between calls.)</p>
+<p>Because automatic variables come and go with function invocation, they
+do not retain their values from one call to the next, and must be
+explicitly set upon each entry. If they are not set, they will contain
+garbage.</p>
+<p>As an alternative to automatic variables, it is possible to define
+variables that are <em>external</em> to all functions, that is, variables that
+can be accessed by name by any function. (This mechanism is rather like
+Fortran COMMON or Pascal variables declared in the outermost block.)
+Because external variables are globally accessible, they can be used
+instead of argument lists to communicate data between functions.
+Furthermore, because external variables remain in existence permanently,
+rather than appearing and disappearing as functions are called and
+exited, they retain their values even after the functions that set them
+have returned.</p>
+<p>An external variable must be <em>defined</em>, exactly once, outside of any
+function; this sets aside storage for it. The variable must also be
+<em>declared</em> in each function that wants to access it; this states the
+type of the variable. The declaration may be an explicit <span class="code">extern</span> statement or may be implicit from context. To
+make the discussion concrete, let us rewrite the longest-line program
+with <span class="code">line</span>, <span class="code">longest</span>,
+and <span class="code">max</span> as external variables. This requires
+changing the calls, declarations, and bodies of all three
+functions.<span id="page_32"></span></p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#define MAXLINE 1000    /<span class="bottom">*</span> maximum input line size <span class="bottom">*</span>/</p>
+<p>int max;                 /<span class="bottom">*</span> maximum length seen so far <span class="bottom">*</span>/<br />
+char line<span class="math display">\[MAXLINE\]</span>;      /<span class="bottom">*</span> current input line <span class="bottom">*</span>/<br />
+char longest<span class="math display">\[MAXLINE\]</span>;   /<span class="bottom">*</span> longest line saved here <span class="bottom">*</span>/</p>
+<p>int getline(void);<br />
+void copy(void);</p>
+<p>/<span class="bottom">*</span> print longest input line; specialized version <span class="bottom">*</span>/<br />
+main()<br />
+{<br />
+    int len;<br />
+    extern int max;<br />
+    extern char longest[];</p>
+<p>    max = 0;<br />
+    while ((len = getline()) &gt; 0)<br />
+        if (len &gt; max) {<br />
+            max = len;<br />
+            copy();<br />
+        }<br />
+    if (max &gt; 0)    /<span class="bottom">*</span> there was a line <span class="bottom">*</span>/<br />
+        printf(“%s,” longest);<br />
+    return 0;<br />
+}</p>
+<p>/<span class="bottom">*</span> getline:  specialized version <span class="bottom">*</span>/<br />
+int getline(void)<br />
+{<br />
+    int c, i;<br />
+    extern char line[];</p>
+<p>    for (i = 0; i &lt; MAXLINE-1<br />
+        &amp;&amp; (c=getchar()) != EOF &amp;&amp; c != ′\n′; ++i)<br />
+            line<span class="math display">\[i\]</span> = c;<br />
+    if (c == ′\n′) {<br />
+        line<span class="math display">\[i\]</span> = c;<br />
+        ++i;<br />
+    }<br />
+    line<span class="math display">\[i\]</span> = ′\0′;<br />
+    return i;<br />
+}</p>
+<p><span id="page_33"></span> /<span class="bottom">*</span> copy:  specialized version <span class="bottom">*</span>/<br />
+void copy(void)<br />
+{<br />
+    int i;<br />
+    extern char line[], longest[];</p>
+<p>    i = 0;<br />
+    while ((longest<span class="math display">\[i\]</span> = line<span class="math display">\[i\]</span>) != ′\0′)<br />
+        ++i;<br />
+}</p>
+<p>The external variables in <span class="code">main</span>, <span class="code">getline</span>, and <span class="code">copy</span> are
+defined by the first lines of the example above, which state their type
+and cause storage to be allocated for them. Syntactically, external
+definitions are just like definitions of local variables, but since they
+occur outside of functions, the variables are external. Before a
+function can use an external variable, the name of the variable must be
+made known to the function. One way to do this is to write an <span class="code">extern</span> declaration in the function; the declaration
+is the same as before except for the added keyword <span class="code">extern</span>.</p>
+<p>In certain circumstances, the <span class="code">extern</span>
+declaration can be omitted. If the definition of an external variable
+occurs in the source file before its use in a particular function, then
+there is no need for an <span class="code">extern</span> declaration in
+the function. The <span class="code">extern</span> declarations in <span class="code">main</span>, <span class="code">getline</span> and <span class="code">copy</span> are thus redundant. In fact, common practice is
+to place definitions of all external variables at the beginning of the
+source file, and then omit all <span class="code">extern</span>
+declarations.</p>
+<p>If the program is in several source files, and a variable is defined in
+<em>file1</em> and used in <em>file2</em> and <em>file3</em>, then <span class="code">extern</span> declarations are needed in <em>file2</em> and
+<em>file3</em> to connect the occurrences of the variable. The usual practice
+is to collect <span class="code">extern</span> declarations of variables
+and functions in a separate file, historically called a <em>header</em>, that
+is included by <span class="code">#include</span> at the front of each
+source file. The suffix <span class="code">.h</span> is conventional for
+header names. The functions of the standard library, for example, are
+declared in headers like <span class="code">&lt;stdio.h&gt;</span>. This
+topic is discussed at length in Chapter 4, and the library itself in Chapter 7
+and Appendix B.</p>
+<p>Since the specialized versions of <span class="code">getline</span> and
+<span class="code">copy</span> have no arguments, logic would suggest
+that their prototypes at the beginning of the file should be <span class="code">getline()</span> and <span class="code">copy()</span>. But
+for compatibility with older C programs the standard takes an empty list
+as an old-style declaration, and turns off all argument list checking;
+the word <span class="code">void</span> must be used for an explicitly
+empty list. We will discuss this further in Chapter 4.</p>
+<p>You should note that we are using the words <em>definition</em> and
+<em>declaration</em> carefully when we refer to external variables in this
+section. “Definition” refers to the place where the variable is created
+or assigned storage; “declaration” refers to places where the nature of
+the variable is stated but no storage is allocated.</p>
+<p>By the way, there is a tendency to make everything in sight an <span class="code">extern</span> variable because it appears to simplify
+communications—argument lists are short <span id="page_34"></span>and
+variables are always there when you want them. But external variables
+are always there even when you don’t want them. Relying too heavily on
+external variables is fraught with peril since it leads to programs
+whose data connections are not at all obvious—variables can be changed
+in unexpected and even inadvertent ways, and the program is hard to
+modify. The second version of the longest-line program is inferior to
+the first, partly for these reasons, and partly because it destroys the
+generality of two useful functions by wiring into them the names of the
+variables they manipulate.</p>
+<p>At this point we have covered what might be called the conventional core
+of C. With this handful of building blocks, it’s possible to write
+useful programs of considerable size, and it would probably be a good
+idea if you paused long enough to do so. These exercises suggest
+programs of somewhat greater complexity than the ones earlier in this
+chapter.</p>
+<p><strong>Exercise 1-20</strong>. Write a program <span class="code">detab</span> that
+replaces tabs in the input with the proper number of blanks to space to
+the next tab stop. Assume a fixed set of tab stops, say every <em>n</em>
+columns. Should <em>n</em> be a variable or a symbolic parameter?</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-20/detab.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+#define TAB_WIDTH 4
+
+int getchars(char s[], int maxline);
+void detab(char s1[], char s2[], int tabwidth);
+
+int main(void)
+{
+    char s1[MAXLINE];
+    char s2[MAXLINE];
+
+    printf(&quot;Input some characters, then press enter:\n&quot;);
+    while (getchars(s1, MAXLINE) == 0)
+        ;
+
+    detab(s1, s2, TAB_WIDTH);
+    printf(&quot;detab result:\n%s\n&quot;, s2);
+
+    return 0;
+}
+
+int getchars(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i)
+        if (i &lt; lim - 1)
+          s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}
+
+// copy characters in s1 to s2 and replace tabs with proper number of blanks
+void detab(char s1[], char s2[], int w)
+{
+    int i, j, l, c, blanks;
+
+    i = 0;
+    l = 0;
+    while ((c = s1[i++]) != &#39;\0&#39;) {
+        if (c == &#39;\t&#39;) {
+            blanks = w - l % w;
+            for (j = 0; j &lt; blanks; ++j)
+                s2[l++] = &#39; &#39;;
+        } else {
+            s2[l++] = c;
+        }
+    }
+    s2[l] = &#39;\0&#39;;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-20/detab.c -o Chapter1/Exercise\ 1-20/detab</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-20/detab</code></pre>
+<p><strong>Exercise 1-21</strong>. Write a program <span class="code">entab</span> that
+replaces strings of blanks by the minimum number of tabs and blanks to
+achieve the same spacing. Use the same tab stops as for <span class="code">detab</span>. When either a tab or a single blank would
+suffice to reach a tab stop, which should be given preference?</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-21/entab.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+#define TAB_WIDTH 8
+
+int getchars(char s[], int maxline);
+void entab(char s1[], char s2[], int tabwidth);
+
+int main(void)
+{
+    char s1[MAXLINE];
+    char s2[MAXLINE];
+
+    printf(&quot;Input some characters, then press enter:\n&quot;);
+    while (getchars(s1, MAXLINE) == 0)
+        ;
+
+    entab(s1, s2, TAB_WIDTH);
+    printf(&quot;entab result:\n%s\n&quot;, s2);
+
+    return 0;
+}
+
+int getchars(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i)
+        if (i &lt; lim - 1)
+          s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}
+
+// copy characters in s1 to s2 and replace blanks with tabs
+void entab(char s1[], char s2[], int w)
+{
+    int i, j, l, c, blanks;
+    int blanksenough;
+
+    i = 0;
+    l = 0;
+    while ((c = s1[i]) != &#39;\0&#39;) {
+        if (c == &#39; &#39;) {
+            blanksenough = 1;
+            blanks = w - i % w;
+            for (j = 1; j &lt; blanks; ++j)
+                if (s1[i + j] != &#39; &#39;) {
+                    blanksenough = 0;
+                    break;
+                }
+            if (blanksenough) {
+                s2[l++] = &#39;\t&#39;;
+                i += blanks - 1;
+            } else {
+                s2[l++] = c;
+            }
+        } else {
+            s2[l++] = c;
+        }
+        ++i;
+    }
+    s2[l] = &#39;\0&#39;;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-21/entab.c -o Chapter1/Exercise\ 1-21/entab</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-21/entab</code></pre>
+<p><strong>Exercise 1-22</strong>. Write a program to “fold” long input lines into two
+or more shorter lines after the last non-blank character that occurs
+before the <em>n</em>-th column of input. Make sure your program does something
+intelligent with very long lines, and if there are no blanks or tabs
+before the specified column.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-22/fold.c</code></pre>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAXLINE 1000
+#define TAB_WIDTH 8
+#define LINE_WIDTH 10
+
+int getchars(char s[], int maxline);
+void fold(char s1[], char s2[], int linewidth, int tabwidth);
+
+int main(void)
+{
+    char s1[MAXLINE];
+    char s2[MAXLINE];
+
+    printf(&quot;Input some characters, then press enter:\n&quot;);
+    while (getchars(s1, MAXLINE) == 0)
+        ;
+
+    fold(s1, s2, LINE_WIDTH, TAB_WIDTH);
+    printf(&quot;\nfold result:\n%s\n&quot;, s2);
+
+    return 0;
+}
+
+int getchars(char s[], int lim)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF &amp;&amp; c != &#39;\n&#39;; ++i)
+        if (i &lt; lim - 1)
+          s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}
+
+void fold(char s1[], char s2[], int lw, int tw)
+{
+    int i, l, c, k, w;
+
+    w = 0;
+    k = -1;
+    i = l = 0;
+    while ((c = s1[i]) != &#39;\0&#39;) {
+        if (c == &#39; &#39;) {
+            if (w + 1 == lw) {
+                s2[l++] = &#39;\n&#39;;
+                w = 0;
+                i = k;
+            } else {
+                s2[l++] = &#39; &#39;;
+                ++w;
+            }
+        } else if (c == &#39;\t&#39;) {
+            if (w + tw - w % tw &gt;= lw) {
+                s2[l++] = &#39;\n&#39;;
+                w = 0;
+                i = k;
+            } else {
+                s2[l++] = &#39;\t&#39;;
+                w += tw;
+            }
+        } else {
+            s2[l++] = c;
+            if (w + 1 == lw) {
+                s2[l++] = &#39;\n&#39;;
+                w = 0;
+            } else {
+                k = i;
+                ++w;
+            }
+        }
+        ++i;
+    }
+    s2[l++] = &#39;\0&#39;;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-22/fold.c -o Chapter1/Exercise\ 1-22/fold</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-22/fold</code></pre>
+<p><strong>Exercise 1-23</strong>. Write a program to remove all comments from a C
+program. Don’t forget to handle quoted strings and character constants
+properly. C comments do not nest.</p>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-23/comments.c</code></pre>
+<pre><code>/**
+ * Test text, replace &#39;@&#39; with &#39;/&#39;
+
+ @**
+  * Hello World
+  *@
+ #include &lt;stdio.h&gt; // for printf
+
+ int main(void)
+ {
+     char s[] = &quot;// hello \
+         world!\n&quot;;
+     printf(&quot;%s\n&quot;, s);
+ 
+     return 0;
+ }
+
+ */
+
+
+#include &lt;stdio.h&gt;
+
+#define MAXLENGTH 5000
+
+int _getline(char s[], int max);
+
+int main(void)
+{
+    int len, i;
+    char s[MAXLENGTH];
+
+    
+    printf(&quot;Input code, then press Ctrl+D:\n&quot;);
+    while ((len = _getline(s, MAXLENGTH)) &gt; 0) {
+        printf(&quot;\nResult:\n=========================\n&quot;);
+        i = 0;
+        while (s[i] != &#39;\0&#39;) {
+            if (s[i] == &#39;/&#39; &amp;&amp; s[i+1] == &#39;/&#39;) {
+                i += 2;
+                while (s[i] != &#39;\n&#39; &amp;&amp; s[i] != &#39;\0&#39;)
+                    ++i;
+            } else if (s[i] == &#39;/&#39; &amp;&amp; s[i+1] == &#39;*&#39;) {
+                i += 2;
+                while (s[i] != &#39;\0&#39; &amp;&amp; s[i+1] != &#39;\0&#39; &amp;&amp; (s[i] != &#39;*&#39; || s[i+1] != &#39;/&#39;))
+                    ++i;
+                if (s[i] != &#39;\0&#39; &amp;&amp; s[i+1] == &#39;\0&#39;)
+                    ++i;
+                if (s[i] == &#39;*&#39;)
+                    i += 2;
+            } else if (s[i] == &#39;\&quot;&#39;) {
+                putchar(&#39;\&quot;&#39;);
+                ++i;
+                while (s[i] != &#39;\0&#39; &amp;&amp; (s[i-1] == &#39;\\&#39; || s[i] != &#39;\&quot;&#39;))
+                    putchar(s[i++]);
+            } else {
+                putchar(s[i++]);
+            }
+        }
+    }
+    
+    return 0;
+}
+
+int _getline(char s[], int max)
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF; ++i)
+        if (i &lt; max - 1)
+            s[l++] = c;
+    s[l] = &#39;\0&#39;;
+
+    return l;
+}</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-23/comments.c -o Chapter1/Exercise\ 1-23/comments</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-23/comments</code></pre>
+<p><strong>Exercise 1-24</strong>. Write a program to check a C program for rudimentary
+syntax errors like unbalanced parentheses, brackets and braces. Don’t
+forget about quotes, both single and double, escape sequences, and
+comments. (This program is hard if you do it in full generality.)</p>
 <p><strong>References</strong></p>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-kernighan2006c" class="csl-entry">
 1. Kernighan BW, Ritchie DM. The c programming language. 2006.
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -108,7 +2375,22 @@
     </div>
     
 
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
