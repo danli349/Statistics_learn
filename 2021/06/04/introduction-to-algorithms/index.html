@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>Introduction to Algorithms 1 The Role of Algorithms in Computing - A Hugo website</title>
+<meta property="og:title" content="Introduction to Algorithms 1 The Role of Algorithms in Computing - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">21 min read</span>
+    
+
+    <h1 class="article-title">Introduction to Algorithms 1 The Role of Algorithms in Computing</h1>
+
+    
+    <span class="article-date">2021-06-04</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/06/04/introduction-to-algorithms/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#the-role-of-algorithms-in-computing">1 The Role of Algorithms in Computing</a>
+<ul>
+<li><a href="#algorithms">1.1 Algorithms</a></li>
+<li><a href="#exercises">Exercises</a>
+<ul>
+<li><a href="#section">1.1-1</a></li>
+<li><a href="#section-1">1.1-2</a></li>
+<li><a href="#section-2">1.1-3</a></li>
+<li><a href="#section-3">1.1-4</a></li>
+<li><a href="#section-4">1.1-5</a></li>
+</ul></li>
+<li><a href="#algorithms-as-a-technology">1.2 Algorithms as a technology</a></li>
+<li><a href="#exercises-1">Exercises</a>
+<ul>
+<li><a href="#section-5">1.2-1</a></li>
+<li><a href="#section-6">1.2-2</a></li>
+<li><a href="#section-7">1.2-3</a></li>
+</ul></li>
+<li><a href="#problems">Problems</a>
+<ul>
+<li><a href="#comparison-of-running-times">1-1 Comparison of running times</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="the-role-of-algorithms-in-computing" class="section level1">
+<h1>1 The Role of Algorithms in Computing</h1>
+<p>What are algorithms? Why is the study of algorithms worthwhile? What is the role
+of algorithms relative to other technologies used in computers? In this chapter, we
+will answer these questions.</p>
+<div id="algorithms" class="section level2">
+<h2>1.1 Algorithms</h2>
+<p>Informally, an algorithm is any welldefined computational procedure that takes
+some value, or set of values, as input and produces some value, or set of values, as
+output. An algorithm is thus a sequence of computational steps that transform the
+input into the output.</p>
+<p>We can also view an algorithm as a tool for solving a wellspecified computational problem. The statement of the problem specifies in general terms the desired
+inputoutput relationship. The algorithm describes a specific computational procedure for achieving that inputoutput relationship.</p>
+<p>For example, we might need to sort a sequence of numbers into nondecreasing
+order. This problem arises frequently in practice and provides fertile ground for
+introducing many standard design techniques and analysis tools. Here is how we
+formally define the sorting problem:</p>
+<p><strong>Input</strong>: A sequence of n numbers &lt;<span class="math inline">\(a_1, a_2,\cdots, a_n\)</span>&gt;.</p>
+<p><strong>Output</strong>: A permutation (reordering) &lt;<span class="math inline">\(a_1&#39;, a_2&#39;,\cdots, a_n&#39;\)</span>&gt; of the input sequence such
+that <span class="math inline">\(a_1&#39;\leq a_2&#39;\leq\cdots\leq a_n&#39;\)</span>.</p>
+<p>For example, given the input sequence (31, 41,59, 26, 41, 58), a sorting algorithm
+returns as output the sequence (26, 31, 41, 41, 58,59). Such an input sequence is
+called an <strong>instance</strong> of the sorting problem. In general, an <strong>instance of a problem</strong>
+consists of the input (satisfying whatever constraints are imposed in the problem
+statement) needed to compute a solution to the problem.</p>
+<p>Because many programs use it as an intermediate step, sorting is a fundamental
+operation in computer science. As a result, we have a large number of good sorting
+algorithms at our disposal. Which algorithm is best for a given application depends
+on—among other factors—the number of items to be sorted, the extent to which
+the items are already somewhat sorted, possible restrictions on the item values,
+the architecture of the computer, and the kind of storage devices to be used: main
+memory, disks, or even tapes.</p>
+<p>An algorithm is said to be correct if, for every input instance, it halts with the
+correct output. We say that a correct algorithm solves the given computational
+problem. An incorrect algorithm might not halt at all on some input instances, or it
+might halt with an incorrect answer. Contrary to what you might expect, incorrect
+algorithms can sometimes be useful, if we can control their error rate. We shall see
+an example of an algorithm with a controllable error rate in Chapter 31 when we
+study algorithms for finding large prime numbers. Ordinarily, however, we shall
+be concerned only with correct algorithms.</p>
+<p>An algorithm can be specified in English, as a computer program, or even as
+a hardware design. The only requirement is that the specification must provide a
+precise description of the computational procedure to be followed.</p>
+<p>What kinds of problems are solved by algorithms?</p>
+<p>Sorting is by no means the only computational problem for which algorithms have
+been developed. (You probably suspected as much when you saw the size of this
+book). Practical applications of algorithms are ubiquitous and include the following examples:</p>
+<ul>
+<li><p>The Human Genome Project has made great progress toward the goals of identifying all the 100,000 genes in human DNA, determining the sequences of the
+3 billion chemical base pairs that make up human DNA, storing this informa
+tion in databases, and developing tools for data analysis. Each of these steps
+requires sophisticated algorithms. Although the solutions to the various prob
+lems involved are beyond the scope of this book, many methods to solve these
+biological problems use ideas from several of the chapters in this book, thereby
+enabling scientists to accomplish tasks while using resources efficiently. The
+savings are in time, both human and machine, and in money, as more information can be extracted from laboratory techniques.</p></li>
+<li><p>The Internet enables people all around the world to quickly access and retrieve
+large amounts of information. With the aid of clever algorithms, sites on the
+Internet are able to manage and manipulate this large volume of data. Examples
+of problems that make essential use of algorithms include finding good routes
+on which the data will travel (techniques for solving such problems appear in
+Chapter 24), and using a search engine to quickly find pages on which particular
+information resides (related techniques are in Chapters 11 and 32).</p></li>
+<li><p>Electronic commerce enables goods and services to be negotiated and exchanged electronically, and it depends on the privacy of personal
+information such as credit card numbers, passwords, and bank statements. The core
+technologies used in electronic commerce include publickey cryptography and
+digital signatures (covered in Chapter 31), which are based on numerical algorithms and number theory.</p></li>
+<li><p>Manufacturing and other commercial enterprises often need to allocate scarce
+resources in the most beneficial way. An oil company may wish to know where
+to place its wells in order to maximize its expected profit. A political candidate
+may want to determine where to spend money buying campaign advertising in
+order to maximize the chances of winning an election. An airline may wish
+to assign crews to flights in the least expensive way possible, making sure that
+each flight is covered and that government regulations regarding crew scheduling are met. An Internet service provider may wish to determine where to place additional resources in order to serve its customers more effectively. All of
+these are examples of problems that can be solved using linear programming,
+which we shall study in Chapter 29.</p></li>
+</ul>
+<p>Although some of the details of these examples are beyond the scope of this book, we do give underlying techniques that apply to these problems and problem areas. We also show how to solve many specific problems, including the following:</p>
+<ul>
+<li><p>We are given a road map on which the distance between each pair of adjacent
+intersections is marked, and we wish to determine the shortest route from one
+intersection to another. The number of possible routes can be huge, even if we
+disallow routes that cross over themselves. How do we choose which of all
+possible routes is the shortest? Here, we model the road map (which is itself
+a model of the actual roads) as a graph (which we will meet in Part VI and
+Appendix B), and we wish to find the shortest path from one vertex to another
+in the graph. We shall see how to solve this problem efficiently in Chapter 24.</p></li>
+<li><p>We are given two ordered sequences of symbols, <span class="math inline">\(X = &lt;x_1,x_2,\cdots,x_m&gt;\)</span> and
+<span class="math inline">\(Y = &lt;y_1,y_2,\cdots,y_n&gt;\)</span>, and we wish to find a longest common subsequence of
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. A subsequence of <span class="math inline">\(X\)</span> is just <span class="math inline">\(X\)</span> with some (or possibly all or none) of
+its elements removed. For example, one subsequence of <span class="math inline">\((A, B, C, D, E, F, G)\)</span>
+would be <span class="math inline">\((B, C, E, G)\)</span>. The length of a longest common subsequence of <span class="math inline">\(X\)</span>
+and <span class="math inline">\(Y\)</span> gives one measure of how similar these two sequences are. For example,
+if the two sequences are base pairs in DNA strands, then we might consider
+them similar if they have a long common subsequence. If <span class="math inline">\(X\)</span> has <span class="math inline">\(m\)</span> symbols
+and <span class="math inline">\(Y\)</span> has <span class="math inline">\(n\)</span> symbols, then <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have <span class="math inline">\(2^m\)</span> and <span class="math inline">\(2^n\)</span> possible subsequences,
+respectively. Selecting all possible subsequences of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and matching
+them up could take a prohibitively long time unless <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are very small.
+We shall see in Chapter 15 how to use a general technique known as dynamic
+programming to solve this problem much more efficiently.</p></li>
+<li><p>We are given a mechanical design in terms of a library of parts, where each part
+may include instances of other parts, and we need to list the parts in order so
+that each part appears before any part that uses it. If the design comprises n
+parts, then there are n! possible orders, where n! denotes the factorial function.
+Because the factorial function grows faster than even an exponential function,
+we cannot feasibly generate each possible order and then verify that, within
+that order, each part appears before the parts using it (unless we have only a
+few parts). This problem is an instance of topological sorting, and we shall see
+in Chapter 22 how to solve this problem efficiently.</p></li>
+<li><p>We are given n points in the plane, and we wish to find the convex hull of
+these points. The convex hull is the smallest convex polygon containing the
+points. Intuitively, we can think of each point as being represented by a nail
+sticking out from a board. The convex hull would be represented by a tight
+rubber band that surrounds all the nails. Each nail around which the rubber
+band makes a turn is a vertex of the convex hull. (See Figure 33.6 on page 1029
+for an example). Any of the <span class="math inline">\(2^n\)</span> subsets of the points might be the vertices
+of the convex hull. Knowing which points are vertices of the convex hull is
+not quite enough, either, since we also need to know the order in which they
+appear. There are many choices, therefore, for the vertices of the convex hull.
+Chapter 33 gives two good methods for finding the convex hull.</p></li>
+</ul>
+<p>These lists are far from exhaustive (as you again have probably surmised from
+this book’s heft), but exhibit two characteristics that are common to many interest
+ing algorithmic problems:</p>
+<ol style="list-style-type: decimal">
+<li><p>They have many candidate solutions, the overwhelming majority of which do
+not solve the problem at hand. Finding one that does, or one that is “best,” can
+present quite a challenge.</p></li>
+<li><p>They have practical applications. Of the problems in the above list, finding the
+shortest path provides the easiest examples. A transportation firm, such as a
+trucking or railroad company, has a financial interest in finding shortest paths
+through a road or rail network because taking shorter paths results in lower
+labor and fuel costs. Or a routing node on the Internet may need to find the
+shortest path through the network in order to route a message quickly. Or a
+person wishing to drive from New York to Boston may want to find driving
+directions from an appropriate Web site, or she may use her GPS while driving.</p></li>
+</ol>
+<p>Not every problem solved by algorithms has an easily identified set of candidate
+solutions. For example, suppose we are given a set of numerical values representing samples of a signal, and we want to compute the discrete Fourier transform of
+these samples. The discrete Fourier transform converts the time domain to the frequency domain, producing a set of numerical coefficients, so that we can determine
+the strength of various frequencies in the sampled signal. In addition to lying at
+the heart of signal processing, discrete Fourier transforms have applications in data
+compression and multiplying large polynomials and integers. Chapter 30 gives
+an efficient algorithm, the fast Fourier transform (commonly called the FFT), for
+this problem, and the chapter also sketches out the design of a hardware circuit to
+compute the FFT.</p>
+<p><strong>Data structures</strong></p>
+<p>This book also contains several data structures. A data structure is a way to store
+and organize data in order to facilitate access and modifications. No single data
+structure works well for all purposes, and so it is important to know the strengths
+and limitations of several of them.</p>
+<p><strong>Technique</strong></p>
+<p>Although you can use this book as a “cookbook” for algorithms, you may someday
+encounter a problem for which you cannot readily find a published algorithm (many
+of the exercises and problems in this book, for example). This book will teach you
+techniques of algorithm design and analysis so that you can develop algorithms on
+your own, show that they give the correct answer, and understand their efficiency.
+Different chapters address different aspects of algorithmic problem solving. Some
+chapters address specific problems, such as finding medians and order statistics in
+Chapter 9, computing minimum spanning trees in Chapter 23, and determining a
+maximum flow in a network in Chapter 26. Other chapters address techniques,
+such as divide-and-conquer in Chapter 4, dynamic programming in Chapter 15,
+and amortized analysis in Chapter 17.</p>
+<p><strong>Hard problems</strong></p>
+<p>Most of this book is about efficient algorithms. Our usual measure of efficiency
+is speed, i.e., how long an algorithm takes to produce its result. There are some
+problems, however, for which no efficient solution is known. Chapter 34 studies
+an interesting subset of these problems, which are known as NP-complete.</p>
+<p>Why are NP-complete problems interesting? First, although no efficient algorithm for an NP-complete problem has ever been found, nobody has ever proven
+that an efficient algorithm for one cannot exist. In other words, no one knows
+whether or not efficient algorithms exist for NP-complete problems. Second, the
+set of NP-complete problems has the remarkable property that if an efficient algo
+rithm exists for any one of them, then efficient algorithms exist for all of them. This
+relationship among the NP-complete problems makes the lack of efficient solutions
+all the more tantalizing. Third, several NP-complete problems are similar, but not
+identical, to problems for which we do know of efficient algorithms. Computer
+scientists are intrigued by how a small change to the problem statement can cause
+a big change to the efficiency of the best known algorithm.</p>
+<p>You should know about NP-complete problems because some of them arise surptisingly often in real applications. If you are called upon to produce an efficient
+algorithm for an NP-complete problem, you are likely to spend a lot of time in a
+fruitless search. If you can show that the problem is NP-complete, you can instead
+spend your time developing an efficient algorithm that gives a good, but not the
+best possible, solution.</p>
+<p>As a concrete example, consider a delivery company with a central depot. Each
+day, it loads up each delivery truck at the depot and sends it around to deliver goods
+to several addresses. At the end of the day, each truck must end up back at the depot
+so that it is ready to be loaded for the next day. To reduce costs, the company wants
+to select an order of delivery stops that yields the lowest overall distance traveled
+by each truck. This problem is the wellknown “traveling-salesman problem,” and
+it is NP-complete. It has no known efficient algorithm. Under certain assumptions,
+however, we know of efficient algorithms that give an overall distance which is
+not too far above the smallest possible. Chapter 35 discusses such “approximation
+algorithms.”</p>
+<p><strong>Parallelism</strong></p>
+<p>For many years, we could count on processor clock speeds increasing at a steady
+rate. Physical limitations present a fundamental roadblock to ever-increasing clock
+speeds, however: because power density increases superlinearly with clock speed,
+chips run the risk of melting once their clock speeds become high enough. In order
+to perform more computations per second, therefore, chips are being designed to
+contain not just one but several processing “cores.” We can liken these multicore
+computers to several sequential computers on a single chip; in other words, they are
+a type of “parallel computer.” In order to elicit the best performance from multicore
+computers, we need to design algorithms with parallelism in mind. Chapter 27
+presents a model for “multithreaded” algorithms, which take advantage of multiple
+cores. This model has advantages from a theoretical standpoint, and it forms the
+basis of several successful computer programs, including a championship chess
+program.</p>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<div id="section" class="section level3">
+<h3>1.1-1</h3>
+<p>Give a realworld example that requires sorting or a realworld example that requires computing a convex hull.</p>
+<ul>
+<li>The multiplication process in computers are time consuming than addition process. If we have three or more matrices to multiply, then we should check the order in which to multiply to reduce the number of multiplications.</li>
+<li>The problem of finding convex hulls finds its practical applications in pattern recognition, image processing, statistics, geographic information system, game theory, construction of phase diagrams, and static code analysis by abstract interpretation. It also serves as a tool, a building block for a number of other computational-geometric algorithms such as the rotating calipers method for computing the width and diameter of a point set. also application in <a href="http:docs.opencv.orgdoctutorialsimgprocshapedescriptorshullhull.html">CV</a>.</li>
+</ul>
+</div>
+<div id="section-1" class="section level3">
+<h3>1.1-2</h3>
+<p>Other than speed, what other measures of efficiency might one use in a realworld
+setting?</p>
+<ul>
+<li>Memory requirement, Degree of parallelism, Resource use( cpu or gpu cycles), Disk IO etc, Accessibility (Cloudlocal)</li>
+</ul>
+</div>
+<div id="section-2" class="section level3">
+<h3>1.1-3</h3>
+<p>Select a data structure that you have seen previously, and discuss its strengths and
+limitations.</p>
+<ul>
+<li>Array. Fast access; but it’s slow to check if the array contains a specific element since we need to iterates the whole array.</li>
+</ul>
+</div>
+<div id="section-3" class="section level3">
+<h3>1.1-4</h3>
+<p>How are the shortest-path and traveling-sales-man problems given above similar?
+How are they different?</p>
+<ul>
+<li>In travelling salesman problem we want to know an order of delivery of stops that yields “lowest overall distance” travelled.</li>
+<li>This “lowest overall distance” is similar to shortest path finding situation.</li>
+<li>Shortest path is polynomially solvable but travelling-sales-man is NP-Complete.</li>
+</ul>
+</div>
+<div id="section-4" class="section level3">
+<h3>1.1-5</h3>
+<p>Come up with a realworld problem in which only the best solution will do. Then
+come up with one in which a solution that is “approximately” the best is good
+enough.</p>
+<ul>
+<li>only the best solution will do: You have 5 apples and you need to give those 5 apples to 5 people and everyone should have an apple.</li>
+<li>a solution that is “approximately” the best is good enough: Calculate square root of 2.</li>
+</ul>
+</div>
+</div>
+<div id="algorithms-as-a-technology" class="section level2">
+<h2>1.2 Algorithms as a technology</h2>
+<p>Suppose computers were infinitely fast and computer memory was free. Would
+you have any reason to study algorithms? The answer is yes, if for no other reason
+than that you would still like to demonstrate that your solution method terminates
+and does so with the correct answer.</p>
+<p>If computers were infinitely fast, any correct method for solving a problem
+would do. You would probably want your implementation to be within the bounds
+of good software engineering practice (for example, your implementation should
+be well designed and documented), but you would most often use whichever
+method was the easiest to implement.</p>
+<p>Of course, computers may be fast, but they are not infinitely fast. And memory
+may be inexpensive, but it is not free. Computing time is therefore a bounded
+resource, and so is space in memory. You should use these resources wisely, and
+algorithms that are efficient in terms of time or space will help you do so.</p>
+<p><strong>Efficiency</strong></p>
+<p>Different algorithms devised to solve the same problem often differ dramatically in
+their efficiency. These differences can be much more significant than differences
+due to hardware and software.</p>
+<p>As an example, in Chapter 2, we will see two algorithms for sorting. The first,
+known as <strong>insertion sort</strong>, takes time roughly equal to <span class="math inline">\(c_1n^2\)</span> to sort n items, where <span class="math inline">\(c_1\)</span>
+is a constant that does not depend on n. That is, it takes time roughly proportional
+to <span class="math inline">\(n^2\)</span>. The second, <strong>merge sort</strong>, takes time roughly equal to <span class="math inline">\(c_2n\lg n\)</span>, where <span class="math inline">\(\lg n\)</span>
+stands for <span class="math inline">\(\log_2 n\)</span> and <span class="math inline">\(c_2\)</span> is another constant that also does not depend on n. 
+Insertion sort typically has a smaller constant factor than merge sort, so that <span class="math inline">\(c_1&lt; c_2\)</span>.
+We shall see that the constant factors can have far less of an impact on the running
+time than the dependence on the input size n. Let’s write insertion sort’s running
+time as <span class="math inline">\(c_1n\cdot n\)</span> and merge sort’s running time as <span class="math inline">\(c_2n\cdot\lg n\)</span>.</p>
+<p>Then we see that where
+insertion sort has a factor of n in its running time, merge sort has a factor of <span class="math inline">\(\lg n\)</span>,
+which is much smaller. (For example, when n = 1000, <span class="math inline">\(\lg n\)</span> is approximately 10,
+and when n equals one million, <span class="math inline">\(\lg n\)</span> is approximately only 20.) Although insertion
+sort usually runs faster than merge sort for small input sizes, once the input size n
+becomes large enough, merge sort’s advantage of <span class="math inline">\(\lg n\)</span> vs. n will more than compensate for the difference in constant factors.
+No matter how much smaller <span class="math inline">\(c_1\)</span>, is than <span class="math inline">\(c_2\)</span>, there will always be a crossover point beyond which merge sort is faster.</p>
+<p>For a concrete example, let us pit a faster computer (computer A) running insertion sort against a slower computer (computer B) running merge sort. They each
+must sort an array of 10 million numbers. (Although 10 million numbers might
+seem like a lot, if the numbers are eightbyte integers, then the input occupies
+about 80 megabytes, which fits in the memory of even an inexpensive laptop computer many times over.) Suppose that computer A executes 10 billion instructions
+per second (faster than any single sequential computer at the time of this writing)
+and computer B executes only 10 million instructions per second, so that computer A is 1000 times faster than computer B in raw computing power. To make
+the difference even more dramatic, suppose that the world’s craftiest programmer
+codes insertion sort in machine language for computer A, and the resulting code
+requires <span class="math inline">\(2n^2\)</span> instructions to sort n numbers. Suppose further that just an average
+programmer implements merge sort, using a highlevel language with an inefficient
+compiler, with the resulting code taking <span class="math inline">\(50n \lg n\)</span> instructions. To sort 10 million
+numbers, computer A takes</p>
+<p><span class="math display">\[\frac{2\cdot (10^7)^2\text{ instructions }}{(10^{10}\text{ instructions/second })}=20,000\text{ seconds (more than 5.5 hours) }\]</span></p>
+<p>while computer B takes</p>
+<p><span class="math display">\[\frac{50\cdot 10^7\lg 10^7\text{ instructions }}{(10^{7})\text{ instructions/second }}\approx 1163\text{ seconds (less than 20 minutes) }\]</span></p>
+<p>By using an algorithm whose running time grows more slowly, even with a poor
+compiler, computer B runs more than 17 times faster than computer A! The advantage of merge sort is even more pronounced when we sort 100 million numbers:
+where insertion sort takes more than 23 days, merge sort takes under four hours.
+In general, as the problem size increases, so does the relative advantage of merge
+sort.</p>
+<p><strong>Algorithms and other technologies</strong></p>
+<p>The example above shows that we should consider algorithms, like computer hardware, as a technology. Total system performance depends on choosing efficient
+algorithms as much as on choosing fast hardware. Just as rapid advances are being
+made in other computer technologies, they are being made in algorithms as well.</p>
+<p>You might wonder whether algorithms are truly that important on contemporary
+computers in light of other advanced technologies, such as</p>
+<ul>
+<li>advanced computer architectures and fabrication technologies,</li>
+<li>easy-to-use, intuitive, graphical user interfaces (GUIs),</li>
+<li>objectoriented systems,</li>
+<li>integrated Web technologies, and</li>
+<li>fast networking, both wired and wireless.</li>
+</ul>
+<p>The answer is yes. Although some applications do not explicitly require algorithmic content at the application level (such as some simple, Web-based applications),
+many do. For example, consider a Web-based service that determines how to travel
+from one location to another. Its implementation would rely on fast hardware, a
+graphical user interface, wide-area networking, and also possibly on object orientation. However, it would also require algorithms for certain operations, such
+as finding routes (probably using a shortest-path algorithm), rendering maps, and
+interpolating addresses.</p>
+<p>Moreover, even an application that does not require algorithmic content at the
+application level relies heavily upon algorithms. Does the application rely on fast
+hardware? The hardware design used algorithms. Does the application rely on
+graphical user interfaces? The design of any GUI relies on algorithms. Does the
+application rely on networking? Routing in networks relies heavily on algorithms.
+Was the application written in a language other than machine code? Then it was
+processed by a compiler, interpreter, or assembler, all of which make extensive use
+of algorithms. Algorithms are at the core of most technologies used in contemporary computers.</p>
+<p>Furthermore, with the ever-increasing capacities of computers, we use them to
+solve larger problems than ever before. As we saw in the above comparison between insertion sort and merge sort, it is at larger problem sizes that the differences in efficiency between algorithms become particularly prominent.</p>
+<p>Having a solid base of algorithmic knowledge and technique is one characteristic
+that separates the truly skilled programmers from the novices. With modern computing technology, you can accomplish some tasks without knowing much about algorithms, but with a good background in algorithms, you can do much, much more.</p>
+</div>
+<div id="exercises-1" class="section level2">
+<h2>Exercises</h2>
+<div id="section-5" class="section level3">
+<h3>1.2-1</h3>
+<p>Give an example of an application that requires algorithmic content at the application level, and discuss the function of the algorithms involved.</p>
+<blockquote>
+<p>Fingerprint matching algorithm used by forensics. Storing the fingerprints, and comparing them with the suspects prints
+it requires algorithms at application level. Function of algorithm is to have accurate matching and quick response.
+Akinator is a web application that tells what was on our mind simply by asking questions. It uses Decision trees to come to conclusion.
+<a href="http:en.akinator.com" class="uri">http:en.akinator.com</a></p>
+</blockquote>
+</div>
+<div id="section-6" class="section level3">
+<h3>1.2-2</h3>
+<p>Suppose we are comparing implementations of insertion sort and merge sort on the
+same machine. For inputs of size n, insertion sort runs in <span class="math inline">\(8n^2\)</span> steps, while merge
+sort runs in <span class="math inline">\(64n \lg n\)</span> steps. For which values of n does insertion sort beat merge
+sort?</p>
+<blockquote>
+<p>For <span class="math inline">\(8n^2 = 64n \lg n\)</span>, 2 &lt; n &lt; 43</p>
+</blockquote>
+<pre class="python"><code>import numpy as np
+8*43**2&lt;64*43*np.log2(43)</code></pre>
+<pre><code>True</code></pre>
+<pre class="python"><code>8*44**2&lt;64*44*np.log2(44)</code></pre>
+<pre><code>False</code></pre>
+</div>
+<div id="section-7" class="section level3">
+<h3>1.2-3</h3>
+<p>What is the smallest value of n such that an algorithm whose running time is <span class="math inline">\(100n^2\)</span> runs faster than an algorithm whose running time is <span class="math inline">\(2^n\)</span> on the same machine?</p>
+<blockquote>
+<p><span class="math inline">\(100n^2=2^n\)</span>, then <span class="math inline">\(2\lg100\lg n=n\lg 2\)</span> then n = 15</p>
+</blockquote>
+</div>
+</div>
+<div id="problems" class="section level2">
+<h2>Problems</h2>
+<div id="comparison-of-running-times" class="section level3">
+<h3>1-1 Comparison of running times</h3>
+<p>For each function <strong>f</strong>(n) and time t in the following table, determine the largest size n of a problem that can be solved in time t, assuming that the algorithm to solve the problem takes <strong>f</strong>(n) microseconds.</p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Item</th>
+<th align="right">1 second</th>
+<th align="right">1 miniute</th>
+<th align="right">1 hour</th>
+<th align="right">1 day</th>
+<th align="right">1 month</th>
+<th align="right">1 year</th>
+<th align="right">1 century</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\log_2{n}\)</span></td>
+<td align="right"><span class="math inline">\(2^{10^6}\)</span></td>
+<td align="right"><span class="math inline">\(2^{6*10^7}\)</span></td>
+<td align="right"><span class="math inline">\(2^{36*10^8}\)</span></td>
+<td align="right"><span class="math inline">\(2^{864*10^8}\)</span></td>
+<td align="right"><span class="math inline">\(2^{25920*10^8}\)</span></td>
+<td align="right"><span class="math inline">\(2^{315360*10^8}\)</span></td>
+<td align="right"><span class="math inline">\(2^{31556736*10^8}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\({n}^{1/2}\)</span></td>
+<td align="right"><span class="math inline">\(10^{12}\)</span></td>
+<td align="right"><span class="math inline">\(36*10^{14}\)</span></td>
+<td align="right"><span class="math inline">\(1296*10^{16}\)</span></td>
+<td align="right"><span class="math inline">\(746496*10^{16}\)</span></td>
+<td align="right"><span class="math inline">\(6718464*10^{18}\)</span></td>
+<td align="right"><span class="math inline">\(994519296*10^{18}\)</span></td>
+<td align="right"><span class="math inline">\(995827586973696*10^{16}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\({n}\)</span></td>
+<td align="right"><span class="math inline">\(10^6\)</span></td>
+<td align="right"><span class="math inline">\(6*10^7\)</span></td>
+<td align="right"><span class="math inline">\(36*10^8\)</span></td>
+<td align="right"><span class="math inline">\(864*10^8\)</span></td>
+<td align="right"><span class="math inline">\(2592*10^9\)</span></td>
+<td align="right"><span class="math inline">\(31536*10^9\)</span></td>
+<td align="right"><span class="math inline">\(31556736*10^8\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\({n}\log_2{n}\)</span></td>
+<td align="right">62746</td>
+<td align="right">2801417</td>
+<td align="right">133378058</td>
+<td align="right">2755147513</td>
+<td align="right">71870856404</td>
+<td align="right">797633893349</td>
+<td align="right">68654697441062</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\({n}^2\)</span></td>
+<td align="right">1000</td>
+<td align="right">7745</td>
+<td align="right">60000</td>
+<td align="right">293938</td>
+<td align="right">1609968</td>
+<td align="right">5615692</td>
+<td align="right">56175382</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\({n}^3\)</span></td>
+<td align="right">100</td>
+<td align="right">391</td>
+<td align="right">1532</td>
+<td align="right">4420</td>
+<td align="right">13736</td>
+<td align="right">31593</td>
+<td align="right">146677</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(2^n\)</span></td>
+<td align="right">19</td>
+<td align="right">25</td>
+<td align="right">31</td>
+<td align="right">36</td>
+<td align="right">41</td>
+<td align="right">44</td>
+<td align="right">51</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\({n}!\)</span></td>
+<td align="right">9</td>
+<td align="right">11</td>
+<td align="right">12</td>
+<td align="right">13</td>
+<td align="right">15</td>
+<td align="right">16</td>
+<td align="right">17</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-cormen2009introduction" class="csl-entry">
+1. Cormen TH, Leiserson CE, Rivest RL, Stein C. Introduction to algorithms. MIT press; 2009.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">124 min read</span>
+    <span class="article-duration">123 min read</span>
     
 
     <h1 class="article-title">The C Programming Language</h1>
@@ -183,7 +183,10 @@
 <ul>
 <li><a href="#exercise-3-1-.-our-binary-search-makes-two-tests-inside-the-loop">Exercise 3-1 . Our binary search makes two tests inside the loop,</a></li>
 </ul></li>
-<li><a href="#switch">3.4 Switch</a></li>
+<li><a href="#switch">3.4 Switch</a>
+<ul>
+<li><a href="#exercise-3-2-.-write-a-function-escapest-that-converts-characters-like-newline">Exercise 3-2 . Write a function <span class="code">escape(s,t)</span> that converts characters like newline</a></li>
+</ul></li>
 <li><a href="#loopswhile-and-for">3.5 Loops—While and For</a>
 <ul>
 <li><a href="#exercise-3-3-.-write-a-function-expands1s2-that-expands-shorthand-notations-like">Exercise 3-3 . Write a function <span class="code">expand(s1,s2)</span> that expands shorthand notations like</a></li>
@@ -341,7 +344,7 @@ complete list in Section 2.3</p>
 <p>Run the “<span class="code">hello, world</span>”
 program on your system. Experiment with leaving out parts of the
 program, to see what error messages you get.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-01/helloworld.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-01/helloworld.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -349,14 +352,14 @@ int main(void)
     printf(&quot;hello world!\n&quot;);
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-01/helloworld.c -o Chapter1/### Exercise\ 1-01/helloworld</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-01/helloworld</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-01/helloworld.c -o Chapter1/Exercise\ 1-01/helloworld</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-01/helloworld</code></pre>
 <pre><code>hello world!</code></pre>
 </div>
 <div id="exercise-1-2-." class="section level3">
 <h3>Exercise 1-2 .</h3>
 <p>Experiment to find out what happens when <span class="code">printf</span>’s argument string contains <span class="code">\</span><em>c</em>, where <em>c</em> is some character not listed above.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-02/escape_sequence.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-02/escape_sequence.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -367,8 +370,8 @@ int main(void)
     printf(&quot;double quote: \&quot;\n&quot;);
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-02/escape_sequence.c -o Chapter1/### Exercise\ 1-02/escape</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-02/escape</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-02/escape_sequence.c -o Chapter1/Exercise\ 1-02/escape</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-02/escape</code></pre>
 <pre><code>tab:    
 backslash: \
 single quote: &#39;
@@ -628,7 +631,7 @@ hexadecimal, <span class="code">%c</span> for character, <span class="code">%s</
 <div id="exercise-1-3-." class="section level3">
 <h3>Exercise 1-3 .</h3>
 <p>Modify the temperature conversion program to print a heading above the table.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-03/temperature.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-03/temperature.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -650,8 +653,8 @@ int main(void)
     }
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-03/temperature.c -o Chapter1/### Exercise\ 1-03/temperature</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-03/temperature</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-03/temperature.c -o Chapter1/Exercise\ 1-03/temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-03/temperature</code></pre>
 <pre><code>  Fahr      Celsius
   0  -17.8
  20   -6.7
@@ -674,7 +677,7 @@ int main(void)
 <h3>Exercise 1-4 .</h3>
 <p>Write a program to print the corresponding Celsius to
 Fahrenheit table.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-04/ctof.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-04/ctof.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -696,8 +699,8 @@ int main(void)
     }
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-04/ctof.c -o Chapter1/### Exercise\ 1-04/ctof</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-04/ctof</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-04/ctof.c -o Chapter1/Exercise\ 1-04/ctof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-04/ctof</code></pre>
 <pre><code>  celsius      fahr
 -20   -4.0
 -10   14.0
@@ -770,7 +773,7 @@ and it keeps the loop control statements together in one place.</p>
 <h3>Exercise 1-5 .</h3>
 <p>Modify the temperature conversion program to print the
 table in reverse order, that is, from 300 degrees to 0.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-05/reverse_temperature.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-05/reverse_temperature.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -792,8 +795,8 @@ int main(void)
     }
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-05/reverse_temperature.c -o Chapter1/### Exercise\ 1-05/reverse_temperature</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-05/reverse_temperature</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-05/reverse_temperature.c -o Chapter1/Exercise\ 1-05/reverse_temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-05/reverse_temperature</code></pre>
 <pre><code>  fahr      celsius
 300  148.9
 280  137.8
@@ -957,7 +960,7 @@ statement</p>
 <div id="exercise-1-6-." class="section level3">
 <h3>Exercise 1-6 .</h3>
 <p>Verify that the expression <span class="code">getchar() != EOF</span> is 0 or 1.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-06/eof.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-06/eof.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -966,14 +969,14 @@ int main(void)
     printf(&quot;The expression \&quot;getchar() != EOF\&quot; is %d.\n&quot;, getchar() != EOF);
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-06/eof.c -o Chapter1/### Exercise\ 1-06/eof</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-06/eof</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-06/eof.c -o Chapter1/Exercise\ 1-06/eof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-06/eof</code></pre>
 <pre><code>Please enter a character:</code></pre>
 </div>
 <div id="exercise-1-7-." class="section level3">
 <h3>Exercise 1-7 .</h3>
 <p>Write a program to print the value of <span class="code">EOF</span>.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-07/eof.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-07/eof.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -981,8 +984,8 @@ int main(void)
     printf(&quot;The value of EOF is %d.\n&quot;, EOF);
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-07/eof.c -o Chapter1/### Exercise\ 1-07/eof</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-07/eof</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-07/eof.c -o Chapter1/Exercise\ 1-07/eof</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-07/eof</code></pre>
 <pre><code>The value of EOF is -1.</code></pre>
 </div>
 <div id="character-counting" class="section level3">
@@ -1088,7 +1091,7 @@ strings versus characters is discussed further in Chapter 2.</p>
 </div>
 <div id="exercise-1-8-.-write-a-program-to-count-blanks-tabs-and-newlines." class="section level3">
 <h3>Exercise 1-8 . Write a program to count blanks, tabs, and newlines.</h3>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-08/count.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-08/count.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -1111,14 +1114,14 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-08/count.c -o Chapter1/### Exercise\ 1-08/count</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-08/count.c -o Chapter1/Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-08/count</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 <div id="exercise-1-9-.-write-a-program-to-copy-its-input-to-its-output" class="section level3">
 <h3>Exercise 1-9 . Write a program to copy its input to its output,</h3>
 <p>replacing each string of one or more blanks by a single blank.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-09/blank.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-09/blank.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -1139,8 +1142,8 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-08/count.c -o Chapter1/### Exercise\ 1-08/count</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-08/count.c -o Chapter1/Exercise\ 1-08/count</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-08/count</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 <div id="exercise-1-10-.-write-a-program-to-copy-its-input-to-its-output" class="section level3">
@@ -1148,7 +1151,7 @@ int main(void)
 <p>replacing each tab by <span class="code">\t</span>, each backspace by
 <span class="code">\b</span>, and each backslash by <span class="code">\\</span>. This makes tabs and backspaces visible in an
 unambiguous way.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-10/replace.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-10/replace.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -1168,8 +1171,8 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-10/replace.c -o Chapter1/### Exercise\ 1-10/replace</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-10/replace</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-10/replace.c -o Chapter1/Exercise\ 1-10/replace</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-10/replace</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 <div id="word-counting" class="section level3">
@@ -1250,7 +1253,7 @@ count program, the one after the <span class="code">else</span> is an
 <div id="exercise-1-12-.-write-a-program-that-prints-its-input-one-word-per" class="section level3">
 <h3>Exercise 1-12 . Write a program that prints its input one word per</h3>
 <p>line.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-12/one_word_per_line.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-12/one_word_per_line.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
@@ -1272,8 +1275,8 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-12/one_word_per_line.c -o Chapter1/### Exercise\ 1-12/one_word_per_line</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-12/one_word_per_line</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-12/one_word_per_line.c -o Chapter1/Exercise\ 1-12/one_word_per_line</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-12/one_word_per_line</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 </div>
@@ -1378,7 +1381,7 @@ Section 3.4.</p>
 <h3>Exercise 1-13 . Write a program to print a histogram of the lengths</h3>
 <p>of words in its input. It is easy to draw the histogram with the bars
 horizontal; a vertical orientation is more challenging.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-13/word_length.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-13/word_length.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAX_LENGTH 15
@@ -1460,14 +1463,14 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-13/word_length.c -o Chapter1/### Exercise\ 1-13/word_length</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-13/word_length</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-13/word_length.c -o Chapter1/Exercise\ 1-13/word_length</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-13/word_length</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 <div id="exercise-1-14-.-write-a-program-to-print-a-histogram-of-the" class="section level3">
 <h3>Exercise 1-14 . Write a program to print a histogram of the</h3>
 <p>frequencies of different characters in its input.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-14/frequency.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-14/frequency.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define NUM_CHARS 128
@@ -1494,8 +1497,8 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-14/frequency.c -o Chapter1/### Exercise\ 1-14/frequency</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-14/frequency</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-14/frequency.c -o Chapter1/Exercise\ 1-14/frequency</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-14/frequency</code></pre>
 <pre><code>Input some characters, then press Ctrl+D.</code></pre>
 </div>
 </div>
@@ -1631,7 +1634,7 @@ form when you have a compiler that supports it.</p>
 <div id="exercise-1-15-.-rewrite-the-temperature-conversion-program-of" class="section level3">
 <h3>Exercise 1-15 . Rewrite the temperature conversion program of</h3>
 <p>Section 1.2 to use a function for conversion.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-15/temperature.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-15/temperature.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 float ftoc(float fahr);
@@ -1660,8 +1663,8 @@ float ftoc(float fahr)
     celsius = (5.0 / 9.0) * (fahr - 32.0);
     return celsius;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-15/temperature.c -o Chapter1/### Exercise\ 1-15/temperature</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-15/temperature</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-15/temperature.c -o Chapter1/Exercise\ 1-15/temperature</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-15/temperature</code></pre>
 <pre><code>  0  -17.8
  20   -6.7
  40    4.4
@@ -1838,7 +1841,7 @@ it.</p>
 <h3>Exercise 1-16 . Revise the main routine of the longest-line program</h3>
 <p>so it will correctly print the length of arbitrarily long input lines,
 and as much as possible of the text.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-16/longest_line.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-16/longest_line.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000 /* maximum input line length */
@@ -1898,13 +1901,13 @@ void copy(char to[], char from[])
     while ((to[i] = from[i]) != &#39;\0&#39;)
         ++i;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-16/longest_line.c -o Chapter1/### Exercise\ 1-16/longest_line</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-16/longest_line</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-16/longest_line.c -o Chapter1/Exercise\ 1-16/longest_line</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-16/longest_line</code></pre>
 </div>
 <div id="exercise-1-17-.-write-a-program-to-print" class="section level3">
 <h3>Exercise 1-17 . Write a program to print</h3>
 <p>all input lines that are longer than 80 characters.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-17/lines.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-17/lines.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -1940,13 +1943,13 @@ int get_line(char s[], int lim)
 
     return l;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-17/lines.c -o Chapter1/### Exercise\ 1-17/lines</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-17/lines</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-17/lines.c -o Chapter1/Exercise\ 1-17/lines</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-17/lines</code></pre>
 </div>
 <div id="exercise-1-18-.-write-a-program-to-remove-trailing-blanks-and-tabs" class="section level3">
 <h3>Exercise 1-18 . Write a program to remove trailing blanks and tabs</h3>
 <p>from each line of input, and to delete entirely blank lines.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-18/lines.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-18/lines.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -1980,14 +1983,14 @@ int get_line(char s[], int lim)
 
     return l;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-18/lines.c -o Chapter1/### Exercise\ 1-18/lines</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-18/lines</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-18/lines.c -o Chapter1/Exercise\ 1-18/lines</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-18/lines</code></pre>
 </div>
 <div id="exercise-1-19-.-write-a-function-reverses" class="section level3">
 <h3>Exercise 1-19 . Write a function <span class="code">reverse(s)</span></h3>
 <p>that reverses the character string <span class="code">s</span>. Use it
 to write a program that reverses its input a line at a time.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-19/reverse.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-19/reverse.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -2038,8 +2041,8 @@ void reverse(char s[])
         s[j] = tmp;
     }
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-19/reverse.c -o Chapter1/### Exercise\ 1-19/reverse</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-19/reverse</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-19/reverse.c -o Chapter1/Exercise\ 1-19/reverse</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-19/reverse</code></pre>
 </div>
 </div>
 <div id="external-variables-and-scope" class="section level2">
@@ -2188,7 +2191,7 @@ chapter.</p>
 <p>replaces tabs in the input with the proper number of blanks to space to
 the next tab stop. Assume a fixed set of tab stops, say every <em>n</em>
 columns. Should <em>n</em> be a variable or a symbolic parameter?</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-20/detab.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-20/detab.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -2242,15 +2245,15 @@ void detab(char s1[], char s2[], int w)
     }
     s2[l] = &#39;\0&#39;;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-20/detab.c -o Chapter1/### Exercise\ 1-20/detab</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-20/detab</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-20/detab.c -o Chapter1/Exercise\ 1-20/detab</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-20/detab</code></pre>
 </div>
 <div id="exercise-1-21-.-write-a-program-entab-that" class="section level3">
 <h3>Exercise 1-21 . Write a program <span class="code">entab</span> that</h3>
 <p>replaces strings of blanks by the minimum number of tabs and blanks to
 achieve the same spacing. Use the same tab stops as for <span class="code">detab</span>. When either a tab or a single blank would
 suffice to reach a tab stop, which should be given preference?</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-21/entab.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-21/entab.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -2316,8 +2319,8 @@ void entab(char s1[], char s2[], int w)
     }
     s2[l] = &#39;\0&#39;;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-21/entab.c -o Chapter1/### Exercise\ 1-21/entab</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-21/entab</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-21/entab.c -o Chapter1/Exercise\ 1-21/entab</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-21/entab</code></pre>
 </div>
 <div id="exercise-1-22-.-write-a-program-to-fold-long-input-lines-into-two" class="section level3">
 <h3>Exercise 1-22 . Write a program to “fold” long input lines into two</h3>
@@ -2325,7 +2328,7 @@ void entab(char s1[], char s2[], int w)
 before the <em>n</em>-th column of input. Make sure your program does something
 intelligent with very long lines, and if there are no blanks or tabs
 before the specified column.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-22/fold.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-22/fold.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -2402,14 +2405,14 @@ void fold(char s1[], char s2[], int lw, int tw)
     }
     s2[l++] = &#39;\0&#39;;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-22/fold.c -o Chapter1/### Exercise\ 1-22/fold</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-22/fold</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-22/fold.c -o Chapter1/Exercise\ 1-22/fold</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-22/fold</code></pre>
 </div>
 <div id="exercise-1-23-.-write-a-program-to-remove-all-comments-from-a-c" class="section level3">
 <h3>Exercise 1-23 . Write a program to remove all comments from a C</h3>
 <p>program. Don’t forget to handle quoted strings and character constants
 properly. C comments do not nest.</p>
-<pre class="python"><code>! cat Chapter1/### Exercise\ 1-23/comments.c</code></pre>
+<pre class="python"><code>! cat Chapter1/Exercise\ 1-23/comments.c</code></pre>
 <pre><code>/ 
  * Test text, replace &#39;@&#39; with &#39;/&#39;
 
@@ -2484,8 +2487,8 @@ int _getline(char s[], int max)
 
     return l;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter1/### Exercise\ 1-23/comments.c -o Chapter1/### Exercise\ 1-23/comments</code></pre>
-<pre class="python"><code>! Chapter1/### Exercise\ 1-23/comments</code></pre>
+<pre class="python"><code>! gcc Chapter1/Exercise\ 1-23/comments.c -o Chapter1/Exercise\ 1-23/comments</code></pre>
+<pre class="python"><code>! Chapter1/Exercise\ 1-23/comments</code></pre>
 </div>
 <div id="exercise-1-24-.-write-a-program-to-check-a-c-program-for-rudimentary" class="section level3">
 <h3>Exercise 1-24 . Write a program to check a C program for rudimentary</h3>
@@ -2598,7 +2601,7 @@ These are discussed in Appendix B.</p>
 <p>printing appropriate values from standard headers and by direct
 computation. Harder if you compute them: determine the ranges of the
 various floating-point types.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-01/ranges.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-01/ranges.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;limits.h&gt;
 
@@ -2619,8 +2622,8 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-01/ranges.c -o Chapter2/### Exercise\ 2-01/ranges</code></pre>
-<pre class="python"><code>! Chapter2/### Exercise\ 2-01/ranges</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-01/ranges.c -o Chapter2/Exercise\ 2-01/ranges</code></pre>
+<pre class="python"><code>! Chapter2/Exercise\ 2-01/ranges</code></pre>
 <pre><code>Range of signed char is [-128, 127].
 Range of unsigned char is [0, 255].
 Range of char is [-128, 127].
@@ -2876,7 +2879,7 @@ non-zero operand into 0, and a zero operand into 1. A common use of
 complicated ones can be hard to understand.</p>
 <div id="exercise-2-2-.-write-a-loop-equivalent-to-the-for-loop-above-without-using-or-." class="section level3">
 <h3>Exercise 2-2 . Write a loop equivalent to the <span class="code">for</span> loop above without using <span class="code">&amp;&amp;</span> or <span class="code">||</span>.</h3>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-02/loop.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-02/loop.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -2900,7 +2903,7 @@ int main(void)
 
     return 0;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-02/loop.c -o Chapter2/### Exercise\ 2-02/loop</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-02/loop.c -o Chapter2/Exercise\ 2-02/loop</code></pre>
 </div>
 </div>
 <div id="type-conversions" class="section level2">
@@ -3078,7 +3081,7 @@ next = seed;<br />
 <p>which converts a string of hexadecimal digits (including an optional
 <span class="code">0x</span> or <span class="code">0X</span>) into its
 equivalent integer value. The allowable digits are <span class="code">0</span> through <span class="code">9</span>, <span class="code">a</span> through <span class="code">f</span>, and <span class="code">A</span> through <span class="code">F</span>.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-03/htoi.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-03/htoi.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -3134,7 +3137,7 @@ unsigned long htoi(char s[])
 
     return n;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-03/htoi.c -o Chapter2/### Exercise\ 2-03/htoi</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-03/htoi.c -o Chapter2/Exercise\ 2-03/htoi</code></pre>
 </div>
 </div>
 <div id="increment-and-decrement-operators" class="section level2">
@@ -3213,7 +3216,7 @@ applied to both <span class="code">i</span> and <span class="code">j</span> to m
 next pass through the loop.</p>
 <div id="exercise-2-4-.-write-an-alternate-version-of-squeezes1s2-that-deletes-each-character-in-s1-that-matches-any-character-in-the-string-s2." class="section level3">
 <h3>Exercise 2-4 . Write an alternate version of <span class="code">squeeze(s1,s2)</span> that deletes each character in <span class="code">s1</span> that matches any character in the <em>string</em> <span class="code">s2</span>.</h3>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-04/squeeze.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-04/squeeze.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -3272,7 +3275,7 @@ void squeeze(char s1[], char s2[])
         ++i;
     }
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-04/squeeze.c -o Chapter2/### Exercise\ 2-04/squeeze</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-04/squeeze.c -o Chapter2/Exercise\ 2-04/squeeze</code></pre>
 </div>
 <div id="exercise-2-5-.-write-the-function-anys1s2-which-returns-the-first-location-in-the" class="section level3">
 <h3>Exercise 2-5 . Write the function <span class="code">any(s1,s2)</span>, which returns the first location in the</h3>
@@ -3280,7 +3283,7 @@ void squeeze(char s1[], char s2[])
 <span class="code">s2</span> occurs, or <span class="code">-1</span> if
 <span class="code">s1</span> contains no characters from <span class="code">s2</span>. (The standard library function <span class="code">strpbrk</span> does the same job but returns a pointer to
 the location.)</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-05/any.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-05/any.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -3336,7 +3339,7 @@ int any(char s1[], char s2[])
 
     return -1;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-05/any.c -o Chapter2/### Exercise\ 2-05/any</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-05/any.c -o Chapter2/Exercise\ 2-05/any</code></pre>
 </div>
 </div>
 <div id="bitwise-operators" class="section level2">
@@ -3402,7 +3405,7 @@ desired field to the right end of the word. <span class="code">~0</span> is all 
 <h3>Exercise 2-6 . Write a function <span class="code">setbits(x,p,n,y)</span> that returns <span class="code">x</span> with the <span class="code">n</span> bits that</h3>
 <p>begin at position <span class="code">p</span> set to the rightmost <span class="code">n</span> bits of <span class="code">y</span>, leaving the
 other bits unchanged.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-06/setbits.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-06/setbits.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 unsigned setbits(unsigned x, int p, int n, unsigned y);
@@ -3424,13 +3427,13 @@ unsigned setbits(unsigned x, int p, int n, unsigned y)
     // xxxxxyyyyyxxxxx
     return a | b;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-06/setbits.c -o Chapter2/### Exercise\ 2-06/setbits</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-06/setbits.c -o Chapter2/Exercise\ 2-06/setbits</code></pre>
 </div>
 <div id="exercise-2-7-.-write-a-function-invertxpn-that-returns-x-with-the-n-bits-that" class="section level3">
 <h3>Exercise 2-7 . Write a function <span class="code">invert(x,p,n)</span> that returns <span class="code">x</span> with the <span class="code">n</span> bits that</h3>
 <p>begin at position <span class="code">p</span> inverted (i.e., 1 changed
 into 0 and vice versa), leaving the others unchanged.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-07/invert.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-07/invert.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 unsigned invert(unsigned x, int p, int n);
@@ -3449,12 +3452,12 @@ unsigned invert(unsigned x, int p, int n)
     // xxxxx^^^^^xxxxx
     return x ^ mask;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-07/invert.c -o Chapter2/### Exercise\ 2-07/invert</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-07/invert.c -o Chapter2/Exercise\ 2-07/invert</code></pre>
 </div>
 <div id="exercise-2-8-.-write-a-function-rightrotxn-that-returns-the-value-of-the-integer" class="section level3">
 <h3>Exercise 2-8 . Write a function <span class="code">rightrot(x,n)</span> that returns the value of the integer</h3>
 <p><span class="code">x</span> rotated to the right by <span class="code">n</span> bit positions.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-08/rightrot.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-08/rightrot.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 unsigned rightroc(unsigned x, int n);
@@ -3474,7 +3477,7 @@ unsigned rightroc(unsigned x, int n)
             x = x &gt;&gt; 1;
     return x;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-08/rightrot.c -o Chapter2/### Exercise\ 2-08/rightrot</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-08/rightrot.c -o Chapter2/Exercise\ 2-08/rightrot</code></pre>
 </div>
 </div>
 <div id="assignment-operators-and-expressions" class="section level2">
@@ -3542,7 +3545,7 @@ assignment.</p>
 <div id="exercise-2-9-.-in-a-twos-complement-number-system-x-x-1-deletes-the-rightmost-1-bit-in-x.-explain-why.-use-this-observation-to-write-a" class="section level3">
 <h3>Exercise 2-9 . In a two’s complement number system, <span class="code">x &amp;= (x-1)</span> deletes the rightmost 1-bit in <span class="code">x</span>. Explain why. Use this observation to write a</h3>
 <p>faster version of <span class="code">bitcount</span>.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-09/bitcount.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-09/bitcount.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int bitcount(unsigned x);
@@ -3562,7 +3565,7 @@ int bitcount(unsigned x)
         b++;
     return b;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-09/bitcount.c -o Chapter2/### Exercise\ 2-09/bitcount</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-09/bitcount.c -o Chapter2/Exercise\ 2-09/bitcount</code></pre>
 </div>
 </div>
 <div id="conditional-expressions" class="section level2">
@@ -3609,7 +3612,7 @@ This might look tricky, but it’s more compact than the equivalent <span class=
 <h3>Exercise 2-10 . Rewrite the function <span class="code">lower</span>,</h3>
 <p>which converts upper case letters to lower case, with a conditional
 expression instead of <span class="code">if-else</span>.</p>
-<pre class="python"><code>! cat Chapter2/### Exercise\ 2-10/lower.c</code></pre>
+<pre class="python"><code>! cat Chapter2/Exercise\ 2-10/lower.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int lower(int c);
@@ -3632,7 +3635,7 @@ int lower(int c)
 {
     return (c &gt;= &#39;A&#39; &amp;&amp; c&lt;= &#39;Z&#39;) ? c + &#39;a&#39; - &#39;A&#39; : c;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter2/### Exercise\ 2-10/lower.c -o Chapter2/### Exercise\ 2-10/lower</code></pre>
+<pre class="python"><code>! gcc Chapter2/Exercise\ 2-10/lower.c -o Chapter2/Exercise\ 2-10/lower</code></pre>
 </div>
 </div>
 <div id="precedence-and-order-of-evaluation" class="section level2">
@@ -3838,7 +3841,7 @@ than, greater than, or equal to the middle element <span class="code">v [mid]</s
 <p>when one would suffice (at the price of more tests outside). Write a
 version with only one test inside the loop and measure the difference in
 run-time.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-01/binsearch.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-01/binsearch.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 int binsearch(int x, int v[], int n);
@@ -3867,8 +3870,8 @@ int binsearch(int x, int v[], int n)
     }
     return (x == v[low]) ? low : -1;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-01/binsearch.c -o Chapter3/### Exercise\ 3-01/binsearch</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-01/binsearch</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-01/binsearch.c -o Chapter3/Exercise\ 3-01/binsearch</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-01/binsearch</code></pre>
 <pre><code>binsearch result: 5</code></pre>
 </div>
 </div>
@@ -3943,11 +3946,12 @@ used sparingly, and commented.</p>
 the last case (the <span class="code">default</span> here) even though
 it’s logically unnecessary. Some day when another case gets added at the
 end, this bit of defensive programming will save you.</p>
-<p><span id="page_60"></span>### Exercise 3-2 . Write a function <span class="code">escape(s,t)</span> that converts characters like newline
-and tab into visible escape sequences like <span class="code">\n</span>
+<div id="exercise-3-2-.-write-a-function-escapest-that-converts-characters-like-newline" class="section level3">
+<h3>Exercise 3-2 . Write a function <span class="code">escape(s,t)</span> that converts characters like newline</h3>
+<p>and tab into visible escape sequences like <span class="code">\n</span>
 and <span class="code">\t</span> as it copies the string <span class="code">t</span> to <span class="code">s</span>. Use a <span class="code">switch</span>. Write a function for the other direction as
 well, converting escape sequences into the real characters.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-02/escape.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-02/escape.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -4098,9 +4102,10 @@ void unescape(char s[], char t[])
     }
     s[j] = &#39;\0&#39;;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-02/escape.c -o Chapter3/### Exercise\ 3-02/escape</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-02/escape</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-02/escape.c -o Chapter3/Exercise\ 3-02/escape</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-02/escape</code></pre>
 <pre><code>Input some characters, then press Ctrl+D:</code></pre>
+</div>
 </div>
 <div id="loopswhile-and-for" class="section level2">
 <h2>3.5 Loops—While and For</h2>
@@ -4255,7 +4260,7 @@ c = s[i], s[i] = s[j], s[j] = c;</p>
 into the equivalent complete list <span class="code">abc…xyz</span> in
 <span class="code">s2</span>. Allow for letters of either case and
 digits, and be prepared to handle cases like <span class="code">a-b-c</span> and <span class="code">a-z0−9</span> and <span class="code">-a-z</span>. Arrange that a leading or trailing <span class="code">-</span> is taken literally.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-03/expand.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-03/expand.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 
 #define MAXLINE 1000
@@ -4310,8 +4315,8 @@ void expand(char s1[], char s2[])
     }
     s2[j] = &#39;\0&#39;;
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-03/expand.c -o Chapter3/### Exercise\ 3-03/expand</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-03/expand</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-03/expand.c -o Chapter3/Exercise\ 3-03/expand</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-03/expand</code></pre>
 <pre><code>Input some characters, then press enter:</code></pre>
 </div>
 </div>
@@ -4365,7 +4370,7 @@ unnecessary, so the hasty reader will not mistake the <span class="code">while</
 negative number, that is, the value of <span class="code">n</span> equal
 to −(2<sup>wordsize−1</sup>). Explain why not. Modify it to print that
 value correctly, regardless of the machine on which it runs.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-04/itoa.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-04/itoa.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;limits.h&gt;
 
@@ -4419,8 +4424,8 @@ void reverse(char s[])
         s[j] = tmp;
     }
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-04/itoa.c -o Chapter3/### Exercise\ 3-04/itoa</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-04/itoa</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-04/itoa.c -o Chapter3/Exercise\ 3-04/itoa</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-04/itoa</code></pre>
 <pre><code>-2147483648 is converted to -2147483648.
 826 is converted to 826.
 -2093 is converted to -2093.</code></pre>
@@ -4429,7 +4434,7 @@ void reverse(char s[])
 <h3>Exercise 3-5 . Write the function <span class="code">itob(n,s,b)</span> that converts the integer <span class="code">n</span> into a base <span class="code">b</span> character</h3>
 <p>representation in the string <span class="code">s</span>. In particular,
 <span class="code">itob(n,s,16)</span> formats <span class="code">n</span> as a hexadecimal integer in <span class="code">s</span>.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-05/itob.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-05/itob.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;limits.h&gt;
 
@@ -4487,8 +4492,8 @@ void reverse(char s[])
         s[j] = tmp;
     }
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-05/itob.c -o Chapter3/### Exercise\ 3-05/itob</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-05/itob</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-05/itob.c -o Chapter3/Exercise\ 3-05/itob</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-05/itob</code></pre>
 <pre><code>-2147483648 in base 16 is -80000000.
 826 in base 10 is 826.
 -2093 in base 5 is -31333.</code></pre>
@@ -4498,7 +4503,7 @@ void reverse(char s[])
 <p>accepts three arguments instead of two. The third argument is a minimum
 field width; the converted number must be padded with blanks on the left
 if necessary to make it wide enough.</p>
-<pre class="python"><code>! cat Chapter3/### Exercise\ 3-06/itoa.c</code></pre>
+<pre class="python"><code>! cat Chapter3/Exercise\ 3-06/itoa.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;limits.h&gt;
 
@@ -4558,8 +4563,8 @@ void reverse(char s[])
         s[j] = tmp;
     }
 }</code></pre>
-<pre class="python"><code>! gcc Chapter3/### Exercise\ 3-06/itoa.c -o Chapter3/### Exercise\ 3-06/itoa</code></pre>
-<pre class="python"><code>! Chapter3/### Exercise\ 3-06/itoa</code></pre>
+<pre class="python"><code>! gcc Chapter3/Exercise\ 3-06/itoa.c -o Chapter3/Exercise\ 3-06/itoa</code></pre>
+<pre class="python"><code>! Chapter3/Exercise\ 3-06/itoa</code></pre>
 <pre><code> -2147483648 is converted to -2147483648.
          826 is converted to         826.
        -2093 is converted to       -2093.</code></pre>
