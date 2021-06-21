@@ -6,7 +6,25 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hands-on Machine Learning</title>
+      <link>/2021/06/06/hands-on-machine-learning/</link>
+      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/06/hands-on-machine-learning/</guid>
+      <description>Chapter 1 – The Machine Learning landscapeExample 1-1. Training and running a linear model using Scikit-LearnExercisesChapter 2 – End-to-end Machine Learning projectWorking with Real DataLook at the Big PictureDiscover and visualize the data to gain insightsPrepare the data for Machine Learning algorithmsSelect and train a modelFine-Tune Your ModelExtra materialA full pipeline with both preparation and predictionModel persistence using joblibExample SciPy distributions for RandomizedSearchCVExercise solutions1.</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Algorithms 2 Getting Started</title>
+      <link>/2021/06/05/introduction-to-algorithms-2-getting-started/</link>
+      <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/05/introduction-to-algorithms-2-getting-started/</guid>
+      <description>ReferencesReferences1. Cormen TH, Leiserson CE, Rivest RL, Stein C. Introduction to algorithms. MIT press; 2009.</description>
+    </item>
+    
     <item>
       <title>Introduction to Algorithms 1 The Role of Algorithms in Computing</title>
       <link>/2021/06/04/introduction-to-algorithms/</link>
@@ -850,8 +868,9 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>This website was constructed using R markdown and R blogdown, the wonderful packages by Yihui Xie, and the Hugo Lithium theme. These pages are hosted by GitHub Pages.
-What are the meaningful and eternal things I should pursue in life?</description>
+      <description>This website was constructed using R markdown and R blogdown, the wonderful packages by Yihui Xie, and the Hugo Lithium theme. These pages are hosted by GitHub Pages.
+Interesting blogs which I followed:
+colah</description>
     </item>
     
     <item>
