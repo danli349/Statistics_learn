@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hands-on Machine Learning: Keras</title>
+      <link>/2021/06/21/hands-on-machine-learning-keras/</link>
+      <pubDate>Mon, 21 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/21/hands-on-machine-learning-keras/</guid>
+      <description>Chapter 10 – Introduction to Artificial Neural Networks with KerasPerceptronsThe Multilayer Perceptron (MLP) and BackpropagationActivation functionsRegression MLPClassification MLPsImplementing MLPs with KerasBuilding an Image Classifier Using the Sequential APIBuilding Complex Models Using the Functional APIUsing the Subclassing API to Build Dynamic ModelsSaving and Restoring a ModelUsing Callbacks during TrainingUsing TensorBoard for VisualizationFine-Tuning Neural Network HyperparametersExercise solutionsReferencesChapter 10 – Introduction to Artificial Neural Networks with KerasFirst, let’s import a few common modules, ensure MatplotLib plots figures inline and prepare a function to save the figures.</description>
+    </item>
+    
     <item>
       <title>Hands-on Machine Learning: Scikit-Learn</title>
       <link>/2021/06/06/hands-on-machine-learning/</link>
@@ -17,16 +26,7 @@
     </item>
     
     <item>
-      <title>Introduction to Algorithms 2 Getting Started</title>
-      <link>/2021/06/05/introduction-to-algorithms-2-getting-started/</link>
-      <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/06/05/introduction-to-algorithms-2-getting-started/</guid>
-      <description>ReferencesReferences1. Cormen TH, Leiserson CE, Rivest RL, Stein C. Introduction to algorithms. MIT press; 2009.</description>
-    </item>
-    
-    <item>
-      <title>Introduction to Algorithms 1 The Role of Algorithms in Computing</title>
+      <title>Introduction to Algorithms</title>
       <link>/2021/06/04/introduction-to-algorithms/</link>
       <pubDate>Fri, 04 Jun 2021 00:00:00 +0000</pubDate>
       

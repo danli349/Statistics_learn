@@ -228,6 +228,7 @@
 </ul></li>
 <li><a href="#exercise-solutions-4">Exercise solutions</a></li>
 </ul></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
@@ -1607,7 +1608,7 @@ assert sklearn.__version__ &gt;= &quot;0.20&quot;</code></pre>
 Figure 1-20. The importance of data versus algorithms
 </div>
 <p>As the authors put it, “these results suggest that we may want to reconsider the trade-off between spending time and money on algorithm development versus spending it on corpus development.”</p>
-<p>The idea that data matters more than algorithms for complex problems was further popularized by Peter Norvig et al. in a paper titled “The Unreasonable Effectiveness of Data”, published in 2009.10 It should be noted, however, that small- and medium-sized datasets are still very common, and it is not always easy or cheap to get extra training data⁠—so don’t abandon algorithms just yet.</p>
+<p>The idea that data matters more than algorithms for complex problems was further popularized by Peter Norvig et al. in a paper titled “The Unreasonable Effectiveness of Data,” published in 2009.10 It should be noted, however, that small- and medium-sized datasets are still very common, and it is not always easy or cheap to get extra training data⁠—so don’t abandon algorithms just yet.</p>
 <p><strong>Nonrepresentative Training Data</strong></p>
 <p>In order to generalize well, it is crucial that your training data be representative of the new cases you want to generalize to. This is true whether you use instance-based learning or model-based learning.</p>
 <p>For example, the set of countries we used earlier for training the linear model was not perfectly representative; a few countries were missing. Figure 1-21 shows what the data looks like when you add the missing countries.</p>
@@ -13515,7 +13516,7 @@ plt.show()</code></pre>
 * Compare many more models and tune hyperparameters using cross validation and grid search,
 * Do more feature engineering, for example:
 * replace <strong>SibSp</strong> and <strong>Parch</strong> with their sum,
-* try to identify parts of names that correlate well with the <strong>Survived</strong> attribute (e.g. if the name contains “Countess”, then survival seems more likely),
+* try to identify parts of names that correlate well with the <strong>Survived</strong> attribute (e.g. if the name contains “Countess,” then survival seems more likely),
 * try to convert numerical attributes to categorical attributes: for example, different age groups had very different survival rates (see below), so it may help to create an age bucket category and use it instead of the age. Similarly, it may be useful to have a special category for people traveling alone since only 30% of them survived (see below).</p>
 <pre class="python"><code>train_data[&quot;Age&quot;]</code></pre>
 <pre><code>0      22.0
@@ -13997,7 +13998,7 @@ Computing =&gt; comput
 Computed =&gt; comput
 Compute =&gt; comput
 Compulsive =&gt; compuls</code></pre>
-<p>We will also need a way to replace URLs with the word “URL”. For this, we could use hard core <a href="https://mathiasbynens.be/demo/url-regex">regular expressions</a> but we will just use the <a href="https://github.com/lipoja/URLExtract">urlextract</a> library. You can install it with the following command (don’t forget to activate your virtualenv first; if you don’t have one, you will likely need administrator rights, or use the <code>--user</code> option):</p>
+<p>We will also need a way to replace URLs with the word “URL.” For this, we could use hard core <a href="https://mathiasbynens.be/demo/url-regex">regular expressions</a> but we will just use the <a href="https://github.com/lipoja/URLExtract">urlextract</a> library. You can install it with the following command (don’t forget to activate your virtualenv first; if you don’t have one, you will likely need administrator rights, or use the <code>--user</code> option):</p>
 <p><code>$ pip3 install urlextract</code></p>
 <pre class="python"><code>try:
     import urlextract # may require an Internet connection to download root domain names
@@ -14089,7 +14090,7 @@ X_few_vectors</code></pre>
 <pre><code>array([[ 6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
        [99, 11,  9,  8,  3,  1,  3,  1,  3,  2,  3],
        [67,  0,  1,  2,  3,  4,  1,  2,  0,  1,  0]], dtype=int64)</code></pre>
-<p>What does this matrix mean? Well, the 64 in the third row, first column, means that the third email contains 64 words that are not part of the vocabulary. The 1 next to it means that the first word in the vocabulary is present once in this email. The 2 next to it means that the second word is present twice, and so on. You can look at the vocabulary to know which words we are talking about. The first word is “of”, the second word is “and”, etc.</p>
+<p>What does this matrix mean? Well, the 64 in the third row, first column, means that the third email contains 64 words that are not part of the vocabulary. The 1 next to it means that the first word in the vocabulary is present once in this email. The 2 next to it means that the second word is present twice, and so on. You can look at the vocabulary to know which words we are talking about. The first word is “of,” the second word is “and,” etc.</p>
 <pre class="python"><code>vocab_transformer.vocabulary_</code></pre>
 <pre><code>{&#39;the&#39;: 1,
  &#39;of&#39;: 2,
@@ -22228,6 +22229,15 @@ plot_faces(X_bad_faces_reconstructed, y_bad)</code></pre>
 <div class="figure">
 <img src="09_unsupervised_learning_files/09_unsupervised_learning_423_0.png" alt="" />
 <p class="caption">png</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p><a href="https://github.com/ageron/handson-ml2" class="uri">https://github.com/ageron/handson-ml2</a></p>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-geron2019hands" class="csl-entry">
+1. Géron A. Hands-on machine learning with scikit-learn, keras, and TensorFlow: Concepts, tools, and techniques to build intelligent systems. O’Reilly Media; 2019.
 </div>
 </div>
 </div>
