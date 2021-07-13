@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">33 min read</span>
+    <span class="article-duration">36 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation</h1>
@@ -88,6 +88,7 @@
 <li><a href="#conditional-expectation">4.5 Conditional Expectation</a></li>
 <li><a href="#technical-appendix">4.6 Technical Appendix</a></li>
 <li><a href="#exercises">4.7 Exercises</a></li>
+<li><a href="#negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling">4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -865,6 +866,122 @@ a_1 \mathbb{E}(X_1) \\
 <p>and</p>
 <p><span class="math display">\[ \mathbb{V}(A X) = \mathbb{E}((A (X - \mu) (A(X - \mu))^T) = \mathbb{E}((A (X - \mu) (X - \mu)^T A^T) = A \Sigma A^T \]</span></p>
 </div>
+<div id="negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling" class="section level3">
+<h3>4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</h3>
+<div id="the-negative-integer-exponents-binomials" class="section level4">
+<h4>4.8.1 The negative integer exponents binomials</h4>
+<p>The binomial theorem for positive integer exponents <span class="math inline">\(n\)</span> can be generalized to negative integer exponents. This gives rise to several familiar Maclaurin series with numerous applications in calculus and other areas of mathematics.</p>
+<p>The <strong>negative</strong> in the name stem from binomial with negative integer exponents.
+When the binomial has negative integer exponents, such as <span class="math display">\[f(x)=(1+x)^{-3}\]</span> we can expand it as a <strong>Maclaurin series</strong>. The Maclaurin series for <span class="math inline">\(f(x)\)</span>, wherever it converges, can be expressed as
+<span class="math display">\[f(x)=f(0)+f&#39;(0)x+\frac{f&#39;&#39;(0)}{2!}x^2+\cdots+\frac{f^{(k)}(x)}{k!}x^k+\cdots\]</span> Since
+<span class="math display">\[f^{(k)}(x)=-3\cdot-4\cdots(-3-k+1)(1+x)^{-3-k}\]</span> then
+<span class="math display">\[f^{(k)}(0)=-3\cdot-4\cdots(-3-k+1)(1+0)^{-3-k}=-3\cdot-4\cdots(-3-k+1)\]</span>
+So the Maclaurin series becomes
+<span class="math display">\[f(x)=1-3x+\frac{-3\cdot-4}{2!}x^2+\cdots+\frac{-3\cdot-4\cdots(-3-k+1)}{k!}x^k+\cdots\]</span> This converges for <span class="math inline">\(|x|&lt;1\)</span> by the ratio test.</p>
+<p>The above example generalizes immediately for all negative integer exponents <span class="math inline">\(\alpha\)</span>. Let <span class="math inline">\(\alpha\)</span> be a real number and <span class="math inline">\(k\)</span> a positive integer. Define
+<span class="math display">\[{\alpha\choose k}=\frac{\alpha(\alpha-1)\cdots(\alpha-k+1)}{k!}=\frac{\alpha!}{k!(\alpha-k)!}\]</span>
+Let <span class="math inline">\(n\)</span> be a positive integer. Then
+<span class="math display">\[\begin{align}
+\frac{1}{(1+x)^n}&amp;=\left(1+x\right)^{-n}\\
+&amp;=1-nx+\frac{(-n)(-n-1)}{2}x^2+\cdots+\frac{(-n)(-n-1)\cdots(-n-k+1)}{k!}x^k\\
+&amp;=\sum_{k=0}^{\infty}(-1)^k{n+k-1\choose k}x^k
+\end{align}\]</span> for <span class="math inline">\(|x|&lt;1\)</span>.</p>
+<p>Based on the definition of binomial,</p>
+<p><span class="math display">\[\begin{align}
+{x+r-1\choose x}&amp;=\frac{(x+r-1)(x+r-2)\cdots r}{x!}\\
+&amp;=(-1)^x\frac{(-x-r+1)(-x-r+2)\cdots (-r)}{x!}\\
+&amp;=(-1)^x\frac{(-r-(x-1))(-r-(x-2))\cdots (-r)}{x!}\\
+&amp;=(-1)^x\frac{(-r)(-r-1)(-r-2)\cdots (-r-(x-1))}{x!}\\
+&amp;=(-1)^x{{-r}\choose x}
+\end{align}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[\begin{align}
+1&amp;=p^rp^{-r}\\
+&amp;=p^r(1-q)^{-r}\\
+&amp;=p^r\sum_{x=0}^{\infty}{{-r}\choose x}(-q)^{x}\\
+&amp;=p^r\sum_{x=0}^{\infty}(-1)^{x}{{-r}\choose x}q^{x}\\
+&amp;=\sum_{x=0}^{\infty}{{r+x-1}\choose x}p^rq^{x}\\
+&amp;=\sum_{x=0}^{\infty}{{r+x-1}\choose {r-1}}p^r(1-p)^{x}\\
+\end{align}\]</span></p>
+</div>
+<div id="the-negative-binomial-distribution-derives-from-the-bernoulli-trials-and-is-the-sum-of-i.i.d-geometric-distribution" class="section level4">
+<h4>4.8.2 The negative binomial distribution derives from the <strong>Bernoulli</strong> trials and is the sum of i.i.d <strong>Geometric</strong> distribution</h4>
+<p>The negative binomial distribution is a discrete probability distribution that models the number of successes (or failures) in a sequence of independent and identically distributed <strong>Bernoulli</strong> trials before a specified (non-random) number of failures (or successes) (denoted <span class="math inline">\(r\)</span>) occurs. For example, we can define rolling a <span class="math inline">\(6\)</span> on a die as a failure, and rolling any other number as a success, and ask how many successful rolls will occur before we see the third failure (<span class="math inline">\(r = 3\)</span>). In such a case, the probability distribution of the number of non-6s that appear will be a negative binomial distribution. We could similarly use the negative binomial distribution to model the number of days a certain machine works before it breaks down (<span class="math inline">\(r = 1\)</span>). Or we can model the count number of a specific gene <span class="math inline">\((x_{iA}, i\in 1,\cdots, M)\)</span> in a library <span class="math inline">\(A\)</span>, <span class="math inline">\(A\)</span> is the library index. Let <span class="math inline">\(p\)</span> is the probability of failure (or success) in each trial.</p>
+<p>Then <span class="math display">\[P_r(X=k)={{k+r-1}\choose{r-1}}(1-p)^kp^{r-1}p={{k+r-1}\choose{r-1}}(1-p)^kp^r\]</span></p>
+<p>Since the Geometric distribution <span class="math inline">\(P_r(X=k)=p (1 - p)^{k}, k\in (0,\cdots, k+1)\)</span> depicts the number of successes (or failures) (denoted <span class="math inline">\(k\)</span>) before the first failure (or success), or the total number of trials at the first failure (or success). Then negative binomial distribution is the sum of <span class="math inline">\(r\)</span> i.i.d <strong>Geom</strong>.</p>
+</div>
+<div id="the-expectation-variance-and-moment-generating-function-of-negative-binomial-distribution" class="section level4">
+<h4>4.8.3 The Expectation, Variance and Moment-generating function of negative binomial distribution</h4>
+<p>The <strong>Generating Function</strong></p>
+<p>By definition, the following is the generating function of the negative binomial distribution, using :
+<span class="math display">\[\begin{align}
+g(z)&amp;=\sum_{x=0}^{\infty}{{r+x-1}\choose{x}}p^rq^xz^x\\
+&amp;=\sum_{x=0}^{\infty}{{r+x-1}\choose{x}}p^r(qz)^x\\
+&amp;=p^r\sum_{x=0}^{\infty}(-1)^x{{-r}\choose x}(qz)^x\\
+&amp;=p^r\sum_{x=0}^{\infty}{{-r}\choose x}(-qz)^x\\
+&amp;=p^r(1-qz)^{-r}\\
+&amp;=\frac{p^r}{(1-qz)^{r}}\\
+&amp;=\frac{p^r}{(1-(1-p)z)^{r}};\quad z&lt;\frac{1}{1-p}\\
+\end{align}\]</span></p>
+<p>The <strong>moment generating function</strong> of the negative binomial distribution is:
+<span class="math display">\[M(t)=\frac{p^r}{(1-(1-p)e^t)^{r}};\quad t&lt;-\ln(1-p)\]</span></p>
+<p>The <strong>Mean</strong>:</p>
+<p><span class="math display">\[\begin{align}
+\mathbb E(X)&amp;=g&#39;(1)\\
+&amp;=\left(\frac{p^r}{(1-(1-p)z)^{r}}\right)&#39;\bigg|_{z=1}\\
+&amp;=\left(\frac{-r(-(1-p))p^r}{(1-(1-p)z)^{r+1}}\right)\bigg|_{z=1}\\
+&amp;=\frac{r(1-p)p^r}{p^{r+1}}\\
+&amp;=\frac{r(1-p)}{p}\\
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+\mathbb V(X)&amp;=\mathbb E(X^2)-(\mathbb E(X))^2\\
+&amp;=g&#39;&#39;(1)+g&#39;(1)-[g&#39;(1)]^2\\
+&amp;=\left(\frac{p^r}{(1-(1-p)z)^{r}}\right)&#39;&#39;\bigg|_{z=1}+\frac{r(1-p)}{p}-\left(\frac{r(1-p)}{p}\right)^2\\
+&amp;=\left(\frac{-r(-(1-p))p^r}{(1-(1-p)z)^{r+1}}\right)&#39;\bigg|_{z=1}+\frac{r(1-p)}{p}-\left(\frac{r(1-p)}{p}\right)^2\\
+&amp;=\left(\frac{r(1-p)p^r}{(1-(1-p)z)^{r+1}}\right)&#39;\bigg|_{z=1}+\frac{r(1-p)}{p}-\left(\frac{r(1-p)}{p}\right)^2\\
+&amp;=\frac{r(1-p)^2(r+1)p^r}{p^{r+2}}+\frac{r(1-p)}{p}-\left(\frac{r(1-p)}{p}\right)^2\\
+&amp;=\frac{r(1-p)^2(r+1)}{p^2}+\frac{r(1-p)}{p}-\frac{r^2(1-p)^2}{p^2}\\
+&amp;=\frac{r(1-p)}{p^2}
+\end{align}\]</span> and</p>
+<p>Since the expectation of geom is <span class="math inline">\(\mathbb{E}(X)=1/p\)</span> and variance of geom is <span class="math inline">\(\mathbb{V}(X) = \frac{1 - p}{p^2}\)</span>, then the negative binomial distribution is the sum of <span class="math inline">\(r\)</span> i.i.d Geometric.</p>
+</div>
+<div id="the-connection-with-poisson-distribution" class="section level4">
+<h4>4.8.4 The connection with Poisson distribution</h4>
+<p>Since <span class="math inline">\(\Gamma(a)=(a-1)!\)</span> then <span class="math display">\[Pr(X=k)={{k+r-1}\choose{r-1}}(1-p)^kp^r=\frac{\Gamma(k+r)}{k!\Gamma(r)}(1-p)^kp^r,\quad k=0,1,2,\cdots\]</span> denote <span class="math inline">\(X\sim NB(r,p)\)</span>, when <span class="math inline">\(r\to\infty\)</span> and <span class="math inline">\(p\to 0\)</span> and <span class="math inline">\(\mathbb E(X)=\frac{r(1-p)}{p}\)</span> remain constant, let <span class="math display">\[\lambda=\frac{r(1-p)}{p}\Rightarrow p=\frac{r}{r+\lambda}\]</span> Then
+<span class="math display">\[\begin{align}
+Pr(X=k;r,p)&amp;={{k+r-1}\choose{r-1}}(1-p)^kp^r\\
+&amp;=\frac{\Gamma(k+r)}{k!\Gamma(r)}(1-p)^kp^r\\
+&amp;=\frac{1}{k!}\cdot\frac{\Gamma(k+r)}{\Gamma(r)}\left(\frac{\lambda}{r+\lambda}\right)^k\left(\frac{r}{r+\lambda}\right)^r\\
+&amp;=\frac{\lambda^k}{k!}\cdot\frac{\Gamma(k+r)}{\Gamma(r)(r+\lambda)^k}\left(\frac{r}{r+\lambda}\right)^r\\
+&amp;=\frac{\lambda^k}{k!}\cdot\frac{\Gamma(k+r)}{\Gamma(r)(r+\lambda)^k}\left(1+\frac{\lambda}{r}\right)^{-r}\\
+&amp;=\frac{\lambda^k}{k!}\cdot1\cdot\frac{1}{e^{\lambda}}\\
+&amp;=\frac{\lambda^k}{k!e^{\lambda}}
+\end{align}\]</span> which is Poisson distribution.</p>
+</div>
+<div id="expectation-variance-and-overdispersion" class="section level4">
+<h4>4.8.5 Expectation, Variance and overdispersion</h4>
+<p><span class="math display">\[\mu=\mathbb E(X)=\frac{r(1-p)}{p}\]</span>
+<span class="math display">\[\sigma^2=\mathbb V(X)=\frac{r(1-p)}{p^2}\]</span>
+the variance can be write as <span class="math display">\[\sigma^2=\mu+\frac{1}{r}\mu^2&gt;\mu\]</span> and when <span class="math inline">\(r\to\infty\)</span>, <span class="math display">\[\sigma^2=\mu\]</span>. <span class="math inline">\(\frac{1}{r}\)</span> is called <strong>dispersion parameter</strong>, which can be used for data overdispersion test (Wald test: <span class="math inline">\(H_0:\frac{1}{r}=0\)</span>)</p>
+</div>
+<div id="gamma-poisson-mixture-distribution" class="section level4">
+<h4>4.8.6 gamma-poisson mixture distribution</h4>
+<p>For <span class="math inline">\(Y|\lambda\sim Pois(\lambda), \lambda\sim Gamma(r_0,b_0)\)</span>, then
+<span class="math display">\[\begin{align}
+P(Y=y)&amp;=\int_{0}^{\infty}P(Y=y|\lambda)f(\lambda)d\lambda\\
+&amp;=\int_{0}^{\infty}\frac{e^{-\lambda}\lambda^y}{y!}\frac{b_0^{r_0}}{\Gamma(r_0)}\lambda^{r_0-1}e^{-b_0\lambda}d\lambda\\
+&amp;=\frac{b_0^{r_0}}{\Gamma(r_0)y!}\int_{0}^{\infty}e^{-\lambda}\lambda^y\lambda^{r_0-1}e^{-b_0\lambda}d\lambda\\
+&amp;=\frac{b_0^{r_0}}{\Gamma(r_0)y!}\int_{0}^{\infty}e^{-\lambda(b_0+1)}\lambda^{y+r_0-1}d\lambda\\
+&amp;=\frac{\Gamma(r_0+y)}{\Gamma(r_0)y!}\frac{b_0^{r_0}}{(b_0+1)^{r_0+y}}\int_{0}^{\infty}\frac{1}{\Gamma(r_0+y)}e^{-\lambda(b_0+1)}\lambda^{y+r_0-1}(b_0+1)^{r_0+y}d\lambda\\
+&amp;=\frac{\Gamma(r_0+y)}{\Gamma(r_0)y!}\frac{b_0^{r_0}}{(b_0+1)^{r_0+y}}\int_{0}^{\infty}\frac{1}{\Gamma(r_0+y)}e^{-\lambda(b_0+1)}[\lambda(b_0+1)]^{r_0+y}\frac{1}{\lambda}d\lambda\\
+&amp;=\frac{\Gamma(r_0+y)}{\Gamma(r_0)y!}\frac{b_0^{r_0}}{(b_0+1)^{r_0+y}}\\
+&amp;=\frac{\Gamma(r_0+y)}{\Gamma(r_0)y!}\left(\frac{1}{b_0+1}\right)^y\left(\frac{b_0}{b_0+1}\right)^{r_0}\\
+\end{align}\]</span> which is negative binomial distribution.</p>
+</div>
+<div id="counting-modeling" class="section level4">
+<h4>4.8.6 counting modeling</h4>
+</div>
+</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
@@ -874,6 +991,12 @@ a_1 \mathbb{E}(X_1) \\
 </div>
 <div id="ref-telmo-correa/all-of-statistics" class="csl-entry">
 2. Https://github.com/telmo-correa/all-of-statistics.
+</div>
+<div id="ref-Negative-binomial-distribution" class="csl-entry">
+3.
+</div>
+<div id="ref-negative-binomial-theorem" class="csl-entry">
+4. Https://brilliant.org/wiki/negative-binomial-theorem/.
 </div>
 </div>
 </div>
