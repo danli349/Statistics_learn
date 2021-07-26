@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.80.0" />
 
 
-<title>AOS chapter04 Expectation and negative binomial distribution - A Hugo website</title>
-<meta property="og:title" content="AOS chapter04 Expectation and negative binomial distribution - A Hugo website">
+<title>AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics - A Hugo website</title>
+<meta property="og:title" content="AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics - A Hugo website">
 
 
   <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
@@ -64,10 +64,10 @@
 
   <article class="article">
     
-    <span class="article-duration">47 min read</span>
+    <span class="article-duration">52 min read</span>
     
 
-    <h1 class="article-title">AOS chapter04 Expectation and negative binomial distribution</h1>
+    <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
 
     
     <span class="article-date">2021-04-12</span>
@@ -89,6 +89,7 @@
 <li><a href="#technical-appendix">4.6 Technical Appendix</a></li>
 <li><a href="#exercises">4.7 Exercises</a></li>
 <li><a href="#negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling">4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</a></li>
+<li><a href="#beta-distribution-and-order-statistics">4.9 Beta distribution and Order Statistics</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -1158,6 +1159,79 @@ newdata2 &lt;- within(newdata2, {
 <p>The graph shows the expected count across the range of math scores, for each type of program along with 95 percent confidence intervals. Note that the lines are not straight because this is a log linear model, and what is plotted are the expected values, not the log of the expected values.</p>
 </div>
 </div>
+<div id="beta-distribution-and-order-statistics" class="section level3">
+<h3>4.9 Beta distribution and Order Statistics</h3>
+<p>Let <span class="math inline">\(Y\)</span> be a continuous random variable for which <span class="math inline">\(y_1, y_2, \cdots, y_n\)</span> are the values of a random sample of size <span class="math inline">\(n\)</span>. Reorder the <span class="math inline">\(y_i\)</span>’s from smallest to largest:
+<span class="math display">\[y&#39;_1 &lt; y&#39;_2 &lt; \cdots &lt; y&#39;_n\]</span>
+(No two of the <span class="math inline">\(y_i\)</span>’s are equal, except with probability zero, since <span class="math inline">\(Y\)</span> is continuous.)
+Define the random variable <span class="math inline">\(Y&#39;_i\)</span> to have the value <span class="math inline">\(y&#39;_i, 1 ≤ i ≤ n\)</span>. Then <span class="math inline">\(Y&#39;_i\)</span> is called the <span class="math inline">\(i\)</span>th <strong>order statistic</strong>. Sometimes <span class="math inline">\(Y&#39;_n\)</span> and <span class="math inline">\(Y&#39;_1\)</span> are denoted <span class="math inline">\(Y_{max}\)</span> and <span class="math inline">\(Y_{min}\)</span>, respectively.</p>
+<div id="the-distribution-of-extreme-order-statistics" class="section level4">
+<h4>4.9.1 The distribution of extreme order statistics</h4>
+<p>We begin by investigating the pdfs of the “extreme” order statistics, <span class="math inline">\(f_{Y_{max}} (y)\)</span> and <span class="math inline">\(f_{Y_{min}} (y)\)</span>. These are the simplest to work with. At the end of the section we return to the more general problems of finding (1) the pdf of <span class="math inline">\(Y&#39;_i\)</span> for any <span class="math inline">\(i\)</span> and (2) the joint pdf of <span class="math inline">\(Y&#39;_i\)</span> and <span class="math inline">\(Y&#39;_j\)</span> , where <span class="math inline">\(i &lt; j\)</span>.</p>
+<p><strong>Theorem 1</strong></p>
+<p>Suppose that <span class="math inline">\(Y_1, Y_2, \cdots, Y_n\)</span> is a random sample of continuous random variables, each having pdf <span class="math inline">\(f_Y (y)\)</span> and cdf <span class="math inline">\(F_Y (y)\)</span>. Then</p>
+<p><strong>a</strong>. The pdf of the largest order statistic is
+<span class="math display">\[f_{Y_{max}} (y) = f_{Y&#39;_n} (y) = n[F_Y (y)]^{n−1} f_Y (y)\]</span></p>
+<p><strong>b</strong>. The pdf of the smallest order statistic is
+<span class="math display">\[f_{Y_{min}} (y) = f_{Y&#39;_1} (y) = n[1 − F_Y (y)]^{n−1} f_Y (y)\]</span></p>
+<p><strong>Proof</strong></p>
+<p>Finding the pdfs of <span class="math inline">\(Y_{max}\)</span> and <span class="math inline">\(Y_{min}\)</span> is accomplished by using the technique of differentiating a random variable’s cdf. Consider, for example, the case of the largest order statistic, <span class="math inline">\(Y&#39;_n\)</span>:</p>
+<p><span class="math display">\[\begin{align}
+F_{Y&#39;_n} (y) &amp;= F_{Y_{max}} (y) = P(Y_{max} \le y) \\
+&amp;= P(Y_1 \le y,Y_2 \le y, \cdots,Y_n \le y) \\
+&amp;= P(Y_1 \le y) \cdot P(Y_2 \le y) \cdots P(Y_n \le y)  \\
+&amp;= [F_Y (y)]^n \\
+\end{align}\]</span></p>
+<p>Therefore,
+<span class="math display">\[f_{Y&#39;_n} (y) = d/dy[[F_Y (y)]^n] = n[F_Y (y)]^{n−1} f_Y (y)\]</span></p>
+<p>Similarly, for the smallest order statistic <span class="math inline">\((i = 1)\)</span>,
+<span class="math display">\[\begin{align}
+F_{Y&#39;_1} (y) &amp;= F_{Y_{min}} (y) = P(Y_{min} \le y) \\
+&amp;= 1 − P(Y_{min} &gt; y) \\
+&amp;= 1 − P(Y_1 &gt; y) \cdot P(Y_2 &gt; y) \cdots P(Y_n &gt; y) \\
+&amp;= 1 − [1 − F_Y (y)]^n
+\end{align}\]</span>
+Therefore,
+<span class="math display">\[f_{Y&#39;_1} (y) = d/dy[1 − [1 − F_Y (y)]^n] = n[1 − F_Y (y)]^{n−1} f_Y (y)\]</span></p>
+</div>
+<div id="a-general-formula-for-f_y_iy-1le-ile-n" class="section level4">
+<h4>4.9.2 A general formula for <span class="math inline">\(f_{Y&#39;_i}(y), 1\le i\le n\)</span></h4>
+<p><strong>Theorem 2</strong><br />
+Let <span class="math inline">\(Y_1,Y_2, \cdots ,Y_n\)</span> be a random sample of continuous random variables drawn from a distribution having pdf <span class="math inline">\(f_Y (y)\)</span> and cdf <span class="math inline">\(F_Y (y)\)</span>. The pdf of the <span class="math inline">\(i\)</span>th order statistic is given by
+<span class="math display">\[f_{Y&#39;_i} (y) = \frac{n!}{(i − 1)!(n − i)!}
+[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y (y)\]</span>
+for <span class="math inline">\(1 \le i \le n\)</span>.</p>
+<p><strong>Proof</strong></p>
+<p>Recall the derivation of the binomial probability function,
+<span class="math display">\[p_X (k) = P(X = k) = {n \choose k}p^k(1 − p)^{n−k}\]</span>, where <span class="math inline">\(X\)</span> is the number of successes in <span class="math inline">\(n\)</span> independent trials, and <span class="math inline">\(p\)</span> is the probability that any given trial ends in success. Central to that derivation was the recognition that the event <span class="math inline">\(“X = k”\)</span> is actually a union of all the different (mutually exclusive) sequences having exactly <span class="math inline">\(k\)</span> successes and <span class="math inline">\(n − k\)</span>
+failures. Because the trials are independent, the probability of any such sequence is <span class="math inline">\(p^k(1−p)^{n−k}\)</span> and the number of such sequences is <span class="math inline">\(n!/[k!(n−k)!]={n \choose k}\)</span>, so the probability that <span class="math inline">\(X = k\)</span> is the product <span class="math display">\[{n \choose k}p^k(1 − p)^{n−k}\]</span>.</p>
+<p>Here we are looking for the pdf of the <span class="math inline">\(i\)</span>th order statistic at some point <span class="math inline">\(y\)</span>, that is, <span class="math inline">\(f_{Y&#39;_i} (y)\)</span>. As was the case with the binomial, that pdf will reduce to a combinatorial term times the probability associated with an intersection of independent
+events. The only fundamental difference is that <span class="math inline">\(Y&#39;_i\)</span> is a continuous random variable, whereas the binomial <span class="math inline">\(X\)</span> is discrete, which means that what we find here will be a probability density function.</p>
+<p>There are <span class="math inline">\(n!/[(i − 1)!1!(n − i)!]\)</span> ways that <span class="math inline">\(n\)</span> observations
+can be parceled into three groups such that the <span class="math inline">\(i\)</span>th largest is at the point <span class="math inline">\(y\)</span>. Moreover, the likelihood associated with any particular set of points having the configuration will be the probability that <span class="math inline">\(i − 1\)</span> (independent) observations are all less than <span class="math inline">\(y\)</span>, <span class="math inline">\(n − i\)</span> observations are greater than
+<span class="math inline">\(y\)</span>, and one observation is at <span class="math inline">\(y\)</span>. The probability density associated with those constraints for a given set of points would be <span class="math display">\[[F_Y (y)]^{i−1}[1−F_Y (y)]^{n−i} f_Y (y)\]</span>. The probability
+density, then, that the <span class="math inline">\(i\)</span>th order statistic is located at the point <span class="math inline">\(y\)</span> is the product</p>
+<p><span class="math display">\[\begin{align} 
+f_{Y&#39;_i} (y) &amp;= \frac{n!}{(i − 1)!(n − i)!}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
+&amp;=\frac{\Gamma(n+1)}{\Gamma(i)\Gamma(n-i+1)}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
+&amp;=B\bigg(F_Y (y);i-1,n-i\bigg)f_Y(y)
+\end{align}\]</span>
+and <span class="math display">\[\frac{f_{Y&#39;_i} (y)}{f_Y(y)}=B\bigg(F_Y (y);i-1,n-i\bigg)\]</span></p>
+</div>
+<div id="joint-pdfs-of-order-statistics" class="section level4">
+<h4>4.9.3 Joint pdfs of order statistics</h4>
+<p>Suppose, for example, that each of <span class="math inline">\(n\)</span> observations in a random sample has pdf <span class="math inline">\(f_Y (y)\)</span> and cdf <span class="math inline">\(F_Y (y)\)</span>. The joint pdf for order statistics <span class="math inline">\(Y&#39;_i\)</span> and <span class="math inline">\(Y&#39;_j\)</span> at points <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, where <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(u &lt; v\)</span>, can be deduced from Figure 1 <img src="1.png" alt="Figure 1" />, which shows how the <span class="math inline">\(n\)</span> points must be distributed if the
+<span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th order statistics are to be located at points <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, respectively.</p>
+<p>The number of ways to divide a set of <span class="math inline">\(n\)</span> observations into
+groups of sizes <span class="math inline">\(i − 1, 1, j − i − 1, 1\)</span>, and <span class="math inline">\(n − j\)</span> is the quotient</p>
+<p><span class="math display">\[\frac{n!}{(i-1)!1!(j-i-1)!1!(n-j)!}\]</span></p>
+<p>Also, given the independence of the <span class="math inline">\(n\)</span> observations, the probability that <span class="math inline">\(i − 1\)</span> are less than <span class="math inline">\(u\)</span> is <span class="math inline">\([F_Y (u)]^{i−1}\)</span>, the probability that <span class="math inline">\(j − i − 1\)</span> are between <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> is
+<span class="math inline">\([F_Y (v)−F_Y (u)]^{j−i−1}\)</span>, and the probability that <span class="math inline">\(n− j\)</span> are greater than <span class="math inline">\(v\)</span> is <span class="math inline">\([1−F_Y (v)]^{n−j}\)</span>. Multiplying, then, by the pdfs describing the likelihoods that <span class="math inline">\(Y&#39;_i\)</span> and <span class="math inline">\(Y&#39;_j\)</span> would be at
+points <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, respectively, gives the joint pdf of the two order statistics:
+<span class="math display">\[f_{Y&#39;_i ,Y&#39;_j} (u, v) = \frac{n!}{(i − 1)!( j − i − 1)!(n − j)!}
+[F_Y (u)]^{i−1}[F_Y (v) − F_Y (u)]^{j−i−1} \cdot [1 − F_Y (v)]^{n−j} fY (u) fY (v)\]</span> for <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(u &lt; v\)</span>.</p>
+</div>
+</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
@@ -1173,6 +1247,9 @@ newdata2 &lt;- within(newdata2, {
 </div>
 <div id="ref-negative-binomial-theorem" class="csl-entry">
 4. Https://brilliant.org/wiki/negative-binomial-theorem/.
+</div>
+<div id="ref-larsen2005introduction" class="csl-entry">
+5. Larsen RJ, Marx ML. An introduction to mathematical statistics. Prentice Hall; 2005.
 </div>
 </div>
 </div>
