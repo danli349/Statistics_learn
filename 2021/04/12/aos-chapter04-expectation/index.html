@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.80.0" />
 
 
-<title>AOS chapter04 Expectation - A Hugo website</title>
-<meta property="og:title" content="AOS chapter04 Expectation - A Hugo website">
+<title>AOS chapter04 Expectation and negative binomial distribution - A Hugo website</title>
+<meta property="og:title" content="AOS chapter04 Expectation and negative binomial distribution - A Hugo website">
 
 
   <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
@@ -64,10 +64,10 @@
 
   <article class="article">
     
-    <span class="article-duration">36 min read</span>
+    <span class="article-duration">47 min read</span>
     
 
-    <h1 class="article-title">AOS chapter04 Expectation</h1>
+    <h1 class="article-title">AOS chapter04 Expectation and negative binomial distribution</h1>
 
     
     <span class="article-date">2021-04-12</span>
@@ -978,8 +978,184 @@ P(Y=y)&amp;=\int_{0}^{\infty}P(Y=y|\lambda)f(\lambda)d\lambda\\
 &amp;=\frac{\Gamma(r_0+y)}{\Gamma(r_0)y!}\left(\frac{1}{b_0+1}\right)^y\left(\frac{b_0}{b_0+1}\right)^{r_0}\\
 \end{align}\]</span> which is negative binomial distribution.</p>
 </div>
-<div id="counting-modeling" class="section level4">
-<h4>4.8.6 counting modeling</h4>
+<div id="reparameterized-for-counting-modeling" class="section level4">
+<h4>4.8.6 reparameterized for counting modeling</h4>
+<p>The number of failures before r-th success, denote by <span class="math inline">\(k\)</span>:
+<span class="math display">\[f(k;r,p)\equiv Pr(X=k)=\frac{\Gamma(k+r)}{k!\Gamma(r)}p^r(1-p)^k\quad k=0,1,2,\cdots\]</span></p>
+<p><span class="math display">\[\mu=\mathbb E(X)=\frac{r(1-p)}{p}\]</span>
+<span class="math display">\[\sigma^2=\mathbb V(X)=\frac{r(1-p)}{p^2}\]</span> Then
+<span class="math display">\[p=\frac{\mu}{\sigma^2}\]</span>
+<span class="math display">\[r=\frac{\mu^2}{\sigma^2-\mu}\]</span></p>
+<p><span class="math display">\[f(k;r,p)\equiv Pr(X=k)={k+\frac{\mu^2}{\sigma^2-\mu}-1\choose{\frac{\mu^2}{\sigma^2-\mu}-1}}\left(\frac{\sigma^2-\mu}{\sigma^2}\right)^k\left(\frac{\mu}{\sigma^2}\right)^{\frac{\mu^2}{\sigma^2-\mu}}\]</span></p>
+</div>
+<div id="negative-binomial-regression" class="section level4">
+<h4>4.8.7 negative binomial regression</h4>
+<p>Negative binomial regression is for modeling count variables, usually for over-dispersed count outcome variables.</p>
+<pre class="r"><code>library(foreign)
+library(MASS)
+library(ggplot2)</code></pre>
+<p><strong>Theoretical background</strong></p>
+<p>The Poisson regression model can be generalized by introducing an unobserved heterogeneity term for observation <span class="math inline">\(i\)</span>. Thus, the individuals are assumed to differ randomly in a manner that is not fully accounted for by the observed covariates. This is formulated as
+<span class="math display">\[\mathbb E[Y_i|\mathbf x_i,\tau_i]=\mu_i\tau_i=e^{\mathbf x_i^T\boldsymbol\beta+\epsilon_i}\]</span> where the unobserved heterogeneity term <span class="math inline">\(\tau_i=e^{\epsilon_i}\)</span> is independent of the vector of regressors <span class="math inline">\(\mathbf x_i\)</span>. Then the distribution of <span class="math inline">\(Y_i\)</span> conditional on <span class="math inline">\(\mathbf x_i\)</span> and <span class="math inline">\(\tau_i\)</span> is Poisson with conditional mean and conditional variance <span class="math inline">\(\mu_i\tau_i\)</span>:</p>
+<p><span class="math display">\[f(y_i|\mathbf x_i,\tau_i)=\frac{e^{-\mu_i\tau_i}(\mu_i\tau_i)^{y_i}}{y_i!}, \quad y_i=0,1,2,\cdots\]</span>
+Let <span class="math inline">\(g(\tau_i)\)</span> be the probability density function of <span class="math inline">\(\tau_i\)</span>. Then, the distribution <span class="math inline">\(f(y_i|\mathbf x_i)\)</span> (no longer conditional on <span class="math inline">\(\tau_i\)</span>) is obtained by integrating <span class="math inline">\(f(y_i|\mathbf x_i,\tau_i)\)</span> with respect to <span class="math inline">\(\tau_i\)</span>:</p>
+<p><span class="math display">\[f(y_i|\mathbf x_i)=\int_{0}^{\infty}f(y_i|\mathbf x_i,\tau_i)g(\tau_i)d\tau_i\]</span></p>
+<p>An analytical solution to this integral exists when <span class="math inline">\(\tau_i\)</span> is assumed to follow a gamma distribution. This solution is the <strong>negative binomial distribution</strong>. When the model contains a constant term, it is necessary to assume that <span class="math inline">\(\mathbb E(e^{\epsilon_i})=\mathbb E\tau_i=1\)</span>, in order to identify the mean of the distribution. Thus, it is assumed that <span class="math inline">\(\tau_i\)</span> follows a <span class="math inline">\(gamma(\theta,\theta)\)</span> distribution with <span class="math inline">\(\mathbb E\tau_i=1\)</span> and <span class="math inline">\(\mathbb V(\tau_i)=1/\theta\)</span>:</p>
+<p><span class="math display">\[g(\tau_i)=\frac{\theta^{\theta}}{\Gamma{\theta}}\tau_i^{\theta-1}e^{-\theta\tau_i}\]</span> where <span class="math display">\[\Gamma(x)=\int_{0}^{\infty}z^{x-1}e^{-z}dz\]</span> is the gamma function and <span class="math inline">\(\theta\)</span> is a positive parameter. Then, the density of <span class="math inline">\(Y_i\)</span> given <span class="math inline">\(\mathbf x_i\)</span> is derived as</p>
+<p><span class="math display">\[f(y_i|\mathbf x_i)=\frac{\Gamma(y_i+\alpha^{-1})}{y_i!\Gamma(\alpha^{-1})}\left(\frac{\alpha^{-1}}{\alpha^{-1}+\mu_i}\right)^{\alpha^{-1}}\left(\frac{\mu_i}{\alpha^{-1}+\mu_i}\right)^{y_i}, \quad y_i=0,1,2,\cdots\]</span>
+Thus, the negative binomial distribution is derived as a gamma mixture of Poisson random variables. It has conditional mean
+<span class="math display">\[\mathbb E[Y_i|\mathbf x_i]=e^{\mathbf x_i^T\boldsymbol\beta}\]</span>
+and conditional variance <span class="math display">\[\mathbb V[Y_i|\mathbf x_i]=\mu_i(1+\mu_i/\theta)=\mu_i(1+\alpha\mu_i)&gt;\mathbb E[Y_i|\mathbf x_i]\]</span></p>
+<p>The conditional variance of the negative binomial distribution exceeds the conditional mean. Overdispersion results from neglected unobserved heterogeneity. The negative binomial model with variance function <span class="math display">\[\mathbb V[Y_i|\mathbf x_i]=\mu_i(1+\mu_i/\theta)=\mu_i(1+\alpha\mu_i)=\mu_i+\alpha\mu_i^2\]</span>, which is quadratic in the mean, is referred to as the NB2 model. The Poisson distribution is a special case of the negative binomial distribution where <span class="math inline">\(\alpha=0\)</span>. A test of the Poisson distribution can be carried out by testing the hypothesis that <span class="math inline">\(\alpha=0\)</span>. A Wald test of this hypothesis is used.</p>
+<p><strong>Attendance behavior data</strong></p>
+<p>We have attendance data on 314 high school juniors from two urban high schools in the file <code>nb_data</code>. The response variable of interest is days absent, <code>daysabs</code>. The variable <code>math</code> gives the standardized math score for each student. The variable <code>prog</code> is a three-level nominal variable indicating the type of instructional program in which the student is enrolled.</p>
+<p>Let’s look at the data. It is always a good idea to start with descriptive statistics and plots.</p>
+<pre class="r"><code>dat &lt;- read.dta(&quot;http://www.karlin.mff.cuni.cz/~pesta/prednasky/NMFM404/Data/nb_data.dta&quot;)
+dat &lt;- within(dat, {
+    prog &lt;- factor(prog, levels = 1:3, labels = c(&quot;General&quot;, &quot;Academic&quot;, &quot;Vocational&quot;))
+    id &lt;- factor(id)
+})
+
+summary(dat)</code></pre>
+<pre><code>##        id         gender         math          daysabs               prog    
+##  1001   :  1   female:160   Min.   : 1.00   Min.   : 0.000   General   : 40  
+##  1002   :  1   male  :154   1st Qu.:28.00   1st Qu.: 1.000   Academic  :167  
+##  1003   :  1                Median :48.00   Median : 4.000   Vocational:107  
+##  1004   :  1                Mean   :48.27   Mean   : 5.955                   
+##  1005   :  1                3rd Qu.:70.00   3rd Qu.: 8.000                   
+##  1006   :  1                Max.   :99.00   Max.   :35.000                   
+##  (Other):308</code></pre>
+<pre class="r"><code>ggplot(dat, aes(daysabs, fill = prog)) + geom_histogram(binwidth = 1) + facet_grid(prog ~ 
+    ., margins = TRUE, scales = &quot;free&quot;)</code></pre>
+<p><img src="../../../../2021/04/12/aos-chapter04-expectation/index_files/figure-html/unnamed-chunk-3-1.svg" width="576" /></p>
+<p>Each variable has 314 valid observations and their distributions seem quite reasonable. The unconditional mean of our outcome variable is much lower than its variance.
+Let’s continue with our description of the variables in this dataset. The table below shows the average numbers of days absent by program type and seems to suggest that program type is a good candidate for predicting the number of days absent, our outcome variable, because the mean value of the outcome appears to vary by <code>prog</code>. The variances within each level of <code>prog</code> are higher than the means within each level. These are the conditional means and variances. These differences suggest that over-dispersion is present and that a Negative Binomial model would be appropriate.</p>
+<pre class="r"><code>with(dat, tapply(daysabs, prog, function(x) {
+    sprintf(&quot;M (SD) = %1.2f (%1.2f)&quot;, mean(x), sd(x))
+}))</code></pre>
+<pre><code>##                 General                Academic              Vocational 
+## &quot;M (SD) = 10.65 (8.20)&quot;  &quot;M (SD) = 6.93 (7.45)&quot;  &quot;M (SD) = 2.67 (3.73)&quot;</code></pre>
+<p><strong>Analysis methods you might consider</strong></p>
+<p>Below is a list of some analysis methods you may have encountered. Some of the methods listed are quite reasonable, while others have either fallen out of favor or have limitations.</p>
+<ul>
+<li><p><em>Negative binomial regression</em> - Negative binomial regression can be used for over-dispersed count data, that is when the conditional variance exceeds the conditional mean. It can be considered as a generalization of Poisson regression since it has the same mean structure as Poisson regression and it has an extra parameter to model the over-dispersion. If the conditional distribution of the outcome variable is over-dispersed, the confidence intervals for the Negative binomial regression are likely to be narrower as compared to those from a Poisson regression model.</p></li>
+<li><p><em>Poisson regression</em> - Poisson regression is often used for modeling count data. Poisson regression has a number of extensions useful for count models.</p></li>
+<li><p><em>Zero-inflated regression model</em> - Zero-inflated models attempt to account for excess zeros. In other words, two kinds of zeros are thought to exist in the data, “true zeros” and “excess zeros.” Zero-inflated models estimate two equations simultaneously, one for the count model and one for the excess zeros.</p></li>
+<li><p><em>OLS regression</em> - Count outcome variables are sometimes log-transformed and analyzed using OLS regression. Many issues arise with this approach, including loss of data due to undefined values generated by taking the log of zero (which is undefined), as well as the lack of capacity to model the dispersion.</p></li>
+</ul>
+<p><strong>Negative binomial regression analysis</strong></p>
+<pre class="r"><code>head(dat)</code></pre>
+<pre><code>##     id gender math daysabs     prog
+## 1 1001   male   63       4 Academic
+## 2 1002   male   27       4 Academic
+## 3 1003 female   20       2 Academic
+## 4 1004 female   16       3 Academic
+## 5 1005 female    2       3 Academic
+## 6 1006 female   71      13 Academic</code></pre>
+<pre class="r"><code>summary(m1 &lt;- glm.nb(daysabs ~ math + prog, data = dat))</code></pre>
+<pre><code>## 
+## Call:
+## glm.nb(formula = daysabs ~ math + prog, data = dat, init.theta = 1.032713156, 
+##     link = log)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1547  -1.0192  -0.3694   0.2285   2.5273  
+## 
+## Coefficients:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)     2.615265   0.197460  13.245  &lt; 2e-16 ***
+## math           -0.005993   0.002505  -2.392   0.0167 *  
+## progAcademic   -0.440760   0.182610  -2.414   0.0158 *  
+## progVocational -1.278651   0.200720  -6.370 1.89e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for Negative Binomial(1.0327) family taken to be 1)
+## 
+##     Null deviance: 427.54  on 313  degrees of freedom
+## Residual deviance: 358.52  on 310  degrees of freedom
+## AIC: 1741.3
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  1.033 
+##           Std. Err.:  0.106 
+## 
+##  2 x log-likelihood:  -1731.258</code></pre>
+<p>R first displays the call and the deviance residuals. Next, we see the regression coefficients for each of the variables, along with standard errors, z-scores, and p-values. The variable <code>math</code> has a coefficient of -0.006, which is statistically significant. This means that for each one-unit increase in <code>math</code>, the expected log count of the number of days absent decreases by 0.006. The indicator variable shown as <code>progAcademic</code> is the expected difference in log count between group 2 and the reference group (<code>prog</code>=1). The expected log count for level 2 of <code>prog</code> is -0.44 lower than the expected log count for level 1. The indicator variable for <code>progVocational</code> is the expected difference in log count between group 3 and the reference group.The expected log count for level 3 of <code>prog</code> is -1.28 lower than the expected log count for level 1. To determine if <code>prog</code> itself, overall, is statistically significant, we can compare a model with and without <code>prog</code>. The reason it is important to fit separate models, is that unless we do, the overdispersion parameter is held constant.</p>
+<pre class="r"><code>m2 &lt;- update(m1, . ~ . - prog)
+anova(m1, m2)</code></pre>
+<pre><code>## Likelihood ratio tests of Negative Binomial Models
+## 
+## Response: daysabs
+##         Model     theta Resid. df    2 x log-lik.   Test    df LR stat.
+## 1        math 0.8558565       312       -1776.306                      
+## 2 math + prog 1.0327132       310       -1731.258 1 vs 2     2 45.04798
+##       Pr(Chi)
+## 1            
+## 2 1.65179e-10</code></pre>
+<ul>
+<li><p>The two degree-of-freedom chi-square test indicates that prog is a statistically significant predictor of <code>daysabs</code>.</p></li>
+<li><p>The null deviance is calculated from an intercept-only model with 313 degrees of freedom. Then we see the residual deviance, the deviance from the full model. We are also shown the AIC and 2*log likelihood.</p></li>
+<li><p>The theta parameter shown is the dispersion parameter. Note that R parameterizes this differently from SAS, Stata, and SPSS. The R parameter (theta) is equal to the inverse of the dispersion parameter (alpha) estimated in these other software packages. Thus, the theta value of 1.033 seen here is equivalent to the 0.968 value seen in the Stata because 1/0.968 = 1.033.</p></li>
+</ul>
+<p><strong>Checking model assumption</strong></p>
+<p>As we mentioned earlier, negative binomial models assume the conditional means are not equal to the conditional variances. This inequality is captured by estimating a dispersion parameter (not shown in the output) that is held constant in a Poisson model. Thus, the Poisson model is actually nested in the negative binomial model. We can then use a likelihood ratio test to compare these two and test this model assumption. To do this, we will run our model as a Poisson.</p>
+<pre class="r"><code>m3 &lt;- glm(daysabs ~ math + prog, family = &quot;poisson&quot;, data = dat)
+pchisq(2 * (logLik(m1) - logLik(m3)), df = 1, lower.tail = FALSE)</code></pre>
+<pre><code>## &#39;log Lik.&#39; 2.157298e-203 (df=5)</code></pre>
+<p>In this example the associated chi-squared value is 926.03 with one degree of freedom. This strongly suggests the negative binomial model, estimating the dispersion parameter, is more appropriate than the Poisson model.
+We can get the confidence intervals for the coefficients by profiling the likelihood function.</p>
+<pre class="r"><code>(est &lt;- cbind(Estimate = coef(m1), confint(m1)))</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                    Estimate       2.5 %       97.5 %
+## (Intercept)     2.615265446  2.24205576  3.012935926
+## math           -0.005992988 -0.01090086 -0.001066615
+## progAcademic   -0.440760012 -0.81006586 -0.092643481
+## progVocational -1.278650721 -1.68348970 -0.890077623</code></pre>
+<p>We might be interested in looking at incident rate ratios rather than coefficients. To do this, we can exponentiate our model coefficients. The same applies to the confidence intervals.</p>
+<pre class="r"><code>exp(est)</code></pre>
+<pre><code>##                  Estimate     2.5 %     97.5 %
+## (Intercept)    13.6708448 9.4126616 20.3470498
+## math            0.9940249 0.9891583  0.9989340
+## progAcademic    0.6435471 0.4448288  0.9115184
+## progVocational  0.2784127 0.1857247  0.4106239</code></pre>
+<p>The output above indicates that the incident rate for <code>prog</code> = 2 is 0.64 times the incident rate for the reference group (<code>prog</code> = 1). Likewise, the incident rate for <code>prog</code> = 3 is 0.28 times the incident rate for the reference group holding the other variables constant. The percent change in the incident rate of <code>daysabs</code> is a 1% decrease for every unit increase in math.
+The form of the model equation for negative binomial regression is the same as that for Poisson regression. The log of the outcome is predicted with a linear combination of the predictors:</p>
+<p><span class="math display">\[\log(\widehat{daysabs_i})=\hat{\beta}_0+\hat{\beta}_1\mathcal I(prog_i=2)+\hat{\beta}_2\mathcal I(prog_i=3)+\hat{\beta}_3 math_i\]</span>
+The coefficients have an additive effect in the <span class="math inline">\(\log(y)\)</span> scale and the IRR have a multiplicative effect in the <span class="math inline">\(y\)</span> scale. The dispersion parameter in negative binomial regression does not effect the expected counts, but it does effect the estimated variance of the expected counts.</p>
+<p><strong>Predicted values</strong></p>
+<p>For assistance in further understanding the model, we can look at predicted counts for various levels of our predictors. Below we create new datasets with values of <code>math</code> and <code>prog</code> and then use the <code>predict</code> command to calculate the predicted number of events.</p>
+<p>First, we can look at predicted counts for each value of <code>prog</code> while holding <code>math</code> at its mean. To do this, we create a new dataset with the combinations of <code>prog</code> and <code>math</code> for which we would like to find predicted values, then use the <code>predict</code> command.</p>
+<pre class="r"><code>newdata1 &lt;- data.frame(math = mean(dat$math), prog = factor(1:3, levels = 1:3, 
+    labels = levels(dat$prog)))
+newdata1$phat &lt;- predict(m1, newdata1, type = &quot;response&quot;)
+newdata1</code></pre>
+<pre><code>##       math       prog      phat
+## 1 48.26752    General 10.236899
+## 2 48.26752   Academic  6.587927
+## 3 48.26752 Vocational  2.850083</code></pre>
+<p>In the output above, we see that the predicted number of events (e.g., days absent) for a general program is about 10.24, holding <code>math</code> at its mean. The predicted number of events for an academic program is lower at 6.59, and the predicted number of events for a vocational program is about 2.85.
+Below we will obtain the mean predicted number of events for values of math across its entire range for each level of <code>prog</code> and <code>graph</code> these.</p>
+<pre class="r"><code>newdata2 &lt;- data.frame(
+  math = rep(seq(from = min(dat$math), to = max(dat$math), length.out = 100), 3),
+  prog = factor(rep(1:3, each = 100), levels = 1:3, labels =
+  levels(dat$prog)))
+
+newdata2 &lt;- cbind(newdata2, predict(m1, newdata2, type = &quot;link&quot;, se.fit=TRUE))
+newdata2 &lt;- within(newdata2, {
+  DaysAbsent &lt;- exp(fit)
+  LL &lt;- exp(fit - 1.96 * se.fit)
+  UL &lt;- exp(fit + 1.96 * se.fit)
+})</code></pre>
+<pre class="r"><code>ggplot(newdata2, aes(math, DaysAbsent)) +
+  geom_ribbon(aes(ymin = LL, ymax = UL, fill = prog), alpha = .25) +
+  geom_line(aes(colour = prog), size = 2) +
+  labs(x = &quot;Math Score&quot;, y = &quot;Predicted Days Absent&quot;)</code></pre>
+<p><img src="../../../../2021/04/12/aos-chapter04-expectation/index_files/figure-html/unnamed-chunk-13-1.svg" width="576" /></p>
+<p>The graph shows the expected count across the range of math scores, for each type of program along with 95 percent confidence intervals. Note that the lines are not straight because this is a log linear model, and what is plotted are the expected values, not the log of the expected values.</p>
 </div>
 </div>
 </div>
