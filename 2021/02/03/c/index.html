@@ -181,21 +181,21 @@
 <li><a href="#if-else">3.2 If-Else</a></li>
 <li><a href="#else-if">3.3 Else-If</a>
 <ul>
-<li><a href="#exercise-3-1-.-our-binary-search-makes-two-tests-inside-the-loop">Exercise 3-1 . Our binary search makes two tests inside the loop,</a></li>
+<li><a href="#exercise-3-1.">Exercise 3-1.</a></li>
 </ul></li>
 <li><a href="#switch">3.4 Switch</a>
 <ul>
-<li><a href="#exercise-3-2-.-write-a-function-escapest-that-converts-characters-like-newline">Exercise 3-2 . Write a function <span class="code">escape(s,t)</span> that converts characters like newline</a></li>
+<li><a href="#exercise-3-2.">Exercise 3-2.</a></li>
 </ul></li>
 <li><a href="#loopswhile-and-for">3.5 Loops—While and For</a>
 <ul>
-<li><a href="#exercise-3-3-.-write-a-function-expands1s2-that-expands-shorthand-notations-like">Exercise 3-3 . Write a function <span class="code">expand(s1,s2)</span> that expands shorthand notations like</a></li>
+<li><a href="#exercise-3-3.">Exercise 3-3.</a></li>
 </ul></li>
 <li><a href="#loopsdo-while">3.6 Loops—Do-while</a>
 <ul>
-<li><a href="#exercise-3-4-.-in-a-twos-complement-number-representation-our">Exercise 3-4 . In a two’s complement number representation, our</a></li>
-<li><a href="#exercise-3-5-.-write-the-function-itobnsb-that-converts-the-integer-n-into-a-base-b-character">Exercise 3-5 . Write the function <span class="code">itob(n,s,b)</span> that converts the integer <span class="code">n</span> into a base <span class="code">b</span> character</a></li>
-<li><a href="#exercise-3-6-.-write-a-version-of-itoa-that">Exercise 3-6 . Write a version of <span class="code">itoa</span> that</a></li>
+<li><a href="#exercise-3-4.">Exercise 3-4.</a></li>
+<li><a href="#exercise-3-5.">Exercise 3-5.</a></li>
+<li><a href="#exercise-3-6.">Exercise 3-6.</a></li>
 </ul></li>
 <li><a href="#break-and-continue">3.7 Break and Continue</a></li>
 <li><a href="#goto-and-labels">3.8 Goto and Labels</a></li>
@@ -3836,9 +3836,10 @@ return −1; /<span class="bottom">*</span> no match <span class="bottom">*</spa
 }</p>
 <p>The fundamental decision is whether <span class="code">x</span> is less
 than, greater than, or equal to the middle element <span class="code">v [mid]</span> at each step; this is a natural for <span class="code">else-if</span>.</p>
-<div id="exercise-3-1-.-our-binary-search-makes-two-tests-inside-the-loop" class="section level3">
-<h3>Exercise 3-1 . Our binary search makes two tests inside the loop,</h3>
-<p>when one would suffice (at the price of more tests outside). Write a
+<div id="exercise-3-1." class="section level3">
+<h3>Exercise 3-1.</h3>
+<p>Our binary search makes two tests inside the loop,
+when one would suffice (at the price of more tests outside). Write a
 version with only one test inside the loop and measure the difference in
 run-time.</p>
 <pre class="python"><code>! cat Chapter3/Exercise\ 3-01/binsearch.c</code></pre>
@@ -3946,9 +3947,10 @@ used sparingly, and commented.</p>
 the last case (the <span class="code">default</span> here) even though
 it’s logically unnecessary. Some day when another case gets added at the
 end, this bit of defensive programming will save you.</p>
-<div id="exercise-3-2-.-write-a-function-escapest-that-converts-characters-like-newline" class="section level3">
-<h3>Exercise 3-2 . Write a function <span class="code">escape(s,t)</span> that converts characters like newline</h3>
-<p>and tab into visible escape sequences like <span class="code">\n</span>
+<div id="exercise-3-2." class="section level3">
+<h3>Exercise 3-2.</h3>
+<p>Write a function <span class="code">escape(s,t)</span> that converts characters like newline
+and tab into visible escape sequences like <span class="code">\n</span>
 and <span class="code">\t</span> as it copies the string <span class="code">t</span> to <span class="code">s</span>. Use a <span class="code">switch</span>. Write a function for the other direction as
 well, converting escape sequences into the real characters.</p>
 <pre class="python"><code>! cat Chapter3/Exercise\ 3-02/escape.c</code></pre>
@@ -4254,9 +4256,10 @@ in <span class="code">reverse</span>, where the exchange can be thought
 of as a single operation:</p>
 <p>for (i = 0, j = strlen(s)−1; i &lt; j; i++, j–)<br />
 c = s[i], s[i] = s[j], s[j] = c;</p>
-<div id="exercise-3-3-.-write-a-function-expands1s2-that-expands-shorthand-notations-like" class="section level3">
-<h3>Exercise 3-3 . Write a function <span class="code">expand(s1,s2)</span> that expands shorthand notations like</h3>
-<p><span class="code">a-z</span> in the string <span class="code">s1</span>
+<div id="exercise-3-3." class="section level3">
+<h3>Exercise 3-3.</h3>
+<p>Write a function <span class="code">expand(s1,s2)</span> that expands shorthand notations like
+<span class="code">a-z</span> in the string <span class="code">s1</span>
 into the equivalent complete list <span class="code">abc…xyz</span> in
 <span class="code">s2</span>. Allow for letters of either case and
 digits, and be prepared to handle cases like <span class="code">a-b-c</span> and <span class="code">a-z0−9</span> and <span class="code">-a-z</span>. Arrange that a leading or trailing <span class="code">-</span> is taken literally.</p>
@@ -4364,9 +4367,10 @@ convenient, since at least one character must be installed in the array
 zero. We also used braces around the single statement that makes up the
 body of the <span class="code">do-while</span>, even though they are
 unnecessary, so the hasty reader will not mistake the <span class="code">while</span> part for the <em>beginning</em> of a <span class="code">while</span> loop.</p>
-<div id="exercise-3-4-.-in-a-twos-complement-number-representation-our" class="section level3">
-<h3>Exercise 3-4 . In a two’s complement number representation, our</h3>
-<p>version of <span class="code">itoa</span> does not handle the largest
+<div id="exercise-3-4." class="section level3">
+<h3>Exercise 3-4.</h3>
+<p>In a two’s complement number representation, our
+version of <span class="code">itoa</span> does not handle the largest
 negative number, that is, the value of <span class="code">n</span> equal
 to −(2<sup>wordsize−1</sup>). Explain why not. Modify it to print that
 value correctly, regardless of the machine on which it runs.</p>
@@ -4430,9 +4434,10 @@ void reverse(char s[])
 826 is converted to 826.
 -2093 is converted to -2093.</code></pre>
 </div>
-<div id="exercise-3-5-.-write-the-function-itobnsb-that-converts-the-integer-n-into-a-base-b-character" class="section level3">
-<h3>Exercise 3-5 . Write the function <span class="code">itob(n,s,b)</span> that converts the integer <span class="code">n</span> into a base <span class="code">b</span> character</h3>
-<p>representation in the string <span class="code">s</span>. In particular,
+<div id="exercise-3-5." class="section level3">
+<h3>Exercise 3-5.</h3>
+<p>Write the function <span class="code">itob(n,s,b)</span> that converts the integer <span class="code">n</span> into a base <span class="code">b</span> character
+representation in the string <span class="code">s</span>. In particular,
 <span class="code">itob(n,s,16)</span> formats <span class="code">n</span> as a hexadecimal integer in <span class="code">s</span>.</p>
 <pre class="python"><code>! cat Chapter3/Exercise\ 3-05/itob.c</code></pre>
 <pre><code>#include &lt;stdio.h&gt;
@@ -4498,9 +4503,10 @@ void reverse(char s[])
 826 in base 10 is 826.
 -2093 in base 5 is -31333.</code></pre>
 </div>
-<div id="exercise-3-6-.-write-a-version-of-itoa-that" class="section level3">
-<h3>Exercise 3-6 . Write a version of <span class="code">itoa</span> that</h3>
-<p>accepts three arguments instead of two. The third argument is a minimum
+<div id="exercise-3-6." class="section level3">
+<h3>Exercise 3-6.</h3>
+<p>Write a version of <span class="code">itoa</span> that
+accepts three arguments instead of two. The third argument is a minimum
 field width; the converted number must be padded with blanks on the left
 if necessary to make it wide enough.</p>
 <pre class="python"><code>! cat Chapter3/Exercise\ 3-06/itoa.c</code></pre>

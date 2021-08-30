@@ -178,6 +178,7 @@
 \text{Bernoulli}(p)          &amp; p             &amp; p(1-p)         \\
 \text{Binomial}(n, p)        &amp; np            &amp; np(1-p)        \\
 \text{Geometric}(p)          &amp; 1/p           &amp; (1 - p)/p^2    \\
+\text{Cauchy}                &amp; \infty       &amp; \infty        \\
 \text{Poisson}(\lambda)      &amp; \lambda       &amp; \lambda        \\
 \text{Uniform}(a, b)         &amp; (a + b) / 2   &amp; (b - a)^2 / 12 \\
 \text{Normal}(\mu, \sigma^2) &amp; \mu           &amp; \sigma^2       \\
@@ -541,6 +542,8 @@ plt.show()</code></pre>
 <p>Solving for the expectation, we get <span class="math inline">\(\mathbb{E}(X^2) = (2 - p) / p^2\)</span>.</p>
 <p>Finally,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} \]</span></p>
+<p><strong>Cauchy</strong>. Let <span class="math display">\[f_X(x) = \frac{1}{\pi(1+x^2)},\quad -\infty&lt;x&lt;\infty\]</span>. Then:
+<span class="math display">\[\mathbb{E}|X|=\int_{-\infty}^{\infty}\frac{|x|}{\pi(1+x^2)}dx=\frac{2}{\pi}\int_{0}^{\infty}\frac{x}{1+x^2}dx=\frac{2}{\pi}\frac{\log(1+x^2)}{2}\bigg|_{0}^{\infty}=\infty\]</span> so <span class="math inline">\(\mathbb{E}X\)</span> does not exist.</p>
 <p><strong>Poisson</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
 <ul>
 <li><p><span class="math display">\[ \mathbb{E}(X) = \sum_{k=0}^\infty k \frac{\lambda^k e^{-\lambda}}{k!} = \lambda e^{-\lambda} \sum_{k=1}^\infty \frac{\lambda^{k - 1} }{(k - 1)!} = \lambda e^{-\lambda} \sum_{k=0}^\infty \frac{\lambda^k}{k!} = \lambda e^{-\lambda} e^{\lambda} = \lambda \]</span></p></li>
@@ -1229,7 +1232,9 @@ groups of sizes <span class="math inline">\(i − 1, 1, j − i − 1, 1\)</span
 <span class="math inline">\([F_Y (v)−F_Y (u)]^{j−i−1}\)</span>, and the probability that <span class="math inline">\(n− j\)</span> are greater than <span class="math inline">\(v\)</span> is <span class="math inline">\([1−F_Y (v)]^{n−j}\)</span>. Multiplying, then, by the pdfs describing the likelihoods that <span class="math inline">\(Y&#39;_i\)</span> and <span class="math inline">\(Y&#39;_j\)</span> would be at
 points <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, respectively, gives the joint pdf of the two order statistics:
 <span class="math display">\[f_{Y&#39;_i ,Y&#39;_j} (u, v) = \frac{n!}{(i − 1)!( j − i − 1)!(n − j)!}
-[F_Y (u)]^{i−1}[F_Y (v) − F_Y (u)]^{j−i−1} \cdot [1 − F_Y (v)]^{n−j} fY (u) fY (v)\]</span> for <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(u &lt; v\)</span>.</p>
+[F_Y (u)]^{i−1}[F_Y (v) − F_Y (u)]^{j−i−1} \cdot \\
+[1 − F_Y (v)]^{n−j} f_Y (u) f_Y (v)\]</span>
+for <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(u &lt; v\)</span>.</p>
 </div>
 </div>
 </div>
