@@ -177,7 +177,7 @@
 \text{Point mass at } p      &amp; a             &amp; 0              \\
 \text{Bernoulli}(p)          &amp; p             &amp; p(1-p)         \\
 \text{Binomial}(n, p)        &amp; np            &amp; np(1-p)        \\
-\text{Geometric}(p)          &amp; 1/p           &amp; (1 - p)/p^2    \\
+\text{Geometric}(p)          &amp; \begin{cases} 1/p,&amp; (k=1,2,3,\cdots) \\ \frac{1-p}{p},&amp;  (k=0, 1,2,\cdots) \end{cases}         &amp; (1 - p)/p^2    \\
 \text{Cauchy}                &amp; \infty       &amp; \infty        \\
 \text{Poisson}(\lambda)      &amp; \lambda       &amp; \lambda        \\
 \text{Uniform}(a, b)         &amp; (a + b) / 2   &amp; (b - a)^2 / 12 \\
@@ -333,7 +333,7 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 <p><span class="math display">\[ \mathbb{V}(X_n) = \sum_{i=1}^n \mathbb{V}(1 - 2Y_i) \sum_{i=1}^n 4\mathbb{V}(Y_i) = 4np(1 - p) \]</span></p>
 <p><strong>Exercise 4.7.5</strong>. A fair coin is tossed until a head is obtained. What is the expected number of tosses that will be required?</p>
 <p><strong>Solution</strong>. The number of tosses follows a geometric distribution, <span class="math inline">\(X \sim \text{Geom}(p)\)</span>, where <span class="math inline">\(p\)</span> is the probability of heads. Let’s deduce its expected value, rather than use it as a known fact (<span class="math inline">\(\mathbb{E}(X) = 1/p\)</span>). The PDF is</p>
-<p><span class="math display">\[ f_X(k) = p (1 - p)^{k - 1}, \quad k &gt; 0 \]</span></p>
+<p><span class="math display">\[ f_X(k) = p (1 - p)^{k - 1}, \quad k = 1,2,3,\cdots \]</span></p>
 <p>The expected value for <span class="math inline">\(X\)</span> is</p>
 <p><span class="math display">\[
 \begin{align}
@@ -345,6 +345,19 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 \end{align}
 \]</span></p>
 <p>from where we get <span class="math inline">\(\mathbb{E}(X) = 1 / p\)</span>.</p>
+<p>If <span class="math display">\[ f_X(k) = p (1 - p)^k, \quad k = 0, 1,2,3,\cdots \]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X) &amp;= \sum_{k=0}^\infty k p (1 - p)^{k}  \\
+&amp;= \sum_{k=1}^\infty kp(1-p)^{k}\\
+&amp;= \sum_{k=1}^\infty (k-1)p(1-p)^{k}+\sum_{k=1}^\infty p(1-p)^{k}\\
+&amp;= (1-p)\sum_{k=1}^\infty (k-1)p(1-p)^{k-1}+\sum_{k=1}^\infty p(1-p)^{k}\\
+&amp;= (1 - p)\mathbb{E}(X) +\sum_{k=1}^\infty p(1-p)^{k} \\
+&amp;= (1 - p)\mathbb{E}(X) +\sum_{k=0}^\infty p(1-p)^{k}-p \\
+&amp;= (1 - p)\mathbb{E}(X) +1-p \\
+\end{align}
+\]</span></p>
+<p>from where we get <span class="math display">\[\mathbb{E}(X) = (1-p)/p\]</span>.</p>
 <p><strong>Exercise 4.7.6</strong>. Prove Theorem 4.6 for discrete random variables.</p>
 <p>Let <span class="math inline">\(Y = r(X)\)</span>. Then</p>
 <p><span class="math display">\[ \mathbb{E}(Y) = \mathbb{E}(r(X)) = \int r(x) \; dF_X(x) \]</span></p>
