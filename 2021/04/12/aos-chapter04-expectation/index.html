@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">52 min read</span>
+    <span class="article-duration">53 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -177,6 +177,7 @@
 \text{Point mass at } p      &amp; a             &amp; 0              \\
 \text{Bernoulli}(p)          &amp; p             &amp; p(1-p)         \\
 \text{Binomial}(n, p)        &amp; np            &amp; np(1-p)        \\
+\text{Negative binomial}(r,p) &amp; \frac{r(1-p)}{p} &amp; \frac{r(1-p)}{p^2} \text{ Or } \mu+\frac{1}{r}\mu^2\\
 \text{Geometric}(p)          &amp; \begin{cases} 1/p,&amp; (k=1,2,3,\cdots) \\ \frac{1-p}{p},&amp;  (k=0, 1,2,\cdots) \end{cases}         &amp; (1 - p)/p^2    \\
 \text{Cauchy}                &amp; \infty       &amp; \infty        \\
 \text{Poisson}(\lambda)      &amp; \lambda       &amp; \lambda        \\
@@ -286,7 +287,7 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 <p>By taking further derivatives we conclude that <span class="math inline">\(\psi^{(k)}(0) = \mathbb{E}(X^k)\)</span>. This gives us a method for computing the moments of a distribution.</p>
 <p><strong>Lemma 4.30</strong>. Properties of the mgf.</p>
 <ol style="list-style-type: decimal">
-<li>If <span class="math inline">\(Y = aX + b\)</span> then $_Y(t) = e^{bt} _X(at) $</li>
+<li>If <span class="math inline">\(Y = aX + b\)</span> then <span class="math display">\[ \psi_Y(t) = e^{bt} \psi_X(at) \]</span></li>
 <li>if <span class="math inline">\(X_1, \dots, X_n\)</span> are independent and <span class="math inline">\(Y = \sum_i X_i\)</span> then <span class="math inline">\(\psi_Y(t) = \prod_i \psi_{i}(t)\)</span>, where <span class="math inline">\(\psi_i\)</span> is the mgf of <span class="math inline">\(X_i\)</span>.</li>
 </ol>
 <p><strong>Theorem 4.32</strong>. Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be random variables. If <span class="math inline">\(\psi_X(t) = \psi_Y(t)\)</span> for all <span class="math inline">\(t\)</span> in an open interval around 0, then <span class="math inline">\(X \overset{d}= Y\)</span>.</p>
@@ -531,18 +532,32 @@ plt.show()</code></pre>
 <li><span class="math display">\[\mathbb{E}(X) = \mathbb{E}\left( \sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{E}(Y_i) = np \]</span></li>
 <li><span class="math display">\[\mathbb{V}(X) = \mathbb{V}\left(\sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{V}(Y_i) = np(1-p) \]</span></li>
 </ul>
-<p><strong>Geometric</strong>. Let <span class="math inline">\(X \sim \text{Geometric}(p)\)</span>. Then:</p>
+<p><strong>Geometric</strong>.<br />
+Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^{k-1}, \quad k = 1,2,3,\cdots \]</span> The expectation:</p>
 <p><span class="math display">\[ 
 \begin{align}
 \mathbb{E}(X) &amp;= \sum_{k=1}^\infty k p (1 - p)^{k - 1}  \\
 &amp;= \sum_{k=1}^\infty p(1-p)^{k-1} + \sum_{k=2}^\infty (k - 1) p(1-p)^{k - 1} \\
-&amp;= p \left( 1 + (1 - p) + (1 - p)^2 + \dots \right) + \sum_{k=1}^\infty k p(1-p)^k \\
-&amp;= p \left(\frac{1}{1 - (1 - p)}\right) + (1 - p) \sum_{k=1}^\infty k p(1-p)^{k - 1} \\
+&amp;= 1 + \sum_{k=1}^\infty k p(1-p)^k \\
+&amp;= 1 + (1 - p) \sum_{k=1}^\infty k p(1-p)^{k - 1} \\
 &amp;= 1 + (1 - p) \mathbb{E}(X)
 \end{align}
 \]</span></p>
 <p>Solving for the expectation, we get <span class="math inline">\(\mathbb{E}(X) = 1/p\)</span>.</p>
-<p>We also have:</p>
+<p>Another version of Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^k, \quad k = 0, 1,2,3,\cdots \]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\mathbb{E}(X) &amp;= \sum_{k=0}^\infty k p (1 - p)^{k}  \\
+&amp;= \sum_{k=1}^\infty kp(1-p)^{k}\\
+&amp;= \sum_{k=1}^\infty (k-1)p(1-p)^{k}+\sum_{k=1}^\infty p(1-p)^{k}\\
+&amp;= (1-p)\sum_{k=1}^\infty (k-1)p(1-p)^{k-1}+\sum_{k=1}^\infty p(1-p)^{k}\\
+&amp;= (1 - p)\mathbb{E}(X) +\sum_{k=1}^\infty p(1-p)^{k} \\
+&amp;= (1 - p)\mathbb{E}(X) +\sum_{k=0}^\infty p(1-p)^{k}-p \\
+&amp;= (1 - p)\mathbb{E}(X) +1-p \\
+\end{align}
+\]</span></p>
+<p>from where we get <span class="math display">\[\mathbb{E}(X) = (1-p)/p\]</span></p>
+<p>For the variance we also have:</p>
 <p><span class="math display">\[ 
 \begin{align}
 \mathbb{E}(X^2) &amp;= \sum_{k=1}^\infty k^2 p (1 - p)^{k - 1}  \\
@@ -555,6 +570,30 @@ plt.show()</code></pre>
 <p>Solving for the expectation, we get <span class="math inline">\(\mathbb{E}(X^2) = (2 - p) / p^2\)</span>.</p>
 <p>Finally,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} \]</span></p>
+<p>For the variant version of Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^k, \quad k = 0, 1,2,3,\cdots \]</span>
+<span class="math display">\[ 
+\begin{align}
+\mathbb{E}(X^2) &amp;= \sum_{k=0}^\infty k^2 p (1 - p)^{k}  \\
+&amp;= \sum_{k=1}^\infty k^2 p(1-p)^{k}\\
+&amp;= \sum_{k=0}^\infty (k+1)^2 p(1-p)^{k+1}\\
+&amp;= \sum_{k=0}^\infty k^2 p(1-p)^{k+1}+2\sum_{k=0}^\infty k p(1-p)^{k+1}+\sum_{k=0}^\infty p(1-p)^{k+1}\\
+&amp;= (1-p)\mathbb{E}(X^2)+2(1-p)\mathbb{E}(X)+(1-p)\\
+&amp;= (1-p)\mathbb{E}(X^2)+2(1-p)^2/p+(1-p)\\
+&amp;= (1-p)\mathbb{E}(X^2)+\frac{2(1-p)^2}{p}+\frac{p(1-p)}{p}\\
+&amp;= (1-p)\mathbb{E}(X^2)+\frac{2-3p+p^2}{p}\\
+\end{align}
+\]</span>
+We get <span class="math display">\[\mathbb{E}(X^2) = \frac{2-3p+p^2}{p^2}\]</span>
+And then the variance:
+<span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2-3p+p^2}{p^2} - \frac{(1-p)^2}{p^2} = \frac{1 - p}{p^2} \]</span></p>
+<p>Because the two distributions are linked in the following way</p>
+<p><span class="math display">\[Y=X-1\]</span></p>
+<p>Thus using expectation property you get that</p>
+<p><span class="math display">\[E(Y)=E(X)-1\]</span></p>
+<p>That is</p>
+<p><span class="math display">\[E(Y)=\frac{1}{p}-1=\frac{1-p}{p}\]</span></p>
+<p>But, using variance property,</p>
+<p><span class="math display">\[V(Y)=V(X-1)=V(X)\]</span></p>
 <p><strong>Cauchy</strong>. Let <span class="math display">\[f_X(x) = \frac{1}{\pi(1+x^2)},\quad -\infty&lt;x&lt;\infty\]</span>. Then:
 <span class="math display">\[\mathbb{E}|X|=\int_{-\infty}^{\infty}\frac{|x|}{\pi(1+x^2)}dx=\frac{2}{\pi}\int_{0}^{\infty}\frac{x}{1+x^2}dx=\frac{2}{\pi}\frac{\log(1+x^2)}{2}\bigg|_{0}^{\infty}=\infty\]</span> so <span class="math inline">\(\mathbb{E}X\)</span> does not exist.</p>
 <p><strong>Poisson</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
