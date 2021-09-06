@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>Statistical Inference - A Hugo website</title>
+<meta property="og:title" content="Statistical Inference - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">8 min read</span>
+    
+
+    <h1 class="article-title">Statistical Inference</h1>
+
+    
+    <span class="article-date">2021-09-05</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2021/09/05/statistical-inference/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#common-families-of-distributions">3. Common Families of Distributions</a>
+<ul>
+<li><a href="#some-distributions">Some Distributions</a>
+<ul>
+<li><a href="#chi-squared-distribution">Chi-Squared Distribution</a></li>
+<li><a href="#students-t-distribution">Student’s <span class="math inline">\(t\)</span>-Distribution</a></li>
+<li><a href="#snedcors-f-distribution">Snedcor’s <span class="math inline">\(F\)</span>-Distribution</a></li>
+<li><a href="#multinomial-distribution">Multinomial Distribution</a></li>
+</ul></li>
+<li><a href="#exponential-families">Exponential Families</a></li>
+<li><a href="#location-and-scale-families">Location and Scale Families</a></li>
+<li><a href="#inequalities-and-identities">Inequalities and Identities</a></li>
+</ul></li>
+<li><a href="#multiple-random-variables">4. Multiple Random Variables</a>
+<ul>
+<li><a href="#facts">Facts</a></li>
+<li><a href="#bivariate-relations">Bivariate Relations</a></li>
+<li><a href="#inequalities">Inequalities</a>
+<ul>
+<li><a href="#numerical-inequalities">Numerical Inequalities</a></li>
+<li><a href="#functional-inequalities">Functional Inequalities</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="common-families-of-distributions" class="section level1">
+<h1>3. Common Families of Distributions</h1>
+<p><em>Lots of this chapter is standard definitions of distributions, so is
+omitted</em></p>
+<div id="some-distributions" class="section level2">
+<h2>Some Distributions</h2>
+<p>[Normal Distribution] If <span class="math inline">\(\vec{X} \sim \text{n}(\vec{\mu}, \boldsymbol{\Sigma})\)</span> then
+<span class="math inline">\(\vec{X}\)</span> has pdf
+<span class="math display">\[f_{\vec{X}}(x_1, \dots, x_k \vert{} \vec{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\vec{ x}-\vec{\mu})^\top \boldsymbol{\Sigma}^{-1}(\vec{x}-\vec{\mu})\right)\]</span>.</p>
+<div id="chi-squared-distribution" class="section level3">
+<h3>Chi-Squared Distribution</h3>
+<p>The <em>chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom</em> has pdf
+<span class="math display">\[\chi_p^2 \sim \frac{1}{\Gamma(p/2)2^{p/2}} x^{(p/2)-1} e^{-x/2}, \quad 0&lt; x&lt; \infty.\]</span></p>
+<p>[Some facts]</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>If <span class="math inline">\(Z \sim \text{n}(0, 1)\)</span> then <span class="math inline">\(Z^2 \sim \chi_1^2\)</span></p></li>
+<li><p>If <span class="math inline">\(X_1, \dots, X_n\)</span> are independent <span class="math inline">\(X_i \sim \chi_{p_i}^2\)</span> then
+<span class="math inline">\(X_1 + \cdots + X_n \sim \chi_{p_1 + \cdots + p_n}^2\)</span>.</p></li>
+</ol>
+</div>
+<div id="students-t-distribution" class="section level3">
+<h3>Student’s <span class="math inline">\(t\)</span>-Distribution</h3>
+<p><a href="#students-t-distribution">Student’s <span class="math inline">\(t\)</span>-distribution</a> <span class="math inline">\(T \sim t_p\)</span>, a <em><span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(p\)</span>
+degrees of freedom</em> if it has pdf
+<span class="math display">\[f_T(t) = \frac{\Gamma\left(\frac{p+1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \frac{1}{\sqrt{p\pi}} \frac{1}{(1 + t^2/p)^{(p+1)/2}}, \quad t \in \mathbb R{}\]</span></p>
+<p>If <span class="math inline">\(p = 1\)</span> then this is the Cauchy distribution.</p>
+<p>If <span class="math inline">\(X_1, \dots, X_n\)</span> are a random sample from <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span> then
+<span class="math display">\[\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1}.\]</span> This is often taken
+as the definition. Note that the denominator is independent of the
+numerator.</p>
+<p>[Moments and mgf of <span class="math inline">\(t\)</span>-distribution] Student’s <span class="math inline">\(t\)</span> has no mgf because
+it does not have moments of all orders: <span class="math inline">\(t_p\)</span> has only <span class="math inline">\(p-1\)</span> moments. If
+<span class="math inline">\(T_p \sim t_p\)</span> then</p>
+<p><span class="math display">\[\begin{aligned}
+        \mathbb E{}[T_p] &amp;= 0 \quad p &gt; 1 \\
+        \mathbb V{}[T_p] &amp;= \frac{p}{p-2} \quad p &gt; 2
+    \end{aligned}\]</span></p>
+</div>
+<div id="snedcors-f-distribution" class="section level3">
+<h3>Snedcor’s <span class="math inline">\(F\)</span>-Distribution</h3>
+<p><a href="#snedcors-f-distribution">Snedcor’s <span class="math inline">\(F\)</span>-distribution</a> A random variable <span class="math inline">\(X \sim F_{p,q}\)</span> has
+<em><span class="math inline">\(F\)</span>-distribution with p and q degrees of freedom</em> if its pdf is
+<span class="math display">\[f_X(x) = \frac{\Gamma\left(\frac{p+q}{2}\right)}{\Gamma\left(\frac p2 \right)\Gamma\left(\frac q2 \right)} (p/q)^{p/2} \frac{x^{(p/2) - 1}}{(1 + px/q)^{(p+q)/2}}, \quad 0 &lt; x &lt; \infty.\]</span></p>
+<p>If <span class="math inline">\(X_1, \dots, X_n\)</span> is a random sample from <span class="math inline">\(\text{n}(\mu_X, \sigma_X^2)\)</span> and
+<span class="math inline">\(Y_1, \dots, Y_m\)</span> is an independent random sample from
+<span class="math inline">\(\text{n}(\mu_Y, \sigma_Y^2)\)</span>, then
+<span class="math display">\[\frac{S^2_X/\sigma^2_X}{S_Y^2/\sigma_Y^2} \sim F_{n-1, m-1}.\]</span> This is
+often taken as the definition.</p>
+<p>[Some facts]</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(X \sim F_{p,q} \,\, \implies \,\, 1/X \sim F_{q,p}\)</span></p></li>
+<li><p><span class="math inline">\(X \sim t_q \,\, \implies \,\, X^2 \sim F_{1,q}\)</span></p></li>
+<li><p><span class="math inline">\(X \sim F_{p,q} \,\, \implies \,\, \frac{(p/q)X}{1 + (p/q)X} \sim \text{beta}(p/2, q/2)\)</span></p></li>
+</ol>
+</div>
+<div id="multinomial-distribution" class="section level3">
+<h3>Multinomial Distribution</h3>
+<p><a href="#multinomial-distribution">Multinomial Distribution</a> Let <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> be positive integers and let
+<span class="math inline">\(p_1, \dots, p_n \in [0, 1]\)</span> satisfy <span class="math inline">\(\sum_{i=1}^n p_i = 1\)</span>. Then the
+random vector <span class="math inline">\((X_1, \dots, X_n)\)</span> has <em>multinomial distribution with m
+trials and cell probabilities <span class="math inline">\(p_1, \dots, p_n\)</span></em> if the joint pmf of
+<span class="math inline">\((X_1, \dots, X_n)\)</span> is
+<span class="math display">\[f(x_1, \dots , x_n) = \frac{m!}{x_1! \cdots x_n!} p_1^{x_1} \cdots
+p_n^{x_n} = m! \prod_{i=1}^n \frac{p_i^{x_i}}{x_i!}\]</span> on the set of
+<span class="math inline">\((x_1, \dots, x_n)\)</span> such that each <span class="math inline">\(x_i\)</span> is a nonnegative integer and
+<span class="math inline">\(\sum_{i=1}^n x_i = m\)</span>.</p>
+<p>The marginal distributions have <span class="math inline">\(X_i \sim \text{binomial}(m, p_i)\)</span>.</p>
+<p>[Multinomial Theorem] Let <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> be positive integers and let
+<span class="math inline">\(\mathcal{A}\)</span> be the set of vectors <span class="math inline">\(\vec{x} = (x_1, \dots, x_n)\)</span> such
+that each <span class="math inline">\(x_i\)</span> is a nonnegative integer and <span class="math inline">\(\sum_{i=1}^n x_i = m\)</span>.
+Then for any real numbers <span class="math inline">\(p_1, \dots, p_n\)</span>,
+<span class="math display">\[(p_1 + \cdots + p_n)^m = \sum_{\vec{x} \in \mathcal{A}} \frac{m!}{x_1! \cdots x_n!} p_1^{x_1}\cdots p_n^{x_n}.\]</span></p>
+</div>
+</div>
+<div id="exponential-families" class="section level2">
+<h2>Exponential Families</h2>
+<p>[Exponential family 1] A family of pmfs/pdfs is called an <em>exponential
+family</em> if it can be expressed
+<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right)\]</span>
+where <span class="math inline">\(h(x) \geq 0\)</span>, the <span class="math inline">\(t_i\)</span> are real valued functions of the
+observation <span class="math inline">\(x\)</span> that do not depend on <span class="math inline">\(\vec{\theta}\)</span> and
+<span class="math inline">\(c(\theta) \geq 0\)</span> and the <span class="math inline">\(w_i(\vec{\theta})\)</span> are real valued functions
+of <span class="math inline">\(\vec{\theta}\)</span> that do not depend on <span class="math inline">\(x\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> is a random variable from an exponential family distribution then
+<span class="math display">\[\mathbb E{}\left[ \sum_{i=1}^k \frac{\partial w_i(\vec{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial}{\partial \theta_j} \log c(\vec{\theta})\]</span>
+and
+<span class="math display">\[\mathbb V\left[ \frac{\partial w_i(\vec{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial^2}{\partial \theta_j^2} \log c(\vec{\theta}) - \mathbb E{}\left[ \sum_{i=1}^{k} \frac{\partial^2 w_i(\vec{\theta})}{\partial \theta_j^2} t_i(X) \right]\]</span></p>
+<p>[Exponential family 2] We can write another parameterisation of the
+exponential family
+<span class="math display">\[f(x | \vec{\eta}) = h(x) c^{*}(\vec{\eta}) \exp(\vec{\eta} \cdot \vec{t}(x))\]</span>
+where <span class="math inline">\(\vec{\eta}\)</span> is called the <em>natural parameter</em> and the set
+<span class="math inline">\(\mathcal{H} = \{\vec{\eta} : \int_\mathbb R{} f(x|\eta) \text{d}x &lt; \infty \}\)</span> is called
+the <em>natural parameter space</em> and is convex.</p>
+<p><span class="math inline">\(\{\vec{\eta}: \vec{\eta} = \vec{w}(\vec{\theta}), \,\, \vec{\theta} \in \Theta\} \subseteq \mathcal{H}\)</span>.
+So there may be more parameterisations here than previously.<br />
+</p>
+<p>The natural parameter provides a convenient mathematical formulation,
+but sometimes lacks simple interpretation.</p>
+<p>[Curved exponential family] A <em>curved exponential family</em> distribution
+is one for which the dimension of <span class="math inline">\(\vec{\theta}\)</span> is <span class="math inline">\(d &lt; k\)</span>. If <span class="math inline">\(d = k\)</span>
+then we have a <em>full exponential family</em>.</p>
+</div>
+<div id="location-and-scale-families" class="section level2">
+<h2>Location and Scale Families</h2>
+<p>[Location family] Let <span class="math inline">\(f(x)\)</span> be any pdf. The family of pdfs <span class="math inline">\(f(x - \mu)\)</span>
+for <span class="math inline">\(\mu \in \mathbb R{}\)</span> is called the <em>location family with standard pdf
+<span class="math inline">\(f(x)\)</span></em> and <span class="math inline">\(\mu\)</span> is the <em>location parameter</em> of the family.</p>
+<p>[Scale family] Let <span class="math inline">\(f(x)\)</span> be any pdf. For any <span class="math inline">\(\sigma &gt; 0\)</span> the family of
+pdfs <span class="math inline">\(\frac{1}{\sigma} f(x/\sigma)\)</span> is called the <em>scale family with
+standard pdf <span class="math inline">\(f(x)\)</span></em> and <span class="math inline">\(\sigma\)</span> is the <em>scale parameter</em> of the
+family.</p>
+<p>[Location-Scale family] Let <span class="math inline">\(f(x)\)</span> be any pdf. For <span class="math inline">\(\mu \in \mathbb R{}\)</span> and
+<span class="math inline">\(\sigma &gt; 0\)</span> the family of pdfs
+<span class="math inline">\(\frac{1}{\sigma} f(\frac{x - \mu}{\sigma})\)</span> is called the
+<em>location-scale family with standard pdf <span class="math inline">\(f(x)\)</span></em>; <span class="math inline">\(\mu\)</span> is the <em>location
+parameter</em> and <span class="math inline">\(\sigma\)</span> is the <em>scale parameter</em>.</p>
+<p>[Standardisation] Let <span class="math inline">\(f\)</span> be any pdf, <span class="math inline">\(\mu \in \mathbb R{}\)</span> and
+<span class="math inline">\(\sigma \in \mathbb R{}_{&gt;0}\)</span>. Then <span class="math inline">\(X\)</span> is a random variable with pdf
+<span class="math inline">\(\frac{1}{\sigma}f(\frac{x - \mu}{\sigma})\)</span> if and only if there exists
+a random variable <span class="math inline">\(Z\)</span> with pdf <span class="math inline">\(f(z)\)</span> and <span class="math inline">\(X = \sigma Z + \mu\)</span>.</p>
+<p>Probabilities of location-scale families can be computed in terms of
+their standard variables <span class="math inline">\(Z\)</span>
+<span class="math display">\[\text{P}(X \leq x) = \text{P}\left(Z \leq \frac{x - \mu}{\sigma} \right)\]</span></p>
+</div>
+<div id="inequalities-and-identities" class="section level2">
+<h2>Inequalities and Identities</h2>
+<p>[Chebychev’s inequality] Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(g(x)\)</span> be
+a nonnegative function. Then, for any <span class="math inline">\(r &gt; 0\)</span>,
+<span class="math display">\[\text{P}(g(X) \geq r) \leq \frac{\mathbb E{}[g(X)]}{r}.\]</span></p>
+<p>This bound is conservative and almost never attained.</p>
+<p>[Markov inequality] The Markov inequality is the special case with
+<span class="math inline">\(g = \mathbb{I}\)</span>.</p>
+<p>Let <span class="math inline">\(X_{\alpha, \beta}\)</span> denote a gamma<span class="math inline">\((\alpha, \beta)\)</span> random variable
+with pdf <span class="math inline">\(f(x \vert{} \alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 1\)</span>. Then for any
+constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>:
+<span class="math display">\[\text{P}(a &lt; X_{\alpha, \beta} &lt; b) = \beta (f(a \vert{} \alpha, \beta) - f(b \vert{} \alpha, \beta)) + \text{P}(a &lt; X_{\alpha - 1, \beta} &lt; b)\]</span></p>
+<p>[Stein’s Lemma] Let <span class="math inline">\(X \sim \text{n}(\theta, \sigma^2)\)</span> and let <span class="math inline">\(g\)</span> be a
+differentiable function with <span class="math inline">\(\mathbb E{}[g&#39;(x)] &lt; \infty\)</span>. Then
+<span class="math display">\[\mathbb E{}[g(X)(X - \theta)] = \sigma^2 \mathbb E{}[g&#39;(X)]\]</span></p>
+<p>The proof is just integration by parts.</p>
+<p>Stein’s lemma is useful for moment calculations</p>
+<p>Let <span class="math inline">\(\chi^2_p\)</span> denote a chi squared distribution with <span class="math inline">\(p\)</span> degrees of
+freedom. For any function <span class="math inline">\(h(x)\)</span>,
+<span class="math display">\[\mathbb E{}[h(\chi^2_p)] = p \mathbb E{}\left[\frac{h(\chi_{p+2}^2)}{\chi_{p+2}^2}\right]\]</span>
+provided the expressions exist.</p>
+<p>Let <span class="math inline">\(g(x)\)</span> be a function that is bounded at <span class="math inline">\(-1\)</span> and has finite
+expectation, then</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>If <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>,
+<span class="math display">\[\mathbb E{}[\lambda g(X)] = \mathbb E{}[Xg(X-1)].\]</span></p></li>
+<li><p>If <span class="math inline">\(X\sim \text{negative-binomial}(r, p)\)</span>,
+<span class="math display">\[\mathbb E{}[(1-p)g(X)] = \mathbb E{}\left[ \frac{X}{r + X - 1}g(X) \right].\]</span></p></li>
+</ol>
+</div>
+</div>
+<div id="multiple-random-variables" class="section level1">
+<h1>4. Multiple Random Variables</h1>
+<div id="facts" class="section level2">
+<h2>Facts</h2>
+<ul>
+<li><p>RVs are independent if and only if their pdfs factorise</p></li>
+<li><p>Functions of independent RVs are independent</p></li>
+<li><p>Expectations of products (and hence mgfs, etc. of sums) of
+independent RVs factor</p></li>
+<li><p>Variance of sum of independent RVs is sum of variances.</p></li>
+<li><p>Independent RVs have vanishing covariance/correlation, but the
+converse is not true in general.</p></li>
+</ul>
+</div>
+<div id="bivariate-relations" class="section level2">
+<h2>Bivariate Relations</h2>
+<p>[Conditional Expectation] <span class="math display">\[\mathbb E{}[\mathbb E{}[X|Y]] = \mathbb E{}[X]\]</span> provided the
+expectations exist.</p>
+<p>[Conditional variance]
+<span class="math display">\[\mathbb V[X] = \mathbb E{}[\mathbb V[X \vert{} Y]] + \mathbb V[\mathbb E{}[X \vert{} Y]]\]</span>
+provided the expectations exist.</p>
+<p>[Covariance] <span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[(X - \mu_X)(Y - \mu_Y)]\]</span></p>
+<p><span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[XY] - \mu_X\mu_Y\]</span></p>
+<p><span class="math display">\[\mathbb V[aX + bY] = a^2\mathbb V[X] + b^2\mathbb V[Y] + 2ab\text{Cov }[X, Y]\]</span></p>
+<p>[Correlation] <span class="math display">\[\rho_XY = \frac{\text{Cov }[X, Y]}{\sigma_X \sigma_Y}\]</span></p>
+<p>The correlation measures the strength of <em>linear</em> relation between two
+RVs. It is possible to have strong non-linear relationships but with
+<span class="math inline">\(\rho = 0\)</span>.</p>
+<p>We can use an argument similar to the standard proof of Cauchy-Schwarz
+to show the following</p>
+<p>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any RVs, then</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(-1 \leq \rho_{XY} \leq 1\)</span>,</p></li>
+<li><p><span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> if and only if there are constants
+<span class="math inline">\(a \text{n}eq 0, b\)</span> such that <span class="math inline">\(\text{P}{}(Y = aX + b) = 1\)</span>. If
+<span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> then <span class="math inline">\(\text{sign}(\rho) = \text{sign}(a)\)</span>.</p></li>
+</ol>
+</div>
+<div id="inequalities" class="section level2">
+<h2>Inequalities</h2>
+<div id="numerical-inequalities" class="section level3">
+<h3>Numerical Inequalities</h3>
+<p>Let <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> be any positive numbers and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy
+<span class="math inline">\(1/p + 1/q = 1\)</span>, then <span class="math display">\[\frac1p a^p + \frac1q b^q \geq ab\]</span> with
+equality if and only if <span class="math inline">\(a^p = b^q\)</span>.</p>
+<p>[H<span>ö</span>lder’s Inequality] Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any random
+variables and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy <span class="math inline">\(1/p + 1/q = 1\)</span>, then
+<span class="math display">\[\lvert{\mathbb E{}[XY]}\lvert \leq \mathbb E{}[\lvert{XY}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p} \mathbb E{}[\lvert{Y}\lvert^q]^{1/q}\]</span></p>
+<ul>
+<li><p>Cauchy-Schwarz is the special case <span class="math inline">\(p = q = 2\)</span></p></li>
+<li><p><span class="math inline">\(\text{Cov }[X, Y]^2 \leq \sigma_X^2 \sigma_Y^2\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb E{}[\lvert{X}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p}\)</span></p></li>
+<li><p><em>Liapounov’s Inequality</em>
+<span class="math inline">\(\mathbb E{}[\lvert{X}\lvert^r]^{1/r} \leq \mathbb E{}[\lvert{X}\lvert^s]^{1/s}\)</span> where
+<span class="math inline">\(1 &lt; r &lt; s &lt; \infty\)</span>.</p></li>
+</ul>
+</div>
+<div id="functional-inequalities" class="section level3">
+<h3>Functional Inequalities</h3>
+<p>[Convex Function] A function <span class="math inline">\(g(x)\)</span> is <em>convex</em> on a set <span class="math inline">\(S\)</span> if for all
+<span class="math inline">\(x, y \in S\)</span> and <span class="math inline">\(0&lt; \lambda &lt; 1\)</span>
+<span class="math display">\[g(\lambda x + (1 - \lambda)y) \leq \lambda g(x) + (1 - \lambda)g(y).\]</span>
+<em>Strictly convex</em> is when the inequality is strict. <span class="math inline">\(g\)</span> is <em>concave</em> if
+<span class="math inline">\(-g\)</span> is convex.</p>
+<p><span class="math inline">\(g(x)\)</span> is convex on <span class="math inline">\(S\)</span> if <span class="math inline">\(g&#39;&#39;(x) \geq 0\)</span> <span class="math inline">\(\forall x \in S\)</span>.</p>
+<p>[Jensen’s Inequality] If <span class="math inline">\(g(x)\)</span> is convex, then for any random variable
+<span class="math inline">\(X\)</span> <span class="math display">\[\mathbb E{}[g(X)] \leq g(\mathbb E{}[X]).\]</span> Equality holds if and only if, for
+every line <span class="math inline">\(a + bx\)</span> that is tangent to <span class="math inline">\(g(x)\)</span> at <span class="math inline">\(x = \mathbb E{}[X]\)</span>,
+<span class="math inline">\(\text{P}{}\{g(X) = a + bX\} = 1\)</span>. (So if and only if <span class="math inline">\(g\)</span> is affine with
+probability 1.)</p>
+<ul>
+<li><p><span class="math inline">\(\mathbb E{}[X^2] \geq \mathbb E{}[X]^2\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb E{}[1/X] \geq 1/ \mathbb E{}[X]\)</span></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-casella2021statistical" class="csl-entry">
+1. Casella G, Berger RL. Statistical inference. Cengage Learning; 2021.
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

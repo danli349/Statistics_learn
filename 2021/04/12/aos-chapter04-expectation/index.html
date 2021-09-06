@@ -725,7 +725,7 @@ And then the variance:
 <p><em>Reference: <a href="https://math.stackexchange.com/a/1502519" class="uri">https://math.stackexchange.com/a/1502519</a></em></p>
 <p><strong><span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as the sum of squares of <span class="math inline">\(k\)</span> IID standard Normal random variables, <span class="math inline">\(X = \sum_{i=1}^k Z_i^2\)</span>, <span class="math inline">\(Z_i \sim N(0, 1)\)</span>.</p>
 <p>Chi-squared distribution PDF:
-<span class="math display">\[ f_X(x) = \frac{1}{2^{p/2}\Gamma(p/2)} x^{(p/2) - 1} e^{- x/2} \quad \text{for } x &gt; 0 \]</span></p>
+<span class="math display">\[ f_X(x) = \frac{1}{2^{p/2}\Gamma(p/2)} x^{(p/2) - 1} e^{- x/2}=Gamma(p/2,1/2) \quad \text{for } x &gt; 0 \]</span></p>
 <p>The expectation of <span class="math inline">\(X\)</span> can then be computed:</p>
 <p><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}\left( \sum_{i=1}^k Z_i^2 \right) = \sum_{i=1}^k \mathbb{E}(Z_i^2) = \sum_{i=1}^k (\mathbb{V}(Z_i) + \mathbb{E}(Z_i)^2) = \sum_{i=1}^k (1 + 0) = k \]</span></p>
 <p>The expectation of <span class="math inline">\(X^2\)</span> is:</p>
@@ -750,6 +750,18 @@ And then the variance:
 <p>Therefore,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = k^2 + 2k - k^2 = 2k \]</span></p>
 <p><em>The proofs for the multinomial and mutivariate normal distribution expressions are provided in the book text (and there are notes above).</em></p>
+<p><strong>noncentral <span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span> with <span class="math inline">\(p\)</span> degrees of freedom and noncentrality parameter <span class="math inline">\(\lambda\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as a mixture distribution, made up of central chi squared densities and Poisson distributions. That is we set up the hierarchy<br />
+<span class="math display">\[\begin{align}
+X|K&amp;\sim \chi_{p+2K}^2\\
+K&amp;\sim Poisson(\lambda)
+\end{align}\]</span></p>
+<p>The noncentral Chi-squared distribution PDF:
+<span class="math display">\[ f(x|\lambda,p) = \sum_{k=0}^{\infty}\frac{x^{p/2+k-1}e^{-x/2}}{\Gamma(p/2+k)2^{p/2+k}}\frac{\lambda^ke^{-\lambda}}{k!} =\sum_{k=0}^{\infty}Gamma(\frac{p}{2}+k, \frac{1}{2})Poisson(\lambda)\]</span></p>
+<p>The marginal distribution of <span class="math inline">\(X\)</span> is given by <span class="math display">\[\begin{align}
+\mathbb E{X}&amp;=\mathbb E(\mathbb E(X|K))\\
+&amp;=\mathbb E(p+2K)\\
+&amp;=p+2\lambda\\
+\end{align}\]</span></p>
 <p><strong>Exercise 4.7.13</strong>. Suppose we generate a random variable <span class="math inline">\(X\)</span> in the following way. First we flip a fair coin. If the coin is heads, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. If the coin is tails, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(3, 4)\)</span> distribution.</p>
 <p><strong>(a)</strong> Find the mean of <span class="math inline">\(X\)</span>.</p>
 <p><strong>(b)</strong> Find the standard deviation of <span class="math inline">\(X\)</span>.</p>
