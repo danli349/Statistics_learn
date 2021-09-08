@@ -13,8 +13,7 @@
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/09/05/statistical-inference/</guid>
-      <description>3. Common Families of DistributionsSome DistributionsChi-Squared DistributionStudent’s \(t\)-DistributionSnedcor’s \(F\)-DistributionMultinomial DistributionExponential FamiliesLocation and Scale FamiliesInequalities and Identities4. Multiple Random VariablesFactsBivariate RelationsInequalitiesNumerical InequalitiesFunctional InequalitiesReferences3. Common Families of DistributionsLots of this chapter is standard definitions of distributions, so isomitted
-Some Distributions[Normal Distribution] If \(\vec{X} \sim \text{n}(\vec{\mu}, \boldsymbol{\Sigma})\) then\(\vec{X}\) has pdf\[f_{\vec{X}}(x_1, \dots, x_k \vert{} \vec{\mu}, \boldsymbol{\Sigma}) = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\vec{ x}-\vec{\mu})^\top \boldsymbol{\Sigma}^{-1}(\vec{x}-\vec{\mu})\right)\].</description>
+      <description>3. Common Families of DistributionsSome DistributionsChi-Squared DistributionStudent’s \(t\)-DistributionSnedcor’s \(F\)-DistributionMultinomial DistributionExponential FamiliesLocation and Scale FamiliesInequalities and Identities4. Multiple Random VariablesFactsBivariate RelationsInequalitiesNumerical InequalitiesFunctional Inequalities5. Properties of a Random SampleSampling from the Normal DistributionConvergence ConceptsConvergence in ProbabilityAlmost Sure ConvergenceConvergence in DistributionThe Delta MethodGenerating A Random SampleReferences3.</description>
     </item>
     
     <item>
@@ -900,7 +899,7 @@ colahChris ChoyTerence Tao1. R Core Team. R: A language and environment for 
       <description>Contact Information– Email: dan@danli.org;
 – Homepage:http://danli.org/;
 – Twitter: @LiDan;
-– Stackexchange: stackoverflow</description>
+– Stack: StackExchange</description>
     </item>
     
   </channel>

@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">8 min read</span>
+    <span class="article-duration">15 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -96,6 +96,18 @@
 <li><a href="#numerical-inequalities">Numerical Inequalities</a></li>
 <li><a href="#functional-inequalities">Functional Inequalities</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#properties-of-a-random-sample">5. Properties of a Random Sample</a>
+<ul>
+<li><a href="#sampling-from-the-normal-distribution">Sampling from the Normal Distribution</a></li>
+<li><a href="#convergence-concepts">Convergence Concepts</a>
+<ul>
+<li><a href="#convergence-in-probability">Convergence in Probability</a></li>
+<li><a href="#almost-sure-convergence">Almost Sure Convergence</a></li>
+<li><a href="#convergence-in-distribution">Convergence in Distribution</a></li>
+<li><a href="#the-delta-method">The Delta Method</a></li>
+</ul></li>
+<li><a href="#generating-a-random-sample">Generating A Random Sample</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -299,36 +311,297 @@ to show the following</p>
 <div id="numerical-inequalities" class="section level3">
 <h3>Numerical Inequalities</h3>
 <p>Let <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> be any positive numbers and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy
-<span class="math inline">\(1/p + 1/q = 1\)</span>, then <span class="math display">\[\frac1p a^p + \frac1q b^q \geq ab\]</span> with
+<span class="math inline">\(1/p + 1/q = 1\)</span>, then <span class="math display">\[p+q=pq\]</span>
+<span class="math display">\[q(p-1)=p\]</span>
+<span class="math display">\[1-1/q=1/p\]</span>
+<span class="math display">\[\frac1p a^p + \frac1q b^q \geq ab\]</span> with
 equality if and only if <span class="math inline">\(a^p = b^q\)</span>.</p>
-<p>[H<span>ö</span>lder’s Inequality] Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any random
+<p><strong>H<span class="math inline">\(\ddot{o}\)</span>lder’s Inequality</strong> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any random
 variables and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy <span class="math inline">\(1/p + 1/q = 1\)</span>, then
 <span class="math display">\[\lvert{\mathbb E{}[XY]}\lvert \leq \mathbb E{}[\lvert{XY}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p} \mathbb E{}[\lvert{Y}\lvert^q]^{1/q}\]</span></p>
 <ul>
-<li><p>Cauchy-Schwarz is the special case <span class="math inline">\(p = q = 2\)</span></p></li>
+<li><p><strong>Cauchy-Schwarz Inequality</strong> is the special case <span class="math inline">\(p = q = 2\)</span></p></li>
 <li><p><span class="math inline">\(\text{Cov }[X, Y]^2 \leq \sigma_X^2 \sigma_Y^2\)</span></p></li>
 <li><p><span class="math inline">\(\mathbb E{}[\lvert{X}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p}\)</span></p></li>
-<li><p><em>Liapounov’s Inequality</em>
+<li><p><strong>Liapounov’s Inequality</strong>
 <span class="math inline">\(\mathbb E{}[\lvert{X}\lvert^r]^{1/r} \leq \mathbb E{}[\lvert{X}\lvert^s]^{1/s}\)</span> where
 <span class="math inline">\(1 &lt; r &lt; s &lt; \infty\)</span>.</p></li>
+<li><p>For numbers <span class="math inline">\(a_i,b_i,i=1,\cdots,n\)</span>, <span class="math display">\[\sum_{i=1}^{n}|a_ib_i|\leq\left(\sum_{i=1}^{n}a_i^p\right)^{1/p}\left(\sum_{i=1}^{n}b_i^q\right)^{1/q}\]</span> where <span class="math inline">\(\frac{1}{p}+\frac{1}{q}=1\)</span></p></li>
+<li><p><span class="math display">\[\frac{1}{n}\left(\sum_{i=1}^{n}|a_i|\right)^2\leq\sum_{i=1}^{n}a_i^2\]</span></p></li>
 </ul>
+<p><strong>Minkowski’s Inequality</strong><br />
+Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any two random variables. Then for <span class="math inline">\(1\le p&lt;\infty\)</span>
+<span class="math display">\[(\mathbb E|X+Y|^p)^{1/p}\le (\mathbb E|X|^p)^{1/p}+(\mathbb E|Y|^p)^{1/p}\]</span></p>
 </div>
 <div id="functional-inequalities" class="section level3">
 <h3>Functional Inequalities</h3>
-<p>[Convex Function] A function <span class="math inline">\(g(x)\)</span> is <em>convex</em> on a set <span class="math inline">\(S\)</span> if for all
+<p><strong>Convex Function</strong> A function <span class="math inline">\(g(x)\)</span> is <em>convex</em> on a set <span class="math inline">\(S\)</span> if for all
 <span class="math inline">\(x, y \in S\)</span> and <span class="math inline">\(0&lt; \lambda &lt; 1\)</span>
 <span class="math display">\[g(\lambda x + (1 - \lambda)y) \leq \lambda g(x) + (1 - \lambda)g(y).\]</span>
-<em>Strictly convex</em> is when the inequality is strict. <span class="math inline">\(g\)</span> is <em>concave</em> if
+<strong>Strictly convex</strong> is when the inequality is strict. <span class="math inline">\(g\)</span> is <strong>concave</strong> if
 <span class="math inline">\(-g\)</span> is convex.</p>
 <p><span class="math inline">\(g(x)\)</span> is convex on <span class="math inline">\(S\)</span> if <span class="math inline">\(g&#39;&#39;(x) \geq 0\)</span> <span class="math inline">\(\forall x \in S\)</span>.</p>
-<p>[Jensen’s Inequality] If <span class="math inline">\(g(x)\)</span> is convex, then for any random variable
+<p><strong>Jensen’s Inequality</strong> If <span class="math inline">\(g(x)\)</span> is convex, then for any random variable
 <span class="math inline">\(X\)</span> <span class="math display">\[\mathbb E{}[g(X)] \leq g(\mathbb E{}[X]).\]</span> Equality holds if and only if, for
 every line <span class="math inline">\(a + bx\)</span> that is tangent to <span class="math inline">\(g(x)\)</span> at <span class="math inline">\(x = \mathbb E{}[X]\)</span>,
 <span class="math inline">\(\text{P}{}\{g(X) = a + bX\} = 1\)</span>. (So if and only if <span class="math inline">\(g\)</span> is affine with
 probability 1.)</p>
 <ul>
-<li><p><span class="math inline">\(\mathbb E{}[X^2] \geq \mathbb E{}[X]^2\)</span></p></li>
-<li><p><span class="math inline">\(\mathbb E{}[1/X] \geq 1/ \mathbb E{}[X]\)</span></p></li>
+<li><p><span class="math inline">\(x^2\)</span> is convex, <span class="math inline">\(\mathbb E[X^2] \geq \mathbb E{}[X]^2\)</span></p></li>
+<li><p><span class="math inline">\(1/x\)</span> is convex, <span class="math inline">\(\mathbb E[1/X] \geq 1/ \mathbb E{}[X]\)</span></p></li>
+<li><p><span class="math inline">\(\log x\)</span> is concave, <span class="math inline">\(\mathbb E(\log X) \leq \log (\mathbb E X)\)</span></p></li>
+<li><p>Arithmetic mean: <span class="math display">\[a_A=\frac{1}{n}(a_1+a_2+\cdots+a_n)\]</span>
+Geometric mean: <span class="math display">\[a_G=(a_1a_2\cdots a_n)^{1/n}\]</span>
+Harmonic mean: <span class="math display">\[a_H=\frac{1}{\frac{1}{n}\left(\frac{1}{a_1}+\frac{1}{a_2}+\cdots+\frac{1}{a_n}\right)}\]</span>
+<span class="math display">\[a_H\leq a_G\leq a_A\]</span></p></li>
+</ul>
+<p><strong>Covariance Inequality</strong> Let <span class="math inline">\(X\)</span> be any random variable and <span class="math inline">\(g(x)\)</span> and <span class="math inline">\(h(x)\)</span> any functions such that <span class="math inline">\(\mathbb E g(X), \mathbb E h(X)\)</span> and <span class="math inline">\(\mathbb E (g(X)h(X))\)</span> exist.<br />
+- If <span class="math inline">\(g(x)\)</span> is a nondecreasing function and <span class="math inline">\(h(x)\)</span> is a nonincreasing function, then
+<span class="math display">\[\mathbb E \bigg(g(X)h(X)\bigg)\leq\bigg(\mathbb E g(X)\bigg)\bigg(\mathbb E h(X)\bigg)\]</span></p>
+<ul>
+<li>If <span class="math inline">\(g(x)\)</span> and <span class="math inline">\(h(x)\)</span> are both nondecreasing or nonincreasing functions, then
+<span class="math display">\[\mathbb E \bigg(g(X)h(X)\bigg)\geq\bigg(\mathbb E g(X)\bigg)\bigg(\mathbb E h(X)\bigg)\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="properties-of-a-random-sample" class="section level1">
+<h1>5. Properties of a Random Sample</h1>
+<div class="definition">
+<p><span id="def:unlabeled-div-1" class="definition"><strong>Definition 1  </strong></span>A collection of random variables <span class="math inline">\(X_1, \dots, X_n\)</span> is a <em>random sample
+of size n from population <span class="math inline">\(f(x)\)</span></em> if they are iid with pdf/pmf f(x).</p>
+</div>
+<div class="definition">
+<p><span id="def:unlabeled-div-2" class="definition"><strong>Definition 2  </strong></span><span class="math inline">\(Y = T(X_1, \dots, X_n)\)</span> is a <em>statistic</em> if the domain of <span class="math inline">\(T\)</span> contains
+the sample space of <span class="math inline">\((X_1, \dots, X_n)\)</span>. The distribution of <span class="math inline">\(Y\)</span> is the
+<em>sampling distribution of <span class="math inline">\(Y\)</span></em>.</p>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-3" class="remark"><em>Remark</em>. </span>A statistic is any function of the data. The only restriction is that
+the statistic is not also a function of some other parameters.</p>
+</div>
+<div class="definition">
+<p><span id="def:unlabeled-div-4" class="definition"><strong>Definition 3  </strong></span>The <em>sample mean</em> <span class="math inline">\(\bar{X}\)</span> and <em>sample variance</em> <span class="math inline">\(S^2\)</span> of a random
+sample <span class="math inline">\(X_1, \dots, X_n\)</span> are, respectively,</p>
+<ul>
+<li><p><span class="math inline">\(\bar{X} = \frac1n \sum_{i=1}^n X_i\)</span></p></li>
+<li><p><span class="math inline">\(S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2\)</span>.</p></li>
+</ul>
+<p>The <em>sample standard deviation</em> is <span class="math inline">\(S = \sqrt{S^2}\)</span>.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-5" class="theorem"><strong>Theorem 1  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a population with mean
+<span class="math inline">\(\mu\)</span> and finite variance <span class="math inline">\(\sigma^2\)</span>, then</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(\mathbb E[\bar{X}] = \mu\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb V[\bar{X}] = \frac{\sigma^2}{n}\)</span></p></li>
+<li><p><span class="math inline">\(\mathbb E[S^2] = \sigma ^2\)</span>.</p></li>
+</ol>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-6" class="theorem"><strong>Theorem 2  </strong></span>Take <span class="math inline">\(x_1, \dots, x_n \in \mathbb R\)</span> and let <span class="math inline">\(\bar{x}\)</span> be their mean. Then,</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(\min_a \sum_{i=1}^n (x_i - a)^2 = \sum_{i=1}^n (x_i - \bar{x})^2\)</span></p></li>
+<li><p><span class="math inline">\((n-1)s^2 = \sum_{i=1}^n(x_i - \bar{x})^2 = \sum_{i=1}^n x_i^2 - n\bar{x}^2\)</span>.</p></li>
+</ol>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-7" class="theorem"><strong>Theorem 3  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from population
+<span class="math inline">\(f(x\vert{}\vec{\theta})\)</span> belonging to an exponential family
+<span class="math display">\[f(x \vert{} \vec{\theta}) = h(x)c(\vec{\theta}) \exp\left(\sum_{i=1}^k w_i(\vec{\theta})t_i(x)\right).\]</span>
+Define the statistics
+<span class="math display">\[T_i(X_1, \dots, X_n) = \sum_{j=1}^n t_i(X_j), \quad i=1, \dots, k.\]</span>
+Then if the set
+<span class="math inline">\(\{(w_1(\vec{\theta}), \dots, w_n(\vec{\theta}), \, \theta \in \Theta\}\)</span>
+contains and open subset of <span class="math inline">\(\mathbb R^k\)</span> then the distribution of
+<span class="math inline">\((X_1, \dots, X_n)\)</span> is an exponential family of the form
+<span class="math display">\[f(u_1, \dots, u_n \vert{} \vec{\theta}) = H(u_1, \dots, u_n) c(\vec{\theta})^n \exp\left(\sum_{i=1}^kw_i(\vec{\theta})u_i\right).\]</span></p>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-8" class="remark"><em>Remark</em>. </span>The open condition eliminates curved exponential families from this
+result.</p>
+</div>
+<div id="sampling-from-the-normal-distribution" class="section level2">
+<h2>Sampling from the Normal Distribution</h2>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-9" class="theorem"><strong>Theorem 4  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma)\)</span>
+distribution. Then,</p>
+<ul>
+<li><p><span class="math inline">\(\bar{X}\)</span> and <span class="math inline">\(S^2\)</span> are independent</p></li>
+<li><p><span class="math inline">\(\bar{X} \sim \text{n}(\mu, \sigma^2/n)\)</span></p></li>
+<li><p><span class="math inline">\((n-1)S^2/\sigma^2 \sim \chi^2_{n-1}\)</span>.</p></li>
+</ul>
+</div>
+<div class="lemma">
+<p><span id="lem:unlabeled-div-10" class="lemma"><strong>Lemma 1  </strong></span>In the case of samples from a multivariate normal</p>
+<ul>
+<li><p>Independence <span class="math inline">\(\iff\)</span> vanishing covariance</p></li>
+<li><p>Pairwise independence <span class="math inline">\(\iff\)</span> independence</p></li>
+</ul>
+</div>
+</div>
+<div id="convergence-concepts" class="section level2">
+<h2>Convergence Concepts</h2>
+<div id="convergence-in-probability" class="section level3">
+<h3>Convergence in Probability</h3>
+<div class="definition">
+<p><span id="def:unlabeled-div-11" class="definition"><strong>Definition 4  </strong></span>A sequence of random variables <span class="math inline">\(\{X_i: i \in \mathbb N \}\)</span> <em>converges in
+probability</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<span class="math display">\[\lim_{n\to\infty}\text{P }(|{X_n - X}| \geq \epsilon) = 0\]</span> (or
+equivalently if <span class="math inline">\(\lim_{n\to\infty}\text{P }(|{X_n - X}| &lt; \epsilon) = 1\)</span>).</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 5  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
+<span class="math inline">\(\mathbb E[|{X_i}|] &lt; \infty\)</span>. Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n\)</span>.
+Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges in probability to <span class="math inline">\(\mu\)</span>. That
+is, <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<span class="math display">\[\lim_{n\to\infty} \text{P }(|{X_n - \mu}| &lt; \epsilon) = 1\]</span></p>
+</div>
+<p>Proof is using Chebychev’s inequality.</p>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-13" class="theorem"><strong>Theorem 6  </strong></span>If <span class="math inline">\(X_1, X_2, \dots\)</span> converges in probability to <span class="math inline">\(X\)</span> and <span class="math inline">\(h\)</span> is a
+continuous function, then <span class="math inline">\(h(X_1), h(X_2), \dots\)</span> converges in
+probability to <span class="math inline">\(h(X)\)</span>.</p>
+</div>
+</div>
+<div id="almost-sure-convergence" class="section level3">
+<h3>Almost Sure Convergence</h3>
+<div class="definition">
+<p><span id="def:unlabeled-div-14" class="definition"><strong>Definition 5  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges almost
+surely</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<span class="math display">\[\text{P }\left(\lim_{n\to\infty} |{\bar{X}_n - X}| &lt; \epsilon\right) = 1.\]</span></p>
+</div>
+<div class="comments">
+<ul>
+<li><p>Almost sure convergence is much stronger than convergence in
+probability. Convergence in probability states that the sequence of
+measures of the sets on which the sequence has finite difference
+from its the limit converges to 0. Almost sure convergence states
+that any place where the sequence has finite difference from its
+limit must have measure 0. It’s like a sequence of integrals
+converging vs. whether the integrands converge.</p></li>
+<li><p>Almost sure convergence implies convergence in probability but not
+the other way around.</p></li>
+</ul>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-15" class="theorem"><strong>Theorem 7  </strong></span>If a sequence converges in probability then it is possible to find a
+subsequence that converges almost surely.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-16" class="theorem"><strong>Theorem 8  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
+<span class="math inline">\(\mathbb E[|{X_i}|] &lt; \infty\)</span>. Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n\)</span>.
+Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges almost surely to <span class="math inline">\(\mu\)</span>. That is,
+<span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<span class="math display">\[\text{P }\left(\lim_{n\to\infty}|{\bar{X}_n - \mu}| &lt; \epsilon\right) = 1.\]</span></p>
+</div>
+</div>
+<div id="convergence-in-distribution" class="section level3">
+<h3>Convergence in Distribution</h3>
+<div class="definition">
+<p><span id="def:unlabeled-div-17" class="definition"><strong>Definition 6  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges in
+distribution</em> to a random variable <span class="math inline">\(X\)</span> if
+<span class="math display">\[\lim_{n \to \infty} F_{X_n}(x) = F_X(x)\]</span> at all points where <span class="math inline">\(F_X\)</span> is
+continuous.</p>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-18" class="remark"><em>Remark</em>. </span>Here it is really the cdfs that converge, rather than the random
+variables. In this way convergence in distribution differs from the
+previous two concepts.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 9  </strong></span>Convergence in probability implies convergence in distribution</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of iid random variables with
+<span class="math inline">\(\mathbb E[X_i] = \mu\)</span> and finite variance <span class="math inline">\(\mathbb V[X_i] = \sigma^2 &lt; \infty\)</span>.
+Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n X_i\)</span>. Let <span class="math inline">\(G_n(x)\)</span> denote the
+cdf of <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span>. Then <span class="math inline">\(\forall x \in \mathbb R\)</span>,
+<span class="math display">\[\lim_{n\to\infty} G_n(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x e^{-y^2/2}dy.\]</span>
+That is, <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span> converges in distribution to
+the standard normal.</p>
+</div>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-21" class="theorem"><strong>Theorem 11  </strong></span>If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
+constant, then</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(Y_nX_n \to aX\)</span> in distribution</p></li>
+<li><p><span class="math inline">\(X_n + Y_n \to X + a\)</span> in distribution</p></li>
+</ol>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-22" class="remark"><em>Remark</em>. </span>This tells us, for instance, that
+<span class="math display">\[\frac{\sqrt{n}(\bar{X}_n - \mu)}{S_n} \to \text{n}(0, 1)\]</span> in distribution,
+since we know that <span class="math inline">\(S_n \to \sigma\)</span> in probability.</p>
+</div>
+</div>
+<div id="the-delta-method" class="section level3">
+<h3>The Delta Method</h3>
+<p>If we are interested in the convergence of some function of a sequence
+of RVs, rather than the RVs themselves, then we can use the Delta Method
+(follows from an application of Taylor’s theorem and Slutsky’s theorem).</p>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-23" class="theorem"><strong>Theorem 12  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
+<span class="math inline">\(\sqrt{n}(Y_n - \theta) \to \text{n}(0, \sigma^2)\)</span> in distribution. For a
+given function <span class="math inline">\(g\)</span> and a specific value of <span class="math inline">\(\theta\)</span>, suppose that
+<span class="math inline">\(g&#39;(\theta)\)</span> exists and is non-zero. Then
+<span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] \to \text{n}(0, \sigma^2g&#39;(\theta)^2)\]</span> in
+distribution.</p>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-24" class="remark"><em>Remark</em>. </span>There exists a corresponding multivariate result.</p>
+</div>
+<p>If <span class="math inline">\(g&#39;(\theta) = 0\)</span> then we take the next term in the Taylor series.</p>
+<div class="theorem">
+<p><span id="thm:unlabeled-div-25" class="theorem"><strong>Theorem 13  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
+<span class="math inline">\(\sqrt{n}(Y_n - \theta) \to \text{n}(0, \sigma^2)\)</span> in distribution. For a
+given function <span class="math inline">\(g\)</span> and a specific value of <span class="math inline">\(\theta\)</span>, suppose that
+<span class="math inline">\(g&#39;(\theta) = 0\)</span> and <span class="math inline">\(g&#39;&#39;(\theta)\)</span> exists and is non-zero. Then
+<span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] \to \text{n}(0, \sigma^2g&#39;(\theta)^2)\]</span> in
+distribution.</p>
+</div>
+</div>
+</div>
+<div id="generating-a-random-sample" class="section level2">
+<h2>Generating A Random Sample</h2>
+<div class="definition">
+<p><span id="def:unlabeled-div-26" class="definition"><strong>Definition 7  </strong></span>A <em>Direct Method</em> of generating a random sample uses the probability
+integral transform to map draws from a <span class="math inline">\(\text{uniform}(0, 1)\)</span> random
+variable to draws from the distribution of interest.<br />
+The Probability Integral Transform states that if <span class="math inline">\(X\)</span> has continuous cdf
+<span class="math inline">\(F_X(x)\)</span> then <span class="math display">\[F_X(X) \sim \text{uniform}(0, 1).\]</span></p>
+</div>
+<div class="definition">
+<p><span id="def:unlabeled-div-27" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
+common support with <span class="math display">\[M = \sup_y f_Y(y) / f_V(y) &lt; \infty.\]</span> To generate
+a random variable <span class="math inline">\(Y \sim f_Y\)</span>:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Generate <span class="math inline">\(U \sim \text{uniform}(0, 1)\)</span>, <span class="math inline">\(V \sim f_V\)</span> independent.</p></li>
+<li><p>If <span class="math inline">\(U &lt; \frac 1M f_Y(V)/f_V(V)\)</span>, return <span class="math inline">\(V\)</span> as a sample of <span class="math inline">\(Y\)</span>;
+otherwise go back to (a.).</p></li>
+</ol>
+</div>
+<div class="remark">
+<ul>
+<li></li>
+<li><p>It is typical to call <span class="math inline">\(V\)</span> the <em>candidate density</em> and <span class="math inline">\(Y\)</span> the
+<em>target density</em>.</p></li>
+<li><p>One would normally try to choose a candidate density with heavier
+tails than the target density (e.g. Cauchy and normal) to ensure
+that the tails of the target are well represented. If the target has
+heavy tails, however, it can be hard to find a candidate that
+results in finite <span class="math inline">\(M\)</span>. In this case people turn to MCMC methods.</p></li>
+<li><p>Note that <span class="math inline">\(\text{P }(\texttt{terminate}) = 1/M\)</span>. The number of trials to
+generate one sample of <span class="math inline">\(Y\)</span> is therefore <span class="math inline">\(\text{geometric}(1/M)\)</span>,
+with <span class="math inline">\(M\)</span> the expected number of trials.</p></li>
+<li><p>The intuition behind this algorithm is that if we consider placing
+the density of a random variable <span class="math inline">\(Y\)</span> in a box (2d for simplicity)
+with coordinates <span class="math inline">\((v,u)\)</span>, we express the cdf of <span class="math inline">\(Y\)</span> using
+<span class="math inline">\(V, U \sim \text{uniform}(0, 1)\)</span>
+<span class="math display">\[\text{P }(Y \leq y) = \text{P }(V \leq y \vert{} U \leq \frac1c f_Y(V))\]</span>
+where <span class="math inline">\(c = \sup_y f_Y(y)\)</span>. In the actual algorithm we take
+<span class="math inline">\(U \sim \text{uniform}(0,1)\)</span> and <span class="math inline">\(V\)</span> to be an RV that has common
+support with <span class="math inline">\(Y\)</span>.</p></li>
 </ul>
 </div>
 </div>
