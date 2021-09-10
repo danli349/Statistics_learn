@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">55 min read</span>
+    <span class="article-duration">56 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -515,25 +515,35 @@ plt.show()</code></pre>
 <p><strong>Exercise 4.7.12</strong>. Prove the formulas given in the table at the beginning of Section 4.4 for the Bernoulli, Poisson, Uniform, Exponential, Gamma, and Beta. Here are some hints. For the mean of the Poisson, use the fact that <span class="math inline">\(e^a = \sum_{x=0}^a a^x / x!\)</span>. To compute the variance, first compute <span class="math inline">\(\mathbb{E}(X(X - 1))\)</span>. For the mean of the Gamma, it will help to multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) / \beta^{\alpha + 1}\)</span> and use the fact that a Gamma density integrates to 1. For the Beta, multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) \Gamma(\beta) / \Gamma(\alpha + \beta + 1)\)</span>.</p>
 <p><strong>Solution</strong>.</p>
 <p>We will do all expressions in the table instead (other than multinomial and multivariate normal, where proofs are already provided in the book).</p>
-<p><strong>Point mass at <span class="math inline">\(p\)</span></strong>. Let <span class="math inline">\(X\)</span> have a point mass at <span class="math inline">\(p\)</span>. Then:</p>
+<div id="point-mass-at-p" class="section level4">
+<h4>Point mass at <span class="math inline">\(p\)</span></h4>
+<p>Let <span class="math inline">\(X\)</span> have a point mass at <span class="math inline">\(p\)</span>. Then:</p>
 <ul>
 <li><span class="math inline">\(\mathbb{E}(X) = p \cdot 1 = p\)</span></li>
 <li><span class="math inline">\(\mathbb{E}(X^2) = p^2 \cdot 1 = p^2\)</span></li>
 <li><span class="math inline">\(\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p^2 - p^2 = 0\)</span></li>
 </ul>
-<p><strong>Bernoulli</strong>. Let <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. Then:</p>
+</div>
+<div id="bernoulli" class="section level4">
+<h4>Bernoulli</h4>
+<p>Let <span class="math inline">\(X \sim \text{Bernoulli}(p)\)</span>. Then:</p>
 <ul>
 <li><span class="math display">\[\mathbb{E}(X) = 1 \cdot p + 0 \cdot (1 - p) = p \]</span></li>
 <li><span class="math display">\[\mathbb{E}(X^2) = 1 \cdot p + 0 \cdot (1 - p) = p\]</span></li>
 <li><span class="math display">\[\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = p(1 - p)\]</span></li>
 </ul>
-<p><strong>Binomial</strong>. Let <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>. Then <span class="math inline">\(X = \sum_{i=1}^n Y_i\)</span>, where <span class="math inline">\(Y_i \sim \text{Bernoulli}(p)\)</span> are IID random variables.</p>
+</div>
+<div id="binomial" class="section level4">
+<h4>Binomial</h4>
+<p>Let <span class="math inline">\(X \sim \text{Binomial}(n, p)\)</span>. Then <span class="math inline">\(X = \sum_{i=1}^n Y_i\)</span>, where <span class="math inline">\(Y_i \sim \text{Bernoulli}(p)\)</span> are IID random variables.</p>
 <ul>
 <li><span class="math display">\[\mathbb{E}(X) = \mathbb{E}\left( \sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{E}(Y_i) = np \]</span></li>
 <li><span class="math display">\[\mathbb{V}(X) = \mathbb{V}\left(\sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{V}(Y_i) = np(1-p) \]</span></li>
 </ul>
-<p><strong>Geometric</strong>.<br />
-Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^{k-1}, \quad k = 1,2,3,\cdots \]</span> The expectation:</p>
+</div>
+<div id="geometric" class="section level4">
+<h4>Geometric</h4>
+<p>Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^{k-1}, \quad k = 1,2,3,\cdots \]</span> The expectation:</p>
 <p><span class="math display">\[ 
 \begin{align}
 \mathbb{E}(X) &amp;= \sum_{k=1}^\infty k p (1 - p)^{k - 1}  \\
@@ -594,21 +604,33 @@ And then the variance:
 <p><span class="math display">\[E(Y)=\frac{1}{p}-1=\frac{1-p}{p}\]</span></p>
 <p>But, using variance property,</p>
 <p><span class="math display">\[V(Y)=V(X-1)=V(X)\]</span></p>
-<p><strong>Cauchy</strong>. Let <span class="math display">\[f_X(x) = \frac{1}{\pi[1+(x-\theta)^2]},\quad -\infty&lt;x&lt;\infty\quad -\infty&lt;\theta&lt;\infty\]</span>. Then:
+</div>
+<div id="cauchy" class="section level4">
+<h4>Cauchy</h4>
+<p>Let <span class="math display">\[f_X(x) = \frac{1}{\pi[1+(x-\theta)^2]},\quad -\infty&lt;x&lt;\infty\quad -\infty&lt;\theta&lt;\infty\]</span>. Then:
 <span class="math display">\[\mathbb{E}|X|=\int_{-\infty}^{\infty}\frac{|x|}{\pi([1+(x-\theta)^2])}dx=\frac{2}{\pi}\int_{0}^{\infty}\frac{x}{[1+(x-\theta)^2]}dx=\frac{2}{\pi}\frac{\log([1+(x-\theta)^2])}{2}\bigg|_{0}^{\infty}=\infty\]</span> so <span class="math inline">\(\mathbb{E}X\)</span> does not exist.</p>
-<p><strong>Poisson</strong>. Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
+</div>
+<div id="poisson" class="section level4">
+<h4>Poisson</h4>
+<p>Let <span class="math inline">\(X \sim \text{Poisson}(\lambda)\)</span>. Then:</p>
 <ul>
 <li><p><span class="math display">\[ \mathbb{E}(X) = \sum_{k=0}^\infty k \frac{\lambda^k e^{-\lambda}}{k!} = \lambda e^{-\lambda} \sum_{k=1}^\infty \frac{\lambda^{k - 1} }{(k - 1)!} = \lambda e^{-\lambda} \sum_{k=0}^\infty \frac{\lambda^k}{k!} = \lambda e^{-\lambda} e^{\lambda} = \lambda \]</span></p></li>
 <li><p><span class="math display">\[ \mathbb{E}(X^2) = \sum_{k=0}^\infty k^2 \frac{\lambda^k e^{-\lambda}}{k!} = \lambda \sum_{k=1}^\infty k \frac{\lambda^{k-1} e^{-\lambda} }{(k-1)!} = \lambda \sum_{k=0}^\infty (k + 1) \frac{\lambda^{k} e^{-\lambda} }{k!} = \lambda \mathbb{E}(X + 1) = \lambda(\lambda + 1) \]</span></p></li>
 <li><p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \lambda^2 + \lambda - \lambda^2 = \lambda \]</span></p></li>
 </ul>
-<p><strong>Uniform</strong>. Let <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>. Then:</p>
+</div>
+<div id="uniform" class="section level4">
+<h4>Uniform</h4>
+<p>Let <span class="math inline">\(X \sim \text{Uniform}(a, b)\)</span>. Then:</p>
 <ul>
 <li><span class="math display">\[\mathbb{E}(X) = \int_a^b x \frac{1}{b - a} dx = \frac{a + b}{2}\]</span></li>
 <li><span class="math display">\[\mathbb{E}(X^2) = \int_a^b x^2 \frac{1}{b - a} dx = \frac{a^2 + ab + b^2}{3}\]</span></li>
 <li><span class="math display">\[\mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{a^2 + ab + b^2}{3} - \frac{a^2 + 2ab + b^2}{4} = \frac{(b - a)^2}{12}\]</span></li>
 </ul>
-<p><strong>Normal</strong>. Let <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Converting into a standard normal, we get <span class="math inline">\(Z = (X - \mu) / \sigma \sim N(0, 1)\)</span>. Then:</p>
+</div>
+<div id="normal" class="section level4">
+<h4>Normal</h4>
+<p>Let <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>. Converting into a standard normal, we get <span class="math inline">\(Z = (X - \mu) / \sigma \sim N(0, 1)\)</span>. Then:</p>
 <ul>
 <li><span class="math display">\[ \mathbb{E}(X) = \mathbb{E}(\sigma Z + \mu) = \sigma \mathbb{E}(Z) + \mu = \mu\]</span></li>
 <li><span class="math display">\[ \mathbb{V}(X) = \mathbb{V}(\sigma Z + \mu) = \sigma^2 \mathbb{V}(Z) = \sigma^2\]</span></li>
@@ -622,13 +644,19 @@ And then the variance:
 \]</span></p>
 <p>and so</p>
 <p><span class="math display">\[\mathbb{V}(Z) = \mathbb{E}(Z^2) - \mathbb{E}(Z)^2 = 1 - 0 = 1\]</span></p>
-<p><strong>Exponential</strong>. Let <span class="math inline">\(X \sim \text{Exponential}(\beta)\)</span>. Then:</p>
+</div>
+<div id="exponential" class="section level4">
+<h4>Exponential</h4>
+<p>Let <span class="math inline">\(X \sim \text{Exponential}(\beta)\)</span>. Then:</p>
 <ul>
 <li><span class="math display">\[ \mathbb{E}(X) = \int_0^\infty x \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x e^{-x / \beta} dx = \frac{1}{\beta} \beta^2 = \beta\]</span></li>
 <li><span class="math display">\[\mathbb{E}(X^2) =  \int_0^\infty x^2 \frac{1}{\beta} e^{-x / \beta} dx = \frac{1}{\beta} \int_0^\infty x^2 e^{-x / \beta} dx = \frac{1}{\beta} 2\beta^3 = 2 \beta^2 \]</span></li>
 <li><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = 2\beta^2 - \beta^2 = \beta^2\]</span></li>
 </ul>
-<p><strong>Gamma</strong>. Let <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>. The PDF is</p>
+</div>
+<div id="gamma" class="section level4">
+<h4>Gamma</h4>
+<p>Let <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>. The PDF is</p>
 <p><span class="math display">\[ f_X(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} \quad \text{for } x &gt; 0 \]</span></p>
 <p>We have:</p>
 <p><span class="math display">\[ 
@@ -661,7 +689,10 @@ And then the variance:
 </ul>
 <p>Therefore,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\alpha (\alpha + 1)}{\beta^2} - \frac{\alpha^2}{\beta^2} = \frac{\alpha}{\beta^2} \]</span></p>
-<p><strong>Beta</strong>. Let <span class="math inline">\(X \sim \text{Beta}(\alpha, \beta)\)</span>. The PDF is</p>
+</div>
+<div id="beta" class="section level4">
+<h4>Beta</h4>
+<p>Let <span class="math inline">\(X \sim \text{Beta}(\alpha, \beta)\)</span>. The PDF is</p>
 <p><span class="math display">\[f_X(x) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} \quad \text{for } x &gt; 0\]</span></p>
 <p>We have:</p>
 <p><span class="math display">\[ 
@@ -697,7 +728,10 @@ And then the variance:
 </ul>
 <p>Therefore,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)} - \frac{\alpha^2}{(\alpha + \beta)^2} = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} \]</span></p>
-<p><strong>t-student</strong>. Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span> distribution. The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(\sigma/\sqrt{n})}\]</span> has a standard normal distribution (i.e. normal with expected mean 0 and variance 1). The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(S/\sqrt{n})}\]</span> has Student’s <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(p\)</span> degrees of freedom.
+</div>
+<div id="t-student" class="section level4">
+<h4><span class="math inline">\(t\)</span>-student</h4>
+<p>Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span> distribution. The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(\sigma/\sqrt{n})}\]</span> has a standard normal distribution (i.e. normal with expected mean 0 and variance 1). The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(S/\sqrt{n})}\]</span> has Student’s <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(p\)</span> degrees of freedom.
 And <span class="math display">\[\frac{(\bar{X}-\mu)}{(S/\sqrt{n})}=\frac{(\bar{X}-\mu)/(\sigma/\sqrt{n})}{\sqrt{S^2/\sigma^2}}=\frac{U}{\sqrt{V/p}}\]</span>, the numerator <span class="math inline">\(U\)</span> is a <span class="math inline">\(n(0,1)\)</span> random variable, and the denominator <span class="math inline">\(\sqrt{V/p}\)</span> is <span class="math inline">\(\sqrt{\chi_{n-1}^2/(n-1)}\)</span> independent of the numerator.</p>
 <p>Since the joint pdf of <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> is <span class="math display">\[f_{U,V}(u,v)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}}v^{p/2-1}e^{-v/2} \quad -\infty&lt;u,v&lt;+\infty\]</span> Now make the transformation, <span class="math display">\[t=\frac{u}{\sqrt{v/p}}, \quad w=v\]</span> The Jacobian of the transformation is <span class="math display">\[J=\begin{vmatrix}\frac{\partial u}{\partial t} &amp;\frac{\partial u}{\partial w}\\
 \frac{\partial v}{\partial t} &amp; \frac{\partial v}{\partial w}  
@@ -738,7 +772,10 @@ f_{T}(t)&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}p^{1/2}}\G
 <p>Finally,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{p}{p - 2} \]</span></p>
 <p><em>Reference: <a href="https://math.stackexchange.com/a/1502519" class="uri">https://math.stackexchange.com/a/1502519</a></em></p>
-<p><strong><span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as the sum of squares of <span class="math inline">\(k\)</span> IID standard Normal random variables, <span class="math inline">\(X = \sum_{i=1}^k Z_i^2\)</span>, <span class="math inline">\(Z_i \sim N(0, 1)\)</span>.</p>
+</div>
+<div id="chi2-distribution" class="section level4">
+<h4><span class="math inline">\(\chi^2\)</span> distribution</h4>
+<p>Let <span class="math inline">\(X \sim \chi^2_k\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as the sum of squares of <span class="math inline">\(k\)</span> IID standard Normal random variables, <span class="math inline">\(X = \sum_{i=1}^k Z_i^2\)</span>, <span class="math inline">\(Z_i \sim N(0, 1)\)</span>.</p>
 <p>Chi-squared distribution PDF:
 <span class="math display">\[ f_X(x) = \frac{1}{2^{p/2}\Gamma(p/2)} x^{(p/2) - 1} e^{- x/2}=Gamma(p/2,1/2) \quad \text{for } x &gt; 0 \]</span></p>
 <p>The expectation of <span class="math inline">\(X\)</span> can then be computed:</p>
@@ -765,7 +802,10 @@ f_{T}(t)&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}p^{1/2}}\G
 <p>Therefore,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = k^2 + 2k - k^2 = 2k \]</span></p>
 <p><em>The proofs for the multinomial and mutivariate normal distribution expressions are provided in the book text (and there are notes above).</em></p>
-<p><strong>noncentral <span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span> with <span class="math inline">\(p\)</span> degrees of freedom and noncentrality parameter <span class="math inline">\(\lambda\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as a mixture distribution, made up of central chi squared densities and Poisson distributions. That is we set up the hierarchy<br />
+</div>
+<div id="noncentral-chi2-distribution" class="section level4">
+<h4>noncentral <span class="math inline">\(\chi^2\)</span> distribution</h4>
+<p>Let <span class="math inline">\(X \sim \chi^2_k\)</span> with <span class="math inline">\(p\)</span> degrees of freedom and noncentrality parameter <span class="math inline">\(\lambda\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as a mixture distribution, made up of central chi squared densities and Poisson distributions. That is we set up the hierarchy<br />
 <span class="math display">\[\begin{align}
 X|K&amp;\sim \chi_{p+2K}^2\\
 K&amp;\sim Poisson(\lambda)
@@ -777,7 +817,10 @@ K&amp;\sim Poisson(\lambda)
 &amp;=\mathbb E(p+2K)\\
 &amp;=p+2\lambda\\
 \end{align}\]</span></p>
-<p><strong>Inverse <span class="math inline">\(\chi^2\)</span> distribution</strong> The inverse-chi-squared distribution (or inverted-chi-square distribution) is the probability distribution of a random variable whose multiplicative inverse (reciprocal) has a chi-squared distribution. It is also often defined as the distribution of a random variable whose reciprocal divided by its degrees of freedom is a chi-squared distribution. That is, if <span class="math inline">\(X\)</span> has the chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom, then according to the first definition, <span class="math inline">\(1/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom; while according to the second definition, <span class="math inline">\(p/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom.</p>
+</div>
+<div id="inverse-chi2-distribution" class="section level4">
+<h4>Inverse <span class="math inline">\(\chi^2\)</span> distribution</h4>
+<p>The inverse-chi-squared distribution (or inverted-chi-square distribution) is the probability distribution of a random variable whose multiplicative inverse (reciprocal) has a chi-squared distribution. It is also often defined as the distribution of a random variable whose reciprocal divided by its degrees of freedom is a chi-squared distribution. That is, if <span class="math inline">\(X\)</span> has the chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom, then according to the first definition, <span class="math inline">\(1/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom; while according to the second definition, <span class="math inline">\(p/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom.</p>
 <p>The first definition yields a probability density function given by
 <span class="math display">\[f(x,p)=\frac{2^{-p/2}}{\Gamma(p/2)}x^{-p/2-1}e^{-1/(2x)}\quad 0&lt;x&lt;\infty\]</span> <span class="math inline">\(p\)</span> is the degrees of freedom parameter.</p>
 <p><span class="math display">\[\begin{align}\mathbb E f(x,p)&amp;=\frac{2^{-p/2}}{\Gamma(p/2)}\int_{0}^{\infty}x^{-p/2}e^{-1/(2x)}dx\\
@@ -787,8 +830,36 @@ K&amp;\sim Poisson(\lambda)
 &amp;=\frac{1/2}{p/2-1}\\
 &amp;=\frac{1}{p-2}\quad (p&gt;2)
 \end{align}\]</span></p>
-<p><strong>F-distribution</strong> Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(n(\mu_X, \sigma_X^2)\)</span> population, and let <span class="math inline">\(Y_1,\cdots,X_m\)</span> be a random sample from an independent <span class="math inline">\(n(\mu_Y, \sigma_Y^2)\)</span> population. If we were interested in comparing the variability of the populations, one quantity of interest would be the ratio <span class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>. Information about this ratio is contained in <span class="math inline">\(S_X^2/S_Y^2\)</span>, the ratio of sample variances. The <span class="math inline">\(F\)</span> distribution allows us to compare these quantities by giving us a distribution of
+</div>
+<div id="f-distribution" class="section level4">
+<h4><span class="math inline">\(F\)</span>-distribution</h4>
+<p>Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(n(\mu_X, \sigma_X^2)\)</span> population, and let <span class="math inline">\(Y_1,\cdots,X_m\)</span> be a random sample from an independent <span class="math inline">\(n(\mu_Y, \sigma_Y^2)\)</span> population. If we were interested in comparing the variability of the populations, one quantity of interest would be the ratio <span class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>. Information about this ratio is contained in <span class="math inline">\(S_X^2/S_Y^2\)</span>, the ratio of sample variances. The <span class="math inline">\(F\)</span> distribution allows us to compare these quantities by giving us a distribution of
 <span class="math display">\[F=\frac{S_X^2/S_Y^2}{\sigma_X^2/\sigma_Y^2}=\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}\]</span> with <span class="math inline">\(n-1, m-1\)</span> degree of freedom. The ratios <span class="math inline">\(S_X^2/\sigma_X^2, S_Y^2/\sigma_Y^2\)</span> are each scaled chi squared variates, and they are independent.</p>
+<p>Let <span class="math inline">\(V\sim \chi^2(n)\)</span> and <span class="math inline">\(W\sim \chi^2(m)\)</span> independent r.v.</p>
+<p>To find the PDF for <span class="math inline">\(X=\frac{V/n}{W/m}\)</span>.</p>
+<p>Define <span class="math inline">\(h(v,w)=(v,v/n\cdot m/w)=(v,x)\)</span>.
+So, <span class="math inline">\(h^{-1}(v,x)=(v,\frac{v \cdot m}{x\cdot n})\)</span></p>
+<p>Since <span class="math inline">\(f_{V,X}=f_{V,W}(h^{-1}(v,x))\cdot |det(Dh^{-1}(v,x))|\)</span>.</p>
+<p>Because they are independent, <span class="math inline">\(f_{V,W}=f_{V}\cdot f_{W}\)</span>.</p>
+<p>When V and U are two <span class="math inline">\(\chi^2\)</span> independent random variables: <span class="math inline">\(f_V(v)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}v^{(\frac{m}{2})-1}e^{-\frac{1}{2}v}\)</span><br />
+<span class="math inline">\(f_U(u)=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{(\frac{n}{2})-1}e^{-\frac{1}{2}u}\)</span><br />
+with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom, then, the pdf for <span class="math inline">\(W=V/U\)</span> is:<br />
+<span class="math display">\[\begin{align}
+f_{V/U}(\omega)&amp;=\int_{0}^{+\infty}|u|f_U(u)f_V(u\omega)du\\
+&amp;=\int_{0}^{+\infty}u\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{\frac{n}{2}-1}e^{-\frac{1}{2}u}  \frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(u\omega)^{\frac{m}{2}-1}e^{-\frac{1}{2}u\omega}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n}{2}}u^{\frac{m}{2}-1} e^{-\frac{1}{2}u(1+\omega)}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n+m}{2}-1} e^{-\frac{1}{2}u(1+\omega)}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} (\frac{\Gamma(\frac{n+m}{2})}{(\frac{1}{2}(1+\omega))^{\frac{n+m}{2}}})\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{\omega^{\frac{m}{2}-1}}{(1+\omega)^{\frac{n+m}{2}}}
+\end{align}\]</span></p>
+<p>Then, the pdf for <span class="math inline">\(W=\frac{V/m}{U/n}\)</span> is:
+<span class="math display">\[\begin{align}
+f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
+&amp;=\frac{m}{n}f_{V/U}(\frac{m}{n}\omega)\\
+&amp;=\frac{m}{n}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(1+\frac{m}{n}\omega)^{\frac{n+m}{2}}}\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m}{n}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}n^{\frac{n+m}{2}}\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}
+\end{align}\]</span></p>
 <p>The random variable <span class="math inline">\(F\)</span> has the <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> degrees of freedom if it has pdf
 <span class="math display">\[f_F(x)=\frac{\Gamma\left(\frac{p+q}{2}\right)}{\Gamma\left(\frac{p}{2}\right)\Gamma\left(\frac{q}{2}\right)}\left(\frac{p}{q}\right)^{p/2}\frac{x^{(p/2)-1}}{[1+(p/q)x]^{(p+q)/2}},\quad 0&lt;x&lt;\infty\]</span> The <span class="math inline">\(F\)</span> pdf is pdf of <span class="math inline">\((U/p)/(V/q)\)</span>, where <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> are independent, <span class="math inline">\(U \sim \chi_p^2\)</span> and <span class="math inline">\(V \sim \chi_q^2\)</span>.</p>
 <p><span class="math display">\[\begin{align}\mathbb E F_{n-1,m-1}&amp;=\mathbb E\left(\frac{\chi_{n-1}^2/(n-1)}{\chi_{m-1}^2/(m-1)}\right)\\
@@ -969,6 +1040,7 @@ a_1 \mathbb{E}(X_1) \\
 \end{pmatrix} = A \mu \]</span></p>
 <p>and</p>
 <p><span class="math display">\[ \mathbb{V}(A X) = \mathbb{E}((A (X - \mu) (A(X - \mu))^T) = \mathbb{E}((A (X - \mu) (X - \mu)^T A^T) = A \Sigma A^T \]</span></p>
+</div>
 </div>
 <div id="negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling" class="section level3">
 <h3>4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</h3>
