@@ -403,6 +403,13 @@ sample <span class="math inline">\(X_1, \dots, X_n\)</span> are, respectively,</
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(\min_a \sum_{i=1}^n (x_i - a)^2 = \sum_{i=1}^n (x_i - \bar{x})^2\)</span></p></li>
 <li><p><span class="math inline">\((n-1)s^2 = \sum_{i=1}^n(x_i - \bar{x})^2 = \sum_{i=1}^n x_i^2 - n\bar{x}^2\)</span>.</p></li>
+<li><p>The mgf <span class="math inline">\(M_{\bar{X}}(t)=\mathbb E e^{t\bar{X}}=\mathbb E e^{t(X_1+\cdots+X_n)/n}=\mathbb E e^{(t/n)(X_1+\cdots+X_n)}=M_{(X_1+\cdots+X_n)}(t/n)=[M_{X}(t/n)]^n\)</span>. The last equal sign is caused by <span class="math inline">\(X_1,\cdots,X_n\)</span> are identically distributed, <span class="math inline">\(M_{X_i}(t)\)</span> is the same function for each <span class="math inline">\(i\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span>
+distribution. Then the mgf of the sample mean is <span class="math display">\[\begin{align}
+M_{\bar{X}}(t)&amp;=\left[\exp\left(\mu\frac{t}{n}+\frac{\sigma^2(t/n)^2}{2}\right)\right]^n\\
+&amp;=\exp\left(n\left(\mu\frac{t}{n}+\frac{\sigma^2(t/n)^2}{2}\right)\right)\\
+&amp;=\exp\left(\mu t+\frac{(\sigma^2/n)t^2}{2}\right)
+\end{align}\]</span> Thus <span class="math inline">\(\bar{X}\)</span> has a <span class="math inline">\(\text{n}(\mu, \sigma^2/n)\)</span> distribution.</p></li>
 </ol>
 </div>
 <div class="theorem">
@@ -424,7 +431,7 @@ result.</p>
 <div id="sampling-from-the-normal-distribution" class="section level2">
 <h2>Sampling from the Normal Distribution</h2>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-9" class="theorem"><strong>Theorem 4  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma)\)</span>
+<p><span id="thm:unlabeled-div-9" class="theorem"><strong>Theorem 4  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span>
 distribution. Then,</p>
 <ul>
 <li><p><span class="math inline">\(\bar{X}\)</span> and <span class="math inline">\(S^2\)</span> are independent</p></li>
@@ -571,8 +578,8 @@ variable to draws from the distribution of interest.<br />
 The Probability Integral Transform states that if <span class="math inline">\(X\)</span> has continuous cdf
 <span class="math inline">\(F_X(x)\)</span> then <span class="math display">\[F_X(X) \sim \text{uniform}(0, 1).\]</span></p>
 </div>
-<div class="definition">
-<p><span id="def:unlabeled-div-27" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
+<p>::: {.definition}
+Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
 common support with <span class="math display">\[M = \sup_y f_Y(y) / f_V(y) &lt; \infty.\]</span> To generate
 a random variable <span class="math inline">\(Y \sim f_Y\)</span>:</p>
 <ol style="list-style-type: lower-alpha">
@@ -580,10 +587,7 @@ a random variable <span class="math inline">\(Y \sim f_Y\)</span>:</p>
 <li><p>If <span class="math inline">\(U &lt; \frac 1M f_Y(V)/f_V(V)\)</span>, return <span class="math inline">\(V\)</span> as a sample of <span class="math inline">\(Y\)</span>;
 otherwise go back to (a.).</p></li>
 </ol>
-</div>
-<div class="remark">
 <ul>
-<li></li>
 <li><p>It is typical to call <span class="math inline">\(V\)</span> the <em>candidate density</em> and <span class="math inline">\(Y\)</span> the
 <em>target density</em>.</p></li>
 <li><p>One would normally try to choose a candidate density with heavier
@@ -603,7 +607,6 @@ where <span class="math inline">\(c = \sup_y f_Y(y)\)</span>. In the actual algo
 <span class="math inline">\(U \sim \text{uniform}(0,1)\)</span> and <span class="math inline">\(V\)</span> to be an RV that has common
 support with <span class="math inline">\(Y\)</span>.</p></li>
 </ul>
-</div>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">

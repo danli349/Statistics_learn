@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">53 min read</span>
+    <span class="article-duration">54 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -697,31 +697,46 @@ And then the variance:
 </ul>
 <p>Therefore,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)} - \frac{\alpha^2}{(\alpha + \beta)^2} = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} \]</span></p>
-<p><strong>t-student</strong>. Let <span class="math inline">\(X \sim t_\nu\)</span>. The PDF for the t-student distribution is</p>
-<p><span class="math display">\[ f_X(x) = \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \frac{1}{\left(1 + \frac{x^2}{\nu} \right)^{(\nu + 1)/2}} \]</span></p>
-<p>Since the PDF is even, <span class="math inline">\(f_X(x) = f_X(-x)\)</span>, the expectation will be 0 when it is defined:</p>
+<p><strong>t-student</strong>. Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span> distribution. The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(\sigma/\sqrt{n})}\]</span> has a standard normal distribution (i.e. normal with expected mean 0 and variance 1). The quantity <span class="math display">\[\frac{(\bar{X}-\mu)}{(S/\sqrt{n})}\]</span> has Student’s <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(p\)</span> degrees of freedom.
+And <span class="math display">\[\frac{(\bar{X}-\mu)}{(S/\sqrt{n})}=\frac{(\bar{X}-\mu)/(\sigma/\sqrt{n})}{\sqrt{S^2/\sigma^2}}=\frac{U}{\sqrt{V/p}}\]</span>, the numerator <span class="math inline">\(U\)</span> is a <span class="math inline">\(n(0,1)\)</span> random variable, and the denominator <span class="math inline">\(\sqrt{V/p}\)</span> is <span class="math inline">\(\sqrt{\chi_{n-1}^2/(n-1)}\)</span> independent of the numerator.</p>
+<p>Since the joint pdf of <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> is <span class="math display">\[f_{U,V}(u,v)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}}v^{p/2-1}e^{-v/2} \quad -\infty&lt;u,v&lt;+\infty\]</span> Now make the transformation, <span class="math display">\[t=\frac{u}{\sqrt{v/p}}, \quad w=v\]</span> The Jacobian of the transformation is <span class="math display">\[J=\begin{vmatrix}\frac{\partial u}{\partial t} &amp;\frac{\partial u}{\partial w}\\
+\frac{\partial v}{\partial t} &amp; \frac{\partial v}{\partial w}  
+\end{vmatrix}=\begin{vmatrix}(w/p)^{1/2} &amp;0 \\
+0 &amp; 1  
+\end{vmatrix}=(w/p)^{1/2}\]</span>, and the marginal pdf of</p>
+<p><span class="math display">\[\begin{align} f_{T}(t)&amp;=\int_{0}^{\infty}f_{U,V}\left(t\left(\frac{w}{p}\right)^{1/2},w\right)\left(\frac{w}{p}\right)^{1/2}dw\\
+&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}}\int_{0}^{\infty}e^{-(1/2)t^2 w/p}w^{p/2-1}e^{-w/2}\left(\frac{w}{p}\right)^{1/2}dw\\
+&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}p^{1/2}}\int_{0}^{\infty}e^{-(1/2)t^2 w/p}w^{p/2-1}e^{-w/2}w^{1/2}dw\\
+&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}p^{1/2}}\int_{0}^{\infty}w^{((p+1)/2)-1} e^{-(1/2)(1+t^2/p)w}dw\\
+\end{align}\]</span> Recognize the integrand as the kernel of a <span class="math inline">\(gamma\left(\frac{p+1}{2},\frac{2}{1+t^2/p}\right)\)</span> pdf. We therefore have <span class="math display">\[\begin{align}
+f_{T}(t)&amp;=\frac{1}{\sqrt{2\pi}}\frac{1}{\Gamma(\frac{p}{2})2^{p/2}p^{1/2}}\Gamma\left(\frac{p+1}{2}\right)\left[\frac{2}{1+t^2/p}\right]^{(p+1)/2}\\
+&amp;=\frac{1}{\sqrt{p\pi}}\frac{1}{\Gamma(\frac{p}{2})}\Gamma\left(\frac{p+1}{2}\right)\left[\frac{1}{1+t^2/p}\right]^{(p+1)/2}\\
+\end{align}\]</span></p>
+<p>Let <span class="math inline">\(X \sim t_p\)</span>. The PDF for the t-student distribution is</p>
+<p><span class="math display">\[ f_X(x) = \frac{1}{\sqrt{p \pi}} \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \frac{1}{\left(1 + \frac{x^2}{p} \right)^{(p + 1)/2}} \]</span></p>
+<p>Since the PDF is even, <span class="math inline">\(f_X(x) = f_X(-x)\)</span>, the expectation will be <span class="math inline">\(0\)</span> when it is defined:</p>
 <p><span class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^\infty x f_X(x) dx = \int_{-\infty}^0 x f_X(x) dx + \int_0^\infty x f_X(x) dx \\
 = \int_0^\infty -x f_X(-x) dx + \int_0^\infty x f_X(x) dx = \int_0^\infty (-x + x)f_X(x) dx = 0 \]</span></p>
 <p>But</p>
-<p><span class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^\infty x f_X(x) dx = \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_{-\infty}^\infty x  \left(1 + \frac{x^2}{\nu} \right)^{-(\nu + 1)/2} dx \]</span></p>
+<p><span class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^\infty x f_X(x) dx = \frac{1}{\sqrt{p \pi}} \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \int_{-\infty}^\infty x  \left(1 + \frac{x^2}{p} \right)^{-(p + 1)/2} dx \]</span></p>
 <p>For the expectation of <span class="math inline">\(X^2\)</span>, assuming it is defined, we have:</p>
 <p><span class="math display">\[
 \begin{align}
 \mathbb{E}(X^2) &amp;= \int_{-\infty}^\infty x^2 f_X(x) dx \\
-&amp;= \frac{1}{\sqrt{v \pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_{-\infty}^\infty x^2 \left( 1 + \frac{x^2}{\nu}\right)^{-(\nu + 1) / 2} dx \\
-&amp;= \frac{\nu}{\sqrt{\pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \int_0^1 y^{\nu /2 - 2} \left( 1 - y \right)^{1 / 2} dy \\
-&amp;= \frac{\nu}{\sqrt{\pi}} \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right)} \frac{\Gamma\left(\frac{\nu}{2} - 1\right) \Gamma\left(\frac{3}{2}\right)}{\Gamma\left(\frac{\nu + 1}{2}\right)} \\
-&amp;= \frac{\nu}{\nu - 2}
+&amp;= \frac{1}{\sqrt{p \pi}} \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \int_{-\infty}^\infty x^2 \left( 1 + \frac{x^2}{p}\right)^{-(p + 1) / 2} dx \\
+&amp;= \frac{p}{\sqrt{\pi}} \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \int_0^1 y^{p /2 - 2} \left( 1 - y \right)^{1 / 2} dy \\
+&amp;= \frac{p}{\sqrt{\pi}} \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left(\frac{p}{2}\right)} \frac{\Gamma\left(\frac{p}{2} - 1\right) \Gamma\left(\frac{3}{2}\right)}{\Gamma\left(\frac{p + 1}{2}\right)} \\
+&amp;= \frac{p}{p - 2}
 \end{align}
 \]</span></p>
 <p>where we used:</p>
 <ul>
-<li>A variable replacement <span class="math inline">\(y = \left( 1 + \frac{x^2}{\nu} \right)^{-1}\)</span></li>
-<li>The property that <span class="math inline">\(\int_0^1 y^{p - 1} (1 - y)^{q - 1} dy = \frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, since this is the integral of the PDF of <span class="math inline">\(\Gamma(p, q)\)</span> scaled by a factor of <span class="math inline">\(\frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, with <span class="math inline">\(p = \nu / 2 - 1\)</span>, <span class="math inline">\(q = 3/2\)</span></li>
+<li>A variable replacement <span class="math inline">\(y = \left( 1 + \frac{x^2}{p} \right)^{-1}\)</span></li>
+<li>The property that <span class="math inline">\(\int_0^1 y^{p - 1} (1 - y)^{q - 1} dy = \frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, since this is the integral of the PDF of <span class="math inline">\(\Gamma(p, q)\)</span> scaled by a factor of <span class="math inline">\(\frac{\Gamma(p) \Gamma(q)}{\Gamma(p + q)}\)</span>, with <span class="math inline">\(p = p / 2 - 1, \quad p&gt;2\)</span>, <span class="math inline">\(q = 3/2\)</span></li>
 <li><span class="math inline">\(\Gamma(3 / 2) = \sqrt{\pi}/2\)</span></li>
 </ul>
 <p>Finally,</p>
-<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{\nu}{\nu - 2} \]</span></p>
+<p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{p}{p - 2} \]</span></p>
 <p><em>Reference: <a href="https://math.stackexchange.com/a/1502519" class="uri">https://math.stackexchange.com/a/1502519</a></em></p>
 <p><strong><span class="math inline">\(\chi^2\)</span> distribution</strong>. Let <span class="math inline">\(X \sim \chi^2_k\)</span>. Then <span class="math inline">\(X\)</span> has the same distributions as the sum of squares of <span class="math inline">\(k\)</span> IID standard Normal random variables, <span class="math inline">\(X = \sum_{i=1}^k Z_i^2\)</span>, <span class="math inline">\(Z_i \sim N(0, 1)\)</span>.</p>
 <p>Chi-squared distribution PDF:
@@ -762,6 +777,10 @@ K&amp;\sim Poisson(\lambda)
 &amp;=\mathbb E(p+2K)\\
 &amp;=p+2\lambda\\
 \end{align}\]</span></p>
+<p><strong>F-distribution</strong> Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(n(\mu_X, \sigma_X^2)\)</span> population, and let <span class="math inline">\(Y_1,\cdots,X_m\)</span> be a random sample from an independent <span class="math inline">\(n(\mu_Y, \sigma_Y^2)\)</span> population. If we were interested in comparing the variability of the populations, one quantity of interest would be the ratio <span class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>. Information about this ratio is contained in <span class="math inline">\(S_X^2/S_Y^2\)</span>, the ratio of sample variances. The <span class="math inline">\(F\)</span> distribution allows us to compare these quantities by giving us a distribution of
+<span class="math display">\[F=\frac{S_X^2/S_Y^2}{\sigma_X^2/\sigma_Y^2}=\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}\]</span> with <span class="math inline">\(n-1, m-1\)</span> degree of freedom. The ratios <span class="math inline">\(S_X^2/\sigma_X^2, S_Y^2/\sigma_Y^2\)</span> are each scaled chi squared variates, and they are independent.</p>
+<p>The random variable <span class="math inline">\(F\)</span> has the <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> degrees of freedom if it has pdf
+<span class="math display">\[f_F(x)=\frac{\Gamma\left(\frac{p+q}{2}\right)}{\Gamma\left(\frac{p}{2}\right)\Gamma\left(\frac{q}{2}\right)}\left(\frac{p}{q}\right)^{p/2}\frac{x^{(p/2)-1}}{[1+(p/q)x]^{(p+q)/2}},\quad 0&lt;x&lt;\infty\]</span></p>
 <p><strong>Exercise 4.7.13</strong>. Suppose we generate a random variable <span class="math inline">\(X\)</span> in the following way. First we flip a fair coin. If the coin is heads, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. If the coin is tails, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(3, 4)\)</span> distribution.</p>
 <p><strong>(a)</strong> Find the mean of <span class="math inline">\(X\)</span>.</p>
 <p><strong>(b)</strong> Find the standard deviation of <span class="math inline">\(X\)</span>.</p>
