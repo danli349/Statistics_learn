@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">54 min read</span>
+    <span class="article-duration">55 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -777,10 +777,25 @@ K&amp;\sim Poisson(\lambda)
 &amp;=\mathbb E(p+2K)\\
 &amp;=p+2\lambda\\
 \end{align}\]</span></p>
+<p><strong>Inverse <span class="math inline">\(\chi^2\)</span> distribution</strong> The inverse-chi-squared distribution (or inverted-chi-square distribution) is the probability distribution of a random variable whose multiplicative inverse (reciprocal) has a chi-squared distribution. It is also often defined as the distribution of a random variable whose reciprocal divided by its degrees of freedom is a chi-squared distribution. That is, if <span class="math inline">\(X\)</span> has the chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom, then according to the first definition, <span class="math inline">\(1/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom; while according to the second definition, <span class="math inline">\(p/X\)</span> has the inverse-chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom.</p>
+<p>The first definition yields a probability density function given by
+<span class="math display">\[f(x,p)=\frac{2^{-p/2}}{\Gamma(p/2)}x^{-p/2-1}e^{-1/(2x)}\quad 0&lt;x&lt;\infty\]</span> <span class="math inline">\(p\)</span> is the degrees of freedom parameter.</p>
+<p><span class="math display">\[\begin{align}\mathbb E f(x,p)&amp;=\frac{2^{-p/2}}{\Gamma(p/2)}\int_{0}^{\infty}x^{-p/2}e^{-1/(2x)}dx\\
+&amp;=\frac{2^{-p/2}}{\Gamma(p/2)}\int_{\infty}^{0}-y^{p/2}e^{-(1/2)y}y^{-2}dy\quad(y=1/x,\quad dy=-1/x^2 dx)\\
+&amp;=\frac{2^{-p/2}}{\Gamma(p/2)}\int_{0}^{\infty}y^{(p/2)-2}e^{-(1/2)y}dy\\
+&amp;=\frac{2^{-p/2}}{\Gamma(p/2)}\Gamma(p/2-1)2^{(p/2-1)}\\
+&amp;=\frac{1/2}{p/2-1}\\
+&amp;=\frac{1}{p-2}\quad (p&gt;2)
+\end{align}\]</span></p>
 <p><strong>F-distribution</strong> Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(n(\mu_X, \sigma_X^2)\)</span> population, and let <span class="math inline">\(Y_1,\cdots,X_m\)</span> be a random sample from an independent <span class="math inline">\(n(\mu_Y, \sigma_Y^2)\)</span> population. If we were interested in comparing the variability of the populations, one quantity of interest would be the ratio <span class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>. Information about this ratio is contained in <span class="math inline">\(S_X^2/S_Y^2\)</span>, the ratio of sample variances. The <span class="math inline">\(F\)</span> distribution allows us to compare these quantities by giving us a distribution of
 <span class="math display">\[F=\frac{S_X^2/S_Y^2}{\sigma_X^2/\sigma_Y^2}=\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}\]</span> with <span class="math inline">\(n-1, m-1\)</span> degree of freedom. The ratios <span class="math inline">\(S_X^2/\sigma_X^2, S_Y^2/\sigma_Y^2\)</span> are each scaled chi squared variates, and they are independent.</p>
 <p>The random variable <span class="math inline">\(F\)</span> has the <span class="math inline">\(F\)</span> distribution with <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> degrees of freedom if it has pdf
-<span class="math display">\[f_F(x)=\frac{\Gamma\left(\frac{p+q}{2}\right)}{\Gamma\left(\frac{p}{2}\right)\Gamma\left(\frac{q}{2}\right)}\left(\frac{p}{q}\right)^{p/2}\frac{x^{(p/2)-1}}{[1+(p/q)x]^{(p+q)/2}},\quad 0&lt;x&lt;\infty\]</span></p>
+<span class="math display">\[f_F(x)=\frac{\Gamma\left(\frac{p+q}{2}\right)}{\Gamma\left(\frac{p}{2}\right)\Gamma\left(\frac{q}{2}\right)}\left(\frac{p}{q}\right)^{p/2}\frac{x^{(p/2)-1}}{[1+(p/q)x]^{(p+q)/2}},\quad 0&lt;x&lt;\infty\]</span> The <span class="math inline">\(F\)</span> pdf is pdf of <span class="math inline">\((U/p)/(V/q)\)</span>, where <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> are independent, <span class="math inline">\(U \sim \chi_p^2\)</span> and <span class="math inline">\(V \sim \chi_q^2\)</span>.</p>
+<p><span class="math display">\[\begin{align}\mathbb E F_{n-1,m-1}&amp;=\mathbb E\left(\frac{\chi_{n-1}^2/(n-1)}{\chi_{m-1}^2/(m-1)}\right)\\
+&amp;=\mathbb E\left(\frac{\chi_{n-1}^2}{n-1}\right)\mathbb E\left(\frac{m-1}{\chi_{m-1}^2}\right)\\
+&amp;=\left(\frac{n-1}{n-1}\right)\left(\frac{m-1}{m-3}\right)\\
+&amp;=\frac{m-1}{m-3}
+\end{align}\]</span></p>
 <p><strong>Exercise 4.7.13</strong>. Suppose we generate a random variable <span class="math inline">\(X\)</span> in the following way. First we flip a fair coin. If the coin is heads, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. If the coin is tails, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(3, 4)\)</span> distribution.</p>
 <p><strong>(a)</strong> Find the mean of <span class="math inline">\(X\)</span>.</p>
 <p><strong>(b)</strong> Find the standard deviation of <span class="math inline">\(X\)</span>.</p>
