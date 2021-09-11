@@ -867,6 +867,37 @@ f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
 &amp;=\left(\frac{n-1}{n-1}\right)\left(\frac{m-1}{m-3}\right)\\
 &amp;=\frac{m-1}{m-3}
 \end{align}\]</span></p>
+</div>
+<div id="f_alphanm1f_1alphamn" class="section level4">
+<h4><span class="math inline">\(F_{\alpha,n,m}=1/F_{1−\alpha,m,n}\)</span></h4>
+<p>If <span class="math inline">\(X\)</span> is Fisher distribution variable,</p>
+<p><span class="math display">\[X = \frac{ \frac{A}{n} } { \frac{B}{m} }\]</span></p>
+<p>where <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> follow <span class="math inline">\(\chi^2\)</span> distributions, are independent, and have <span class="math inline">\(n\)</span>, <span class="math inline">\(m\)</span> degrees of freedom respectively. Then the following holds:</p>
+<p><span class="math display">\[\frac{1}{X} = \frac{ \frac{B}{m} } { \frac{A}{n} }\]</span> which is also a Fisher distribution variable, and have <span class="math inline">\(m\)</span>, <span class="math inline">\(n\)</span> degrees of freedom respectively.</p>
+<p>Since
+<span class="math display">\[
+1/F_{(m,n)} = F_{(n,m)}, 
+\]</span>
+by the reciprocal of the chi square distributions,
+then let <span class="math inline">\(X\sim F_{(m,n)}\)</span> hence <span class="math inline">\(1/X\sim F_{(n,m)}\)</span>, so
+<span class="math display">\[\begin{align}
+\alpha =&amp; P\left(X\le F_{\alpha, (m,n)}\right)\\
+        =&amp; P\left(1/X \ge 1/F_{a, (m,n)} \right)\\
+        =&amp; 1 - P\left(1/X \le 1/F_{a, (m,n)} \right)\\
+         =&amp;1-P\left( F_{(n,m)} \le 1/F_{a, (m,n)}\right)\\
+         =&amp;1-F_{(n,m)}(1/F_{a, (m,n)})    
+\end{align}\]</span>
+thus,
+<span class="math display">\[\begin{align}
+1-\alpha =&amp; F_{(n,m)}(1/F_{a, (m,n)})\\
+F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}. 
+\end{align}\]</span></p>
+<p><a href="https://math.stackexchange.com/questions/2371494/show-prove-that-f-alpha-n-m-1-f-1-alpha-m-n/2372564#2372564">ref</a></p>
+</div>
+<div id="if-xsim-t_q-then-x2sim-f_1q" class="section level4">
+<h4>If <span class="math inline">\(X\sim t_q\)</span>, then <span class="math inline">\(X^2\sim F_{1,q}\)</span></h4>
+<p>A random variable <span class="math inline">\(X\)</span> has a standard Student’s <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(q\)</span> degrees of freedom if it can be written as a ratio <span class="math display">\[T=\frac{N(0,1)}{\sqrt{\chi^2_q/q}}\]</span>between a standard normal random variable <span class="math inline">\(Z\sim N(0,1)\)</span> and a Chi-square random variable with <span class="math inline">\(v\)</span> degrees of freedom divided by <span class="math inline">\(q\)</span>, which is <strong>independent</strong> of <span class="math inline">\(N(0,1)\)</span>.</p>
+<p>then <span class="math inline">\(X^2=\frac{Z^2/1}{\chi^2_q/q}\sim F_{1,q}\)</span></p>
 <p><strong>Exercise 4.7.13</strong>. Suppose we generate a random variable <span class="math inline">\(X\)</span> in the following way. First we flip a fair coin. If the coin is heads, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(0, 1)\)</span> distribution. If the coin is tails, take <span class="math inline">\(X\)</span> to have a <span class="math inline">\(\text{Uniform}(3, 4)\)</span> distribution.</p>
 <p><strong>(a)</strong> Find the mean of <span class="math inline">\(X\)</span>.</p>
 <p><strong>(b)</strong> Find the standard deviation of <span class="math inline">\(X\)</span>.</p>
@@ -1389,9 +1420,9 @@ density, then, that the <span class="math inline">\(i\)</span>th order statistic
 <p><span class="math display">\[\begin{align} 
 f_{Y&#39;_i} (y) &amp;= \frac{n!}{(i − 1)!(n − i)!}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
 &amp;=\frac{\Gamma(n+1)}{\Gamma(i)\Gamma(n-i+1)}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
-&amp;=B\bigg(F_Y (y);i-1,n-i\bigg)f_Y(y)
+&amp;=B\bigg(F_Y (y);i,n-i+1\bigg)f_Y(y)
 \end{align}\]</span>
-and <span class="math display">\[\frac{f_{Y&#39;_i} (y)}{f_Y(y)}=B\bigg(F_Y (y);i-1,n-i\bigg)\]</span></p>
+and <span class="math display">\[\frac{f_{Y&#39;_i} (y)}{f_Y(y)}=B\bigg(F_Y (y);i,n-i+1\bigg)\]</span></p>
 </div>
 <div id="joint-pdfs-of-order-statistics" class="section level4">
 <h4>4.9.3 Joint pdfs of order statistics</h4>
