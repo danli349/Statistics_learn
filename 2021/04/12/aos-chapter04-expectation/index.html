@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">56 min read</span>
+    <span class="article-duration">58 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -1438,6 +1438,36 @@ points <span class="math inline">\(u\)</span> and <span class="math inline">\(v\
 [F_Y (u)]^{i−1}[F_Y (v) − F_Y (u)]^{j−i−1} \cdot \\
 [1 − F_Y (v)]^{n−j} f_Y (u) f_Y (v)\]</span>
 for <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(u &lt; v\)</span>.</p>
+</div>
+<div id="range-and-midrange" class="section level4">
+<h4>4.9.4 range and midrange</h4>
+<p>Let <span class="math inline">\(X_1, \cdots, X_n\)</span> be iid <span class="math inline">\(uniform(O, a)\)</span> and let <span class="math inline">\(X_{(1)}, \cdots, X_{(n)}\)</span> denote the order statistics. The range was defined as <span class="math inline">\(R = X_{(n)}- X_{(1)}\)</span> . The midrange, a measure of location like the sample median or the sample mean, is defined by <span class="math inline">\(V=\left(X_{(1)} + X_{(n)}\right)/2\)</span>. We will derive
+the joint pdf of <span class="math inline">\(R\)</span> and <span class="math inline">\(V\)</span> from the joint pdf of <span class="math inline">\(X_{(1)}\)</span> and <span class="math inline">\(X_{(n)}\)</span>. We have that
+<span class="math display">\[\begin{align} 
+f_{X_{(1)} ,X_{(n)}} (x_1, x_n) &amp;= \frac{n!}{(1 − 1)!( n − 1 − 1)!(n − n)!}
+[F_{X_{(1)}} (x_1)]^{1−1}[F_{X_{(n)}} (x_n) − F_{X_{(1)}} (x_1)]^{n−1−1} \cdot
+[1 − F_{X_{(n)}} (x_n)]^{n−n} f_{X_{(1)}} (x_1) f_{X_{(n)}} (x_n)\\
+&amp;=\frac{n!}{( n − 2)!}
+[F_{X_{(n)}} (x_n) − F_{X_{(1)}} (x_1)]^{n−2} \cdot f_{X_{(1)}} (x_1) f_{X_{(n)}} (x_n)\\
+&amp;=\frac{n(n-1)}{a^2}\left(\frac{x_n}{a}-\frac{x_1}{a}\right)^{n-2}\\
+&amp;=\frac{n(n-1)(x_n-x_1)^{n-2}}{a^n}, \quad 0&lt;x_1&lt;x_n&lt;a
+\end{align}\]</span></p>
+<p>Since <span class="math display">\[X_1=V-R/2, \quad X_n=V+R/2\]</span> The Jacobian for this transformation is <span class="math inline">\(-1\)</span>. The transformation from <span class="math inline">\((X_{(1)} , X_{(n)}\)</span> to <span class="math inline">\((R, V)\)</span> maps <span class="math inline">\(\{(X_1, X_n) : 0 &lt; X_1 &lt; X_n &lt; a\}\)</span> onto the set <span class="math inline">\(\{(r, v) : 0 &lt; r &lt; a, r/2 &lt; v &lt; a - r/2\}\)</span>. To see this, note that obviously <span class="math inline">\(0 &lt; r &lt; a\)</span> and for a fixed value of <span class="math inline">\(r\)</span>, <span class="math inline">\(v\)</span> ranges from <span class="math inline">\(r/2\)</span> (corresponding to <span class="math inline">\(x_1 = 0, x_n = r\)</span>) to <span class="math inline">\(a - r/2\)</span> (corresponding to <span class="math inline">\(x_1 = a - r, x_n =a\)</span>). Thus, the joint pdf of <span class="math inline">\((R, V)\)</span> is <span class="math display">\[f_{R,V} (r, v)=\frac{n(n-1)r^{n-2}}{a^n},\quad 0&lt;r&lt;a,r/2&lt;v&lt;a-r/2\]</span></p>
+<p>The marginal pdf of R is thus <span class="math display">\[\begin{align} f_{R} (r)&amp;=\int_{r/2}^{a-r/2}\frac{n(n-1)r^{n-2}}{a^n}dv\\
+&amp;=\frac{n(n-1)r^{n-2}(a-r)}{a^n}, \quad 0&lt;r&lt;a\\
+&amp;=\frac{n(n-1)}{a}\left(\frac{r}{a}\right)^{n-2}\left(\frac{a-r}{a}\right)\\
+&amp;=\frac{n(n-1)}{a}\left(\frac{r}{a}\right)^{n-2}\left(1-\frac{r}{a}\right)\\
+&amp;=\frac{\Gamma(n-1+2)}{\Gamma(n-1)\Gamma(2)}\left(\frac{r}{a}\right)^{n-2}\left(1-\frac{r}{a}\right)\frac{1}{a}\\
+\end{align}\]</span> Then
+<span class="math display">\[f_{R/a} (r/a)=\frac{\Gamma(n-1+2)}{\Gamma(n-1)\Gamma(2)}\left(\frac{r}{a}\right)^{n-2}\left(1-\frac{r}{a}\right)=beta(r/a, n-1,2)\]</span>
+If <span class="math inline">\(a = 1\)</span>, we see that <span class="math inline">\(r\)</span> has a <span class="math inline">\(beta(n-1, 2)\)</span> distribution. Or, for arbitrary <span class="math inline">\(a\)</span>, it is easy to deduce that <span class="math inline">\(R/a\)</span> has a beta distribution.</p>
+<p>The set where <span class="math inline">\(f_{R,V}(r, v) &gt; 0\)</span> is shown in Figure 2, where we see that the range
+of integration of <span class="math inline">\(r\)</span> depends on whether <span class="math inline">\(v &gt; a/2\)</span> or <span class="math inline">\(v &lt; a/2\)</span>.</p>
+<p><a href="2.png">Figure 2</a></p>
+<p>Thus, the marginal pdf of <span class="math inline">\(V\)</span> is given by <span class="math display">\[f_{V} (v)=\int_{0}^{2v}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n(2v)^{n-1}}{a^n},\quad 
+0&lt;v\leq a/2\]</span></p>
+<p><span class="math display">\[f_{V} (v)=\int_{0}^{2(a-v)}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n[2(a-v)]^{n-1}}{a^n},\quad 
+a/2 &lt;v\leq a\]</span></p>
 </div>
 </div>
 </div>
