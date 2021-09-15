@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">58 min read</span>
+    <span class="article-duration">64 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -1150,7 +1150,7 @@ g(z)&amp;=\sum_{x=0}^{\infty}{{r+x-1}\choose{x}}p^rq^xz^x\\
 &amp;=\frac{r(1-p)^2(r+1)}{p^2}+\frac{r(1-p)}{p}-\frac{r^2(1-p)^2}{p^2}\\
 &amp;=\frac{r(1-p)}{p^2}
 \end{align}\]</span> and</p>
-<p>Since the expectation of geom is <span class="math inline">\(\mathbb{E}(X)=1/p\)</span> and variance of geom is <span class="math inline">\(\mathbb{V}(X) = \frac{1 - p}{p^2}\)</span>, then the negative binomial distribution is the sum of <span class="math inline">\(r\)</span> i.i.d Geometric.</p>
+<p>Since the expectation of geom is <span class="math inline">\(\mathbb{E}(X)=\frac{1-p}{p}\quad(x=0,1,2,3,\cdots)\quad (\text{or } 1/p \quad x=1,2,3,\cdots)\)</span> and variance of geom is <span class="math inline">\(\mathbb{V}(X) = \frac{1 - p}{p^2}\)</span>, then the negative binomial distribution is the sum of <span class="math inline">\(r\)</span> i.i.d Geometric.</p>
 </div>
 <div id="the-connection-with-poisson-distribution" class="section level4">
 <h4>4.8.4 The connection with Poisson distribution</h4>
@@ -1194,6 +1194,68 @@ P(Y=y)&amp;=\int_{0}^{\infty}P(Y=y|\lambda)f(\lambda)d\lambda\\
 <span class="math display">\[p=\frac{\mu}{\sigma^2}\]</span>
 <span class="math display">\[r=\frac{\mu^2}{\sigma^2-\mu}\]</span></p>
 <p><span class="math display">\[f(k;r,p)\equiv Pr(X=k)={k+\frac{\mu^2}{\sigma^2-\mu}-1\choose{\frac{\mu^2}{\sigma^2-\mu}-1}}\left(\frac{\sigma^2-\mu}{\sigma^2}\right)^k\left(\frac{\mu}{\sigma^2}\right)^{\frac{\mu^2}{\sigma^2-\mu}}\]</span></p>
+<p>The <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> of each gene can be estimated from data.</p>
+<p>We assume that the number of reads in sample <span class="math inline">\(j\)</span> that are assigned to gene <span class="math inline">\(i\)</span> can be modeled by a negative binomial (NB) distribution,</p>
+<p><span class="math display">\[K_{ij}\sim NB(\mu_{ij},\sigma^2_{ij}),\tag1\]</span></p>
+<p>which has two parameters, the mean <span class="math inline">\(\mu_{ij}\)</span> and the variance <span class="math inline">\(\sigma^2_{ij}\)</span>. The read counts <span class="math inline">\(K_{ij}\)</span> are non-negative integers. The NB distribution is commonly used to model count data when overdispersion is present.</p>
+<p>In practice, we do not know the parameters <span class="math inline">\(\mu_{ij}\)</span> and <span class="math inline">\(\sigma^2_{ij}\)</span>, and we need to estimate them from the data. Typically, the number of replicates is small, and further modelling assumptions need to be made in order to obtain useful estimates.</p>
+<ul>
+<li>First, the mean parameter <span class="math inline">\(\mu_{ij}\)</span> , that is, the expectation value of the observed counts for gene <span class="math inline">\(i\)</span> in sample <span class="math inline">\(j\)</span>, is the product of a condition-dependent per-gene value <span class="math inline">\(q_{i, \rho(j)}\)</span>(where <span class="math inline">\(\rho(j)\)</span> is the experimental condition of sample <span class="math inline">\(j\)</span>) and a size factor <span class="math inline">\(s_j\)</span>,</li>
+</ul>
+<p><span class="math display">\[\mu_{ij} = q_{i, \rho(j)}s_j.\tag2\]</span>
+<span class="math inline">\(q_{i, \rho(j)}\)</span> is proportional to the expectation value of the true (but unknown) concentration of fragments from gene <span class="math inline">\(i\)</span> under condition <span class="math inline">\(\rho(j)\)</span>. The size factor <span class="math inline">\(s_j\)</span> represents the coverage, or sampling depth, of library <span class="math inline">\(j\)</span>, and we will use the term common scale for quantities, such as <span class="math inline">\(q_{i, \rho(j)}\)</span>, that are adjusted for coverage by dividing by <span class="math inline">\(s_j\)</span>.</p>
+<ul>
+<li>Second, the variance <span class="math inline">\(\sigma^2_{ij}\)</span> is the sum of a shot noise term and a raw variance term,</li>
+</ul>
+<p><span class="math display">\[\sigma^2_{ij}=\mu_{ij}+s_j^2v_{i,\rho(j)},\tag3\]</span></p>
+<ul>
+<li>Third, we assume that the per-gene raw variance parameter <span class="math inline">\(v_{i,\rho(j)}\)</span> is a smooth function of <span class="math inline">\(q_{i, \rho(j)}\)</span>,</li>
+</ul>
+<p><span class="math display">\[v_{i,\rho(j)}=v_\rho(q_{i, \rho(j)}) \tag4\]</span>
+This assumption is needed because the number of replicates is typically too low to get a precise estimate of the variance for gene <span class="math inline">\(i\)</span> from just the data available for this gene. This assumption allows us to pool the data from genes with similar expression strength for the purpose of variance estimation.</p>
+<p>The decomposition of the variance in Equation (3) is motivated by the following hierarchical model: We assume that the actual concentration of fragments from gene <span class="math inline">\(i\)</span> in sample <span class="math inline">\(j\)</span> is proportional to a random variable <span class="math inline">\(R_{ij}\)</span>, such that the rate that fragments from gene <span class="math inline">\(i\)</span> are sequenced is <span class="math inline">\(s_j r_{ij}\)</span>. For each gene <span class="math inline">\(i\)</span> and all samples <span class="math inline">\(j\)</span> of condition <span class="math inline">\(\rho\)</span>, the <span class="math inline">\(R_{ij}\)</span> are i.i.d. with mean <span class="math inline">\(q_{i, \rho(j)}\)</span> and variance <span class="math inline">\(v_{i,\rho(j)}\)</span>. Thus, the count value <span class="math inline">\(K_{ij}\)</span>, conditioned on <span class="math inline">\(R_{ij} = r_{ij}\)</span>, is Poisson distributed with rate <span class="math inline">\(s_j r_{ij}\)</span>. The marginal distribution of <span class="math inline">\(K_{ij}\)</span> - when allowing for variation in <span class="math inline">\(R_{ij}\)</span> - has the mean <span class="math inline">\(\mu_{ij}\)</span> and (according to the law of total variance) the variance given in Equation (3). Furthermore, if the higher moments of <span class="math inline">\(R_{ij}\)</span> are modeled according to a gamma distribution, the marginal distribution of <span class="math inline">\(K_{ij}\)</span> is NB.</p>
+<p><strong>Fitting</strong></p>
+<p>We now describe how the model can be fitted to data. The data are an <span class="math inline">\(n × m\)</span> table of counts, <span class="math inline">\(K_{ij}\)</span> , where <span class="math inline">\(i = 1,\cdots, n\)</span> indexes the genes, and <span class="math inline">\(j = 1,\cdots, m\)</span> indexes the samples. The model has three sets of parameters:</p>
+<ul>
+<li><ol style="list-style-type: lower-roman">
+<li><span class="math inline">\(m\)</span> size factors <span class="math inline">\(s_j\)</span> ; the expectation values of all counts from sample <span class="math inline">\(j\)</span> are proportional to <span class="math inline">\(s_j\)</span> .</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-roman">
+<li>for each experimental condition <span class="math inline">\(\rho\)</span>, <span class="math inline">\(n\)</span> expression strength parameters <span class="math inline">\(q_{i, \rho(j)}\)</span> ; they reflect the expected abundance of fragments from gene <span class="math inline">\(i\)</span> under condition <span class="math inline">\(\rho\)</span>, that is, expectation values of counts for gene <span class="math inline">\(i\)</span> are proportional to <span class="math inline">\(q_{i, \rho(j)}\)</span> .</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: lower-roman">
+<li>The smooth functions <span class="math inline">\(v_{\rho}: \mathbb R^+ \to \mathbb R^+\)</span>; for each condition <span class="math inline">\(\rho\)</span>, <span class="math inline">\(v_{\rho}\)</span> models the dependence of the raw variance <span class="math inline">\(v_{i\rho}\)</span> on the expected mean <span class="math inline">\(q_{i, \rho(j)}\)</span>.</li>
+</ol></li>
+</ul>
+<p>The purpose of the size factors <span class="math inline">\(s_j\)</span> is to render counts from different samples, which may have been sequenced to different depths, comparable. Hence, the ratios <span class="math inline">\((\mathbb EK_{ij})/(\mathbb E K_{ij&#39;})\)</span> of expected counts for the same gene <span class="math inline">\(i\)</span> in different samples <span class="math inline">\(j\)</span> and <span class="math inline">\(j&#39;\)</span> should be equal to the size ratio <span class="math inline">\(s_j /s_{j&#39;}\)</span> if gene <span class="math inline">\(i\)</span> is not differentially expressed or samples <span class="math inline">\(j\)</span> and <span class="math inline">\(j&#39;\)</span> are replicates. The total number of reads, <span class="math inline">\(\sum_i K_{ij}\)</span> , may seem to be a good measure of sequencing depth and hence a reasonable choice for <span class="math inline">\(s_j\)</span> . Experience with real data, however, shows this not always to be the case, because a few highly and differentially expressed genes may have strong influence on the total read count, causing the ratio of total read counts not to be a good estimate for the ratio of expected counts.</p>
+<p>Hence, to estimate the size factors, we take the median of the ratios of observed counts. Generalizing the procedure just outlined to the case of more than two samples, we use:</p>
+<p><span class="math display">\[\hat{s}_j=\underset{i}{\text{median  }}\frac{K_{ij}}{(\prod^m_{v=1} k_{iv})^{1/m}}.\tag5\]</span></p>
+<p>The denominator of this expression can be interpreted as a pseudo-reference sample obtained by taking the geometric mean across samples. Thus, each size factor estimate <span class="math inline">\(\hat{s}_j\)</span> is computed as the median of the ratios of the <span class="math inline">\(j\)</span>-th sample’s counts to those of the pseudo-reference.</p>
+<p>To estimate <span class="math inline">\(q_{i, \rho(j)}\)</span> , we use the average of the counts from the samples <span class="math inline">\(j\)</span> corresponding to condition <span class="math inline">\(\rho\)</span>, transformed to the common scale:</p>
+<p><span class="math display">\[\hat q_{i\rho}=\frac{1}{m_{\rho}}\sum_{j:\rho(j)=\rho}\frac{k_{ij}}{\hat s_j}\tag6\]</span></p>
+<p>where <span class="math inline">\(m_{\rho}\)</span> is the number of replicates of condition <span class="math inline">\(\rho\)</span> and the sum runs over these replicates. the functions <span class="math inline">\(v_{\rho}\)</span> , we first calculate sample variances on the common scale</p>
+<p><span class="math display">\[w_{i\rho}=\frac{1}{m_{\rho}−1}\sum_{j:\rho(j)=\rho}\bigg(\frac{k_{ij}}{\hat s_j}−\hat q_{i\rho}\bigg)^2\tag7\]</span></p>
+<p>and define</p>
+<p><span class="math display">\[z_{i\rho}=\frac{\hat q_{i\rho}}{m_{\rho}}\sum_{j:\rho(j)=\rho}\frac{1}{\hat s_j}.\tag8\]</span></p>
+<p><span class="math inline">\(w_{i\rho} - z_{i\rho}\)</span> is an unbiased estimator for the raw variance parameter <span class="math inline">\(v_{i\rho}\)</span> of Equation (3).</p>
+<p>However, for small numbers of replicates, <span class="math inline">\(m_{\rho}\)</span> , as is typically the case in applications, the values <span class="math inline">\(w_{i\rho}\)</span> are highly variable, and <span class="math inline">\(w_{i\rho} - z_{i\rho}\)</span> would not be a useful variance estimator for statistical inference. Instead, we use local regression on the graph <span class="math inline">\((\hat q_{i\rho}, w_{i\rho})\)</span> to obtain a smooth function <span class="math inline">\(w_{\rho}(q)\)</span>, with</p>
+<p><span class="math display">\[\hat v_{\rho}(\hat q_{i\rho})=w_{\rho}(\hat q_{i\rho})−z_{i\rho} \tag9\]</span>
+as our estimate for the raw variance.</p>
+<p>Some attention is needed to avoid estimation biases in the local regression. <span class="math inline">\(w_{i\rho}\)</span> is a sum of squared random variables, and the residuals <span class="math inline">\(w_{i\rho}−w(\hat q_{i\rho})\)</span> are skewed. We use a generalized linear model of the gamma family for the local regression, using the implementation in the locfit package.</p>
+<p><strong>Testing for differential expression</strong></p>
+<p>Suppose that we have <span class="math inline">\(m_A\)</span> replicate samples for biological condition <span class="math inline">\(A\)</span> and <span class="math inline">\(m_B\)</span> samples for condition <span class="math inline">\(B\)</span>. For each gene <span class="math inline">\(i\)</span>, we would like to weigh the evidence in the data for differential expression of that gene between the two conditions. In particular, we would like to test the null hypothesis <span class="math inline">\(q_{iA} = q_{iB}\)</span> , where <span class="math inline">\(q_{iA}\)</span> is the expression strength parameter for the samples of condition <span class="math inline">\(A\)</span>, and <span class="math inline">\(q_{iB}\)</span> for condition <span class="math inline">\(B\)</span>. To this end, we define, as test statistic, the total counts in each condition,</p>
+<p><span class="math display">\[K_{iA}=\sum_{j:\rho(j)=A}K_{ij},\quad K_{iB}=\sum_{j:\rho(j)=B}K_{ij},\tag{10}\]</span></p>
+<p>and their overall sum <span class="math inline">\(K_{iS} = K_{iA} + K_{iB}\)</span> . From the error model described in the previous Section, we show below that - under the null hypothesis - we can compute the probabilities of the events <span class="math inline">\(K_{iA} = a\)</span> and <span class="math inline">\(K_{iB} = b\)</span> for any pair of numbers <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. We denote this probability by <span class="math inline">\(p(a, b)\)</span>. The <span class="math inline">\(P\)</span> value of a pair of observed count sums <span class="math inline">\((k_{iA} , k_{iB})\)</span> is then the sum of all probabilities less or equal to <span class="math inline">\(p(k_{iA}, k_{iB})\)</span>, given that the overall sum is <span class="math inline">\(k_{iS}\)</span>:</p>
+<p><span class="math display">\[p_i=\frac{\displaystyle\sum_{a+b=k_{iS}\\p(a,b)\leq p(k_{iA},k_{iB})}p(a,b)}{\displaystyle\sum_{a+b=k_{iS}}p(a,b)}.\tag{11}\]</span>
+The variables <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> in the above sums take the values <span class="math inline">\(0,\cdots, k_{iS}\)</span>.</p>
+<p><strong>Computation of <span class="math inline">\(p(a, b)\)</span></strong>.</p>
+<ul>
+<li>First, assume that, under the null hypothesis, counts from different samples are independent. Then, <span class="math inline">\(p(a, b) = Pr(K_{iA}= a) Pr(K_{iB}= b)\)</span>. The problem thus is computing the probability of the event <span class="math inline">\(K_{iA}= a\)</span>, and, analogously, of <span class="math inline">\(K_{iB}= b\)</span>. The random variable <span class="math inline">\(K_{iA}\)</span> is the sum of <span class="math inline">\(m_A\)</span> NB-distributed random variables. We approximate its distribution by a NB distribution whose parameters we obtain from those of the <span class="math inline">\(K_{ij}\)</span>. To this end, we first compute the pooled mean estimate from the counts of both conditions,</li>
+</ul>
+<p><span class="math display">\[\hat q_{io}=\sum_{j:\rho(j)\in{A,B}}k_{ij}/s_j,\tag{12}\]</span></p>
+<p>which accounts for the fact that the null hypothesis stipulates that <span class="math inline">\(q_{iA}= q_{iB}\)</span>. The summed mean and variance for condition <span class="math inline">\(A\)</span> are</p>
+<p><span class="math display">\[\hat\mu_{iA}=\sum_{j\in A} s_j\hat q_{io},\tag{13}\]</span></p>
+<p><span class="math display">\[\sigma^2_{iA}=\sum_{j∈A}\hat s_j\hat q_{io}+\hat s^2_j\hat v_{A}(\hat q_{io}).\tag{14}\]</span></p>
 </div>
 <div id="negative-binomial-regression" class="section level4">
 <h4>4.8.7 negative binomial regression</h4>
@@ -1488,6 +1550,9 @@ a/2 &lt;v\leq a\]</span></p>
 </div>
 <div id="ref-larsen2005introduction" class="csl-entry">
 5. Larsen RJ, Marx ML. An introduction to mathematical statistics. Prentice Hall; 2005.
+</div>
+<div id="ref-anders2010differential" class="csl-entry">
+6. Anders S, Huber W. Differential expression analysis for sequence count data. Nature Precedings. 2010;1–1.
 </div>
 </div>
 </div>

@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">15 min read</span>
+    <span class="article-duration">16 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -305,6 +305,7 @@ to show the following</p>
 <span class="math inline">\(a \text{n}eq 0, b\)</span> such that <span class="math inline">\(\text{P}{}(Y = aX + b) = 1\)</span>. If
 <span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> then <span class="math inline">\(\text{sign}(\rho) = \text{sign}(a)\)</span>.</p></li>
 </ol>
+<p>Let <span class="math inline">\(X_1, \cdots , X_n\)</span> be independent random vectors. Let <span class="math inline">\(g_i(x_i)\)</span> be a function only of <span class="math inline">\(x_i, i = 1 , \cdots, n\)</span>. Then the random variables <span class="math inline">\(U_i = g_i(X_i), i = 1,\cdots, n\)</span>, are mutually independent.</p>
 </div>
 <div id="inequalities" class="section level2">
 <h2>Inequalities</h2>
@@ -458,13 +459,17 @@ probability</em> to a random variable <span class="math inline">\(X\)</span> if 
 equivalently if <span class="math inline">\(\lim_{n\to\infty}\text{P }(|{X_n - X}| &lt; \epsilon) = 1\)</span>).</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 5  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
-<span class="math inline">\(\mathbb E[|{X_i}|] &lt; \infty\)</span>. Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n\)</span>.
+<p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 5  </strong></span><strong>Weak Law of Large Numbers, WLLN</strong>
+Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
+<span class="math inline">\(\mathbb V X_i = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac1n \sum_{i=1}^n X_i\]</span>
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges in probability to <span class="math inline">\(\mu\)</span>. That
 is, <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
-<span class="math display">\[\lim_{n\to\infty} \text{P }(|{X_n - \mu}| &lt; \epsilon) = 1\]</span></p>
+<span class="math display">\[\lim_{n\to\infty} \text{P }(|{\bar X_n - \mu}| &lt; \epsilon) = 1\]</span></p>
 </div>
 <p>Proof is using Chebychev’s inequality.</p>
+<p>We have for every <span class="math inline">\(\epsilon&gt;0\)</span>, <span class="math display">\[P(|\bar X_n - \mu|\ge\epsilon)=P((\bar X_n - \mu)^2\ge\epsilon^2)\leq\frac{\mathbb E(\bar X_n - \mu)^2}{\epsilon^2}=\frac{\mathbb V\bar X_n}{\epsilon^2}=\frac{\sigma^2}{n\epsilon^2}\]</span>
+Hence, <span class="math display">\[P(|\bar X_n - \mu|&lt;\epsilon)=1-P(|\bar X_n - \mu|\ge\epsilon)\ge 1-\frac{\sigma^2}{n\epsilon^2}\to 1 \text{ as } n\to \infty\]</span></p>
+<p>The property summarized by the WLLN, that a sequence of the “same” sample quantity approaches a constant as <span class="math inline">\(n \to \infty\)</span>, is known as <strong>consistency</strong>.</p>
 <div class="theorem">
 <p><span id="thm:unlabeled-div-13" class="theorem"><strong>Theorem 6  </strong></span>If <span class="math inline">\(X_1, X_2, \dots\)</span> converges in probability to <span class="math inline">\(X\)</span> and <span class="math inline">\(h\)</span> is a
 continuous function, then <span class="math inline">\(h(X_1), h(X_2), \dots\)</span> converges in
@@ -474,30 +479,22 @@ probability to <span class="math inline">\(h(X)\)</span>.</p>
 <div id="almost-sure-convergence" class="section level3">
 <h3>Almost Sure Convergence</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-14" class="definition"><strong>Definition 5  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges almost
-surely</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<p><span id="def:unlabeled-div-14" class="definition"><strong>Definition 5  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges almost surely</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\text{P }\left(\lim_{n\to\infty} |{\bar{X}_n - X}| &lt; \epsilon\right) = 1.\]</span></p>
 </div>
 <div class="comments">
 <ul>
-<li><p>Almost sure convergence is much stronger than convergence in
-probability. Convergence in probability states that the sequence of
-measures of the sets on which the sequence has finite difference
-from its the limit converges to 0. Almost sure convergence states
-that any place where the sequence has finite difference from its
-limit must have measure 0. It’s like a sequence of integrals
-converging vs. whether the integrands converge.</p></li>
-<li><p>Almost sure convergence implies convergence in probability but not
-the other way around.</p></li>
+<li><p>Almost sure convergence is much stronger than convergence in probability. Convergence in probability states that the sequence of measures of the sets on which the sequence has finite difference from its the limit converges to <span class="math inline">\(0\)</span>. Almost sure convergence states that any place where the sequence has finite difference from its limit must have measure <span class="math inline">\(0\)</span>. It’s like a sequence of integrals converging vs. whether the integrands converge.</p></li>
+<li><p>Almost sure convergence implies convergence in probability but not the other way around.</p></li>
 </ul>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-15" class="theorem"><strong>Theorem 7  </strong></span>If a sequence converges in probability then it is possible to find a
-subsequence that converges almost surely.</p>
+<p><span id="thm:unlabeled-div-15" class="theorem"><strong>Theorem 7  </strong></span>If a sequence converges in probability then it is possible to find a subsequence that converges almost surely.</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-16" class="theorem"><strong>Theorem 8  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
-<span class="math inline">\(\mathbb E[|{X_i}|] &lt; \infty\)</span>. Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n\)</span>.
+<p><span id="thm:unlabeled-div-16" class="theorem"><strong>Theorem 8  </strong></span><strong>Strong Law of Large Numbers (SLLN)</strong>
+Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mathbb E {X_i} = \mu\)</span> and
+<span class="math inline">\(\mathbb V{X_i} = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\]</span>.
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges almost surely to <span class="math inline">\(\mu\)</span>. That is,
 <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\text{P }\left(\lim_{n\to\infty}|{\bar{X}_n - \mu}| &lt; \epsilon\right) = 1.\]</span></p>
@@ -520,7 +517,8 @@ previous two concepts.</p>
 <p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 9  </strong></span>Convergence in probability implies convergence in distribution</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span>Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of iid random variables with
+<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span><strong>Central Limit Theorem</strong>
+Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of iid random variables with
 <span class="math inline">\(\mathbb E[X_i] = \mu\)</span> and finite variance <span class="math inline">\(\mathbb V[X_i] = \sigma^2 &lt; \infty\)</span>.
 Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n X_i\)</span>. Let <span class="math inline">\(G_n(x)\)</span> denote the
 cdf of <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span>. Then <span class="math inline">\(\forall x \in \mathbb R\)</span>,
