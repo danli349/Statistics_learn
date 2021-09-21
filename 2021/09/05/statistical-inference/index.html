@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">16 min read</span>
+    <span class="article-duration">25 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -106,8 +106,22 @@
 <li><a href="#almost-sure-convergence">Almost Sure Convergence</a></li>
 <li><a href="#convergence-in-distribution">Convergence in Distribution</a></li>
 <li><a href="#the-delta-method">The Delta Method</a></li>
+<li><a href="#the-second-order-delta-method">The second-order Delta Method</a></li>
+<li><a href="#multivariate-delta-method">Multivariate Delta Method</a></li>
 </ul></li>
-<li><a href="#generating-a-random-sample">Generating A Random Sample</a></li>
+<li><a href="#generating-a-random-sample">Generating A Random Sample</a>
+<ul>
+<li><a href="#direct-method">Direct Method</a></li>
+<li><a href="#indirect-methods">Indirect Methods</a></li>
+<li><a href="#the-acceptreject-algorithm">The Accept/Reject Algorithm</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#principles-of-data-reduction">6. Principles of Data Reduction</a>
+<ul>
+<li><a href="#the-sufficiency-principle">The Sufficiency Principle</a></li>
+<li><a href="#the-likelihood-principle">The Likelihood Principle</a></li>
+<li><a href="#a-slightly-more-formal-construction">A Slightly More Formal Construction</a></li>
+<li><a href="#the-equivariance-principle">The Equivariance Principle</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -525,7 +539,8 @@ That is, <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span> c
 the standard normal.</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-21" class="theorem"><strong>Theorem 11  </strong></span>If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
+<p><span id="thm:unlabeled-div-21" class="theorem"><strong>Theorem 11  </strong></span><strong>Slutsky’s Theorem</strong>
+If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
 constant, then</p>
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(Y_nX_n \to aX\)</span> in distribution</p></li>
@@ -562,18 +577,76 @@ given function <span class="math inline">\(g\)</span> and a specific value of <s
 <span class="math inline">\(g&#39;(\theta) = 0\)</span> and <span class="math inline">\(g&#39;&#39;(\theta)\)</span> exists and is non-zero. Then
 <span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] \to \text{n}(0, \sigma^2[g&#39;(\theta)]^2)\]</span> in
 distribution.</p>
+<p>Furthermore, as both <span class="math inline">\(\bar Y\)</span> and <span class="math inline">\(\sigma^2\)</span> are consistent estimators, we can again apply Slutsky’s Theorem to conclude that
+<span class="math display">\[\sqrt{n}[g(Y_n) - g(\bar Y)] \to \text{n}(0, S^2[g&#39;(\bar Y)]^2)\]</span></p>
 </div>
+<p><strong>Proof</strong> The Taylor expansion of <span class="math inline">\(g(Y_n)\)</span> around <span class="math inline">\(Y_n = 0\)</span> is
+<span class="math display">\[g(Y_n) = g(\theta) + g&#39;(\theta) (Y_n - \theta) + \text{Remainder},\]</span>
+where the remainder <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(Y_n \to \theta\)</span>. Since <span class="math inline">\(Y_n \to \theta\)</span> in probability it follows that the remainder <span class="math inline">\(\to 0\)</span> in probability. By applying <strong>Slutsky’s Theorem</strong> to
+<span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] = g&#39;(\theta)\sqrt{n}(Y_n-\theta),\]</span>
+the result now follows.</p>
+</div>
+<div id="the-second-order-delta-method" class="section level3">
+<h3>The second-order Delta Method</h3>
+<p>If <span class="math inline">\(g&#39;(\theta) = 0\)</span>, we take one more term in the Taylor expansion to get
+<span class="math display">\[g(Y_n) = g(\theta) + g&#39;(\theta)(Y_n -\theta) +\frac{g&#39;&#39;(\theta)}{2} (Y_n -\theta)^2 + \text{Remainder}.\]</span>
+If we do some rearranging (setting <span class="math inline">\(g&#39; = 0\)</span>), we have
+<span class="math display">\[ g(Y_n) -g(\theta) = \frac{g&#39;&#39;(\theta)}{2} (Y_n -\theta)^2 + \text{Remainder}.\]</span>
+Now recall that the square of a <span class="math inline">\(n(0, 1)\)</span> is a <span class="math inline">\(\chi_1^2\)</span> , which implies that
+<span class="math display">\[\frac{n(Y_n-\theta)^2}{\sigma^2}\to\chi_1^2\]</span>
+in distribution. Therefore,</p>
+<p>(<strong>Second-order Delta Method</strong>) Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies <span class="math inline">\(\sqrt{n}(Y_n -\theta) \to n(0, \sigma^2)\)</span> in distribution. For a given function <span class="math inline">\(g\)</span>
+and a specific value of <span class="math inline">\(\theta\)</span>, suppose that <span class="math inline">\(g&#39;(\theta)=0\)</span> and <span class="math inline">\(g&#39;&#39;(\theta)\)</span> exists and is not <span class="math inline">\(0\)</span>. Then
+<span class="math display">\[n[g(Y_n) -g(\theta)]\approx n\frac{g&#39;&#39;(\theta)}{2} (Y_n -\theta)^2\to \sigma^2\frac{g&#39;&#39;(\theta)}{2}\chi_1^2\]</span> in distribution.</p>
+</div>
+<div id="multivariate-delta-method" class="section level3">
+<h3>Multivariate Delta Method</h3>
+<p>Note that we must deal with multiple random variables although the ultimate CLT is a univariate one. Suppose the vector-valued random variable <span class="math inline">\(\mathbf X=(X_1,\cdots, X_p)\)</span> has mean <span class="math inline">\(\boldsymbol\mu = (\mu_1, \cdots , \mu_p)\)</span> and covariances <span class="math inline">\(Cov(X_i, X_j) = \sigma_{ij}\)</span>, and we observe an independent
+random sample <span class="math inline">\(\mathbf X_1, \cdots, \mathbf X_n\)</span> and calculate the means <span class="math display">\[\bar X_i = \frac{1}{n}\sum_{k=1}^{n}X_{ik},\quad i=1,\cdots,p\]</span>
+For a function <span class="math inline">\(g(\mathbf x) = g(x_1, \cdots, x_p)\)</span> we can write
+<span class="math display">\[g(\bar x_1, \cdots, \bar x_p) = g(\mu_1, \cdots, \mu_p) + \sum_{k=1}^{p}g&#39;_k(\mathbf x)(\bar x_k - \mu_k),\]</span>
+and we then have the following theorem:</p>
+<p><strong>Multivariate Delta Method</strong> Let <span class="math inline">\(\mathbf X_1, \cdots, \mathbf X_n\)</span> be a random sample with <span class="math inline">\(E(X_{ij})=\mu_i\)</span> and <span class="math inline">\(Cov(X_{ik}, X_{jk}) = \sigma_{ij}\)</span> . For a given function <span class="math inline">\(g\)</span> with continuous first partial derivatives and a specific value of <span class="math inline">\(\boldsymbol\mu = (\mu_1, \cdots , \mu_p)\)</span> for which
+<span class="math display">\[\tau^2=\sum\sum\sigma_{ij}\frac{\partial g(\boldsymbol\mu)}{\partial{\mu_i}}\frac{\partial g(\boldsymbol\mu)}{\partial{\mu_j}}&gt;0,\]</span>
+<span class="math display">\[\sqrt{n}\big[g(\bar x_1,\cdots,\bar x_p)-g(\mu_1,\cdots,\mu_p)\big]\to n(0,\tau^2)\;\;\text {in distribution}\]</span></p>
 </div>
 </div>
 <div id="generating-a-random-sample" class="section level2">
 <h2>Generating A Random Sample</h2>
+<div id="direct-method" class="section level3">
+<h3>Direct Method</h3>
+<p><strong>Probability integral transformation</strong> Let <span class="math inline">\(X\)</span> have continuous
+cdf <span class="math inline">\(F_X(x)\)</span> and define the random variable <span class="math inline">\(Y\)</span> as <span class="math inline">\(Y = F_X (X)\)</span>. Then <span class="math inline">\(Y\)</span> is uniformly distributed on <span class="math inline">\((0, 1)\)</span>, that is, <span class="math inline">\(P(Y \leq y) = y, 0 &lt; y &lt; 1\)</span>.</p>
+<p><strong>Proof</strong> For <span class="math inline">\(Y = F_X (X)\)</span> we have, for <span class="math inline">\(0 &lt; y &lt; 1\)</span>,
+<span class="math display">\[\begin{align} P(Y\leq y)&amp;=P(F_X (X)\leq y)\\
+&amp;=P(F_X^{-1} [F_X (X)]\leq F_X^{-1}(y))\quad (F_X^{-1} \text{ is increasing})\\
+&amp;=P(X\leq F_X^{-1}(y))\\
+&amp;=F_X(F_X^{-1}(y))\\
+&amp;=y
+\end{align}\]</span>
+At the endpoints we have <span class="math inline">\(P (Y \leq y) = 1\)</span> for <span class="math inline">\(y \ge 1\)</span> and <span class="math inline">\(P (Y \leq y)=0\)</span> for <span class="math inline">\(y \leq 0\)</span>, showing that <span class="math inline">\(Y\)</span> has a uniform distribution.</p>
+<p>Let <span class="math inline">\(X\)</span> have cdf <span class="math inline">\(F_X(x)\)</span>, let <span class="math inline">\(Y=g(X)\)</span>, and let <span class="math inline">\(\mathcal X\)</span> and <span class="math inline">\(\mathcal Y\)</span> be defined as <span class="math inline">\(\mathcal X \{x: f_X(x) &gt; 0\}\)</span> and <span class="math inline">\(\mathcal Y = \{y: y = g(x)\},\text{ for some }x \in \mathcal X\}\)</span>.</p>
+<ul>
+<li><ol style="list-style-type: lower-alpha">
+<li>If <span class="math inline">\(g\)</span> is an increasing function on <span class="math inline">\(\mathcal X\)</span>, <span class="math display">\[F_Y (y) =\int_{x\in \mathcal X:x\leq g^{-1}(y)}f_X(x)dx=\int_{-\infty}^{g^{-1}(y)}f_X(x)dx= F_X (g^{-1}(y)) \text{ for }y \in \mathcal Y\]</span></li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-alpha">
+<li>If <span class="math inline">\(g\)</span> is a decreasing function on <span class="math inline">\(\mathcal X\)</span> and <span class="math inline">\(X\)</span> is a continuous random variable, <span class="math display">\[F_Y (y)=\int_{g^{-1}(y)}^{\infty}f_X(x)dx=1 - F_X(g^{-1} (y)) \text{ for } y \in \mathcal Y\]</span></li>
+</ol></li>
+</ul>
 <div class="definition">
-<p><span id="def:unlabeled-div-26" class="definition"><strong>Definition 7  </strong></span>A <em>Direct Method</em> of generating a random sample uses the probability
+<p><span id="def:unlabeled-div-26" class="definition"><strong>Definition 7  </strong></span>A <strong>Direct Method</strong> of generating a random sample uses the probability
 integral transform to map draws from a <span class="math inline">\(\text{uniform}(0, 1)\)</span> random
 variable to draws from the distribution of interest.<br />
 The Probability Integral Transform states that if <span class="math inline">\(X\)</span> has continuous cdf
 <span class="math inline">\(F_X(x)\)</span> then <span class="math display">\[F_X(X) \sim \text{uniform}(0, 1).\]</span></p>
 </div>
+</div>
+<div id="indirect-methods" class="section level3">
+<h3>Indirect Methods</h3>
+</div>
+<div id="the-acceptreject-algorithm" class="section level3">
+<h3>The Accept/Reject Algorithm</h3>
 <div class="definition">
 <p><span id="def:unlabeled-div-27" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
 common support with <span class="math display">\[M = \sup_y f_Y(y) / f_V(y) &lt; \infty.\]</span> To generate
@@ -604,6 +677,194 @@ where <span class="math inline">\(c = \sup_y f_Y(y)\)</span>. In the actual algo
 <span class="math inline">\(U \sim \text{uniform}(0,1)\)</span> and <span class="math inline">\(V\)</span> to be an RV that has common
 support with <span class="math inline">\(Y\)</span>.</p></li>
 </ul>
+</div>
+</div>
+</div>
+<div id="principles-of-data-reduction" class="section level1">
+<h1>6. Principles of Data Reduction</h1>
+<p>In this chapter, we explore how we can use functions of a sample
+<span class="math inline">\(\vec{X}\)</span> to make inferences about an unknown parameter (of the
+distribution of the sample) <span class="math inline">\(\theta\)</span>.</p>
+<p>[Statistic] A statistic is any function of the data.</p>
+<p>A statistic <span class="math inline">\(T(X)\)</span> forms a partition of the sample space <span class="math inline">\(\mathcal X\)</span> according to
+its image,
+<span class="math inline">\(\mathcal{T} = \{t: \exists \vec{x} \in \mathcal X{} \text{  so that  } t = T(\vec{x})\}\)</span>.
+In this way a statistic provides a method of data reduction. An
+experimenter who observes only <span class="math inline">\(T\)</span> will treat as equal two samples
+<span class="math inline">\(\vec{x}, \vec{y}\)</span> for which <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>.</p>
+<div id="the-sufficiency-principle" class="section level3">
+<h3>The Sufficiency Principle</h3>
+<p><strong>Sufficient Statistic</strong> A statistic <span class="math inline">\(T(\vec{X})\)</span> is a <strong>sufficient
+statistic</strong> for <span class="math inline">\(\theta\)</span> if the conditional distribution of the sample
+<span class="math inline">\(\vec{X}\)</span> given <span class="math inline">\(T(\vec{X})\)</span> does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<p>We ignore the fact that all points have <span class="math inline">\(0\)</span> probability for continuous
+distributions.</p>
+<p><strong>The Sufficiency Principle</strong> If <span class="math inline">\(T(\vec{X})\)</span> is a sufficient statistic
+for <span class="math inline">\(\theta\)</span>, then any inference about <span class="math inline">\(\theta\)</span> should depend on the
+sample <span class="math inline">\(\vec{X}\)</span> only through <span class="math inline">\(T(\vec{X})\)</span>.</p>
+<p>If <span class="math inline">\(p(\vec{x}\vert{}\theta)\)</span> is the pmf/pdf of the sample <span class="math inline">\(\vec{X}\)</span> and
+<span class="math inline">\(q(t\vert{} \theta)\)</span> is the pmf/pdf of <span class="math inline">\(T(\vec{X})\)</span>, then <span class="math inline">\(T(\vec{X})\)</span>
+is a sufficient statistic for <span class="math inline">\(\theta\)</span> if <span class="math inline">\(\forall \vec{x} \in \mathcal X{}\)</span>,
+<span class="math inline">\(p(\vec{x}\vert{}\theta) / q(t\vert{}\theta)\)</span> is constant as a function
+of <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Niceness of the exponential family</strong> It turns out that outside of the
+exponential family, it is rare to have a sufficient statistic that is of
+smaller dimension than the size of the sample.</p>
+<p><strong>Factorisation Theorem</strong> Let <span class="math inline">\(f(\vec{x} \vert{} \theta)\)</span> denote the
+pmf/pdf of a sample <span class="math inline">\(\vec{X}\)</span>. A statistic <span class="math inline">\(T(\vec{X})\)</span> is a sufficient
+statistic for <span class="math inline">\(\theta\)</span> if and only if there exists functions
+<span class="math inline">\(g(t \vert{} \theta)\)</span> and <span class="math inline">\(h(\vec{x})\)</span> such that
+<span class="math inline">\(\forall \vec{x} \in \mathcal X{}\)</span>, <span class="math inline">\(\forall \theta \in \Theta\)</span>
+<span class="math display">\[f(\vec{x} \vert{} \theta) = g(T(\vec{x}) \vert{} \theta)h(\vec{x}).\]</span></p>
+<p>This theorem shows that the identity is a sufficient statistic. It is
+straightforward to show from this that any bijection of a sufficient
+statistic is a sufficient statistic.</p>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid observations from a pmf/pdf
+<span class="math inline">\(f(x \vert{} \theta)\)</span> from an exponential family
+<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right),\]</span>
+where <span class="math inline">\(\vec{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
+<span class="math inline">\(\vec{T}(\vec{X})\)</span> defined by
+<span class="math display">\[T_i(\vec{X}) = \sum_{j=1}^k t_i(\vec{X}_j)\]</span> is a sufficient statistic
+for <span class="math inline">\(\vec{\theta}\)</span>.</p>
+<p><strong>Minimal sufficient statistic</strong> A sufficient statistic <span class="math inline">\(T(\vec{X})\)</span> is
+called a <em>minimal sufficient statistic</em> if, for any other sufficient
+statistic <span class="math inline">\(T&#39;(\vec{X})\)</span>, <span class="math inline">\(T\)</span> is a function of <span class="math inline">\(T&#39;\)</span>.</p>
+<p>By ‘function of’ we mean that if <span class="math inline">\(T&#39;(\vec{x}) = T&#39;(\vec{y})\)</span> then
+<span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span> – <span class="math inline">\(T\)</span> varies with respect to <span class="math inline">\(X\)</span> only insofar
+as it varies with <span class="math inline">\(T&#39;\)</span>. This means that each tile of the partition of
+the sample space according to the image of <span class="math inline">\(T&#39;\)</span> is a subset of some tile
+in the partition according to <span class="math inline">\(T\)</span>. This means that minimal sufficient
+statistics provide the coarsest possible tiling of the sample space and
+thus are the sufficient statistics that provide the greatest data
+reduction.</p>
+<p>Let <span class="math inline">\(f(\vec{x} \vert{} \theta)\)</span> be the pmf/pdf of a sample <span class="math inline">\(\vec{X}\)</span>.
+Suppose there exists a function <span class="math inline">\(T(\vec{X})\)</span> such that
+<span class="math inline">\(\forall \vec{x}, \vec{y} \in \mathcal X{}\)</span> the ratio
+<span class="math inline">\(f(\vec{x}\vert{}\theta)/f(\vec{y}\vert{}\theta)\)</span> is constant as a
+function of <span class="math inline">\(\theta\)</span> if an only if <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>. Then
+<span class="math inline">\(T(\vec{X})\)</span> is a minimal sufficient statistic for <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Necessary Statistic</strong> A statistic is <em>necessary</em> if it can be written as
+a function of every sufficient statistic.</p>
+<p>A statistic is minimal sufficient if and only if it is a necessary and
+sufficient statistic.</p>
+<p><strong>Ancillary Statistic</strong> A statistic <span class="math inline">\(S(\vec{X})\)</span> whose distribution does
+not depend on the parameter <span class="math inline">\(\theta\)</span> is called an <em>ancillary statistic</em>.</p>
+<p><strong>First Order Ancillary</strong> A statistic <span class="math inline">\(V(\vec{X})\)</span> is <em>first order
+ancillary</em> if <span class="math inline">\(\E{}[V(\vec{X})]\)</span> is independent of <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Complete Statistic</strong> Let <span class="math inline">\(f(t \vert{} \theta)\)</span> be a family of pdfs or
+pmfs for a statistic <span class="math inline">\(T(\vec{X})\)</span>. The family of probability
+distributions is called <em>complete</em> if for every (measurable) function
+<span class="math inline">\(g\)</span>
+<span class="math display">\[\E{}[g(T)] = 0  \,\, \forall \theta \implies \P{}(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
+Equivalently, <span class="math inline">\(T(\vec{X})\)</span> is called a <span class="math inline">\(\emph{complete statistic}\)</span>.</p>
+<p>(It is left unsaid that the function <span class="math inline">\(g\)</span> must be independent of
+<span class="math inline">\(\theta\)</span>.)</p>
+<p><strong>Basu’s Theorem</strong> If <span class="math inline">\(T(\vec{X})\)</span> is a complete and minimal sufficient
+statistic, then <span class="math inline">\(T(\vec{X})\)</span> is independent of every ancillary
+statistic.</p>
+<p><strong>Complete statistics in the exponential family</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be
+iid observations from a pmf/pdf <span class="math inline">\(f(x \vert{} \theta)\)</span> from an
+exponential family
+<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right),\]</span>
+where <span class="math inline">\(\vec{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
+<span class="math inline">\(\vec{T}(\vec{X})\)</span> defined by
+<span class="math display">\[T_i(\vec{X}) = \sum_{j=1}^k t_i(\vec{X}_j)\]</span> is complete if
+<span class="math inline">\(\{(w_1(\vec{\theta}), \dots, w_n(\vec{\theta}))\}\)</span> contains an open set
+in <span class="math inline">\(\R{}^k\)</span>.</p>
+<p>The open set criteria excludes curved exponential families.</p>
+<p>If a minimal sufficient statistic exists, then every complete statistic
+is minimal sufficient.</p>
+</div>
+<div id="the-likelihood-principle" class="section level3">
+<h3>The Likelihood Principle</h3>
+<p><strong>Likelihood</strong> Let <span class="math inline">\(f(\vec{x}\vert{} \theta)\)</span> denote the pmf/pdf of the
+sample <span class="math inline">\(\vec{X}\)</span>. Then the <em>likelihood function</em>, given an observation
+<span class="math inline">\(\vec{X} = \vec{x}\)</span>, is
+<span class="math display">\[L(\theta \vert{} \vec{x}) = f(\vec{x} \vert{} \theta)\]</span> as a function
+of <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Likelihood Principle</strong> If <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> are two sample points
+such that <span class="math inline">\(L(\theta \vert{} \vec{x})\)</span> is proportional to
+<span class="math inline">\(L(\theta \vert{} \vec{y})\)</span>, that is, there exists a constant
+<span class="math inline">\(C(\vec{x}, \vec{y})\)</span> such that
+<span class="math display">\[L(\theta \vert{} \vec{x}) = C(\vec{x}, \vec{y})L(\theta \vert{} \vec{y}) \quad \forall \theta,\]</span>
+then the conclusions drawn from <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> should be
+identical.</p>
+</div>
+<div id="a-slightly-more-formal-construction" class="section level3">
+<h3>A Slightly More Formal Construction</h3>
+<p><strong>Experiment</strong> We define an <strong>experiment</strong> <span class="math inline">\(E\)</span> to be a triple
+<span class="math inline">\((\vec{X}, \theta, f(\vec{x}\vert{}\theta))\)</span>, where <span class="math inline">\(\vec{X}\)</span> is a
+random vector with pmf/pdf <span class="math inline">\(f\)</span>.<br />
+</p>
+<p>Knowing what experiment <span class="math inline">\(E\)</span> was performed, an experimenter will observer
+<span class="math inline">\(\vec{X} = \vec{x}\)</span>. The conclusions they draw about <span class="math inline">\(\theta\)</span> will be
+denoted <span class="math inline">\(\text{Ev}(E, \vec{x})\)</span>, which stands for <em>the evidence about
+<span class="math inline">\(\theta\)</span> arising from <span class="math inline">\(E\)</span> and <span class="math inline">\(\vec{x}\)</span></em>.</p>
+<p><strong>Formal Sufficiency Principle</strong> Consider an experiment
+<span class="math inline">\(E = (\vec{X}, \theta, f(\vec{x}\vert{}\theta))\)</span> and suppose that
+<span class="math inline">\(T(\vec{X})\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(\vec{x}\)</span> and
+<span class="math inline">\(\vec{y}\)</span> are sample points satisfying <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>, then
+<span class="math inline">\(\text{Ev}(E, \vec{x}) = \text{Ev}(E, \vec{y})\)</span>.</p>
+<p><strong>Conditionality Principle</strong> Suppose that
+<span class="math inline">\(E_1 = \{X_1, \theta, f_1(x_1\vert{} \theta)\}\)</span> and
+<span class="math inline">\(E_2 = \{X_2, \theta, f_2(x_2\vert{} \theta)\}\)</span> are two experiments,
+where only the unknown parameter <span class="math inline">\(\theta\)</span> need be common between the two
+experiments. Consider the mixed experiment in which the random variable
+<span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(\P{}(J = 1) = \P{}(J = 2) = \frac12\)</span>
+(independent of <span class="math inline">\(\vec{X}_1, \vec{X}_2, \theta\)</span>), and then the experiment
+<span class="math inline">\(E_J\)</span> is performed. Formally, the experiment performed is
+<span class="math inline">\(E^* = (\vec{X}^*, \theta, f(\vec{x}^* \vert{} \theta))\)</span>, where
+<span class="math inline">\(\vec{X}^* = (j, \vec{X})j\)</span> and
+<span class="math inline">\(f^*(\vec{x}^* \vert{} \theta) = f^*((j, \vec{x}_j)\vert{} \theta) = \frac12 f_j(\vec{x}_j \vert{}\theta)\)</span>.
+Then <span class="math display">\[\text{Ev}(E^*, (j, \vec{x}_j)) = \text{Ev}(E_j, \vec{x_j}).\]</span>
+That is, information about <span class="math inline">\(\theta\)</span> depends only on the experiment run
+(not on the fact that the particular experiment was chosen).</p>
+<p><strong>Formal Likelihood Principle</strong> Suppose that we have two
+experiments, <span class="math inline">\(E_1 = (\vec{X}_1, \theta, f_1(\vec{x}_1 \vert{} \theta))\)</span>
+and <span class="math inline">\(E_2 = (\vec{X}_2, \theta, f_2(\vec{x}_2 \vert{} \theta))\)</span> where the
+unknown parameter <span class="math inline">\(\theta\)</span> is the same in both experiments. Suppose that
+<span class="math inline">\(\vec{x}_1^*\)</span> and <span class="math inline">\(\vec{x}_2^*\)</span> are sample points from <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span>
+respectively, such that
+<span class="math display">\[L(\theta \vert{} \vec{x}_2^*) = CL(\theta \vert{} \vec{x}_1^*)\]</span> for
+all <span class="math inline">\(\theta\)</span> and for some constant <span class="math inline">\(C(\vec{x}_1^*, \vec{x}_2^*)\)</span> that is
+independent of <span class="math inline">\(\theta\)</span>. Then
+<span class="math display">\[\text{Ev}(E_1, \vec{x}_1^*) = \text{Ev}(E_2, \vec{x}_2^*).\]</span></p>
+<p>Note that this is more general from the other likelihood principle since
+it concerns two experiments (that we can of course set to be equal).</p>
+<p><strong>Likelihood Principle Corollary</strong> If
+<span class="math inline">\(E = (\vec{X}, \theta, f(\vec{x} \vert{} \theta))\)</span> is an experiment then
+<span class="math inline">\(\text{Ev}(E, \vec{x})\)</span> should depend on <span class="math inline">\(E\)</span> and <span class="math inline">\(\vec{x}\)</span> only through
+<span class="math inline">\(L(\theta \vert{} \vec{x})\)</span>.</p>
+<p><strong>Birnbaum’s Theorem</strong> The Formal Likelihood Principle follows from the
+Formal Sufficiency Principle and the Conditionality Principle. The
+converse is also true.</p>
+<p>Many common statistical procedures violate the Formal Likelihood
+Principle – the topic of the applicability of these principles is not
+settled. For instance, checking the residuals of a model (to grade the
+model) violates the Sufficiency Principle. These notions are model
+dependent, so may not be applicable until <em>after</em> we have decided on a
+model.</p>
+</div>
+<div id="the-equivariance-principle" class="section level3">
+<h3>The Equivariance Principle</h3>
+<p><strong>Measurement Equivariance</strong> Inferences should not depend on the
+measurement scale used.</p>
+<p><strong>Formal Invariance</strong> If two inference problems have the same formal
+structure, in terms of the mathematical model used, then the same
+inference procedure should be used, regardless of the physical
+realisation.</p>
+<p><strong>Equivariance Principle</strong> If <span class="math inline">\(\vec{Y} = g(\vec{X})\)</span> is a change of
+measurement scale such that the model <span class="math inline">\(\vec{Y}\)</span> has the same formal
+structure as the model <span class="math inline">\(\vec{X}\)</span>, then an inference procedure should be
+both measurement equivariant and formally invariant.</p>
+<p>Let <span class="math inline">\(\mathcal{F} = \{f(\vec{x} \vert{} \theta): \theta \in \Theta\}\)</span> be
+a set of pdfs or pmfs for <span class="math inline">\(\vec{X}\)</span>, and let <span class="math inline">\(\mathcal{G}\)</span> be group of
+transformations on the sample space <span class="math inline">\(\mathcal X{}\)</span>. Then <span class="math inline">\(\mathcal{F}\)</span> is
+<em>invariant under the group</em> <span class="math inline">\(\mathcal{G}\)</span> if for every
+<span class="math inline">\(\theta \in \Theta\)</span> and <span class="math inline">\(g \in \mathcal{G}\)</span> there exists a unique
+<span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\vec{Y} = g(\vec{X})\)</span> has the
+distribution <span class="math inline">\(f(\vec{y} \vert{} \theta&#39;)\)</span> if <span class="math inline">\(\vec{X}\)</span> has the
+distribution <span class="math inline">\(f(\vec{x} \vert{} \theta&#39;)\)</span>.</p>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">

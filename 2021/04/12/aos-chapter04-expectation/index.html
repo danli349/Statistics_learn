@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">64 min read</span>
+    <span class="article-duration">65 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -296,13 +296,97 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 \begin{array}{ll}
 \text{Distribution} &amp; \text{mgf} \\
 \hline
+\text{Geometric}(p)   &amp;\frac{pe^t}{1-(1 - p)e^t} \quad k\in\{1,2,3,\cdots\} \quad\text {or}\quad \frac{p}{1-(1 - p)e^t} \quad k\in\{0,1,2,3,\cdots\}         \\
 \text{Bernoulli}(p)   &amp; pe^t + (1 - p)         \\
 \text{Binomial}(n, p) &amp; (pe^t + (1 - p))^n     \\
 \text{Poisson}(\lambda) &amp; e^{\lambda(e^t - 1)} \\
+\text{Exponential}(\beta) &amp; \frac{1}{1-\beta t} \quad (t-\frac{1}{\beta}&lt;0)\\
+\text{Gamma}(\alpha,\beta) &amp;  \left(\frac{1}{1-\beta t}\right)^{\alpha} \quad (t-\frac{1}{\beta}&lt;0)\\
+\text{standard Normal}(0, 1) &amp; \exp\left(\frac{t^2}{2} \right) \\
 \text{Normal}(\mu, \sigma^2) &amp; \exp\left(\mu t + \frac{\sigma^2 t^2}{2} \right) \\
-\text{Gamma}(\alpha, \beta) &amp; \left( \frac{1}{1-\beta t} \right)^\alpha \text{ for } t &lt; 1/\beta
+\chi^2(k) &amp; \left(\frac{1}{1-2 t}\right)^{k/2}\quad(t&lt;\frac{1}{2}) \\
+\text{non-central  }\chi^2(k,\lambda) &amp; \exp\left(\frac{\lambda t}{1-2t}\right)\left(\frac{1}{1-2 t}\right)^{k/2}\quad (2t&lt;1)\\
 \end{array}
 \]</span></p>
+<p><strong>Geometric</strong> <span class="math display">\[M(t)=\mathbb E[e^{tX}]=\sum_{k=1}^{\infty}e^{tk}p(1-p)^{k-1}\\
+=pe^t\sum_{k=1}^{\infty}e^{t(k-1)}(1-p)^{k-1}=pe^t\frac{1}{1-e^t(1-p)}\\
+\quad k\in\{1,2,3,\cdots\}\\
+\text{and}\quad e^t(1-p)&lt;1\]</span></p>
+<p><span class="math display">\[M(t)=\sum_{k=0}^{\infty}e^{tk}p(1-p)^{k}=p\sum_{k=0}^{\infty}e^{tk}(1-p)^{k}=\frac{p}{1-e^t(1-p)}\\
+\quad k\in\{0,1,2,3,\cdots\}\\
+\text{and}\quad e^t(1-p)&lt;1\]</span></p>
+<p><strong>Binomial</strong> <span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\sum_{k=0}^{n}e^{tk}{n\choose k}p^k(1-p)^{n-k}\\
+&amp;=\sum_{k=0}^{n}{n\choose k}(e^{t}p)^k(1-p)^{n-k}\\
+&amp;=[pe^{t}+(1-p)]^n
+\end{align}\]</span></p>
+<p><strong>Poisson</strong> <span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\sum_{x=0}^{\infty}e^{tx}\frac{\lambda^x e^{-\lambda}}{x!}\\
+&amp;=e^{-\lambda}\sum_{x=0}^{\infty}\frac{(\lambda e^t)^x}{x!}\\
+&amp;=e^{-\lambda}e^{\lambda e^t}\\
+&amp;=e^{\lambda (e^t-1)}\\
+\end{align}\]</span></p>
+<p><strong>Exponential</strong>
+<span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\int_{0}^{\infty}e^{tx}\frac{1}{\beta}e^{-\frac{1}{\beta}x}dx\\
+&amp;=\frac{1}{\beta}\int_{0}^{\infty}e^{(t-\frac{1}{\beta})x}dx\\
+&amp;=\frac{1}{\beta}\frac{1}{t-\frac{1}{\beta}}(-1)\quad (t-\frac{1}{\beta}&lt;0)\\
+&amp;=\frac{1}{1-\beta t}
+\end{align}\]</span></p>
+<p><strong>Gamma</strong>
+<span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\int_{0}^{\infty}e^{tx}\frac{1}{\Gamma(\alpha)\beta^{\alpha}}e^{-\frac{x}{\beta}}x^{\alpha-1}dx\\
+&amp;=\int_{0}^{\infty}\frac{1}{\Gamma(\alpha)\beta^{\alpha}}e^{-(\frac{1}{\beta}-t)x}x^{\alpha-1}dx\\
+&amp;=\frac{1}{\Gamma(\alpha)\beta^{\alpha}}\int_{0}^{\infty}e^{-(\frac{1}{\beta}-t)x}x^{\alpha-1}dx\\
+&amp;=\frac{1}{\Gamma(\alpha)\beta^{\alpha}}\frac{\Gamma(\alpha)}{(\frac{1}{\beta}-t)^{\alpha}}\\
+&amp;=\left(\frac{1}{1-\beta t}\right)^{\alpha}\\
+\end{align}\]</span></p>
+<p><strong>standard Normal</strong> <span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tz}]\\
+&amp;=\int e^{tz}\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}z^2}dz\\
+&amp;=\frac{1}{\sqrt{2\pi}}\int \exp\left(tz-\frac{1}{2}z^2\right)dz\\
+&amp;=\frac{1}{\sqrt{2\pi}}\int \exp\left(-\frac{1}{2}(z-t)^2\right)\exp\left(\frac{1}{2}t^2\right)dz\\
+&amp;=e^{\frac{1}{2}t^2}\frac{1}{\sqrt{2\pi}}\int \exp\left(-\frac{1}{2}(z-t)^2\right)dz\\
+&amp;=e^{\frac{1}{2}t^2}
+\end{align}\]</span></p>
+<p><strong>Normal</strong> <span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tx}]\\
+&amp;=\int e^{tx}\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(x-\mu)^2/\sigma^2}dx\\
+&amp;=\int e^{t(z\sigma+\mu)}\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}z^2}dz\\
+&amp;=e^{\mu t}\int e^{z\sigma t}\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}z^2}dz\\
+&amp;=e^{\mu t}e^{\frac{1}{2}\sigma^2t^2}\\
+\end{align}\]</span> The final equality follows in view of the final equality of the equation above where the dummy variable <span class="math inline">\(t\)</span> can be replace by <span class="math inline">\(\sigma t\)</span>.</p>
+<p><strong><span class="math inline">\(\chi^2\)</span></strong> Since <span class="math inline">\(\chi^2\)</span> is a <span class="math inline">\(\Gamma(k/2,2)\)</span> then <span class="math display">\[\begin{align}
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\int_{0}^{\infty}e^{tx}\frac{1}{\Gamma(k/2)2^{k/2}}e^{-\frac{x}{2}}x^{k/2-1}dx\\
+&amp;=\left(\frac{1}{1-2 t}\right)^{k/2}\quad(t&lt;\frac{1}{2})\\
+\end{align}\]</span></p>
+<p><strong>non-central chi-squared distribution</strong> Let <span class="math inline">\(Z\)</span> have a standard normal distribution, with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>, then <span class="math inline">\((Z+\mu)^2\)</span> has a noncentral chi-squared distribution with one degree of freedom. The moment-generating function of <span class="math inline">\((Z+\mu)^2\)</span> then is <span class="math display">\[\begin{align} 
+M(t)&amp;=\mathbb E[e^{tX}]\\
+&amp;=\mathbb E[e^{t(Z+\mu)^2}]\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}e^{t(z+\mu)^2}e^{-z^2/2}dz\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\exp(tz^2+2t\mu z-z^2/2+t\mu^2)dz\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\exp\left(-(\frac{1}{2}-t)z^2+2t\mu z-z^2/2+t\mu^2\right)dz\\
+&amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\exp\left(-(\frac{1}{2}-t)(z-\frac{2\mu t}{1-2t})^2+t\mu^2+\frac{2\mu^2 t^2}{1-2t}\right)dz\\
+&amp;=\exp\left(t\mu^2+\frac{2\mu^2 t^2}{1-2t}\right)\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\exp\left(-(\frac{1}{2}-t)(z-\frac{2\mu t}{1-2t})^2\right)dz\\
+&amp;=\exp\left(t\mu^2+\frac{2\mu^2 t^2}{1-2t}\right)\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}\frac{(z-\frac{2\mu t}{1-2t})^2}{(1-2t)^{-1}}\right)dz\\
+&amp;=\exp\left(t\mu^2+\frac{2\mu^2 t^2}{1-2t}\right)(1-2t)^{-1/2}\\
+&amp;=\exp\left(\frac{t\mu^2}{1-2t}\right)(1-2t)^{-1/2}\\
+\end{align}\]</span></p>
+<p>A noncentral chi-squared distributed random variable <span class="math inline">\(\chi^2_{k,\lambda}\)</span> with <span class="math inline">\(k\)</span> df and parameter <span class="math display">\[\lambda=\sum_{i=1}^{k}\mu^2_i\]</span> is the sum of the squares of <span class="math inline">\(k\)</span> independent normal variables <span class="math inline">\(X_i=Z_i+\mu_i,\quad i=1,\cdots,k.\)</span> That is,
+<span class="math display">\[\chi^2_{k,\lambda}=\sum_{i=1}^{k}X_i^2=\sum_{i=1}^{k}(Z_i+\mu_i)^2\]</span> Because all terms are jointly independent and using the above result, we have <span class="math display">\[\begin{align} 
+M(t)&amp;=\mathbb E[e^{t\chi^2_{k,\lambda}}]\\
+&amp;=\mathbb E[e^{t\sum_{i=1}^{k}(Z_i+\mu_i)^2}]\\
+&amp;=\mathbb E\left[\prod_{i}\exp\left[t(Z_i+\mu_i)^2\right]\right]\\
+&amp;=\prod_{i}\mathbb E\left[\exp\left[t(Z_i+\mu_i)^2\right]\right]\\
+&amp;=\prod_{i}\exp\left(\frac{t\mu_i^2}{1-2t}\right)(1-2t)^{-1/2}\\
+&amp;=\exp\left(\frac{t\sum_i\mu_i^2}{1-2t}\right)(1-2t)^{-k/2}\\
+&amp;=\exp\left(\frac{t\lambda}{1-2t}\right)(1-2t)^{-k/2} \quad (2t&lt;1)\\
+\end{align}\]</span> <a href="https://stats.stackexchange.com/questions/168371/moment-generating-function-mgf-of-non-central-chi-squared-distribution">ref</a></p>
 </div>
 </div>
 <div id="exercises" class="section level3">
