@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">65 min read</span>
+    <span class="article-duration">67 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -185,11 +185,15 @@
 \text{Normal}(\mu, \sigma^2) &amp; \mu           &amp; \sigma^2       \\
 \text{Exponential}(\beta)    &amp; \beta         &amp; \beta^2        \\
 \text{Gamma}(\alpha, \beta)  &amp; \alpha \beta  &amp; \alpha \beta^2 \\
+\text{Inverse-Gamma}(\alpha, \beta)  &amp; \frac{1}{(\alpha-1)\beta}  &amp; \frac{1}{(\alpha-1)^2(\alpha-2)\beta^2} \\
 \text{Beta}(\alpha, \beta)   &amp; \alpha / (\alpha + \beta) &amp; \alpha \beta / ((\alpha + \beta)^2 (\alpha + \beta + 1)) \\
 t_\nu                        &amp; 0 \text{ (if } \nu &gt; 1 \text{)} &amp; \nu / (\nu - 2) \text{ (if } \nu &gt; 2 \text{)} \\
-\chi^2_p                     &amp; p             &amp; 2p             \\
+\chi^2_k                     &amp; k             &amp; 2k             \\
+\text{non-central  }\chi^2_{k,\lambda} &amp; k+\lambda &amp;2(k+2\lambda) \\
+\text{Inverse }\chi^2 &amp;\frac{1}{k-2}\quad (k&gt;2) &amp; \frac{2}{(k-2)^2(k-4)} \quad (k&gt;4)\\
 \text{Multinomial}(n, p)     &amp; np            &amp; \text{see below} \\
 \text{Multivariate Nornal}(\mu, \Sigma) &amp; \mu &amp; \Sigma \\
+\text{Logistic}(\mu, s) &amp; \mu &amp; \frac{s^2\pi^2}{3} \\
 \end{array}
 \]</span></p>
 <p>The last two entries in the table are multivariate models which involve a random vector <span class="math inline">\(X\)</span> of the form</p>
@@ -306,6 +310,7 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 \text{Normal}(\mu, \sigma^2) &amp; \exp\left(\mu t + \frac{\sigma^2 t^2}{2} \right) \\
 \chi^2(k) &amp; \left(\frac{1}{1-2 t}\right)^{k/2}\quad(t&lt;\frac{1}{2}) \\
 \text{non-central  }\chi^2(k,\lambda) &amp; \exp\left(\frac{\lambda t}{1-2t}\right)\left(\frac{1}{1-2 t}\right)^{k/2}\quad (2t&lt;1)\\
+\text{Logistic}(\mu, s)&amp; e^{\mu t}B(1-st, 1+st)\quad  t\in(-1/s,1/s)\\
 \end{array}
 \]</span></p>
 <p><strong>Geometric</strong> <span class="math display">\[M(t)=\mathbb E[e^{tX}]=\sum_{k=1}^{\infty}e^{tk}p(1-p)^{k-1}\\
@@ -377,8 +382,12 @@ M(t)&amp;=\mathbb E[e^{tX}]\\
 &amp;=\exp\left(t\mu^2+\frac{2\mu^2 t^2}{1-2t}\right)(1-2t)^{-1/2}\\
 &amp;=\exp\left(\frac{t\mu^2}{1-2t}\right)(1-2t)^{-1/2}\\
 \end{align}\]</span></p>
-<p>A noncentral chi-squared distributed random variable <span class="math inline">\(\chi^2_{k,\lambda}\)</span> with <span class="math inline">\(k\)</span> df and parameter <span class="math display">\[\lambda=\sum_{i=1}^{k}\mu^2_i\]</span> is the sum of the squares of <span class="math inline">\(k\)</span> independent normal variables <span class="math inline">\(X_i=Z_i+\mu_i,\quad i=1,\cdots,k.\)</span> That is,
-<span class="math display">\[\chi^2_{k,\lambda}=\sum_{i=1}^{k}X_i^2=\sum_{i=1}^{k}(Z_i+\mu_i)^2\]</span> Because all terms are jointly independent and using the above result, we have <span class="math display">\[\begin{align} 
+<p>A noncentral chi-squared distributed random variable <span class="math inline">\(\chi^2_{k,\lambda}\)</span> with <span class="math inline">\(k\)</span> df and parameter <span class="math display">\[\lambda=\sum_{i=1}^{k}\mu^2_i\]</span> <span class="math inline">\(\lambda\)</span> is sometimes called the <strong>noncentrality parameter</strong>. A noncentral chi-squared distributed random variable is the sum of the squares of <span class="math inline">\(k\)</span> independent normal variables <span class="math inline">\(X_i=Z_i+\mu_i,\quad i=1,\cdots,k.\)</span> That is,
+<span class="math display">\[\chi^2_{k,\lambda}=\sum_{i=1}^{k}X_i^2=\sum_{i=1}^{k}(Z_i+\mu_i)^2\]</span> This distribution arises in multivariate statistics as a derivative of the multivariate normal distribution. While the central chi-squared distribution is the squared norm of a random vector with <span class="math inline">\(N(\mathbf 0_{k},\mathbf I_{k})\)</span> distribution (i.e., the squared distance from the origin to a point taken at random from that distribution), the non-central <span class="math inline">\(\chi^{2}\)</span> is the squared norm of a random vector with <span class="math inline">\(N(\boldsymbol\mu,\mathbf I_{k})\)</span> distribution. Here <span class="math inline">\(\mathbf 0_{k}\)</span> is a zero vector of length <span class="math inline">\(k\)</span>, <span class="math inline">\(\boldsymbol\mu =(\mu_{1},\ldots ,\mu_{k})\)</span> and <span class="math inline">\(\mathbf I_{k}\)</span> is the identity matrix of size <span class="math inline">\(k\)</span>.
+The probability density function (pdf) is given by</p>
+<p><span class="math display">\[f_{X}(x;k,\lambda)=\sum_{i=0}^{\infty}\frac {e^{-\lambda /2}(\lambda /2)^{i}}{i!}f_{Y_{k+2i}}(x),\]</span>
+where <span class="math inline">\(Y_{q}\)</span> is distributed as chi-squared with <span class="math inline">\(q\)</span> degrees of freedom. From this representation, the noncentral chi-squared distribution is seen to be a Poisson-weighted mixture of central chi-squared distributions. Suppose that a random variable <span class="math inline">\(J\)</span> has a Poisson distribution with mean <span class="math inline">\(\lambda/2\)</span>, and the conditional distribution of <span class="math inline">\(Z\)</span> given <span class="math inline">\(J = i\)</span> is chi-squared with <span class="math inline">\(k + 2i\)</span> degrees of freedom. Then the unconditional distribution of <span class="math inline">\(Z\)</span> is non-central chi-squared with <span class="math inline">\(k\)</span> degrees of freedom, and non-centrality parameter <span class="math inline">\(\lambda\)</span>.</p>
+<p>Because all terms are jointly independent and using the above result, we have <span class="math display">\[\begin{align} 
 M(t)&amp;=\mathbb E[e^{t\chi^2_{k,\lambda}}]\\
 &amp;=\mathbb E[e^{t\sum_{i=1}^{k}(Z_i+\mu_i)^2}]\\
 &amp;=\mathbb E\left[\prod_{i}\exp\left[t(Z_i+\mu_i)^2\right]\right]\\
@@ -387,6 +396,35 @@ M(t)&amp;=\mathbb E[e^{t\chi^2_{k,\lambda}}]\\
 &amp;=\exp\left(\frac{t\sum_i\mu_i^2}{1-2t}\right)(1-2t)^{-k/2}\\
 &amp;=\exp\left(\frac{t\lambda}{1-2t}\right)(1-2t)^{-k/2} \quad (2t&lt;1)\\
 \end{align}\]</span> <a href="https://stats.stackexchange.com/questions/168371/moment-generating-function-mgf-of-non-central-chi-squared-distribution">ref</a></p>
+<p><strong>Logistic</strong> When the location parameter <span class="math inline">\(\mu\)</span> is <span class="math inline">\(0\)</span> and the scale parameter <span class="math inline">\(s\)</span> is <span class="math inline">\(1\)</span>, then the probability density function of the logistic distribution is given by <span class="math display">\[ \begin{align}
+f(x;0,1)&amp;=\frac{e^{-x}}{(1+e^{-x})^2}\\
+&amp;=\frac{1}{(e^{x/2}+e^{-x/2})^2}\\
+&amp;=\frac{1}{4}\text{sech}^{2}\left(\frac{x}{2}\right).
+\end{align}\]</span></p>
+<p>The mgf is
+<span class="math display">\[ \begin{align}
+M(t)&amp;=\mathbb E[e^{tx}]\\
+&amp;=\int_{-\infty}^{\infty}e^{tx}\frac{e^{-x}}{(1+e^{-x})^2}dx\\
+&amp;=\int_{1}^{0}-\left(\frac{1}{u}-1\right)^t du\quad u=\frac{1}{1+e^x}\quad du=-\frac{e^x}{(1+e^x)^2}\\
+&amp;=\int_{0}^{1}\left(\frac{1}{u}-1\right)^t du\\
+&amp;=\int_{0}^{1}u^{-t}\left(1-u\right)^t du\\
+&amp;=B(1-t, 1+t)\\
+\end{align}\]</span></p>
+<p>Thus in general the density is:</p>
+<p><span class="math display">\[\begin{align}
+f(x;\mu,s)&amp;=\frac{e^{-(x-\mu)/s}}{s\left(1+e^{-(x-\mu )/s}\right)^2}\\
+&amp;=\frac{1}{s\left(e^{(x-\mu)/(2s)}+e^{-(x-\mu )/(2s)}\right)^2}\\
+&amp;=\frac{1}{4s}\text{sech}^{2}\left(\frac {x-\mu}{2s}\right).
+\end{align}\]</span></p>
+<p>The mgf is
+<span class="math display">\[ \begin{align}
+M(t)&amp;=\mathbb E[e^{tx}]\\
+&amp;=\int_{-\infty}^{\infty}e^{tx}\frac{e^{(x-\mu)/s}}{s\left(e^{(x-\mu)/s}+1\right)^2}dx\\
+&amp;=\int_{1}^{0}-\left(\frac{1}{u}-1\right)^{st}e^{\mu t} du\quad u=\frac{1}{1+e^{(x-\mu)/s}}\quad du=-\frac{e^{(x-\mu)/s}}{s\left(e^{(x-\mu)/s}+1\right)^2}\\
+&amp;=\int_{0}^{1}\left(\frac{1}{u}-1\right)^{st} e^{\mu t}du\\
+&amp;=e^{\mu t}\int_{0}^{1}u^{-st}\left(1-u\right)^{st} du\\
+&amp;=e^{\mu t}B(1-st, 1+st)\\
+\end{align}\]</span></p>
 </div>
 </div>
 <div id="exercises" class="section level3">

@@ -750,13 +750,13 @@ sufficient statistic.</p>
 <p><strong>Ancillary Statistic</strong> A statistic <span class="math inline">\(S(\vec{X})\)</span> whose distribution does
 not depend on the parameter <span class="math inline">\(\theta\)</span> is called an <em>ancillary statistic</em>.</p>
 <p><strong>First Order Ancillary</strong> A statistic <span class="math inline">\(V(\vec{X})\)</span> is <em>first order
-ancillary</em> if <span class="math inline">\(\E{}[V(\vec{X})]\)</span> is independent of <span class="math inline">\(\theta\)</span>.</p>
+ancillary</em> if <span class="math inline">\(\mathbb E[V(\vec{X})]\)</span> is independent of <span class="math inline">\(\theta\)</span>.</p>
 <p><strong>Complete Statistic</strong> Let <span class="math inline">\(f(t \vert{} \theta)\)</span> be a family of pdfs or
 pmfs for a statistic <span class="math inline">\(T(\vec{X})\)</span>. The family of probability
 distributions is called <em>complete</em> if for every (measurable) function
 <span class="math inline">\(g\)</span>
-<span class="math display">\[\E{}[g(T)] = 0  \,\, \forall \theta \implies \P{}(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
-Equivalently, <span class="math inline">\(T(\vec{X})\)</span> is called a <span class="math inline">\(\emph{complete statistic}\)</span>.</p>
+<span class="math display">\[\mathbb E[g(T)] = 0  \,\, \forall \theta \implies P(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
+Equivalently, <span class="math inline">\(T(\vec{X})\)</span> is called a <strong>complete statistic</strong>.</p>
 <p>(It is left unsaid that the function <span class="math inline">\(g\)</span> must be independent of
 <span class="math inline">\(\theta\)</span>.)</p>
 <p><strong>Basu’s Theorem</strong> If <span class="math inline">\(T(\vec{X})\)</span> is a complete and minimal sufficient
@@ -770,7 +770,7 @@ where <span class="math inline">\(\vec{\theta} = (\theta_1, \dots, \theta_d)\)</
 <span class="math inline">\(\vec{T}(\vec{X})\)</span> defined by
 <span class="math display">\[T_i(\vec{X}) = \sum_{j=1}^k t_i(\vec{X}_j)\]</span> is complete if
 <span class="math inline">\(\{(w_1(\vec{\theta}), \dots, w_n(\vec{\theta}))\}\)</span> contains an open set
-in <span class="math inline">\(\R{}^k\)</span>.</p>
+in <span class="math inline">\(\mathbb R^k\)</span>.</p>
 <p>The open set criteria excludes curved exponential families.</p>
 <p>If a minimal sufficient statistic exists, then every complete statistic
 is minimal sufficient.</p>
@@ -810,7 +810,7 @@ denoted <span class="math inline">\(\text{Ev}(E, \vec{x})\)</span>, which stands
 <span class="math inline">\(E_2 = \{X_2, \theta, f_2(x_2\vert{} \theta)\}\)</span> are two experiments,
 where only the unknown parameter <span class="math inline">\(\theta\)</span> need be common between the two
 experiments. Consider the mixed experiment in which the random variable
-<span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(\P{}(J = 1) = \P{}(J = 2) = \frac12\)</span>
+<span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(P(J = 1) = P(J = 2) = \frac12\)</span>
 (independent of <span class="math inline">\(\vec{X}_1, \vec{X}_2, \theta\)</span>), and then the experiment
 <span class="math inline">\(E_J\)</span> is performed. Formally, the experiment performed is
 <span class="math inline">\(E^* = (\vec{X}^*, \theta, f(\vec{x}^* \vert{} \theta))\)</span>, where
