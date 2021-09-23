@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">25 min read</span>
+    <span class="article-duration">28 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -119,6 +119,8 @@
 <li><a href="#principles-of-data-reduction">6. Principles of Data Reduction</a>
 <ul>
 <li><a href="#the-sufficiency-principle">The Sufficiency Principle</a></li>
+<li><a href="#ancillary-statistic">Ancillary Statistic</a></li>
+<li><a href="#complete-statistic">Complete Statistic</a></li>
 <li><a href="#the-likelihood-principle">The Likelihood Principle</a></li>
 <li><a href="#a-slightly-more-formal-construction">A Slightly More Formal Construction</a></li>
 <li><a href="#the-equivariance-principle">The Equivariance Principle</a></li>
@@ -131,9 +133,9 @@
 <h1>3. Common Families of Distributions</h1>
 <div id="some-distributions" class="section level2">
 <h2>Some Distributions</h2>
-<p>[Normal Distribution] If <span class="math inline">\(\vec{X} \sim \text{n}(\vec{\mu}, \boldsymbol{\Sigma})\)</span> then
-<span class="math inline">\(\vec{X}\)</span> has pdf
-<span class="math display">\[f_{\vec{X}}(x_1, \dots, x_k \vert{} \vec{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\vec{ x}-\vec{\mu})^\top \boldsymbol{\Sigma}^{-1}(\vec{x}-\vec{\mu})\right)\]</span>.</p>
+<p>[Normal Distribution] If <span class="math inline">\(\mathbf{X} \sim \text{n}(\mathbf{\mu}, \boldsymbol{\Sigma})\)</span> then
+<span class="math inline">\(\mathbf{X}\)</span> has pdf
+<span class="math display">\[f_{\mathbf{X}}(x_1, \dots, x_k \vert{} \mathbf{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\mathbf{ x}-\mathbf{\mu})^\top \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\mathbf{\mu})\right)\]</span>.</p>
 <div id="chi-squared-distribution" class="section level3">
 <h3>Chi-Squared Distribution</h3>
 <p>The <em>chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom</em> has pdf
@@ -193,38 +195,38 @@ p_n^{x_n} = m! \prod_{i=1}^n \frac{p_i^{x_i}}{x_i!}\]</span> on the set of
 <span class="math inline">\(\sum_{i=1}^n x_i = m\)</span>.</p>
 <p>The marginal distributions have <span class="math inline">\(X_i \sim \text{binomial}(m, p_i)\)</span>.</p>
 <p>[Multinomial Theorem] Let <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> be positive integers and let
-<span class="math inline">\(\mathcal{A}\)</span> be the set of vectors <span class="math inline">\(\vec{x} = (x_1, \dots, x_n)\)</span> such
+<span class="math inline">\(\mathcal{A}\)</span> be the set of vectors <span class="math inline">\(\mathbf{x} = (x_1, \dots, x_n)\)</span> such
 that each <span class="math inline">\(x_i\)</span> is a nonnegative integer and <span class="math inline">\(\sum_{i=1}^n x_i = m\)</span>.
 Then for any real numbers <span class="math inline">\(p_1, \dots, p_n\)</span>,
-<span class="math display">\[(p_1 + \cdots + p_n)^m = \sum_{\vec{x} \in \mathcal{A}} \frac{m!}{x_1! \cdots x_n!} p_1^{x_1}\cdots p_n^{x_n}.\]</span></p>
+<span class="math display">\[(p_1 + \cdots + p_n)^m = \sum_{\mathbf{x} \in \mathcal{A}} \frac{m!}{x_1! \cdots x_n!} p_1^{x_1}\cdots p_n^{x_n}.\]</span></p>
 </div>
 </div>
 <div id="exponential-families" class="section level2">
 <h2>Exponential Families</h2>
 <p>[Exponential family 1] A family of pmfs/pdfs is called an <em>exponential
 family</em> if it can be expressed
-<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right)\]</span>
+<span class="math display">\[f(x|\mathbf{\theta}) = h(x)c(\mathbf{\theta})\exp\left( \sum_{i=1}^k w_i(\mathbf{\theta}) t_i(x) \right)\]</span>
 where <span class="math inline">\(h(x) \geq 0\)</span>, the <span class="math inline">\(t_i\)</span> are real valued functions of the
-observation <span class="math inline">\(x\)</span> that do not depend on <span class="math inline">\(\vec{\theta}\)</span> and
-<span class="math inline">\(c(\theta) \geq 0\)</span> and the <span class="math inline">\(w_i(\vec{\theta})\)</span> are real valued functions
-of <span class="math inline">\(\vec{\theta}\)</span> that do not depend on <span class="math inline">\(x\)</span>.</p>
+observation <span class="math inline">\(x\)</span> that do not depend on <span class="math inline">\(\mathbf{\theta}\)</span> and
+<span class="math inline">\(c(\theta) \geq 0\)</span> and the <span class="math inline">\(w_i(\mathbf{\theta})\)</span> are real valued functions
+of <span class="math inline">\(\mathbf{\theta}\)</span> that do not depend on <span class="math inline">\(x\)</span>.</p>
 <p>If <span class="math inline">\(X\)</span> is a random variable from an exponential family distribution then
-<span class="math display">\[\mathbb E{}\left[ \sum_{i=1}^k \frac{\partial w_i(\vec{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial}{\partial \theta_j} \log c(\vec{\theta})\]</span>
+<span class="math display">\[\mathbb E{}\left[ \sum_{i=1}^k \frac{\partial w_i(\mathbf{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial}{\partial \theta_j} \log c(\mathbf{\theta})\]</span>
 and
-<span class="math display">\[\mathbb V\left[ \frac{\partial w_i(\vec{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial^2}{\partial \theta_j^2} \log c(\vec{\theta}) - \mathbb E{}\left[ \sum_{i=1}^{k} \frac{\partial^2 w_i(\vec{\theta})}{\partial \theta_j^2} t_i(X) \right]\]</span></p>
+<span class="math display">\[\mathbb V\left[ \frac{\partial w_i(\mathbf{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial^2}{\partial \theta_j^2} \log c(\mathbf{\theta}) - \mathbb E{}\left[ \sum_{i=1}^{k} \frac{\partial^2 w_i(\mathbf{\theta})}{\partial \theta_j^2} t_i(X) \right]\]</span></p>
 <p>[Exponential family 2] We can write another parameterisation of the
 exponential family
-<span class="math display">\[f(x | \vec{\eta}) = h(x) c^{*}(\vec{\eta}) \exp(\vec{\eta} \cdot \vec{t}(x))\]</span>
-where <span class="math inline">\(\vec{\eta}\)</span> is called the <em>natural parameter</em> and the set
-<span class="math inline">\(\mathcal{H} = \{\vec{\eta} : \int_\mathbb R{} f(x|\eta) \text{d}x &lt; \infty \}\)</span> is called
+<span class="math display">\[f(x | \mathbf{\eta}) = h(x) c^{*}(\mathbf{\eta}) \exp(\mathbf{\eta} \cdot \mathbf{t}(x))\]</span>
+where <span class="math inline">\(\mathbf{\eta}\)</span> is called the <em>natural parameter</em> and the set
+<span class="math inline">\(\mathcal{H} = \{\mathbf{\eta} : \int_\mathbb R{} f(x|\eta) \text{d}x &lt; \infty \}\)</span> is called
 the <em>natural parameter space</em> and is convex.</p>
-<p><span class="math inline">\(\{\vec{\eta}: \vec{\eta} = \vec{w}(\vec{\theta}), \,\, \vec{\theta} \in \Theta\} \subseteq \mathcal{H}\)</span>.
+<p><span class="math inline">\(\{\mathbf{\eta}: \mathbf{\eta} = \mathbf{w}(\mathbf{\theta}), \,\, \mathbf{\theta} \in \Theta\} \subseteq \mathcal{H}\)</span>.
 So there may be more parameterisations here than previously.<br />
 </p>
 <p>The natural parameter provides a convenient mathematical formulation,
 but sometimes lacks simple interpretation.</p>
 <p>[Curved exponential family] A <em>curved exponential family</em> distribution
-is one for which the dimension of <span class="math inline">\(\vec{\theta}\)</span> is <span class="math inline">\(d &lt; k\)</span>. If <span class="math inline">\(d = k\)</span>
+is one for which the dimension of <span class="math inline">\(\mathbf{\theta}\)</span> is <span class="math inline">\(d &lt; k\)</span>. If <span class="math inline">\(d = k\)</span>
 then we have a <em>full exponential family</em>.</p>
 </div>
 <div id="location-and-scale-families" class="section level2">
@@ -427,15 +429,15 @@ M_{\bar{X}}(t)&amp;=\left[\exp\left(\mu\frac{t}{n}+\frac{\sigma^2(t/n)^2}{2}\rig
 </div>
 <div class="theorem">
 <p><span id="thm:unlabeled-div-7" class="theorem"><strong>Theorem 3  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from population
-<span class="math inline">\(f(x\vert{}\vec{\theta})\)</span> belonging to an exponential family
-<span class="math display">\[f(x \vert{} \vec{\theta}) = h(x)c(\vec{\theta}) \exp\left(\sum_{i=1}^k w_i(\vec{\theta})t_i(x)\right).\]</span>
+<span class="math inline">\(f(x\vert{}\mathbf{\theta})\)</span> belonging to an exponential family
+<span class="math display">\[f(x \vert{} \mathbf{\theta}) = h(x)c(\mathbf{\theta}) \exp\left(\sum_{i=1}^k w_i(\mathbf{\theta})t_i(x)\right).\]</span>
 Define the statistics
 <span class="math display">\[T_i(X_1, \dots, X_n) = \sum_{j=1}^n t_i(X_j), \quad i=1, \dots, k.\]</span>
 Then if the set
-<span class="math inline">\(\{(w_1(\vec{\theta}), \dots, w_n(\vec{\theta}), \, \theta \in \Theta\}\)</span>
+<span class="math inline">\(\{(w_1(\mathbf{\theta}), \dots, w_n(\mathbf{\theta}), \, \theta \in \Theta\}\)</span>
 contains and open subset of <span class="math inline">\(\mathbb R^k\)</span> then the distribution of
 <span class="math inline">\((X_1, \dots, X_n)\)</span> is an exponential family of the form
-<span class="math display">\[f(u_1, \dots, u_n \vert{} \vec{\theta}) = H(u_1, \dots, u_n) c(\vec{\theta})^n \exp\left(\sum_{i=1}^kw_i(\vec{\theta})u_i\right).\]</span></p>
+<span class="math display">\[f(u_1, \dots, u_n \vert{} \mathbf{\theta}) = H(u_1, \dots, u_n) c(\mathbf{\theta})^n \exp\left(\sum_{i=1}^kw_i(\mathbf{\theta})u_i\right).\]</span></p>
 </div>
 <div class="remark">
 <p><span id="unlabeled-div-8" class="remark"><em>Remark</em>. </span>The open condition eliminates curved exponential families from this
@@ -683,93 +685,113 @@ support with <span class="math inline">\(Y\)</span>.</p></li>
 <div id="principles-of-data-reduction" class="section level1">
 <h1>6. Principles of Data Reduction</h1>
 <p>In this chapter, we explore how we can use functions of a sample
-<span class="math inline">\(\vec{X}\)</span> to make inferences about an unknown parameter (of the
+<span class="math inline">\(\mathbf{X}\)</span> to make inferences about an unknown parameter (of the
 distribution of the sample) <span class="math inline">\(\theta\)</span>.</p>
 <p>[Statistic] A statistic is any function of the data.</p>
 <p>A statistic <span class="math inline">\(T(X)\)</span> forms a partition of the sample space <span class="math inline">\(\mathcal X\)</span> according to
 its image,
-<span class="math inline">\(\mathcal{T} = \{t: \exists \vec{x} \in \mathcal X{} \text{  so that  } t = T(\vec{x})\}\)</span>.
+<span class="math inline">\(\mathcal{T} = \{t: \exists \mathbf{x} \in \mathcal X{} \text{  so that  } t = T(\mathbf{x})\}\)</span>.
 In this way a statistic provides a method of data reduction. An
 experimenter who observes only <span class="math inline">\(T\)</span> will treat as equal two samples
-<span class="math inline">\(\vec{x}, \vec{y}\)</span> for which <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>.</p>
+<span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> for which <span class="math inline">\(T(\mathbf{x}) = T(\mathbf{y})\)</span>.</p>
 <div id="the-sufficiency-principle" class="section level3">
 <h3>The Sufficiency Principle</h3>
-<p><strong>Sufficient Statistic</strong> A statistic <span class="math inline">\(T(\vec{X})\)</span> is a <strong>sufficient
+<p><strong>Sufficient Statistic</strong> A statistic <span class="math inline">\(T(\mathbf{X})\)</span> is a <strong>sufficient
 statistic</strong> for <span class="math inline">\(\theta\)</span> if the conditional distribution of the sample
-<span class="math inline">\(\vec{X}\)</span> given <span class="math inline">\(T(\vec{X})\)</span> does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<span class="math inline">\(\mathbf{X}\)</span> given <span class="math inline">\(T(\mathbf{X})\)</span> does not depend on <span class="math inline">\(\theta\)</span>.</p>
 <p>We ignore the fact that all points have <span class="math inline">\(0\)</span> probability for continuous
 distributions.</p>
-<p><strong>The Sufficiency Principle</strong> If <span class="math inline">\(T(\vec{X})\)</span> is a sufficient statistic
+<p><strong>The Sufficiency Principle</strong> If <span class="math inline">\(T(\mathbf{X})\)</span> is a sufficient statistic
 for <span class="math inline">\(\theta\)</span>, then any inference about <span class="math inline">\(\theta\)</span> should depend on the
-sample <span class="math inline">\(\vec{X}\)</span> only through <span class="math inline">\(T(\vec{X})\)</span>.</p>
-<p>If <span class="math inline">\(p(\vec{x}\vert{}\theta)\)</span> is the pmf/pdf of the sample <span class="math inline">\(\vec{X}\)</span> and
-<span class="math inline">\(q(t\vert{} \theta)\)</span> is the pmf/pdf of <span class="math inline">\(T(\vec{X})\)</span>, then <span class="math inline">\(T(\vec{X})\)</span>
-is a sufficient statistic for <span class="math inline">\(\theta\)</span> if <span class="math inline">\(\forall \vec{x} \in \mathcal X{}\)</span>,
-<span class="math inline">\(p(\vec{x}\vert{}\theta) / q(t\vert{}\theta)\)</span> is constant as a function
+sample <span class="math inline">\(\mathbf{X}\)</span> only through <span class="math inline">\(T(\mathbf{X})\)</span>.</p>
+<p>If <span class="math inline">\(p(\mathbf{x}\vert{}\theta)\)</span> is the pmf/pdf of the sample <span class="math inline">\(\mathbf{X}\)</span> and
+<span class="math inline">\(q(t\vert{} \theta)\)</span> is the pmf/pdf of <span class="math inline">\(T(\mathbf{X})\)</span>, then <span class="math inline">\(T(\mathbf{X})\)</span>
+is a sufficient statistic for <span class="math inline">\(\theta\)</span> if <span class="math inline">\(\forall \mathbf{x} \in \mathcal X{}\)</span>,
+<span class="math display">\[f(\mathbf{x}\vert{}\theta) / q(T(\mathbf{X})\lvert\theta)\]</span> is constant as a function
 of <span class="math inline">\(\theta\)</span>.</p>
 <p><strong>Niceness of the exponential family</strong> It turns out that outside of the
 exponential family, it is rare to have a sufficient statistic that is of
 smaller dimension than the size of the sample.</p>
-<p><strong>Factorisation Theorem</strong> Let <span class="math inline">\(f(\vec{x} \vert{} \theta)\)</span> denote the
-pmf/pdf of a sample <span class="math inline">\(\vec{X}\)</span>. A statistic <span class="math inline">\(T(\vec{X})\)</span> is a sufficient
+<p><strong>Factorization Theorem</strong> Let <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span> denote the
+pmf/pdf of a sample <span class="math inline">\(\mathbf{X}\)</span>. A statistic <span class="math inline">\(T(\mathbf{X})\)</span> is a sufficient
 statistic for <span class="math inline">\(\theta\)</span> if and only if there exists functions
-<span class="math inline">\(g(t \vert{} \theta)\)</span> and <span class="math inline">\(h(\vec{x})\)</span> such that
-<span class="math inline">\(\forall \vec{x} \in \mathcal X{}\)</span>, <span class="math inline">\(\forall \theta \in \Theta\)</span>
-<span class="math display">\[f(\vec{x} \vert{} \theta) = g(T(\vec{x}) \vert{} \theta)h(\vec{x}).\]</span></p>
+<span class="math inline">\(g(T(\mathbf{X})\vert{} \theta)\)</span> and <span class="math inline">\(h(\mathbf{x})\)</span> such that
+<span class="math inline">\(\forall \mathbf{x} \in \mathcal X{}\)</span>, <span class="math inline">\(\forall \theta \in \Theta\)</span>
+<span class="math display">\[f(\mathbf{x} \vert{} \theta) = g(T(\mathbf{x}) \vert{} \theta)h(\mathbf{x}).\]</span></p>
 <p>This theorem shows that the identity is a sufficient statistic. It is
 straightforward to show from this that any bijection of a sufficient
 statistic is a sufficient statistic.</p>
+<p><strong>Proof</strong> Suppose <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic. Choose <span class="math inline">\(g(t\lvert \theta) = P_{\theta}(T(\mathbf X) = t)\)</span> and <span class="math inline">\(h(\mathbf x) =P\big(\mathbf X = \mathbf x\lvert T(\mathbf X) = T(\mathbf x)\big)\)</span>. Because <span class="math inline">\(T(\mathbf X)\)</span> is sufficient, the conditional probability
+defining <span class="math inline">\(h(\mathbf x)\)</span> does not depend on <span class="math inline">\(\theta\)</span>. Thus this choice of <span class="math inline">\(h(\mathbf x)\)</span> and <span class="math inline">\(g(t\lvert \theta)\)</span> is legitimate,
+and for this choice we have
+<span class="math display">\[\begin{align}
+f(\mathbf x\lvert \theta) &amp;= P_{\theta}(\mathbf X = \mathbf x)\\
+&amp;= P_{\theta}\bigg(\mathbf X = \mathbf x \text{ and } T(\mathbf X) = T(\mathbf x)\bigg)\\
+&amp;= P_{\theta}(T(\mathbf X) = T(\mathbf x)) P(\mathbf X=\mathbf x\lvert T(\mathbf X) = T(\mathbf x))\quad \text{(sufficiency)}\\
+&amp;= g(T(\mathbf x)\lvert \theta)h(\mathbf x).
+\end{align}\]</span></p>
+<p>So factorization has been exhibited. We also see from the last two lines above that
+<span class="math display">\[P_{\theta}\big(T(\mathbf X) = T(\mathbf x)\big) =g(T(\mathbf x)\lvert \theta),\]</span> so <span class="math inline">\(g(T(\mathbf x)\lvert \theta)\)</span> is the pmf of <span class="math inline">\(T(\mathbf X).\)</span></p>
+<p>Now assume the factorization exists. Let <span class="math inline">\(q(t\lvert \theta)\)</span> be the pmf of <span class="math inline">\(T(\mathbf X)\)</span>. To show that <span class="math inline">\(T(\mathbf X)\)</span> is sufficient we examine the ratio <span class="math inline">\(f(\mathbf x\lvert \theta)/q(T(\mathbf x)\lvert \theta)\)</span>. Define <span class="math inline">\(A_{T(\mathbf x)} =\{\mathbf y: T(\mathbf y) = T(\mathbf x)\}\)</span>. Then
+<span class="math display">\[\begin{align}
+\frac{f(\mathbf x\lvert \theta)}{q(T(\mathbf x)\lvert \theta)}&amp;=\frac{g(T(\mathbf x)\lvert \theta)h(\mathbf x)}{q(T(\mathbf x)\lvert \theta)}\\
+&amp;=\frac{g(T(\mathbf x)\lvert \theta)h(\mathbf x)}{\sum_{A_{T(\mathbf x)}}g(T(\mathbf y)\lvert \theta)h(\mathbf y)}\quad \text{(definition of the pmf of T)}\\
+&amp;=\frac{g(T(\mathbf x)\lvert \theta)h(\mathbf x)}{g(T(\mathbf y)\lvert \theta)\sum_{A_{T(\mathbf x)}}h(\mathbf y)}\quad \text{(since T is constant on} \;A_{T(\mathbf x)})\\
+&amp;=\frac{g(T(\mathbf x)\lvert \theta)h(\mathbf x)}{g(T(\mathbf x)\lvert \theta)\sum_{A_{T(\mathbf x)}}h(\mathbf y)}\\
+&amp;=\frac{h(\mathbf x)}{\sum_{A_{T(\mathbf x)}}h(\mathbf y)}\\
+\end{align}\]</span></p>
+<p>Since the ratio does not depend on <span class="math inline">\(\theta\)</span>, <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>.</p>
 <p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid observations from a pmf/pdf
-<span class="math inline">\(f(x \vert{} \theta)\)</span> from an exponential family
-<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right),\]</span>
-where <span class="math inline">\(\vec{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
-<span class="math inline">\(\vec{T}(\vec{X})\)</span> defined by
-<span class="math display">\[T_i(\vec{X}) = \sum_{j=1}^k t_i(\vec{X}_j)\]</span> is a sufficient statistic
-for <span class="math inline">\(\vec{\theta}\)</span>.</p>
-<p><strong>Minimal sufficient statistic</strong> A sufficient statistic <span class="math inline">\(T(\vec{X})\)</span> is
-called a <em>minimal sufficient statistic</em> if, for any other sufficient
-statistic <span class="math inline">\(T&#39;(\vec{X})\)</span>, <span class="math inline">\(T\)</span> is a function of <span class="math inline">\(T&#39;\)</span>.</p>
-<p>By ‘function of’ we mean that if <span class="math inline">\(T&#39;(\vec{x}) = T&#39;(\vec{y})\)</span> then
-<span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span> – <span class="math inline">\(T\)</span> varies with respect to <span class="math inline">\(X\)</span> only insofar
-as it varies with <span class="math inline">\(T&#39;\)</span>. This means that each tile of the partition of
-the sample space according to the image of <span class="math inline">\(T&#39;\)</span> is a subset of some tile
-in the partition according to <span class="math inline">\(T\)</span>. This means that minimal sufficient
-statistics provide the coarsest possible tiling of the sample space and
-thus are the sufficient statistics that provide the greatest data
-reduction.</p>
-<p>Let <span class="math inline">\(f(\vec{x} \vert{} \theta)\)</span> be the pmf/pdf of a sample <span class="math inline">\(\vec{X}\)</span>.
-Suppose there exists a function <span class="math inline">\(T(\vec{X})\)</span> such that
-<span class="math inline">\(\forall \vec{x}, \vec{y} \in \mathcal X{}\)</span> the ratio
-<span class="math inline">\(f(\vec{x}\vert{}\theta)/f(\vec{y}\vert{}\theta)\)</span> is constant as a
-function of <span class="math inline">\(\theta\)</span> if an only if <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>. Then
-<span class="math inline">\(T(\vec{X})\)</span> is a minimal sufficient statistic for <span class="math inline">\(\theta\)</span>.</p>
+<span class="math inline">\(f(x \vert{} \boldsymbol\theta)\)</span> from an exponential family
+<span class="math display">\[f(x|\boldsymbol{\theta}) = h(x)c(\boldsymbol{\theta})\exp\left( \sum_{i=1}^k w_i(\boldsymbol{\theta}) t_i(x) \right),\]</span>
+where <span class="math inline">\(\boldsymbol{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
+<span class="math inline">\(T(\mathbf{X})\)</span> defined by
+<span class="math display">\[T(\mathbf{X}) = \left(\sum_{j=1}^n t_1(\mathbf{X}_j),\cdots,\sum_{j=1}^n t_k(\mathbf{X}_j)\right)\]</span> is a sufficient statistic for <span class="math inline">\(\boldsymbol{\theta}\)</span>.</p>
+<p><strong>Minimal sufficient statistic</strong> A sufficient statistic <span class="math inline">\(T(\mathbf{X})\)</span> is called a <strong>minimal sufficient statistic</strong> if, for any other sufficient statistic <span class="math inline">\(T&#39;(\mathbf{X})\)</span>, <span class="math inline">\(T(\mathbf{x})\)</span> is a function of <span class="math inline">\(T&#39;(\mathbf{x})\)</span>.</p>
+<p>By ‘function of’ we mean that if <span class="math inline">\(T&#39;(\mathbf{x}) = T&#39;(\mathbf{y})\)</span> then
+<span class="math inline">\(T(\mathbf{x}) = T(\mathbf{y})\)</span>, <span class="math inline">\(T\)</span> varies with respect to <span class="math inline">\(X\)</span> only as it varies with <span class="math inline">\(T&#39;\)</span>. This means that each tile of the partition <span class="math inline">\(\{B_{t&#39;}:t&#39;\in \mathcal T&#39;\}\)</span> of the sample space according to the image of <span class="math inline">\(T&#39;\)</span> is a subset of some tile in the partition <span class="math inline">\(\{A_{t}:t\in \mathcal T\}\)</span> according to <span class="math inline">\(T\)</span>. This means that minimal sufficient statistics provide the <em>coarsest</em> possible tiling of the sample space and thus are the sufficient statistics that provide the greatest data reduction.</p>
+<p><strong>Theorem</strong> Let <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span> be the pmf/pdf of a sample <span class="math inline">\(\mathbf{X}\)</span>.
+Suppose there exists a function <span class="math inline">\(T(\mathbf{X})\)</span> such that
+<span class="math inline">\(\forall \mathbf{x}, \mathbf{y} \in \mathcal X{}\)</span> the ratio
+<span class="math inline">\(f(\mathbf{x}\vert{}\theta)/f(\mathbf{y}\vert{}\theta)\)</span> is constant as a function of <span class="math inline">\(\theta\)</span> if an only if <span class="math inline">\(T(\mathbf{x}) = T(\mathbf{y})\)</span>. Then <span class="math inline">\(T(\mathbf{X})\)</span> is a minimal sufficient statistic for <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Proof</strong> To simplify the proof, we assume <span class="math inline">\(f(\mathbf x\lvert \theta) &gt; 0\)</span> for all <span class="math inline">\(\mathbf x \in \mathcal X\)</span> and <span class="math inline">\(\theta\)</span>.</p>
+<p>First we show that <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic. Let <span class="math inline">\(\mathcal T = \{t : t=T(\mathbf x)\; \text{for some }\; \mathbf x \in \mathcal X\}\)</span> be the image of <span class="math inline">\(\mathcal X\)</span> under <span class="math inline">\(T(\mathbf x)\)</span>. Define the partition sets induced by <span class="math inline">\(T(\mathbf x)\)</span> as <span class="math inline">\(A_t = \{\mathbf x: T(\mathbf x) = t\}\)</span>. For each <span class="math inline">\(A_t\)</span>, choose and fix one element <span class="math inline">\(\mathbf x_t \in A_t\)</span>. For any <span class="math inline">\(\mathbf x \in \mathcal X\)</span>,
+<span class="math inline">\(\mathbf x_{T(\mathbf x)}\)</span> is the fixed element that is in the same set, <span class="math inline">\(A_t\)</span> , as <span class="math inline">\(\mathbf x\)</span>. Since <span class="math inline">\(\mathbf x\)</span> and <span class="math inline">\(\mathbf x_{T(\mathbf x)}\)</span> are in the same set <span class="math inline">\(A_t\)</span> , <span class="math inline">\(T(\mathbf x) = T(\mathbf x_{T(\mathbf x)})\)</span> and, hence, <span class="math inline">\(f(\mathbf x\lvert\theta)/ f(\mathbf x_{T(\mathbf x)}\lvert\theta)\)</span> is constant as a
+function of <span class="math inline">\(\theta\)</span>. Thus, we can define a function on <span class="math inline">\(\mathcal X\)</span> by <span class="math inline">\(h(\mathbf x) = f(\mathbf x\lvert\theta)/ f(\mathbf x_{T(\mathbf x)}\lvert\theta)\)</span> and <span class="math inline">\(h\)</span> does not depend on <span class="math inline">\(\theta\)</span>. Define a function on <span class="math inline">\(\mathcal T\)</span> by <span class="math inline">\(g(t\lvert\theta) = f(\mathbf x_t\lvert\theta)\)</span>. Then it can be seen that
+<span class="math display">\[f(\mathbf x_t\lvert\theta)=\frac{f(\mathbf x_{T(\mathbf x)}\lvert\theta)f(\mathbf x\lvert\theta)}{f(\mathbf x_{T(\mathbf x)}\lvert\theta)} = g(T(\mathbf x)\lvert\theta)h(\mathbf x)\]</span><br />
+and, by the Factorization Theorem, <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>.</p>
+<p>Now to show that <span class="math inline">\(T(\mathbf X)\)</span> is minimal, let <span class="math inline">\(T&#39;(\mathbf X)\)</span> be any other sufficient statistic. By the Factorization Theorem, there exist functions <span class="math inline">\(g&#39;\)</span> and <span class="math inline">\(h&#39;\)</span> such that <span class="math inline">\(f(\mathbf x\lvert\theta) =g&#39;(T&#39;(\mathbf x)\lvert\theta)h&#39;(\mathbf x)\)</span>. Let <span class="math inline">\(\mathbf x\)</span> and <span class="math inline">\(\mathbf y\)</span> be any two sample points with <span class="math inline">\(T&#39;(\mathbf x) = T&#39;(\mathbf y)\)</span>. Then <span class="math display">\[\frac{f(\mathbf x\lvert\theta)}{f(\mathbf y\lvert\theta)}=\frac{g&#39;(T&#39;(\mathbf x)\lvert\theta)h&#39;(\mathbf x)}{g&#39;(T&#39;(\mathbf y)\lvert\theta)h&#39;(\mathbf y)}=\frac{h&#39;(\mathbf x)}{h&#39;(\mathbf y)}\]</span> Since this ratio does not depend on <span class="math inline">\(\theta\)</span>, the assumptions of the theorem imply that <span class="math inline">\(T(\mathbf x) = T(\mathbf y)\)</span>. Thus, <span class="math inline">\(T(\mathbf x)\)</span> is a function of <span class="math inline">\(T&#39;(\mathbf x)\)</span> and <span class="math inline">\(T(\mathbf x)\)</span> is minimal.</p>
 <p><strong>Necessary Statistic</strong> A statistic is <em>necessary</em> if it can be written as
 a function of every sufficient statistic.</p>
 <p>A statistic is minimal sufficient if and only if it is a necessary and
 sufficient statistic.</p>
-<p><strong>Ancillary Statistic</strong> A statistic <span class="math inline">\(S(\vec{X})\)</span> whose distribution does
-not depend on the parameter <span class="math inline">\(\theta\)</span> is called an <em>ancillary statistic</em>.</p>
-<p><strong>First Order Ancillary</strong> A statistic <span class="math inline">\(V(\vec{X})\)</span> is <em>first order
-ancillary</em> if <span class="math inline">\(\mathbb E[V(\vec{X})]\)</span> is independent of <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div id="ancillary-statistic" class="section level3">
+<h3>Ancillary Statistic</h3>
+<p><strong>Ancillary Statistic</strong> A statistic <span class="math inline">\(S(\mathbf{X})\)</span> whose distribution does not depend on the parameter <span class="math inline">\(\theta\)</span> is called an <strong>ancillary statistic</strong>.</p>
+<p><strong>First Order Ancillary</strong> A statistic <span class="math inline">\(V(\mathbf{X})\)</span> is <strong>first order ancillary</strong> if <span class="math inline">\(\mathbb E[V(\mathbf{X})]\)</span> is independent of <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div id="complete-statistic" class="section level3">
+<h3>Complete Statistic</h3>
 <p><strong>Complete Statistic</strong> Let <span class="math inline">\(f(t \vert{} \theta)\)</span> be a family of pdfs or
-pmfs for a statistic <span class="math inline">\(T(\vec{X})\)</span>. The family of probability
-distributions is called <em>complete</em> if for every (measurable) function
+pmfs for a statistic <span class="math inline">\(T(\mathbf{X})\)</span>. The family of probability
+distributions is called <strong>complete</strong> if for every (measurable) function
 <span class="math inline">\(g\)</span>
 <span class="math display">\[\mathbb E[g(T)] = 0  \,\, \forall \theta \implies P(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
-Equivalently, <span class="math inline">\(T(\vec{X})\)</span> is called a <strong>complete statistic</strong>.</p>
+Equivalently, <span class="math inline">\(T(\mathbf{X})\)</span> is called a <strong>complete statistic</strong>.</p>
 <p>(It is left unsaid that the function <span class="math inline">\(g\)</span> must be independent of
 <span class="math inline">\(\theta\)</span>.)</p>
-<p><strong>Basu’s Theorem</strong> If <span class="math inline">\(T(\vec{X})\)</span> is a complete and minimal sufficient
-statistic, then <span class="math inline">\(T(\vec{X})\)</span> is independent of every ancillary
+<p><strong>Basu’s Theorem</strong> If <span class="math inline">\(T(\mathbf{X})\)</span> is a complete and minimal sufficient
+statistic, then <span class="math inline">\(T(\mathbf{X})\)</span> is independent of every ancillary
 statistic.</p>
 <p><strong>Complete statistics in the exponential family</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be
 iid observations from a pmf/pdf <span class="math inline">\(f(x \vert{} \theta)\)</span> from an
 exponential family
-<span class="math display">\[f(x|\vec{\theta}) = h(x)c(\vec{\theta})\exp\left( \sum_{i=1}^k w_i(\vec{\theta}) t_i(x) \right),\]</span>
-where <span class="math inline">\(\vec{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
-<span class="math inline">\(\vec{T}(\vec{X})\)</span> defined by
-<span class="math display">\[T_i(\vec{X}) = \sum_{j=1}^k t_i(\vec{X}_j)\]</span> is complete if
-<span class="math inline">\(\{(w_1(\vec{\theta}), \dots, w_n(\vec{\theta}))\}\)</span> contains an open set
+<span class="math display">\[f(x|\mathbf{\theta}) = h(x)c(\mathbf{\theta})\exp\left( \sum_{i=1}^k w_i(\mathbf{\theta}) t_i(x) \right),\]</span>
+where <span class="math inline">\(\mathbf{\theta} = (\theta_1, \dots, \theta_d)\)</span>, <span class="math inline">\(d \leq k\)</span>. Then
+<span class="math inline">\(\mathbf{T}(\mathbf{X})\)</span> defined by
+<span class="math display">\[T_i(\mathbf{X}) = \sum_{j=1}^k t_i(\mathbf{X}_j)\]</span> is complete if
+<span class="math inline">\(\{(w_1(\mathbf{\theta}), \dots, w_n(\mathbf{\theta}))\}\)</span> contains an open set
 in <span class="math inline">\(\mathbb R^k\)</span>.</p>
 <p>The open set criteria excludes curved exponential families.</p>
 <p>If a minimal sufficient statistic exists, then every complete statistic
@@ -777,64 +799,64 @@ is minimal sufficient.</p>
 </div>
 <div id="the-likelihood-principle" class="section level3">
 <h3>The Likelihood Principle</h3>
-<p><strong>Likelihood</strong> Let <span class="math inline">\(f(\vec{x}\vert{} \theta)\)</span> denote the pmf/pdf of the
-sample <span class="math inline">\(\vec{X}\)</span>. Then the <em>likelihood function</em>, given an observation
-<span class="math inline">\(\vec{X} = \vec{x}\)</span>, is
-<span class="math display">\[L(\theta \vert{} \vec{x}) = f(\vec{x} \vert{} \theta)\]</span> as a function
+<p><strong>Likelihood</strong> Let <span class="math inline">\(f(\mathbf{x}\vert{} \theta)\)</span> denote the pmf/pdf of the
+sample <span class="math inline">\(\mathbf{X}\)</span>. Then the <em>likelihood function</em>, given an observation
+<span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>, is
+<span class="math display">\[L(\theta \vert{} \mathbf{x}) = f(\mathbf{x} \vert{} \theta)\]</span> as a function
 of <span class="math inline">\(\theta\)</span>.</p>
-<p><strong>Likelihood Principle</strong> If <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> are two sample points
-such that <span class="math inline">\(L(\theta \vert{} \vec{x})\)</span> is proportional to
-<span class="math inline">\(L(\theta \vert{} \vec{y})\)</span>, that is, there exists a constant
-<span class="math inline">\(C(\vec{x}, \vec{y})\)</span> such that
-<span class="math display">\[L(\theta \vert{} \vec{x}) = C(\vec{x}, \vec{y})L(\theta \vert{} \vec{y}) \quad \forall \theta,\]</span>
-then the conclusions drawn from <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> should be
+<p><strong>Likelihood Principle</strong> If <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are two sample points
+such that <span class="math inline">\(L(\theta \vert{} \mathbf{x})\)</span> is proportional to
+<span class="math inline">\(L(\theta \vert{} \mathbf{y})\)</span>, that is, there exists a constant
+<span class="math inline">\(C(\mathbf{x}, \mathbf{y})\)</span> such that
+<span class="math display">\[L(\theta \vert{} \mathbf{x}) = C(\mathbf{x}, \mathbf{y})L(\theta \vert{} \mathbf{y}) \quad \forall \theta,\]</span>
+then the conclusions drawn from <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> should be
 identical.</p>
 </div>
 <div id="a-slightly-more-formal-construction" class="section level3">
 <h3>A Slightly More Formal Construction</h3>
 <p><strong>Experiment</strong> We define an <strong>experiment</strong> <span class="math inline">\(E\)</span> to be a triple
-<span class="math inline">\((\vec{X}, \theta, f(\vec{x}\vert{}\theta))\)</span>, where <span class="math inline">\(\vec{X}\)</span> is a
+<span class="math inline">\((\mathbf{X}, \theta, f(\mathbf{x}\vert{}\theta))\)</span>, where <span class="math inline">\(\mathbf{X}\)</span> is a
 random vector with pmf/pdf <span class="math inline">\(f\)</span>.<br />
 </p>
 <p>Knowing what experiment <span class="math inline">\(E\)</span> was performed, an experimenter will observer
-<span class="math inline">\(\vec{X} = \vec{x}\)</span>. The conclusions they draw about <span class="math inline">\(\theta\)</span> will be
-denoted <span class="math inline">\(\text{Ev}(E, \vec{x})\)</span>, which stands for <em>the evidence about
-<span class="math inline">\(\theta\)</span> arising from <span class="math inline">\(E\)</span> and <span class="math inline">\(\vec{x}\)</span></em>.</p>
+<span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>. The conclusions they draw about <span class="math inline">\(\theta\)</span> will be
+denoted <span class="math inline">\(\text{Ev}(E, \mathbf{x})\)</span>, which stands for <em>the evidence about
+<span class="math inline">\(\theta\)</span> arising from <span class="math inline">\(E\)</span> and <span class="math inline">\(\mathbf{x}\)</span></em>.</p>
 <p><strong>Formal Sufficiency Principle</strong> Consider an experiment
-<span class="math inline">\(E = (\vec{X}, \theta, f(\vec{x}\vert{}\theta))\)</span> and suppose that
-<span class="math inline">\(T(\vec{X})\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(\vec{x}\)</span> and
-<span class="math inline">\(\vec{y}\)</span> are sample points satisfying <span class="math inline">\(T(\vec{x}) = T(\vec{y})\)</span>, then
-<span class="math inline">\(\text{Ev}(E, \vec{x}) = \text{Ev}(E, \vec{y})\)</span>.</p>
+<span class="math inline">\(E = (\mathbf{X}, \theta, f(\mathbf{x}\vert{}\theta))\)</span> and suppose that
+<span class="math inline">\(T(\mathbf{X})\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(\mathbf{x}\)</span> and
+<span class="math inline">\(\mathbf{y}\)</span> are sample points satisfying <span class="math inline">\(T(\mathbf{x}) = T(\mathbf{y})\)</span>, then
+<span class="math inline">\(\text{Ev}(E, \mathbf{x}) = \text{Ev}(E, \mathbf{y})\)</span>.</p>
 <p><strong>Conditionality Principle</strong> Suppose that
 <span class="math inline">\(E_1 = \{X_1, \theta, f_1(x_1\vert{} \theta)\}\)</span> and
 <span class="math inline">\(E_2 = \{X_2, \theta, f_2(x_2\vert{} \theta)\}\)</span> are two experiments,
 where only the unknown parameter <span class="math inline">\(\theta\)</span> need be common between the two
 experiments. Consider the mixed experiment in which the random variable
 <span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(P(J = 1) = P(J = 2) = \frac12\)</span>
-(independent of <span class="math inline">\(\vec{X}_1, \vec{X}_2, \theta\)</span>), and then the experiment
+(independent of <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \theta\)</span>), and then the experiment
 <span class="math inline">\(E_J\)</span> is performed. Formally, the experiment performed is
-<span class="math inline">\(E^* = (\vec{X}^*, \theta, f(\vec{x}^* \vert{} \theta))\)</span>, where
-<span class="math inline">\(\vec{X}^* = (j, \vec{X})j\)</span> and
-<span class="math inline">\(f^*(\vec{x}^* \vert{} \theta) = f^*((j, \vec{x}_j)\vert{} \theta) = \frac12 f_j(\vec{x}_j \vert{}\theta)\)</span>.
-Then <span class="math display">\[\text{Ev}(E^*, (j, \vec{x}_j)) = \text{Ev}(E_j, \vec{x_j}).\]</span>
+<span class="math inline">\(E^* = (\mathbf{X}^*, \theta, f(\mathbf{x}^* \vert{} \theta))\)</span>, where
+<span class="math inline">\(\mathbf{X}^* = (j, \mathbf{X})j\)</span> and
+<span class="math inline">\(f^*(\mathbf{x}^* \vert{} \theta) = f^*((j, \mathbf{x}_j)\vert{} \theta) = \frac12 f_j(\mathbf{x}_j \vert{}\theta)\)</span>.
+Then <span class="math display">\[\text{Ev}(E^*, (j, \mathbf{x}_j)) = \text{Ev}(E_j, \mathbf{x_j}).\]</span>
 That is, information about <span class="math inline">\(\theta\)</span> depends only on the experiment run
 (not on the fact that the particular experiment was chosen).</p>
 <p><strong>Formal Likelihood Principle</strong> Suppose that we have two
-experiments, <span class="math inline">\(E_1 = (\vec{X}_1, \theta, f_1(\vec{x}_1 \vert{} \theta))\)</span>
-and <span class="math inline">\(E_2 = (\vec{X}_2, \theta, f_2(\vec{x}_2 \vert{} \theta))\)</span> where the
+experiments, <span class="math inline">\(E_1 = (\mathbf{X}_1, \theta, f_1(\mathbf{x}_1 \vert{} \theta))\)</span>
+and <span class="math inline">\(E_2 = (\mathbf{X}_2, \theta, f_2(\mathbf{x}_2 \vert{} \theta))\)</span> where the
 unknown parameter <span class="math inline">\(\theta\)</span> is the same in both experiments. Suppose that
-<span class="math inline">\(\vec{x}_1^*\)</span> and <span class="math inline">\(\vec{x}_2^*\)</span> are sample points from <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span>
+<span class="math inline">\(\mathbf{x}_1^*\)</span> and <span class="math inline">\(\mathbf{x}_2^*\)</span> are sample points from <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span>
 respectively, such that
-<span class="math display">\[L(\theta \vert{} \vec{x}_2^*) = CL(\theta \vert{} \vec{x}_1^*)\]</span> for
-all <span class="math inline">\(\theta\)</span> and for some constant <span class="math inline">\(C(\vec{x}_1^*, \vec{x}_2^*)\)</span> that is
+<span class="math display">\[L(\theta \vert{} \mathbf{x}_2^*) = CL(\theta \vert{} \mathbf{x}_1^*)\]</span> for
+all <span class="math inline">\(\theta\)</span> and for some constant <span class="math inline">\(C(\mathbf{x}_1^*, \mathbf{x}_2^*)\)</span> that is
 independent of <span class="math inline">\(\theta\)</span>. Then
-<span class="math display">\[\text{Ev}(E_1, \vec{x}_1^*) = \text{Ev}(E_2, \vec{x}_2^*).\]</span></p>
+<span class="math display">\[\text{Ev}(E_1, \mathbf{x}_1^*) = \text{Ev}(E_2, \mathbf{x}_2^*).\]</span></p>
 <p>Note that this is more general from the other likelihood principle since
 it concerns two experiments (that we can of course set to be equal).</p>
 <p><strong>Likelihood Principle Corollary</strong> If
-<span class="math inline">\(E = (\vec{X}, \theta, f(\vec{x} \vert{} \theta))\)</span> is an experiment then
-<span class="math inline">\(\text{Ev}(E, \vec{x})\)</span> should depend on <span class="math inline">\(E\)</span> and <span class="math inline">\(\vec{x}\)</span> only through
-<span class="math inline">\(L(\theta \vert{} \vec{x})\)</span>.</p>
+<span class="math inline">\(E = (\mathbf{X}, \theta, f(\mathbf{x} \vert{} \theta))\)</span> is an experiment then
+<span class="math inline">\(\text{Ev}(E, \mathbf{x})\)</span> should depend on <span class="math inline">\(E\)</span> and <span class="math inline">\(\mathbf{x}\)</span> only through
+<span class="math inline">\(L(\theta \vert{} \mathbf{x})\)</span>.</p>
 <p><strong>Birnbaum’s Theorem</strong> The Formal Likelihood Principle follows from the
 Formal Sufficiency Principle and the Conditionality Principle. The
 converse is also true.</p>
@@ -853,18 +875,18 @@ measurement scale used.</p>
 structure, in terms of the mathematical model used, then the same
 inference procedure should be used, regardless of the physical
 realisation.</p>
-<p><strong>Equivariance Principle</strong> If <span class="math inline">\(\vec{Y} = g(\vec{X})\)</span> is a change of
-measurement scale such that the model <span class="math inline">\(\vec{Y}\)</span> has the same formal
-structure as the model <span class="math inline">\(\vec{X}\)</span>, then an inference procedure should be
+<p><strong>Equivariance Principle</strong> If <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> is a change of
+measurement scale such that the model <span class="math inline">\(\mathbf{Y}\)</span> has the same formal
+structure as the model <span class="math inline">\(\mathbf{X}\)</span>, then an inference procedure should be
 both measurement equivariant and formally invariant.</p>
-<p>Let <span class="math inline">\(\mathcal{F} = \{f(\vec{x} \vert{} \theta): \theta \in \Theta\}\)</span> be
-a set of pdfs or pmfs for <span class="math inline">\(\vec{X}\)</span>, and let <span class="math inline">\(\mathcal{G}\)</span> be group of
+<p>Let <span class="math inline">\(\mathcal{F} = \{f(\mathbf{x} \vert{} \theta): \theta \in \Theta\}\)</span> be
+a set of pdfs or pmfs for <span class="math inline">\(\mathbf{X}\)</span>, and let <span class="math inline">\(\mathcal{G}\)</span> be group of
 transformations on the sample space <span class="math inline">\(\mathcal X{}\)</span>. Then <span class="math inline">\(\mathcal{F}\)</span> is
 <em>invariant under the group</em> <span class="math inline">\(\mathcal{G}\)</span> if for every
 <span class="math inline">\(\theta \in \Theta\)</span> and <span class="math inline">\(g \in \mathcal{G}\)</span> there exists a unique
-<span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\vec{Y} = g(\vec{X})\)</span> has the
-distribution <span class="math inline">\(f(\vec{y} \vert{} \theta&#39;)\)</span> if <span class="math inline">\(\vec{X}\)</span> has the
-distribution <span class="math inline">\(f(\vec{x} \vert{} \theta&#39;)\)</span>.</p>
+<span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> has the
+distribution <span class="math inline">\(f(\mathbf{y} \vert{} \theta&#39;)\)</span> if <span class="math inline">\(\mathbf{X}\)</span> has the
+distribution <span class="math inline">\(f(\mathbf{x} \vert{} \theta&#39;)\)</span>.</p>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
