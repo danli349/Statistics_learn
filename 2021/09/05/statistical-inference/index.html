@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">28 min read</span>
+    <span class="article-duration">30 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -777,13 +777,56 @@ sufficient statistic.</p>
 pmfs for a statistic <span class="math inline">\(T(\mathbf{X})\)</span>. The family of probability
 distributions is called <strong>complete</strong> if for every (measurable) function
 <span class="math inline">\(g\)</span>
-<span class="math display">\[\mathbb E[g(T)] = 0  \,\, \forall \theta \implies P(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
+<span class="math display">\[\mathbb E_{\theta}[g(T)] = 0  \,\, \forall \theta \implies P_{\theta}(g(T) = 0) = 1 \,\, \forall \theta.\]</span>
 Equivalently, <span class="math inline">\(T(\mathbf{X})\)</span> is called a <strong>complete statistic</strong>.</p>
 <p>(It is left unsaid that the function <span class="math inline">\(g\)</span> must be independent of
 <span class="math inline">\(\theta\)</span>.)</p>
 <p><strong>Basu’s Theorem</strong> If <span class="math inline">\(T(\mathbf{X})\)</span> is a complete and minimal sufficient
-statistic, then <span class="math inline">\(T(\mathbf{X})\)</span> is independent of every ancillary
-statistic.</p>
+statistic, then <span class="math inline">\(T(\mathbf{X})\)</span> is independent of every ancillary statistic.</p>
+<p><strong>Proof</strong></p>
+<ul>
+<li>For discrete distributions:</li>
+</ul>
+<p>Let <span class="math inline">\(S(\mathbf X)\)</span> be any ancillary statistic. Then <span class="math inline">\(P(S(\mathbf X) = s)\)</span> does not depend on <span class="math inline">\(\theta\)</span> since <span class="math inline">\(S(\mathbf X)\)</span> is ancillary. Also the conditional probability,
+<span class="math display">\[P\big(S(\mathbf X) = s\lvert T(\mathbf X)=t\big) = P\big(\mathbf X \in \{\mathbf x: S(\mathbf x) = s\}\lvert T(\mathbf X)=t\big),\]</span>
+does not depend on <span class="math inline">\(\theta\)</span> because <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic (the definition!). Thus, to show that <span class="math inline">\(S(\mathbf X)\)</span> and <span class="math inline">\(T(\mathbf X)\)</span> are independent, it suffices to show that
+<span class="math display">\[P(S(\mathbf X) = s\lvert T(\mathbf X) = t) = P(S(\mathbf X) = s)\]</span>
+for all possible values <span class="math inline">\(t \in \mathcal T\)</span>. Now,
+<span class="math display">\[P(S(\mathbf X)=s)= \sum_{t\in\mathcal T}^{} P\big(S(\mathbf X) =s\lvert T(\mathbf X) = t\big)P_{\theta}\big(T(\mathbf X)= t\big).\]</span>
+Furthermore, since <span class="math inline">\(\sum_{t\in\mathcal T}P_{\theta}(T(\mathbf X) = t) = 1\)</span>, we can write
+<span class="math display">\[P(S(\mathbf X) = s) = \sum_{t \in \mathcal T}^{} P(S(\mathbf X)=s)P_{\theta}(T(\mathbf X)=t).\]</span></p>
+<p>Therefore, if we define the statistic
+<span class="math display">\[g(t) = P\big(S(\mathbf X) = s\lvert T(\mathbf X) = t\big) - P\big(S(\mathbf X)=s\big),\]</span>
+the above two equations show that
+<span class="math display">\[\mathbb E_{\theta}g(T) = \sum_{t \in \mathcal T} g(t)P_{\theta}(T(\mathbf X) = t) = 0\quad  \forall  \theta.\]</span>
+Since <span class="math inline">\(T(\mathbf X)\)</span> is a complete statistic, this implies that <span class="math inline">\(g(t)=0\)</span> for all possible values <span class="math inline">\(t\in\mathcal T\)</span>. Hence <span class="math display">\[P(S(\mathbf X) = s\lvert T(\mathbf X) = t) = P(S(\mathbf X) = s)\]</span> is verified.</p>
+<ul>
+<li>For continuous distributions:</li>
+</ul>
+<p>Let <span class="math inline">\(T(\mathbf X)\)</span> be a complete sufficient statistic. Let <span class="math inline">\(S(\mathbf X)\)</span> be an ancillary statistic. Let <span class="math inline">\(A\)</span> be an event in the sample space.</p>
+<p>Basu’s theorem states that <span class="math inline">\(S\)</span> and <span class="math inline">\(T\)</span> are independent. We need to show:</p>
+<p><span class="math display">\[\begin{align}
+P( S \in A  |  T=t )&amp;=P(S \in A)\\
+&amp;=\mathbb{E}[I(S \in A)]\\
+&amp;=\mathbb{E}_{\theta}\mathbb{E}[I(S \in A)|T=t]\\
+\end{align}\]</span></p>
+<p>Define the function <span class="math inline">\(g(t)\)</span> by <span class="math display">\[g(t)=\mathbb E[I(V∈A)|T=t]\]</span>
+then we conclude <span class="math display">\[\mathbb{E}_{\theta}[g(t)-P(S \in A)]=\mathbb{E}_{\theta}[\mathbb E[I(V∈A)|T=t]-P(S \in A)]=0\]</span> for all <span class="math inline">\(\theta\)</span> in the sample space.</p>
+<p>This is using the definition of a <a href="https://www.wikiwand.com/en/Completeness_(statistics)#/Definition">complete statistic</a>:</p>
+<blockquote>
+<p>If you have a function <span class="math inline">\(h(T)\)</span> that</p>
+<ul>
+<li>does not depend on the parameter <span class="math inline">\(\theta\)</span> directly, but only on <span class="math inline">\(T\)</span> (as it is written, “<span class="math inline">\(h(T)\)</span>,” and</li>
+<li>for which <span class="math inline">\(\mathbb E_{\theta}(h(T)) = 0\)</span> for whatever <span class="math inline">\(\theta\)</span> you pick,</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>then <span class="math inline">\(h(t)\)</span> is itself zero almost everywhere (or:
+<span class="math inline">\(P_{\theta}(h(T) = 0) = 1\)</span>), again for any value of <span class="math inline">\(\theta\)</span>.</p>
+</blockquote>
+<p><span class="math inline">\(T\)</span> is complete, and the function <span class="math inline">\(h\)</span> of <span class="math inline">\(T\)</span> is <span class="math display">\[h(T) = g(T) − P(S \in A) = g(T) - c\]</span>. We need that <span class="math inline">\(S\)</span> is ancillary because else, <span class="math inline">\(h\)</span> would not be purely a function of <span class="math inline">\(T\)</span>, but some <span class="math inline">\(h(\theta, T)\)</span>.</p>
+<p>Since <span class="math display">\[\mathbb E_{\theta}(I_{V \in A}) = \mathbb E_{\theta}[g(T)],\]</span> so <span class="math inline">\(\mathbb E_{\theta}[h(T)]\)</span> is zero, so the second point is fulfilled, too, so the conclusion follows.</p>
+<p>Thus <span class="math display">\[\mathbb{E}_{\theta}[I(S \in A)|T=t]=P(S \in A)|T=t)=P(S \in A)\]</span></p>
 <p><strong>Complete statistics in the exponential family</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be
 iid observations from a pmf/pdf <span class="math inline">\(f(x \vert{} \theta)\)</span> from an
 exponential family
@@ -794,34 +837,25 @@ where <span class="math inline">\(\mathbf{\theta} = (\theta_1, \dots, \theta_d)\
 <span class="math inline">\(\{(w_1(\mathbf{\theta}), \dots, w_n(\mathbf{\theta}))\}\)</span> contains an open set
 in <span class="math inline">\(\mathbb R^k\)</span>.</p>
 <p>The open set criteria excludes curved exponential families.</p>
-<p>If a minimal sufficient statistic exists, then every complete statistic
-is minimal sufficient.</p>
+<p><strong>If a minimal sufficient statistic exists, then every complete statistic is minimal sufficient.</strong></p>
 </div>
 <div id="the-likelihood-principle" class="section level3">
 <h3>The Likelihood Principle</h3>
-<p><strong>Likelihood</strong> Let <span class="math inline">\(f(\mathbf{x}\vert{} \theta)\)</span> denote the pmf/pdf of the
-sample <span class="math inline">\(\mathbf{X}\)</span>. Then the <em>likelihood function</em>, given an observation
+<p><strong>Likelihood</strong> Let <span class="math inline">\(f(\mathbf{x}\vert{} \theta)\)</span> denote the pmf/pdf of the sample <span class="math inline">\(\mathbf{X}\)</span>. Then the <em>likelihood function</em>, given an observation
 <span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>, is
 <span class="math display">\[L(\theta \vert{} \mathbf{x}) = f(\mathbf{x} \vert{} \theta)\]</span> as a function
 of <span class="math inline">\(\theta\)</span>.</p>
 <p><strong>Likelihood Principle</strong> If <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are two sample points
 such that <span class="math inline">\(L(\theta \vert{} \mathbf{x})\)</span> is proportional to
 <span class="math inline">\(L(\theta \vert{} \mathbf{y})\)</span>, that is, there exists a constant
-<span class="math inline">\(C(\mathbf{x}, \mathbf{y})\)</span> such that
+<span class="math inline">\(C(\mathbf{x}, \mathbf{y})\)</span>, which does not depend on <span class="math inline">\(\theta\)</span>, such that
 <span class="math display">\[L(\theta \vert{} \mathbf{x}) = C(\mathbf{x}, \mathbf{y})L(\theta \vert{} \mathbf{y}) \quad \forall \theta,\]</span>
-then the conclusions drawn from <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> should be
-identical.</p>
+then the conclusions drawn from <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> should be identical.</p>
 </div>
 <div id="a-slightly-more-formal-construction" class="section level3">
 <h3>A Slightly More Formal Construction</h3>
-<p><strong>Experiment</strong> We define an <strong>experiment</strong> <span class="math inline">\(E\)</span> to be a triple
-<span class="math inline">\((\mathbf{X}, \theta, f(\mathbf{x}\vert{}\theta))\)</span>, where <span class="math inline">\(\mathbf{X}\)</span> is a
-random vector with pmf/pdf <span class="math inline">\(f\)</span>.<br />
-</p>
-<p>Knowing what experiment <span class="math inline">\(E\)</span> was performed, an experimenter will observer
-<span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>. The conclusions they draw about <span class="math inline">\(\theta\)</span> will be
-denoted <span class="math inline">\(\text{Ev}(E, \mathbf{x})\)</span>, which stands for <em>the evidence about
-<span class="math inline">\(\theta\)</span> arising from <span class="math inline">\(E\)</span> and <span class="math inline">\(\mathbf{x}\)</span></em>.</p>
+<p>We define an <strong>experiment</strong> <span class="math inline">\(E\)</span> to be a triple
+<span class="math inline">\((\mathbf{X}, \theta, f(\mathbf{x}\vert{}\theta))\)</span>, where <span class="math inline">\(\mathbf{X}\)</span> is a random vector with pmf/pdf <span class="math inline">\(f(\mathbf{x}\vert{}\theta)\)</span> for some <span class="math inline">\(\theta\)</span> in the parameter space <span class="math inline">\(\Theta\)</span>. As an experimenter, knowing what experiment <span class="math inline">\(E\)</span> was performed and having observed a particular sample <span class="math inline">\(\mathbf{X}=\mathbf{x}\)</span>, will make some inference or draw some conclusion about <span class="math inline">\(\theta\)</span>. This conclusion we denote by <span class="math inline">\(E_v(E,\mathbf{x})\)</span>, which stands for the <strong>evidence about <span class="math inline">\(\theta\)</span> arising from <span class="math inline">\(E\)</span> and <span class="math inline">\(\mathbf{x}\)</span>.</strong></p>
 <p><strong>Formal Sufficiency Principle</strong> Consider an experiment
 <span class="math inline">\(E = (\mathbf{X}, \theta, f(\mathbf{x}\vert{}\theta))\)</span> and suppose that
 <span class="math inline">\(T(\mathbf{X})\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(\mathbf{x}\)</span> and
@@ -831,18 +865,12 @@ denoted <span class="math inline">\(\text{Ev}(E, \mathbf{x})\)</span>, which sta
 <span class="math inline">\(E_1 = \{X_1, \theta, f_1(x_1\vert{} \theta)\}\)</span> and
 <span class="math inline">\(E_2 = \{X_2, \theta, f_2(x_2\vert{} \theta)\}\)</span> are two experiments,
 where only the unknown parameter <span class="math inline">\(\theta\)</span> need be common between the two
-experiments. Consider the mixed experiment in which the random variable
-<span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(P(J = 1) = P(J = 2) = \frac12\)</span>
-(independent of <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \theta\)</span>), and then the experiment
-<span class="math inline">\(E_J\)</span> is performed. Formally, the experiment performed is
-<span class="math inline">\(E^* = (\mathbf{X}^*, \theta, f(\mathbf{x}^* \vert{} \theta))\)</span>, where
-<span class="math inline">\(\mathbf{X}^* = (j, \mathbf{X})j\)</span> and
-<span class="math inline">\(f^*(\mathbf{x}^* \vert{} \theta) = f^*((j, \mathbf{x}_j)\vert{} \theta) = \frac12 f_j(\mathbf{x}_j \vert{}\theta)\)</span>.
+experiments. Consider the mixed experiment in which the random variable <span class="math inline">\(J\)</span> is observed, where <span class="math inline">\(P(J = 1) = P(J = 2) = \frac12\)</span> (independent of <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \theta\)</span>), and then the experiment <span class="math inline">\(E_J\)</span> is performed. Formally, the experiment performed is <span class="math inline">\(E^* = (\mathbf{X}^*, \theta, f(\mathbf{x}^* \vert{} \theta))\)</span>, where
+<span class="math inline">\(\mathbf{X}^* = (j, \mathbf{X}_j)\)</span> and
+<span class="math display">\[f^*(\mathbf{x}^* \vert{} \theta) = f^*((j, \mathbf{x}_j)\vert{} \theta) = \frac12 f_j(\mathbf{x}_j \vert{}\theta).\]</span>
 Then <span class="math display">\[\text{Ev}(E^*, (j, \mathbf{x}_j)) = \text{Ev}(E_j, \mathbf{x_j}).\]</span>
-That is, information about <span class="math inline">\(\theta\)</span> depends only on the experiment run
-(not on the fact that the particular experiment was chosen).</p>
-<p><strong>Formal Likelihood Principle</strong> Suppose that we have two
-experiments, <span class="math inline">\(E_1 = (\mathbf{X}_1, \theta, f_1(\mathbf{x}_1 \vert{} \theta))\)</span>
+That is, information about <span class="math inline">\(\theta\)</span> depends only on the experiment run (not on the fact that the particular experiment was chosen).</p>
+<p><strong>Formal Likelihood Principle</strong> Suppose that we have two experiments, <span class="math inline">\(E_1 = (\mathbf{X}_1, \theta, f_1(\mathbf{x}_1 \vert{} \theta))\)</span>
 and <span class="math inline">\(E_2 = (\mathbf{X}_2, \theta, f_2(\mathbf{x}_2 \vert{} \theta))\)</span> where the
 unknown parameter <span class="math inline">\(\theta\)</span> is the same in both experiments. Suppose that
 <span class="math inline">\(\mathbf{x}_1^*\)</span> and <span class="math inline">\(\mathbf{x}_2^*\)</span> are sample points from <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span>
@@ -869,16 +897,10 @@ model.</p>
 </div>
 <div id="the-equivariance-principle" class="section level3">
 <h3>The Equivariance Principle</h3>
-<p><strong>Measurement Equivariance</strong> Inferences should not depend on the
-measurement scale used.</p>
-<p><strong>Formal Invariance</strong> If two inference problems have the same formal
-structure, in terms of the mathematical model used, then the same
-inference procedure should be used, regardless of the physical
-realisation.</p>
+<p><strong>Measurement Equivariance</strong> Inferences should not depend on the measurement scale used.</p>
+<p><strong>Formal Invariance</strong> If two inference problems have the same formal structure, in terms of the mathematical model used, then the same inference procedure should be used, regardless of the physical realisation.</p>
 <p><strong>Equivariance Principle</strong> If <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> is a change of
-measurement scale such that the model <span class="math inline">\(\mathbf{Y}\)</span> has the same formal
-structure as the model <span class="math inline">\(\mathbf{X}\)</span>, then an inference procedure should be
-both measurement equivariant and formally invariant.</p>
+measurement scale such that the model <span class="math inline">\(\mathbf{Y}\)</span> has the same formal structure as the model <span class="math inline">\(\mathbf{X}\)</span>, then an inference procedure should be both measurement equivariant and formally equivariant.</p>
 <p>Let <span class="math inline">\(\mathcal{F} = \{f(\mathbf{x} \vert{} \theta): \theta \in \Theta\}\)</span> be
 a set of pdfs or pmfs for <span class="math inline">\(\mathbf{X}\)</span>, and let <span class="math inline">\(\mathcal{G}\)</span> be group of
 transformations on the sample space <span class="math inline">\(\mathcal X{}\)</span>. Then <span class="math inline">\(\mathcal{F}\)</span> is
@@ -886,7 +908,7 @@ transformations on the sample space <span class="math inline">\(\mathcal X{}\)</
 <span class="math inline">\(\theta \in \Theta\)</span> and <span class="math inline">\(g \in \mathcal{G}\)</span> there exists a unique
 <span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> has the
 distribution <span class="math inline">\(f(\mathbf{y} \vert{} \theta&#39;)\)</span> if <span class="math inline">\(\mathbf{X}\)</span> has the
-distribution <span class="math inline">\(f(\mathbf{x} \vert{} \theta&#39;)\)</span>.</p>
+distribution <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span>.</p>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
