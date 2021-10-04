@@ -1087,7 +1087,7 @@ estimator</em> of of <span class="math inline">\(\tau(\theta)\)</span> if it sat
 <span class="math inline">\(\mathbb E[W^*] = \tau(\theta) \,\, \forall \theta\)</span>, and for any other
 estimator with <span class="math inline">\(\mathbb E[W] = \tau(\theta) \,\, \forall \theta\)</span> we have
 <span class="math inline">\(\mathbb V[W*] \leq \mathbb V[W] \,\, \forall \theta\)</span>. We also call <span class="math inline">\(W^*\)</span> the
-<em>uniform minimum variance unbiased estimator</em> (UMVUE) of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<strong>uniform minimum variance unbiased estimator</strong> (UMVUE) of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <p>Suppose that we are trying to estimate <span class="math inline">\(\theta\)</span> and consider the class
 of estimators <span class="math display">\[\mathcal{C}_\tau = \{W: \mathbb E[W] = \tau(\theta)\}.\]</span> All
 estimators in this class have the same bias, so we can compare their
@@ -1097,26 +1097,26 @@ considerations of this chapter can be applied to classes like
 <span class="math inline">\(\mathcal{C}_\tau\)</span>, even if <span class="math inline">\(\tau(\theta) \neq \theta\)</span>.</p>
 <p>The best unbiased estimator, if it exists, could be hard to find. The
 following lower bound at least gives a stopping criterion to our search.</p>
-<p>[Cramér-Rao Inequality] Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample with pdf
-<span class="math inline">\(f(\mathbf x\vert{}\theta)\)</span> and let <span class="math inline">\(W(\mathbf x) = W(X_1, \dots, X_n)\)</span> be
+<p><strong>Cramér-Rao Inequality</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample with pdf
+<span class="math inline">\(f(\mathbf x\vert{}\theta)\)</span> and let <span class="math inline">\(W(\mathbf X) = W(X_1, \dots, X_n)\)</span> be
 any estimator with finite variance satisfying
-<span class="math display">\[\frac{d}{d \theta} \mathbb E[W(\mathbf x)] = \int_{\X{}} \frac{\pd{}}{\pd{} \theta} \left(W(\mathbf x) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span>
+<span class="math display">\[\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] = \int_{\mathcal X{}} \frac{\partial}{\partial \theta} \left(W(\mathbf X) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span> and <span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)]&lt;\infty\]</span>
 Then
-<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]}.\]</span></p>
+<span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] \right)^2}{\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X\vert{} \theta) \right)^2 \right]}.\]</span></p>
 <p>The proof of this considers the correlation between the gradient of the
 log likelihood and the statistic. Note that the sample in the above
 theorem is not necessarily iid.</p>
 <p>This hold for discrete distributions too, replacing integrals with sums.</p>
-<p>If the random sample <span class="math inline">\(\X_1, \dots, X_n\)</span> is iid then the result becomes
-<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{n\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(X \vert{} \theta) \right)^2 \right]}.\]</span></p>
+<p>If the random sample <span class="math inline">\(X_1, \dots, X_n\)</span> is iid then the result becomes
+<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{n\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]}.\]</span></p>
 <p>[Fisher Information] The quantity
-<span class="math inline">\(\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
+<span class="math inline">\(\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
 is called the <em>Fisher Information</em> of the sample <span class="math inline">\(\mathbf x\)</span>.</p>
 <p>If <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies
-<span class="math display">\[\frac{d}{d \theta} \mathbb E\left[ \frac{\pd}{\pd \theta} \log f(X \vert{} \theta) \right] = \int \frac{\pd}{\pd \theta} \left[ \left( \frac{\pd}{\pd \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
+<span class="math display">\[\frac{d}{d \theta} \mathbb E\left[ \frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right] = \int \frac{\partial}{\partial \theta} \left[ \left( \frac{\partial}{\partial \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
 (as is true for an exponential family), then the Fisher information can
 be written
-<span class="math display">\[\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(X \vert{} \theta) \right)^2 \right] = - \mathbb E\left[ \frac{\pd^2}{\pd \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
+<span class="math display">\[\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] = - \mathbb E\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
 <p>Even if the Cramér-Rao bound is applicable, it may not be sharp – there
 may not be an estimator that attains this bound.</p>
 <p>[Attainment] Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid <span class="math inline">\(X \sim f(x \vert{} \theta)\)</span>,
@@ -1126,7 +1126,7 @@ Theorem. Let
 the likelihood function. If <span class="math inline">\(W(\mathbf x)\)</span> is any unbiased estimator of
 <span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W(\mathbf x)\)</span> attains the Cramér-Rao lower bound if
 and only if <span class="math inline">\(\exists a(\theta)\)</span> such that
-<span class="math display">\[a(\theta) [W(\mathbf x) - \tau(\theta)] = \frac{\pd}{\pd \theta} \log L(\theta \vert{} \mathbf x).\]</span></p>
+<span class="math display">\[a(\theta) [W(\mathbf x) - \tau(\theta)] = \frac{\partial}{\partial \theta} \log L(\theta \vert{} \mathbf x).\]</span></p>
 </div>
 <div id="sufficiency-and-unbiasedness" class="section level3">
 <h3>Sufficiency and Unbiasedness</h3>
