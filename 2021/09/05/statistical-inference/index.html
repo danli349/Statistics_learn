@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">40 min read</span>
+    <span class="article-duration">43 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -322,7 +322,7 @@ provided the expectations exist.</p>
 <p>[Covariance] <span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[(X - \mu_X)(Y - \mu_Y)]\]</span></p>
 <p><span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[XY] - \mu_X\mu_Y\]</span></p>
 <p><span class="math display">\[\mathbb V[aX + bY] = a^2\mathbb V[X] + b^2\mathbb V[Y] + 2ab\text{Cov }[X, Y]\]</span></p>
-<p>[Correlation] <span class="math display">\[\rho_XY = \frac{\text{Cov }[X, Y]}{\sigma_X \sigma_Y}\]</span></p>
+<p>[Correlation] <span class="math display">\[\rho_{XY} = \frac{\text{Cov }[X, Y]}{\sigma_X \sigma_Y}\]</span></p>
 <p>The correlation measures the strength of <em>linear</em> relation between two
 RVs. It is possible to have strong non-linear relationships but with
 <span class="math inline">\(\rho = 0\)</span>.</p>
@@ -349,20 +349,36 @@ to show the following</p>
 equality if and only if <span class="math inline">\(a^p = b^q\)</span>.</p>
 <p><strong>H<span class="math inline">\(\ddot{o}\)</span>lder’s Inequality</strong> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any random
 variables and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy <span class="math inline">\(1/p + 1/q = 1\)</span>, then
-<span class="math display">\[\lvert{\mathbb E{}[XY]}\lvert \leq \mathbb E{}[\lvert{XY}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p} \mathbb E{}[\lvert{Y}\lvert^q]^{1/q}\]</span></p>
+<span class="math display">\[\lvert{\mathbb E{}[XY]}\lvert \leq \mathbb E{}[\lvert{XY}\lvert] \le \mathbb E{}[\lvert{X}\lvert^p]^{1/p} \mathbb E{}[\lvert{Y}\lvert^q]^{1/q}\]</span>
+<strong>Proof:</strong> The first inequality follows from <span class="math inline">\(- |XY| \leq XY \leq |XY|\)</span>. To prove the second inequality, define <span class="math display">\[a=\frac{|X|}{(\mathbb E|X|^p)^{1/p}}\quad\text{and}\quad b=\frac{|Y|}{(\mathbb E|Y|^q)^{1/q}}\]</span> then <span class="math display">\[\frac1p a^p+ \frac1q b^q=\frac1p\frac{|X|^p}{(\mathbb E|X|^p)}+\frac1q\frac{|Y|^q}{(\mathbb E|Y|^q)}\ge ab=\frac{|XY|}{(\mathbb E|X|^p)^{1/p}(\mathbb E|Y|^q)^{1/q}}\]</span> Now take expectations of both sides. The expectation of the left-hand side is <span class="math inline">\(1\)</span>, then <span class="math display">\[1\ge \frac{\mathbb E|XY|}{(\mathbb E|X|^p)^{1/p}(\mathbb E|Y|^q)^{1/q}}\]</span>.</p>
 <ul>
-<li><p><strong>Cauchy-Schwarz Inequality</strong> is the special case <span class="math inline">\(p = q = 2\)</span></p></li>
-<li><p><span class="math inline">\(\text{Cov }[X, Y]^2 \leq \sigma_X^2 \sigma_Y^2\)</span></p></li>
-<li><p><span class="math inline">\(\mathbb E{}[\lvert{X}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p}\)</span></p></li>
+<li><strong>Cauchy-Schwarz Inequality</strong> is the special case <span class="math inline">\(p = q = 2\)</span> <span class="math display">\[\mathbb E|XY|\le (\mathbb E|X|^2)^{1/2}(\mathbb E|Y|^2)^{1/2}\]</span><br />
+Also let <span class="math display">\[u(t) = E[(tX - Y)^2]\]</span>
+Then:<span class="math display">\[t^2E[X^2] - 2tE[XY] + E[Y^2] \ge 0\]</span></li>
+</ul>
+<p>This is a quadratic in <span class="math inline">\(t\)</span>. Thus the discriminant must be non-positive. Therefore: <span class="math display">\[(\mathbb E[XY])^2 - \mathbb E[X^2]\mathbb E[Y^2] \le 0\]</span> or <span class="math display">\[(\mathbb E[XY])^2 \le \mathbb E[X^2]\mathbb E[Y^2]\]</span> Then <span class="math display">\[|(\mathbb E[XY])|\le(\mathbb E|X|^2)^{1/2}(\mathbb E|Y|^2)^{1/2}\]</span></p>
+<ul>
+<li><p><strong>Covariance inequality</strong> <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\mathbb V(X)\mathbb V(Y)\]</span> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have means <span class="math inline">\(\mu_X\)</span> and <span class="math inline">\(\mu_Y\)</span> and
+variances <span class="math inline">\(\sigma_X^2\)</span> and <span class="math inline">\(\sigma_Y^2\)</span>, respectively, we can apply the Cauchy-Schwarz Inequality to get <span class="math display">\[\mathbb E\lvert(X-\mu_X)(Y-\mu_Y)\rvert\le \{\mathbb E(X-\mu_X)^2\}^{1/2}\{\mathbb E(Y-\mu_Y)^2\}^{1/2}\]</span>
+Squaring both sides and using statistical notation, we have
+<span class="math display">\[(\text{Cov}(X, Y))^2 \leq \sigma_X^2\sigma_Y^2.\]</span></p></li>
+<li><p><span class="math display">\[\mathbb E{}[\lvert{X}\lvert] \leq \mathbb E{}[\lvert{X}\lvert^p]^{1/p}\]</span></p></li>
 <li><p><strong>Liapounov’s Inequality</strong>
-<span class="math inline">\(\mathbb E{}[\lvert{X}\lvert^r]^{1/r} \leq \mathbb E{}[\lvert{X}\lvert^s]^{1/s}\)</span> where
+<span class="math display">\[\mathbb E{}[\lvert{X}\lvert^r]^{1/r} \leq \mathbb E{}[\lvert{X}\lvert^s]^{1/s}\]</span> where
 <span class="math inline">\(1 &lt; r &lt; s &lt; \infty\)</span>.</p></li>
 <li><p>For numbers <span class="math inline">\(a_i,b_i,i=1,\cdots,n\)</span>, <span class="math display">\[\sum_{i=1}^{n}|a_ib_i|\leq\left(\sum_{i=1}^{n}a_i^p\right)^{1/p}\left(\sum_{i=1}^{n}b_i^q\right)^{1/q}\]</span> where <span class="math inline">\(\frac{1}{p}+\frac{1}{q}=1\)</span></p></li>
 <li><p><span class="math display">\[\frac{1}{n}\left(\sum_{i=1}^{n}|a_i|\right)^2\leq\sum_{i=1}^{n}a_i^2\]</span></p></li>
 </ul>
 <p><strong>Minkowski’s Inequality</strong><br />
 Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any two random variables. Then for <span class="math inline">\(1\le p&lt;\infty\)</span>
-<span class="math display">\[(\mathbb E|X+Y|^p)^{1/p}\le (\mathbb E|X|^p)^{1/p}+(\mathbb E|Y|^p)^{1/p}\]</span></p>
+<span class="math display">\[(\mathbb E|X+Y|^p)^{1/p}\le (\mathbb E|X|^p)^{1/p}+(\mathbb E|Y|^p)^{1/p}\]</span>
+<strong>Proof:</strong> Write
+<span class="math display">\[\mathbb E(|X + Y|^p) = \mathbb E \left(|X + Y||X + Y|^{p-1}\right)\le \mathbb E\left(|X| |X + Y|^{p-1}\right) + \mathbb E\left(|Y||X + Y|^{p-1}\right),\]</span>
+where we have used the fact that <span class="math inline">\(|X + Y| \le |X| + |Y|\)</span> (the triangle inequality. Now apply HOlder’s Inequality to each expectation on the right-hand side to get
+<span class="math display">\[\begin{align}
+\mathbb E(|X + Y|^p) &amp;\leq \mathbb E\left(|X| |X + Y|^{p-1}\right) + \mathbb E\left(|Y||X + Y|^{p-1}\right)\\
+&amp;=\left(\mathbb E|X|^p\right)^{1/p} \left(\mathbb E|X + Y|^{q(p-1)}\right)^{1/q} + \left(\mathbb E|Y|^p\right)^{1/p}\left(\mathbb E|X + Y|^{q(p-1)}\right)^{1/q}\\
+\end{align}\]</span> where <span class="math inline">\(q\)</span> satisfies <span class="math inline">\(1/p + 1/q = 1\)</span>. Now divide through by <span class="math inline">\(\left(\mathbb E|X + Y|^{q(p-1)}\right)^{1/q}\)</span>. Then <span class="math display">\[\frac{\mathbb E(|X + Y|^p)}{\left(\mathbb E|X + Y|^{q(p-1)}\right)^{1/q}}=\left(\mathbb E(|X + Y|^p\right)^{1/p}\le \left(\mathbb E|X|^p\right)^{1/p} + \left(\mathbb E|Y|^p\right)^{1/p}\]</span></p>
 </div>
 <div id="functional-inequalities" class="section level3">
 <h3>Functional Inequalities</h3>
@@ -1103,15 +1119,38 @@ any estimator with finite variance satisfying
 <span class="math display">\[\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] = \int_{\mathcal X{}} \frac{\partial}{\partial \theta} \left(W(\mathbf X) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span> and <span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)]&lt;\infty\]</span>
 Then
 <span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] \right)^2}{\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X\vert{} \theta) \right)^2 \right]}.\]</span></p>
-<p>The proof of this considers the correlation between the gradient of the
-log likelihood and the statistic. Note that the sample in the above
-theorem is not necessarily iid.</p>
-<p>This hold for discrete distributions too, replacing integrals with sums.</p>
-<p>If the random sample <span class="math inline">\(X_1, \dots, X_n\)</span> is iid then the result becomes
-<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{n\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]}.\]</span></p>
-<p>[Fisher Information] The quantity
-<span class="math inline">\(\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
-is called the <em>Fisher Information</em> of the sample <span class="math inline">\(\mathbf x\)</span>.</p>
+<p>The proof of this considers the correlation between the gradient of the log likelihood and the statistic. Note that the sample in the above theorem is not necessarily iid.</p>
+<p><strong>proof</strong></p>
+<p><strong>Covariance inequality</strong> For any two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\mathbb V(X)\mathbb V(Y)\]</span> and <span class="math display">\[\mathbb V(X)\ge\frac{(\text{Cov}[X, Y])^2}{\mathbb V(Y)}\]</span> The cleverness in this theorem follows from choosing <span class="math inline">\(X\)</span> to be the estimator <span class="math inline">\(W(\mathbf X)\)</span> and <span class="math inline">\(Y\)</span> to be the quantity <span class="math inline">\(\frac{\partial}{\partial\theta} \log f(\mathbf X|\theta)\)</span> and applying the Cauchy-Schwarz IneqUality.
+First note that <span class="math display">\[\begin{align}
+\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)&amp;=\int_{\mathcal X}W(\mathbf X)\left[\frac{\partial}{\partial\theta}f(\mathbf X|\theta)\right]dx\\
+&amp;=\int_{\mathcal X}W(\mathbf X)\frac{\frac{\partial}{\partial\theta}f(\mathbf X|\theta)}{f(\mathbf X|\theta)}f(\mathbf X|\theta)dx\\
+&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\frac{\partial}{\partial\theta}f(\mathbf X|\theta)}{f(\mathbf X|\theta)}\right]\\
+&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
+\end{align}\]</span> which suggests a covariance between <span class="math inline">\(W(\mathbf X)\)</span> and <span class="math inline">\(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\)</span>. For it to be a covariance, we need to subtract the product of the expected values, so we calculate <span class="math inline">\(\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\)</span>. If <span class="math inline">\(W(\mathbf X) = 1\)</span>, we have <span class="math display">\[\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)=\frac{d}{d\theta}\mathbb E_{\theta}[1]=0=\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\]</span></p>
+<p>Therefore <span class="math display">\[\begin{align}
+\text{Cox}_{\theta}\left(W(\mathbf X), \frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]+\mathbb E_{\theta}W(\mathbf X)\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
+&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
+&amp;=\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)
+\end{align}\]</span> Also since <span class="math display">\[\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]=0\]</span> we have <span class="math display">\[\mathbb V_{\theta}\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)=\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)\]</span> Using the Cauchy-Schwarz Inequality we obtain <span class="math display">\[\mathbb V_{\theta}(W(\mathbf X))\ge \frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)}\]</span></p>
+<p><strong>Cramer-Rao Inequality, iid case</strong> If the assumptions of last Theorem are satisfied and, additionally, if <span class="math inline">\(X_1,\cdots ,X_n\)</span> are iid with pdf <span class="math inline">\(f(x|\theta)\)</span>, then
+<span class="math display">\[\begin{align}
+\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]&amp;=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log \prod_{i=1}^{n}f(X_i \vert{} \theta) \right)^2 \right]
+\end{align}\]</span></p>
+<p><strong>proof</strong>
+Since <span class="math inline">\(X_1, \dots, X_n\)</span> are independent,
+<span class="math display">\[\begin{align}
+\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]&amp;=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log \prod_{i=1}^{n}f(X_i \vert{} \theta) \right)^2 \right]\\
+&amp;=\mathbb E_{\theta}\left[ \left(\sum_{i=1}^{n}\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right)^2 \right]\\
+&amp;=\sum_{i=1}^{n}\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right)^2 \right]\\
+&amp;+\sum_{i\ne j}^{}\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right) \left(\frac{\partial}{\partial \theta} \log f(X_j \vert{} \theta) \right)\right]\\
+\end{align}\]</span> since <span class="math inline">\(X_1, \dots, X_n\)</span> are independent, for <span class="math inline">\(i\ne j\)</span> we have <span class="math display">\[\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right) \left(\frac{\partial}{\partial \theta} \log f(X_j \vert{} \theta) \right)\right]
+=\mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right) \mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_j \vert{} \theta) \right)=0\]</span> So <span class="math display">\[\begin{align}
+\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]=\sum_{i=1}^{n}\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right)^2 \right]=n\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]\\
+\end{align}\]</span></p>
+<p><strong>Fisher Information</strong> The quantity
+<span class="math inline">\(\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
+is called the <em>Fisher Information</em> of the sample <span class="math inline">\(\mathbf X\)</span>.</p>
 <p>If <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies
 <span class="math display">\[\frac{d}{d \theta} \mathbb E\left[ \frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right] = \int \frac{\partial}{\partial \theta} \left[ \left( \frac{\partial}{\partial \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
 (as is true for an exponential family), then the Fisher information can
