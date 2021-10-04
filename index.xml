@@ -887,7 +887,7 @@ system2(&amp;quot;wsl&amp;quot;,&amp;quot;efetch -db=nuccore -format=gb -id=NC_0
       <guid>/about/</guid>
       <description>This website was constructed using R markdown and R blogdown, the wonderful packages by Yihui Xie, and the Hugo Lithium theme. These pages are hosted by GitHub Pages.
 Interesting blogs which I followed:
-colahChris ChoyTerence Tao1. R Core Team. R: A language and environment for statistical computing. Vienna, Austria: R Foundation for Statistical Computing; 2021. https://www.R-project.org/.2. Xie Y, Hill AP, Thomas A. Blogdown: Creating websites with R markdown.</description>
+colahChris ChoyTerence TaoPiotr Migdał1. R Core Team. R: A language and environment for statistical computing. Vienna, Austria: R Foundation for Statistical Computing; 2021. https://www.R-project.org/.2. Xie Y, Hill AP, Thomas A.</description>
     </item>
     
     <item>

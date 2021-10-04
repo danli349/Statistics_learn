@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">30 min read</span>
+    <span class="article-duration">40 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -124,6 +124,22 @@
 <li><a href="#the-likelihood-principle">The Likelihood Principle</a></li>
 <li><a href="#a-slightly-more-formal-construction">A Slightly More Formal Construction</a></li>
 <li><a href="#the-equivariance-principle">The Equivariance Principle</a></li>
+</ul></li>
+<li><a href="#point-estimation">7. Point Estimation</a>
+<ul>
+<li><a href="#methods-of-finding-estimators">Methods of Finding Estimators</a>
+<ul>
+<li><a href="#method-of-moments">Method of Moments</a></li>
+<li><a href="#maximum-likelihood-estimators">Maximum Likelihood Estimators</a></li>
+<li><a href="#bayes-estimators">Bayes Estimators</a></li>
+<li><a href="#the-em-expectation-maximization-algorithm">The EM (Expectation-Maximization) Algorithm</a></li>
+</ul></li>
+<li><a href="#methods-of-evaluating-estimators">Methods of Evaluating Estimators</a>
+<ul>
+<li><a href="#mean-squared-error">Mean Squared Error</a></li>
+<li><a href="#best-unbiased-estimators">Best Unbiased Estimators</a></li>
+<li><a href="#sufficiency-and-unbiasedness">Sufficiency and Unbiasedness</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -901,14 +917,261 @@ model.</p>
 <p><strong>Formal Invariance</strong> If two inference problems have the same formal structure, in terms of the mathematical model used, then the same inference procedure should be used, regardless of the physical realisation.</p>
 <p><strong>Equivariance Principle</strong> If <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> is a change of
 measurement scale such that the model <span class="math inline">\(\mathbf{Y}\)</span> has the same formal structure as the model <span class="math inline">\(\mathbf{X}\)</span>, then an inference procedure should be both measurement equivariant and formally equivariant.</p>
+<p>A set of functions <span class="math inline">\(\{g(\mathbf{x}) : g \in \mathcal G\}\)</span> from the sample space <span class="math inline">\(\mathcal X\)</span> onto
+<span class="math inline">\(\mathcal X\)</span> is called a <strong>group of transformations</strong> of <span class="math inline">\(\mathcal X\)</span> if:</p>
+<ul>
+<li><p>(i). (<strong>Inverse</strong>) For every <span class="math inline">\(g \in \mathcal G\)</span> there is a <span class="math inline">\(g&#39; \in \mathcal G\)</span> such that <span class="math inline">\(g&#39;(g(\mathbf{x})) = \mathbf{x}\)</span> for all <span class="math inline">\(\mathbf{x} \in \mathcal X\)</span>.</p></li>
+<li><p>(ii). (<strong>Composition</strong>) For every <span class="math inline">\(g \in \mathcal G\)</span> and <span class="math inline">\(g&#39; \in \mathcal G\)</span> there exists <span class="math inline">\(g&#39;&#39; \in \mathcal G\)</span> such that <span class="math inline">\(g&#39;(g(\mathbf{x})) = g&#39;&#39;(\mathbf{x})\)</span> for all <span class="math inline">\(\mathbf x \in \mathcal X\)</span>.</p></li>
+<li><p>(iii). (<strong>Identity</strong>) The identity, <span class="math inline">\(e(\mathbf x)\)</span>, defined by <span class="math inline">\(e(\mathbf x) =\mathbf x\)</span> is an element of <span class="math inline">\(\mathcal G\)</span>, which is a consequence of (i) and (ii)
+and need not be verified separately.</p></li>
+</ul>
 <p>Let <span class="math inline">\(\mathcal{F} = \{f(\mathbf{x} \vert{} \theta): \theta \in \Theta\}\)</span> be
 a set of pdfs or pmfs for <span class="math inline">\(\mathbf{X}\)</span>, and let <span class="math inline">\(\mathcal{G}\)</span> be group of
 transformations on the sample space <span class="math inline">\(\mathcal X{}\)</span>. Then <span class="math inline">\(\mathcal{F}\)</span> is
-<em>invariant under the group</em> <span class="math inline">\(\mathcal{G}\)</span> if for every
-<span class="math inline">\(\theta \in \Theta\)</span> and <span class="math inline">\(g \in \mathcal{G}\)</span> there exists a unique
-<span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> has the
+<strong>invariant under the group</strong> <span class="math inline">\(\mathcal{G}\)</span> if for every <span class="math inline">\(\theta \in \Theta\)</span> and <span class="math inline">\(g \in \mathcal{G}\)</span> there exists a unique <span class="math inline">\(\theta&#39; \in \Theta\)</span> such that <span class="math inline">\(\mathbf{Y} = g(\mathbf{X})\)</span> has the
 distribution <span class="math inline">\(f(\mathbf{y} \vert{} \theta&#39;)\)</span> if <span class="math inline">\(\mathbf{X}\)</span> has the
 distribution <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span>.</p>
+</div>
+</div>
+<div id="point-estimation" class="section level1">
+<h1>7. Point Estimation</h1>
+<p><strong>Point Estimator</strong> A <em>point estimator</em> is any function <span class="math inline">\(W(X_1, \dots, X_n)\)</span> of a sample; that is, any statistic is a point estimator. An <em>estimate</em> is a realised value <span class="math inline">\(w(x_1, \dots, x_n)\)</span>.</p>
+<p>Note that there is the implicit restriction that the estimator is not a function of the parameter you are trying to estimate.</p>
+<div id="methods-of-finding-estimators" class="section level2">
+<h2>Methods of Finding Estimators</h2>
+<div id="method-of-moments" class="section level3">
+<h3>Method of Moments</h3>
+<p>The method of moments is performed using a random sample <span class="math inline">\(X_1, \dots, X_n\)</span> from a population with unknown parameters <span class="math inline">\(\theta_1, \dots, \theta_k\)</span> by computing the first <span class="math inline">\(k\)</span> empirical moments
+<span class="math inline">\(m_k = \frac{1}{n}\sum_{i=1}^nX_i^k\)</span> and matching them with the corresponding moments of the population <span class="math inline">\(\mu_k&#39; = \mathbb E[X^t]\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+    m_1 &amp;= \mu_1&#39;(\theta_1, \dots, \theta_k)\\
+    m_2 &amp;= \mu_2&#39;(\theta_1, \dots, \theta_k)\\
+        &amp;\vdots  \\
+    m_k &amp;= \mu_k&#39; (\theta_1, \dots, \theta_k)\\
+\end{aligned}\]</span></p>
+<p>From this you get <span class="math inline">\(k\)</span> simultaneous equations that you can use to solve for the parameters of the population.</p>
+</div>
+<div id="maximum-likelihood-estimators" class="section level3">
+<h3>Maximum Likelihood Estimators</h3>
+<p><strong>Maximum Likelihood Estimator</strong> For each sample point <span class="math inline">\(\mathbf x\)</span>, let <span class="math inline">\(\hat{\boldsymbol\theta}(\mathbf x)\)</span> be a parameter value at which the likelihood function <span class="math display">\[L(\boldsymbol\theta \vert{} \mathbf x)=\prod_{i=1}^{n}f(x_i\lvert \theta_1,\cdots,\theta_k)\]</span> attains its maximum as a function of <span class="math inline">\(\boldsymbol\theta\)</span>, with <span class="math inline">\(\mathbf x\)</span> held fixed. A <strong>maximum likelihood estimator (MLE)</strong> of the parameter <span class="math inline">\(\boldsymbol\theta\)</span> based on a sample <span class="math inline">\(\mathbf X\)</span> is <span class="math inline">\(\hat{\boldsymbol\theta}(\mathbf X)\)</span>.</p>
+<p>Suppose we want to find the MLE for some function of the parameter
+<span class="math inline">\(\tau(\theta)\)</span>.</p>
+<p><strong>Induced Likelihood</strong> Given some function of the parameter
+<span class="math inline">\(\tau(\theta)\)</span>, we define the <strong>induced likelihood function</strong> <span class="math inline">\(L^*\)</span> by
+<span class="math display">\[L^*(\eta \vert{} \mathbf x) = \sup_{\theta : \tau(\theta) = \eta} L(\theta \vert{} \mathbf x).\]</span>
+The value <span class="math inline">\(\hat{\eta}\)</span> that maximises <span class="math inline">\(L^*(\eta \vert{} \mathbf x)\)</span> will
+be called the MLE of <span class="math inline">\(\eta = \tau(\theta)\)</span>. It can be seen that the
+maxima of <span class="math inline">\(L^*\)</span> and <span class="math inline">\(L\)</span> coincide.</p>
+<p><strong>Invariance Property of MLEs</strong> IF <span class="math inline">\(\hat{\theta}\)</span> is the MLE of <span class="math inline">\(\theta\)</span>, then for any function <span class="math inline">\(\tau(\theta)\)</span>, the MLE of <span class="math inline">\(\tau(\theta)\)</span> is <span class="math inline">\(\tau(\hat{\theta})\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li><p>The MLE can be an unstable function of the data.</p></li>
+<li><p>When verifying maxima for multi-dimensional problems try to avoid going down the hessian route, which can be tedious.</p></li>
+</ol>
+<p>To use two-variate calculus to verify that a function <span class="math inline">\(H(\theta_1,\theta_2)\)</span> has a local maximum at <span class="math inline">\((\hat\theta_1,\hat\theta_2)\)</span>, it must be shown that the following three conditions hold.</p>
+<ul>
+<li><ol style="list-style-type: lower-alpha">
+<li>The first-order partial derivatives are <span class="math inline">\(0\)</span>, <span class="math display">\[\frac{\partial}{\partial\theta_1}H(\theta_1,\theta_2)|_{\theta_1=\hat\theta_1,\theta_2=\hat\theta_2}=0\]</span> and <span class="math display">\[\frac{\partial}{\partial\theta_2}H(\theta_1,\theta_2)|_{\theta_1=\hat\theta_1,\theta_2=\hat\theta_2}=0\]</span></li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-alpha">
+<li>At least one second-order partial derivative is negative, <span class="math display">\[\frac{\partial^2}{\partial\theta_1^2}H(\theta_1,\theta_2)|_{\theta_1=\hat\theta_1,\theta_2=\hat\theta_2}&lt;0\]</span> or <span class="math display">\[\frac{\partial^2}{\partial\theta_2^2}H(\theta_1,\theta_2)|_{\theta_1=\hat\theta_1,\theta_2=\hat\theta_2}&lt;0\]</span></li>
+</ol></li>
+<li><ol start="3" style="list-style-type: lower-alpha">
+<li>The Jacobian of the second-order partial derivatives is positive, <span class="math display">\[\begin{vmatrix}
+\frac{\partial^2}{\partial\theta_1^2}H(\theta_1,\theta_2)&amp;\frac{\partial^2}{\partial\theta_1\partial\theta_2}H(\theta_1,\theta_2)\\
+\frac{\partial^2}{\partial\theta_1\partial\theta_2}H(\theta_1,\theta_2)&amp;\frac{\partial^2}{\partial\theta_2^2}H(\theta_1,\theta_2)
+\end{vmatrix}_{\theta_1=\hat\theta_1,\theta_2=\hat\theta_2}\\
+=\frac{\partial^2}{\partial\theta_1^2}H(\theta_1,\theta_2)\frac{\partial^2}{\partial\theta_2^2}H(\theta_1,\theta_2)-\left(\frac{\partial^2}{\partial\theta_1\partial\theta_2}H(\theta_1,\theta_2)\right)^2 &gt;0\]</span><br />
+Since <span class="math display">\[f(\theta) \approx f(\theta_0) + \nabla f(\theta_0)^T (\theta - \theta_0) + \frac12 (\theta - \theta_0)^T \nabla^2 f(\theta_0) (\theta - \theta_0).\]</span> If <span class="math inline">\(\theta_0\)</span> is a local extremum for <span class="math inline">\(f\)</span>, then <span class="math inline">\(\nabla f(\theta_0) = 0\)</span>, so if <span class="math inline">\(\nabla^2 f(\theta_0)\)</span> is negative definite, then <span class="math inline">\((\theta - \theta_0)^T \nabla^2 f(\theta_0) (\theta - \theta_0) \leq 0\)</span> for all <span class="math inline">\(\theta\)</span>, so <span class="math inline">\(\theta_0\)</span> is a local maximum. Then the eigenvalues of <span class="math inline">\(\nabla^2 f(\theta_0)\)</span> should be both negative and the determinant should be positive.</li>
+</ol></li>
+</ul>
+</div>
+<div id="bayes-estimators" class="section level3">
+<h3>Bayes Estimators</h3>
+<p>If we denote the prior distribution by <span class="math inline">\(\pi(\theta)\)</span> and the sampling
+distribution by <span class="math inline">\(f(\mathbf x \vert{} \theta)\)</span>, then the posterior
+distribution of <span class="math inline">\(\theta\)</span> given the sample <span class="math inline">\(\mathbf x\)</span> is
+<span class="math display">\[\pi(\theta \vert{} \mathbf x) = \frac{f(\mathbf x\vert{}\theta)\pi(\theta)}{m(\mathbf x)},\]</span>
+where <span class="math inline">\(m(\mathbf x)\)</span> is the marginal distribution of the sample <span class="math inline">\(\mathbf x\)</span>
+<span class="math display">\[m(\mathbf x) = \int f(\mathbf x\vert{}\theta) \pi(\theta) d\theta.\]</span></p>
+<p><strong>Conjugate Priors</strong> Let <span class="math inline">\(\mathcal{F}\)</span> denote the class of pdfs/pmfs
+<span class="math inline">\(f(\mathbf x \vert{} \theta)\)</span> (indexed by <span class="math inline">\(\theta\)</span>). A class <span class="math inline">\(\Pi\)</span> of
+prior distribution is a <strong>conjugate family</strong> for <span class="math inline">\(\mathcal{F}\)</span> if,
+<span class="math inline">\(\forall f \in \mathcal{F}\)</span>, <span class="math inline">\(\forall \, \text{priors} \in \mathcal{F}\)</span>
+and <span class="math inline">\(\forall \mathbf x \in \mathcal X\)</span>, the posterior distribution is in <span class="math inline">\(\Pi\)</span>.</p>
+<p>Note that this relation is not said to be symmetric.</p>
+<p>[Some Examples]</p>
+<ul>
+<li><p>Normal is self-conjugate as a family.</p></li>
+<li><p>Beta distribution is conjugate to binomial.</p></li>
+</ul>
+</div>
+<div id="the-em-expectation-maximization-algorithm" class="section level3">
+<h3>The EM (Expectation-Maximization) Algorithm</h3>
+<p>In general, we can move in either direction, from the complete-data problem to the <strong>incomplete-data</strong> problem or the reverse. If <span class="math inline">\(\mathbf Y = (Y_1, \cdots , Y_n)\)</span> are the incomplete data, and <span class="math inline">\(\mathbf X = (X_1, \cdots, X_m)\)</span> are the augmented data, making <span class="math inline">\((\mathbf Y, \mathbf X)\)</span> the <strong>complete data</strong>,
+the densities <span class="math inline">\(g(\cdot\lvert \theta)\)</span> of <span class="math inline">\(\mathbf Y\)</span> and <span class="math inline">\(f(\cdot\lvert\theta)\)</span> of <span class="math inline">\((\mathbf Y, \mathbf X)\)</span> have the relationship <span class="math display">\[g(\mathbf y\lvert\theta) = \int f(\mathbf y, \mathbf x\lvert\theta) d\mathbf x\]</span>
+with sums replacing integrals in the discrete case.<br />
+If we turn these into likelihoods, <span class="math display">\[L(\theta\lvert\mathbf y) = g(\mathbf y\lvert\theta)\]</span> is the incomplete-data likelihood and <span class="math display">\[L(\theta\lvert\mathbf y, \mathbf x)=f(\mathbf y,\mathbf x\lvert\theta)\]</span> is the complete-data likelihood.</p>
+</div>
+</div>
+<div id="methods-of-evaluating-estimators" class="section level2">
+<h2>Methods of Evaluating Estimators</h2>
+<div id="mean-squared-error" class="section level3">
+<h3>Mean Squared Error</h3>
+<p>The <strong>mean squared error</strong> (MSE) of an estimator <span class="math inline">\(W\)</span>
+of a parameter <span class="math inline">\(\theta\)</span> is defined by <span class="math inline">\(\mathbb E_{\theta}[(W - \theta)^2]\)</span>.</p>
+<p><strong>Bias-Variance Decomposition</strong>
+<span class="math display">\[\mathbb E_{\theta}[(W - \theta)^2] = \mathbb V_{\theta} [W] + (\mathbb E_{\theta} [W] - \theta)^2 = \mathbb V_{\theta} [W] + (\text{Bias}_{\theta} [W])^2\]</span></p>
+<p><strong>Bias</strong> The <em>bias</em> of a point estimator <span class="math inline">\(W\)</span> of a parameter <span class="math inline">\(\theta\)</span> is
+given by <span class="math display">\[\text{Bias}_{\theta} [W] = \mathbb E_{\theta} [W] - \theta.\]</span> An estimator whose bias is <span class="math inline">\(0\)</span> is called an <strong>unbiased estimator</strong> and has <span class="math inline">\(\mathbb E_{\theta}[W] = \theta,\quad\forall \theta\)</span>.</p>
+<ul>
+<li><p>Clearly, if an estimator is unbiased, then its MSE is equal to its
+variance.</p></li>
+<li><p>The MSE makes sense for location parameters but not so much for
+scale parameters, since it is symmetric and scale parameters have a
+natural floor at <span class="math inline">\(0\)</span>.</p></li>
+<li><p>The MSE may be a function of the thing you’re trying to estimate. So
+which estimator you choose as being the ‘best’ may depend on the
+range you expect the parameter to lie within.</p></li>
+</ul>
+<p>The MLE (biased) estimator of the variance of a normal distribution is
+<span class="math display">\[\hat \sigma^2 = \frac{1}{N} \sum_{i=1}^{N}(X_i - \bar X)^2,\]</span> where <span class="math inline">\(\bar X\)</span> is the sample mean and <span class="math inline">\(X_i \sim^{iid} \mathcal{N}(\mu,\sigma^2)\)</span>.
+Since <span class="math display">\[\frac{1}{\sigma ^2} \sum_{i=1}^{N}(X_i-\bar X)^2 \sim \chi^2_{N},\]</span> we have that
+<span class="math display">\[\begin{align}
+\mathbb V\big(\frac{N\hat \sigma^2}{\sigma^2}\big) = \mathbb V(\chi^2_{N-1}) = 2(N-1) \\
+\implies \mathbb V(\hat \sigma ^2) = \frac{2(N-1) \sigma^4}{N^2}  
+\end{align}
+\]</span> The variance of this estimator is equal to <span class="math inline">\(\frac{2(N-1) \sigma^4}{N^2}\)</span>. The MSE is <span class="math display">\[\text{MSE}=\mathbb V(\hat \sigma ^2)+\text{Bias} =\frac{2\sigma ^4}{N}+ \mathbb E [\hat \sigma ^2] - \sigma ^2=\mathbb V(\hat \sigma ^2)+\text{Bias}^2 \\=\mathbb V(\hat \sigma ^2)+(\mathbb E(\hat \sigma ^2)-\sigma ^2)^2=\frac{2(N-1) \sigma^4}{N^2}+ \left(\frac{N-1}{N}\sigma ^2 - \sigma ^2\right)^2\\
+=\frac{2N-1}{N^2}\sigma ^4.\]</span> where
+<span class="math display">\[\begin{align}
+\mathbb E(\hat \sigma ^2)&amp;=\mathbb E\left(\frac{1}{N}\sum_{i=1}^{N}(x_i-\bar{x})^2\right)\\
+&amp;=\frac{1}{N}\mathbb E\left(\sum_{i=1}^{N}x_i^2-2\sum_{i=1}^{N}x_i\bar{x}+\sum_{i=1}^{N}\bar{x}^2\right)\\
+&amp;=\frac{1}{N}\mathbb E\left(\sum_{i=1}^{N}x_i^2-N\bar{x}^2\right)\\
+&amp;=\frac{1}{N}\mathbb E\left(\sum_{i=1}^{N}x_i^2\right)-\mathbb E\left(\bar{x}^2\right)\\
+&amp;=\mathbb E\left(x^2\right)-\mathbb E\left(\bar{x}^2\right)\\
+&amp;=(\sigma_x^2+\mu^2)-(\sigma_{\bar x}^2+\mu^2)\\
+&amp;=\sigma_x^2-\sigma_{\bar x}^2\\
+&amp;=\sigma_x^2-\mathbb V(\bar x)\\
+&amp;=\sigma_x^2-\mathbb V\left(\frac{1}{N}\sum_{i=1}^{N}x_i\right)\\
+&amp;=\sigma_x^2-\frac{1}{N^2}\mathbb V\left(\sum_{i=1}^{N}x_i\right)\\
+&amp;=\sigma_x^2-\frac{1}{N^2}\sum_{i=1}^{N}\mathbb V\left(x\right)\\
+&amp;=\sigma_x^2-\frac{1}{N}\mathbb V\left(x\right)\\
+&amp;=\sigma_x^2-\frac{1}{N}\sigma_x^2\\
+&amp;=\frac{N-1}{N}\sigma_x^2\\
+\end{align}\]</span></p>
+<p>A unbiased estimator of the variance of a normal distribution is
+<span class="math display">\[S^2 = \frac{1}{N-1} \sum_{i=1}^{N}(X_i - \bar X)^2,\]</span> since <span class="math inline">\(\mathbb E S^2=\sigma^2\)</span>.
+And since <span class="math display">\[\frac{(N-1) S^2}{\sigma^2} \sim \chi_{n-1}^2,\]</span>
+<span class="math display">\[\begin{align}
+\mathbb V\big(\frac{(N-1)S^2}{\sigma^2}\big) = \mathbb V(\chi^2_{N-1}) = 2(N-1) \\
+\implies \mathbb V(S^2) = \frac{2(N-1) \sigma^4}{(N-1)^2}=\frac{2\sigma^4}{N-1}  
+\end{align}
+\]</span> The variance of this estimator is equal to <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span>, which is also the MSE.</p>
+<p>The variance (or MSE) in the unbiased case <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span> is greater than the variance in the biased case <span class="math inline">\(\frac{2(N-1) \sigma^4}{N^2}\)</span>. The MSE of the unbiased estimator <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span> is larger than the MSE of the biased estimator <span class="math inline">\(\frac{2N-1}{N^2}\sigma ^4\)</span>.</p>
+<p><span class="math display">\[
+\begin{array}{llll}
+\text{Estimator} &amp; \text{MLE} &amp; \text{best-unbiased} &amp; \text{Bayes}           \\
+\hline
+\text{Normal}(\mu) &amp; \bar X        &amp; \bar X  &amp; \frac{\tau^2}{\tau^2+\sigma^2}\bar X+\frac{\sigma^2}{\tau^2+\sigma^2}\mu       \\
+\text{Normal}(\sigma^2) &amp; \frac{1}{n}\sum(X_i-\bar X)=\frac{n-1}{n}S^2           &amp; S^2=\frac{1}{n-1}\sum(X_i-\bar X) &amp; \frac{\sigma^2\tau^2}{\sigma^2+\tau^2}       \\
+\text{Bernoulli}(p)          &amp; \bar X             &amp; &amp;         \\
+\text{Bernoulli}(p(1-p))          &amp;              &amp;  &amp;         \\
+\text{Binomial}(np)          &amp; \frac{\sum_{i=1}^n X_i}{n}            &amp; &amp; \frac{(\sum_{i=1}^n X_i) +\alpha}{\alpha+\beta+n}         \\
+\text{Binomial}(np(1-p))          &amp;             &amp; &amp;         \\
+\end{array}
+\]</span></p>
+</div>
+<div id="best-unbiased-estimators" class="section level3">
+<h3>Best Unbiased Estimators</h3>
+<p>[Best Unbiased Estimator] An estimator <span class="math inline">\(W^*\)</span> is <em>best unbiased
+estimator</em> of of <span class="math inline">\(\tau(\theta)\)</span> if it satisfies
+<span class="math inline">\(\mathbb E[W^*] = \tau(\theta) \,\, \forall \theta\)</span>, and for any other
+estimator with <span class="math inline">\(\mathbb E[W] = \tau(\theta) \,\, \forall \theta\)</span> we have
+<span class="math inline">\(\mathbb V[W*] \leq \mathbb V[W] \,\, \forall \theta\)</span>. We also call <span class="math inline">\(W^*\)</span> the
+<em>uniform minimum variance unbiased estimator</em> (UMVUE) of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<p>Suppose that we are trying to estimate <span class="math inline">\(\theta\)</span> and consider the class
+of estimators <span class="math display">\[\mathcal{C}_\tau = \{W: \mathbb E[W] = \tau(\theta)\}.\]</span> All
+estimators in this class have the same bias, so we can compare their
+MSEs by comparing their variances alone. (So the best estimator in this
+class is just the minimum variance one.) This means that the
+considerations of this chapter can be applied to classes like
+<span class="math inline">\(\mathcal{C}_\tau\)</span>, even if <span class="math inline">\(\tau(\theta) \neq \theta\)</span>.</p>
+<p>The best unbiased estimator, if it exists, could be hard to find. The
+following lower bound at least gives a stopping criterion to our search.</p>
+<p>[Cramér-Rao Inequality] Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample with pdf
+<span class="math inline">\(f(\mathbf x\vert{}\theta)\)</span> and let <span class="math inline">\(W(\mathbf x) = W(X_1, \dots, X_n)\)</span> be
+any estimator with finite variance satisfying
+<span class="math display">\[\frac{d}{d \theta} \mathbb E[W(\mathbf x)] = \int_{\X{}} \frac{\pd{}}{\pd{} \theta} \left(W(\mathbf x) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span>
+Then
+<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]}.\]</span></p>
+<p>The proof of this considers the correlation between the gradient of the
+log likelihood and the statistic. Note that the sample in the above
+theorem is not necessarily iid.</p>
+<p>This hold for discrete distributions too, replacing integrals with sums.</p>
+<p>If the random sample <span class="math inline">\(\X_1, \dots, X_n\)</span> is iid then the result becomes
+<span class="math display">\[\mathbb V[W(\mathbf x)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E[W(\mathbf x)] \right)^2}{n\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(X \vert{} \theta) \right)^2 \right]}.\]</span></p>
+<p>[Fisher Information] The quantity
+<span class="math inline">\(\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
+is called the <em>Fisher Information</em> of the sample <span class="math inline">\(\mathbf x\)</span>.</p>
+<p>If <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies
+<span class="math display">\[\frac{d}{d \theta} \mathbb E\left[ \frac{\pd}{\pd \theta} \log f(X \vert{} \theta) \right] = \int \frac{\pd}{\pd \theta} \left[ \left( \frac{\pd}{\pd \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
+(as is true for an exponential family), then the Fisher information can
+be written
+<span class="math display">\[\mathbb E\left[ \left(\frac{\pd{}}{\pd{} \theta} \log f(X \vert{} \theta) \right)^2 \right] = - \mathbb E\left[ \frac{\pd^2}{\pd \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
+<p>Even if the Cramér-Rao bound is applicable, it may not be sharp – there
+may not be an estimator that attains this bound.</p>
+<p>[Attainment] Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid <span class="math inline">\(X \sim f(x \vert{} \theta)\)</span>,
+where <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies the conditions of the Cramér-Rao
+Theorem. Let
+<span class="math inline">\(L(\theta \vert{} \mathbf x) = \prod_{i=1}^n f(x_i \vert{} \theta)\)</span> denote
+the likelihood function. If <span class="math inline">\(W(\mathbf x)\)</span> is any unbiased estimator of
+<span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W(\mathbf x)\)</span> attains the Cramér-Rao lower bound if
+and only if <span class="math inline">\(\exists a(\theta)\)</span> such that
+<span class="math display">\[a(\theta) [W(\mathbf x) - \tau(\theta)] = \frac{\pd}{\pd \theta} \log L(\theta \vert{} \mathbf x).\]</span></p>
+</div>
+<div id="sufficiency-and-unbiasedness" class="section level3">
+<h3>Sufficiency and Unbiasedness</h3>
+<p>[Rao-Blackwell] Let <span class="math inline">\(W\)</span> be any unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> and
+let <span class="math inline">\(T\)</span> be a sufficient statistic for <span class="math inline">\(\theta\)</span>. Define
+<span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span>. Then <span class="math inline">\(\mathbb E[\phi(T)] = \tau(\theta)\)</span> and
+<span class="math inline">\(\mathbb V[\phi(T)] \leq \mathbb V[W] \,\, \forall \theta\)</span>. That is, <span class="math inline">\(\phi(T)\)</span>
+is a <em>uniformly better unbiased estimator</em> of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<ul>
+<li><p>Conditioning on any unbiased estimator on a sufficient statistic
+will result in a uniform improvement, so we need consider only
+functions of a sufficient statistic when looking for best unbiased
+estimators.</p></li>
+<li><p>The proof doesn’t require that the statistic we condition on is
+sufficient, but if it isn’t then the resulting quantity will
+probably depend on the parameter we are trying to estimate.</p></li>
+</ul>
+<p>If <span class="math inline">\(W\)</span> is a best unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W\)</span> is
+unique.</p>
+<p>The following theorem is mostly useful to show that a given estimator
+<em>isn’t</em> best unbiased.</p>
+<p>If <span class="math inline">\(\mathbb E[W] = \tau(\theta)\)</span>, then <span class="math inline">\(W\)</span> is the best unbiased estimator of
+<span class="math inline">\(\tau(\theta)\)</span> if and only if <span class="math inline">\(W\)</span> is uncorrelated with all unbiased
+estimators of 0.</p>
+<p>The idea comes from considering <span class="math inline">\(\phi_a = W + aU\)</span> where <span class="math inline">\(\mathbb E[U] = 0\)</span>,
+then considering the variance.</p>
+<p>[Unbiased estimator of 0] Note that an unbiased estimator of 0 is simply
+noise (one should estimate 0 with 0). If an estimator can be improved by
+adding noise, then it is probably defective.</p>
+<p>We are now in a position such that, if we can characterise all of the
+unbiased estimators of 0 then we can check if a given estimator is best
+unbiased. In general this is not easy and requires conditions on the
+distribution. However, if a distribution is complete then it admits no
+unbiased estimators of 0 other than 0 itself (by definition), so we will
+be done.<br />
+</p>
+<p>Note that due to the Rao-Blackwell theorem, only the distribution of the
+sufficient statistic needs to be complete (not the underlying population
+distribution).</p>
+<p>Let <span class="math inline">\(T\)</span> be a complete sufficient statistic for a parameter <span class="math inline">\(\theta\)</span> and
+let <span class="math inline">\(\phi(T)\)</span> be any estimator based only on <span class="math inline">\(T\)</span>. Then <span class="math inline">\(\phi(T)\)</span> is the
+unique best unbiased estimator of its expected value.</p>
+<p>[Lehmann-Scheffé] Unbiased estimators based on complete sufficient
+statistics are unique.</p>
+</div>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
