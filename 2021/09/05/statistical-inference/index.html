@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">43 min read</span>
+    <span class="article-duration">47 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -138,6 +138,7 @@
 <ul>
 <li><a href="#mean-squared-error">Mean Squared Error</a></li>
 <li><a href="#best-unbiased-estimators">Best Unbiased Estimators</a></li>
+<li><a href="#fisher-information">Fisher Information</a></li>
 <li><a href="#sufficiency-and-unbiasedness">Sufficiency and Unbiasedness</a></li>
 </ul></li>
 </ul></li>
@@ -316,9 +317,24 @@ converse is not true in general.</p></li>
 <h2>Bivariate Relations</h2>
 <p>[Conditional Expectation] <span class="math display">\[\mathbb E{}[\mathbb E{}[X|Y]] = \mathbb E{}[X]\]</span> provided the
 expectations exist.</p>
+<p><strong>Proof:</strong> Let <span class="math inline">\(f(x, y)\)</span> denote the joint pdf of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. By definition, we have <span class="math display">\[\mathbb E X=\int\int xf(x,y)dxdy=\int\left[\int xf(x|y)dx\right]f_Y(y)dy\\
+=\int\mathbb E(X|y)f_Y(y)dy\\
+=\mathbb E(\mathbb E(X|Y))\]</span></p>
 <p>[Conditional variance]
 <span class="math display">\[\mathbb V[X] = \mathbb E{}[\mathbb V[X \vert{} Y]] + \mathbb V[\mathbb E{}[X \vert{} Y]]\]</span>
 provided the expectations exist.</p>
+<p><strong>Proof:</strong> By definition, we have
+<span class="math display">\[\begin{align}
+\mathbb V X&amp;=\mathbb E\left((X-\mathbb E X)^2\right)\\
+&amp;=\mathbb E\left((X-\mathbb E(X|Y)+\mathbb E(X|Y)-\mathbb E X)^2\right)\\
+&amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\left(X-\mathbb E(X|Y)\right)\left(\mathbb E(X|Y)-\mathbb E X\right)\bigg]\\
+&amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\mathbb E\bigg(\left(X-\mathbb E(X|Y)\right)\left(\mathbb E(X|Y)-\mathbb E X\right)|Y\bigg)\bigg]\\
+&amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\left(\mathbb E(X|Y)-\mathbb E X\right)\mathbb E\bigg(\left(X-\mathbb E(X|Y)\right)|Y\bigg)\bigg]\\
+&amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\left(\mathbb E(X|Y)-\mathbb E X\right)\cdot 0 \bigg]\\
+&amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]\\
+&amp;=\mathbb E\left[\mathbb E\{\left(X-\mathbb E(X|Y)\right)^2\}|Y\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]\\
+&amp;=\mathbb E\left[\mathbb V(X|Y)\right]+\mathbb V[\mathbb E(X|Y)]\\
+\end{align}\]</span></p>
 <p>[Covariance] <span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[(X - \mu_X)(Y - \mu_Y)]\]</span></p>
 <p><span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[XY] - \mu_X\mu_Y\]</span></p>
 <p><span class="math display">\[\mathbb V[aX + bY] = a^2\mathbb V[X] + b^2\mathbb V[Y] + 2ab\text{Cov }[X, Y]\]</span></p>
@@ -1132,7 +1148,7 @@ First note that <span class="math display">\[\begin{align}
 \text{Cox}_{\theta}\left(W(\mathbf X), \frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]+\mathbb E_{\theta}W(\mathbf X)\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
 &amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
 &amp;=\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)
-\end{align}\]</span> Also since <span class="math display">\[\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]=0\]</span> we have <span class="math display">\[\mathbb V_{\theta}\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)=\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)\]</span> Using the Cauchy-Schwarz Inequality we obtain <span class="math display">\[\mathbb V_{\theta}(W(\mathbf X))\ge \frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)}\]</span></p>
+\end{align}\]</span> Also since <span class="math display">\[\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]=0\]</span> we have <span class="math display">\[\mathbb V_{\theta}\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)=\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)\]</span> Using the Cauchy-Schwarz Inequality we obtain <span class="math display">\[\mathbb V_{\theta}(W(\mathbf X))\ge \frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)}=\frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\text{(information number)}}\]</span></p>
 <p><strong>Cramer-Rao Inequality, iid case</strong> If the assumptions of last Theorem are satisfied and, additionally, if <span class="math inline">\(X_1,\cdots ,X_n\)</span> are iid with pdf <span class="math inline">\(f(x|\theta)\)</span>, then
 <span class="math display">\[\begin{align}
 \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]&amp;=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log \prod_{i=1}^{n}f(X_i \vert{} \theta) \right)^2 \right]
@@ -1148,24 +1164,96 @@ Since <span class="math inline">\(X_1, \dots, X_n\)</span> are independent,
 =\mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right) \mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_j \vert{} \theta) \right)=0\]</span> So <span class="math display">\[\begin{align}
 \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]=\sum_{i=1}^{n}\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right)^2 \right]=n\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]\\
 \end{align}\]</span></p>
+</div>
+<div id="fisher-information" class="section level3">
+<h3>Fisher Information</h3>
 <p><strong>Fisher Information</strong> The quantity
-<span class="math inline">\(\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf x \vert{} \theta) \right)^2 \right]\)</span>
-is called the <em>Fisher Information</em> of the sample <span class="math inline">\(\mathbf X\)</span>.</p>
+<span class="math display">\[\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]\]</span> is called the <strong>Fisher Information</strong> or <strong>Information number</strong> of the sample <span class="math inline">\(\mathbf X\)</span>. This terminology reflects the fact that the information number gives a bound on the variance of the best unbiased estimator of <span class="math inline">\(\theta\)</span>. As the
+information number gets bigger and we have more information about <span class="math inline">\(\theta\)</span>, we have a smaller bound on the variance of the best unbiased estimator.</p>
 <p>If <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies
-<span class="math display">\[\frac{d}{d \theta} \mathbb E\left[ \frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right] = \int \frac{\partial}{\partial \theta} \left[ \left( \frac{\partial}{\partial \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
-(as is true for an exponential family), then the Fisher information can
+<span class="math display">\[\frac{d}{d \theta} \mathbb E_{\theta}\left[ \frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right] = \int \frac{\partial}{\partial \theta} \left[ \left( \frac{\partial}{\partial \theta} \log f(x \vert{} \theta) \right) f(x \vert{} \theta) \right] dx\]</span>
+(as is true for an exponential family), the partial derivative with respect to <span class="math inline">\(\theta\)</span> of the natural logarithm of the likelihood function is called the <strong>score</strong>. Under certain regularity conditions, if <span class="math inline">\(\theta\)</span> is the true parameter (i.e. <span class="math inline">\(X\)</span> is actually distributed as <span class="math inline">\(f(X; \theta)\)</span>), it can be shown that the expected value (the first moment) of the score, evaluated at the true parameter value <span class="math inline">\(\theta\)</span> , is <span class="math inline">\(0\)</span></p>
+<p><span class="math display">\[\begin{align}
+\mathbb E_{\theta}\left[\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right]&amp;=\int_{\mathbb R}^{}\left[\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right]f(X \vert{} \theta) dx\\
+&amp;=\int_{\mathbb R}^{}\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)} f(X \vert{} \theta) dx\\
+&amp;=\frac{\partial}{\partial \theta}\int_{\mathbb R}^{} f(X \vert{} \theta) dx\\
+&amp;=\frac{\partial}{\partial \theta}\cdot 1\\
+&amp;=0\\
+\end{align}\]</span> The variance of the score is defined to be the <strong>Fisher information</strong>:
+<span class="math display">\[\mathcal I_{\theta}=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]=\int_{\mathbb R}\left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2f(X \vert{} \theta)dx\]</span>
+Since
+<span class="math display">\[\begin{align}
+\frac{\partial^2}{\partial \theta^2} \log f(X \vert{} \theta)&amp;=\frac{\partial}{\partial \theta}\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\\
+&amp;=\frac{\left[\frac{\partial^2}{\partial \theta^2} f(X \vert{} \theta)\right]f(X \vert{} \theta)-\left[\frac{\partial}{\partial \theta} f(X \vert{} \theta)\right]^2}{(f(X \vert{} \theta))^2}\\
+&amp;=\frac{\frac{\partial^2}{\partial \theta^2} f(X \vert{} \theta)}{f(X \vert{} \theta)}-\frac{\left[\frac{\partial}{\partial \theta} f(X \vert{} \theta)\right]^2}{(f(X \vert{} \theta))^2}\\
+&amp;=\frac{\frac{\partial^2}{\partial \theta^2} f(X \vert{} \theta)}{f(X \vert{} \theta)}-\left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta)\right)^2\\
+\end{align}\]</span> and <span class="math display">\[\mathbb E_{\theta}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right]=\frac{\partial^2}{\partial \theta^2}\int_{\mathbb R}f(X \vert{} \theta)dx=0\]</span>
+then the Fisher information can
 be written
-<span class="math display">\[\mathbb E\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] = - \mathbb E\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
+<span class="math display">\[\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] =\mathbb E_{\theta}\left[ \left(\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right)^2 \right]= - \mathbb E_{\theta}\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
 <p>Even if the Cramér-Rao bound is applicable, it may not be sharp – there
 may not be an estimator that attains this bound.</p>
+<ul>
+<li>For Bernoulli RVs, the Fisher information is
+<span class="math display">\[\begin{align}
+I_X(p)&amp;=E_p\left[\left(\frac{d}{dp}\log\left(p^X(1-p)^{1-X}\right)\right)^2\right]\\
+&amp;=E_p\left[\left(\frac{d}{dp}\left[X\log p+(1-X)\log (1-p)\right]\right)^2\right]\\
+&amp;=E_p\left[\left(\frac Xp-\frac{1-X}{1-p}\right)^2\right]\\
+&amp;=E_p\left[\left(\frac Xp\right)^2-2\left(\frac Xp\frac{1-X}{1-p}\right)+\left(\frac{1-X}{1-p}\right)^2\right]\\
+&amp;=E_p\left(\frac{X^2}{p^2}\right)-2E_p\left(\frac{X(1-X)}{p(1-p)}\right)+E_p\left(\frac{(1-X)^2}{(1-p)^2}\right)\\
+&amp;=\frac{1}{p}-0+\frac{1}{(1-p)}\\
+&amp;=\frac{1}{p(1-p)}\\
+\end{align}\]</span></li>
+</ul>
+<p>Since
+<span class="math display">\[E_p(X^2)=0^2\cdot p_X(0)+1^2\cdot p_X(1)=0^2(1-p)+1^2p=p,\]</span>
+<span class="math display">\[E_p((1-X)^2)=1-p,\]</span>
+- For Exponential RVs <span class="math inline">\(X \sim \exp(\beta)\)</span>, If the density is <span class="math display">\[f(X|\beta) = \frac1\beta e^{-\frac1\beta X}\]</span>. The Fisher information is
+<span class="math display">\[\begin{align*}
+\mathcal I_{\beta} &amp; = n\mathbb E_{\beta}\left( \left(\frac{\partial \log f(X| \beta)}{\partial \beta}\right)^2\right) \\
+&amp; = n\int_0^\infty \left(\frac{\partial \log f(X|\beta)}{\partial \beta}\right)^2 \, f(X|\beta) \, dx \\
+&amp;=n\int_0^\infty \left(\frac{\partial}{\partial \beta}\left(-\frac{1}{\beta}x+\log\frac{1}{\beta}\right)\right)^2 \, \frac{1}{\beta}e^{-\frac{1}{\beta}x} \, dx \\
+&amp; = n\int_0^\infty \left(\frac{x}{\beta^2} -\frac{1}{\beta}\right)^2 \, \frac{1}{\beta}e^{-\frac{1}{\beta}x} \, dx \\
+&amp; = n\int_0^\infty \left(\frac{x^2}{\beta^4} -2\frac{x}{\beta^3}+\frac{1}{\beta^2}\right) \, \frac{1}{\beta}e^{-\frac{1}{\beta}x} \, dx \\
+&amp;=n\left(\frac{2}{\beta^2}-\frac{2}{\beta^2}+\frac{1}{\beta^2}\right)\\
+&amp;=\frac{n}{\beta^2}\\
+\end{align*}\]</span></p>
+<ul>
+<li>For Exponential RVs <span class="math inline">\(X \sim \exp(\lambda)\)</span>, If the density is <span class="math display">\[f(X|\lambda) = \lambda e^{-\lambda X}\]</span>. The Fisher information is
+<span class="math display">\[\begin{align*}
+\mathcal I_{\lambda} &amp; = n\mathbb E_{\lambda}\left( \left(\frac{\partial \log f(X| \lambda)}{\partial \lambda}\right)^2\right) \\
+&amp; = n\int_0^\infty \left(\frac{\partial \log f(X|\lambda)}{\partial \lambda}\right)^2 \, f(X|\lambda) \, dx \\
+&amp;=n\int_0^\infty \left(\frac{\partial}{\partial \lambda}\left(-\lambda x+\log\lambda\right)\right)^2 \, \lambda e^{-\lambda X}\, dx \\
+&amp; = n\int_0^\infty \left(-x +\frac{1}{\lambda}\right)^2 \, \lambda e^{-\lambda X} \, dx \\
+&amp; = n\int_0^\infty \left(x^2 -2\frac{x}{\lambda}+\frac{1}{\lambda^2}\right) \, \lambda e^{-\lambda X} \, dx \\
+&amp;=n\left(\frac{2}{\lambda^2}-\frac{2}{\lambda^2}+\frac{1}{\lambda^2}\right)\\
+&amp;=\frac{n}{\lambda^2}\\
+\end{align*}\]</span></li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{llll}
+ &amp; \text{Fisher Information} &amp; \text{Cramér-Rao lower bound}           \\
+\hline
+\text{Exponential}(\beta) &amp; \frac{n}{\beta^2}        &amp;    \frac{\beta^2}{n}   \\
+\text{Bernoulli}(p)          &amp; \frac{1}{p(1-p)}             &amp;   p(1-p)       \\
+\text{Normal}(\sigma^2)          &amp; \frac{n}{2\sigma^4}             &amp;   \frac{2\sigma^4}{n}       \\
+\end{array}
+\]</span></p>
+<p>The Matrix form</p>
+<p>When there are <span class="math inline">\(N\)</span> parameters, so that <span class="math inline">\(\theta\)</span> is an <span class="math inline">\(N \times 1\)</span> vector <span class="math display">\[\displaystyle\boldsymbol\theta =\begin{bmatrix}
+\theta _{1}&amp;\theta _{2}&amp;\dots &amp;\theta _{N}
+\end{bmatrix}^{T}\]</span> then the Fisher information takes the form of an <span class="math inline">\(N \times N\)</span> matrix. This matrix is called the <strong>Fisher information matrix</strong> (FIM) and has typical element <span class="math display">\[[\mathcal I(\theta)]_{i,j}=\mathbb E_{\theta}\left[\left(\frac{\partial}{\partial\theta_i}\log f(X|\theta)\right)\left(\frac{\partial}{\partial\theta_j}\log f(X|\theta)\right)\right]\]</span> The FIM is a <span class="math inline">\(N \times N\)</span> positive semidefinite matrix. If it is positive definite, then it defines a Riemannian metric on the <span class="math inline">\(N\)</span>-dimensional parameter space.</p>
+<p>Under certain regularity conditions, the Fisher information matrix may also be written as <span class="math display">\[[\mathcal I(\theta)]_{i,j}=-\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta_i}\frac{\partial}{\partial\theta_j}\log f(X|\theta)\right]\]</span></p>
 <p>[Attainment] Let <span class="math inline">\(X_1, \dots, X_n\)</span> be iid <span class="math inline">\(X \sim f(x \vert{} \theta)\)</span>,
 where <span class="math inline">\(f(x \vert{} \theta)\)</span> satisfies the conditions of the Cramér-Rao
 Theorem. Let
 <span class="math inline">\(L(\theta \vert{} \mathbf x) = \prod_{i=1}^n f(x_i \vert{} \theta)\)</span> denote
-the likelihood function. If <span class="math inline">\(W(\mathbf x)\)</span> is any unbiased estimator of
-<span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W(\mathbf x)\)</span> attains the Cramér-Rao lower bound if
-and only if <span class="math inline">\(\exists a(\theta)\)</span> such that
+the likelihood function. If <span class="math inline">\(W(\mathbf X)=W(X_1,\cdots,X_n)\)</span> is any unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W(\mathbf X)\)</span> attains the Cramér-Rao lower bound if and only if exist <span class="math inline">\(a(\theta)\)</span> such that
 <span class="math display">\[a(\theta) [W(\mathbf x) - \tau(\theta)] = \frac{\partial}{\partial \theta} \log L(\theta \vert{} \mathbf x).\]</span></p>
+<p><strong>Proof:</strong> Recalling that <span class="math inline">\(\mathbb E_{\theta}W=\tau(\theta)\)</span>, <span class="math inline">\(\mathbb E_{\theta}\left(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)=0\)</span>, the Cramer-Rao Inequality, can be written as <span class="math display">\[\begin{align}
+\left[\text{Cov}_{\theta}\left(W(\mathbf X),\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)\right]^2&amp;=\left[\mathbb E_{\theta}\bigg(W(\mathbf X)-\tau(\theta)\bigg)\left(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)-0\right)\right]^2\\
+&amp;=\left[\mathbb E_{\theta}\left(W(\mathbf X)\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)\right]^2\\
+&amp;\le\mathbb V_{\theta}\left[W(\mathbf X)\right]\mathbb V_{\theta}\left[\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right]\end{align}\]</span> We can have equality if and only if <span class="math display">\[W(\mathbf X)-\tau(\theta)\]</span> is proportional to <span class="math inline">\(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\)</span>.</p>
 </div>
 <div id="sufficiency-and-unbiasedness" class="section level3">
 <h3>Sufficiency and Unbiasedness</h3>
