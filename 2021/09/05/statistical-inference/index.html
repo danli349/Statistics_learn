@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">47 min read</span>
+    <span class="article-duration">49 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -140,6 +140,9 @@
 <li><a href="#best-unbiased-estimators">Best Unbiased Estimators</a></li>
 <li><a href="#fisher-information">Fisher Information</a></li>
 <li><a href="#sufficiency-and-unbiasedness">Sufficiency and Unbiasedness</a></li>
+<li><a href="#uniqueness-of-best-unbiased-estimator">Uniqueness of best unbiased estimator</a></li>
+<li><a href="#completeness-and-best-unbiasedness">completeness and best unbiasedness</a></li>
+<li><a href="#loss-function-optimality">Loss Function Optimality</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#references">References</a></li>
@@ -1257,47 +1260,78 @@ the likelihood function. If <span class="math inline">\(W(\mathbf X)=W(X_1,\cdot
 </div>
 <div id="sufficiency-and-unbiasedness" class="section level3">
 <h3>Sufficiency and Unbiasedness</h3>
-<p>[Rao-Blackwell] Let <span class="math inline">\(W\)</span> be any unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> and
+<p><strong>Rao-Blackwell</strong> Let <span class="math inline">\(W\)</span> be any unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> and
 let <span class="math inline">\(T\)</span> be a sufficient statistic for <span class="math inline">\(\theta\)</span>. Define
-<span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span>. Then <span class="math inline">\(\mathbb E[\phi(T)] = \tau(\theta)\)</span> and
-<span class="math inline">\(\mathbb V[\phi(T)] \leq \mathbb V[W] \,\, \forall \theta\)</span>. That is, <span class="math inline">\(\phi(T)\)</span>
-is a <em>uniformly better unbiased estimator</em> of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span>. Then <span class="math inline">\(\mathbb E_{\theta}[\phi(T)] = \tau(\theta)\)</span> and <span class="math inline">\(\mathbb V_{\theta}[\phi(T)] \leq \mathbb V_{\theta}[W] \,\, \forall \theta\)</span>. That is, <span class="math inline">\(\phi(T)\)</span> is a <em>uniformly better unbiased estimator</em> of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<p><strong>Proof:</strong> Since <span class="math display">\[\mathbb E X=\mathbb E[\mathbb E(X|Y)]\]</span>
+<span class="math display">\[\mathbb V X=\mathbb V[\mathbb E(X|Y)]+\mathbb E[\mathbb V (X|Y)]\]</span> then we have <span class="math display">\[\tau(\theta)=\mathbb E_{\theta}W=\mathbb E_{\theta}[\mathbb E(W|T)]=\mathbb E_{\theta}\phi(T)\]</span> so <span class="math inline">\(\phi(T)\)</span> is unbiased for <span class="math inline">\(\tau(\theta)\)</span>. Also
+<span class="math display">\[\begin{align}
+\mathbb V_{\theta}W&amp;=\mathbb V_{\theta}[\mathbb E(W|T)]+\mathbb E_{\theta}[\mathbb V (W|T)]\\
+&amp;=\mathbb V_{\theta}[\phi(T)]+\mathbb E_{\theta}[\mathbb V (W|T)]\\
+&amp;\ge\mathbb V_{\theta}[\phi(T)]
+\end{align}\]</span> Hence <span class="math inline">\(\phi(T)\)</span> is uniformly better than <span class="math inline">\(W\)</span>, and it only remains to show that <span class="math inline">\(\phi(T)\)</span> is indeed an estimator. That is, we must show that <span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span> is a function of only the sample and, in particular, is independent of <span class="math inline">\(\theta\)</span>. But it follows from the definition of sufficiency, and the fact that <span class="math inline">\(W\)</span> is a function only of the sample, that the distribution of <span class="math inline">\(W|T\)</span> is independent of <span class="math inline">\(\theta\)</span>. Hence <span class="math inline">\(\phi(T)\)</span> is a uniformly better unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <ul>
-<li><p>Conditioning on any unbiased estimator on a sufficient statistic
+<li><p>Conditioning any unbiased estimator on a sufficient statistic
 will result in a uniform improvement, so we need consider only
-functions of a sufficient statistic when looking for best unbiased
-estimators.</p></li>
+statistics that are functions of a sufficient statistic when looking for best unbiased estimators.</p></li>
 <li><p>The proof doesn’t require that the statistic we condition on is
 sufficient, but if it isn’t then the resulting quantity will
-probably depend on the parameter we are trying to estimate.</p></li>
+probably depend on the parameter we are trying to estimate and not be
+an estimator..</p></li>
 </ul>
+</div>
+<div id="uniqueness-of-best-unbiased-estimator" class="section level3">
+<h3>Uniqueness of best unbiased estimator</h3>
 <p>If <span class="math inline">\(W\)</span> is a best unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> then <span class="math inline">\(W\)</span> is
 unique.</p>
+<p><strong>Proof:</strong> Suppose <span class="math inline">\(W&#39;\)</span> is another best unbiased estimator, and consider the estimator <span class="math inline">\(W^*=\frac{1}{2}(W + W&#39;)\)</span>. Note that <span class="math inline">\(\mathbb E_{\theta}W^* = \tau(\theta)\)</span> and<br />
+<span class="math display">\[\begin{align}
+\mathbb V_{\theta}W^*&amp;=\mathbb V_{\theta}\left(\frac{1}{2}W+\frac{1}{2}W&#39;\right)\\
+&amp;=\frac{1}{4}\mathbb V_{\theta}W+\frac{1}{4}\mathbb V_{\theta}W&#39;+\frac{1}{2}\text{Cov}_{\theta}(W,W&#39;)\\
+&amp;\le\frac{1}{4}\mathbb V_{\theta}W+\frac{1}{4}\mathbb V_{\theta}W&#39;+\frac{1}{2}\left[\mathbb V_{\theta}(W)\mathbb V_{\theta}(W&#39;)\right]^{1/2}\\
+&amp;=\mathbb V_{\theta}W \quad\quad(\mathbb V_{\theta}W=\mathbb V_{\theta}W&#39;)\\
+\end{align}\]</span> But if the above inequality is strict, then the best unbiasedness of <span class="math inline">\(W\)</span> is contradicted, so we must have equality for all <span class="math inline">\(\theta\)</span>. Since the inequality is an application of Cauchy-Schwarz, we can have equality only if <span class="math inline">\(W&#39; = a(\theta) W + b(\theta)\)</span>. Now using properties of covariance, we have <span class="math display">\[\begin{align}
+\text{Cov}_{\theta}(W + W&#39;)&amp;=\text{Cov}_{\theta}(W + a(\theta) W + b(\theta))\\
+&amp;=\text{Cov}_{\theta}(W + a(\theta) W)\\
+&amp;=a(\theta)\mathbb V_{\theta}(W)\\
+\end{align}\]</span> But <span class="math display">\[\text{Cov}_{\theta}(W + W&#39;)=\mathbb V_{\theta}(W)\]</span> since we had equality in last Cauchy-Schwarz, hence <span class="math inline">\(a(\theta)=1\)</span> and since <span class="math inline">\(\mathbb E_{\theta}W^* = \tau(\theta)\)</span>, we must have <span class="math inline">\(b(\theta)=0\)</span> and <span class="math inline">\(W=W&#39;\)</span>.</p>
 <p>The following theorem is mostly useful to show that a given estimator
 <em>isn’t</em> best unbiased.</p>
-<p>If <span class="math inline">\(\mathbb E[W] = \tau(\theta)\)</span>, then <span class="math inline">\(W\)</span> is the best unbiased estimator of
-<span class="math inline">\(\tau(\theta)\)</span> if and only if <span class="math inline">\(W\)</span> is uncorrelated with all unbiased
-estimators of 0.</p>
+<p>If <span class="math inline">\(\mathbb E_{\theta}[W] = \tau(\theta)\)</span>, <span class="math inline">\(W\)</span> is the best unbiased estimator of
+<span class="math inline">\(\tau(\theta)\)</span> if and only if <span class="math inline">\(W\)</span> is uncorrelated with all unbiased estimators of <span class="math inline">\(0\)</span>.</p>
+<p><strong>Proof:</strong> If <span class="math inline">\(W\)</span> satisfies <span class="math inline">\(\mathbb E_{\theta}[W] = \tau(\theta)\)</span>, and we have another estimator, <span class="math inline">\(U\)</span>, that satisfies <span class="math inline">\(\mathbb E_{\theta}U=0\)</span> for all <span class="math inline">\(\theta\)</span>, that is, <span class="math inline">\(U\)</span> is an unbiased estimator of <span class="math inline">\(0\)</span>. The estimator <span class="math display">\[\phi_a=W+aU,\]</span> where <span class="math inline">\(a\)</span> is a constant, satisfies <span class="math inline">\(\mathbb E_{\theta}\phi_a = \tau(\theta)\)</span> and hence is also an unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>. The variance of <span class="math inline">\(\phi_a\)</span> is
+<span class="math display">\[\mathbb V_{\theta}\phi_a=\mathbb V_{\theta}(W+aU)\\
+=\mathbb V_{\theta}W+a^2\mathbb V_{\theta}U+2a\text{Cov}_{\theta}(W,U)\]</span> Now, if for some <span class="math inline">\(\theta=\theta_0,\text{Cov}_{\theta_0}(W,U)&lt;0\)</span>, then we can male <span class="math inline">\(2a\text{Cov}_{\theta_0}(W,U)+a^2\mathbb V_{\theta}U&lt;0\)</span> by choosing <span class="math inline">\(a\in(0, -2\text{Cov}_{\theta_0}(W,U)/\mathbb V_{\theta_0}U)\)</span>. Hence, <span class="math inline">\(\phi_a\)</span> will be better than <span class="math inline">\(W\)</span> at <span class="math inline">\(\theta=\theta_0\)</span> and <span class="math inline">\(W\)</span> can’t be best unbiased. A similar argument will show that if <span class="math inline">\(\text{Cov}_{\theta_0}(W,U)&gt;0\)</span> for any <span class="math inline">\(\theta_0\)</span>, <span class="math inline">\(W\)</span> also cannot be best unbiased.</p>
+<p>If <span class="math inline">\(W\)</span> is best unbiased, the above argument shows that <span class="math inline">\(W\)</span> must satisfy
+<span class="math inline">\(\text{Cov}_{\theta}(W,U)=0\)</span> for all <span class="math inline">\(\theta\)</span>, for any <span class="math inline">\(U\)</span> satisfying <span class="math inline">\(\mathbb E_{\theta}U=0\)</span>. Hence the necessity is established.</p>
+<p>Suppose now that we have an unbiased estimator <span class="math inline">\(W\)</span> that is uncorrelated with all unbiased estimators of <span class="math inline">\(0\)</span>. Let <span class="math inline">\(W&#39;\)</span> be any other estimator satisfying <span class="math inline">\(\mathbb E_{\theta}W&#39;=\mathbb E_{\theta}W=\tau(\theta)\)</span> we will show that <span class="math inline">\(W\)</span> is better than <span class="math inline">\(W&#39;\)</span>. Write <span class="math display">\[W&#39;=W+(W&#39;-W),\]</span> and calculate <span class="math display">\[\begin{align}
+\mathbb V_{\theta}W&#39;&amp;=\mathbb V_{\theta}W+\mathbb V_{\theta}(W&#39;-W)+2\text{Cov}_{\theta}(W,W&#39;-W)\\
+&amp;=\mathbb V_{\theta}W+\mathbb V_{\theta}(W&#39;-W)
+\end{align}\]</span> where the last equality is true because <span class="math inline">\(W&#39;-W\)</span> is an unbiased estimator of <span class="math inline">\(0\)</span> and is uncorrelated with <span class="math inline">\(W\)</span> by assumption. Since <span class="math inline">\(\mathbb V_{\theta}(W&#39;-W)\ge 0\)</span>, then <span class="math inline">\(\mathbb V_{\theta}W&#39;\ge \mathbb V_{\theta}W\)</span>. Since <span class="math inline">\(W&#39;\)</span> is arbitrary, it follows that <span class="math inline">\(W\)</span> is the best unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <p>The idea comes from considering <span class="math inline">\(\phi_a = W + aU\)</span> where <span class="math inline">\(\mathbb E[U] = 0\)</span>,
 then considering the variance.</p>
-<p>[Unbiased estimator of 0] Note that an unbiased estimator of 0 is simply
-noise (one should estimate 0 with 0). If an estimator can be improved by
-adding noise, then it is probably defective.</p>
+<p><strong>Unbiased estimator of <span class="math inline">\(0\)</span></strong> Note that an unbiased estimator of <span class="math inline">\(0\)</span> is simply
+<strong>random noise</strong> (there is no information in an estimator of <span class="math inline">\(0\)</span>). If an estimator can be improved by adding noise, then it is probably defective.</p>
 <p>We are now in a position such that, if we can characterise all of the
-unbiased estimators of 0 then we can check if a given estimator is best
+unbiased estimators of <span class="math inline">\(0\)</span> then we can check if a given estimator is best
 unbiased. In general this is not easy and requires conditions on the
 distribution. However, if a distribution is complete then it admits no
-unbiased estimators of 0 other than 0 itself (by definition), so we will
-be done.<br />
-</p>
+unbiased estimators of <span class="math inline">\(0\)</span> other than <span class="math inline">\(0\)</span> itself (by definition), so we will
+be done.</p>
 <p>Note that due to the Rao-Blackwell theorem, only the distribution of the
 sufficient statistic needs to be complete (not the underlying population
 distribution).</p>
+</div>
+<div id="completeness-and-best-unbiasedness" class="section level3">
+<h3>completeness and best unbiasedness</h3>
 <p>Let <span class="math inline">\(T\)</span> be a complete sufficient statistic for a parameter <span class="math inline">\(\theta\)</span> and
 let <span class="math inline">\(\phi(T)\)</span> be any estimator based only on <span class="math inline">\(T\)</span>. Then <span class="math inline">\(\phi(T)\)</span> is the
 unique best unbiased estimator of its expected value.</p>
-<p>[Lehmann-Scheffé] Unbiased estimators based on complete sufficient
+<p><strong>Lehmann-Scheffé</strong> Unbiased estimators based on complete sufficient
 statistics are unique.</p>
+</div>
+<div id="loss-function-optimality" class="section level3">
+<h3>Loss Function Optimality</h3>
 </div>
 </div>
 </div>
