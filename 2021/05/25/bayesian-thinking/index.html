@@ -298,9 +298,9 @@ total number of people in the poll. That is, <span class="math display">\[\begin
 \end{split}
 \end{multline*}\]</span> It turns out this relationship holds true for any
 conditional probability and is known as Bayes’ rule:</p>
-
+ffalse{-91-66-97-121-101-115-39-32-82-117-108-101-93-}
 <div class="definition">
-<p><span id="def:unnamed-chunk-2" class="definition"><strong>Definition 1  (Bayes’ Rule)  </strong></span>The conditional probability of the event <span class="math inline">\(A\)</span> conditional on the event <span class="math inline">\(B\)</span> is given by</p>
+<p><span id="def:unnamed-chunk-2" class="definition"><strong>Definition 1  \iffalse (Bayes’ Rule)  </strong></span>The conditional probability of the event <span class="math inline">\(A\)</span> conditional on the event <span class="math inline">\(B\)</span> is given by</p>
 <span class="math display">\[
   P(A \mid B) = \frac{P(A \,\&amp;\, B)}{P(B)}.
 \]</span>
@@ -411,10 +411,9 @@ Section <a href="#sec:bayes-rule"><strong>??</strong></a> by <span class="math i
 <p>Putting this all together and inserting into <a href="#eq:HIVconditional">(1)</a>
 reveals
 <span class="math display">\[\begin{equation}
-P(\\text{Person tested has HIV} \\mid \\text{ELISA is positive}) =
-\\frac{0.0013764}{0.0113616} \\approx 0.12.
-(\\\#eq:HIVresult)
-\\end{equation}
+\frac{P(\text{Person tested has HIV &amp; ELISA is positive})}{P(\text{ELISA is positive})} =
+\frac{0.0013764}{0.0113616} \approx 0.12.
+\end{equation}
 \]</span> So even when the ELISA returns positive, the probability
 of having HIV is only 12%. An important reason why this number is so low
 is due to the prevalence of HIV. Before testing, one’s probability of
@@ -555,7 +554,7 @@ the confidence level is NOT the probability that a given interval
 includes the true population parameter.</p>
 
 <div class="example">
-<span id="exm:unnamed-chunk-8" class="example"><strong>Example 6  </strong></span>Based on a 2015 Pew Research poll on 1,500 adults: "We are 95% confident that 60% to 64% of Americans think the federal government does not do enough for middle class people.
+<span id="exm:unnamed-chunk-8" class="example"><strong>Example 6  </strong></span>Based on a 2015 Pew Research poll on 1,500 adults: “We are 95% confident that 60% to 64% of Americans think the federal government does not do enough for middle class people.
 </div>
 <p>The correct interpretation is: 95% of random samples of 1,500 adults
 will produce confidence intervals that contain the true proportion of
@@ -726,7 +725,7 @@ knitr::kable(
 barplot(prior, names.arg = p, las = 2, main = &quot;Prior&quot;)
 barplot(likelihood, names.arg = p, las = 2, main = &quot;Likelihood&quot;)
 barplot(posterior, names.arg = p, las = 2, main = &quot;Posterior&quot;)</code></pre>
-<div class="figure"><span id="fig:RU-486plot"></span>
+<div class="figure"><span style="display:block;" id="fig:RU-486plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/RU-486plot-1.svg" alt="Original: sample size $n=20$ and number of successes $k=4$" width="960" />
 <p class="caption">
 Figure 1: Original: sample size <span class="math inline">\(n=20\)</span> and number of successes <span class="math inline">\(k=4\)</span>
@@ -749,7 +748,7 @@ par(mfrow = c(1,3), bg = NA)
 barplot(prior, names.arg = p, las = 2, main = &quot;Prior&quot;)
 barplot(likelihood, names.arg = p, las = 2, main = &quot;Likelihood&quot;)
 barplot(posterior, names.arg = p, las = 2, main = &quot;Posterior&quot;)</code></pre>
-<div class="figure"><span id="fig:RU-486plotX2"></span>
+<div class="figure"><span style="display:block;" id="fig:RU-486plotX2"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/RU-486plotX2-1.svg" alt="More data: sample size $n=40$ and number of successes $k=8$" width="960" />
 <p class="caption">
 Figure 2: More data: sample size <span class="math inline">\(n=40\)</span> and number of successes <span class="math inline">\(k=8\)</span>
@@ -768,7 +767,7 @@ par(mfrow = c(1,3), bg = NA)
 barplot(prior, names.arg = p, las = 2, main = &quot;Prior&quot;)
 barplot(likelihood, names.arg = p, las = 2, main = &quot;Likelihood&quot;)
 barplot(posterior, names.arg = p, las = 2, main = &quot;Posterior&quot;)</code></pre>
-<div class="figure"><span id="fig:RU-486plotX10"></span>
+<div class="figure"><span style="display:block;" id="fig:RU-486plotX10"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/RU-486plotX10-1.svg" alt="More data: sample size $n=200$ and number of successes $k=40$" width="960" />
 <p class="caption">
 Figure 3: More data: sample size <span class="math inline">\(n=200\)</span> and number of successes <span class="math inline">\(k=40\)</span>
@@ -907,7 +906,7 @@ data = data.frame(trials = c(0,1,1,1,2,2,2,3))
 ggplot(data, aes(data$trials)) + 
   geom_histogram(aes(y=..count../sum(..count..))) +
   xlab(&quot;&quot;) + ylab(&quot;&quot;) + theme_tufte()</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:histogram"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:histogram"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/histogram-1.svg" alt="Histogram of binomial random variable" width="288" />
 <p class="caption">
 Figure 4: Histogram of binomial random variable
@@ -916,8 +915,8 @@ Figure 4: Histogram of binomial random variable
 <p>In contrast, the normal distribution, a.k.a. Gaussian distribution or the bell-shaped curve, can take any numerical value in <span class="math inline">\((-\infty,+\infty)\)</span>. A random variable generated from a normal distribution because it can take a continuum of values.</p>
 <p>In general, if the set of possible values a random variable can take are separated points, it is a discrete random variable. But if it can take any value in some (possibly infinite) interval, then it is a continuous random variable.</p>
 <p>When the random variable is <strong>discrete</strong>, it has a <strong>probability mass function</strong> or pmf. That pmf tells us the probability that the random variable takes each of the possible values. But when the random variable is continuous, it has probability zero of taking any single value. (Hence probability zero does not equal to impossible, an event of probabilty zero can still happen.)</p>
-<p>We can only talk about the probability of a continuous random variable lined within some interval. For example, suppose that heights are approximately normally distributed. The probability of finding someone who is exactly 6 feet and 0.0000 inches tall (for an infinite number of 0s after the decimal point) is 0. But we can easily calculate the probability of finding someone who is between 5’11" inches tall and 6’1" inches tall.</p>
-<p>A <strong>continuous</strong> random variable has a <strong>probability density function</strong> or pdf, instead of probability mass functions. The probability of finding someone whose height lies between 5’11" (71 inches) and 6’1" (73 inches) is the area under the pdf curve for height between those two values, as shown in the blue area of Figure <a href="#fig:pdf-auc">5</a>.<!--^[Code reference: http://www.statmethods.net/advgraphs/probability.html]--></p>
+<p>We can only talk about the probability of a continuous random variable lined within some interval. For example, suppose that heights are approximately normally distributed. The probability of finding someone who is exactly 6 feet and 0.0000 inches tall (for an infinite number of 0s after the decimal point) is 0. But we can easily calculate the probability of finding someone who is between 5’11” inches tall and 6’1” inches tall.</p>
+<p>A <strong>continuous</strong> random variable has a <strong>probability density function</strong> or pdf, instead of probability mass functions. The probability of finding someone whose height lies between 5’11” (71 inches) and 6’1” (73 inches) is the area under the pdf curve for height between those two values, as shown in the blue area of Figure <a href="#fig:pdf-auc">5</a>.<!--^[Code reference: http://www.statmethods.net/advgraphs/probability.html]--></p>
 <pre class="r"><code>library(ggplot2)
 library(ggthemes)
 # 5&#39;11&quot;=71 inches; 6&#39;1&quot;=73 inches
@@ -945,7 +944,7 @@ p = p + geom_segment(aes(x = 71, y = 0, xend = 71, yend = ytop1), color = &quot;
   geom_polygon(data = shade, aes(x = x, y = y), fill = &quot;dodgerblue3&quot;) + 
   xlab(&quot;Height (inches)&quot;) + ylab(&quot;Probability Density&quot;) + theme_tufte() 
 print(p)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:pdf-auc"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pdf-auc"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/pdf-auc-1.svg" alt="Area under curve for the probability density function" width="70%" />
 <p class="caption">
 Figure 5: Area under curve for the probability density function
@@ -1041,7 +1040,7 @@ ggplot(data = my_beta) + geom_line(aes(x = x, y = beta0, col = &quot;a&quot;)) +
                                 bquote(paste(alpha, &quot; = &quot;, 2, &quot;, &quot;, beta, &quot; = &quot;, 5))),
                      name = &quot;Beta Distributions&quot;) + 
   ylab(&quot;Probability Density&quot;) + xlab(&quot;p&quot;) + theme_tufte() </code></pre>
-<div class="figure" style="text-align: center"><span id="fig:beta"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:beta"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/beta-1.svg" alt="Beta family" width="80%" />
 <p class="caption">
 Figure 6: Beta family
@@ -1204,7 +1203,7 @@ ggplot(data = my_gamma) + geom_line(aes(x = x, y = ga1, col = &quot;a&quot;)) +
                      name = &quot;Gamma Distributions&quot;) + 
   xlim(0, 20) + ylim(0, 0.5) +
   ylab(&quot;Probability Density&quot;) + xlab(&quot;x&quot;) # + theme_tufte()</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:gamma"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gamma"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/gamma-1.svg" alt="Gamma family" width="100%" />
 <p class="caption">
 Figure 7: Gamma family
@@ -1384,7 +1383,7 @@ par(mar = mar.default + c(0, 4, 0, 0))
 plot(fit, xlim = c(0.001, 0.495), ylim = c(0, 5.5), xlab = &quot;p&quot;, 
      ylab = expression(paste(&quot;posterior distribution, &quot;, pi, &quot;*&quot;, &quot;(p)&quot;)))
 segments(0.5, 0, 0.5, length(p.pointMass) / length(p), col = &quot;black&quot;, lwd = 5)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:JAGS-plot"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:JAGS-plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/JAGS-plot-1.svg" alt="Posterior with JAGS" width="80%" />
 <p class="caption">
 Figure 8: Posterior with JAGS
@@ -1410,7 +1409,7 @@ x.vector = seq(from=0, to=1, by=0.001)
 y.vector = dbeta(x.vector,1,5)
 
 qplot(x = x.vector, y = y.vector, geom = &quot;line&quot;,  main=&quot;Beta(1,5)&quot;, xlab=&quot;p&quot;, ylab=&quot;Probability Density f(p)&quot;) + theme_tufte()</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:posterior"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:posterior"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/posterior-1.svg" alt="RU-486 Posterior" width="80%" />
 <p class="caption">
 Figure 9: RU-486 Posterior
@@ -1539,7 +1538,7 @@ abline(v = 35, col = &quot;pink&quot;, lwd = 4)
 legend(&quot;topleft&quot;, col = c(&quot;orange&quot;, &quot;turquoise4&quot;, &quot;pink&quot;),
 c(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;), lty = 1, lwd = 4,
 bty = &quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:posterior-decision"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:posterior-decision"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/posterior-decision-1.svg" alt="Posterior" width="960" />
 <p class="caption">
 Figure 10: Posterior
@@ -1653,7 +1652,7 @@ abline(v = 35, col = &quot;pink&quot;, lwd = 4)
 legend(&quot;topleft&quot;, col = c(&quot;orange&quot;, &quot;turquoise4&quot;, &quot;pink&quot;),
 c(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;), lty = 1, lwd = 4,
 bty = &quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:L0-mode"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:L0-mode"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/L0-mode-1.svg" alt="L0 is minimized at the mode of the posterior" width="960" />
 <p class="caption">
 Figure 11: L0 is minimized at the mode of the posterior
@@ -1759,7 +1758,7 @@ abline(v = 35, col = &quot;pink&quot;, lwd = 4)
 legend(&quot;topleft&quot;, col = c(&quot;orange&quot;, &quot;turquoise4&quot;, &quot;pink&quot;),
        c(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;), lty = 1, lwd = 4,
        bty = &quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:L1-median"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:L1-median"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/L1-median-1.svg" alt="L1 is minimized at the median of the posterior" width="960" />
 <p class="caption">
 Figure 12: L1 is minimized at the median of the posterior
@@ -1864,7 +1863,7 @@ abline(v = 35, col = &quot;pink&quot;, lwd = 4)
 legend(&quot;topleft&quot;, col = c(&quot;orange&quot;, &quot;turquoise4&quot;, &quot;pink&quot;),
        c(&quot;mean&quot;, &quot;median&quot;, &quot;mode&quot;), lty = 1, lwd = 4,
        bty = &quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:L2-mean"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:L2-mean"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/L2-mean-1.svg" alt="L2 is minimized at the mean of the posterior" width="960" />
 <p class="caption">
 Figure 13: L2 is minimized at the mean of the posterior
@@ -2237,7 +2236,7 @@ ggplot(data = my_data) + geom_line(aes(x = x, y = y_norm, lty = &quot;standard n
   geom_line(aes(x = x, y = y_t, lty = &quot;Student t t(4,0,1)&quot;), size = 1) + 
   xlab(&quot;&quot;) + ylab(&quot;density&quot;) +
   scale_linetype_manual(values = c(2, 1), name = &quot;&quot;)</code></pre>
-<div class="figure"><span id="fig:t-density"></span>
+<div class="figure"><span style="display:block;" id="fig:t-density"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/t-density-1.svg" alt="Standard normal and Student t densities." width="576" />
 <p class="caption">
 Figure 14: Standard normal and Student t densities.
@@ -2285,7 +2284,7 @@ out = bayes_inference(tthm, data=tapwater, prior=&quot;NG&quot;,
                       mu_0 = m_0, n_0 = n_0, s_0 = sqrt(s2_0), v_0 = v_0,
                       method=&quot;theoretical&quot;, stat=&quot;mean&quot;, type=&quot;ci&quot;, 
                       show_res=FALSE, show_summ=FALSE, show_plot=TRUE)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:tapwater-post-mu"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tapwater-post-mu"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/tapwater-post-mu-1.svg" alt="Highest Posterior Density region." width="480" />
 <p class="caption">
 Figure 15: Highest Posterior Density region.
@@ -2641,7 +2640,7 @@ ggplot(data=df, aes(x=phi)) +
         geom_density(aes(phi, ..density..), color=&quot;black&quot;) +
         geom_line(aes(x=phi, y=density), color=&quot;orange&quot;) +
         xlab(expression(phi)) + theme_tufte()</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:phi-plot"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:phi-plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/phi-plot-1.svg" alt="Monte Carlo approximation of the posterior distribution of the precision from the tap water example" width="480" />
 <p class="caption">
 Figure 16: Monte Carlo approximation of the posterior distribution of the precision from the tap water example
@@ -2683,7 +2682,7 @@ post = ggplot(data=df, aes(x=sigma)) +
         geom_density(aes(sigma, ..density..), color=&quot;black&quot;) +
         xlab(expression(sigma)) + theme_tufte()
 print(post)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:sigma-plot"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sigma-plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/sigma-plot-1.svg" alt="Monte Carlo approximation of the posterior distribution of the standard deviation from the tap water example" width="480" />
 <p class="caption">
 Figure 17: Monte Carlo approximation of the posterior distribution of the standard deviation from the tap water example
@@ -2793,7 +2792,7 @@ ggplot(data=df, aes(x=y)) +
         plot.background = element_rect(fill = &quot;transparent&quot;, colour = NA),
         legend.position = c(.75, .75),
         text = element_text(size=15))</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:hist-prior"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hist-prior"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/hist-prior-1.svg" alt="Prior density" width="480" />
 <p class="caption">
 Figure 18: Prior density
@@ -2836,7 +2835,7 @@ ggplot(data=df, aes(x=pred_y)) +
         plot.background = element_rect(fill = &quot;transparent&quot;, colour = NA),
         legend.position=c(.75, .75),
         text = element_text(size=15))</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:hist-pred"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hist-pred"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/hist-pred-1.svg" alt="Posterior densities" width="480" />
 <p class="caption">
 Figure 19: Posterior densities
@@ -2955,7 +2954,7 @@ ggplot(data=df, aes(x=pred_y)) +
         plot.background = element_rect(fill = &quot;transparent&quot;, colour = NA),
         legend.position=c(.76, .85),
         text = element_text(size=15))</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:plot-post-pred"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-post-pred"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/plot-post-pred-1.svg" alt="Comparison of posterior densities" width="480" />
 <p class="caption">
 Figure 20: Comparison of posterior densities
@@ -3011,7 +3010,7 @@ ggplot(data=df, aes(x=x,y=y, group=distribution)) +
         plot.background = element_rect(fill = &quot;transparent&quot;, colour = NA),
         legend.position=c(.75, .75),
         text = element_text(size=15))</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:cauchy-plot"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cauchy-plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/cauchy-plot-1.svg" alt="Cauchy distribution" width="480" />
 <p class="caption">
 Figure 21: Cauchy distribution
@@ -3135,7 +3134,7 @@ ggplot(data=df, aes(x=pred_y)) +
         plot.background = element_rect(fill = &quot;transparent&quot;, colour = NA),
         legend.position=c(.8, .8),
         text = element_text(size=15))</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:hist-ref-pred"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hist-ref-pred"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/hist-ref-pred-1.svg" alt="Comparison of posterior densities" width="768" />
 <p class="caption">
 Figure 22: Comparison of posterior densities
@@ -3241,7 +3240,7 @@ bfplot = ggplot(df, aes(x=n0, y=bf, group=Z, colour=Z, linetype=Z)) +
 #       legend=c(&quot;male&quot;, &quot;prior&quot;))
 
 bfplot</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:vague-prior"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:vague-prior"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/vague-prior-1.svg" alt="Vague prior for mu: n=100" width="384" />
 <p class="caption">
 Figure 23: Vague prior for mu: n=100
@@ -3267,7 +3266,7 @@ lines(x, dnorm(x, sd=.5), lwd=3,  lty = 2, col=&quot;orange&quot;)
 legend(x=&quot;topleft&quot;, legend=c(&quot;N(0,1)&quot;, &quot;N(0, .25)&quot;),
        col=c(myblue, &quot;orange&quot;),
        lty=c(1,2), lwd=3, bty=&quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:effect-size"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:effect-size"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/effect-size-1.svg" alt="Prior on standard effect size" width="480" />
 <p class="caption">
 Figure 24: Prior on standard effect size
@@ -3304,7 +3303,7 @@ lines(x, dnorm(x,0.5, sd=1), lwd=2,  lty = 2, col=&quot;orange&quot;)
 legend(x=&quot;topleft&quot;, legend=c(paste0(&quot;N(.5,.5/&quot;,n0.5,&quot;^2)&quot;), &quot;N(.5, .5)&quot;),
        col=c(myblue, &quot;orange&quot;),
        lty=c(1,2), lwd=3, bty=&quot;n&quot;)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:prior-effect"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:prior-effect"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/prior-effect-1.svg" alt="Prior effect in the extra sensory perception test" width="672" />
 <p class="caption">
 Figure 25: Prior effect in the extra sensory perception test
@@ -3628,7 +3627,7 @@ out = bayes_inference(y=weight, x=habit, data=nc,type=&#39;ht&#39;,
                 statistic=&#39;mean&#39;,  alternative=&#39;twosided&#39;,
                 prior=&#39;JZS&#39;, null=0, r=.5, method=&#39;theo&#39;,
                 show_summ=FALSE, show_res=FALSE, show_plot=TRUE)</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:BF-NC-plot"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:BF-NC-plot"></span>
 <img src="../../../../2021/05/25/bayesian-thinking/index_files/figure-html/BF-NC-plot-1.svg" alt="Estimates of effect under H2" width="384" />
 <p class="caption">
 Figure 26: Estimates of effect under H2

@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">49 min read</span>
+    <span class="article-duration">59 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -144,6 +144,29 @@
 <li><a href="#completeness-and-best-unbiasedness">completeness and best unbiasedness</a></li>
 <li><a href="#loss-function-optimality">Loss Function Optimality</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#hypothesis-testing">8. Hypothesis Testing</a>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#methods-of-finding-tests">Methods of Finding Tests</a>
+<ul>
+<li><a href="#likelihood-ratio-tests">Likelihood Ratio Tests</a></li>
+<li><a href="#likelihood-ratio-tests-using-the-sufficiency-statistic">Likelihood Ratio Tests using the sufficiency statistic</a></li>
+<li><a href="#bayesian-tests">Bayesian tests</a></li>
+<li><a href="#union-intersection-and-intersection-union-tests">Union-intersection and intersection-union tests</a></li>
+</ul></li>
+<li><a href="#methods-of-evaluating-tests">Methods of Evaluating Tests</a>
+<ul>
+<li><a href="#error-probabilities-and-the-power-function">Error Probabilities and the Power Function</a></li>
+<li><a href="#most-powerful-tests-ump">Most Powerful Tests (UMP)</a></li>
+<li><a href="#sizes-of-union-intersection-and-intersection-union-tests">Sizes of Union-Intersection and Intersection-Union Tests</a></li>
+<li><a href="#p-values"><span class="math inline">\(p\)</span>-Values</a></li>
+<li><a href="#loss-function-optimality-1">Loss Function Optimality</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#anova">11. ANOVA</a>
+<ul>
+<li><a href="#simple-linear-regression">Simple Linear Regression</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul>
@@ -763,12 +786,16 @@ of <span class="math inline">\(\theta\)</span>.</p>
 <p><strong>Niceness of the exponential family</strong> It turns out that outside of the
 exponential family, it is rare to have a sufficient statistic that is of
 smaller dimension than the size of the sample.</p>
-<p><strong>Factorization Theorem</strong> Let <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span> denote the
+<div id="theorem1" class="section level4">
+<h4>Factorization Theorem</h4>
+<p>Let <span class="math inline">\(f(\mathbf{x} \vert{} \theta)\)</span> denote the
 pmf/pdf of a sample <span class="math inline">\(\mathbf{X}\)</span>. A statistic <span class="math inline">\(T(\mathbf{X})\)</span> is a sufficient
 statistic for <span class="math inline">\(\theta\)</span> if and only if there exists functions
 <span class="math inline">\(g(T(\mathbf{X})\vert{} \theta)\)</span> and <span class="math inline">\(h(\mathbf{x})\)</span> such that
 <span class="math inline">\(\forall \mathbf{x} \in \mathcal X{}\)</span>, <span class="math inline">\(\forall \theta \in \Theta\)</span>
-<span class="math display">\[f(\mathbf{x} \vert{} \theta) = g(T(\mathbf{x}) \vert{} \theta)h(\mathbf{x}).\]</span></p>
+<span class="math display">\[\begin{equation}
+f(\mathbf{x} \vert{} \theta) = g(T(\mathbf{x}) \vert{} \theta)h(\mathbf{x}).
+\end{equation}\]</span></p>
 <p>This theorem shows that the identity is a sufficient statistic. It is
 straightforward to show from this that any bijection of a sufficient
 statistic is a sufficient statistic.</p>
@@ -816,6 +843,7 @@ and, by the Factorization Theorem, <span class="math inline">\(T(\mathbf X)\)</s
 a function of every sufficient statistic.</p>
 <p>A statistic is minimal sufficient if and only if it is a necessary and
 sufficient statistic.</p>
+</div>
 </div>
 <div id="ancillary-statistic" class="section level3">
 <h3>Ancillary Statistic</h3>
@@ -1332,6 +1360,243 @@ statistics are unique.</p>
 </div>
 <div id="loss-function-optimality" class="section level3">
 <h3>Loss Function Optimality</h3>
+</div>
+</div>
+</div>
+<div id="hypothesis-testing" class="section level1">
+<h1>8. Hypothesis Testing</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<ul>
+<li>Test statistic: <span class="math inline">\(W(X_1,..., X_n) = W(\mathbf X)\)</span></li>
+<li><span class="math inline">\(H_0: \theta \in \Theta_0\)</span></li>
+<li><span class="math inline">\(H_1: \theta \in \Theta^c_0\)</span></li>
+</ul>
+</div>
+<div id="methods-of-finding-tests" class="section level2">
+<h2>Methods of Finding Tests</h2>
+<div id="likelihood-ratio-tests" class="section level3">
+<h3>Likelihood Ratio Tests</h3>
+<p>Likelihood ratio test (LRT) statistic for testing <span class="math inline">\(H_0: \theta \in \Theta_0\)</span> versus <span class="math inline">\(H_1: \theta \in \Theta^c_0\)</span> is:</p>
+<p><span class="math display">\[\lambda(\mathbf x) = \frac{\underset{\Theta_0}{\sup}L(\theta|\mathbf x)}{\underset{\Theta}{\sup}L(\theta|\mathbf x)}\]</span> A likelihood ratio test (LRT) is any test that has a rejection region of the form
+<span class="math inline">\(\{\mathbf x : \lambda(\mathbf x)\le c\}\)</span> , where <span class="math inline">\(c\)</span> is any number satisfying <span class="math inline">\(0\le c \le 1\)</span>.
+<span class="math display">\[L(\theta|x_1,..., x_n) = f(\mathbf x|\theta) = \prod^n_{i=1}f(x_i|\theta)\]</span>
+the numerator is the maximum probability of the observed sample, the maximum being computed over parameters in the null hypothesis. The denominator is maximum probability of observed sample over all possible parameters. Small likelihood implies rejecting <span class="math inline">\(H_0\)</span>.</p>
+<p>Suppose <span class="math inline">\(\hat\theta\)</span> an MLE of <span class="math inline">\(\theta\)</span>, exists; <span class="math inline">\(\hat\theta\)</span> is obtained by doing an unrestricted maximization of <span class="math inline">\(L(\theta|\mathbf x)\)</span>.
+We can also consider the MLE of <span class="math inline">\(\theta\)</span>, call it <span class="math inline">\(\hat\theta_0\)</span>, obtained by doing a restricted maximization, assuming <span class="math inline">\(\Theta_0\)</span> is the parameter space. That is, <span class="math inline">\(\hat\theta_0=\hat\theta_0(\mathbf x)\)</span> is the value of <span class="math inline">\(\theta\in\Theta_0\)</span> that maximizes <span class="math inline">\(L(\theta|\mathbf x)\)</span>. Then, the LRT statistic is
+<span class="math display">\[\lambda(\mathbf x)=\frac{L(\hat\theta_0|\mathbf x)}{L(\hat\theta|\mathbf x)}\]</span></p>
+</div>
+<div id="likelihood-ratio-tests-using-the-sufficiency-statistic" class="section level3">
+<h3>Likelihood Ratio Tests using the sufficiency statistic</h3>
+<p>If <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\lambda^*(t)\)</span> and <span class="math inline">\(\lambda(\mathbf x)\)</span> are the LRT statistics based on <span class="math inline">\(T\)</span> and <span class="math inline">\(\mathbf X\)</span>, respectively, then <span class="math inline">\(\lambda^*(T(\mathbf x))=\lambda(\mathbf x)\)</span> for every <span class="math inline">\(\mathbf x\)</span> in the sample space.</p>
+<p><strong>Proof:</strong>
+From the <a href="#theorem1">Factorization Theorem</a>, the pdf or pmf of <span class="math inline">\(\mathbf X\)</span> can
+be written as <span class="math inline">\(f(\mathbf x|\theta) = g(T(\mathbf x)|\theta)h(\mathbf x)\)</span>, where <span class="math inline">\(g(t|\theta)\)</span> is the pdf or pmf of <span class="math inline">\(T\)</span> and <span class="math inline">\(h(\mathbf x)\)</span>
+does not depend on <span class="math inline">\(\theta\)</span>. Thus
+<span class="math display">\[\begin{align}
+\lambda(\mathbf x) &amp;= \frac{\underset{\Theta_0}{\sup}L(\theta|\mathbf x)}{\underset{\Theta}{\sup}L(\theta|\mathbf x)}\\
+&amp;=\frac{\underset{\Theta_0}{\sup}f(\mathbf x|\theta)}{\underset{\Theta}{\sup}f(\mathbf x|\theta)}\\
+&amp;=\frac{\underset{\Theta_0}{\sup}g(T(\mathbf x)|\theta)h(\mathbf x)}{\underset{\Theta}{\sup}g(T(\mathbf x)|\theta)h(\mathbf x)}\\
+&amp;=\frac{\underset{\Theta_0}{\sup}g(T(\mathbf x)|\theta)}{\underset{\Theta}{\sup}g(T(\mathbf x)|\theta)}\\
+&amp;= \frac{\underset{\Theta_0}{\sup}L^*(\theta|T(\mathbf x))}{\underset{\Theta}{\sup}L^*(\theta|T(\mathbf x))}\\
+&amp;=\lambda^*(T(\mathbf x))\\
+\end{align}\]</span></p>
+</div>
+<div id="bayesian-tests" class="section level3">
+<h3>Bayesian tests</h3>
+<p>Normal Bayesian test: accept <span class="math inline">\(H_0\)</span> if and only if
+<span class="math display">\[\frac{1}{2} \leq P(\theta \in \Theta_0|\mathbf X) = P(\theta \leq \theta_0|\mathbf X)\]</span></p>
+</div>
+<div id="union-intersection-and-intersection-union-tests" class="section level3">
+<h3>Union-intersection and intersection-union tests</h3>
+<p>Union-intersection test:
+<span class="math display">\[H_0: \theta \in \underset{\gamma \in \Gamma}\bigcap \Theta_{\gamma}\]</span>
+intersection-union test:
+<span class="math display">\[H_0: \theta \in \underset{\gamma \in \Gamma}\bigcup \Theta_{\gamma}\]</span></p>
+</div>
+</div>
+<div id="methods-of-evaluating-tests" class="section level2">
+<h2>Methods of Evaluating Tests</h2>
+<div id="error-probabilities-and-the-power-function" class="section level3">
+<h3>Error Probabilities and the Power Function</h3>
+<ul>
+<li>Type I Error (FP): If <span class="math inline">\(\theta \in \Theta_0\)</span> but the hypothesis test incorrectly decides to reject <span class="math inline">\(H_0\)</span>,</li>
+<li>Type II Error (FN): If <span class="math inline">\(\theta \in \Theta^c_0\)</span> but the test decides to accept <span class="math inline">\(H_0\)</span>,</li>
+</ul>
+<p><strong>Power function</strong>: The power function of a hypothesis test with rejection region <span class="math inline">\(R\)</span> is the function of <span class="math inline">\(\theta\)</span> defined by <span class="math display">\[\beta(\theta) = P_{\theta}(\mathbf X \in R)\]</span>
+Ideally;
+- <span class="math inline">\(\beta(\theta) = 0\)</span> for all <span class="math inline">\(\theta \in \Theta_0\)</span>
+- <span class="math inline">\(\beta(\theta) = 1\)</span> for all <span class="math inline">\(\theta \in \Theta^c_0\)</span></p>
+<p>Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a <span class="math inline">\(n(\theta, \sigma^2)\)</span> population, <span class="math inline">\(\sigma^2\)</span> known. An LRT of <span class="math inline">\(H_0 : \theta\le\theta_0\)</span> versus <span class="math inline">\(H_1 : \theta &gt; \theta_0\)</span> is a test that rejects <span class="math inline">\(H_0\)</span> if
+<span class="math display">\[\frac{\bar{X} - \theta_0}{\sigma/ \sqrt{n}} &gt; c\]</span> The constant <span class="math inline">\(c\)</span> can be any positive number. The power function of this test is:
+<span class="math display">\[\begin{align}
+\beta(\theta) &amp;= P_{\theta}\left(\frac{\bar{X} - \theta_0}{\sigma/ \sqrt{n}} &gt; c\right)\\
+&amp;= P_{\theta}\left(\frac{\bar{X} - \theta}{\sigma/ \sqrt{n}} &gt; c+\frac{\theta_0 - \theta}{\sigma/ \sqrt{n}}\right)\\
+&amp;=P\left(Z &gt; c + \frac{\theta_0 - \theta}{\sigma/ \sqrt{n}}\right)
+\end{align}\]</span> where <span class="math inline">\(Z\)</span> is a standard normal random variable, since <span class="math display">\[\frac{\bar{X} - \theta}{\sigma/ \sqrt{n}}\sim n(0,1)\]</span> As <span class="math inline">\(\theta\)</span>
+increases from <span class="math inline">\(-\infty\to \infty\)</span>, it is easy to see that this normal probability increases from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>. Therefore, it follows that <span class="math inline">\(\beta(\theta)\)</span> is an increasing function of <span class="math inline">\(\theta\)</span>, with
+<span class="math display">\[\underset{\theta\to-\infty}{\lim}\beta(\theta)=0, \;\;\underset{\theta\to+\infty}{\lim}\beta(\theta)=1,\]</span> and <span class="math display">\[\beta(\theta_0)=\alpha\quad\text{if}\quad P(Z&gt;c)=\alpha\]</span> <span class="math inline">\(\alpha\)</span> is the Type I Error probability.</p>
+<ul>
+<li><p>For <span class="math inline">\(0\le\alpha\le 1\)</span>, a test with power function <span class="math inline">\((\beta(\theta)\)</span> is a <strong>size <span class="math inline">\(\alpha\)</span> test</strong> if <span class="math inline">\(\sup_{\theta\in\Theta_0}\beta(\theta) = \alpha\)</span>.</p></li>
+<li><p>For <span class="math inline">\(0\le\alpha\le 1\)</span>, a test with power function <span class="math inline">\((\beta(\theta)\)</span> is a <strong>level <span class="math inline">\(\alpha\)</span> test</strong> if <span class="math inline">\(\sup_{\theta\in\Theta_0}\beta(\theta) \le \alpha\)</span>.</p></li>
+<li><p><strong>Size of LRT</strong> a size <span class="math inline">\(\alpha\)</span> LRT is constructed by choosing
+<span class="math inline">\(c\)</span> such that <span class="math inline">\(\sup_{\theta\in\Theta_0}P_{\theta}(\lambda(\mathbf X)\le c) = \alpha\)</span>. How that <span class="math inline">\(c\)</span> is determined depends on the
+particular problem. For example, <span class="math inline">\(\Theta_0\)</span> consists of the single point <span class="math inline">\(\theta=\theta_0\)</span> and <span class="math inline">\(\sqrt{n}(\bar{X} - \theta_0) \sim n(0,1)\)</span> if <span class="math inline">\(\theta=\theta_0\)</span>. So the test
+<span class="math display">\[\text{reject }H_0\text{ if }|\bar{X}-\theta_0|\ge z_{\alpha/2}/\sqrt{n}\]</span> where <span class="math inline">\(z_{\alpha/2}\)</span> satisfies <span class="math inline">\(P(Z\ge z_{\alpha/2})=\alpha/2\)</span> with <span class="math inline">\(Z\sim n(0,1)\)</span> is a size <span class="math inline">\(\alpha\)</span> LRT.</p></li>
+<li><p><strong>Size of union-intersection test</strong> Finding constants <span class="math inline">\(t_L\)</span> and <span class="math inline">\(t_U\)</span> such that <span class="math display">\[\underset{\theta\in\Theta_0}{\sup}P_{\theta}\left(\frac{\bar{X}-\mu_0}{\sqrt{S^2/n}}\ge t_L\quad\text{ or }\quad\frac{\bar{X}-\mu_0}{\sqrt{S^2/n}}\le t_U\right)=\alpha\]</span> But for any <span class="math inline">\((\mu,\sigma^2)=\theta\in\Theta_0,\;\mu=\mu_0\)</span> and thus <span class="math display">\[\frac{\bar{X}-\mu_0}{\sqrt{S^2/n}}=\frac{\bar{X}-\mu}{\sqrt{S^2/n}}\]</span> has a Student’s <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(n-1\)</span> degree of freedom. So any choice of <span class="math inline">\(t_U=t_{n-1,1-\alpha_1}\)</span> and <span class="math inline">\(t_L=t_{n-1,\alpha_2}\)</span> with <span class="math inline">\(\alpha_1+\alpha_2=\alpha\)</span> will yield a test with Type I Error probability of exactly <span class="math inline">\(\alpha\)</span> for all <span class="math inline">\(\theta\in\Theta_0\)</span>.</p></li>
+<li><p><strong>Unbiased power function</strong> A test with power function <span class="math inline">\(\beta(\theta)\)</span> is unbiased if <span class="math inline">\(\beta(\theta&#39;)\ge\beta(\theta&#39;&#39;)\)</span> for every <span class="math inline">\(\theta&#39;\in\Theta_0^c\)</span> and <span class="math inline">\(\theta&#39;&#39;\in\Theta_0\)</span></p></li>
+</ul>
+</div>
+<div id="most-powerful-tests-ump" class="section level3">
+<h3>Most Powerful Tests (UMP)</h3>
+<p>Let <span class="math inline">\(\mathcal C\)</span> be a class of tests for testing <span class="math inline">\(H_0:\theta\in\Theta_0\)</span> versus <span class="math inline">\(H_1:\theta\in\Theta_0^c\)</span>. A test in class <span class="math inline">\(\mathcal C\)</span>, with power function <span class="math inline">\(\beta(\theta)\)</span>, is a <strong>uniformly most powerful (UMP) class <span class="math inline">\(\mathcal C\)</span> test</strong> if <span class="math inline">\(\beta(\theta)\ge \beta&#39;(\theta)\)</span> for every <span class="math inline">\(\theta\in\Theta_0^c\)</span> and every <span class="math inline">\(\beta&#39;(\theta)\)</span> that is a power function of a test in class <span class="math inline">\(\mathcal C\)</span>.</p>
+<div id="neyman-pearson-lemma" class="section level4">
+<h4>Neyman-Pearson lemma</h4>
+<p>Consider testing <span class="math inline">\(H_0:\theta=\theta_0\)</span> versus <span class="math inline">\(H_1:\theta=\theta_1\)</span>, where the pdf or pmf corresponding to <span class="math inline">\(\theta_i\)</span> is <span class="math inline">\(f(\mathbf x|\theta_i), i = 0, 1\)</span>, using a test with rejection region <span class="math inline">\(R\)</span> that satisfies <span class="math display">\[\mathbf x\in R\quad\text{if}\quad f(\mathbf x|\theta_1)&gt;kf(\mathbf x|\theta_0)\\
+\text{and}\\
+\mathbf x\in R^c\quad\text{if}\quad f(\mathbf x|\theta_1)&lt;kf(\mathbf x|\theta_0)\tag1\]</span> for some <span class="math inline">\(K\ge 0\)</span> and <span class="math display">\[\alpha=P_{\theta_0}(\mathbf X\in R)\tag2\]</span> Then</p>
+<ul>
+<li><ol style="list-style-type: lower-alpha">
+<li><em>Sufficiency</em>, Any test that satisfies the conditions above is a UMP level <span class="math inline">\(\alpha\)</span> test.</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-alpha">
+<li><em>Necessity</em>, If there exists a test satisfying the conditions above with <span class="math inline">\(k &gt; 0\)</span>, then every UMP level <span class="math inline">\(\alpha\)</span> test is a size <span class="math inline">\(\alpha\)</span> test (satisfies (2)) and every UMP level <span class="math inline">\(\alpha\)</span> test satisfies (1) except perhaps on a set <span class="math inline">\(A\)</span> satisfying <span class="math display">\[P_{\theta_0}(\mathbf X\in A)=P_{\theta_1}(\mathbf X\in A)=0\]</span></li>
+</ol></li>
+</ul>
+<p><strong>Proof:</strong> Note first that any test satisfying (2) is a size <span class="math inline">\(\alpha\)</span> and, hence, a level <span class="math inline">\(\alpha\)</span> test because
+<span class="math display">\[\sup_{\theta\in\Theta_0}P_{\theta}(\mathbf X\in R)=P_{\theta_0}(\mathbf X\in R)=\alpha\]</span> since <span class="math inline">\(\Theta_0\)</span> has only one point.</p>
+<p>To ease notation, we define a <em>test junction</em>, a function on the sample space that is <span class="math inline">\(1\)</span> if <span class="math inline">\(\mathbf x \in R\)</span> and <span class="math inline">\(0\)</span> if <span class="math inline">\(\mathbf x \in R^c\)</span>. That is, it is the indicator function of the rejection
+region. Let <span class="math inline">\(\phi(\mathbf x)\)</span> be the test function of a test satisfying (1) and (2). Let <span class="math inline">\(\phi&#39;(\mathbf x)\)</span> be the test function of any other level <span class="math inline">\(\alpha\)</span> test, and let <span class="math inline">\(\beta(\theta)\)</span> and <span class="math inline">\(\beta&#39;(\theta)\)</span> be the power functions corresponding to the tests <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\phi&#39;\)</span>, respectively. Because <span class="math inline">\(0\le\phi&#39;(\mathbf x)\le 1\)</span>, (1) implies that <span class="math display">\[(\phi(\mathbf x)-\phi&#39;(\mathbf x))(f(\mathbf x|\theta_1)-kf(\mathbf x|\theta_0))\ge 0\]</span> for every <span class="math inline">\(\mathbf x\)</span> (since <span class="math inline">\(\phi=1\)</span> if <span class="math inline">\(f(\mathbf x|\theta_1)&gt;kf(\mathbf x|\theta_0)\)</span> and <span class="math inline">\(\phi = 0\)</span> if <span class="math inline">\(f(\mathbf x|\theta_1) &lt; kf(\mathbf x|\theta_0)\)</span>. Thus <span class="math display">\[0\le\int\left[\phi(\mathbf x)-\phi&#39;(\mathbf x)\right]\left[f(\mathbf x|\theta_1)-kf(\mathbf x|\theta_0)\right]d\mathbf x\\
+=\beta(\theta_1)-\beta&#39;(\theta_1)-k(\beta(\theta_0)-\beta&#39;(\theta_0))\tag3\]</span> Statement (a) is proved by noting that, since <span class="math inline">\(\phi&#39;\)</span> is a level <span class="math inline">\(\alpha\)</span> test and <span class="math inline">\(\phi\)</span> is a size <span class="math inline">\(\alpha\)</span> test, <span class="math inline">\(\beta(\theta_0)-\beta&#39;(\theta_0)=\alpha-\beta&#39;(\theta_0)\ge 0\)</span> Thus (3) and <span class="math inline">\(k\ge 0\)</span> imply that <span class="math display">\[0\le\beta(\theta_1)-\beta&#39;(\theta_1)-k(\beta(\theta_0)-\beta&#39;(\theta_0))\le\beta(\theta_1)-\beta&#39;(\theta_1)\]</span> showing that <span class="math inline">\(\beta(\theta_1)\ge \beta&#39;(\theta_1)\)</span> and hence <span class="math inline">\(\phi\)</span> has greater power than <span class="math inline">\(\phi&#39;\)</span>. Since <span class="math inline">\(\phi&#39;\)</span> was an arbitrary level <span class="math inline">\(\alpha\)</span> test and <span class="math inline">\(\theta_1\)</span> is the only point in <span class="math inline">\(\Theta_0^c\)</span>, <span class="math inline">\(\phi\)</span> is a UMP level <span class="math inline">\(\alpha\)</span> test.</p>
+<p>To prove statement (b) , let <span class="math inline">\(\phi&#39;\)</span> now be the test function for any UMP level <span class="math inline">\(\alpha\)</span> test. By part (a), <span class="math inline">\(\phi\)</span>, the test satisfying (1) and (2), is also a UMP level <span class="math inline">\(\alpha\)</span> test, thus
+<span class="math inline">\(\beta(\theta_1)=\beta&#39;(\theta_1)\)</span>. This fact, (3), and <span class="math inline">\(k &gt; 0\)</span> imply <span class="math display">\[\alpha-\beta&#39;(\theta_0)=\beta(\theta_0)-\beta&#39;(\theta_0)\leq0\]</span></p>
+<p>Now, since <span class="math inline">\(\phi&#39;\)</span> is a level <span class="math inline">\(\alpha\)</span> test, <span class="math inline">\(\beta&#39;(\theta_0)\le\alpha\)</span>. Thus <span class="math inline">\(\beta&#39;(\theta_0)=\alpha\)</span>, that is, <span class="math inline">\(\phi&#39;\)</span> is a size <span class="math inline">\(\alpha\)</span> test, and this also implies that (3) is an equality in this case. But the nonnegative integrand <span class="math inline">\((\phi(\mathbf x)-\phi&#39;(\mathbf x))(f(\mathbf x|\theta_1)-kf(\mathbf x|\theta_0))\)</span> will have a zero integral only if <span class="math inline">\(\phi&#39;\)</span> satisfies
+(1), except perhaps on a set <span class="math inline">\(A\)</span> with <span class="math inline">\(\int_Af(\mathbf x|\theta_i)d\mathbf x=0\)</span>. This implies that the last
+assertion in statement (b) is true.</p>
+</div>
+<div id="corollary-neyman-pearson-lemma-and-sufficiency" class="section level4">
+<h4>Corollary: Neyman-Pearson lemma and sufficiency</h4>
+<p>Consider the hypothesis problem posed in Theorem <a href="#neyman-pearson-lemma">Neyman-Pearson lemma</a>. Suppose <span class="math inline">\(T(\mathbf X)\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(g(t|\theta_i)\)</span> is the pdf or pmf of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\theta_i,\;i=0,1\)</span>. Then any test based on <span class="math inline">\(T\)</span> with rejection region <span class="math inline">\(S\)</span> (a subset of the sample space of <span class="math inline">\(T\)</span>) is a UMP level <span class="math inline">\(\alpha\)</span> test if it satisfies <span class="math display">\[t\in S\quad\text{if}\quad g(t|\theta_1)&gt;kg(t|\theta_0)\\
+\text{and}\\
+t\in S^c\quad\text{if}\quad g(t|\theta_1)&lt;kg(t|\theta_0),\tag4\]</span> for some <span class="math inline">\(k\ge0\)</span> where <span class="math display">\[\alpha=P_{\theta_0}(T\in S)\tag5\]</span></p>
+<p><strong>Proof:</strong> In terms of the original sample <span class="math inline">\(\mathbf X\)</span>, the test based on <span class="math inline">\(T\)</span> has the rejection region <span class="math inline">\(R = \{\mathbf x: T(\mathbf x) \in S\}\)</span>. By the <a href="#theorem1">Factorization Theorem</a>, the pdf or pmf of <span class="math inline">\(\mathbf X\)</span> can be written as <span class="math inline">\(f(\mathbf x|\theta_i)=g(T(\mathbf x)|\theta_i)h(\mathbf x),\quad i=0,1,\)</span> for some nonnegative function <span class="math inline">\(h(\mathbf x)\)</span>.
+Multiplying the inequalities in (4) by this non-negative function, we see that <span class="math inline">\(R\)</span> satisfies <span class="math display">\[\mathbf x\in R\quad\text{if}\quad f(\mathbf x|\theta_1)=g(T(\mathbf x)|\theta_1)h(\mathbf x)&gt;kg(T(\mathbf x)|\theta_0)h(\mathbf x)=kf(\mathbf x|\theta_0)\]</span>
+and <span class="math display">\[\mathbf x\in R^c\quad\text{if}\quad f(\mathbf x|\theta_1)=g(T(\mathbf x)|\theta_1)h(\mathbf x)&lt;kg(T(\mathbf x)|\theta_0)h(\mathbf x)=kf(\mathbf x|\theta_0)\]</span>
+Also by (5), <span class="math display">\[P_{\theta_0}(\mathbf X\in R)=P_{\theta_0}(T(\mathbf X)\in S)=\alpha.\]</span> So, by the sufficiency part of the <a href="#neyman-pearson-lemma">Neyma-Pearson Lemma</a>, the test based on <span class="math inline">\(T\)</span> is a
+UMP level <span class="math inline">\(\alpha\)</span> test.</p>
+</div>
+<div id="monotone-likelihood-ratio-mlr" class="section level4">
+<h4>Monotone Likelihood Ratio (MLR)</h4>
+<p>A family of pdfs or pmfs <span class="math inline">\(\{g(t|\theta):\theta\in\Theta\}\)</span> for a univariate random variable <span class="math inline">\(T\)</span> with real-valued parameter <span class="math inline">\(\theta\)</span> has a <strong>monotone likelihood ratio (MLR)</strong> if, for every <span class="math inline">\(\theta_2 &gt; \theta_1\)</span>, <span class="math inline">\(g(t|\theta_2)/g(t|\theta_1)\)</span> is a monotone (nonincreasing or nondecreasing) function of <span class="math inline">\(t\)</span> on
+<span class="math inline">\(\{t:g(t|\theta_1)&gt;0\text{ or }g(t|\theta_2)&gt;0\}\)</span>. Note that <span class="math inline">\(c/0\)</span> is defined as <span class="math inline">\(\infty\)</span> if <span class="math inline">\(0 &lt; c\)</span>.</p>
+<blockquote>
+<p>Many common families of distributions have an MLR. For example, the normal (known variance, unknown mean), Poisson, and binomial all have an MLR. Indeed, any regular exponential family with <span class="math inline">\(g(t|\theta)=h(t)c(\theta)e^{w(\theta)t}\)</span> has an MLR if <span class="math inline">\(w(\theta)\)</span> is a nondecreasing function.</p>
+</blockquote>
+</div>
+<div id="karlin-rubin-theorem" class="section level4">
+<h4>Karlin-Rubin Theorem</h4>
+<p>Consider testing <span class="math inline">\(H_0:\theta\le\theta_0\)</span> versus <span class="math inline">\(H_1:\theta&gt;\theta_0\)</span>. Suppose that <span class="math inline">\(T\)</span> is a sufficient statistic for <span class="math inline">\(\theta\)</span> and the family of pdfs or pmfs
+<span class="math inline">\(\{g(t|\theta):\theta\in\Theta\}\)</span> of <span class="math inline">\(T\)</span> has an MLR. Then for any <span class="math inline">\(t_0\)</span>, the test that rejects <span class="math inline">\(H_0\)</span> if and only if <span class="math inline">\(T &gt; t_0\)</span> is a UMP level <span class="math inline">\(\alpha\)</span> test, where <span class="math inline">\(\alpha = P_{\theta_0}(T &gt; t_0)\)</span>.</p>
+<p><strong>Proof:</strong> Let <span class="math inline">\(\beta(\theta)=P_{\theta}(T&gt;t_0)\)</span> be the power function of the test. Fix <span class="math inline">\(\theta&#39;&gt;\theta_0\)</span> and consider testing <span class="math inline">\(H_0&#39;:\theta=\theta_0\)</span> versus <span class="math inline">\(H_1&#39;:\theta=\theta&#39;\)</span>. Since the family of pdfs or pmfs of <span class="math inline">\(T\)</span> has an MLR, <span class="math inline">\(\beta(\theta)\)</span> is nondecreasing, so</p>
+<ul>
+<li><ol style="list-style-type: lower-roman">
+<li><span class="math inline">\(\sup_{\theta&lt;\theta_0}\beta(\theta)=\beta(\theta_0)=\alpha\)</span>, and this is a level <span class="math inline">\(\alpha\)</span> test.<br />
+</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-roman">
+<li>If we define <span class="math display">\[k&#39;=\inf_{t\in\mathcal T}\frac{g(t|\theta&#39;)}{g(t|\theta_0)}\]</span> where <span class="math inline">\(\mathcal T=\{t:t&gt;t_0\text{  and either  } g(t|\theta&#39;)&gt;0\text{  or  }g(t|\theta_0)&gt;0\}\)</span>, it follows that <span class="math display">\[T&gt;t_0\iff\frac{g(t|\theta&#39;)}{g(t|\theta_0)}&gt;k&#39;.\]</span></li>
+</ol></li>
+</ul>
+<p>Together with <a href="#corollary-neyman-pearson-lemma-and-sufficiency">Corollary: Neyman-Pearson lemma and sufficiency</a>, (i) and (ii) imply that <span class="math inline">\(\beta(\theta&#39;)\ge\beta^*(\theta&#39;)\)</span>, where <span class="math inline">\(\beta^*(\theta)\)</span> is the power function for any other level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0&#39;\)</span>, that is, any test satisfying <span class="math inline">\(\beta(\theta_0)\le\alpha\)</span>. However, any level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0\)</span> satisfies <span class="math inline">\(\beta^*(\theta_0)\le\sup_{\theta\in\Theta_0}\beta^*(\theta)\le\alpha.\)</span> Thus, <span class="math inline">\(\beta(\theta&#39;)\ge\beta^*(\theta&#39;)\)</span> for any level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0\)</span>. Since <span class="math inline">\(\theta&#39;\)</span> was arbitrary, the test is a UMP level <span class="math inline">\(\alpha\)</span> test.</p>
+</div>
+</div>
+<div id="sizes-of-union-intersection-and-intersection-union-tests" class="section level3">
+<h3>Sizes of Union-Intersection and Intersection-Union Tests</h3>
+</div>
+<div id="p-values" class="section level3">
+<h3><span class="math inline">\(p\)</span>-Values</h3>
+</div>
+<div id="loss-function-optimality-1" class="section level3">
+<h3>Loss Function Optimality</h3>
+</div>
+</div>
+</div>
+<div id="anova" class="section level1">
+<h1>11. ANOVA</h1>
+<ul>
+<li><p>One way ANOVA equation: <span class="math display">\[Y_{ij} = \theta_{i} + \epsilon_{ij}, \text{ with: } i = 1,..., k \text{ and } j = 1,..., n_{i}\]</span></p>
+<ul>
+<li><span class="math inline">\(i\)</span> = treatment</li>
+<li><span class="math inline">\(j\)</span> = observation</li>
+</ul></li>
+<li><p>Assumptions:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(E[\epsilon_{ij}] = 0 , \text{ Var}\epsilon_{ij} = \sigma^2_{i} &lt; \infty\)</span></p>
+<p><span class="math inline">\(\text{Cov}(\epsilon_{ij}\epsilon_{i&#39;j&#39;}) = 0, \text{ unless } i=i&#39; \text{ and } j=j&#39;\)</span></p></li>
+<li><p><span class="math inline">\(\epsilon_{ij}\)</span> are independently and normally distributed</p></li>
+<li><p>Homoscedasicity</p></li>
+</ol></li>
+<li><p>If data doesn’t meet the assumptions can transform or rely on CLT</p></li>
+<li><p>Requires identifiability, each <span class="math inline">\(\theta\)</span> has a unique distribution</p>
+<ul>
+<li>Otherwise it’s impossible to tell label future observations<br />
+</li>
+</ul></li>
+<li><p>Hypothesises:</p>
+<ul>
+<li><span class="math inline">\(H_0: \theta_1 = \theta_2 = ... = \theta_k\)</span></li>
+<li><span class="math inline">\(H_1: \theta_i \neq \theta_j\)</span> for some <span class="math inline">\(i, j\)</span></li>
+</ul></li>
+<li><p>Pooled variance: <span class="math display">\[S^{2}_{p} = \frac{1}{N-k}\sum^{k}_{i=1}(n_{1}-1)S^{2}_{1} = \frac{1}{N-k}\sum^{k}_{i=1}\sum^{n_{i}}_{j=1}(Y_{ij}-\bar{Y_{i}})^{2}\]</span></p></li>
+<li><p>t statistic: <span class="math display">\[\abs{\frac{\bar{Y_{1.}}\bar{Y_{2.}}}{\sqrt{S^{2}_{p}(\frac{1}{n_1} + \frac{1}{n_2}})}} &gt; t_{N-k, \alpha/2}\]</span></p></li>
+<li><p>ANOVA F test: <span class="math display">\[\text{reject } H_0 \text{ if } F = \frac{\sum^{k}_{i=1}n_{i}((\bar{Y_{i.}} - \bar{\bar{Y}}))^{2}/(k-1)}{S^{2}_{p}} &gt; F_{k-1, N-K, \alpha}\]</span></p></li>
+<li><p>Sum of squares = (SS within) + (SS between)</p>
+<ul>
+<li>This is easy to look at than some complicated equation</li>
+<li>Are chi-square random variables</li>
+<li>If <span class="math inline">\(H_0\)</span> is true:
+<ul>
+<li>(SS between) $ ^2_{k-1}$</li>
+<li>(SS total) $ ^2_{N-1}$</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="simple-linear-regression" class="section level3">
+<h3>Simple Linear Regression</h3>
+<ul>
+<li>Population regression function: <span class="math inline">\(E[Y_i] = \beta_0 + \beta x_i\)</span>
+<ul>
+<li>Assumes: <span class="math inline">\(E[\epsilon] = 0\)</span></li>
+</ul></li>
+<li>Another form: <span class="math inline">\(E[Y_i|x_i] \approx \beta_0 + \beta x_i\)</span></li>
+</ul>
+<div id="algebraic-solution" class="section level4">
+<h4>Algebraic solution</h4>
+<ul>
+<li>Estimating perameters:
+<ul>
+<li><span class="math inline">\(\beta_0 = \bar{y} - \beta\bar{x}\)</span></li>
+<li><span class="math inline">\(\beta = \frac{S_{xy}}{S_{xx}}\)</span></li>
+</ul></li>
+</ul>
+</div>
+<div id="statistical-solution" class="section level4">
+<h4>Statistical solution</h4>
+<ul>
+<li>Assume the form: <span class="math inline">\(Y_i = \beta_0 + \beta x_i + \epsilon_i \text{ for } i = 1,..., n\)</span></li>
+<li><span class="math inline">\(\epsilon_i,..., \epsilon_n\)</span> are uncorrelated random variables with: <span class="math display">\[E[\epsilon_i] = 0 \text{ and } \text{Var}\epsilon_i = \sigma^2\]</span>
+<ul>
+<li><span class="math inline">\(\epsilon_i\)</span> are random errors, therefore <span class="math inline">\(Y_i\)</span> are uncorrelated</li>
+</ul></li>
+<li>Linear estimator: <span class="math display">\[\sum^{n}_{i=1}d_iY_i\]</span>
+<ul>
+<li>Must satisfy <span class="math inline">\(E[\sum^{n}_{i=1}d_iY_i] = \beta\)</span>
+<ul>
+<li>Holds true for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(beta\)</span> if and only if: <span class="math inline">\(\sum^n_{i=1}d_i = 0\)</span> and <span class="math inline">\(\sum^n_{i=1}d_{i}x_{i} = 1\)</span></li>
+</ul></li>
+<li><span class="math inline">\(d_i\)</span> is BLUE if it minimizes the variance</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>
