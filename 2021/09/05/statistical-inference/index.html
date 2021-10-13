@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">59 min read</span>
+    <span class="article-duration">66 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -74,6 +74,19 @@
 
 <div id="TOC">
 <ul>
+<li><a href="#probability-theory">1. Probability Theory</a>
+<ul>
+<li><a href="#set-theory">Set Theory</a></li>
+<li><a href="#basics-of-probability-theory">Basics of Probability Theory</a></li>
+<li><a href="#conditional-probability-and-independence">Conditional Probability and Independence</a></li>
+<li><a href="#random-variables">Random Variables</a></li>
+<li><a href="#distribution-functions">Distribution Functions</a></li>
+<li><a href="#density-and-mass-functions">Density and Mass Functions</a></li>
+</ul></li>
+<li><a href="#transformations-and-expectations">2. Transformations and Expectations</a>
+<ul>
+<li><a href="#distributions-of-functions-of-a-random-variable-theorem">Distributions of Functions of a Random Variable Theorem</a></li>
+</ul></li>
 <li><a href="#common-families-of-distributions">3. Common Families of Distributions</a>
 <ul>
 <li><a href="#some-distributions">Some Distributions</a>
@@ -164,21 +177,99 @@
 <li><a href="#loss-function-optimality-1">Loss Function Optimality</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#anova">11. ANOVA</a>
+<li><a href="#interval-estimation">9. Interval Estimation</a>
+<ul>
+<li><a href="#introduction-1">Introduction</a></li>
+</ul></li>
+<li><a href="#asymptotic-evaluations">10. Asymptotic Evaluations</a></li>
+<li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
 <ul>
 <li><a href="#simple-linear-regression">Simple Linear Regression</a></li>
 </ul></li>
+<li><a href="#regression-models">12. Regression Models</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
 
+<div id="probability-theory" class="section level1">
+<h1>1. Probability Theory</h1>
+<div id="set-theory" class="section level2">
+<h2>Set Theory</h2>
+</div>
+<div id="basics-of-probability-theory" class="section level2">
+<h2>Basics of Probability Theory</h2>
+<div id="theorem-1.2.9-and-bonferroni-s-inequality" class="section level4">
+<h4>Theorem 1.2.9 and Bonferroni ’s Inequality</h4>
+<p>If <span class="math inline">\(P\)</span> is a probability function and <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are any sets in <span class="math inline">\(B\)</span>, then<br />
+- <strong>a.</strong> <span class="math inline">\(P(B\cap A^c)=P(B)-P(A\cap B)\)</span>;<br />
+- <strong>b.</strong> <span class="math inline">\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)</span>;<br />
+- <strong>c.</strong> iF <span class="math inline">\(A\subset B\)</span> then <span class="math inline">\(P(A)\le P(B)\)</span>;</p>
+<p><strong>Proof:</strong> To establish (a) note that for any sets <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> we have <span class="math display">\[B=\{B\cap A\}\cup\{B\cap A^c\}\]</span> and therefor
+<span class="math display">\[P(B)=P(\{B\cap A\}\cup\{B\cap A^c\})=P(B\cap A)+P(B\cap A^c)\]</span> since <span class="math inline">\(B\cap A\)</span> and <span class="math inline">\(B\cap A^c\)</span> are disjoint.</p>
+<p>To establish (b), we use the identity <span class="math display">\[A\cup B=A\cup \{B\cap A^c\}\]</span> since <span class="math inline">\(A\)</span> and <span class="math inline">\(B\cap A^c\)</span> are disjoint, we have <span class="math display">\[P(A\cup B)=P(A)+P(B\cap A^c)=P(A)+P(B)-P(A\cap B)\]</span> from (a).</p>
+<p>If <span class="math inline">\(A\subset B\)</span>, then <span class="math inline">\(A\cap B=A\)</span>. Therefore, using (a) we have <span class="math display">\[0\le P(B\cap A^c)=P(B)-P(A)\]</span> establishing (c).</p>
+<p>Formula (b) of Theorem 1.2.9 gives a useful inequality for the probability of an intersection. Since <span class="math inline">\(P(A\cup B)\le 1\)</span>, we have from <span class="math display">\[P(A\cup B)=P(A)+P(B\cap A^c)=P(A)+P(B)-P(A\cap B)\le 1\]</span>, after some rearranging, <span class="math display">\[P(A\cap B)\ge P(A)+P(B)-1\]</span> This inequality is a special case of what is known as <strong>Bonferroni ’s Inequality</strong>.</p>
+</div>
+<div id="booles-inequality" class="section level4">
+<h4>Boole’s Inequality</h4>
+<p>If <span class="math inline">\(P\)</span> is a probability junction, then</p>
+<ul>
+<li><strong>a.</strong> <span class="math inline">\(P(A)=\sum_{i=1}^{\infty}P(A\cap C_i)\)</span> for any partition <span class="math inline">\(C_1,C_2,\cdots\)</span>;<br />
+</li>
+<li><strong>b.</strong> <span class="math inline">\(P(\bigcup_{i=1}^{\infty}A_i)\le\sum_{i=1}^{\infty}P(A_i)\)</span> for any sets <span class="math inline">\(A_1,A_2,\cdots\)</span>.</li>
+</ul>
+<p><strong>Proof:</strong> Since <span class="math inline">\(C_1,C_2,\cdots\)</span> form a partition, we have that <span class="math inline">\(C_i\cap C_j=\emptyset\)</span> for all <span class="math inline">\(i \ne j\)</span>, and <span class="math inline">\(S=\bigcup_{i=1}^{\infty}C_i\)</span>. Hence, <span class="math display">\[A=A\cap S=A\cap\left(\bigcup_{i=1}^{\infty}C_i\right)=\bigcup_{i=1}^{\infty}(A\cap C_i)\]</span> where the last equality follows from the Distributive Law. We therefore have <span class="math display">\[P(A)=P\left(\bigcup_{i=1}^{\infty}(A\cap C_i)\right)\]</span> Now, since the <span class="math inline">\(C_i\)</span> are disjoint, the sets <span class="math inline">\(A\cap C_i\)</span> are also disjoint, and from the properties of a probability function we have <span class="math display">\[P\left(\bigcup_{i=1}^{\infty}(A\cap C_i)\right)=\sum_{i=1}^{\infty}P(A\cap C_i),\]</span> establishing (a).</p>
+<p>To establish (b), construct a disjoint collection <span class="math inline">\(A_1^*,A_2^*,\cdots\)</span>, with the property that <span class="math inline">\(\cup_{i=1}^{\infty}A_i^*=\cup_{i=1}^{\infty}A_i\)</span>, we define <span class="math inline">\(A_i^*\)</span> by <span class="math display">\[A_1^*=A_1, A_i^*=A_i\setminus\left(\bigcup_{j=1}^{i-1}A_j\right),\quad i=2,3,\cdots,\]</span> where <span class="math inline">\(A\setminus B=A\cap B^c\)</span>. It should be easy to see that <span class="math inline">\(\cup_{i=1}^{\infty}A_i^*=\cup_{i=1}^{\infty}A_i\)</span> and we have <span class="math display">\[P\left(\bigcup_{i=1}^{\infty}A_i\right)=P\left(\bigcup_{i=1}^{\infty}A_i^*\right)=\sum_{i=1}^{\infty}P(A_i^*)\le\sum_{i=1}^{\infty} P(A_i)\]</span> Since, by construction <span class="math inline">\(A_i^*\subset A_i\)</span>. establishing (b).</p>
+</div>
+<div id="bonferroni-s-inequality" class="section level4">
+<h4>Bonferroni ’s Inequality</h4>
+<p>If we apply Boole’s Inequality to <span class="math inline">\(A^c\)</span> of Bonferroni ’s Inequality, we have <span class="math display">\[P\left(\bigcup_{i=1}^{n}A_i^c\right)\le\sum_{i=1}^{n}P(A_i^c)\]</span> and using the fact that <span class="math inline">\(\bigcup_{i=1}^{n}A_i^c=\left(\bigcap_{i=1}^{n} A_i\right)^c\)</span> and <span class="math inline">\(P(A_i^c)=1-P(A_i)\)</span> so we obtain <span class="math display">\[1-P\left(\bigcap_{i=1}^{n} A_i\right)=P\left(\bigcup_{i=1}^{n}A_i^c\right)\le\sum_{i=1}^{n}P(A_i^c)= n-\sum_{i=1}^{n}P(A_i)\]</span> This becomes <span class="math display">\[P\left(\bigcap_{i=1}^{n} A_i\right)\ge\sum_{i=1}^{n}P(A_i)-(n-1)\]</span>
+which is a more general version of the Bonferroni Inequality.</p>
+</div>
+</div>
+<div id="conditional-probability-and-independence" class="section level2">
+<h2>Conditional Probability and Independence</h2>
+</div>
+<div id="random-variables" class="section level2">
+<h2>Random Variables</h2>
+</div>
+<div id="distribution-functions" class="section level2">
+<h2>Distribution Functions</h2>
+</div>
+<div id="density-and-mass-functions" class="section level2">
+<h2>Density and Mass Functions</h2>
+</div>
+</div>
+<div id="transformations-and-expectations" class="section level1">
+<h1>2. Transformations and Expectations</h1>
+<div id="distributions-of-functions-of-a-random-variable-theorem" class="section level2">
+<h2>Distributions of Functions of a Random Variable Theorem</h2>
+<div id="probability-integral-transformation" class="section level4">
+<h4>Probability integral transformation</h4>
+<p>Let <span class="math inline">\(X\)</span> have continuous cdf <span class="math inline">\(F_{X}(x)\)</span> and define the random variable <span class="math inline">\(Y\)</span> as <span class="math inline">\(Y = F_{X}(X)\)</span>. Then <span class="math inline">\(Y\)</span> is uniformly distributed on <span class="math inline">\((0, 1)\)</span>, that is, <span class="math inline">\(P(Y \le y) = y, 0 &lt; y &lt; 1\)</span>.</p>
+<p>Let <span class="math inline">\(F_{X}^{-1}\)</span> be the inverse of the cdf <span class="math inline">\(F_{X}\)</span>. If <span class="math inline">\(F_{X}\)</span> is strictly increasing, then <span class="math inline">\(F_{X}^{-1}\)</span> is well defined by
+<span class="math display">\[F_{X}^{-1}(y)=x\iff F_{X}(x)=y.\]</span>
+However, if <span class="math inline">\(F_{X}\)</span> is constant on some interval <span class="math inline">\(x_1\le x \le x_2\)</span>, then <span class="math inline">\(F_{X}^{-1}\)</span> is not well defined by <span class="math inline">\(F_{X}^{-1}(y)=x\iff F_{X}(x)=y.\)</span> Any <span class="math inline">\(x\)</span> satisfying <span class="math inline">\(x_1\le x \le x_2\)</span> satisfies <span class="math inline">\(F_{X}(x) = y\)</span>.
+This problem is avoided by defining <span class="math inline">\(F_{X}^{-1}(y)\)</span> for <span class="math inline">\(0 &lt; y &lt; 1\)</span> by <span class="math display">\[F_{X}^{-1}(y) = \inf\; \{x: F_{X}(x) \ge y\},\]</span>
+Using this definition, we have <span class="math inline">\(F_{X}^{-1}(y)=x_1\)</span>. At the endpoints of the range of <span class="math inline">\(y\)</span>, <span class="math inline">\(F_{X}^{-1}(y)\)</span> can also be defined. <span class="math inline">\(F_{X}^{-1}(1)=\infty\)</span> if <span class="math inline">\(F_X(x) &lt; 1\)</span> for all <span class="math inline">\(x\)</span> and, for any <span class="math inline">\(F_X\)</span>, <span class="math inline">\(F_{X}^{-1}(0) = -\infty.\)</span></p>
+<p><strong>Proof: </strong> For <span class="math inline">\(Y = F_X (X)\)</span> we have, for <span class="math inline">\(0 &lt; y &lt; 1\)</span>,
+<span class="math display">\[\begin{align}
+P(Y\le y)&amp;=P(F_X (X)\le y)\\
+&amp;=P(F_X^{-1}[F_X (X)]\le F_X^{-1}(y))\quad\quad(F_X^{-1} \text{ is increasing})\\
+&amp;=P(X\le F_X^{-1}(y))\\
+&amp;=F_X(F_X^{-1}(y))\\
+&amp;=y\\
+\end{align}\]</span> At the endpoints we have <span class="math inline">\(P(Y\le y)=1\)</span> for <span class="math inline">\(y \ge 1\)</span> and <span class="math inline">\(P (Y\le y) = 0\)</span> for <span class="math inline">\(y \le 0\)</span>, showing that <span class="math inline">\(Y\)</span> has a uniform distribution.</p>
+</div>
+</div>
+</div>
 <div id="common-families-of-distributions" class="section level1">
 <h1>3. Common Families of Distributions</h1>
 <div id="some-distributions" class="section level2">
 <h2>Some Distributions</h2>
 <p>[Normal Distribution] If <span class="math inline">\(\mathbf{X} \sim \text{n}(\mathbf{\mu}, \boldsymbol{\Sigma})\)</span> then
 <span class="math inline">\(\mathbf{X}\)</span> has pdf
-<span class="math display">\[f_{\mathbf{X}}(x_1, \dots, x_k \vert{} \mathbf{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\mathbf{ x}-\mathbf{\mu})^\top \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\mathbf{\mu})\right)\]</span>.</p>
+<span class="math display">\[f_{\mathbf{X}}(x_1, \dots, x_k \vert{} \mathbf{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\mathbf{ x}-\mathbf{\mu})^\top \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\mathbf{\mu})\right).\]</span></p>
 <div id="chi-squared-distribution" class="section level3">
 <h3>Chi-Squared Distribution</h3>
 <p>The <em>chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom</em> has pdf
@@ -1377,7 +1468,7 @@ statistics are unique.</p>
 <h2>Methods of Finding Tests</h2>
 <div id="likelihood-ratio-tests" class="section level3">
 <h3>Likelihood Ratio Tests</h3>
-<p>Likelihood ratio test (LRT) statistic for testing <span class="math inline">\(H_0: \theta \in \Theta_0\)</span> versus <span class="math inline">\(H_1: \theta \in \Theta^c_0\)</span> is:</p>
+<p><strong>Likelihood ratio test (LRT)</strong> statistic for testing <span class="math inline">\(H_0: \theta \in \Theta_0\)</span> versus <span class="math inline">\(H_1: \theta \in \Theta^c_0\)</span> is:</p>
 <p><span class="math display">\[\lambda(\mathbf x) = \frac{\underset{\Theta_0}{\sup}L(\theta|\mathbf x)}{\underset{\Theta}{\sup}L(\theta|\mathbf x)}\]</span> A likelihood ratio test (LRT) is any test that has a rejection region of the form
 <span class="math inline">\(\{\mathbf x : \lambda(\mathbf x)\le c\}\)</span> , where <span class="math inline">\(c\)</span> is any number satisfying <span class="math inline">\(0\le c \le 1\)</span>.
 <span class="math display">\[L(\theta|x_1,..., x_n) = f(\mathbf x|\theta) = \prod^n_{i=1}f(x_i|\theta)\]</span>
@@ -1512,17 +1603,84 @@ UMP level <span class="math inline">\(\alpha\)</span> test.</p>
 </div>
 <div id="sizes-of-union-intersection-and-intersection-union-tests" class="section level3">
 <h3>Sizes of Union-Intersection and Intersection-Union Tests</h3>
+<p><strong>Union-Intersection tests ( UIT)</strong> and <strong>Intersection-Union tests (IUT)</strong> can often be bounded above by the sizes of some other tests. First consider UITs. In this situation, we are testing a null hypothesis of the form <span class="math inline">\(H_0:\theta\in\Theta_0\)</span>, where <span class="math inline">\(\Theta_0=\underset{\gamma\in\Gamma}{\bigcap}\Theta_{\gamma}\)</span>. To be specific, let <span class="math inline">\(\lambda_{\gamma}(\mathbf x)\)</span> be the LRT statistic for testing <span class="math display">\[H_{0\gamma}:\theta\in\Theta_{\gamma}\]</span> versus <span class="math display">\[H_{1\gamma}:\theta\in\Theta_{\gamma}^c\]</span> and let <span class="math inline">\(\lambda(\mathbf x)\)</span> be the LRT statistic for testing <span class="math inline">\(H_{0}:\theta\in\Theta_{0}\)</span> versus <span class="math inline">\(H_{1}:\theta\in\Theta_{0}^c\)</span> Then we have the following
+relationships between the overall LRT and the UIT based on <span class="math inline">\(\lambda_{\gamma}(\mathbf x)\)</span>.</p>
+<div id="theorem-lrt-is-uniformly-more-powerful-than-the-union-intersection-tests-uits" class="section level4">
+<h4>Theorem: LRT is uniformly more powerful than the Union-Intersection Tests (UITs)</h4>
+<p>Consider testing <span class="math inline">\(H_{0}:\theta\in\Theta_{0}\)</span> versus <span class="math inline">\(H_{1}:\theta\in\Theta_{0}^c\)</span>, where <span class="math inline">\(\Theta_0=\underset{\gamma\in\Gamma}{\bigcap}\Theta_{\gamma}\)</span> and <span class="math inline">\(\lambda_{\gamma}(\mathbf x)\)</span> is defined in the previous paragraph. Define <span class="math inline">\(T(\mathbf x)=\inf_{\gamma\in\Gamma}\lambda_{\gamma}(\mathbf x)\)</span>, and form the UIT with rejection region
+<span class="math display">\[\{\mathbf x:\lambda_{\gamma}(\mathbf x)&lt;c\quad\text{for some}\quad\gamma\in\Gamma\}=\{\mathbf x:T(\mathbf x)&lt;c\}.\]</span> Also consider the usual LRT with rejection region <span class="math display">\[\{\mathbf x:\lambda(\mathbf x)&lt;c\}.\]</span> Then</p>
+<ul>
+<li><ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(T(\mathbf x)\ge\lambda(\mathbf x)\quad\text{for every}\quad \mathbf x\)</span>;</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-alpha">
+<li>If <span class="math inline">\(\beta_T(\theta)\)</span> and <span class="math inline">\(\beta_{\lambda}(\theta)\)</span> are the power functions for the tests based on <span class="math inline">\(T\)</span> and <span class="math inline">\(\lambda\)</span>, respectively, then <span class="math inline">\(\beta_T(\theta)\le\beta_{\lambda}(\theta)\quad\text{for every}\quad\theta\in\Theta\)</span>;</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: lower-alpha">
+<li>If the LRT is a level <span class="math inline">\(\alpha\)</span> test, then the UIT is a level <span class="math inline">\(\alpha\)</span> test.</li>
+</ol></li>
+</ul>
+<p><strong>Proof:</strong> Since <span class="math inline">\(\Theta_0=\underset{\gamma\in\Gamma}{\bigcap}\Theta_{\gamma}\subset\Theta_{\gamma}\)</span> for any <span class="math inline">\(\gamma\)</span>, from Definition of <a href="#likelihood-ratio-tests">Likelihood Ratio Tests</a>, we see that for any <span class="math inline">\(\mathbf x\)</span>, <span class="math display">\[\lambda_{\gamma}(\mathbf x)\ge\lambda(\mathbf x)\quad \text{for each }\quad \gamma\in\Gamma\]</span> because the region of maximization is bigger for the individual <span class="math inline">\(\lambda_{\gamma}\)</span>, thus <span class="math inline">\(T(\mathbf x)=\inf_{\gamma\in\Gamma}\lambda_{\gamma}(\mathbf x)\ge\lambda(\mathbf x)\)</span>, proving (a).</p>
+<p>By (a), <span class="math inline">\(\{\mathbf x:T(\mathbf x)&lt;c\}\subset\{\mathbf x:\lambda(\mathbf x)&lt;c\}\)</span>, so <span class="math display">\[\beta_T(\theta)=P_{\theta}(T(\mathbf X)&lt;c)\le P_{\theta}(\lambda(\mathbf X)&lt;c)=\beta_{\lambda}(\theta),\]</span> proving (b). Since (b) holds for every <span class="math inline">\(\theta, \;\;\sup_{\theta\in\Theta_0}\beta_T(\theta)\le\sup_{\theta\in\Theta_0}\beta_{\lambda}(\theta)\le\alpha\)</span>, proving (c).</p>
+</div>
+<div id="theorem-level-alpha-test-iut" class="section level4">
+<h4>Theorem: Level <span class="math inline">\(\alpha\)</span> test IUT</h4>
+<p>A simple bound for the size of an IUT is related to the sizes of the individual tests that are used to define the IUT. Recall that
+in this situation the null hypothesis is expressible as a <em>union</em>; that is, we are testing <span class="math display">\[H_0:\theta\in\Theta_0\quad\text{versus}\quad H_1:\theta\in\Theta_0^c,\quad\text{where}\quad\Theta_0=\bigcup_{\gamma\in\Gamma}\Theta_{\gamma}.\]</span> An IUT has a rejection region of the form <span class="math inline">\(R=\bigcap_{\gamma\in\Gamma}R_{\gamma},\)</span> where <span class="math inline">\(R_{\gamma}\)</span> is the rejection region for a test of <span class="math inline">\(H_{0\gamma}:\theta\in\Theta_{\gamma}\)</span>H</p>
+<p>Let <span class="math inline">\(\alpha_{\gamma}\)</span> be the size of the test of <span class="math inline">\(H_{0\gamma}\)</span> with rejection region <span class="math inline">\(R_{\gamma}\)</span>. Then the IUT with rejection region
+<span class="math inline">\(R=\bigcap_{\gamma\in\Gamma}R_{\gamma}\)</span> is a level <span class="math inline">\(\alpha=\sup_{\gamma\in\Gamma}\alpha_{\gamma}\)</span> test.</p>
+<p><strong>Proof:</strong> Let <span class="math inline">\(\theta\in\Theta_0\)</span>. Then <span class="math inline">\(\theta\in\Theta_{\gamma}\)</span> for some <span class="math inline">\(\gamma\)</span> and <span class="math display">\[P_{\theta}(\mathbf X\in R)\le P_{\theta}(\mathbf X\in R_{\gamma})\le\alpha_{\gamma}\le\alpha.\]</span> Since <span class="math inline">\(\theta\in\Theta_0\)</span> was arbitrary, the IUT is a level <span class="math inline">\(\alpha\)</span> test.</p>
+<p>Consider testing <span class="math inline">\(H_0:\theta\in\bigcup_{j=1}^{k}\Theta_j\)</span>, where <span class="math inline">\(k\)</span> is a finite positive integer. For each <span class="math inline">\(j = 1 ,\cdots, k\)</span>, let <span class="math inline">\(R_j\)</span> be the rejection region of a level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_{0j}\)</span>. Suppose that for some <span class="math inline">\(i= 1,\cdots, k\)</span>, there exists a sequence of parameter points, <span class="math inline">\(\theta_l\in\Theta_i,\quad l=1,2,\cdots\)</span> such that</p>
+<ul>
+<li><ol style="list-style-type: lower-roman">
+<li><span class="math inline">\(\lim_{l\to\infty}P_{\theta_l}(\mathbf X\in R_i)=\alpha\)</span>,</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-roman">
+<li>for each <span class="math inline">\(j=1,\cdots,k,j\ne i,\lim_{l\to\infty}P_{\theta_l}(\mathbf X\in R_j)=1.\)</span></li>
+</ol></li>
+</ul>
+<p>Then, the IUT with rejection region <span class="math inline">\(R=\bigcap_{j=1}^{k}R_j\)</span> is a size <span class="math inline">\(\alpha\)</span> test.</p>
+<p><strong>Proof:</strong> By Theorem <a href="#theorem-level-alpha-test-iut">Level <span class="math inline">\(\alpha\)</span> test IUT</a> , <span class="math inline">\(R\)</span> is a level <span class="math inline">\(\alpha\)</span> test, that is,
+<span class="math display">\[\sup_{\theta\in\Theta_0}P_{\theta}(\mathbf X\in R)\le\alpha.\]</span> But, because all the parameter points <span class="math inline">\(\theta_l\)</span> satisfy <span class="math inline">\(\theta_l\in\Theta_i\subset\Theta_0,\)</span> <span class="math display">\[\begin{align}\sup_{\theta\in\Theta_0}P_{\theta}(\mathbf X\in R)&amp;\ge\lim_{l\to\infty}P_{\theta_l}(\mathbf X\in R)\\
+&amp;=\lim_{l\to\infty}P_{\theta_l}\left(\mathbf X\in \bigcap_{j=1}^{k}R_j\right)\\
+&amp;\ge\lim_{l\to\infty}\sum_{j=1}^{k}P_{\theta_l}(\mathbf X\in R_j)-(k-1)\quad\quad\quad(\text{Bonferroni&#39;s Inequality})\\
+&amp;=(k-1)+\alpha-(k-1)\\
+&amp;=\alpha.
+\end{align}\]</span> <a href="#theorem-1.2.9-and-bonferroni-s-inequality">Bonferroni ’s Inequality</a> which and <span class="math inline">\(\sup_{\theta\in\Theta_0}P_{\theta}(\mathbf X\in R)\le\alpha\)</span> imply the test has size exactly equal to <span class="math inline">\(\alpha\)</span>.</p>
+</div>
 </div>
 <div id="p-values" class="section level3">
 <h3><span class="math inline">\(p\)</span>-Values</h3>
+<p><strong>Definition</strong> A <span class="math inline">\(p\)</span>-value <span class="math inline">\(p(\mathbf X)\)</span> is a test statistic satisfying <span class="math inline">\(0\le p(\mathbf x)\le 1\)</span> for every sample point <span class="math inline">\(\mathbf x\)</span>. Small values of <span class="math inline">\(p(\mathbf X)\)</span> give evidence that <span class="math inline">\(H_1\)</span> is true. A <span class="math inline">\(p\)</span>-value is <em>valid</em> if, for every <span class="math inline">\(\theta\in\Theta_0\)</span> and every <span class="math inline">\(0\le\alpha\le1\)</span>, <span class="math display">\[P_{\theta}(p(\mathbf X)\le\alpha)\le\alpha\]</span></p>
+<div id="theorem-valid-p-value" class="section level4">
+<h4>Theorem: valid <span class="math inline">\(p\)</span>-value</h4>
+<p>Let <span class="math inline">\(W(\mathbf X)\)</span> be a test statistic such that large values of <span class="math inline">\(W\)</span> give evidence that <span class="math inline">\(H_1\)</span> is true. For each sample point <span class="math inline">\(\mathbf x\)</span>, define <span class="math display">\[p(\mathbf x)=\sup_{\theta\in\Theta_0}P_{\theta}(W(\mathbf X)\ge W(\mathbf x)).\]</span> Then <span class="math inline">\(p(\mathbf X)\)</span> is a valid <span class="math inline">\(p\)</span>-value.</p>
+<p><strong>Proof:</strong> Fix <span class="math inline">\(\theta\in\Theta_0\)</span>. Let <span class="math inline">\(F_{\theta}(w)\)</span> denote the cdf of <span class="math inline">\(-W(\mathbf X)\)</span>. Define <span class="math display">\[p_{\theta}(\mathbf x)=p_{\theta}(W(\mathbf X)\ge W(\mathbf x))=P_{\theta}(-W(\mathbf X)\le -W(\mathbf x))=F_{\theta}(-W(\mathbf x))\]</span> Then the random variable <span class="math inline">\(p_{\theta}(\mathbf X)\)</span> is equal to <span class="math inline">\(F_{\theta}(-W(\mathbf X))\)</span>. Hence, by the <a href="#probability-integral-transformation">Probability integral transformation</a>, the distribution of <span class="math inline">\(p_{\theta}(\mathbf X)\)</span> is stochastically greater than or equal to a <span class="math inline">\(uniform(0,1)\)</span> distribution. That is, for every <span class="math inline">\(0\le\alpha\le1\)</span>, <span class="math inline">\(P_{\theta}(p_{\theta}(\mathbf X)\le\alpha)\le\alpha\)</span>. Because <span class="math inline">\(p(\mathbf x)=\sup_{\theta&#39;\in\Theta_0}p_{\theta&#39;}(\mathbf x)\ge p_{\theta}(\mathbf x)\)</span> for every <span class="math inline">\(\mathbf x\)</span>, <span class="math display">\[P_{\theta}(p(\mathbf X)\le\alpha)\le P_{\theta}(p_{\theta}(\mathbf X)\le\alpha)\le\alpha\]</span> This is true for every <span class="math inline">\(\theta\in\Theta_0\)</span> and for every <span class="math inline">\(0\le\alpha\le1\)</span>, <span class="math inline">\(p(\mathbf X)\)</span> is a valid p-value.</p>
+</div>
 </div>
 <div id="loss-function-optimality-1" class="section level3">
 <h3>Loss Function Optimality</h3>
 </div>
 </div>
 </div>
-<div id="anova" class="section level1">
-<h1>11. ANOVA</h1>
+<div id="interval-estimation" class="section level1">
+<h1>9. Interval Estimation</h1>
+<div id="introduction-1" class="section level2">
+<h2>Introduction</h2>
+<p><strong>Definition: coverage probability</strong> For an interval estimator <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> of a parameter <span class="math inline">\(\theta\)</span>, the <em>coverage probability</em> of <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> is the probability that the random interval
+<span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> covers the true parameter, <span class="math inline">\(\theta\)</span>. In symbols, it is denoted by either <span class="math inline">\(P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span> or <span class="math inline">\(P(\theta\in[L(\mathbf X), U(\mathbf X)]|\theta)\)</span>.</p>
+<p><strong>Definition: confidence coefficient</strong> For an interval estimator <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> of a parameter <span class="math inline">\(\theta\)</span>, the
+confidence coefficient of <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> is the infimum of the coverage probabilities,
+<span class="math inline">\(\inf_{\theta}P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span>.</p>
+<p>It i s important to keep in mind that tbe <strong>interval</strong> is the random quantity, not the parameter. Therefore, when we write probability statements such as <span class="math inline">\(P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span>, these probability statements refer to <span class="math inline">\(\mathbf X\)</span>, not <span class="math inline">\(\theta\)</span>.</p>
+<p>Interval estimators, together with a measure of confidence (usually a confidence coefficient) , are sometimes known as <strong>confidence internals</strong>.</p>
+</div>
+</div>
+<div id="asymptotic-evaluations" class="section level1">
+<h1>10. Asymptotic Evaluations</h1>
+</div>
+<div id="analysis-of-variance-and-regression" class="section level1">
+<h1>11. Analysis of Variance and Regression</h1>
 <ul>
 <li><p>One way ANOVA equation: <span class="math display">\[Y_{ij} = \theta_{i} + \epsilon_{ij}, \text{ with: } i = 1,..., k \text{ and } j = 1,..., n_{i}\]</span></p>
 <ul>
@@ -1599,6 +1757,9 @@ UMP level <span class="math inline">\(\alpha\)</span> test.</p>
 </ul>
 </div>
 </div>
+</div>
+<div id="regression-models" class="section level1">
+<h1>12. Regression Models</h1>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>

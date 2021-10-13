@@ -6,14 +6,23 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Probability</title>
+      <link>/2021/10/10/probability/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/10/10/probability/</guid>
+      <description>ReferencesReferences1. Blitzstein JK, Hwang J. Introduction to probability. Chapman; Hall/CRC; 2019.</description>
+    </item>
+    
     <item>
       <title>Statistical Inference</title>
       <link>/2021/09/05/statistical-inference/</link>
       <pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/09/05/statistical-inference/</guid>
-      <description>3. Common Families of DistributionsSome DistributionsChi-Squared DistributionStudent’s \(t\)-DistributionSnedcor’s \(F\)-DistributionMultinomial DistributionExponential FamiliesLocation and Scale FamiliesInequalities and Identities4. Multiple Random VariablesFactsBivariate RelationsInequalitiesNumerical InequalitiesFunctional Inequalities5. Properties of a Random SampleSampling from the Normal DistributionConvergence ConceptsConvergence in ProbabilityAlmost Sure ConvergenceConvergence in DistributionThe Delta MethodThe second-order Delta MethodMultivariate Delta MethodGenerating A Random SampleDirect MethodIndirect MethodsThe Accept/Reject Algorithm6.</description>
+      <description>1. Probability TheorySet TheoryBasics of Probability TheoryConditional Probability and IndependenceRandom VariablesDistribution FunctionsDensity and Mass Functions2. Transformations and ExpectationsDistributions of Functions of a Random Variable Theorem3. Common Families of DistributionsSome DistributionsChi-Squared DistributionStudent’s \(t\)-DistributionSnedcor’s \(F\)-DistributionMultinomial DistributionExponential FamiliesLocation and Scale FamiliesInequalities and Identities4. Multiple Random VariablesFactsBivariate RelationsInequalitiesNumerical InequalitiesFunctional Inequalities5.</description>
     </item>
     
     <item>
