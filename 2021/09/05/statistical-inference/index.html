@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">66 min read</span>
+    <span class="article-duration">69 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -180,6 +180,12 @@
 <li><a href="#interval-estimation">9. Interval Estimation</a>
 <ul>
 <li><a href="#introduction-1">Introduction</a></li>
+<li><a href="#methods-of-finding-interval-estimators">Methods of Finding Interval Estimators</a>
+<ul>
+<li><a href="#inverting-a-test-statistic">Inverting a Test Statistic</a></li>
+<li><a href="#pivotal-quantities">Pivotal Quantities</a></li>
+<li><a href="#pivoting-the-cdf">Pivoting the CDF</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#asymptotic-evaluations">10. Asymptotic Evaluations</a></li>
 <li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
@@ -1669,11 +1675,64 @@ in this situation the null hypothesis is expressible as a <em>union</em>; that i
 <h2>Introduction</h2>
 <p><strong>Definition: coverage probability</strong> For an interval estimator <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> of a parameter <span class="math inline">\(\theta\)</span>, the <em>coverage probability</em> of <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> is the probability that the random interval
 <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> covers the true parameter, <span class="math inline">\(\theta\)</span>. In symbols, it is denoted by either <span class="math inline">\(P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span> or <span class="math inline">\(P(\theta\in[L(\mathbf X), U(\mathbf X)]|\theta)\)</span>.</p>
-<p><strong>Definition: confidence coefficient</strong> For an interval estimator <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> of a parameter <span class="math inline">\(\theta\)</span>, the
+<p><strong>Definition: confidence coefficient</strong><br />
+(Confidence coefficient is a measure of confidence.)
+For an interval estimator <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> of a parameter <span class="math inline">\(\theta\)</span>, the
 confidence coefficient of <span class="math inline">\([L(\mathbf X), U(\mathbf X)]\)</span> is the infimum of the coverage probabilities,
 <span class="math inline">\(\inf_{\theta}P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span>.</p>
-<p>It i s important to keep in mind that tbe <strong>interval</strong> is the random quantity, not the parameter. Therefore, when we write probability statements such as <span class="math inline">\(P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span>, these probability statements refer to <span class="math inline">\(\mathbf X\)</span>, not <span class="math inline">\(\theta\)</span>.</p>
-<p>Interval estimators, together with a measure of confidence (usually a confidence coefficient) , are sometimes known as <strong>confidence internals</strong>.</p>
+<p>It is important to keep in mind that tbe <strong>interval</strong> is the random quantity, not the parameter. Therefore, when we write probability statements such as <span class="math inline">\(P_{\theta}(\theta\in[L(\mathbf X), U(\mathbf X)])\)</span>, these probability statements refer to <span class="math inline">\(\mathbf X\)</span>, not <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>Interval estimators</strong>, together with a measure of confidence (usually a confidence coefficient) , are sometimes known as <strong>confidence internals</strong>.</p>
+</div>
+<div id="methods-of-finding-interval-estimators" class="section level2">
+<h2>Methods of Finding Interval Estimators</h2>
+<div id="inverting-a-test-statistic" class="section level3">
+<h3>Inverting a Test Statistic</h3>
+<div id="inverting-a-normal-test" class="section level4">
+<h4>Inverting a normal test</h4>
+<p>Let <span class="math inline">\(X_1,\cdots, X_n\)</span> be iid <span class="math inline">\(n(\mu, \sigma^2)\)</span>. The <em>acceptance region</em> of the hypothesis test, the test in the sample space for which <span class="math inline">\(H_0:\mu=\mu_0\)</span> is accepted, is given by <span class="math display">\[A(\mu_0)=\bigg\{(x_1,\cdots,x_n):\mu_0-z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\le\bar x\le \mu_0+z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\bigg\}\]</span> and the <em>confidence interval</em>, the set in the parameter sapce with plausible values of <span class="math inline">\(\mu\)</span>, is given by <span class="math display">\[C(x_1,\cdots,x_n)=\bigg\{\mu:\bar x-z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\le\mu\le \bar x+z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\bigg\}\]</span> These sets are connected to each other by the tautology: <span class="math display">\[(x_1,\cdots,x_n)\in A(\mu_0)\iff\mu_0\in C(x_1,\cdots,x_n).\]</span></p>
+</div>
+<div id="theorem-acceptance-regions-of-tests-and-confidence-sets" class="section level4">
+<h4>Theorem: acceptance regions of tests and confidence sets</h4>
+<p>For each <span class="math inline">\(\theta_0\in\Theta\)</span>, let <span class="math inline">\(A(\theta_0)\)</span> be the acceptance region of a level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0:\theta=\theta_0\)</span>. For each <span class="math inline">\(\mathbf x \in\mathcal X\)</span>, define a set <span class="math inline">\(C(\mathbf x)\)</span> in the parameter space by <span class="math display">\[C(\mathbf x)=\{\theta_0:\mathbf x\in A(\theta_0)\}\]</span> Then the random set <span class="math inline">\(C(\mathbf X)\)</span> is a <span class="math inline">\(1 - \alpha\)</span> confidence set. Conversely, let <span class="math inline">\(C(\mathbf X)\)</span> be a <span class="math inline">\(1 - \alpha\)</span>
+confidence set. For any <span class="math inline">\(\theta_0\in\Theta\)</span>, define <span class="math display">\[A(\theta_0)=\{\mathbf x:\theta_0\in C(\mathbf x)\}\]</span> Then <span class="math inline">\(A(\theta_0)\)</span> is the acceptance region of a level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0:\theta=\theta_0\)</span>.</p>
+<p><strong>Proof:</strong> For the first part, since <span class="math inline">\(A(\theta_0)\)</span> is the acceptance region of a level <span class="math inline">\(\alpha\)</span> test, <span class="math display">\[P_{\theta_0}(\mathbf X\notin A(\theta_0))\le\alpha\quad\text{and hence}\quad P_{\theta_0}(\mathbf X\in A(\theta_0))\ge 1-\alpha\]</span> Since <span class="math inline">\(\theta_0\)</span> is arbitrary, write <span class="math inline">\(\theta\)</span> instead of <span class="math inline">\(\theta_0\)</span>. The above inequality, together with <span class="math display">\[C(\mathbf x)=\{\theta_0:\mathbf x\in A(\theta_0)\}\]</span>
+shows that the coverage probability of the set <span class="math inline">\(C(\mathbf X)\)</span> is given by <span class="math display">\[P_{\theta}(\theta\in C(\mathbf X))=P_{\theta}(\mathbf X\in A(\theta_0))\ge 1-\alpha,\]</span> showing that <span class="math inline">\(C(\mathbf X)\)</span> is a <span class="math inline">\(1-\alpha\)</span> confidence set.</p>
+<p>For the second part, the Type I Error probability for the test of <span class="math inline">\(H_0:\theta=\theta_0\)</span> with acceptance region <span class="math inline">\(A(\theta_0)\)</span> is <span class="math display">\[P_{\theta_0}(\mathbf X\notin A(\theta_0))=P_{\theta_0}(\theta_0\notin C(\mathbf X))\le\alpha.\]</span> So this is a level <span class="math inline">\(\alpha\)</span> test.</p>
+</div>
+</div>
+<div id="pivotal-quantities" class="section level3">
+<h3>Pivotal Quantities</h3>
+<p><strong>Definition: Pivotal Quantities</strong> A random variable
+<span class="math inline">\(Q(\mathbf X, \theta) = Q(X_1, \cdots, X_n, \theta)\)</span> is a pivotal quantity (or pivot) if the distribution of <span class="math inline">\(Q(\mathbf X, \theta)\)</span> is independent of all parameters. That is, if <span class="math inline">\(\mathbf X \sim F(\mathbf x|\theta)\)</span>, then <span class="math inline">\(Q(\mathbf X, \theta)\)</span> has the same distribution for all values of <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div id="pivoting-the-cdf" class="section level3">
+<h3>Pivoting the CDF</h3>
+<div id="pivoting-a-continuous-cdf" class="section level4">
+<h4>Pivoting a continuous cdf</h4>
+<p>Let <span class="math inline">\(T\)</span> be a statistic with continuous cdf <span class="math inline">\(F_{T}(t|\theta)\)</span>. Let <span class="math inline">\(\alpha_1 + \alpha_2 = \alpha\)</span> with <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span> be fixed values. Suppose that for each <span class="math inline">\(t \in \mathcal T\)</span>, the functions <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> can be defined as follows.</p>
+<ul>
+<li><p><strong>i.</strong> If <span class="math inline">\(F_{T}(t|\theta)\)</span> is a decreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span>, define <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> by <span class="math display">\[F_{T}(t|\theta_U(t))=\alpha_1;\quad F_{T}(t|\theta_L(t))=1-\alpha_2\]</span></p></li>
+<li><p><strong>ii.</strong> If <span class="math inline">\(F_{T}(t|\theta)\)</span> is an increasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span>, define <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> by <span class="math display">\[F_{T}(t|\theta_L(t))=\alpha_1;\quad F_{T}(t|\theta_U(t))=1-\alpha_2\]</span> Then the random interval <span class="math inline">\([\theta_L(t), \theta_U(t)]\)</span> is a <span class="math inline">\(1-\alpha\)</span> confidence interval for <span class="math inline">\(\theta\)</span>.</p></li>
+</ul>
+<p><strong>Proof:</strong> Assume that we have constructed the <span class="math inline">\(1-\alpha\)</span> acceptance region <span class="math display">\[\big\{t:\alpha_1\le F_{T}(t|\theta_0)\le1-\alpha_2\big\}\]</span> Since <span class="math inline">\(F_{T}(t|\theta)\)</span> is a decreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span> and <span class="math inline">\(1-\alpha_2&gt;\alpha_1,\quad \theta_L(t) &lt; \theta_U(t)\)</span>, and the values <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> are unique. Also,
+<span class="math display">\[F_{T}(t|\theta)&lt;\alpha_1\iff \theta&gt;\theta_U(t),\]</span>
+<span class="math display">\[F_{T}(t|\theta)&gt;1-\alpha_2\iff \theta&lt;\theta_L(t),\]</span> and hence <span class="math display">\[\big\{\theta:\alpha_1\le F_{T}(t|\theta)\le1-\alpha_2\big\}=\big\{\theta:\theta_L(T) \le\theta\le \theta_U(T)\big\}.\]</span>
+#### Pivoting a discrete cdf</p>
+<p>Let <span class="math inline">\(T\)</span> be a discrete statistic with cdf
+<span class="math inline">\(F_T(t|\theta)=P(T\le t|\theta)\)</span>. <span class="math inline">\(\alpha_1 + \alpha_2 = \alpha\)</span> with <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span> be fixed values. Suppose that for each <span class="math inline">\(t \in \mathcal T\)</span>, the functions <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> can be defined as follows.</p>
+<ul>
+<li><p><strong>i.</strong> If <span class="math inline">\(F_{T}(t|\theta)\)</span> is a decreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span>, define <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> by <span class="math display">\[P(T\le t|\theta_U(t))=\alpha_1;\quad P(T\ge t|\theta_L(t))=\alpha_2\]</span></p></li>
+<li><p><strong>ii.</strong> If <span class="math inline">\(F_{T}(t|\theta)\)</span> is an increasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span>, define <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> by <span class="math display">\[P(T\ge t|\theta_U(t))=\alpha_1;\quad P(T\le t|\theta_L(t))=\alpha_2\]</span> Then the random interval <span class="math inline">\([\theta_L(t), \theta_U(t)]\)</span> is a <span class="math inline">\(1-\alpha\)</span> confidence interval for <span class="math inline">\(\theta\)</span>.</p></li>
+</ul>
+<p><strong>Proof:</strong> Since <span class="math inline">\(F_T(T|\theta)\)</span> is stochastically greater
+than a uniform random variable, that is, <span class="math inline">\(P_{\theta}(F_T(T|\theta)\le x)\le x\)</span>. Furthermore, this
+property is shared by <span class="math inline">\(\bar F_T(T|\theta)=P(T\ge t|\theta)\)</span>, and this implies that the set
+<span class="math display">\[\big\{\theta: F_{T}(T|\theta)\le\alpha_1\quad\text{and}\quad\bar F_T(T|\theta)\le\alpha_2\big\}.\]</span> is a <span class="math inline">\(1-\alpha\)</span> confidence set. The fact that <span class="math inline">\(F_T(t|\theta)\)</span> is a decreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span> implies that <span class="math inline">\(\bar F_T(t|\theta)\)</span> is a nondecreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span>. It therefore follows that
+<span class="math display">\[\theta&gt;\theta_U(t)\Rightarrow F_{T}(t|\theta)&lt;\frac{\alpha}{2},\]</span>
+<span class="math display">\[\theta&lt;\theta_L(t)\Rightarrow \bar F_{T}(t|\theta)&lt;\frac{\alpha}{2},\]</span> and hence
+<span class="math display">\[\big\{\theta: F_{T}(T|\theta)\le\alpha_1\quad\text{and}\quad\bar F_T(T|\theta)\le\alpha_2\big\}=\big\{\theta:\theta_L(T)\le\theta\le\theta_U(T)\big\}.\]</span></p>
+</div>
+</div>
 </div>
 </div>
 <div id="asymptotic-evaluations" class="section level1">
