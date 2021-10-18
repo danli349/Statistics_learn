@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">69 min read</span>
+    <span class="article-duration">74 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -89,8 +89,10 @@
 </ul></li>
 <li><a href="#common-families-of-distributions">3. Common Families of Distributions</a>
 <ul>
-<li><a href="#some-distributions">Some Distributions</a>
+<li><a href="#continuous-distributions">ContinuouS Distributions</a>
 <ul>
+<li><a href="#gamma-distribution">Gamma Distribution</a></li>
+<li><a href="#normal-distribution">Normal Distribution</a></li>
 <li><a href="#chi-squared-distribution">Chi-Squared Distribution</a></li>
 <li><a href="#students-t-distribution">Student’s <span class="math inline">\(t\)</span>-Distribution</a></li>
 <li><a href="#snedcors-f-distribution">Snedcor’s <span class="math inline">\(F\)</span>-Distribution</a></li>
@@ -186,8 +188,19 @@
 <li><a href="#pivotal-quantities">Pivotal Quantities</a></li>
 <li><a href="#pivoting-the-cdf">Pivoting the CDF</a></li>
 </ul></li>
+<li><a href="#methods-of-evaluating-interval-estimators">Methods of Evaluating Interval Estimators</a>
+<ul>
+<li><a href="#size-and-coverage-probability">Size and Coverage Probability</a></li>
+<li><a href="#test-related-optimality">Test-Related Optimality</a></li>
 </ul></li>
-<li><a href="#asymptotic-evaluations">10. Asymptotic Evaluations</a></li>
+</ul></li>
+<li><a href="#asymptotic-evaluations">10. Asymptotic Evaluations</a>
+<ul>
+<li><a href="#point-estimation-1">Point Estimation</a>
+<ul>
+<li><a href="#consistency">Consistency</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
 <ul>
 <li><a href="#simple-linear-regression">Simple Linear Regression</a></li>
@@ -271,11 +284,28 @@ P(Y\le y)&amp;=P(F_X (X)\le y)\\
 </div>
 <div id="common-families-of-distributions" class="section level1">
 <h1>3. Common Families of Distributions</h1>
-<div id="some-distributions" class="section level2">
-<h2>Some Distributions</h2>
-<p>[Normal Distribution] If <span class="math inline">\(\mathbf{X} \sim \text{n}(\mathbf{\mu}, \boldsymbol{\Sigma})\)</span> then
-<span class="math inline">\(\mathbf{X}\)</span> has pdf
+<div id="continuous-distributions" class="section level2">
+<h2>ContinuouS Distributions</h2>
+<div id="gamma-distribution" class="section level3">
+<h3>Gamma Distribution</h3>
+<p><span class="math display">\[f(x|\alpha,\beta)=\frac{1}{\Gamma(\alpha)\beta^{\alpha}}x^{\alpha-1}e^{-x/\beta}\quad 0&lt;x&lt;\infty;\quad\alpha,\beta&gt;0\]</span></p>
+<div id="gamma-poisson-relationship" class="section level4">
+<h4>Gamma-Poisson relationship</h4>
+<p>If <span class="math inline">\(X\)</span> is a <span class="math inline">\(gamma(\alpha,\beta)\)</span> random variable, where <span class="math inline">\(\alpha\)</span> is an integer, then for any <span class="math inline">\(x\)</span>, <span class="math display">\[P(X\le x)=P(Y\ge\alpha),\]</span> where <span class="math inline">\(Y\sim Poisson(x/\beta).\)</span> <span class="math display">\[\begin{align}
+P_{Gamma}(X\le x|\alpha,\beta)&amp;=\frac{1}{\Gamma(\alpha)\beta^{\alpha}}\int_{0}^{x}t^{\alpha-1}e^{-t/\beta}dt\\
+&amp;=\frac{1}{(\alpha-1)!\beta^{\alpha}}\left[-t^{\alpha-1}\beta e^{-t/\beta}\bigg|_{0}^{x}+\int_{0}^{x}(\alpha-1)t^{\alpha-2}\beta e^{-t/\beta}dt\right]\\
+&amp;=\frac{-1}{(\alpha-1)!\beta^{\alpha-1}}x^{\alpha-1}e^{-x/\beta}+\frac{1}{(\alpha-2)!\beta^{\alpha-1}}\int_{0}^{x}t^{\alpha-2} e^{-t/\beta}dt\\
+&amp;=\frac{1}{(\alpha-2)!\beta^{\alpha-1}}\int_{0}^{x}t^{\alpha-2} e^{-t/\beta}dt-\frac{1}{(\alpha-1)!}\left(\frac{x}{\beta}\right)^{\alpha-1}e^{-x/\beta}\\
+&amp;=\frac{1}{(\alpha-2)!\beta^{\alpha-1}}\int_{0}^{x}t^{\alpha-2} e^{-t/\beta}dt-Poisson_{x/\beta}(Y=\alpha-1)\\
+&amp;=P_{Poisson}(Y\ge\alpha|\frac{x}{\beta})\\
+\end{align}\]</span> where <span class="math inline">\(Y\sim Poisson(x/\beta)\)</span>.</p>
+</div>
+</div>
+<div id="normal-distribution" class="section level3">
+<h3>Normal Distribution</h3>
+<p>If <span class="math inline">\(\mathbf{X} \sim \text{n}(\mathbf{\mu}, \boldsymbol{\Sigma})\)</span> then <span class="math inline">\(\mathbf{X}\)</span> has pdf
 <span class="math display">\[f_{\mathbf{X}}(x_1, \dots, x_k \vert{} \mathbf{\mu}, \boldsymbol{\Sigma})  = \frac{1}{\sqrt{(2\pi)^k \det\boldsymbol{\Sigma}}} \exp\left(-\frac12 (\mathbf{ x}-\mathbf{\mu})^\top \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\mathbf{\mu})\right).\]</span></p>
+</div>
 <div id="chi-squared-distribution" class="section level3">
 <h3>Chi-Squared Distribution</h3>
 <p>The <em>chi-squared distribution with <span class="math inline">\(p\)</span> degrees of freedom</em> has pdf
@@ -393,12 +423,24 @@ their standard variables <span class="math inline">\(Z\)</span>
 </div>
 <div id="inequalities-and-identities" class="section level2">
 <h2>Inequalities and Identities</h2>
-<p>[Chebychev’s inequality] Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(g(x)\)</span> be
+<div id="chebyshevs-inequality" class="section level4">
+<h4>Chebyshev’s inequality</h4>
+<p>Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(g(x)\)</span> be
 a nonnegative function. Then, for any <span class="math inline">\(r &gt; 0\)</span>,
 <span class="math display">\[\text{P}(g(X) \geq r) \leq \frac{\mathbb E{}[g(X)]}{r}.\]</span></p>
+<p><strong>Proof:</strong> <span class="math display">\[\begin{align}
+\mathbb E g(X)&amp;=\int_{-\infty}^{\infty}g(x)f_{X}(x)dx\\
+&amp;\ge\int_{x:g(x)\ge r}g(x)f_{X}(x)dx\\
+&amp;\ge r\int_{x:g(x)\ge r}f_{X}(x)dx\\
+&amp;=r P(g(x)\ge r)
+\end{align}\]</span></p>
 <p>This bound is conservative and almost never attained.</p>
-<p>[Markov inequality] The Markov inequality is the special case with
-<span class="math inline">\(g = \mathbb{I}\)</span>.</p>
+</div>
+<div id="chebyshevs-inequality-variance-version" class="section level4">
+<h4>Chebyshev’s inequality (variance version)</h4>
+<p>The Markov inequality is the special case with
+<span class="math inline">\(g = \frac{(X-\mu)^2}{\sigma^2}\)</span>, where <span class="math inline">\(\mu=\mathbb E X\)</span> and <span class="math inline">\(\sigma^2=\mathbb V X\)</span>. For convenience write <span class="math inline">\(r=t^2\)</span>.</p>
+<p><span class="math display">\[\text{P}\left(\frac{(X-\mu)^2}{\sigma^2} \geq t^2\right) \leq \frac{1}{t^2}.\]</span></p>
 <p>Let <span class="math inline">\(X_{\alpha, \beta}\)</span> denote a gamma<span class="math inline">\((\alpha, \beta)\)</span> random variable
 with pdf <span class="math inline">\(f(x \vert{} \alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 1\)</span>. Then for any
 constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>:
@@ -420,6 +462,7 @@ expectation, then</p>
 <li><p>If <span class="math inline">\(X\sim \text{negative-binomial}(r, p)\)</span>,
 <span class="math display">\[\mathbb E{}[(1-p)g(X)] = \mathbb E{}\left[ \frac{X}{r + X - 1}g(X) \right].\]</span></p></li>
 </ol>
+</div>
 </div>
 </div>
 <div id="multiple-random-variables" class="section level1">
@@ -1163,7 +1206,19 @@ and <span class="math inline">\(\forall \mathbf x \in \mathcal X\)</span>, the p
 <ul>
 <li><p>Normal is self-conjugate as a family.</p></li>
 <li><p>Beta distribution is conjugate to binomial.</p></li>
+<li><p>Gamma distribution is conjugate to Poisson.<br />
+Let <span class="math inline">\(X_1,\cdots, X_n\)</span> be iid <span class="math inline">\(Poisson(\lambda)\)</span>, and let <span class="math inline">\(\lambda\)</span> have a <span class="math inline">\(gamma(\alpha,\beta)\)</span> distribution, the conjugate family for the Poisson.</p></li>
 </ul>
+<p>For <span class="math inline">\(n\)</span> observations, <span class="math inline">\(Y =\sum_i X_i\sim Poisson(n\lambda)\)</span>.
+- a. The marginal pmf of <span class="math inline">\(Y\)</span> is <span class="math display">\[\begin{align}
+m(y)&amp;=\int_{-\infty}^{\infty}f(Y|\lambda)f(\lambda)d\lambda\\
+&amp;=\int_{-\infty}^{\infty}\frac{(n\lambda)^ye^{-n\lambda}}{y!}\frac{1}{\Gamma(\alpha)\beta^{\alpha}}\lambda^{\alpha-1}e^{-\lambda/\beta}d\lambda\\
+&amp;=\frac{n^y}{y!\Gamma(\alpha)\beta^{\alpha}}\int_{-\infty}^{\infty}\lambda^{(y+\alpha)-1}e^{-n\lambda-\lambda/\beta}d\lambda\\
+&amp;=\frac{n^y}{y!\Gamma(\alpha)\beta^{\alpha}}\int_{-\infty}^{\infty}\lambda^{(y+\alpha)-1}e^{-\frac{\lambda}{\beta/(n\beta+1)}}d\lambda\\
+&amp;=\frac{n^y}{y!\Gamma(\alpha)\beta^{\alpha}}\Gamma(y+\alpha)\left(\frac{\beta}{n\beta+1}\right)^{y+\alpha}\\
+\end{align}\]</span>
+Thus <span class="math display">\[\pi(\lambda|y)=\frac{f(y|\lambda)\pi(\lambda)}{m(y)}=\frac{\lambda^{(y+\alpha)-1}e^{-\frac{\lambda}{\beta/(n\beta+1)}}}{\Gamma(y+\alpha)\left(\frac{\beta}{n\beta+1}\right)^{y+\alpha}}\\
+\sim gamma\left(y+\alpha, \frac{\beta}{n\beta+1}\right)\]</span></p>
 </div>
 <div id="the-em-expectation-maximization-algorithm" class="section level3">
 <h3>The EM (Expectation-Maximization) Algorithm</h3>
@@ -1716,8 +1771,10 @@ shows that the coverage probability of the set <span class="math inline">\(C(\ma
 </ul>
 <p><strong>Proof:</strong> Assume that we have constructed the <span class="math inline">\(1-\alpha\)</span> acceptance region <span class="math display">\[\big\{t:\alpha_1\le F_{T}(t|\theta_0)\le1-\alpha_2\big\}\]</span> Since <span class="math inline">\(F_{T}(t|\theta)\)</span> is a decreasing function of <span class="math inline">\(\theta\)</span> for each <span class="math inline">\(t\)</span> and <span class="math inline">\(1-\alpha_2&gt;\alpha_1,\quad \theta_L(t) &lt; \theta_U(t)\)</span>, and the values <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> are unique. Also,
 <span class="math display">\[F_{T}(t|\theta)&lt;\alpha_1\iff \theta&gt;\theta_U(t),\]</span>
-<span class="math display">\[F_{T}(t|\theta)&gt;1-\alpha_2\iff \theta&lt;\theta_L(t),\]</span> and hence <span class="math display">\[\big\{\theta:\alpha_1\le F_{T}(t|\theta)\le1-\alpha_2\big\}=\big\{\theta:\theta_L(T) \le\theta\le \theta_U(T)\big\}.\]</span>
-#### Pivoting a discrete cdf</p>
+<span class="math display">\[F_{T}(t|\theta)&gt;1-\alpha_2\iff \theta&lt;\theta_L(t),\]</span> and hence <span class="math display">\[\big\{\theta:\alpha_1\le F_{T}(t|\theta)\le1-\alpha_2\big\}=\big\{\theta:\theta_L(T) \le\theta\le \theta_U(T)\big\}.\]</span></p>
+</div>
+<div id="pivoting-a-discrete-cdf" class="section level4">
+<h4>Pivoting a discrete cdf</h4>
 <p>Let <span class="math inline">\(T\)</span> be a discrete statistic with cdf
 <span class="math inline">\(F_T(t|\theta)=P(T\le t|\theta)\)</span>. <span class="math inline">\(\alpha_1 + \alpha_2 = \alpha\)</span> with <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span> be fixed values. Suppose that for each <span class="math inline">\(t \in \mathcal T\)</span>, the functions <span class="math inline">\(\theta_L(t)\)</span> and <span class="math inline">\(\theta_U(t)\)</span> can be defined as follows.</p>
 <ul>
@@ -1734,9 +1791,120 @@ property is shared by <span class="math inline">\(\bar F_T(T|\theta)=P(T\ge t|\t
 </div>
 </div>
 </div>
+<div id="methods-of-evaluating-interval-estimators" class="section level2">
+<h2>Methods of Evaluating Interval Estimators</h2>
+<div id="size-and-coverage-probability" class="section level3">
+<h3>Size and Coverage Probability</h3>
+<div id="unimodal" class="section level4">
+<h4>unimodal:</h4>
+<p>A pdf <span class="math inline">\(f (x)\)</span> is <strong>unimodal</strong> if there exists <span class="math inline">\(x^*\)</span> such that <span class="math inline">\(f(x)\)</span> is nondecreasing for <span class="math inline">\(x \le x^*\)</span> and <span class="math inline">\(f (x)\)</span> is nonincreasing for
+<span class="math inline">\(x \ge x^*\)</span>.</p>
+</div>
+<div id="shortest-interval-theorem" class="section level4">
+<h4>shortest interval Theorem</h4>
+<p>Let <span class="math inline">\(f(x)\)</span> be a unimodal pdf. If the interval <span class="math inline">\([a, b]\)</span> satisfies</p>
+<ul>
+<li><strong>i.</strong> <span class="math inline">\(\int_{a}^{b} f (x) dx 1-\alpha,\)</span><br />
+</li>
+<li><strong>ii.</strong> <span class="math inline">\(f(a) = f(b) &gt; 0,\)</span><br />
+</li>
+<li><strong>iii.</strong> <span class="math inline">\(a \le x^* \le b, \text{ where } x^* \text{ is a mode of } f(x),\)</span> then <span class="math inline">\([a, b]\)</span> is the shortest among all intervals that satisfy (<strong>i</strong>).</li>
+</ul>
+<p><strong>Proof:</strong> Let <span class="math inline">\([a&#39;, b&#39;]\)</span> be any interval with <span class="math inline">\(b&#39; - a&#39; &lt; b - a\)</span>. We will show that this implies <span class="math inline">\(\int_{a&#39;}^{b&#39;} f(x) dx &lt; 1 - \alpha\)</span>. The result will be proved only for <span class="math inline">\(a&#39; \le a\)</span>, the proof being similar if <span class="math inline">\(a &lt; a&#39;\)</span>.
+If <span class="math inline">\(b&#39; \le a\)</span>, then <span class="math inline">\(a&#39; \le b&#39; \le a \le x^*\le b\)</span> and <span class="math display">\[\begin{align}
+\int_{a&#39;}^{b&#39;} f(x) dx &amp;\le f(b&#39;)(b&#39;-a&#39;)\\
+&amp;\le f(a)(b&#39;-a&#39;)\\
+&amp;&lt;f(a)(b-a)\\
+&amp;\le\int_{a}^{b}f(x)dx\\
+&amp;=1-\alpha
+\end{align}\]</span></p>
+<p>If <span class="math inline">\(b&#39;&gt;a\)</span>, then <span class="math inline">\(a&#39;\le a&lt;b&#39;&lt;b\)</span>. In this case, we can write
+<span class="math display">\[\begin{align}
+\int_{a&#39;}^{b&#39;} f(x) dx &amp;= \int_{a}^{b} f(x) dx+\int_{a&#39;}^{a} f(x)dx-\int_{b&#39;}^{b} f(x) dx\\
+&amp;= 1-\alpha+\int_{a&#39;}^{a} f(x)dx-\int_{b&#39;}^{b} f(x) dx\\
+&amp;&lt;1-\alpha
+\end{align}\]</span>
+Since
+<span class="math display">\[\begin{align}
+\int_{a&#39;}^{a} f(x) dx &amp;\le f(a)(a-a&#39;)\\
+\end{align}\]</span> and
+<span class="math display">\[\begin{align}
+\int_{b&#39;}^{b} f(x) dx &amp;\ge f(b)(b-b&#39;)\\
+\end{align}\]</span> Thus,</p>
+<p><span class="math display">\[\begin{align}
+\int_{a&#39;}^{a} f(x) dx -\int_{b&#39;}^{b} f(x) dx &amp;\le f(a)(a-a&#39;)-f(b)(b-b&#39;)\\
+&amp;=f(a)[(a-a&#39;)-(b-b&#39;)]\quad (f(a)=f(b))\\
+&amp;=f(a)[(b&#39;-a&#39;)-(b-a)]
+\end{align}\]</span> which is negative if <span class="math inline">\((b&#39;-a&#39;)&lt;(b-a)\)</span> and <span class="math inline">\(f(a)&gt;0\)</span>.</p>
+</div>
+</div>
+<div id="test-related-optimality" class="section level3">
+<h3>Test-Related Optimality</h3>
+<p><span class="math inline">\(\mathbf X\sim f(\mathbf x|\theta)\)</span>, and we construct a <span class="math inline">\(1 - \alpha\)</span>
+confidence set for <span class="math inline">\(\theta\)</span>, <span class="math inline">\(C(\mathbf x)\)</span>, by inverting an acceptance region, <span class="math inline">\(A(\theta)\)</span>. The probability of coverage of <span class="math inline">\(C(\mathbf x)\)</span>, that is, the <strong>probability of true coverage</strong>, is the function of <span class="math inline">\(\theta\)</span> given by <span class="math inline">\(P_{\theta}(\theta \in C(\mathbf X))\)</span>. The <strong>Probability of false coverage</strong> is the function of <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta&#39;\)</span> defined by
+<span class="math display">\[P_{\theta}(\theta&#39; \in C(\mathbf X)),\theta\ne \theta&#39;, \text{ if }C(\mathbf X))=[L(\mathbf X), U(\mathbf X)],\]</span>
+<span class="math display">\[P_{\theta}(\theta&#39; \in C(\mathbf X)),\theta&#39;&lt; \theta, \text{ if }C(\mathbf X))=[L(\mathbf X), \infty),\]</span>
+<span class="math display">\[P_{\theta}(\theta&#39; \in C(\mathbf X)),\theta&#39;&gt; \theta, \text{ if }C(\mathbf X))=(-\infty, U(\mathbf X)],\]</span> the probability of covering <span class="math inline">\(\theta&#39;\)</span> when <span class="math inline">\(\theta\)</span> is the true parameter.</p>
+<p>A <span class="math inline">\(1-\alpha\)</span> confidence set that minimizes the probability of false coverage over a class of <span class="math inline">\(1-\alpha\)</span> confidence sets is called a <strong>uniformly most accurate (UMA)</strong> confidence set.</p>
+<div id="ump-yields-uma-theorem" class="section level4">
+<h4>UMP yields UMA Theorem</h4>
+<p>Let <span class="math inline">\(\mathbf X\sim f(\mathbf x|\theta)\)</span>, where <span class="math inline">\(\theta\)</span> is a real-valued parameter. For each <span class="math inline">\(\theta_0\in\Theta\)</span>, let <span class="math inline">\(A^*(\theta_0)\)</span> be the UMP level <span class="math inline">\(\alpha\)</span> acceptance region of a test of <span class="math inline">\(H_0 : \theta = \theta_0\)</span> versus <span class="math inline">\(H_1: \theta &gt; \theta_0\)</span>. Let <span class="math inline">\(C^*(\mathbf x)\)</span> be the <span class="math inline">\(1 - \alpha\)</span> confidence set formed by inverting the UMP acceptance regions. Then for any other <span class="math inline">\(1 - \alpha\)</span> confidence set <span class="math inline">\(C\)</span>, <span class="math display">\[P_{\theta}(\theta&#39; \in C^*(\mathbf X))\le P_{\theta}(\theta&#39; \in C(\mathbf X))\;\;\forall \theta&#39;&lt;\theta\]</span></p>
+<p><strong>Proof:</strong> Let <span class="math inline">\(\theta&#39;\)</span> be any value less than <span class="math inline">\(\theta\)</span>. Let <span class="math inline">\(A(\theta&#39;)\)</span> be the acceptance region of the level <span class="math inline">\(\alpha\)</span> test of <span class="math inline">\(H_0 : \theta = \theta&#39;\)</span> obtained by inverting <span class="math inline">\(C\)</span>. Since <span class="math inline">\(A^*(\theta&#39;)\)</span> is the UMP acceptance region for testing <span class="math inline">\(H_0 : \theta = \theta&#39;\)</span> versus <span class="math inline">\(H_1 : \theta &gt; \theta&#39;\)</span>, and since <span class="math inline">\(\theta&#39;&lt;\theta\)</span>, we have
+<span class="math display">\[\begin{align}
+P_{\theta}(\theta&#39; \in C^*(\mathbf X))&amp;=P_{\theta}(\mathbf X \in A^*(\theta&#39;))\\
+&amp;\le P_{\theta}(\mathbf X \in A(\theta&#39;))\quad (\text{Since }A^*\text{ is UMP})\\
+&amp;=P_{\theta}(\theta&#39; \in C(\mathbf X)).
+\end{align}\]</span><br />
+Therefore, we have established that for <span class="math inline">\(\theta&#39;&lt;\theta\)</span>, the probability of false coverage is minimized by the interval obtained from inverting the UMP test.</p>
+</div>
+<div id="unbiased-test" class="section level4">
+<h4>unbiased test</h4>
+<p>A <span class="math inline">\(1-\alpha\)</span> confidence set <span class="math inline">\(C(\mathbf x)\)</span> is <strong>unbiased</strong> if
+<span class="math inline">\(P_{\theta}(\theta&#39; \in C(\mathbf X))\le1-\alpha\quad\forall\theta\ne\theta&#39;\)</span>. Unbiased test is one in which the power in the alternative is always greater than the power in the null.</p>
+<p>Thus, for an unbiased confidence set, the probability of false coverage is never more than the minimum probability of true coverage. Unbiased confidence sets can be obtained by inverting unbiased tests. That is, if <span class="math inline">\(A(\theta_0)\)</span> is an unbiased level <span class="math inline">\(\alpha\)</span> acceptance region of a test of <span class="math inline">\(H_0:\theta=\theta_0\)</span> versus <span class="math inline">\(H_1:\theta\ne\theta_0\)</span> and <span class="math inline">\(C(\mathbf x)\)</span> is the <span class="math inline">\(1-\alpha\)</span> confidence set formed by inverting the acceptance regions, then <span class="math inline">\(C(\mathbf x)\)</span> is an unbiased <span class="math inline">\(1-\alpha\)</span> confidence set.</p>
+</div>
+<div id="pratt-theorem" class="section level4">
+<h4>Pratt Theorem</h4>
+<p>Let <span class="math inline">\(X\)</span> be a real-valued random variable with <span class="math inline">\(X\sim f(x|\theta)\)</span>,
+where <span class="math inline">\(\theta\)</span> is a real-valued parameter. Let
+<span class="math inline">\(C(x) = [L(x) , U(x)]\)</span> be a confidence interval for <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(L(x)\)</span> and <span class="math inline">\(U(x)\)</span> are both increasing junctions of <span class="math inline">\(x\)</span>, then for any value <span class="math inline">\(\theta^*\)</span>, <span class="math display">\[\mathbb E_{\theta^*}(\text{Length}[C(\mathbf X)])=\int_{\theta\ne\theta^*}P_{\theta^*}(\theta\in C(\mathbf X))d\theta.\]</span></p>
+<p><strong>Proof:</strong> From the definition of expected value we can write <span class="math display">\[\begin{align}
+\mathbb E_{\theta^*}(\text{Length}[C(X)])&amp;=\int_{\mathcal X}\text{Length}[C(x)]f(x|\theta^*)dx\\
+&amp;=\int_{\mathcal X}[U(x)-L(x)]f(x|\theta^*)dx\\
+&amp;=\int_{\mathcal X}\left[\int_{L(x)}^{U(x)}d\theta\right]f(x|\theta^*)dx\\
+&amp;=\int_{\Theta}\left[\int_{U^{-1}(\theta)}^{L^{-1}(\theta)}f(x|\theta^*)dx\right]d\theta\\
+&amp;=\int_{\Theta}\left[P_{\theta^*}(U^{-1}(\theta)\le X\le L^{-1}(\theta))\right]d\theta\\
+&amp;=\int_{\Theta}\left[P_{\theta^*}(\theta\in C(X))\right]d\theta\\
+&amp;=\int_{\theta\ne\theta^*}P_{\theta^*}(\theta\in C(\mathbf X))d\theta\\
+\end{align}\]</span> The inversion of the confidence interval is standard, where we use the relationship
+<span class="math display">\[\theta\in\{\theta:L(x)\le\theta\le U(x)\}\iff x\in\{x:U^{-1}(\theta)\le x\le L^{-1}(\theta)\},\]</span> which is valid because of the assumption that <span class="math inline">\(L\)</span> and <span class="math inline">\(U\)</span> are increasing.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="asymptotic-evaluations" class="section level1">
 <h1>10. Asymptotic Evaluations</h1>
+<div id="point-estimation-1" class="section level2">
+<h2>Point Estimation</h2>
+<div id="consistency" class="section level3">
+<h3>Consistency</h3>
+<div id="definition-consistent-sequence-of-estimators" class="section level4">
+<h4>Definition: consistent sequence of estimators</h4>
+<p>A sequence of estimators <span class="math inline">\(W_n = W_n(X_1, \cdots, X_n)\)</span> is a <strong>consistent sequence of estimators</strong> of the parameter <span class="math inline">\(\theta\)</span> if, for every <span class="math inline">\(\epsilon &gt; 0\)</span> and every <span class="math inline">\(\theta\in\Theta\)</span>, <span class="math display">\[\lim_{n\to\infty}P_{\theta}(|W_n-\theta|&lt;\epsilon)=1.\]</span> An equivalent statement is this: For every <span class="math inline">\(\epsilon &gt; 0\)</span> and every <span class="math inline">\(\theta\in\Theta\)</span>, a consistent sequence <span class="math inline">\(W_n\)</span> will satisfy <span class="math display">\[\lim_{n\to\infty}P_{\theta}(|W_n-\theta|\ge\epsilon)=0.\]</span> Definition says that a consistent sequence of estimators converges
+in probability to the parameter <span class="math inline">\(\theta\)</span> it is estimating.</p>
+<p>This definition should be compared with <a href="#convergence-in-probability">Convergence in Probability</a>. Definition of Convergence in Probability dealt with one sequence of random variables with one probability structure, Definition of consistent sequence of estimators deals with an entire family o f probability structures, indexed by <span class="math inline">\(\theta\)</span>. For each different value of <span class="math inline">\(\theta\)</span>, the probability structure associated with the sequence <span class="math inline">\(W_n\)</span> is different. And the definition says that for each value of <span class="math inline">\(\theta\)</span>, the probability structure is such that the sequence converges in probability to the true <span class="math inline">\(\theta\)</span>. This is the usual difference between a probability definition and a statistics definition. The probability definition deals with one probability structure, but the statistics definition deals with an entire family.</p>
+<p>Recall that, for an estimator <span class="math inline">\(W_n\)</span> <a href="#chebyshevs-inequality">Chebychev’s Inequality</a> states
+<span class="math display">\[P_{\theta}(|W_{\theta}-\theta|\ge \epsilon\sigma)\le \frac{\mathbb E_{\theta}[(W_n-\theta)^2]}{\sigma^2\epsilon^2}\]</span> so if for every <span class="math inline">\(\theta\in\Theta\)</span>, <span class="math display">\[\lim_{n\to\infty}\mathbb E_{\theta}[(W_n-\theta)^2]=0\]</span> then the sequence of estimators is consistent.</p>
+<p>Since <span class="math inline">\(\mathbb E_{\theta}[(W_n-\theta)^2]=\mathbb V_{\theta}W_n+[\text{Bias}_{\theta}W_n]^2\)</span>, Then the following theorem:</p>
+<p>If <span class="math inline">\(W_n\)</span> is a sequence of estimators of a parameter <span class="math inline">\(\theta\)</span> satisfying</p>
+<ul>
+<li><span class="math inline">\(\lim_{n\to\infty}\mathbb V_{\theta}W_n=0\)</span>,</li>
+<li><span class="math inline">\(\lim_{n\to\infty}\text{Bias}_{\theta}W_n=0\)</span>,</li>
+</ul>
+<p>for every <span class="math inline">\(\theta\in\Theta\)</span>, then <span class="math inline">\(W_n\)</span> is a consistent sequence of estimators of <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="analysis-of-variance-and-regression" class="section level1">
 <h1>11. Analysis of Variance and Regression</h1>
