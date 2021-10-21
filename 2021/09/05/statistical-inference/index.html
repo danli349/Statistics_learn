@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">74 min read</span>
+    <span class="article-duration">82 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -106,6 +106,11 @@
 <ul>
 <li><a href="#facts">Facts</a></li>
 <li><a href="#bivariate-relations">Bivariate Relations</a></li>
+<li><a href="#hierarchical-models-and-mixture-distributions">Hierarchical Models and Mixture Distributions</a>
+<ul>
+<li><a href="#beta-binomial-hierarchy">Beta-binomial hierarchy</a></li>
+<li><a href="#conditional-variance-identity">Conditional variance identity</a></li>
+</ul></li>
 <li><a href="#inequalities">Inequalities</a>
 <ul>
 <li><a href="#numerical-inequalities">Numerical Inequalities</a></li>
@@ -130,6 +135,7 @@
 <li><a href="#indirect-methods">Indirect Methods</a></li>
 <li><a href="#the-acceptreject-algorithm">The Accept/Reject Algorithm</a></li>
 </ul></li>
+<li><a href="#order-statistics">Order Statistics</a></li>
 </ul></li>
 <li><a href="#principles-of-data-reduction">6. Principles of Data Reduction</a>
 <ul>
@@ -199,6 +205,18 @@
 <li><a href="#point-estimation-1">Point Estimation</a>
 <ul>
 <li><a href="#consistency">Consistency</a></li>
+<li><a href="#efficiency">Efficiency</a></li>
+<li><a href="#calculations-and-comparisons">Calculations and Comparisons</a></li>
+<li><a href="#bootstrap-standard-errors">Bootstrap Standard Errors</a></li>
+</ul></li>
+<li><a href="#robustness">Robustness</a>
+<ul>
+<li><a href="#the-mean-and-the-median">The Mean and the Median</a></li>
+<li><a href="#m-estimators">M-Estimators</a></li>
+</ul></li>
+<li><a href="#hypothesis-testing-1">Hypothesis Testing</a>
+<ul>
+<li><a href="#asymptotic-distribution-of-lrts">Asymptotic Distribution of LRTs</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
@@ -332,7 +350,7 @@ it does not have moments of all orders: <span class="math inline">\(t_p\)</span>
 <span class="math inline">\(T_p \sim t_p\)</span> then</p>
 <p><span class="math display">\[\begin{aligned}
         \mathbb E{}[T_p] &amp;= 0 \quad p &gt; 1 \\
-        \mathbb V{}[T_p] &amp;= \frac{p}{p-2} \quad p &gt; 2
+        \text{Var}{}[T_p] &amp;= \frac{p}{p-2} \quad p &gt; 2
     \end{aligned}\]</span></p>
 </div>
 <div id="snedcors-f-distribution" class="section level3">
@@ -383,7 +401,7 @@ of <span class="math inline">\(\mathbf{\theta}\)</span> that do not depend on <s
 <p>If <span class="math inline">\(X\)</span> is a random variable from an exponential family distribution then
 <span class="math display">\[\mathbb E{}\left[ \sum_{i=1}^k \frac{\partial w_i(\mathbf{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial}{\partial \theta_j} \log c(\mathbf{\theta})\]</span>
 and
-<span class="math display">\[\mathbb V\left[ \frac{\partial w_i(\mathbf{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial^2}{\partial \theta_j^2} \log c(\mathbf{\theta}) - \mathbb E{}\left[ \sum_{i=1}^{k} \frac{\partial^2 w_i(\mathbf{\theta})}{\partial \theta_j^2} t_i(X) \right]\]</span></p>
+<span class="math display">\[\text{Var}\left[ \frac{\partial w_i(\mathbf{\theta})}{\partial \theta_j} t_i(X) \right] = - \frac{\partial^2}{\partial \theta_j^2} \log c(\mathbf{\theta}) - \mathbb E{}\left[ \sum_{i=1}^{k} \frac{\partial^2 w_i(\mathbf{\theta})}{\partial \theta_j^2} t_i(X) \right]\]</span></p>
 <p>[Exponential family 2] We can write another parameterisation of the
 exponential family
 <span class="math display">\[f(x | \mathbf{\eta}) = h(x) c^{*}(\mathbf{\eta}) \exp(\mathbf{\eta} \cdot \mathbf{t}(x))\]</span>
@@ -439,7 +457,7 @@ a nonnegative function. Then, for any <span class="math inline">\(r &gt; 0\)</sp
 <div id="chebyshevs-inequality-variance-version" class="section level4">
 <h4>Chebyshev’s inequality (variance version)</h4>
 <p>The Markov inequality is the special case with
-<span class="math inline">\(g = \frac{(X-\mu)^2}{\sigma^2}\)</span>, where <span class="math inline">\(\mu=\mathbb E X\)</span> and <span class="math inline">\(\sigma^2=\mathbb V X\)</span>. For convenience write <span class="math inline">\(r=t^2\)</span>.</p>
+<span class="math inline">\(g = \frac{(X-\mu)^2}{\sigma^2}\)</span>, where <span class="math inline">\(\mu=\mathbb E X\)</span> and <span class="math inline">\(\sigma^2=\text{Var} X\)</span>. For convenience write <span class="math inline">\(r=t^2\)</span>.</p>
 <p><span class="math display">\[\text{P}\left(\frac{(X-\mu)^2}{\sigma^2} \geq t^2\right) \leq \frac{1}{t^2}.\]</span></p>
 <p>Let <span class="math inline">\(X_{\alpha, \beta}\)</span> denote a gamma<span class="math inline">\((\alpha, \beta)\)</span> random variable
 with pdf <span class="math inline">\(f(x \vert{} \alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 1\)</span>. Then for any
@@ -487,11 +505,11 @@ expectations exist.</p>
 =\int\mathbb E(X|y)f_Y(y)dy\\
 =\mathbb E(\mathbb E(X|Y))\]</span></p>
 <p>[Conditional variance]
-<span class="math display">\[\mathbb V[X] = \mathbb E{}[\mathbb V[X \vert{} Y]] + \mathbb V[\mathbb E{}[X \vert{} Y]]\]</span>
+<span class="math display">\[\text{Var}[X] = \mathbb E{}[\text{Var}[X \vert{} Y]] + \text{Var}[\mathbb E{}[X \vert{} Y]]\]</span>
 provided the expectations exist.</p>
 <p><strong>Proof:</strong> By definition, we have
 <span class="math display">\[\begin{align}
-\mathbb V X&amp;=\mathbb E\left((X-\mathbb E X)^2\right)\\
+\text{Var} X&amp;=\mathbb E\left((X-\mathbb E X)^2\right)\\
 &amp;=\mathbb E\left((X-\mathbb E(X|Y)+\mathbb E(X|Y)-\mathbb E X)^2\right)\\
 &amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\left(X-\mathbb E(X|Y)\right)\left(\mathbb E(X|Y)-\mathbb E X\right)\bigg]\\
 &amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\mathbb E\bigg(\left(X-\mathbb E(X|Y)\right)\left(\mathbb E(X|Y)-\mathbb E X\right)|Y\bigg)\bigg]\\
@@ -499,11 +517,11 @@ provided the expectations exist.</p>
 &amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]+2\mathbb E\bigg[\left(\mathbb E(X|Y)-\mathbb E X\right)\cdot 0 \bigg]\\
 &amp;=\mathbb E\left[\left(X-\mathbb E(X|Y)\right)^2\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]\\
 &amp;=\mathbb E\left[\mathbb E\{\left(X-\mathbb E(X|Y)\right)^2\}|Y\right]+\mathbb E\left[\left(\mathbb E(X|Y)-\mathbb E X\right)^2\right]\\
-&amp;=\mathbb E\left[\mathbb V(X|Y)\right]+\mathbb V[\mathbb E(X|Y)]\\
+&amp;=\mathbb E\left[\text{Var}(X|Y)\right]+\text{Var}[\mathbb E(X|Y)]\\
 \end{align}\]</span></p>
 <p>[Covariance] <span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[(X - \mu_X)(Y - \mu_Y)]\]</span></p>
 <p><span class="math display">\[\text{ Cov }[X, Y] = \mathbb E{}[XY] - \mu_X\mu_Y\]</span></p>
-<p><span class="math display">\[\mathbb V[aX + bY] = a^2\mathbb V[X] + b^2\mathbb V[Y] + 2ab\text{Cov }[X, Y]\]</span></p>
+<p><span class="math display">\[\text{Var}[aX + bY] = a^2\text{Var}[X] + b^2\text{Var}[Y] + 2ab\text{Cov }[X, Y]\]</span></p>
 <p>[Correlation] <span class="math display">\[\rho_{XY} = \frac{\text{Cov }[X, Y]}{\sigma_X \sigma_Y}\]</span></p>
 <p>The correlation measures the strength of <em>linear</em> relation between two
 RVs. It is possible to have strong non-linear relationships but with
@@ -518,6 +536,31 @@ to show the following</p>
 <span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> then <span class="math inline">\(\text{sign}(\rho) = \text{sign}(a)\)</span>.</p></li>
 </ol>
 <p>Let <span class="math inline">\(X_1, \cdots , X_n\)</span> be independent random vectors. Let <span class="math inline">\(g_i(x_i)\)</span> be a function only of <span class="math inline">\(x_i, i = 1 , \cdots, n\)</span>. Then the random variables <span class="math inline">\(U_i = g_i(X_i), i = 1,\cdots, n\)</span>, are mutually independent.</p>
+</div>
+<div id="hierarchical-models-and-mixture-distributions" class="section level2">
+<h2>Hierarchical Models and Mixture Distributions</h2>
+<div id="beta-binomial-hierarchy" class="section level3">
+<h3>Beta-binomial hierarchy</h3>
+<p>One generalization of the binomial distribution is to allow the success probability to vary according to a distribution. A
+standard model for this situation is <span class="math display">\[X|P\sim\text{binomia1}(P),\quad i=1,\cdots,n,\]</span>
+<span class="math display">\[P\sim\text{beta}(\alpha,\beta).\]</span>
+By iterating the expectation, we calculate the mean of <span class="math inline">\(X\)</span> as
+<span class="math display">\[\mathbb E X=\mathbb E [\mathbb E (X|P)]=\mathbb E [nP]=n\frac{\alpha}{\alpha+\beta}\]</span></p>
+</div>
+<div id="conditional-variance-identity" class="section level3">
+<h3>Conditional variance identity</h3>
+<p>For any two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>,
+<span class="math display">\[\text{Var} X=\mathbb E (\text{Var} (X|Y))+\text{Var} (\mathbb E (X|Y))\]</span> provided that the expectations exist.</p>
+<p><strong>Proof:</strong> By definition, we have
+<span class="math display">\[\begin{align}
+\text{Var} X&amp;=\mathbb E([X-\mathbb E X]^2)\\
+&amp;=\mathbb E([X-\mathbb E(X|Y)+\mathbb E(X|Y)-\mathbb E X]^2)\\
+&amp;=\mathbb E([X-\mathbb E(X|Y)]^2)+\mathbb E([\mathbb E(X|Y)-\mathbb E X]^2)+2\mathbb E([X-\mathbb E(X|Y)][\mathbb E(X|Y)-\mathbb E X])\\
+&amp;=\mathbb E([X-\mathbb E(X|Y)]^2)+\mathbb E([\mathbb E(X|Y)-\mathbb E X]^2)\\
+&amp;=\mathbb E (\mathbb E\{[X-\mathbb E(X|Y)]^2|Y\})+\text{Var} (\mathbb E (X|Y))\\
+&amp;=\mathbb E (\text{Var} (X|Y))+\text{Var} (\mathbb E (X|Y))
+\end{align}\]</span></p>
+</div>
 </div>
 <div id="inequalities" class="section level2">
 <h2>Inequalities</h2>
@@ -540,7 +583,7 @@ Then:<span class="math display">\[t^2E[X^2] - 2tE[XY] + E[Y^2] \ge 0\]</span></l
 </ul>
 <p>This is a quadratic in <span class="math inline">\(t\)</span>. Thus the discriminant must be non-positive. Therefore: <span class="math display">\[(\mathbb E[XY])^2 - \mathbb E[X^2]\mathbb E[Y^2] \le 0\]</span> or <span class="math display">\[(\mathbb E[XY])^2 \le \mathbb E[X^2]\mathbb E[Y^2]\]</span> Then <span class="math display">\[|(\mathbb E[XY])|\le(\mathbb E|X|^2)^{1/2}(\mathbb E|Y|^2)^{1/2}\]</span></p>
 <ul>
-<li><p><strong>Covariance inequality</strong> <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\mathbb V(X)\mathbb V(Y)\]</span> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have means <span class="math inline">\(\mu_X\)</span> and <span class="math inline">\(\mu_Y\)</span> and
+<li><p><strong>Covariance inequality</strong> <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\text{Var}(X)\text{Var}(Y)\]</span> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have means <span class="math inline">\(\mu_X\)</span> and <span class="math inline">\(\mu_Y\)</span> and
 variances <span class="math inline">\(\sigma_X^2\)</span> and <span class="math inline">\(\sigma_Y^2\)</span>, respectively, we can apply the Cauchy-Schwarz Inequality to get <span class="math display">\[\mathbb E\lvert(X-\mu_X)(Y-\mu_Y)\rvert\le \{\mathbb E(X-\mu_X)^2\}^{1/2}\{\mathbb E(Y-\mu_Y)^2\}^{1/2}\]</span>
 Squaring both sides and using statistical notation, we have
 <span class="math display">\[(\text{Cov}(X, Y))^2 \leq \sigma_X^2\sigma_Y^2.\]</span></p></li>
@@ -623,7 +666,7 @@ sample <span class="math inline">\(X_1, \dots, X_n\)</span> are, respectively,</
 <span class="math inline">\(\mu\)</span> and finite variance <span class="math inline">\(\sigma^2\)</span>, then</p>
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(\mathbb E[\bar{X}] = \mu\)</span></p></li>
-<li><p><span class="math inline">\(\mathbb V[\bar{X}] = \frac{\sigma^2}{n}\)</span></p></li>
+<li><p><span class="math inline">\(\text{Var}[\bar{X}] = \frac{\sigma^2}{n}\)</span></p></li>
 <li><p><span class="math inline">\(\mathbb E[S^2] = \sigma ^2\)</span>.</p></li>
 </ol>
 </div>
@@ -689,13 +732,13 @@ equivalently if <span class="math inline">\(\lim_{n\to\infty}\text{P }(|{X_n - X
 <div class="theorem">
 <p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 5  </strong></span><strong>Weak Law of Large Numbers, WLLN</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
-<span class="math inline">\(\mathbb V X_i = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac1n \sum_{i=1}^n X_i\]</span>
+<span class="math inline">\(\text{Var} X_i = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac1n \sum_{i=1}^n X_i\]</span>
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges in probability to <span class="math inline">\(\mu\)</span>. That
 is, <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\lim_{n\to\infty} \text{P }(|{\bar X_n - \mu}| &lt; \epsilon) = 1\]</span></p>
 </div>
 <p>Proof is using Chebychev’s inequality.</p>
-<p>We have for every <span class="math inline">\(\epsilon&gt;0\)</span>, <span class="math display">\[P(|\bar X_n - \mu|\ge\epsilon)=P((\bar X_n - \mu)^2\ge\epsilon^2)\leq\frac{\mathbb E(\bar X_n - \mu)^2}{\epsilon^2}=\frac{\mathbb V\bar X_n}{\epsilon^2}=\frac{\sigma^2}{n\epsilon^2}\]</span>
+<p>We have for every <span class="math inline">\(\epsilon&gt;0\)</span>, <span class="math display">\[P(|\bar X_n - \mu|\ge\epsilon)=P((\bar X_n - \mu)^2\ge\epsilon^2)\leq\frac{\mathbb E(\bar X_n - \mu)^2}{\epsilon^2}=\frac{\text{Var}\bar X_n}{\epsilon^2}=\frac{\sigma^2}{n\epsilon^2}\]</span>
 Hence, <span class="math display">\[P(|\bar X_n - \mu|&lt;\epsilon)=1-P(|\bar X_n - \mu|\ge\epsilon)\ge 1-\frac{\sigma^2}{n\epsilon^2}\to 1 \text{ as } n\to \infty\]</span></p>
 <p>The property summarized by the WLLN, that a sequence of the “same” sample quantity approaches a constant as <span class="math inline">\(n \to \infty\)</span>, is known as <strong>consistency</strong>.</p>
 <div class="theorem">
@@ -722,7 +765,7 @@ probability to <span class="math inline">\(h(X)\)</span>.</p>
 <div class="theorem">
 <p><span id="thm:unlabeled-div-16" class="theorem"><strong>Theorem 8  </strong></span><strong>Strong Law of Large Numbers (SLLN)</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mathbb E {X_i} = \mu\)</span> and
-<span class="math inline">\(\mathbb V{X_i} = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\]</span>.
+<span class="math inline">\(\text{Var}{X_i} = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\]</span>.
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges almost surely to <span class="math inline">\(\mu\)</span>. That is,
 <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\text{P }\left(\lim_{n\to\infty}|{\bar{X}_n - \mu}| &lt; \epsilon\right) = 1.\]</span></p>
@@ -741,22 +784,25 @@ continuous.</p>
 variables. In this way convergence in distribution differs from the
 previous two concepts.</p>
 </div>
+<div id="convergence-in-probability-implies-convergence-in-distribution" class="section level4">
+<h4>Convergence in probability implies convergence in distribution</h4>
+<p>The sequence of random variables, <span class="math inline">\(X_1, X_2, \cdots\)</span>, converges in probability to a constant <span class="math inline">\(\mu\)</span> if and only if the sequence also converges in distribution to <span class="math inline">\(\mu\)</span>. That is, the statement
+<span class="math display">\[P(|X_n-\mu|&gt;\epsilon)\to 0\quad \forall\epsilon&gt;0\]</span> is equivalent to <span class="math display">\[P(X_n\le x)\to\begin{cases}0&amp;\text{if  }x&lt;\mu\\1&amp;\text{if  }x&gt;\mu.\end{cases}\]</span></p>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 9  </strong></span>Convergence in probability implies convergence in distribution</p>
-</div>
-<div class="theorem">
-<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span><strong>Central Limit Theorem</strong>
+<p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 9  </strong></span><strong>Central Limit Theorem</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of iid random variables with
-<span class="math inline">\(\mathbb E[X_i] = \mu\)</span> and finite variance <span class="math inline">\(\mathbb V[X_i] = \sigma^2 &lt; \infty\)</span>.
+<span class="math inline">\(\mathbb E[X_i] = \mu\)</span> and finite variance <span class="math inline">\(\text{Var}[X_i] = \sigma^2 &lt; \infty\)</span>.
 Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n X_i\)</span>. Let <span class="math inline">\(G_n(x)\)</span> denote the
 cdf of <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span>. Then <span class="math inline">\(\forall x \in \mathbb R\)</span>,
 <span class="math display">\[\lim_{n\to\infty} G_n(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x e^{-y^2/2}dy.\]</span>
 That is, <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu)/\sigma\)</span> converges in distribution to
 the standard normal.</p>
 </div>
+</div>
+<div id="slutskys-theorem" class="section level4">
+<h4>Slutsky’s Theorem</h4>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-21" class="theorem"><strong>Theorem 11  </strong></span><strong>Slutsky’s Theorem</strong>
-If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
+<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span>If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
 constant, then</p>
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(Y_nX_n \to aX\)</span> in distribution</p></li>
@@ -764,41 +810,29 @@ constant, then</p>
 </ol>
 </div>
 <div class="remark">
-<p><span id="unlabeled-div-22" class="remark"><em>Remark</em>. </span>This tells us, for instance, that
+<p><span id="unlabeled-div-21" class="remark"><em>Remark</em>. </span>This tells us, for instance, that
 <span class="math display">\[\frac{\sqrt{n}(\bar{X}_n - \mu)}{S_n} \to \text{n}(0, 1)\]</span> in distribution,
 since we know that <span class="math inline">\(S_n \to \sigma\)</span> in probability.</p>
 </div>
 </div>
+</div>
 <div id="the-delta-method" class="section level3">
 <h3>The Delta Method</h3>
-<p>If we are interested in the convergence of some function of a sequence
-of RVs, rather than the RVs themselves, then we can use the Delta Method
-(follows from an application of Taylor’s theorem and Slutsky’s theorem).</p>
+<p>If we are interested in the convergence of some function of a sequence of RVs, rather than the RVs themselves, then we can use the Delta Method (follows from an application of Taylor’s theorem and Slutsky’s theorem).</p>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-23" class="theorem"><strong>Theorem 12  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
-<span class="math inline">\(\sqrt{n}(Y_n - \theta) \to \text{n}(0, \sigma^2)\)</span> in distribution. For a
-given function <span class="math inline">\(g\)</span> and a specific value of <span class="math inline">\(\theta\)</span>, suppose that
-<span class="math inline">\(g&#39;(\theta)\)</span> exists and is non-zero. Then
-<span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] \to \text{n}(0, \sigma^2g&#39;(\theta)^2)\]</span> in
-distribution.</p>
-</div>
-<div class="remark">
-<p><span id="unlabeled-div-24" class="remark"><em>Remark</em>. </span>There exists a corresponding multivariate result.</p>
-</div>
-<p>If <span class="math inline">\(g&#39;(\theta) = 0\)</span> then we take the next term in the Taylor series.</p>
-<div class="theorem">
-<p><span id="thm:unlabeled-div-25" class="theorem"><strong>Theorem 13  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
+<p><span id="thm:unlabeled-div-22" class="theorem"><strong>Theorem 11  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
 <span class="math inline">\(\sqrt{n}(Y_n - \theta) \to \text{n}(0, \sigma^2)\)</span> in distribution. For a
 given function <span class="math inline">\(g\)</span> and a specific value of <span class="math inline">\(\theta\)</span>, suppose that
 <span class="math inline">\(g&#39;(\theta) = 0\)</span> and <span class="math inline">\(g&#39;&#39;(\theta)\)</span> exists and is non-zero. Then
 <span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] \to \text{n}(0, \sigma^2[g&#39;(\theta)]^2)\]</span> in
 distribution.</p>
-<p>Furthermore, as both <span class="math inline">\(\bar Y\)</span> and <span class="math inline">\(\sigma^2\)</span> are consistent estimators, we can again apply Slutsky’s Theorem to conclude that
+<p>Furthermore, as both <span class="math inline">\(\bar Y\)</span> and <span class="math inline">\(S^2\)</span> are consistent estimators, we can again apply <a href="#slutskys-theorem">Slutsky’s Theorem</a> to conclude that
 <span class="math display">\[\sqrt{n}[g(Y_n) - g(\bar Y)] \to \text{n}(0, S^2[g&#39;(\bar Y)]^2)\]</span></p>
 </div>
+<p>If <span class="math inline">\(g&#39;(\theta) = 0\)</span> then we take the next term in the Taylor series.</p>
 <p><strong>Proof</strong> The Taylor expansion of <span class="math inline">\(g(Y_n)\)</span> around <span class="math inline">\(Y_n = 0\)</span> is
 <span class="math display">\[g(Y_n) = g(\theta) + g&#39;(\theta) (Y_n - \theta) + \text{Remainder},\]</span>
-where the remainder <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(Y_n \to \theta\)</span>. Since <span class="math inline">\(Y_n \to \theta\)</span> in probability it follows that the remainder <span class="math inline">\(\to 0\)</span> in probability. By applying <strong>Slutsky’s Theorem</strong> to
+where the remainder <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(Y_n \to \theta\)</span>. Since <span class="math inline">\(Y_n \to \theta\)</span> in probability it follows that the remainder <span class="math inline">\(\to 0\)</span> in probability. By applying <a href="#slutskys-theorem">Slutsky’s Theorem</a> to
 <span class="math display">\[\sqrt{n}[g(Y_n) - g(\theta)] = g&#39;(\theta)\sqrt{n}(Y_n-\theta),\]</span>
 the result now follows.</p>
 </div>
@@ -851,7 +885,7 @@ At the endpoints we have <span class="math inline">\(P (Y \leq y) = 1\)</span> f
 </ol></li>
 </ul>
 <div class="definition">
-<p><span id="def:unlabeled-div-26" class="definition"><strong>Definition 7  </strong></span>A <strong>Direct Method</strong> of generating a random sample uses the probability
+<p><span id="def:unlabeled-div-23" class="definition"><strong>Definition 7  </strong></span>A <strong>Direct Method</strong> of generating a random sample uses the probability
 integral transform to map draws from a <span class="math inline">\(\text{uniform}(0, 1)\)</span> random
 variable to draws from the distribution of interest.<br />
 The Probability Integral Transform states that if <span class="math inline">\(X\)</span> has continuous cdf
@@ -864,7 +898,7 @@ The Probability Integral Transform states that if <span class="math inline">\(X\
 <div id="the-acceptreject-algorithm" class="section level3">
 <h3>The Accept/Reject Algorithm</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-27" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
+<p><span id="def:unlabeled-div-24" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
 common support with <span class="math display">\[M = \sup_y f_Y(y) / f_V(y) &lt; \infty.\]</span> To generate
 a random variable <span class="math inline">\(Y \sim f_Y\)</span>:</p>
 <ol style="list-style-type: lower-alpha">
@@ -893,6 +927,16 @@ where <span class="math inline">\(c = \sup_y f_Y(y)\)</span>. In the actual algo
 <span class="math inline">\(U \sim \text{uniform}(0,1)\)</span> and <span class="math inline">\(V\)</span> to be an RV that has common
 support with <span class="math inline">\(Y\)</span>.</p></li>
 </ul>
+</div>
+</div>
+<div id="order-statistics" class="section level2">
+<h2>Order Statistics</h2>
+<div id="definition-sample-percentile" class="section level4">
+<h4>Definition: sample percentile</h4>
+<p>The notation <span class="math inline">\(\{b\}\)</span>, when appearing in a subscript, is defined to be
+the number <span class="math inline">\(b\)</span> rounded to the nearest integer in the usual way. More precisely, if <span class="math inline">\(i\)</span> is an integer and <span class="math inline">\(i - .5 \le b &lt; i + .5\)</span>, then
+<span class="math inline">\(\{b\} = i\)</span>.</p>
+<p>The <span class="math inline">\((100p)th\)</span> sample percentile is <span class="math inline">\(X_{(\{np\})}\)</span> if <span class="math inline">\(\frac{1}{2n}&lt;p&lt;.5\)</span> and <span class="math inline">\(X_{(n+1-\{n(1-p)\})}\)</span> if <span class="math inline">\(.5&lt;p&lt;1-\frac{1}{2n}\)</span></p>
 </div>
 </div>
 </div>
@@ -1235,7 +1279,7 @@ If we turn these into likelihoods, <span class="math display">\[L(\theta\lvert\m
 <p>The <strong>mean squared error</strong> (MSE) of an estimator <span class="math inline">\(W\)</span>
 of a parameter <span class="math inline">\(\theta\)</span> is defined by <span class="math inline">\(\mathbb E_{\theta}[(W - \theta)^2]\)</span>.</p>
 <p><strong>Bias-Variance Decomposition</strong>
-<span class="math display">\[\mathbb E_{\theta}[(W - \theta)^2] = \mathbb V_{\theta} [W] + (\mathbb E_{\theta} [W] - \theta)^2 = \mathbb V_{\theta} [W] + (\text{Bias}_{\theta} [W])^2\]</span></p>
+<span class="math display">\[\mathbb E_{\theta}[(W - \theta)^2] = \text{Var}_{\theta} [W] + (\mathbb E_{\theta} [W] - \theta)^2 = \text{Var}_{\theta} [W] + (\text{Bias}_{\theta} [W])^2\]</span></p>
 <p><strong>Bias</strong> The <em>bias</em> of a point estimator <span class="math inline">\(W\)</span> of a parameter <span class="math inline">\(\theta\)</span> is
 given by <span class="math display">\[\text{Bias}_{\theta} [W] = \mathbb E_{\theta} [W] - \theta.\]</span> An estimator whose bias is <span class="math inline">\(0\)</span> is called an <strong>unbiased estimator</strong> and has <span class="math inline">\(\mathbb E_{\theta}[W] = \theta,\quad\forall \theta\)</span>.</p>
 <ul>
@@ -1252,10 +1296,10 @@ range you expect the parameter to lie within.</p></li>
 <span class="math display">\[\hat \sigma^2 = \frac{1}{N} \sum_{i=1}^{N}(X_i - \bar X)^2,\]</span> where <span class="math inline">\(\bar X\)</span> is the sample mean and <span class="math inline">\(X_i \sim^{iid} \mathcal{N}(\mu,\sigma^2)\)</span>.
 Since <span class="math display">\[\frac{1}{\sigma ^2} \sum_{i=1}^{N}(X_i-\bar X)^2 \sim \chi^2_{N},\]</span> we have that
 <span class="math display">\[\begin{align}
-\mathbb V\big(\frac{N\hat \sigma^2}{\sigma^2}\big) = \mathbb V(\chi^2_{N-1}) = 2(N-1) \\
-\implies \mathbb V(\hat \sigma ^2) = \frac{2(N-1) \sigma^4}{N^2}  
+\text{Var}\big(\frac{N\hat \sigma^2}{\sigma^2}\big) = \text{Var}(\chi^2_{N-1}) = 2(N-1) \\
+\implies \text{Var}(\hat \sigma ^2) = \frac{2(N-1) \sigma^4}{N^2}  
 \end{align}
-\]</span> The variance of this estimator is equal to <span class="math inline">\(\frac{2(N-1) \sigma^4}{N^2}\)</span>. The MSE is <span class="math display">\[\text{MSE}=\mathbb V(\hat \sigma ^2)+\text{Bias} =\frac{2\sigma ^4}{N}+ \mathbb E [\hat \sigma ^2] - \sigma ^2=\mathbb V(\hat \sigma ^2)+\text{Bias}^2 \\=\mathbb V(\hat \sigma ^2)+(\mathbb E(\hat \sigma ^2)-\sigma ^2)^2=\frac{2(N-1) \sigma^4}{N^2}+ \left(\frac{N-1}{N}\sigma ^2 - \sigma ^2\right)^2\\
+\]</span> The variance of this estimator is equal to <span class="math inline">\(\frac{2(N-1) \sigma^4}{N^2}\)</span>. The MSE is <span class="math display">\[\text{MSE}=\text{Var}(\hat \sigma ^2)+\text{Bias} =\frac{2\sigma ^4}{N}+ \mathbb E [\hat \sigma ^2] - \sigma ^2=\text{Var}(\hat \sigma ^2)+\text{Bias}^2 \\=\text{Var}(\hat \sigma ^2)+(\mathbb E(\hat \sigma ^2)-\sigma ^2)^2=\frac{2(N-1) \sigma^4}{N^2}+ \left(\frac{N-1}{N}\sigma ^2 - \sigma ^2\right)^2\\
 =\frac{2N-1}{N^2}\sigma ^4.\]</span> where
 <span class="math display">\[\begin{align}
 \mathbb E(\hat \sigma ^2)&amp;=\mathbb E\left(\frac{1}{N}\sum_{i=1}^{N}(x_i-\bar{x})^2\right)\\
@@ -1265,11 +1309,11 @@ Since <span class="math display">\[\frac{1}{\sigma ^2} \sum_{i=1}^{N}(X_i-\bar X
 &amp;=\mathbb E\left(x^2\right)-\mathbb E\left(\bar{x}^2\right)\\
 &amp;=(\sigma_x^2+\mu^2)-(\sigma_{\bar x}^2+\mu^2)\\
 &amp;=\sigma_x^2-\sigma_{\bar x}^2\\
-&amp;=\sigma_x^2-\mathbb V(\bar x)\\
-&amp;=\sigma_x^2-\mathbb V\left(\frac{1}{N}\sum_{i=1}^{N}x_i\right)\\
-&amp;=\sigma_x^2-\frac{1}{N^2}\mathbb V\left(\sum_{i=1}^{N}x_i\right)\\
-&amp;=\sigma_x^2-\frac{1}{N^2}\sum_{i=1}^{N}\mathbb V\left(x\right)\\
-&amp;=\sigma_x^2-\frac{1}{N}\mathbb V\left(x\right)\\
+&amp;=\sigma_x^2-\text{Var}(\bar x)\\
+&amp;=\sigma_x^2-\text{Var}\left(\frac{1}{N}\sum_{i=1}^{N}x_i\right)\\
+&amp;=\sigma_x^2-\frac{1}{N^2}\text{Var}\left(\sum_{i=1}^{N}x_i\right)\\
+&amp;=\sigma_x^2-\frac{1}{N^2}\sum_{i=1}^{N}\text{Var}\left(x\right)\\
+&amp;=\sigma_x^2-\frac{1}{N}\text{Var}\left(x\right)\\
 &amp;=\sigma_x^2-\frac{1}{N}\sigma_x^2\\
 &amp;=\frac{N-1}{N}\sigma_x^2\\
 \end{align}\]</span></p>
@@ -1277,8 +1321,8 @@ Since <span class="math display">\[\frac{1}{\sigma ^2} \sum_{i=1}^{N}(X_i-\bar X
 <span class="math display">\[S^2 = \frac{1}{N-1} \sum_{i=1}^{N}(X_i - \bar X)^2,\]</span> since <span class="math inline">\(\mathbb E S^2=\sigma^2\)</span>.
 And since <span class="math display">\[\frac{(N-1) S^2}{\sigma^2} \sim \chi_{n-1}^2,\]</span>
 <span class="math display">\[\begin{align}
-\mathbb V\big(\frac{(N-1)S^2}{\sigma^2}\big) = \mathbb V(\chi^2_{N-1}) = 2(N-1) \\
-\implies \mathbb V(S^2) = \frac{2(N-1) \sigma^4}{(N-1)^2}=\frac{2\sigma^4}{N-1}  
+\text{Var}\big(\frac{(N-1)S^2}{\sigma^2}\big) = \text{Var}(\chi^2_{N-1}) = 2(N-1) \\
+\implies \text{Var}(S^2) = \frac{2(N-1) \sigma^4}{(N-1)^2}=\frac{2\sigma^4}{N-1}  
 \end{align}
 \]</span> The variance of this estimator is equal to <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span>, which is also the MSE.</p>
 <p>The variance (or MSE) in the unbiased case <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span> is greater than the variance in the biased case <span class="math inline">\(\frac{2(N-1) \sigma^4}{N^2}\)</span>. The MSE of the unbiased estimator <span class="math inline">\(\frac{2\sigma^4}{N-1}\)</span> is larger than the MSE of the biased estimator <span class="math inline">\(\frac{2N-1}{N^2}\sigma ^4\)</span>.</p>
@@ -1301,7 +1345,7 @@ And since <span class="math display">\[\frac{(N-1) S^2}{\sigma^2} \sim \chi_{n-1
 estimator</em> of of <span class="math inline">\(\tau(\theta)\)</span> if it satisfies
 <span class="math inline">\(\mathbb E[W^*] = \tau(\theta) \,\, \forall \theta\)</span>, and for any other
 estimator with <span class="math inline">\(\mathbb E[W] = \tau(\theta) \,\, \forall \theta\)</span> we have
-<span class="math inline">\(\mathbb V[W*] \leq \mathbb V[W] \,\, \forall \theta\)</span>. We also call <span class="math inline">\(W^*\)</span> the
+<span class="math inline">\(\text{Var}[W*] \leq \text{Var}[W] \,\, \forall \theta\)</span>. We also call <span class="math inline">\(W^*\)</span> the
 <strong>uniform minimum variance unbiased estimator</strong> (UMVUE) of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <p>Suppose that we are trying to estimate <span class="math inline">\(\theta\)</span> and consider the class
 of estimators <span class="math display">\[\mathcal{C}_\tau = \{W: \mathbb E[W] = \tau(\theta)\}.\]</span> All
@@ -1312,15 +1356,17 @@ considerations of this chapter can be applied to classes like
 <span class="math inline">\(\mathcal{C}_\tau\)</span>, even if <span class="math inline">\(\tau(\theta) \neq \theta\)</span>.</p>
 <p>The best unbiased estimator, if it exists, could be hard to find. The
 following lower bound at least gives a stopping criterion to our search.</p>
-<p><strong>Cramér-Rao Inequality</strong> Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample with pdf
+<div id="cramér-rao-inequality" class="section level4">
+<h4>Cramér-Rao Inequality</h4>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a sample with pdf
 <span class="math inline">\(f(\mathbf x\vert{}\theta)\)</span> and let <span class="math inline">\(W(\mathbf X) = W(X_1, \dots, X_n)\)</span> be
 any estimator with finite variance satisfying
-<span class="math display">\[\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] = \int_{\mathcal X{}} \frac{\partial}{\partial \theta} \left(W(\mathbf X) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span> and <span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)]&lt;\infty\]</span>
+<span class="math display">\[\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] = \int_{\mathcal X{}} \frac{\partial}{\partial \theta} \left(W(\mathbf X) f(\mathbf x\vert{}\theta) \right)d\mathbf x.\]</span> and <span class="math display">\[\text{Var}_{\theta}[W(\mathbf X)]&lt;\infty\]</span>
 Then
-<span class="math display">\[\mathbb V_{\theta}[W(\mathbf X)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] \right)^2}{\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X\vert{} \theta) \right)^2 \right]}.\]</span></p>
+<span class="math display">\[\text{Var}_{\theta}[W(\mathbf X)] \geq \frac{\left(\frac{d}{d \theta} \mathbb E_{\theta}[W(\mathbf X)] \right)^2}{\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X\vert{} \theta) \right)^2 \right]}.\]</span></p>
 <p>The proof of this considers the correlation between the gradient of the log likelihood and the statistic. Note that the sample in the above theorem is not necessarily iid.</p>
 <p><strong>proof</strong></p>
-<p><strong>Covariance inequality</strong> For any two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\mathbb V(X)\mathbb V(Y)\]</span> and <span class="math display">\[\mathbb V(X)\ge\frac{(\text{Cov}[X, Y])^2}{\mathbb V(Y)}\]</span> The cleverness in this theorem follows from choosing <span class="math inline">\(X\)</span> to be the estimator <span class="math inline">\(W(\mathbf X)\)</span> and <span class="math inline">\(Y\)</span> to be the quantity <span class="math inline">\(\frac{\partial}{\partial\theta} \log f(\mathbf X|\theta)\)</span> and applying the Cauchy-Schwarz IneqUality.
+<p><strong>Covariance inequality</strong> For any two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, <span class="math display">\[(\text{Cov}[X, Y])^2 \leq \sigma_X^2 \sigma_Y^2=\text{Var}(X)\text{Var}(Y)\]</span> and <span class="math display">\[\text{Var}(X)\ge\frac{(\text{Cov}[X, Y])^2}{\text{Var}(Y)}\]</span> The cleverness in this theorem follows from choosing <span class="math inline">\(X\)</span> to be the estimator <span class="math inline">\(W(\mathbf X)\)</span> and <span class="math inline">\(Y\)</span> to be the quantity <span class="math inline">\(\frac{\partial}{\partial\theta} \log f(\mathbf X|\theta)\)</span> and applying the Cauchy-Schwarz Inequality.
 First note that <span class="math display">\[\begin{align}
 \frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)&amp;=\int_{\mathcal X}W(\mathbf X)\left[\frac{\partial}{\partial\theta}f(\mathbf X|\theta)\right]dx\\
 &amp;=\int_{\mathcal X}W(\mathbf X)\frac{\frac{\partial}{\partial\theta}f(\mathbf X|\theta)}{f(\mathbf X|\theta)}f(\mathbf X|\theta)dx\\
@@ -1331,7 +1377,7 @@ First note that <span class="math display">\[\begin{align}
 \text{Cox}_{\theta}\left(W(\mathbf X), \frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)&amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]+\mathbb E_{\theta}W(\mathbf X)\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
 &amp;=\mathbb E_{\theta}\left[W(\mathbf X)\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]\\
 &amp;=\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)
-\end{align}\]</span> Also since <span class="math display">\[\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]=0\]</span> we have <span class="math display">\[\mathbb V_{\theta}\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)=\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)\]</span> Using the Cauchy-Schwarz Inequality we obtain <span class="math display">\[\mathbb V_{\theta}(W(\mathbf X))\ge \frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)}=\frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\text{(information number)}}\]</span></p>
+\end{align}\]</span> Also since <span class="math display">\[\mathbb E_{\theta}\left[\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right]=0\]</span> we have <span class="math display">\[\text{Var}_{\theta}\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)=\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)\]</span> Using the Cauchy-Schwarz Inequality we obtain <span class="math display">\[\text{Var}_{\theta}(W(\mathbf X))\ge \frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)\right)^2\right)}=\frac{\left(\frac{d}{d\theta}\mathbb E_{\theta}W(\mathbf X)\right)^2}{\text{(information number)}}\]</span></p>
 <p><strong>Cramer-Rao Inequality, iid case</strong> If the assumptions of last Theorem are satisfied and, additionally, if <span class="math inline">\(X_1,\cdots ,X_n\)</span> are iid with pdf <span class="math inline">\(f(x|\theta)\)</span>, then
 <span class="math display">\[\begin{align}
 \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]&amp;=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log \prod_{i=1}^{n}f(X_i \vert{} \theta) \right)^2 \right]
@@ -1347,6 +1393,7 @@ Since <span class="math inline">\(X_1, \dots, X_n\)</span> are independent,
 =\mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right) \mathbb E_{\theta}\left(\frac{\partial}{\partial \theta} \log f(X_j \vert{} \theta) \right)=0\]</span> So <span class="math display">\[\begin{align}
 \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(\mathbf X \vert{} \theta) \right)^2 \right]=\sum_{i=1}^{n}\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X_i \vert{} \theta) \right)^2 \right]=n\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right]\\
 \end{align}\]</span></p>
+</div>
 </div>
 <div id="fisher-information" class="section level3">
 <h3>Fisher Information</h3>
@@ -1373,7 +1420,10 @@ Since
 \end{align}\]</span> and <span class="math display">\[\mathbb E_{\theta}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right]=\frac{\partial^2}{\partial \theta^2}\int_{\mathbb R}f(X \vert{} \theta)dx=0\]</span>
 then the Fisher information can
 be written
-<span class="math display">\[\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] =\mathbb E_{\theta}\left[ \left(\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right)^2 \right]= - \mathbb E_{\theta}\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \vert{} \theta) \right].\]</span></p>
+<span class="math display" id="eq:Fisherinformation">\[\begin{equation}
+ \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] =\mathbb E_{\theta}\left[   \left(\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right)^2 \right]= - \mathbb E_{\theta}\left[ \frac{\partial^2}{\partial  \theta^2} \log f(X \vert{} \theta) \right]
+ \tag{1}
+\end{equation}\]</span></p>
 <p>Even if the Cramér-Rao bound is applicable, it may not be sharp – there
 may not be an estimator that attains this bound.</p>
 <ul>
@@ -1390,8 +1440,9 @@ I_X(p)&amp;=E_p\left[\left(\frac{d}{dp}\log\left(p^X(1-p)^{1-X}\right)\right)^2\
 </ul>
 <p>Since
 <span class="math display">\[E_p(X^2)=0^2\cdot p_X(0)+1^2\cdot p_X(1)=0^2(1-p)+1^2p=p,\]</span>
-<span class="math display">\[E_p((1-X)^2)=1-p,\]</span>
-- For Exponential RVs <span class="math inline">\(X \sim \exp(\beta)\)</span>, If the density is <span class="math display">\[f(X|\beta) = \frac1\beta e^{-\frac1\beta X}\]</span>. The Fisher information is
+<span class="math display">\[E_p((1-X)^2)=1-p,\]</span></p>
+<ul>
+<li><p>For Exponential RVs <span class="math inline">\(X \sim \exp(\beta)\)</span>, If the density is <span class="math display">\[f(X|\beta) = \frac1\beta e^{-\frac1\beta X}\]</span> The Fisher information is
 <span class="math display">\[\begin{align*}
 \mathcal I_{\beta} &amp; = n\mathbb E_{\beta}\left( \left(\frac{\partial \log f(X| \beta)}{\partial \beta}\right)^2\right) \\
 &amp; = n\int_0^\infty \left(\frac{\partial \log f(X|\beta)}{\partial \beta}\right)^2 \, f(X|\beta) \, dx \\
@@ -1400,9 +1451,8 @@ I_X(p)&amp;=E_p\left[\left(\frac{d}{dp}\log\left(p^X(1-p)^{1-X}\right)\right)^2\
 &amp; = n\int_0^\infty \left(\frac{x^2}{\beta^4} -2\frac{x}{\beta^3}+\frac{1}{\beta^2}\right) \, \frac{1}{\beta}e^{-\frac{1}{\beta}x} \, dx \\
 &amp;=n\left(\frac{2}{\beta^2}-\frac{2}{\beta^2}+\frac{1}{\beta^2}\right)\\
 &amp;=\frac{n}{\beta^2}\\
-\end{align*}\]</span></p>
-<ul>
-<li>For Exponential RVs <span class="math inline">\(X \sim \exp(\lambda)\)</span>, If the density is <span class="math display">\[f(X|\lambda) = \lambda e^{-\lambda X}\]</span>. The Fisher information is
+\end{align*}\]</span></p></li>
+<li><p>For Exponential RVs <span class="math inline">\(X \sim \exp(\lambda)\)</span>, If the density is <span class="math display">\[f(X|\lambda) = \lambda e^{-\lambda X}\]</span> The Fisher information is
 <span class="math display">\[\begin{align*}
 \mathcal I_{\lambda} &amp; = n\mathbb E_{\lambda}\left( \left(\frac{\partial \log f(X| \lambda)}{\partial \lambda}\right)^2\right) \\
 &amp; = n\int_0^\infty \left(\frac{\partial \log f(X|\lambda)}{\partial \lambda}\right)^2 \, f(X|\lambda) \, dx \\
@@ -1411,7 +1461,7 @@ I_X(p)&amp;=E_p\left[\left(\frac{d}{dp}\log\left(p^X(1-p)^{1-X}\right)\right)^2\
 &amp; = n\int_0^\infty \left(x^2 -2\frac{x}{\lambda}+\frac{1}{\lambda^2}\right) \, \lambda e^{-\lambda X} \, dx \\
 &amp;=n\left(\frac{2}{\lambda^2}-\frac{2}{\lambda^2}+\frac{1}{\lambda^2}\right)\\
 &amp;=\frac{n}{\lambda^2}\\
-\end{align*}\]</span></li>
+\end{align*}\]</span></p></li>
 </ul>
 <p><span class="math display">\[
 \begin{array}{llll}
@@ -1436,19 +1486,19 @@ the likelihood function. If <span class="math inline">\(W(\mathbf X)=W(X_1,\cdot
 <p><strong>Proof:</strong> Recalling that <span class="math inline">\(\mathbb E_{\theta}W=\tau(\theta)\)</span>, <span class="math inline">\(\mathbb E_{\theta}\left(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)=0\)</span>, the Cramer-Rao Inequality, can be written as <span class="math display">\[\begin{align}
 \left[\text{Cov}_{\theta}\left(W(\mathbf X),\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)\right]^2&amp;=\left[\mathbb E_{\theta}\bigg(W(\mathbf X)-\tau(\theta)\bigg)\left(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)-0\right)\right]^2\\
 &amp;=\left[\mathbb E_{\theta}\left(W(\mathbf X)\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right)\right]^2\\
-&amp;\le\mathbb V_{\theta}\left[W(\mathbf X)\right]\mathbb V_{\theta}\left[\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right]\end{align}\]</span> We can have equality if and only if <span class="math display">\[W(\mathbf X)-\tau(\theta)\]</span> is proportional to <span class="math inline">\(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\)</span>.</p>
+&amp;\le\text{Var}_{\theta}\left[W(\mathbf X)\right]\text{Var}_{\theta}\left[\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\right]\end{align}\]</span> We can have equality if and only if <span class="math display">\[W(\mathbf X)-\tau(\theta)\]</span> is proportional to <span class="math inline">\(\frac{\partial}{\partial\theta}\log\prod_{i=1}^{n}f(X_i|\theta)\)</span>.</p>
 </div>
 <div id="sufficiency-and-unbiasedness" class="section level3">
 <h3>Sufficiency and Unbiasedness</h3>
 <p><strong>Rao-Blackwell</strong> Let <span class="math inline">\(W\)</span> be any unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span> and
 let <span class="math inline">\(T\)</span> be a sufficient statistic for <span class="math inline">\(\theta\)</span>. Define
-<span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span>. Then <span class="math inline">\(\mathbb E_{\theta}[\phi(T)] = \tau(\theta)\)</span> and <span class="math inline">\(\mathbb V_{\theta}[\phi(T)] \leq \mathbb V_{\theta}[W] \,\, \forall \theta\)</span>. That is, <span class="math inline">\(\phi(T)\)</span> is a <em>uniformly better unbiased estimator</em> of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span>. Then <span class="math inline">\(\mathbb E_{\theta}[\phi(T)] = \tau(\theta)\)</span> and <span class="math inline">\(\text{Var}_{\theta}[\phi(T)] \leq \text{Var}_{\theta}[W] \,\, \forall \theta\)</span>. That is, <span class="math inline">\(\phi(T)\)</span> is a <em>uniformly better unbiased estimator</em> of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <p><strong>Proof:</strong> Since <span class="math display">\[\mathbb E X=\mathbb E[\mathbb E(X|Y)]\]</span>
-<span class="math display">\[\mathbb V X=\mathbb V[\mathbb E(X|Y)]+\mathbb E[\mathbb V (X|Y)]\]</span> then we have <span class="math display">\[\tau(\theta)=\mathbb E_{\theta}W=\mathbb E_{\theta}[\mathbb E(W|T)]=\mathbb E_{\theta}\phi(T)\]</span> so <span class="math inline">\(\phi(T)\)</span> is unbiased for <span class="math inline">\(\tau(\theta)\)</span>. Also
+<span class="math display">\[\text{Var} X=\text{Var}[\mathbb E(X|Y)]+\mathbb E[\text{Var} (X|Y)]\]</span> then we have <span class="math display">\[\tau(\theta)=\mathbb E_{\theta}W=\mathbb E_{\theta}[\mathbb E(W|T)]=\mathbb E_{\theta}\phi(T)\]</span> so <span class="math inline">\(\phi(T)\)</span> is unbiased for <span class="math inline">\(\tau(\theta)\)</span>. Also
 <span class="math display">\[\begin{align}
-\mathbb V_{\theta}W&amp;=\mathbb V_{\theta}[\mathbb E(W|T)]+\mathbb E_{\theta}[\mathbb V (W|T)]\\
-&amp;=\mathbb V_{\theta}[\phi(T)]+\mathbb E_{\theta}[\mathbb V (W|T)]\\
-&amp;\ge\mathbb V_{\theta}[\phi(T)]
+\text{Var}_{\theta}W&amp;=\text{Var}_{\theta}[\mathbb E(W|T)]+\mathbb E_{\theta}[\text{Var} (W|T)]\\
+&amp;=\text{Var}_{\theta}[\phi(T)]+\mathbb E_{\theta}[\text{Var} (W|T)]\\
+&amp;\ge\text{Var}_{\theta}[\phi(T)]
 \end{align}\]</span> Hence <span class="math inline">\(\phi(T)\)</span> is uniformly better than <span class="math inline">\(W\)</span>, and it only remains to show that <span class="math inline">\(\phi(T)\)</span> is indeed an estimator. That is, we must show that <span class="math inline">\(\phi(T) = \mathbb E[W \vert{} T]\)</span> is a function of only the sample and, in particular, is independent of <span class="math inline">\(\theta\)</span>. But it follows from the definition of sufficiency, and the fact that <span class="math inline">\(W\)</span> is a function only of the sample, that the distribution of <span class="math inline">\(W|T\)</span> is independent of <span class="math inline">\(\theta\)</span>. Hence <span class="math inline">\(\phi(T)\)</span> is a uniformly better unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <ul>
 <li><p>Conditioning any unbiased estimator on a sufficient statistic
@@ -1466,28 +1516,28 @@ an estimator..</p></li>
 unique.</p>
 <p><strong>Proof:</strong> Suppose <span class="math inline">\(W&#39;\)</span> is another best unbiased estimator, and consider the estimator <span class="math inline">\(W^*=\frac{1}{2}(W + W&#39;)\)</span>. Note that <span class="math inline">\(\mathbb E_{\theta}W^* = \tau(\theta)\)</span> and<br />
 <span class="math display">\[\begin{align}
-\mathbb V_{\theta}W^*&amp;=\mathbb V_{\theta}\left(\frac{1}{2}W+\frac{1}{2}W&#39;\right)\\
-&amp;=\frac{1}{4}\mathbb V_{\theta}W+\frac{1}{4}\mathbb V_{\theta}W&#39;+\frac{1}{2}\text{Cov}_{\theta}(W,W&#39;)\\
-&amp;\le\frac{1}{4}\mathbb V_{\theta}W+\frac{1}{4}\mathbb V_{\theta}W&#39;+\frac{1}{2}\left[\mathbb V_{\theta}(W)\mathbb V_{\theta}(W&#39;)\right]^{1/2}\\
-&amp;=\mathbb V_{\theta}W \quad\quad(\mathbb V_{\theta}W=\mathbb V_{\theta}W&#39;)\\
+\text{Var}_{\theta}W^*&amp;=\text{Var}_{\theta}\left(\frac{1}{2}W+\frac{1}{2}W&#39;\right)\\
+&amp;=\frac{1}{4}\text{Var}_{\theta}W+\frac{1}{4}\text{Var}_{\theta}W&#39;+\frac{1}{2}\text{Cov}_{\theta}(W,W&#39;)\\
+&amp;\le\frac{1}{4}\text{Var}_{\theta}W+\frac{1}{4}\text{Var}_{\theta}W&#39;+\frac{1}{2}\left[\text{Var}_{\theta}(W)\text{Var}_{\theta}(W&#39;)\right]^{1/2}\\
+&amp;=\text{Var}_{\theta}W \quad\quad(\text{Var}_{\theta}W=\text{Var}_{\theta}W&#39;)\\
 \end{align}\]</span> But if the above inequality is strict, then the best unbiasedness of <span class="math inline">\(W\)</span> is contradicted, so we must have equality for all <span class="math inline">\(\theta\)</span>. Since the inequality is an application of Cauchy-Schwarz, we can have equality only if <span class="math inline">\(W&#39; = a(\theta) W + b(\theta)\)</span>. Now using properties of covariance, we have <span class="math display">\[\begin{align}
 \text{Cov}_{\theta}(W + W&#39;)&amp;=\text{Cov}_{\theta}(W + a(\theta) W + b(\theta))\\
 &amp;=\text{Cov}_{\theta}(W + a(\theta) W)\\
-&amp;=a(\theta)\mathbb V_{\theta}(W)\\
-\end{align}\]</span> But <span class="math display">\[\text{Cov}_{\theta}(W + W&#39;)=\mathbb V_{\theta}(W)\]</span> since we had equality in last Cauchy-Schwarz, hence <span class="math inline">\(a(\theta)=1\)</span> and since <span class="math inline">\(\mathbb E_{\theta}W^* = \tau(\theta)\)</span>, we must have <span class="math inline">\(b(\theta)=0\)</span> and <span class="math inline">\(W=W&#39;\)</span>.</p>
+&amp;=a(\theta)\text{Var}_{\theta}(W)\\
+\end{align}\]</span> But <span class="math display">\[\text{Cov}_{\theta}(W + W&#39;)=\text{Var}_{\theta}(W)\]</span> since we had equality in last Cauchy-Schwarz, hence <span class="math inline">\(a(\theta)=1\)</span> and since <span class="math inline">\(\mathbb E_{\theta}W^* = \tau(\theta)\)</span>, we must have <span class="math inline">\(b(\theta)=0\)</span> and <span class="math inline">\(W=W&#39;\)</span>.</p>
 <p>The following theorem is mostly useful to show that a given estimator
 <em>isn’t</em> best unbiased.</p>
 <p>If <span class="math inline">\(\mathbb E_{\theta}[W] = \tau(\theta)\)</span>, <span class="math inline">\(W\)</span> is the best unbiased estimator of
 <span class="math inline">\(\tau(\theta)\)</span> if and only if <span class="math inline">\(W\)</span> is uncorrelated with all unbiased estimators of <span class="math inline">\(0\)</span>.</p>
 <p><strong>Proof:</strong> If <span class="math inline">\(W\)</span> satisfies <span class="math inline">\(\mathbb E_{\theta}[W] = \tau(\theta)\)</span>, and we have another estimator, <span class="math inline">\(U\)</span>, that satisfies <span class="math inline">\(\mathbb E_{\theta}U=0\)</span> for all <span class="math inline">\(\theta\)</span>, that is, <span class="math inline">\(U\)</span> is an unbiased estimator of <span class="math inline">\(0\)</span>. The estimator <span class="math display">\[\phi_a=W+aU,\]</span> where <span class="math inline">\(a\)</span> is a constant, satisfies <span class="math inline">\(\mathbb E_{\theta}\phi_a = \tau(\theta)\)</span> and hence is also an unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>. The variance of <span class="math inline">\(\phi_a\)</span> is
-<span class="math display">\[\mathbb V_{\theta}\phi_a=\mathbb V_{\theta}(W+aU)\\
-=\mathbb V_{\theta}W+a^2\mathbb V_{\theta}U+2a\text{Cov}_{\theta}(W,U)\]</span> Now, if for some <span class="math inline">\(\theta=\theta_0,\text{Cov}_{\theta_0}(W,U)&lt;0\)</span>, then we can male <span class="math inline">\(2a\text{Cov}_{\theta_0}(W,U)+a^2\mathbb V_{\theta}U&lt;0\)</span> by choosing <span class="math inline">\(a\in(0, -2\text{Cov}_{\theta_0}(W,U)/\mathbb V_{\theta_0}U)\)</span>. Hence, <span class="math inline">\(\phi_a\)</span> will be better than <span class="math inline">\(W\)</span> at <span class="math inline">\(\theta=\theta_0\)</span> and <span class="math inline">\(W\)</span> can’t be best unbiased. A similar argument will show that if <span class="math inline">\(\text{Cov}_{\theta_0}(W,U)&gt;0\)</span> for any <span class="math inline">\(\theta_0\)</span>, <span class="math inline">\(W\)</span> also cannot be best unbiased.</p>
+<span class="math display">\[\text{Var}_{\theta}\phi_a=\text{Var}_{\theta}(W+aU)\\
+=\text{Var}_{\theta}W+a^2\text{Var}_{\theta}U+2a\text{Cov}_{\theta}(W,U)\]</span> Now, if for some <span class="math inline">\(\theta=\theta_0,\text{Cov}_{\theta_0}(W,U)&lt;0\)</span>, then we can male <span class="math inline">\(2a\text{Cov}_{\theta_0}(W,U)+a^2\text{Var}_{\theta}U&lt;0\)</span> by choosing <span class="math inline">\(a\in(0, -2\text{Cov}_{\theta_0}(W,U)/\text{Var}_{\theta_0}U)\)</span>. Hence, <span class="math inline">\(\phi_a\)</span> will be better than <span class="math inline">\(W\)</span> at <span class="math inline">\(\theta=\theta_0\)</span> and <span class="math inline">\(W\)</span> can’t be best unbiased. A similar argument will show that if <span class="math inline">\(\text{Cov}_{\theta_0}(W,U)&gt;0\)</span> for any <span class="math inline">\(\theta_0\)</span>, <span class="math inline">\(W\)</span> also cannot be best unbiased.</p>
 <p>If <span class="math inline">\(W\)</span> is best unbiased, the above argument shows that <span class="math inline">\(W\)</span> must satisfy
 <span class="math inline">\(\text{Cov}_{\theta}(W,U)=0\)</span> for all <span class="math inline">\(\theta\)</span>, for any <span class="math inline">\(U\)</span> satisfying <span class="math inline">\(\mathbb E_{\theta}U=0\)</span>. Hence the necessity is established.</p>
 <p>Suppose now that we have an unbiased estimator <span class="math inline">\(W\)</span> that is uncorrelated with all unbiased estimators of <span class="math inline">\(0\)</span>. Let <span class="math inline">\(W&#39;\)</span> be any other estimator satisfying <span class="math inline">\(\mathbb E_{\theta}W&#39;=\mathbb E_{\theta}W=\tau(\theta)\)</span> we will show that <span class="math inline">\(W\)</span> is better than <span class="math inline">\(W&#39;\)</span>. Write <span class="math display">\[W&#39;=W+(W&#39;-W),\]</span> and calculate <span class="math display">\[\begin{align}
-\mathbb V_{\theta}W&#39;&amp;=\mathbb V_{\theta}W+\mathbb V_{\theta}(W&#39;-W)+2\text{Cov}_{\theta}(W,W&#39;-W)\\
-&amp;=\mathbb V_{\theta}W+\mathbb V_{\theta}(W&#39;-W)
-\end{align}\]</span> where the last equality is true because <span class="math inline">\(W&#39;-W\)</span> is an unbiased estimator of <span class="math inline">\(0\)</span> and is uncorrelated with <span class="math inline">\(W\)</span> by assumption. Since <span class="math inline">\(\mathbb V_{\theta}(W&#39;-W)\ge 0\)</span>, then <span class="math inline">\(\mathbb V_{\theta}W&#39;\ge \mathbb V_{\theta}W\)</span>. Since <span class="math inline">\(W&#39;\)</span> is arbitrary, it follows that <span class="math inline">\(W\)</span> is the best unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+\text{Var}_{\theta}W&#39;&amp;=\text{Var}_{\theta}W+\text{Var}_{\theta}(W&#39;-W)+2\text{Cov}_{\theta}(W,W&#39;-W)\\
+&amp;=\text{Var}_{\theta}W+\text{Var}_{\theta}(W&#39;-W)
+\end{align}\]</span> where the last equality is true because <span class="math inline">\(W&#39;-W\)</span> is an unbiased estimator of <span class="math inline">\(0\)</span> and is uncorrelated with <span class="math inline">\(W\)</span> by assumption. Since <span class="math inline">\(\text{Var}_{\theta}(W&#39;-W)\ge 0\)</span>, then <span class="math inline">\(\text{Var}_{\theta}W&#39;\ge \text{Var}_{\theta}W\)</span>. Since <span class="math inline">\(W&#39;\)</span> is arbitrary, it follows that <span class="math inline">\(W\)</span> is the best unbiased estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
 <p>The idea comes from considering <span class="math inline">\(\phi_a = W + aU\)</span> where <span class="math inline">\(\mathbb E[U] = 0\)</span>,
 then considering the variance.</p>
 <p><strong>Unbiased estimator of <span class="math inline">\(0\)</span></strong> Note that an unbiased estimator of <span class="math inline">\(0\)</span> is simply
@@ -1895,13 +1945,156 @@ in probability to the parameter <span class="math inline">\(\theta\)</span> it i
 <p>This definition should be compared with <a href="#convergence-in-probability">Convergence in Probability</a>. Definition of Convergence in Probability dealt with one sequence of random variables with one probability structure, Definition of consistent sequence of estimators deals with an entire family o f probability structures, indexed by <span class="math inline">\(\theta\)</span>. For each different value of <span class="math inline">\(\theta\)</span>, the probability structure associated with the sequence <span class="math inline">\(W_n\)</span> is different. And the definition says that for each value of <span class="math inline">\(\theta\)</span>, the probability structure is such that the sequence converges in probability to the true <span class="math inline">\(\theta\)</span>. This is the usual difference between a probability definition and a statistics definition. The probability definition deals with one probability structure, but the statistics definition deals with an entire family.</p>
 <p>Recall that, for an estimator <span class="math inline">\(W_n\)</span> <a href="#chebyshevs-inequality">Chebychev’s Inequality</a> states
 <span class="math display">\[P_{\theta}(|W_{\theta}-\theta|\ge \epsilon\sigma)\le \frac{\mathbb E_{\theta}[(W_n-\theta)^2]}{\sigma^2\epsilon^2}\]</span> so if for every <span class="math inline">\(\theta\in\Theta\)</span>, <span class="math display">\[\lim_{n\to\infty}\mathbb E_{\theta}[(W_n-\theta)^2]=0\]</span> then the sequence of estimators is consistent.</p>
-<p>Since <span class="math inline">\(\mathbb E_{\theta}[(W_n-\theta)^2]=\mathbb V_{\theta}W_n+[\text{Bias}_{\theta}W_n]^2\)</span>, Then the following theorem:</p>
+<p>Since <span class="math inline">\(\mathbb E_{\theta}[(W_n-\theta)^2]=\text{Var}_{\theta}W_n+[\text{Bias}_{\theta}W_n]^2\)</span>, Then the following theorem:</p>
 <p>If <span class="math inline">\(W_n\)</span> is a sequence of estimators of a parameter <span class="math inline">\(\theta\)</span> satisfying</p>
 <ul>
-<li><span class="math inline">\(\lim_{n\to\infty}\mathbb V_{\theta}W_n=0\)</span>,</li>
+<li><span class="math inline">\(\lim_{n\to\infty}\text{Var}_{\theta}W_n=0\)</span>,</li>
 <li><span class="math inline">\(\lim_{n\to\infty}\text{Bias}_{\theta}W_n=0\)</span>,</li>
 </ul>
 <p>for every <span class="math inline">\(\theta\in\Theta\)</span>, then <span class="math inline">\(W_n\)</span> is a consistent sequence of estimators of <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div id="suitable-regularity-conditions" class="section level4">
+<h4>Suitable Regularity Conditions</h4>
+<p>These conditions mainly relate to differentiability of the density and the ability to interchange differentiation and integration.</p>
+<p>The following four assumptions are sufficient to prove <a href="#theorem-consistency-of-mles">Theorem: Consistency of MLEs</a></p>
+<ul>
+<li><p>(A1) We observe <span class="math inline">\(X_1 X_2 , \cdots,X_n\)</span>, where <span class="math inline">\(X_i \sim f(x|\theta)\)</span> are iid.</p></li>
+<li><p>(A2) The parameter is identifiable; that is, if <span class="math inline">\(\theta\ne \theta&#39;\)</span>, then <span class="math inline">\(f(x|\theta) \ne f(x|\theta&#39;).\)</span></p></li>
+<li><p>(A3) The densities <span class="math inline">\(f(x|\theta)\)</span> have common support, and <span class="math inline">\(f(x|\theta)\)</span> is differentiable in <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>(A4) The parameter space <span class="math inline">\(\Omega\)</span> contains an open set <span class="math inline">\(\omega\)</span> of which the true parameter value <span class="math inline">\(\theta_0\)</span> is an interior point.</p></li>
+</ul>
+<p>The next two assumptions, together with (Al)-(A4) are sufficient to prove <a href="#theorem-asymptotic-efficiency-of-mles">Theorem: Asymptotic efficiency of MLEs</a>, asymptotic normality and efficiency of MLEs.</p>
+<ul>
+<li><p>(A5) For every <span class="math inline">\(x \in \mathcal X\)</span>, the density <span class="math inline">\(f(x|\theta)\)</span> is three times differentiable with respect to <span class="math inline">\(\theta\)</span>, the third derivative is continuous in <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(\int f(x|\theta)dx\)</span> can be differentiated three times under the integral sign.</p></li>
+<li><p>(A6) For any <span class="math inline">\(\theta_0 \in \Omega\)</span>, there exists a positive number <span class="math inline">\(c\)</span> and a function <span class="math inline">\(M(x)\)</span> (both of which may depend on (<span class="math inline">\(\theta_0\)</span>) such that <span class="math display">\[\left|\frac{\partial^3}{\partial\theta^3}\right|\log f(x|\theta)\le M(x)\quad \forall x\in \mathcal X, \theta_0-c&lt;\theta&lt;\theta_0+c\]</span> with <span class="math inline">\(\mathbb E_{\theta_0}[M(x)]&lt;\infty.\)</span></p></li>
+</ul>
+</div>
+<div id="theorem-consistency-of-mles" class="section level4">
+<h4>Theorem: Consistency of MLEs</h4>
+<p>Let <span class="math inline">\(X_1, X_2, \cdots,\)</span> be iid <span class="math inline">\(f(x|\theta)\)</span>, and let <span class="math inline">\(L(\theta|\mathbf x)=\prod_{i=1}^{n}f(x_i|\theta)\)</span> be the likelihood function. Let <span class="math inline">\(\hat\theta\)</span> denote the MLE of <span class="math inline">\(\theta\)</span>. Let <span class="math inline">\(\tau(\theta)\)</span> be a continuous function of <span class="math inline">\(\theta\)</span>. Under the <a href="#suitable-regularity-conditions">regularity conditions</a> on <span class="math inline">\(f(x|\theta)\)</span> and, hence, <span class="math inline">\(L(\theta|\mathbf x)\)</span>, for every <span class="math inline">\(\theta &gt; 0\)</span> and every <span class="math inline">\(\theta\in\Theta\)</span>,
+<span class="math display">\[\lim_{n\to\infty}^{}P_{\theta}(|\tau(\hat\theta)-\tau(\theta)|\ge\epsilon)=0.\]</span> That is <span class="math inline">\(\tau(\hat\theta)\)</span> is a consistent estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<p><strong>Proof:</strong> The proof proceeds by showing that <span class="math inline">\(\frac{1}{n}\log L(\hat\theta|\mathbf x)\)</span> converges almost surely to <span class="math inline">\(\mathbb E_{\theta}(\log f(X|\theta))\)</span> for every <span class="math inline">\(\theta\in\Theta\)</span>. Under some conditions on <span class="math inline">\(f(x|\theta)\)</span>, this implies that <span class="math inline">\(\hat\theta\)</span> converges to <span class="math inline">\(\theta\)</span> in probability and, hence, <span class="math inline">\(\tau(\hat\theta)\)</span> converges to <span class="math inline">\(\tau(\theta)\)</span> in probability.</p>
+</div>
+</div>
+<div id="efficiency" class="section level3">
+<h3>Efficiency</h3>
+<div id="definition-limiting-variance" class="section level4">
+<h4>Definition: limiting variance</h4>
+<p>For an estimator <span class="math inline">\(T_n\)</span>, if <span class="math inline">\(\lim_{n\to\infty}k_n\text{Var} T_n=\tau^2&lt;\infty\)</span>, where <span class="math inline">\(\{k_n\}\)</span> is a sequence of constants, then <span class="math inline">\(\tau^2\)</span> is called the limiting variance or limit of the variances.</p>
+</div>
+<div id="definition-asymptotic-variance" class="section level4">
+<h4>Definition: asymptotic variance</h4>
+<p>For an estimator <span class="math inline">\(T_n\)</span>, suppose that <span class="math inline">\(k_n(T_n - \tau(\theta)) \to n(0, \sigma^2)\)</span> in distribution. The parameter <span class="math inline">\(\sigma^2\)</span> is called the asymptotic variance or variance of the limit distribution of <span class="math inline">\(T_n\)</span>.</p>
+</div>
+<div id="definition-asymptotically-efficient" class="section level4">
+<h4>Definition: asymptotically efficient</h4>
+<p>A sequence of estimators <span class="math inline">\(W_n\)</span> is asymptotically efficient for a
+parameter <span class="math inline">\(\tau(\theta)\)</span> if <span class="math inline">\(\sqrt{n}[W_n-\tau(\theta)]\to n[0,v(\theta)]\)</span> in distribution and
+<span class="math display">\[v(\theta)=\frac{[\tau&#39;(\theta)]^2}{\mathbb E_{\theta}\left(\left(\frac{\partial}{\partial\theta}\log f(X|\theta)\right)^2\right)}\]</span> that is, the asymptotic variance of <span class="math inline">\(W_n\)</span> achieves the <a href="#cramér-rao-inequality">Cramer-Rao Lower Bound</a>.</p>
+</div>
+<div id="theorem-asymptotic-efficiency-of-mles" class="section level4">
+<h4>Theorem: Asymptotic efficiency of MLEs</h4>
+<p>Let <span class="math inline">\(X_1 &gt; X_2, \cdots,\)</span> be iid <span class="math inline">\(f(x|\theta)\)</span>, let <span class="math inline">\(\hat\theta\)</span> denote the MLE of <span class="math inline">\(\theta\)</span>, and let <span class="math inline">\(\tau(\theta)\)</span> be a continuous junction of <span class="math inline">\(\theta\)</span>. Under the <a href="#suitable-regularity-conditions">regularity conditions</a> on <span class="math inline">\(f(x|\theta)\)</span> and, hence, <span class="math inline">\(L(\theta|\mathbf x)\)</span>,
+<span class="math display">\[\sqrt{n}[\tau(\hat\theta)-\tau(\theta)]\to n[0,v(\theta)],\]</span> where <span class="math inline">\(v(\theta)\)</span> is the <a href="#cramér-rao-inequality">Cramer-Rao Lower Bound</a>. That is <span class="math inline">\(\tau(\hat\theta)\)</span> is a consistent and asymptotically efficient estimator of <span class="math inline">\(\tau(\theta)\)</span>.</p>
+<p><strong>Proof:</strong> Recall that <span class="math inline">\(L(\theta|\mathbf x)=\sum\log f(x_i|\theta)\)</span> is the log likelihood function. Now expande the first derivative of the log likelihood function around the true value <span class="math inline">\(\theta_0\)</span>,
+<span class="math display">\[L&#39;(\theta|\mathbf x)=L&#39;(\theta_0|\mathbf x)+(\theta-\theta_0)L&#39;&#39;(\theta_0|\mathbf x)+\frac{1}{2!}(\theta-\theta_0)^2L&#39;&#39;&#39;(\theta_0|\mathbf x)+\cdots\]</span> where we are going to ignore the higher-order terms (a justifiable maneuver under the regularity conditions).</p>
+<p>Now substitute the MLE <span class="math inline">\(\hat\theta\)</span> for <span class="math inline">\(\theta\)</span>, and realize that the left-hand side of last equation is <span class="math inline">\(0\)</span>. Rearranging and multiplying through by <span class="math inline">\(\sqrt{n}\)</span> gives us</p>
+<p><span class="math display">\[\sqrt{n}(\hat\theta-\theta_0)=\sqrt{n}\frac{-L&#39;(\theta_0|\mathbf x)}{L&#39;&#39;(\theta_0|\mathbf x)}=\frac{-\frac{1}{\sqrt{n}}L&#39;(\theta_0|\mathbf x)}{\frac{1}{n}L&#39;&#39;(\theta_0|\mathbf x)}\]</span> If we let <span class="math inline">\(I(\theta_0)=\mathbb E[L&#39;(\theta_0|\mathbf x)]^2=1/v(\theta)\)</span> denote the <a href="#fisher-information">information number</a> for one observation,
+application of the Central Limit Theorem and the Weak Law of Large
+Numbers will show <span class="math display">\[-\frac{1}{\sqrt{n}}L&#39;(\theta_0|\mathbf X)\to n[0,I(\theta_0)],\]</span> <span class="math display">\[\frac{1}{n}L&#39;&#39;(\theta_0|\mathbf x)\to I(\theta_0)\]</span> Thus if we let <span class="math inline">\(W\sim n[0,I(\theta_0)]\)</span>, then <span class="math inline">\(\sqrt{n}(\hat\theta-\theta_0)\)</span> converges in distribution to <span class="math inline">\(W/I(\theta_0)\sim n[0, 1/I(\theta_0)]\)</span>.</p>
+</div>
+<div id="asymptotic-normality-and-consistency" class="section level4">
+<h4>Asymptotic normality and consistency</h4>
+<p>Suppose that <span class="math display">\[\sqrt{n}\frac{W_n-\mu}{\sigma}\to Z\text{  in distribution}\]</span> where <span class="math inline">\(Z\sim n(0,1)\)</span>. By applying <a href="#slutskys-theorem">Slutsky’s Theorem</a> we conclude <span class="math display">\[W_n-\mu=\left(\frac{\sigma}{\sqrt{n}}\right)\left(\sqrt{n}\frac{W_n-\mu}{\sigma}\right)\to\lim_{n\to\infty}\left(\frac{\sigma}{\sqrt{n}}\right)Z=0,\]</span> so <span class="math inline">\(W_n-\mu \to 0\)</span> in distribution. Since convergence in distribution to a point is <a href="#convergence-in-probability-implies-convergence-in-distribution">equivalent to convergence in probability</a>, so <span class="math inline">\(W_n\)</span> is a consistent estimator of <span class="math inline">\(\mu\)</span>.</p>
+</div>
+</div>
+<div id="calculations-and-comparisons" class="section level3">
+<h3>Calculations and Comparisons</h3>
+<p>If an MLE is asymptotically efficient, the asymptotic variance in <a href="#theorem-consistency-of-mles">Consistency of MLEs Theorem</a>
+is the <a href="#the-delta-method">Delta Method</a> variance (without the <span class="math inline">\(1/n\)</span> in term). Thus, we can use the <a href="#cramér-rao-inequality">Cramer-Rao Lower Bound</a> as an approximation to the true variance of the MLE. Suppose that <span class="math inline">\(X_1,\cdots, X_n\)</span> are iid <span class="math inline">\(f(x|\theta)\)</span>, <span class="math inline">\(\hat\theta\)</span> is the MLE of <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(I_n(\theta)=\mathbb E_{\theta}\left(\frac{\partial}{\partial\theta}\log L(\theta|\mathbf X)\right)^2\)</span> is the information number of the sample. From the Delta Method and asymptotic efficiency of MLEs, the variance of <span class="math inline">\(h(\hat\theta)\)</span> can be approximated by<br />
+<span class="math display">\[\begin{align}
+\text{Var} (h(\hat\theta)|\theta)&amp;\approx\frac{[h(\hat\theta)]^2}{I_n(\theta)}\\
+&amp;=\frac{[h(\hat\theta)]^2}{\mathbb E_{\theta}\left(\frac{\partial}{\partial\theta}\log L(\theta|\mathbf X)\right)^2}\\
+&amp;=\frac{[h(\hat\theta)]^2}{-\mathbb E_{\theta}\left(\frac{\partial^2}{\partial\theta^2}\log L(\theta|\mathbf X)\right)}\\
+&amp;\approx\frac{[h(\hat\theta)]^2}{-\frac{\partial^2}{\partial\theta^2}\log L(\theta|\mathbf X)|_{\theta=\hat{\theta}}}\\
+\end{align}\]</span> See Fisher information <a href="#eq:Fisherinformation">(1)</a>.</p>
+<p>The denominator is <span class="math inline">\(\hat I_n(\hat\theta)\)</span>, the observed information number.
+To estimate <span class="math inline">\(\text{Var}_{\theta}h(\hat\theta)\)</span>, first we <em>approximate</em> <span class="math inline">\(\text{Var}_{\theta}h(\hat\theta)\)</span>; then we <em>estimate</em> the resulting approximation, usually by substituting <span class="math inline">\(\hat\theta\)</span> for <span class="math inline">\(\theta\)</span>. The resulting estimate can be denoted by <span class="math inline">\(\text{Var}_{\hat\theta}h(\hat\theta)\)</span> or <span class="math inline">\(\widehat{\text{Var}}_{\theta}h(\hat\theta).\)</span></p>
+<p>It follows from <a href="#theorem-consistency-of-mles">Theorem of Consistency of MLEs</a> that <span class="math inline">\(-\frac{1}{n}\frac{\partial^2}{\partial\theta^2}\log L(\theta|\mathbf X)|_{\theta=\hat\theta}\)</span> is a consistent estimator of <span class="math inline">\(I(\theta)\)</span>, so it follows that <span class="math inline">\(\text{Var}_{\hat\theta}h(\hat\theta)\)</span> is a consistent estimator of <span class="math inline">\(\text{Var}_{\theta}h(\hat\theta)\)</span>.</p>
+<div id="asymptotic-relative-efficiency-are" class="section level4">
+<h4>Asymptotic Relative Efficiency (ARE)</h4>
+<p>If two estimators <span class="math inline">\(W_n\)</span> and <span class="math inline">\(V_n\)</span> satisfy
+<span class="math display">\[\sqrt{n}[W_n-\tau(\theta)]\to n[0,\sigma^2_W]\]</span>
+<span class="math display">\[\sqrt{n}[V_n-\tau(\theta)]\to n[0,\sigma^2_V]\]</span> in distribution, the Asymptotic Relative Efficiency (ARE) of <span class="math inline">\(V_n\)</span> with respect to <span class="math inline">\(W_n\)</span> is <span class="math display">\[\text{ARE}(V_n, W_n)=\frac{\sigma^2_W}{\sigma^2_V}\]</span> And <span class="math inline">\(n\text{Var}(V_n)=\sigma^2_V\)</span>, <span class="math inline">\(n\text{Var}(W_n)=\sigma^2_W\)</span>.</p>
+</div>
+</div>
+<div id="bootstrap-standard-errors" class="section level3">
+<h3>Bootstrap Standard Errors</h3>
+</div>
+</div>
+<div id="robustness" class="section level2">
+<h2>Robustness</h2>
+<div id="the-mean-and-the-median" class="section level3">
+<h3>The Mean and the Median</h3>
+<div id="definition-breakdown-value" class="section level4">
+<h4>Definition: breakdown value</h4>
+<p>Let <span class="math inline">\(X_{(1)} &lt; \cdots &lt; X_{(n)}\)</span> be an ordered sample of size <span class="math inline">\(n\)</span>, and let <span class="math inline">\(T_n\)</span> be a statistic based on this sample. <span class="math inline">\(T_n\)</span> has <em>breakdown value</em>
+<span class="math inline">\(b, 0\le b\le 1\)</span>, if, for every <span class="math inline">\(\epsilon&gt;0\)</span>, <span class="math display">\[\lim_{X_{(\{(1-b)n\})}\to\infty} T_n&lt;\infty\quad\text{and}\quad\lim_{X_{(\{(1-(b+\epsilon))n\})}\to\infty} T_n=\infty\]</span> The <span class="math inline">\(\{(1-b)n\}\)</span> is the <a href="#definition-sample-percentile">rounded sample percentile notation.</a></p>
+</div>
+</div>
+<div id="m-estimators" class="section level3">
+<h3>M-Estimators</h3>
+<div id="huber-estimator" class="section level4">
+<h4>Huber estimator</h4>
+<p>The estimator defined as the minimizer of the equation:
+<span class="math display">\[\sum_{i=1}^{n}\rho(x_i-a)=
+\begin{cases}
+\frac{1}{2}\sum_{i=1}^{n}(x_i-a)^2 &amp; \text{if  }|x_i-a|\le k\\
+\sum_{i=1}^{n}\left(k|x_i-a|-\frac{1}{2}k^2\right)&amp; \text{if  }|x_i-a|\ge k\\
+\end{cases}\]</span>
+is called a Huber estimator.</p>
+</div>
+</div>
+</div>
+<div id="hypothesis-testing-1" class="section level2">
+<h2>Hypothesis Testing</h2>
+<div id="asymptotic-distribution-of-lrts" class="section level3">
+<h3>Asymptotic Distribution of LRTs</h3>
+<p>Likelihood ratio method of test construction <span class="math inline">\(H_0:\theta\in \Theta_0\)</span>:
+<span class="math display">\[\lambda(\mathbf x)=\frac{\underset{\Theta_0}{\sup}L(\theta|\mathbf x)}{\underset{\Theta}{\sup}L(\theta|\mathbf x)}\]</span> and an explicit form for the rejection region, <span class="math inline">\(\{\mathbf x:\lambda(\mathbf x)\le c\}\)</span>. To define a level <span class="math inline">\(\alpha\)</span> test, the constant <span class="math inline">\(c\)</span> must be chosen so that
+<span class="math display">\[\underset{\theta\in\Theta_0}{\sup}P_{\theta}(\lambda(\mathbf X)\le c)\le\alpha.\]</span></p>
+<div id="wilks-theorem" class="section level4">
+<h4>Wilks’ theorem</h4>
+<p>For testing <span class="math inline">\(H_0:\theta=\theta_0\)</span> versus <span class="math inline">\(H_1:\theta\ne\theta_0\)</span>, suppose <span class="math inline">\(X_1,\cdots, X_n\)</span> are iid <span class="math inline">\(f(x|\theta)\)</span>, <span class="math inline">\(\hat\theta\)</span> is the MLE of <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(f(x|\theta)\)</span> satisfies the <a href="#suitable-regularity-conditions">regularity conditions</a>. Then under <span class="math inline">\(H_0\)</span>, as <span class="math inline">\(n\to\infty\)</span>,
+<span class="math display">\[-2\log\lambda(\mathbf X)\to\chi^2_1\quad\text{in distribution}\]</span> where <span class="math inline">\(\chi^2_1\)</span> is a <span class="math inline">\(\chi^2\)</span> random variable with <span class="math inline">\(1\)</span> degree of freedom.</p>
+<p><strong>Proof:</strong> First expand <span class="math inline">\(\log L(\theta|\mathbf x)=l(\theta|\mathbf x)\)</span> in a Taylor series around <span class="math inline">\(\hat\theta\)</span>, giving
+<span class="math display">\[l(\theta|\mathbf x)\approx l(\hat\theta|\mathbf x)+l&#39;(\hat\theta|\mathbf x)(\theta-\hat\theta)+l&#39;&#39;(\hat\theta|\mathbf x)\frac{(\theta-\hat\theta)^2}{2!}\]</span> Now substitute the expansion for <span class="math inline">\(l(\theta_0|\mathbf x)\)</span> in <span class="math inline">\(-2\log\lambda(\mathbf x)=-2l(\theta_0|\mathbf x)+2l(\hat\theta|\mathbf x)\)</span>, and get
+<span class="math display">\[\begin{align}
+-2\log\lambda(\mathbf x)&amp;\approx -l&#39;&#39;(\hat\theta|\mathbf x)(\theta-\hat\theta)^2\\
+&amp;=-\log&#39;&#39; L(\hat\theta|\mathbf x)(\theta-\hat\theta)^2\\
+&amp;=nI(\hat\theta)(\theta-\hat\theta)^2\\
+&amp;=\left(\sqrt{nI(\hat\theta)}(\theta-\hat\theta)\right)^2
+\end{align}\]</span> since <span class="math inline">\(l&#39;(\hat\theta|\mathbf x)=0\)</span>.
+By <a href="#theorem-asymptotic-efficiency-of-mles">Asymptotic efficiency of MLEs Theorem</a>, <span class="math inline">\(\sqrt{nI(\hat\theta)}(\theta-\hat\theta)\sim n(0,1)\)</span>, then <span class="math display">\[-2\log\lambda(\mathbf X)\to\chi^2_1\quad\text{in distribution}\]</span></p>
+</div>
+<div id="wilks-theorem-generalized" class="section level4">
+<h4>Wilks’ theorem (generalized)</h4>
+<p>Let <span class="math inline">\(X_1,\cdots,X_n\)</span> be a random sample from a pdf or pmf <span class="math inline">\(f(x|\theta)\)</span>.
+Under the <a href="#suitable-regularity-conditions">regularity conditions</a>, if <span class="math inline">\(\theta\in\Theta_0\)</span>, then the distribution of the statistic <span class="math inline">\(-2\log\lambda(\mathbf X)\)</span> converges to a chi squared distribution as the sample size <span class="math inline">\(n \to\infty\)</span>. The degrees of freedom of the limiting distribution is the difference between the number of free parameters specified by <span class="math inline">\(\theta\in\Theta_0\)</span> and the number of free parameters specified by <span class="math inline">\(\theta\in\Theta\)</span>.</p>
+<p><strong>Proof:</strong>
+Rejection of <span class="math inline">\(H_0:\theta\in\Theta_0\)</span> for small values of <span class="math inline">\(\lambda(\mathbf X)\)</span> is equivalent to rejection for large values of <span class="math inline">\(-2\log\lambda(\mathbf X)\)</span>. Thus, <span class="math display">\[H_0\text{ is rejected if and only if } -2\log\lambda(\mathbf X)\ge\chi^2_{\nu,\alpha},\]</span> The Type I Error probability will be approximately <span class="math inline">\(\alpha\)</span> if <span class="math inline">\(\theta\in\Theta_0\)</span> and the sample size is large. In this way, <a href="#wilks-theorem">Wilks’ theorem</a> will be approximately satisfied for large sample sizes and an <em>asymptotic size <span class="math inline">\(\alpha\)</span> test</em> has been defined. Note that the theorem will actually imply only that
+<span class="math display">\[\lim_{n\to\infty}P_{\theta}(\text{reject }H_0)=\alpha\quad\text{for each }\theta\in\Theta_0,\]</span> not that the <span class="math inline">\(\sup_{\theta\in\Theta_0}P_{\theta}(\text{reject }H_0)\)</span> converges to <span class="math inline">\(\alpha\)</span>. This is usually the case for asymptotic size <span class="math inline">\(\alpha\)</span> tests.</p>
+<p><span class="math inline">\(\Theta\)</span> can be represented as a subset of <span class="math inline">\(q\)</span>-dimentional Euclidian space that contains an open subset in <span class="math inline">\(\mathfrak R^q\)</span>, <span class="math inline">\(\Theta_0\)</span> can be represented as a subset of <span class="math inline">\(p\)</span>-dimentional Euclidian space that contains an open subset in <span class="math inline">\(\mathfrak R^p\)</span>, where <span class="math inline">\(p&lt;q\)</span>. Then <span class="math inline">\(q-p=\nu\)</span> is the degree of freedom for the test statistic.</p>
+</div>
+<div id="wald-test" class="section level4">
+<h4>Wald test</h4>
+<p>A Wald test is a test based on a statistic of the form <span class="math display">\[Z_n=\frac{W_n-\theta_0}{S_n}=\frac{W_n-\theta}{S_n}+\frac{\theta-\theta_0}{S_n}\]</span> where <span class="math inline">\(\theta_0\)</span> is a hypothesized value of the parameter <span class="math inline">\(\theta\)</span>, <span class="math inline">\(W_n\)</span> is an estimator of <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(S_n\)</span> is a standard error for <span class="math inline">\(W_n\)</span>, an estimate of the standard deviation of <span class="math inline">\(W_n\)</span>. If <span class="math inline">\(W_n\)</span> is the MLE of <span class="math inline">\(\theta\)</span>, then, as discussed in <a href="#wilks-theorem">Wilks’ theorem</a> <span class="math inline">\(1/\sqrt{I_n(W_n)}\)</span> is a reasonable standard error for <span class="math inline">\(W_n\)</span>. Alternatively, <span class="math inline">\(1/\sqrt{\hat I_n(W_n)}\)</span> where <span class="math display">\[\hat I_n(W_n)=-\frac{\partial^2}{\partial\theta^2}\log L(\theta|\mathbf X)\bigg|_{\theta=W_n}\]</span> is the observed information number, is often used.</p>
+</div>
+<div id="score-test" class="section level4">
+<h4>Score test</h4>
+<p>The <em>score statistic</em> is defined to be <span class="math display">\[S(\theta)=\frac{\partial}{\partial\theta}\log f(\mathbf X|\theta)=\frac{\partial}{\partial\theta}\log L(\theta|\mathbf X)\]</span> from <a href="#cramér-rao-inequality">Cramér-Rao Inequality</a> we know that for all <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\mathbb E_{\theta}S(\theta)=0\)</span>. In particular, if we are testing <span class="math inline">\(H_0:\theta=\theta_0\)</span> and if <span class="math inline">\(H_0\)</span> is true, then <span class="math inline">\(S(\theta_0)\)</span> has mean <span class="math inline">\(0\)</span>. Furthermore, from <a href="#fisher-information">Fisher Information</a>
+<span class="math display">\[\text{Var}_{\theta}S(\theta)=\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log L(\theta\vert{} \mathbf X ) \right)^2 \right]=I_n(\theta);\]</span> the information number is the variance of the score statistic. The test statistic for the <strong>score test</strong> is
+<span class="math display">\[Z_S=S(\theta_0)/\sqrt{I_n(\theta_0)}.\]</span> If <span class="math inline">\(H_0\)</span> is true, <span class="math inline">\(Z_s\)</span> has mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>. From <a href="#theorem-asymptotic-efficiency-of-mles">Theorem: Asymptotic efficiency of MLEs</a> it follows that <span class="math inline">\(Z_s\)</span> converges to a standard normal random variable if <span class="math inline">\(H_0\)</span> is true. Thus, the approximate level <span class="math inline">\(\alpha\)</span> score test rejects <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|Z_S|&gt;z_{\alpha/2}.\)</span></p>
 </div>
 </div>
 </div>
