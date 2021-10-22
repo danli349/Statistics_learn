@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">82 min read</span>
+    <span class="article-duration">88 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -218,10 +218,27 @@
 <ul>
 <li><a href="#asymptotic-distribution-of-lrts">Asymptotic Distribution of LRTs</a></li>
 </ul></li>
+<li><a href="#interval-estimation-1">Interval Estimation</a></li>
 </ul></li>
 <li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
 <ul>
-<li><a href="#simple-linear-regression">Simple Linear Regression</a></li>
+<li><a href="#oneway-analysis-of-variance">Oneway Analysis of Variance</a>
+<ul>
+<li><a href="#model-and-distribution-assumptions">Model and Distribution Assumptions</a></li>
+<li><a href="#the-classic-anova-hypothesis">The Classic ANOVA Hypothesis</a></li>
+<li><a href="#inferences-regarding-linear-combinations-of-means">Inferences Regarding Linear Combinations of Means</a></li>
+<li><a href="#the-anova-f-test">The ANOVA F Test</a></li>
+<li><a href="#simultaneous-estimation-of-contrasts">Simultaneous Estimation of Contrasts</a></li>
+<li><a href="#partitioning-sums-of-squares">Partitioning Sums of Squares</a></li>
+</ul></li>
+<li><a href="#simple-linear-regression">Simple Linear Regression</a>
+<ul>
+<li><a href="#least-squares">Least Squares</a></li>
+<li><a href="#best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a></li>
+<li><a href="#models-and-distribution-assumptions">Models and Distribution Assumptions</a></li>
+<li><a href="#estimation-and-prediction-at-a-specified-x-x_0">Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></a></li>
+<li><a href="#simultaneous-estimation-and-confidence-bands">Simultaneous Estimation and Confidence Bands</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#regression-models">12. Regression Models</a></li>
 <li><a href="#references">References</a></li>
@@ -2030,6 +2047,11 @@ To estimate <span class="math inline">\(\text{Var}_{\theta}h(\hat\theta)\)</span
 </div>
 <div id="bootstrap-standard-errors" class="section level3">
 <h3>Bootstrap Standard Errors</h3>
+<p>We can estimate the variance of the sample mean <span class="math inline">\(\bar{X}\)</span> by
+<span class="math display">\[\text{Var}^*(\bar{X})=\frac{1}{n^n-1}\sum_{i=1}^{n^n}(\bar{x}^*_i-\bar{\bar{x}^*})^2\]</span> where <span class="math display">\[\bar{\bar{x}^*}=\frac{1}{n^n}\sum_{i=1}^{n^n}\bar{x}^*_i\]</span> the mean of the resamples.</p>
+<p>The variance formula is applicable to virtually any estimator. Thus, for any estimator <span class="math inline">\(\hat\theta(\mathbf x)=\hat\theta\)</span>, we can write
+<span class="math display">\[\text{Var}^*(\hat\theta)=\frac{1}{n^n-1}\sum_{i=1}^{n^n}(\hat\theta^*_i-\bar{\hat\theta^*})^2\]</span> where <span class="math inline">\(\hat\theta^*_i\)</span> is the estimator calculated from the <span class="math inline">\(i\)</span>th resample and <span class="math display">\[\bar{\hat\theta^*}=\frac{1}{n^n}\sum_{i=1}^{n^n}\hat\theta^*_i\]</span> the
+mean of the resampled values.</p>
 </div>
 </div>
 <div id="robustness" class="section level2">
@@ -2046,13 +2068,16 @@ To estimate <span class="math inline">\(\text{Var}_{\theta}h(\hat\theta)\)</span
 <h3>M-Estimators</h3>
 <div id="huber-estimator" class="section level4">
 <h4>Huber estimator</h4>
-<p>The estimator defined as the minimizer of the equation:
+<p>The estimator defined as the minimizer of the <span class="math inline">\(\rho\)</span>-functions:
 <span class="math display">\[\sum_{i=1}^{n}\rho(x_i-a)=
 \begin{cases}
 \frac{1}{2}\sum_{i=1}^{n}(x_i-a)^2 &amp; \text{if  }|x_i-a|\le k\\
 \sum_{i=1}^{n}\left(k|x_i-a|-\frac{1}{2}k^2\right)&amp; \text{if  }|x_i-a|\ge k\\
 \end{cases}\]</span>
-is called a Huber estimator.</p>
+is called a M-Estimators.</p>
+<p>Since minimization of a function is typically done by solving for the zeros of the derivative (when we can take a derivative), defining <span class="math inline">\(\psi=\rho&#39;\)</span>, we see that an M-estimator is the solution to
+<span class="math display">\[\sum_{i=1}^{n}\psi(x_i-\theta)=0\]</span> We write a Taylor expansion for <span class="math inline">\(\psi\)</span> as <span class="math display">\[\sum_{i=1}^{n}\psi(x_i-\theta)\approx\sum_{i=1}^{n}\psi(x_i-\theta_0)+(\theta-\theta_0)\sum_{i=1}^{n}\psi&#39;(x_i-\theta_0)=0\]</span> where <span class="math inline">\(\theta_0\)</span> is the true value and let <span class="math inline">\(\hat\theta_M\)</span> be the solution to last equation and substitute this for <span class="math inline">\(\theta\)</span> to obtain
+<span class="math display">\[\sum_{i=1}^{n}\psi(x_i-\theta_0)+(\hat\theta_M-\theta_0)\sum_{i=1}^{n}\psi&#39;(x_i-\theta_0)=0\]</span> Then <span class="math display">\[\sqrt{n}(\hat\theta_M-\theta_0)=\frac{-\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\psi(x_i-\theta_0)}{\frac{1}{n}\sum_{i=1}^{n}\psi&#39;(x_i-\theta_0)}\]</span> Now we assume that <span class="math inline">\(\theta_0\)</span> satisfies <span class="math inline">\(\mathbb E_{\theta_0}\psi(X-\theta_0)=0\)</span> (which is usually taken as the definition of (<span class="math inline">\(\theta_0\)</span>). It follows that <span class="math display">\[-\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\psi(X_i-\theta_0)=\sqrt{n}\left[-\frac{1}{n}\sum_{i=1}^{n}\psi(X_i-\theta_0)\right]\to n\left(0,\mathbb E_{\theta_0}\psi(X-\theta_0)^2\right)\]</span> in distribution, and the Law of Large Numbers yields <span class="math display">\[\frac{1}{n}\sum_{i=1}^{n}\psi&#39;(x_i-\theta_0)\to \mathbb E_{\theta_0}\psi&#39;(X-\theta_0)\]</span> in probability. Putting this all together we have <span class="math display">\[\sqrt{n}(\hat\theta_M-\theta_0)\to n\left(0, \frac{\mathbb E_{\theta_0}\psi(X-\theta_0)^2}{[\mathbb E_{\theta_0}\psi&#39;(X-\theta_0)]^2}\right)\]</span></p>
 </div>
 </div>
 </div>
@@ -2098,83 +2123,230 @@ Rejection of <span class="math inline">\(H_0:\theta\in\Theta_0\)</span> for smal
 </div>
 </div>
 </div>
+<div id="interval-estimation-1" class="section level2">
+<h2>Interval Estimation</h2>
+</div>
 </div>
 <div id="analysis-of-variance-and-regression" class="section level1">
 <h1>11. Analysis of Variance and Regression</h1>
+<div id="oneway-analysis-of-variance" class="section level2">
+<h2>Oneway Analysis of Variance</h2>
+<div id="model-and-distribution-assumptions" class="section level3">
+<h3>Model and Distribution Assumptions</h3>
+<div id="definition-identifiable" class="section level4">
+<h4>Definition: identifiable</h4>
+<p>A parameter <span class="math inline">\(\theta\)</span> for a family of distributions <span class="math inline">\(\{f(x|\theta):\theta\in\Theta\}\)</span> is <em>identifiable</em> if distinct values of <span class="math inline">\(\theta\)</span> correspond to distinct pdfs or pmfs. That is, if
+<span class="math inline">\(\theta\ne\theta&#39;\)</span>, then <span class="math inline">\(\{f(x|\theta)\)</span> is not the same function of <span class="math inline">\(x\)</span> as <span class="math inline">\(\{f(x|\theta&#39;)\)</span>.</p>
 <ul>
-<li><p>One way ANOVA equation: <span class="math display">\[Y_{ij} = \theta_{i} + \epsilon_{ij}, \text{ with: } i = 1,..., k \text{ and } j = 1,..., n_{i}\]</span></p>
+<li>One way ANOVA equation: <span class="math display">\[Y_{ij} = \theta_{i} + \epsilon_{ij}, \text{ with: } i = 1,..., k \text{ and } j = 1,..., n_{i}\]</span>
 <ul>
 <li><span class="math inline">\(i\)</span> = treatment</li>
 <li><span class="math inline">\(j\)</span> = observation</li>
 </ul></li>
-<li><p>Assumptions:</p>
+<li>Assumptions:
 <ol style="list-style-type: decimal">
-<li><p><span class="math inline">\(E[\epsilon_{ij}] = 0 , \text{ Var}\epsilon_{ij} = \sigma^2_{i} &lt; \infty\)</span></p>
-<p><span class="math inline">\(\text{Cov}(\epsilon_{ij}\epsilon_{i&#39;j&#39;}) = 0, \text{ unless } i=i&#39; \text{ and } j=j&#39;\)</span></p></li>
+<li><p><span class="math inline">\(E[\epsilon_{ij}] = 0 , \mathbb E Y_{ij}=\theta_{i}, \text{Var}\epsilon_{ij} = \sigma^2_{i} &lt; \infty\)</span> the <span class="math inline">\(\theta_{i}\)</span>s are usually referred to as <em>treatment means</em>, since the index often corresponds to different treatments or to <em>levels</em> of a particular treatment, such as dosage levels of a particular drug.</p></li>
+<li><p><span class="math inline">\(\text{Cov}(\epsilon_{ij}\epsilon_{i&#39;j&#39;}) = 0, \text{ unless } i=i&#39; \text{ and } j=j&#39;\)</span></p></li>
 <li><p><span class="math inline">\(\epsilon_{ij}\)</span> are independently and normally distributed</p></li>
-<li><p>Homoscedasicity</p></li>
+<li><p><span class="math inline">\(\sigma^2_i=\sigma^2\;\;\forall i\)</span> (equality of variance, also known as <em>homoscedasticity</em>).</p></li>
 </ol></li>
-<li><p>If data doesn’t meet the assumptions can transform or rely on CLT</p></li>
-<li><p>Requires identifiability, each <span class="math inline">\(\theta\)</span> has a unique distribution</p>
+<li>If data doesn’t meet the assumptions can transform or rely on CLT</li>
+<li>Requires identifiability, each <span class="math inline">\(\theta\)</span> has a unique distribution
 <ul>
-<li>Otherwise it’s impossible to tell label future observations<br />
-</li>
+<li>Otherwise it’s impossible to tell label future observations</li>
 </ul></li>
-<li><p>Hypothesises:</p>
+</ul>
+</div>
+</div>
+<div id="the-classic-anova-hypothesis" class="section level3">
+<h3>The Classic ANOVA Hypothesis</h3>
+<ul>
+<li>Hypothesises:
 <ul>
 <li><span class="math inline">\(H_0: \theta_1 = \theta_2 = ... = \theta_k\)</span></li>
 <li><span class="math inline">\(H_1: \theta_i \neq \theta_j\)</span> for some <span class="math inline">\(i, j\)</span></li>
 </ul></li>
-<li><p>Pooled variance: <span class="math display">\[S^{2}_{p} = \frac{1}{N-k}\sum^{k}_{i=1}(n_{1}-1)S^{2}_{1} = \frac{1}{N-k}\sum^{k}_{i=1}\sum^{n_{i}}_{j=1}(Y_{ij}-\bar{Y_{i}})^{2}\]</span></p></li>
-<li><p>t statistic: <span class="math display">\[\abs{\frac{\bar{Y_{1.}}\bar{Y_{2.}}}{\sqrt{S^{2}_{p}(\frac{1}{n_1} + \frac{1}{n_2}})}} &gt; t_{N-k, \alpha/2}\]</span></p></li>
-<li><p>ANOVA F test: <span class="math display">\[\text{reject } H_0 \text{ if } F = \frac{\sum^{k}_{i=1}n_{i}((\bar{Y_{i.}} - \bar{\bar{Y}}))^{2}/(k-1)}{S^{2}_{p}} &gt; F_{k-1, N-K, \alpha}\]</span></p></li>
-<li><p>Sum of squares = (SS within) + (SS between)</p>
+</ul>
+<div id="definition-linear-combination-and-contrast." class="section level4">
+<h4>Definition: linear combination and contrast.</h4>
+<p>Let <span class="math inline">\(t = (t_1, \cdots , t_k)\)</span> be a set of variables, either parameters or
+statistics, and let <span class="math inline">\(\mathbf a=(a_1, \cdots, a_k)\)</span> be known constants. The function <span class="math display">\[\sum_{i=1}^{k}a_it_i\]</span> is called a <em>linear combination</em> of the <span class="math inline">\(t_i\)</span>s. If, furthermore, <span class="math inline">\(\sum a_i = 0\)</span>, it is called a <em>contrast</em>.</p>
+</div>
+<div id="theorem-of-contrast" class="section level4">
+<h4>Theorem of contrast</h4>
+<p>Let <span class="math inline">\(\theta(\theta_1, \cdots, \theta_k)\)</span> be arbitrary parameters. Then
+<span class="math display">\[\theta_1=\theta_2=\cdots=\theta_k\iff\sum_{i=1}^{k}a_i\theta_i=0;\;\;\forall\mathbf a\in\mathcal A,\]</span> where <span class="math inline">\(\mathcal A\)</span> is the set of constants satisfying <span class="math inline">\(\mathcal A=\{\mathbf a=(a_1,\cdots,a_k):\sum a_i=0\}\)</span>; that is all contrasts must satisfy <span class="math inline">\(\sum_{i=1}^{k}a_i\theta_i=0.\)</span></p>
+<ul>
+<li>Hypothesises:
+<ul>
+<li><span class="math inline">\(H_0: \sum_{i=1}^{k}a_i\theta_i=0\)</span></li>
+<li><span class="math inline">\(H_1: \sum_{i=1}^{k}a_i\theta_i\ne0\)</span> for some <span class="math inline">\(i, j\)</span></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="inferences-regarding-linear-combinations-of-means" class="section level3">
+<h3>Inferences Regarding Linear Combinations of Means</h3>
+<p>Working under the oneway ANOVA assumptions, we have that
+<span class="math display">\[Y_{ij}\sim n(\theta_i,\sigma^2), i=1,\cdots,k;\; j=1,\cdots,n_i.\]</span> Therefore, <span class="math display">\[\bar{Y}_{i\cdot}=\frac{1}{n_i}\sum_{j=1}^{n_i}Y_{ij}\sim n(\theta_i,\sigma^2/n_i),\;\; i=1,\cdots,k.\]</span>
+<span class="math display">\[\bar{\bar{Y}}=\frac{1}{N}\sum_{i=1}^{k}\sum_{j=1}^{n_i}Y_{ij},\]</span>
+For any constants <span class="math inline">\(\mathbf a=(a_1,\cdots,a_k),\;\; \sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}\)</span> is also normal with
+<span class="math display">\[\mathbb E\left(\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}\right)=\sum_{i=1}^{k}a_i\theta_{i}\quad\text{and}\quad\text{Var}\left(\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}\right)=\sigma^2\sum_{i=1}^{k}\frac{a_i^2}{n_i}\]</span> and therefore</p>
+<p><span class="math display">\[\frac{\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}-\sum_{i=1}^{k}a_i\theta_{i}}{\sqrt{\sigma^2\sum_{i=1}^{k}\frac{a_i^2}{n_i}}}\sim n(0,1).\]</span></p>
+<p>In each population, if we denote the sample variance by <span class="math inline">\(S_i^2\)</span>, that is,
+<span class="math display">\[S_i^2=\frac{1}{n_i-1}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_{i\cdot})^2,\;\; i=1,\cdots,k,\]</span> then <span class="math inline">\(S_i^2\)</span> is an estimate of <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\((n_i-1)S_i^2/\sigma^2\sim \chi^2_{n_i-1}\)</span>,</p>
+<p>Furthermore, under the ANOVA assumptions, since each <span class="math inline">\(S_i^2\)</span> estimates the same <span class="math inline">\(\sigma^2\)</span>, we can improve the estimators by combining them. We thus use the pooled estimator of <span class="math inline">\(\sigma^2\)</span>, <span class="math inline">\(S_p^2\)</span></p>
+<ul>
+<li><p>Pooled variance:
+<span class="math display">\[S^{2}_{p} = \frac{1}{N-k}\sum^{k}_{i=1}(n_{i}-1)S^{2}_{i} = \frac{1}{N-k}\sum^{k}_{i=1}\sum^{n_{i}}_{j=1}(Y_{ij}-\bar{Y_{i\cdot}})^{2}\]</span>
+<span class="math display">\[(N-k)S^{2}_{p}/\sigma^2\sim\chi^2_{N-k}\]</span>
+Also, <span class="math inline">\(S^{2}_{p}\)</span> is independent of each <span class="math inline">\(\bar{Y_{i\cdot}}\)</span> and thus
+<span class="math display">\[\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\sim t_{N-k}\]</span> Student’s <span class="math inline">\(t\)</span> with <span class="math inline">\(N - k\)</span> degrees of freedom.</p></li>
+<li><p>t statistic:</p></li>
+</ul>
+<p><span class="math display">\[H_0:\sum_{i=1}^{k}a_i\theta_i=0\quad\text{versus}\quad H_1:\sum_{i=1}^{k}a_i\theta_i\ne0\]</span> at level <span class="math inline">\(\alpha\)</span>, we would reject <span class="math inline">\(H_0\)</span> if <span class="math display">\[\left|\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\right|&gt; t_{N-k,\alpha/2}\]</span></p>
+<p>Furthermore, a pivot that can be inverted to give an interval estimator of <span class="math inline">\(\sum a_i\theta_i\)</span> with probability <span class="math inline">\(1-\alpha\)</span>
+<span class="math display">\[\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-t_{N-k,\alpha/2}\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}\le\sum_{i=1}^{k}a_i\theta_i\le\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}+t_{N-k,\alpha/2}\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}\]</span></p>
+<p>To compare treatments <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span>, take <span class="math inline">\(\mathbf a =(1,-1,0,\cdots,0)\)</span>. Then to test <span class="math inline">\(H_0:\theta_1=\theta_2\quad\text{versus}\quad H_1:\theta_1\ne\theta_2\)</span>, we would reject <span class="math inline">\(H_0\)</span> if
+<span class="math display">\[\left|\frac{\bar{Y_{1\cdot}}\bar{Y_{2\cdot}}}{\sqrt{S^{2}_{p}(\frac{1}{n_1} + \frac{1}{n_2}})}\right| &gt; t_{N-k, \alpha/2}\]</span></p>
+</div>
+<div id="the-anova-f-test" class="section level3">
+<h3>The ANOVA F Test</h3>
+<p>From <a href="#theorem-of-contrast">Theorem of contrast</a>, the ANOVA hypothesis test can be written <span class="math display">\[H_0:\sum_{i=1}^{k}a_i\theta_i=0\;\;\forall\mathbf a\in\mathcal A\quad\text{versus}\quad H_1:\sum_{i=1}^{k}a_i\theta_i\ne0\;\;\text{for some }\mathbf a\in\mathcal A.\]</span> where <span class="math display">\[\mathcal A=\left\{\mathbf a=(a_1,\cdots,a_k):\sum_{i=1}^{k}a_i=0\right\}.\]</span> To see this more clearly as a union-intersection test, define, for each <span class="math inline">\(\mathbf a\)</span>, the set <span class="math display">\[\Theta_{\mathbf a}=\left\{\boldsymbol\theta=(\theta_1,\cdots,\theta_k):\sum_{i=1}^{k}a_i\theta_i=0\right\}\]</span> Then we have
+<span class="math display">\[\theta\in\left\{\theta:\theta_1=\theta_2= \cdots= \theta_k\right\}\iff\theta\in\Theta_{\mathbf a}\;\;\forall\mathbf a\in\mathcal A\iff\theta\in\underset{\mathbf a\in\mathcal A}{\bigcap}\Theta_{\mathbf a},\]</span> showing that the ANOVA null can be written as an intersection.</p>
+<p>By the <a href="#union-intersection-and-intersection-union-tests">Union-intersection and intersection-union tests</a>, we would reject <span class="math inline">\(H_0:\theta\in\underset{\mathbf a\in\mathcal A}{\bigcap}\Theta_{\mathbf a}\)</span> if we can reject <span class="math display">\[H_{0_{\mathbf a}}:\theta\in\Theta_{\mathbf a}\quad\text{versus}\quad H_{1_{\mathbf a}}:\theta\notin\Theta_{\mathbf a};\quad \forall \mathbf a\]</span> We test <span class="math inline">\(H_{0_{\mathbf a}}:\theta\in\Theta_{\mathbf a}\)</span> with <span class="math inline">\(t\)</span> statistic of <span class="math display">\[T_{\mathbf a}=\left|\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\right|\]</span> We then reject <span class="math inline">\(H_{0_{\mathbf a}}\)</span> if <span class="math inline">\(T_{\mathbf a} &gt; k\)</span> for some constant <span class="math inline">\(k\)</span>.</p>
+<p>From the union-intersection methodology, it follows that if we could reject for any <span class="math inline">\(\mathbf a\)</span>, we could reject for the <span class="math inline">\(\mathbf a\)</span> that maximizes <span class="math inline">\(T_{\mathbf a}\)</span>. Thus, the union-intersection test of the ANOVA null is to reject <span class="math inline">\(H_{0_{\mathbf a}}\)</span> if <span class="math inline">\(\sup_{\mathbf a} T_{\mathbf a} &gt; k\)</span>, where <span class="math inline">\(k\)</span> is chosen so that <span class="math inline">\(P_{H_0}(\sup_{\mathbf a} T_{\mathbf a} &gt; k) =\alpha\)</span>.</p>
+<div id="lemma-maximum-of-multiplied-constants" class="section level4">
+<h4>Lemma: maximum of multiplied constants</h4>
+<p>Let <span class="math inline">\((v_1 ,\cdots, v_k)\)</span> be constants and let <span class="math inline">\((c_1, \cdots , c_k)\)</span> be positive constants. Then, for <span class="math inline">\(\mathcal A = \left\{\mathbf a = (a_1,\cdots,a_k): \sum a_i = 0\right\}\)</span>,
+<span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span> where <span class="math inline">\(\bar{v}_c=\sum c_iv_i/\sum c_i\)</span> The maximum is attained at any <span class="math inline">\(\mathbf a\)</span> of the form
+<span class="math inline">\(a_i = K c_i (v_i-\bar{v}_c)\)</span>, where <span class="math inline">\(K\)</span> is a nonzero constant.</p>
+<p>For <span class="math display">\[T_{\mathbf a}=\left|\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\right|\]</span> we see that maximizing <span class="math inline">\(T_{\mathbf a}\)</span> is equivalent to maximizing <span class="math inline">\(T_{\mathbf a}^2\)</span>. We have
+<span class="math display">\[T_{\mathbf a}^2=\frac{\left(\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i\right)^2}{S^2_p\sum_{i=1}^{k}a_i^2/n_i}=\frac{1}{S_p^2}\frac{\left(\sum_{i=1}^{k}a_i(\bar{Y_{i\cdot}}-\theta_i)\right)^2}{S^2_p\sum_{i=1}^{k}a_i^2/n_i}\]</span></p>
+</div>
+<div id="theorem-undersetmathbf-asum-a_i0supt_mathbf-a2k-1sim-f_k-1n-k" class="section level4">
+<h4>Theorem: <span class="math inline">\(\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2/(k-1)\sim F_{k-1,N-k}\)</span></h4>
+<p>For <span class="math display">\[T_{\mathbf a}=\left|\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\right|\]</span></p>
+<p><span class="math display">\[\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2=\frac{1}{S_p^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2\]</span> where <span class="math inline">\(\bar{\bar{Y}}=\sum n_i\bar{Y_{i\cdot}}/\sum n_i\)</span> and <span class="math inline">\(\bar\theta=\sum n_i\theta_i/\sum n_i\)</span> Furthermore, under the ANOVA assumptions,
+<span class="math display">\[\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2\sim(k-1)F_{k-1,N-k}\]</span> that is <span class="math inline">\(\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2/(k-1)\sim F_{k-1,N-k}\)</span>.</p>
+<p><strong>Proof:</strong></p>
+<p>Using <a href="#lemma-maximum-of-multiplied-constants">Lemma: maximum of multiplied constants</a>, <span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span></p>
+<p><span class="math display">\[\begin{align}
+\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2&amp;=\underset{\mathbf a:\sum a_i=0}{\sup}\frac{1}{S_p^2}\frac{\left(\sum_{i=1}^{k}a_i(\bar{Y_{i\cdot}}-\theta_i)\right)^2}{S^2_p\sum_{i=1}^{k}a_i^2/n_i}\\
+&amp;=\frac{1}{S_p^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2
+\end{align}\]</span></p>
+<p>To prove <span class="math display">\[\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2\sim(k-1)F_{k-1,N-k}\]</span> we must show that the numerator and denominator of <span class="math display">\[\frac{1}{S_p^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2\]</span> are independent chi squared random variables, each divided by its degrees of freedom.</p>
+<p>From the ANOVA assumptions two things follow. The numerator and denominator
+are independent and <span class="math display">\[S_p^2/\sigma^2\sim\chi^2_{N-k}/(N-k)\]</span>. We must show that <span class="math display">\[\frac{1}{\sigma^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2\sim\chi^2_{k-1}\]</span></p>
+<p>If <span class="math inline">\(H_0 : \theta_1 = \theta_2 = \cdots = \theta_k\)</span> is true, <span class="math inline">\(\theta_i = \bar\theta\;\;\forall i=1,2,\cdots,k\)</span> and the <span class="math inline">\(\theta_i = \bar\theta\)</span> terms
+drop out. Thus, for an <span class="math inline">\(\alpha\)</span> level test of the ANOVA hypotheses
+<span class="math display">\[H_0:\theta_1 = \theta_2 = \cdots = \theta_k\quad\text{versus}\quad H_1:\theta_i\ne\theta_j\;\text{for some }i,j\]</span></p>
+<ul>
+<li>ANOVA F test:
+<span class="math display">\[\text{reject } H_0 \text{ if } F= \frac{\sum^{k}_{i=1}n_{i}((\bar{Y_{i\cdot}} - \bar{\bar{Y}}))^{2}/(k-1)}{S^{2}_{p}} &gt; F_{k-1, N-K, \alpha}\]</span>
+and the test statistic <span class="math inline">\(F\)</span> is called the ANOVA <span class="math inline">\(F\)</span> statistic.</li>
+</ul>
+</div>
+</div>
+<div id="simultaneous-estimation-of-contrasts" class="section level3">
+<h3>Simultaneous Estimation of Contrasts</h3>
+<div id="theorem-scheffe-procedure-s-method" class="section level4">
+<h4>Theorem: Scheffe procedure (S method)</h4>
+<p>Under the ANOVA assumptions, if <span class="math inline">\(M=\sqrt{(k-1)F_{k-1,N-k,\alpha}}\)</span> then the probability is <span class="math inline">\(1-\alpha\)</span> that
+<span class="math display">\[\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}-M\sqrt{S_p^2\sum_{i=1}^{k}\frac{a_i^2}{n_i}}\le\sum_{i=1}^{k}a_i\theta_{i}\le\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}+M\sqrt{S_p^2\sum_{i=1}^{k}\frac{a_i^2}{n_i}}\]</span> simultaneously for all <span class="math inline">\(\mathbf a \in \mathcal A=\{\mathbf a=(a_1,\cdots,a_k):\sum a_i=0\}\)</span>.</p>
+<p><strong>Proof:</strong></p>
+<p>The simultaneous probability statement requires <span class="math inline">\(M\)</span> to satisfy
+<span class="math display">\[P\left(\left|\sum_{i=1}^{k}a_i\bar{Y}_{i\cdot}-\sum_{i=1}^{k}a_i\theta_{i}\right|\le M\sqrt{S_p^2\sum_{i=1}^{k}\frac{a_i^2}{n_i}}\;\;\forall\mathbf a\in\mathcal A\right)=1-\alpha\]</span> or, equivalently,
+<span class="math display">\[P\left(T_{\mathbf a}^2\le M^2\;\;\forall\mathbf a\in\mathcal A\right)=1-\alpha\]</span> And <span class="math display">\[P\left(T_{\mathbf a}^2\le M^2\;\;\forall\mathbf a\in\mathcal A\right)=P\left(\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2\le M^2=(k-1)F_{k-1,N-k,\alpha}\right)\]</span></p>
+</div>
+</div>
+<div id="partitioning-sums-of-squares" class="section level3">
+<h3>Partitioning Sums of Squares</h3>
+<div id="theorem-allocating-variation" class="section level4">
+<h4>Theorem: allocating variation</h4>
+<p>For any numbers <span class="math inline">\(y_{ij}, i = 1, \cdots, k\)</span>, and <span class="math inline">\(j=1 ,\cdots , n_i\)</span>,
+<span class="math display">\[\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{\bar{y}})^2=\sum_{i=1}^{k}n_i(\bar{y}_{i\cdot}-\bar{\bar{y}})^2+\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2\]</span> where <span class="math inline">\(\bar{y}_{i\cdot}=\frac{1}{n_i}\sum_j y_{ij}\)</span> and <span class="math inline">\(\bar{\bar{y}}=\sum_in_i\bar{y}_{i\cdot}/\sum_in_i\)</span></p>
+<p><strong>Proof:</strong></p>
+<p><span class="math display">\[\begin{align}
+\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{\bar{y}})^2&amp;=\sum_{i=1}^{k}\sum_{j=1}^{n_i}\left((y_{ij}-\bar{y}_{i\cdot})+(\bar{y}_{i\cdot}-\bar{\bar{y}})\right)^2\\
+&amp;=\sum_{i=1}^{k}n_i(\bar{y}_{i\cdot}-\bar{\bar{y}})^2+\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2
+\end{align}\]</span></p>
+<p>Under the ANOVA assumptions, in particular if <span class="math inline">\(Y_{ij}\sim n(\theta_i,\sigma^2)\)</span>, it is easy to show that <span class="math display">\[\frac{1}{\sigma^2}\sum_{i=1}^{k}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_{i\cdot})^2\sim\chi^2_{N-k},\]</span> because for each <span class="math inline">\(i = 1, \cdots, k,\)</span> <span class="math display">\[\frac{1}{\sigma^2}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_{i\cdot})^2\sim\chi^2_{n_i-1},\]</span> all independent, and for independent chi squared random variables, <span class="math display">\[\frac{1}{\sigma^2}\sum_{i=1}^{k}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_{i\cdot})^2\sim\chi^2_{N-k},\]</span></p>
+<p>Furthermore, if <span class="math inline">\(\theta_i=\theta_j\)</span> for every <span class="math inline">\(i,j\)</span>, then <span class="math display">\[\frac{1}{\sigma^2}\sum_{i=1}^{k}n_i(\bar{Y}_{i\cdot}-\bar{\bar{Y}})^2\sim\chi^2_{k-1}\]</span> and
+<span class="math display">\[\frac{1}{\sigma^2}\sum_{i=1}^{k}\sum_{j=1}^{n_i}(Y_{ij}-\bar{\bar{Y}})^2\sim\chi^2_{N-1}\]</span></p>
+<p>Thus, under <span class="math inline">\(H_0 : \theta_1 = \cdots = \theta_k,\)</span> the sum of squares partitioning of <span class="math display">\[\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{\bar{y}})^2=\sum_{i=1}^{k}n_i(\bar{y}_{i\cdot}-\bar{\bar{y}})^2+\sum_{i=1}^{k}\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2\sim\sigma^2(\chi^2_{k-1}+\chi^2_{N-k})\sim\sigma^2\chi^2_{N-1}\]</span> is a partitioning of chi squared random variables. Note that the <span class="math inline">\(\chi^2\)</span> partitioning is true only if the terms on the right-hand side are independent, which follows in this case from the normality in the ANOVA assumptions.</p>
+</div>
+<div id="anova-table-for-oneway-classification" class="section level4">
+<h4>ANOVA table for oneway classification</h4>
+<p><span class="math display">\[
+\begin{array}{l|llll}
+\hline
+            \text{Source of}\\ \text{variation}   &amp; \text{df.} &amp; \text{Sum of squares} &amp; \text{Mean square} &amp; F\; \text{  statistic}   \\ \hline
+           \text{Between}\\ \text{treatment}\\\text{groups} &amp;   k-1 &amp; \mathrm{SSB}=\sum n_i(\bar{y}_{i\cdot}-\bar{\bar{y}})^2 &amp;   \mathrm{MSB}=\mathrm{SSB}/(k-1) &amp; F=\frac{\mathrm{MSB}}{\mathrm{MSW}}   \\\hline
+           \text{Within}\\ \text{treatment}\\\text{groups} &amp;   N-k &amp;  \mathrm{SSW}=\sum\sum (y_{ij}-\bar{y}_{i\cdot})^2  &amp;   \mathrm{MSW}=\mathrm{SSW}/(N-k) &amp;    \\ \hline
+              \text{Total} &amp;  N-1 &amp; \mathrm{SST}=\sum\sum (y_{ij}-\bar{\bar{y}})^2 &amp;    &amp;   
+\end{array}
+\]</span></p>
+<ul>
+<li>Sum of squares = (SS between) + (SS within)
 <ul>
 <li>This is easy to look at than some complicated equation</li>
 <li>Are chi-square random variables</li>
 <li>If <span class="math inline">\(H_0\)</span> is true:
 <ul>
-<li>(SS between) $ ^2_{k-1}$</li>
-<li>(SS total) $ ^2_{N-1}$</li>
+<li>(SS between) <span class="math inline">\(\sim\chi^2_{k-1}\)</span></li>
+<li>(SS total) <span class="math inline">\(\sim\chi^2_{N-1}\)</span></li>
 </ul></li>
-</ul></li>
-</ul>
-<div id="simple-linear-regression" class="section level3">
-<h3>Simple Linear Regression</h3>
-<ul>
-<li>Population regression function: <span class="math inline">\(E[Y_i] = \beta_0 + \beta x_i\)</span>
-<ul>
-<li>Assumes: <span class="math inline">\(E[\epsilon] = 0\)</span></li>
-</ul></li>
-<li>Another form: <span class="math inline">\(E[Y_i|x_i] \approx \beta_0 + \beta x_i\)</span></li>
-</ul>
-<div id="algebraic-solution" class="section level4">
-<h4>Algebraic solution</h4>
-<ul>
-<li>Estimating perameters:
-<ul>
-<li><span class="math inline">\(\beta_0 = \bar{y} - \beta\bar{x}\)</span></li>
-<li><span class="math inline">\(\beta = \frac{S_{xy}}{S_{xx}}\)</span></li>
 </ul></li>
 </ul>
 </div>
-<div id="statistical-solution" class="section level4">
-<h4>Statistical solution</h4>
+</div>
+</div>
+<div id="simple-linear-regression" class="section level2">
+<h2>Simple Linear Regression</h2>
+<div id="population-regression-function" class="section level4">
+<h4>population regression function</h4>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 x_i+\epsilon_i\]</span></p>
+<p><span class="math display">\[E[Y_i] = \beta_0 + \beta_1 x_i\]</span></p>
+<p>Assumes: <span class="math inline">\(\mathbb E[\epsilon_i] = 0\)</span></p>
 <ul>
-<li>Assume the form: <span class="math inline">\(Y_i = \beta_0 + \beta x_i + \epsilon_i \text{ for } i = 1,..., n\)</span></li>
-<li><span class="math inline">\(\epsilon_i,..., \epsilon_n\)</span> are uncorrelated random variables with: <span class="math display">\[E[\epsilon_i] = 0 \text{ and } \text{Var}\epsilon_i = \sigma^2\]</span>
+<li>Another form: <span class="math inline">\(\mathbb E[Y_i|x_i] \approx \beta_0 + \beta_1 x_i\)</span></li>
+</ul>
+</div>
+<div id="least-squares" class="section level3">
+<h3>Least Squares</h3>
 <ul>
-<li><span class="math inline">\(\epsilon_i\)</span> are random errors, therefore <span class="math inline">\(Y_i\)</span> are uncorrelated</li>
-</ul></li>
-<li>Linear estimator: <span class="math display">\[\sum^{n}_{i=1}d_iY_i\]</span>
+<li>parameters solutions:
 <ul>
-<li>Must satisfy <span class="math inline">\(E[\sum^{n}_{i=1}d_iY_i] = \beta\)</span>
-<ul>
-<li>Holds true for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(beta\)</span> if and only if: <span class="math inline">\(\sum^n_{i=1}d_i = 0\)</span> and <span class="math inline">\(\sum^n_{i=1}d_{i}x_{i} = 1\)</span></li>
-</ul></li>
-<li><span class="math inline">\(d_i\)</span> is BLUE if it minimizes the variance</li>
+<li><span class="math inline">\(S_{xx}=\sum(x_i-\bar{x})^2\quad S_{xy}=\sum(x_i-\bar{x})(y_i-\bar{y})\)</span></li>
+<li><span class="math inline">\(\beta_0 = \bar{y} - \beta_1\bar{x}\)</span></li>
+<li><span class="math inline">\(\beta_1 = \frac{S_{xy}}{S_{xx}}\)</span></li>
 </ul></li>
 </ul>
+</div>
+<div id="best-linear-unbiased-estimators" class="section level3">
+<h3>Best Linear Unbiased Estimators</h3>
+<ul>
+<li><p>Assume the form: <span class="math display">\[Y_i = \beta_0 + \beta_1 x_i + \epsilon_i \text{ for } i = 1,\cdots, n\]</span></p></li>
+<li><p><span class="math inline">\(\epsilon_i,..., \epsilon_n\)</span> are uncorrelated random variables with: <span class="math display">\[E[\epsilon_i] = 0 \text{ and } \text{Var}[\epsilon_i] = \sigma^2\]</span></p>
+<ul>
+<li><span class="math inline">\(\epsilon_i\)</span> are random errors, therefore <span class="math inline">\(Y_i\)</span> are uncorrelated</li>
+<li>An estimator is a <em>linear estimator</em> if it is of the form <span class="math inline">\(\sum d_iY_i\)</span>, where <span class="math inline">\(d_1,\cdots,d_n\)</span> are known, fixed constants.<br />
+</li>
+<li>An <em>unbiased estimator</em> of the slope <span class="math inline">\(\beta_1\)</span> must satisfy <span class="math inline">\(\mathbb E\sum d_iY_i=\beta_1\)</span></li>
+<li>This equality is true for all <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> if and only if <span class="math inline">\(\sum_{i=1}^{n} d_i=0\)</span> and <span class="math inline">\(\sum_{i=1}^{n}d_ix_i=1\)</span>.</li>
+<li>An estimator is the <em>best linear unbiased estimator (BLUE)</em> if it is the linear unbiased estimator with the smallest variance.</li>
+</ul></li>
+</ul>
+</div>
+<div id="models-and-distribution-assumptions" class="section level3">
+<h3>Models and Distribution Assumptions</h3>
+</div>
+<div id="estimation-and-prediction-at-a-specified-x-x_0" class="section level3">
+<h3>Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></h3>
+</div>
+<div id="simultaneous-estimation-and-confidence-bands" class="section level3">
+<h3>Simultaneous Estimation and Confidence Bands</h3>
 </div>
 </div>
 </div>
