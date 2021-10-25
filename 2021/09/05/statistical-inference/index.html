@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">88 min read</span>
+    <span class="article-duration">96 min read</span>
     
 
     <h1 class="article-title">Statistical Inference</h1>
@@ -119,7 +119,13 @@
 </ul></li>
 <li><a href="#properties-of-a-random-sample">5. Properties of a Random Sample</a>
 <ul>
-<li><a href="#sampling-from-the-normal-distribution">Sampling from the Normal Distribution</a></li>
+<li><a href="#basic-concepts-of-random-sample">Basic Concepts of Random Sample</a></li>
+<li><a href="#sums-of-random-variables-from-a-random-sample">Sums of Random Variables from a Random Sample</a></li>
+<li><a href="#sampling-from-the-normal-distribution">Sampling from the Normal Distribution</a>
+<ul>
+<li><a href="#properties-of-the-sample-mean-and-variance">Prope’rties of the Sample Mean and Va’riance</a></li>
+<li><a href="#the-derived-distributions-students-t-and-snedecors-f">The Derived Distributions: Student’s <span class="math inline">\(t\)</span> and Snedecor’s <span class="math inline">\(F\)</span></a></li>
+</ul></li>
 <li><a href="#convergence-concepts">Convergence Concepts</a>
 <ul>
 <li><a href="#convergence-in-probability">Convergence in Probability</a></li>
@@ -236,11 +242,24 @@
 <li><a href="#least-squares">Least Squares</a></li>
 <li><a href="#best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a></li>
 <li><a href="#models-and-distribution-assumptions">Models and Distribution Assumptions</a></li>
+<li><a href="#estimation-and-testing-with-normal-errors">Estimation and Testing with Normal Errors</a></li>
 <li><a href="#estimation-and-prediction-at-a-specified-x-x_0">Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></a></li>
 <li><a href="#simultaneous-estimation-and-confidence-bands">Simultaneous Estimation and Confidence Bands</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#regression-models">12. Regression Models</a></li>
+<li><a href="#regression-models">12. Regression Models</a>
+<ul>
+<li><a href="#regression-with-errors-in-variables-eiv-or-measurement-error-model">Regression with Errors in Variables (EIV) (or measurement error model)</a>
+<ul>
+<li><a href="#functional-and-structural-relationships">Functional and Structural Relationships</a></li>
+<li><a href="#a-least-squares-solution-orthogonal-least-squares">A Least Squares Solution: orthogonal least squares</a></li>
+<li><a href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+</ul></li>
+<li><a href="#logistic-regression">Logistic Regression</a>
+<ul>
+<li><a href="#the-model">The Model</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
@@ -656,10 +675,14 @@ Harmonic mean: <span class="math display">\[a_H=\frac{1}{\frac{1}{n}\left(\frac{
 </div>
 <div id="properties-of-a-random-sample" class="section level1">
 <h1>5. Properties of a Random Sample</h1>
+<div id="basic-concepts-of-random-sample" class="section level2">
+<h2>Basic Concepts of Random Sample</h2>
 <div class="definition">
-<p><span id="def:unlabeled-div-1" class="definition"><strong>Definition 1  </strong></span>A collection of random variables <span class="math inline">\(X_1, \dots, X_n\)</span> is a <em>random sample
-of size n from population <span class="math inline">\(f(x)\)</span></em> if they are iid with pdf/pmf f(x).</p>
+<p><span id="def:unlabeled-div-1" class="definition"><strong>Definition 1  </strong></span>A collection of random variables <span class="math inline">\(X_1, \dots, X_n\)</span> is a <em>random sample of size n from population <span class="math inline">\(f(x)\)</span></em> if they are iid with pdf/pmf <span class="math inline">\(f(x)\)</span>.</p>
 </div>
+</div>
+<div id="sums-of-random-variables-from-a-random-sample" class="section level2">
+<h2>Sums of Random Variables from a Random Sample</h2>
 <div class="definition">
 <p><span id="def:unlabeled-div-2" class="definition"><strong>Definition 2  </strong></span><span class="math inline">\(Y = T(X_1, \dots, X_n)\)</span> is a <em>statistic</em> if the domain of <span class="math inline">\(T\)</span> contains
 the sample space of <span class="math inline">\((X_1, \dots, X_n)\)</span>. The distribution of <span class="math inline">\(Y\)</span> is the
@@ -717,8 +740,11 @@ contains and open subset of <span class="math inline">\(\mathbb R^k\)</span> the
 <p><span id="unlabeled-div-8" class="remark"><em>Remark</em>. </span>The open condition eliminates curved exponential families from this
 result.</p>
 </div>
+</div>
 <div id="sampling-from-the-normal-distribution" class="section level2">
 <h2>Sampling from the Normal Distribution</h2>
+<div id="properties-of-the-sample-mean-and-variance" class="section level3">
+<h3>Prope’rties of the Sample Mean and Va’riance</h3>
 <div class="theorem">
 <p><span id="thm:unlabeled-div-9" class="theorem"><strong>Theorem 4  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span>
 distribution. Then,</p>
@@ -728,12 +754,64 @@ distribution. Then,</p>
 <li><p><span class="math inline">\((n-1)S^2/\sigma^2 \sim \chi^2_{n-1}\)</span>.</p></li>
 </ul>
 </div>
-<div class="lemma">
-<p><span id="lem:unlabeled-div-10" class="lemma"><strong>Lemma 1  </strong></span>In the case of samples from a multivariate normal</p>
+<div id="lemma-the-independence-of-linear-commbinations-of-normal-random-variables" class="section level4">
+<h4>Lemma: the independence of linear commbinations of normal random variables</h4>
+<p>Let <span class="math inline">\(X_j \sim \text{n}( \mu_j, \sigma^2_j),\quad j=1,\cdots,n\)</span>, independent. For constants <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{rj}(j=1,\cdots,n;\;i=1,\cdots,k;\;r=1,\cdots,m)\)</span>, where <span class="math inline">\(k + m\le n .\)</span> define <span class="math display">\[U_i=\sum_{j=1}^{n}a_{ij}X_j\quad i=1,\cdots,k\]</span>
+<span class="math display">\[V_r=\sum_{j=1}^{n}b_{rj}X_j\quad r=1,\cdots,m\]</span></p>
+<ul>
+<li><p>(a). The random variable <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_r\)</span> are independent if and only <span class="math inline">\(\text{Cor}(U_i,V_r)=0\)</span>. Furthermore, <span class="math inline">\(\text{Cor}(U_i,V_r)=\sum_{j=1}^{n}a_{ij}b_{rj}\sigma^2_j\)</span>.</p></li>
+<li><p>(b). The random vectors <span class="math inline">\((U_1,\cdots, U_k)\)</span> and <span class="math inline">\((V_1,\cdots, V_m)\)</span> are independent if and only if <span class="math inline">\(U_i\)</span> is independent of <span class="math inline">\(V_r\)</span> for all pairs <span class="math inline">\(i,r(i=1,\cdots,k;\;r=1,\cdots,m)\)</span></p></li>
+</ul>
+<p><strong>Proof:</strong> For <span class="math inline">\(\mu=0\)</span> and <span class="math inline">\(\sigma^2=1\)</span> and to prove part (a) start with the joint pdf of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, <span class="math display">\[f_{X_1,X_2}(x_1,x_2)=\frac{1}{2\pi}e^{-(1/2)(x_1^2+x_2^2)}\]</span>
+Let <span class="math display">\[u=a_1x_1+a_2x_2,\quad v=b_1x_1+b_2x_2\]</span> then
+<span class="math display">\[\begin{bmatrix}
+a_1&amp;a_2\\
+b_1&amp;b_2\\
+\end{bmatrix}\begin{bmatrix}
+x_1\\
+x_2\\
+\end{bmatrix}=\begin{bmatrix}
+u\\
+v\\
+\end{bmatrix}\]</span> then <span class="math display">\[\begin{bmatrix}
+x_1\\
+x_2\\
+\end{bmatrix}=\begin{bmatrix}
+a_1&amp;a_2\\
+b_1&amp;b_2\\
+\end{bmatrix}^{-1}\begin{bmatrix}
+u\\
+v\\
+\end{bmatrix}=\frac{1}{a_1b_2-a_2b_1}\begin{bmatrix}
+b_2&amp;-a_2\\
+-b_1&amp;a_1\\
+\end{bmatrix}\begin{bmatrix}
+u\\
+v\\
+\end{bmatrix}=\begin{bmatrix}
+\frac{b_2u-a_2v}{a_1b_2-b_1a_2}\\
+\frac{-b_1u+a_1v}{a_1b_2-b_1a_2}\\
+\end{bmatrix}\]</span> with <span class="math display">\[J=\frac{\partial\mathbf x}{\partial[u,v]}=\begin{vmatrix}\frac{\partial x_1}{\partial u}&amp;\frac{\partial x_1}{\partial v}\\
+\frac{\partial x_2}{\partial u}&amp;\frac{\partial x_2}{\partial v}\end{vmatrix}=\frac{1}{(a_1b_2-a_2b_1)^2}\begin{vmatrix}b_2&amp;-a_2\\
+-b_1&amp;a_1\end{vmatrix}=\frac{1}{a_1b_2-a_2b_1}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[\begin{align}
+f_{U,V}(u,v)&amp;=f_{X_1,X_2}(x_1,x_2)|J|\\
+&amp;=f_{X_1,X_2}\left(\frac{b_2u-a_2v}{a_1b_2-b_1a_2},
+\frac{-b_1u+a_1v}{a_1b_2-b_1a_2}\right)|J|\\
+&amp;=\frac{1}{2\pi}\exp\left\{-\frac{1}{2(a_1b_2-b_1a_2)^2}\left((b_2u-a_2v)^2+(-b_1u+a_1v)^2\right)\right\}|J|\\
+&amp;=\frac{1}{2\pi}\exp\left\{-\frac{1}{2(a_1b_2-b_1a_2)^2}\left((b_1^2+b_2^2)u^2+(a_1^2+a_2^2)v^2-2(a_1b_1+a_2b_2)uv\right)\right\}|J|\\
+\end{align}\]</span></p>
+<p>If <span class="math inline">\(\text{Cor}(U_i,V_r)=0\)</span>, <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> are independent.</p>
+<p>In the case of samples from a multivariate normal</p>
 <ul>
 <li><p>Independence <span class="math inline">\(\iff\)</span> vanishing covariance</p></li>
 <li><p>Pairwise independence <span class="math inline">\(\iff\)</span> independence</p></li>
 </ul>
+</div>
+</div>
+<div id="the-derived-distributions-students-t-and-snedecors-f" class="section level3">
+<h3>The Derived Distributions: Student’s <span class="math inline">\(t\)</span> and Snedecor’s <span class="math inline">\(F\)</span></h3>
 </div>
 </div>
 <div id="convergence-concepts" class="section level2">
@@ -741,13 +819,13 @@ distribution. Then,</p>
 <div id="convergence-in-probability" class="section level3">
 <h3>Convergence in Probability</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-11" class="definition"><strong>Definition 4  </strong></span>A sequence of random variables <span class="math inline">\(\{X_i: i \in \mathbb N \}\)</span> <em>converges in
+<p><span id="def:unlabeled-div-10" class="definition"><strong>Definition 4  </strong></span>A sequence of random variables <span class="math inline">\(\{X_i: i \in \mathbb N \}\)</span> <em>converges in
 probability</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\lim_{n\to\infty}\text{P }(|{X_n - X}| \geq \epsilon) = 0\]</span> (or
 equivalently if <span class="math inline">\(\lim_{n\to\infty}\text{P }(|{X_n - X}| &lt; \epsilon) = 1\)</span>).</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 5  </strong></span><strong>Weak Law of Large Numbers, WLLN</strong>
+<p><span id="thm:unlabeled-div-11" class="theorem"><strong>Theorem 5  </strong></span><strong>Weak Law of Large Numbers, WLLN</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mu\)</span> and
 <span class="math inline">\(\text{Var} X_i = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac1n \sum_{i=1}^n X_i\]</span>
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges in probability to <span class="math inline">\(\mu\)</span>. That
@@ -759,7 +837,7 @@ is, <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 Hence, <span class="math display">\[P(|\bar X_n - \mu|&lt;\epsilon)=1-P(|\bar X_n - \mu|\ge\epsilon)\ge 1-\frac{\sigma^2}{n\epsilon^2}\to 1 \text{ as } n\to \infty\]</span></p>
 <p>The property summarized by the WLLN, that a sequence of the “same” sample quantity approaches a constant as <span class="math inline">\(n \to \infty\)</span>, is known as <strong>consistency</strong>.</p>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-13" class="theorem"><strong>Theorem 6  </strong></span>If <span class="math inline">\(X_1, X_2, \dots\)</span> converges in probability to <span class="math inline">\(X\)</span> and <span class="math inline">\(h\)</span> is a
+<p><span id="thm:unlabeled-div-12" class="theorem"><strong>Theorem 6  </strong></span>If <span class="math inline">\(X_1, X_2, \dots\)</span> converges in probability to <span class="math inline">\(X\)</span> and <span class="math inline">\(h\)</span> is a
 continuous function, then <span class="math inline">\(h(X_1), h(X_2), \dots\)</span> converges in
 probability to <span class="math inline">\(h(X)\)</span>.</p>
 </div>
@@ -767,7 +845,7 @@ probability to <span class="math inline">\(h(X)\)</span>.</p>
 <div id="almost-sure-convergence" class="section level3">
 <h3>Almost Sure Convergence</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-14" class="definition"><strong>Definition 5  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges almost surely</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
+<p><span id="def:unlabeled-div-13" class="definition"><strong>Definition 5  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges almost surely</em> to a random variable <span class="math inline">\(X\)</span> if <span class="math inline">\(\forall \epsilon &gt; 0\)</span>
 <span class="math display">\[\text{P }\left(\lim_{n\to\infty} |{\bar{X}_n - X}| &lt; \epsilon\right) = 1.\]</span></p>
 </div>
 <div class="comments">
@@ -777,10 +855,10 @@ probability to <span class="math inline">\(h(X)\)</span>.</p>
 </ul>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-15" class="theorem"><strong>Theorem 7  </strong></span>If a sequence converges in probability then it is possible to find a subsequence that converges almost surely.</p>
+<p><span id="thm:unlabeled-div-14" class="theorem"><strong>Theorem 7  </strong></span>If a sequence converges in probability then it is possible to find a subsequence that converges almost surely.</p>
 </div>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-16" class="theorem"><strong>Theorem 8  </strong></span><strong>Strong Law of Large Numbers (SLLN)</strong>
+<p><span id="thm:unlabeled-div-15" class="theorem"><strong>Theorem 8  </strong></span><strong>Strong Law of Large Numbers (SLLN)</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be iid RVs with mean <span class="math inline">\(\mathbb E {X_i} = \mu\)</span> and
 <span class="math inline">\(\text{Var}{X_i} = \sigma^2 &lt; \infty\)</span>. Define <span class="math display">\[\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\]</span>.
 Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges almost surely to <span class="math inline">\(\mu\)</span>. That is,
@@ -791,13 +869,13 @@ Then the sequence <span class="math inline">\(\bar{X}_n\)</span> converges almos
 <div id="convergence-in-distribution" class="section level3">
 <h3>Convergence in Distribution</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-17" class="definition"><strong>Definition 6  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges in
+<p><span id="def:unlabeled-div-16" class="definition"><strong>Definition 6  </strong></span>A sequence of random variables <span class="math inline">\(X_1, X_2, \dots\)</span> <em>converges in
 distribution</em> to a random variable <span class="math inline">\(X\)</span> if
 <span class="math display">\[\lim_{n \to \infty} F_{X_n}(x) = F_X(x)\]</span> at all points where <span class="math inline">\(F_X\)</span> is
 continuous.</p>
 </div>
 <div class="remark">
-<p><span id="unlabeled-div-18" class="remark"><em>Remark</em>. </span>Here it is really the cdfs that converge, rather than the random
+<p><span id="unlabeled-div-17" class="remark"><em>Remark</em>. </span>Here it is really the cdfs that converge, rather than the random
 variables. In this way convergence in distribution differs from the
 previous two concepts.</p>
 </div>
@@ -806,7 +884,7 @@ previous two concepts.</p>
 <p>The sequence of random variables, <span class="math inline">\(X_1, X_2, \cdots\)</span>, converges in probability to a constant <span class="math inline">\(\mu\)</span> if and only if the sequence also converges in distribution to <span class="math inline">\(\mu\)</span>. That is, the statement
 <span class="math display">\[P(|X_n-\mu|&gt;\epsilon)\to 0\quad \forall\epsilon&gt;0\]</span> is equivalent to <span class="math display">\[P(X_n\le x)\to\begin{cases}0&amp;\text{if  }x&lt;\mu\\1&amp;\text{if  }x&gt;\mu.\end{cases}\]</span></p>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 9  </strong></span><strong>Central Limit Theorem</strong>
+<p><span id="thm:unlabeled-div-18" class="theorem"><strong>Theorem 9  </strong></span><strong>Central Limit Theorem</strong>
 Let <span class="math inline">\(X_1, X_2, \dots\)</span> be a sequence of iid random variables with
 <span class="math inline">\(\mathbb E[X_i] = \mu\)</span> and finite variance <span class="math inline">\(\text{Var}[X_i] = \sigma^2 &lt; \infty\)</span>.
 Define <span class="math inline">\(\bar{X}_n = \frac1n \sum_{i=1}^n X_i\)</span>. Let <span class="math inline">\(G_n(x)\)</span> denote the
@@ -819,7 +897,7 @@ the standard normal.</p>
 <div id="slutskys-theorem" class="section level4">
 <h4>Slutsky’s Theorem</h4>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-20" class="theorem"><strong>Theorem 10  </strong></span>If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
+<p><span id="thm:unlabeled-div-19" class="theorem"><strong>Theorem 10  </strong></span>If <span class="math inline">\(X_n \to X\)</span> in distribution and <span class="math inline">\(Y_n \to a\)</span> in probability with <span class="math inline">\(a\)</span>
 constant, then</p>
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(Y_nX_n \to aX\)</span> in distribution</p></li>
@@ -827,7 +905,7 @@ constant, then</p>
 </ol>
 </div>
 <div class="remark">
-<p><span id="unlabeled-div-21" class="remark"><em>Remark</em>. </span>This tells us, for instance, that
+<p><span id="unlabeled-div-20" class="remark"><em>Remark</em>. </span>This tells us, for instance, that
 <span class="math display">\[\frac{\sqrt{n}(\bar{X}_n - \mu)}{S_n} \to \text{n}(0, 1)\]</span> in distribution,
 since we know that <span class="math inline">\(S_n \to \sigma\)</span> in probability.</p>
 </div>
@@ -837,7 +915,7 @@ since we know that <span class="math inline">\(S_n \to \sigma\)</span> in probab
 <h3>The Delta Method</h3>
 <p>If we are interested in the convergence of some function of a sequence of RVs, rather than the RVs themselves, then we can use the Delta Method (follows from an application of Taylor’s theorem and Slutsky’s theorem).</p>
 <div class="theorem">
-<p><span id="thm:unlabeled-div-22" class="theorem"><strong>Theorem 11  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
+<p><span id="thm:unlabeled-div-21" class="theorem"><strong>Theorem 11  </strong></span>Let <span class="math inline">\(Y_n\)</span> be a sequence of random variables that satisfies
 <span class="math inline">\(\sqrt{n}(Y_n - \theta) \to \text{n}(0, \sigma^2)\)</span> in distribution. For a
 given function <span class="math inline">\(g\)</span> and a specific value of <span class="math inline">\(\theta\)</span>, suppose that
 <span class="math inline">\(g&#39;(\theta) = 0\)</span> and <span class="math inline">\(g&#39;&#39;(\theta)\)</span> exists and is non-zero. Then
@@ -902,7 +980,7 @@ At the endpoints we have <span class="math inline">\(P (Y \leq y) = 1\)</span> f
 </ol></li>
 </ul>
 <div class="definition">
-<p><span id="def:unlabeled-div-23" class="definition"><strong>Definition 7  </strong></span>A <strong>Direct Method</strong> of generating a random sample uses the probability
+<p><span id="def:unlabeled-div-22" class="definition"><strong>Definition 7  </strong></span>A <strong>Direct Method</strong> of generating a random sample uses the probability
 integral transform to map draws from a <span class="math inline">\(\text{uniform}(0, 1)\)</span> random
 variable to draws from the distribution of interest.<br />
 The Probability Integral Transform states that if <span class="math inline">\(X\)</span> has continuous cdf
@@ -915,7 +993,7 @@ The Probability Integral Transform states that if <span class="math inline">\(X\
 <div id="the-acceptreject-algorithm" class="section level3">
 <h3>The Accept/Reject Algorithm</h3>
 <div class="definition">
-<p><span id="def:unlabeled-div-24" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
+<p><span id="def:unlabeled-div-23" class="definition"><strong>Definition 8  </strong></span>Let <span class="math inline">\(Y \sim f_Y(y)\)</span> and <span class="math inline">\(V \sim f_V(v)\)</span> where <span class="math inline">\(f_Y\)</span> and <span class="math inline">\(f_V\)</span> have
 common support with <span class="math display">\[M = \sup_y f_Y(y) / f_V(y) &lt; \infty.\]</span> To generate
 a random variable <span class="math inline">\(Y \sim f_Y\)</span>:</p>
 <ol style="list-style-type: lower-alpha">
@@ -2216,8 +2294,8 @@ Also, <span class="math inline">\(S^{2}_{p}\)</span> is independent of each <spa
 <span class="math display">\[\theta\in\left\{\theta:\theta_1=\theta_2= \cdots= \theta_k\right\}\iff\theta\in\Theta_{\mathbf a}\;\;\forall\mathbf a\in\mathcal A\iff\theta\in\underset{\mathbf a\in\mathcal A}{\bigcap}\Theta_{\mathbf a},\]</span> showing that the ANOVA null can be written as an intersection.</p>
 <p>By the <a href="#union-intersection-and-intersection-union-tests">Union-intersection and intersection-union tests</a>, we would reject <span class="math inline">\(H_0:\theta\in\underset{\mathbf a\in\mathcal A}{\bigcap}\Theta_{\mathbf a}\)</span> if we can reject <span class="math display">\[H_{0_{\mathbf a}}:\theta\in\Theta_{\mathbf a}\quad\text{versus}\quad H_{1_{\mathbf a}}:\theta\notin\Theta_{\mathbf a};\quad \forall \mathbf a\]</span> We test <span class="math inline">\(H_{0_{\mathbf a}}:\theta\in\Theta_{\mathbf a}\)</span> with <span class="math inline">\(t\)</span> statistic of <span class="math display">\[T_{\mathbf a}=\left|\frac{\sum_{i=1}^{k}a_i\bar{Y_{i\cdot}}-\sum_{i=1}^{k}a_i\theta_i}{\sqrt{S^2_p\sum_{i=1}^{k}a_i^2/n_i}}\right|\]</span> We then reject <span class="math inline">\(H_{0_{\mathbf a}}\)</span> if <span class="math inline">\(T_{\mathbf a} &gt; k\)</span> for some constant <span class="math inline">\(k\)</span>.</p>
 <p>From the union-intersection methodology, it follows that if we could reject for any <span class="math inline">\(\mathbf a\)</span>, we could reject for the <span class="math inline">\(\mathbf a\)</span> that maximizes <span class="math inline">\(T_{\mathbf a}\)</span>. Thus, the union-intersection test of the ANOVA null is to reject <span class="math inline">\(H_{0_{\mathbf a}}\)</span> if <span class="math inline">\(\sup_{\mathbf a} T_{\mathbf a} &gt; k\)</span>, where <span class="math inline">\(k\)</span> is chosen so that <span class="math inline">\(P_{H_0}(\sup_{\mathbf a} T_{\mathbf a} &gt; k) =\alpha\)</span>.</p>
-<div id="lemma-maximum-of-multiplied-constants" class="section level4">
-<h4>Lemma: maximum of multiplied constants</h4>
+<div id="lemma-of-maximum-of-multiplied-constants" class="section level4">
+<h4>Lemma of maximum of multiplied constants</h4>
 <p>Let <span class="math inline">\((v_1 ,\cdots, v_k)\)</span> be constants and let <span class="math inline">\((c_1, \cdots , c_k)\)</span> be positive constants. Then, for <span class="math inline">\(\mathcal A = \left\{\mathbf a = (a_1,\cdots,a_k): \sum a_i = 0\right\}\)</span>,
 <span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span> where <span class="math inline">\(\bar{v}_c=\sum c_iv_i/\sum c_i\)</span> The maximum is attained at any <span class="math inline">\(\mathbf a\)</span> of the form
 <span class="math inline">\(a_i = K c_i (v_i-\bar{v}_c)\)</span>, where <span class="math inline">\(K\)</span> is a nonzero constant.</p>
@@ -2230,7 +2308,7 @@ Also, <span class="math inline">\(S^{2}_{p}\)</span> is independent of each <spa
 <p><span class="math display">\[\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2=\frac{1}{S_p^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2\]</span> where <span class="math inline">\(\bar{\bar{Y}}=\sum n_i\bar{Y_{i\cdot}}/\sum n_i\)</span> and <span class="math inline">\(\bar\theta=\sum n_i\theta_i/\sum n_i\)</span> Furthermore, under the ANOVA assumptions,
 <span class="math display">\[\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2\sim(k-1)F_{k-1,N-k}\]</span> that is <span class="math inline">\(\underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2/(k-1)\sim F_{k-1,N-k}\)</span>.</p>
 <p><strong>Proof:</strong></p>
-<p>Using <a href="#lemma-maximum-of-multiplied-constants">Lemma: maximum of multiplied constants</a>, <span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span></p>
+<p>Using [Lemma: maximum of multiplied constants][Lemma: maximum of multiplied constants], <span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span></p>
 <p><span class="math display">\[\begin{align}
 \underset{\mathbf a:\sum a_i=0}{\sup}T_{\mathbf a}^2&amp;=\underset{\mathbf a:\sum a_i=0}{\sup}\frac{1}{S_p^2}\frac{\left(\sum_{i=1}^{k}a_i(\bar{Y_{i\cdot}}-\theta_i)\right)^2}{S^2_p\sum_{i=1}^{k}a_i^2/n_i}\\
 &amp;=\frac{1}{S_p^2}\sum_{i=1}^{k}n_i\left((\bar{Y_{i\cdot}}-\bar{\bar{Y}})-(\theta_i-\bar\theta)\right)^2
@@ -2335,12 +2413,166 @@ and the test statistic <span class="math inline">\(F\)</span> is called the ANOV
 </li>
 <li>An <em>unbiased estimator</em> of the slope <span class="math inline">\(\beta_1\)</span> must satisfy <span class="math inline">\(\mathbb E\sum d_iY_i=\beta_1\)</span></li>
 <li>This equality is true for all <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> if and only if <span class="math inline">\(\sum_{i=1}^{n} d_i=0\)</span> and <span class="math inline">\(\sum_{i=1}^{n}d_ix_i=1\)</span>.</li>
-<li>An estimator is the <em>best linear unbiased estimator (BLUE)</em> if it is the linear unbiased estimator with the smallest variance.</li>
+<li>An estimator is the <em>best linear unbiased estimator (BLUE)</em> if it is the linear unbiased estimator with the smallest variance, which must satisfy <span class="math inline">\(\beta_1=\mathbb E\sum_{i=1}^{n}d_iY_i\)</span>.</li>
 </ul></li>
 </ul>
+<p>Because <span class="math inline">\(Y_1,\cdots, Y_n\)</span> are uncorrelated with equal variance <span class="math inline">\(\sigma^2\)</span>, the variance of any linear estimator is given by <span class="math display">\[\text{Var}\sum_{i=1}^{n}d_iY_i=\sum_{i=1}^{n}d_i^2\sigma^2=\sigma^2\sum_{i=1}^{n}d_i^2\]</span> The best linear unbiased estimator of <span class="math inline">\(\beta_1\)</span> is, therefore, defined by constants <span class="math inline">\(d_1,\cdots,d_n\)</span> that satisfy <span class="math inline">\(\sum_{i=1}^{n} d_i=0\)</span> and <span class="math inline">\(\sum_{i=1}^{n}d_ix_i=1\)</span> and have the minimum value of <span class="math inline">\(\sum_{i=1}^{n}d_i^2\)</span>.</p>
+<p>The minimizing values of the constants <span class="math inline">\(d_1,\cdots,d_n\)</span> can now be found by using <a href="#lemma-of-maximum-of-multiplied-constants">Lemma of maximum of multiplied constants</a>: For <span class="math inline">\(\mathcal A = \left\{\mathbf a = (a_1,\cdots,a_k): \sum a_i = 0\right\}\)</span>,
+<span class="math display">\[\underset{\mathbf a\in\mathcal A}{\max}\left\{\frac{\left(\sum_{i=1}^{k}a_iv_i\right)^2}{\sum_{i=1}^{k}a_i^2/c_i}\right\}=\sum_{i=1}^{k}c_i(v_i-\bar{v}_c)^2,\]</span> where <span class="math inline">\(\bar{v}_c=\sum c_iv_i/\sum c_i\)</span> The maximum is attained at any <span class="math inline">\(\mathbf a\)</span> of the form
+<span class="math inline">\(a_i = K c_i (v_i-\bar{v}_c)\)</span>, where <span class="math inline">\(K\)</span> is a nonzero constant.</p>
+<p>To apply the lemma to our minimization problem <span class="math display">\[\max\frac{\left(\sum_{i=1}^{n}d_ix_i\right)^2}{\sum_{i=1}^{n}d_i^2}\]</span> where <span class="math inline">\(\bar{x}=\sum x_i/n\)</span>. The maximum is attained at <span class="math inline">\(d_i=K(x_i-\bar{x}), \;i=1,\cdots,n\)</span>.</p>
+<p>Then we have <span class="math display">\[\sum_{i=1}^{n}d_ix_i=\sum_{i=1}^{n}K(x_i-\bar{x})x_i=KS_{xx}\]</span> The constraint <span class="math inline">\(\sum_{i=1}^{n}d_ix_i=1\)</span> is satisfied if <span class="math inline">\(K=\frac{1}{S_{xx}}\)</span>. Therefore <span class="math display">\[d_i=\frac{(x_i-\bar{x})}{S_{xx}}\quad i=1,\cdots,n\]</span> Finally, <span class="math display">\[\frac{\left(\sum_{i=1}^{n}d_ix_i\right)^2}{\sum_{i=1}^{n}d_i^2}=\frac{1}{\sum_{i=1}^{n}d_i^2}\]</span> and <span class="math display">\[\max\frac{\left(\sum_{i=1}^{n}d_ix_i\right)^2}{\sum_{i=1}^{n}d_i^2}=\min\sum_{i=1}^{n}d_i^2, \\
+\text{under constrain}
+\quad\sum_{i=1}^{n} d_i=0, \quad\sum_{i=1}^{n}d_ix_i=1\]</span> with <span class="math inline">\(d_i=(x_i-\bar x)/S_{xx}\)</span> and the linear
+unbiased estimator defined by these <span class="math inline">\(d_i\)</span>s, <span class="math display">\[\beta_1=\mathbb E\sum_{i=1}^{n}d_iY_i=\sum_{i=1}^{n}\frac{(x_i-\bar{x})}{S_{xx}}y_i=\frac{S_{xy}}{S_{xx}}\]</span></p>
+<p>The variance of <span class="math inline">\(\beta_1\)</span> is <span class="math display">\[\text{Var}\beta_1=\sigma^2\sum_{i=1}^{n}d_i^2=\sigma^2\sum_{i=1}^{n}(x_i-\bar x)^2/S_{xx}^2=\frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar x)^2}\]</span></p>
+<p>Since <span class="math inline">\(X_1 ,\cdots, X_n\)</span> are values chosen by the experimenter, they can be chosen to make <span class="math inline">\(S_{xx}\)</span> large and the variance of the estimator small that is, the experimenter can <em>design the experiment</em> to make the estimator more precise.</p>
 </div>
 <div id="models-and-distribution-assumptions" class="section level3">
 <h3>Models and Distribution Assumptions</h3>
+<div id="conditional-normal-model-x-is-fixed-y-is-random" class="section level4">
+<h4>Conditional normal model, <span class="math inline">\(X\)</span> is fixed <span class="math inline">\(Y\)</span> is random</h4>
+<p><span class="math display">\[Y_i\sim\mathrm{n}(\beta_0+\beta_1x_i,\sigma^2),\quad i=1,\cdots,n,\]</span>
+and <span class="math display">\[\mathbb E{Y|x}=\beta_0+\beta_1x\]</span>
+Then
+<span class="math display">\[Y_i=\beta_0+\beta_1x_i+\epsilon_i,\quad i=1,\cdots,n,\]</span> where <span class="math inline">\(\epsilon_i\)</span> are iid <span class="math inline">\(\mathrm{n}(0,\sigma^2)\)</span> random variables.</p>
+</div>
+<div id="bivariate-normal-model-x-and-y-are-both-random" class="section level4">
+<h4>Bivariate normal model, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are both random</h4>
+<p><span class="math display">\[(X_i,Y_i)\sim\text{bivariate normal}(\mu_X,\mu_Y,\sigma^2_X,\sigma^2_Y,\rho)\]</span> For a bivariate normal model, the conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = x\)</span> is normal. The population regression function is now a true conditional expectation, as the notation suggests, and is <span class="math display">\[\mathbb E(Y|x)=\mu_Y+\rho\frac{\sigma_Y}{\sigma_X}(x-\mu_X)\]</span> The bivariate normal model implies that the population regression is a linear function
+of <span class="math inline">\(x\)</span>. Here <span class="math inline">\(\mathbb E{Y|x}=\beta_0+\beta_1x\)</span> where <span class="math inline">\(\beta_1=\rho\frac{\sigma_Y}{\sigma_X}\)</span> and <span class="math inline">\(\beta_0=\mu_Y-\rho\frac{\sigma_Y}{\sigma_X}\mu_X\)</span> and conditional variance of the response variable <span class="math inline">\(Y\)</span> does not depend on <span class="math inline">\(x\)</span>, <span class="math display">\[\text{Var}(Y|x)=\sigma^2_Y(1-\rho^2)\]</span></p>
+</div>
+</div>
+<div id="estimation-and-testing-with-normal-errors" class="section level3">
+<h3>Estimation and Testing with Normal Errors</h3>
+<p><span class="math display">\[Y_i\sim\mathrm{n}(\beta_0+\beta_1x_i,\sigma^2),\quad i=1,\cdots,n,\]</span>
+<span class="math display">\[Y_i=\beta_0+\beta_1x_i+\epsilon_i,\quad i=1,\cdots,n,\]</span></p>
+<p>The maximum likelihood estimates of the three parameters:
+<span class="math inline">\(\hat\beta_1=\frac{S_{xy}}{S_{xx}}\)</span> which is linear unbiased estimator of <span class="math inline">\(\beta_1\)</span>.</p>
+<p><span class="math inline">\(\hat\beta_0=\bar{y}-\hat\beta_1\bar{x}\)</span> which is linear unbiased estimator of <span class="math inline">\(\beta_0\)</span>.</p>
+<p><span class="math display">\[\hat\sigma^2=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat\beta_0-\hat\beta_1x_i)^2\]</span> which is the RSS, evaluated at the least squares line, divided by the sample size, which is not an unbiased estimator of <span class="math inline">\(\sigma^2\)</span></p>
+<div id="lemma-the-covariance-of-linear-combinations-of-uncorrelated-random-variables" class="section level4">
+<h4>Lemma: the covariance of linear combinations of uncorrelated random variables</h4>
+<p>Let <span class="math inline">\(Y_1,\cdots, Y_n\)</span> be uncorrelated random variables with <span class="math inline">\(\mathrm{Var}Y_i=\sigma^2\)</span> for all <span class="math inline">\(i = 1,\cdots, n\)</span>. Let <span class="math inline">\(c_1,\cdots,c_n\)</span> and <span class="math inline">\(d_1, \cdots, d_n\)</span> be two sets of constants. Then
+<span class="math display">\[\mathrm{Cov}\left(\sum_{i=1}^{n}c_iY_i, \sum_{i=1}^{n}d_iY_i\right)=\left(\sum_{i=1}^{n}c_id_i\right)\sigma^2\]</span></p>
+<p><span class="math display">\[\mathrm{Cov}\left(\sum_{i=1}^{n}c_i\bar Y_i, \sum_{i=1}^{n}d_i\bar Y_i\right)=\frac{1}{n_i}\left(\sum_{i=1}^{n}c_id_i\right)\sigma^2\]</span></p>
+<p><strong>Proof:</strong> See <a href="#lemma-the-independence-of-linear-commbinations-of-normal-random-variables">Lemma: the independence of linear commbinations of normal random variables</a>. Here we do not need either normality or independence
+of <span class="math inline">\(Y_1, \cdots , Y_n\)</span>.</p>
+</div>
+<div id="the-bias-in-sigma2" class="section level4">
+<h4>The bias in <span class="math inline">\(\sigma^2\)</span></h4>
+<p>For <span class="math display">\[Y_i=\beta_0+\beta_1x_i+\epsilon_i,\quad i=1,\cdots,n\]</span>
+we have <span class="math display">\[\epsilon_i=Y_i-\beta_0-\beta_1x_i\]</span>
+We define the <em>residuals</em> from the regression to be
+<span class="math display">\[\hat\epsilon_i=Y_i-\hat\beta_0-\hat\beta_1x_i\]</span> and thus <span class="math display">\[\hat\sigma^2=\frac{1}{n}\sum_{i=1}^{n}\hat\epsilon_i^2=\frac{1}{n}\mathrm{RSS.}\]</span></p>
+<p><span class="math display">\[\mathbb E\hat\epsilon_i=\mathbb E(Y_i-\hat\beta_0-\hat\beta_1x_i)=\beta_0+\beta_1x_i-\beta_0-\beta_1x_i=0\]</span></p>
+<ul>
+<li>(1). <span class="math inline">\(\text{Var}(Y_i)=\text{Var}(\epsilon_i)=\sigma^2\)</span></li>
+<li>(2). By results of <a href="#best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a>, <span class="math display">\[\hat\beta_1=\mathbb E\sum_{i=1}^{n}d_iY_i=\sum_{i=1}^{n}\frac{(x_i-\bar{x})}{\sum(x_i-\bar{x})^2}y_i=\frac{S_{xy}}{S_{xx}}\]</span> then
+<span class="math display">\[\begin{align}
+\hat\beta_0&amp;=\bar{y}-\hat\beta_1\bar{x}\\
+&amp;=\sum\frac{1}{n}y_i-\frac{\bar{x}\sum(x_i-\bar{x})y_i}{\sum(x_i-\bar{x})^2}\\
+&amp;=\sum\left[\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{\sum(x_i-\bar{x})^2}\right]y_i
+\end{align}\]</span>
+For <span class="math display">\[c_i=\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{\sum(x_i-\bar{x})^2},\]</span> <span class="math inline">\(\sum c_i=1,\sum c_ix_i=0\)</span>. Then <span class="math display">\[\mathbb E(\hat\beta_0)=\mathbb E(\sum c_iY_i)=\sum c_i(\beta_0+\beta_1x_i)=\beta_0\]</span></li>
+</ul>
+<p><span class="math display">\[\begin{align}
+\text{Var}(\hat\beta_0)&amp;=\text{Var}(\sum c_iY_i)\\
+&amp;=\sum c_i^2\text{Var}(Y_i)\\
+&amp;=\sigma^2\sum c_i^2\\
+&amp;=\sigma^2\sum\left[\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{\sum(x_i-\bar{x})^2}\right]^2\\
+&amp;=\sigma^2\left[\sum\frac{1}{n^2}+\frac{\sum\bar{x}^2(x_i-\bar{x})^2}{\left(\sum(x_i-\bar{x})^2\right)^2}\right]\\
+&amp;=\sigma^2\left[\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}\right]\\
+&amp;=\sigma^2\left[\frac{\sum(x_i-\bar{x})^2+n\bar{x}^2}{n\sum(x_i-\bar{x})^2}\right]\\
+&amp;=\sigma^2\left[\frac{\sum x_i^2}{n\sum(x_i-\bar{x})^2}\right]\\
+&amp;=\sigma^2\left[\frac{\sum x_i^2}{nS_{xx}}\right]\\
+\end{align}\]</span>
+- (3). By results of <a href="#best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a>, <span class="math display">\[\text{Var}\hat\beta_1=\sigma^2\sum_{i=1}^{n}d_i^2=\sigma^2\sum_{i=1}^{n}(x_i-\bar x)^2/S_{xx}^2=\frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar x)^2}\]</span>
+- (4). Write <span class="math inline">\(\hat\beta_1=\sum d_iy_i\)</span> where <span class="math inline">\(d_i=\frac{x_i-\bar{x}}{\sum(x_i-\bar{x})^2}=\frac{x_i-\bar{x}}{S_{xx}}\)</span>, by <a href="#lemma-the-covariance-of-linear-combinations-of-uncorrelated-random-variables">Lemma: the covariance of linear combinations of uncorrelated random variables</a>,
+<span class="math display">\[\begin{align}
+\text{Cov}(\hat\beta_0,\hat\beta_1)&amp;=\text{Cov}\left(\sum c_iY_i,\sum d_iY_i\right)\\
+&amp;=\left(\sum_{i=1}^{n}c_id_i\right)\sigma^2\\
+&amp;=\sigma^2\sum_{i=1}^{n}\left(\left[\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{\sum(x_i-\bar{x})^2}\right]\frac{x_i-\bar{x}}{\sum(x_i-\bar{x})^2}\right)\\
+&amp;=\sigma^2\sum_{i=1}^{n}\left(\left[\frac{\sum(x_i-\bar{x})^2-n\bar{x}(x_i-\bar{x})}{n\sum(x_i-\bar{x})^2}\right]\frac{x_i-\bar{x}}{\sum(x_i-\bar{x})^2}\right)\\
+&amp;=\sigma^2\left(\left[\frac{\sum(x_i-\bar{x})\sum(x_i-\bar{x})^2-n\bar{x}\sum(x_i-\bar{x})^2}{n\sum(x_i-\bar{x})^2}\right]\frac{1}{\sum(x_i-\bar{x})^2}\right)\\
+&amp;=\sigma^2\left(\frac{\sum(x_i-\bar{x})-n\bar{x}}{n\sum(x_i-\bar{x})^2}\right)\\
+&amp;=\sigma^2\left(\frac{-\bar{x}}{\sum(x_i-\bar{x})^2}\right)\\
+\end{align}\]</span></p>
+<ul>
+<li><p>(5). <span class="math display">\[\begin{align}
+\text{Cov}(Y_i, \hat\beta_0)&amp;=\text{Cov}\left(Y_i, \sum c_iY_i\right)\\
+&amp;=\left[\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{\sum(x_i-\bar{x})^2}\right]\sigma^2\\
+\end{align}\]</span></p></li>
+<li><p>(6). <span class="math display">\[\begin{align}
+\text{Cov}(Y_i, \hat\beta_1)&amp;=\text{Cov}\left(Y_i, \sum d_iY_i\right)\\
+&amp;=\frac{x_i-\bar{x}}{\sum(x_i-\bar{x})^2}\sigma^2\\
+\end{align}\]</span></p></li>
+</ul>
+<p><span class="math display">\[\begin{align}
+\mathrm{Var}\hat\epsilon_i&amp;=\mathbb E \hat\epsilon_i^2\\
+&amp;=\mathbb E(Y_i-\hat\beta_0-\hat\beta_1x_i)^2\\
+&amp;=\mathbb E\left[(Y_i-\beta_0-\beta_1x_i)-(\hat\beta_0-\beta_0)-x_i(\hat\beta_1-\beta_1)\right]^2\\
+&amp;=\mathrm{Var}Y_i+\mathrm{Var}\hat\beta_0+x_i^2\mathrm{Var}\hat\beta_1-2\mathrm{Cov}(Y_i,\hat\beta_0)-2x_i\mathrm{Cov}(Y_i,\hat\beta_1)+2x_i\mathrm{Cov}(\hat\beta_0,\hat\beta_1)\\
+&amp;=\left(1+\frac{\sum x_i^2}{n\sum(x_i-\bar{x})^2}+\frac{x_i^2}{\sum_{i=1}^{n}(x_i-\bar x)^2}-\frac{2}{n}-\frac{2(x_i-\bar{x})^2}{\sum(x_i-\bar{x})^2}-\frac{2x_i\bar{x}}{\sum(x_i-\bar{x})^2}\right)\sigma^2\\
+\end{align}\]</span></p>
+<p>Thus <span class="math display">\[\begin{align}
+\mathbb E\hat\sigma^2&amp;=\frac{1}{n}\sum_{i=1}^{n}\mathbb E \hat\epsilon_i^2\\
+&amp;=\frac{1}{n}\sum_{i=1}^{n}\left[\left(1+\frac{\sum x_i^2}{n\sum(x_i-\bar{x})^2}+\frac{x_i^2}{\sum_{i=1}^{n}(x_i-\bar x)^2}-\frac{2}{n}-\frac{2(x_i-\bar{x})^2}{\sum(x_i-\bar{x})^2}-\frac{2x_i\bar{x}}{\sum(x_i-\bar{x})^2}\right)\sigma^2\right]\\
+&amp;=\left(\frac{n-2}{n}+\frac{\sum x_i^2}{n\sum(x_i-\bar{x})^2}+\frac{\sum x_i^2}{n\sum_{i=1}^{n}(x_i-\bar x)^2}-\frac{2\sum(x_i-\bar{x})^2}{n\sum(x_i-\bar{x})^2}-\frac{2\sum x_i\bar{x}}{n\sum(x_i-\bar{x})^2}\right)\sigma^2\\
+&amp;=\left(\frac{n-2}{n}+0\right)\sigma^2\\
+&amp;=\frac{n-2}{n}\sigma^2\\
+\end{align}\]</span>
+The MLE <span class="math inline">\(\hat\sigma^2\)</span> is a biased estimator of <span class="math inline">\(\sigma^2\)</span>. The more commonly used estimator of <span class="math inline">\(\sigma^2\)</span>, which is unbiased, is <span class="math display">\[S^2=\frac{n}{n-2}\hat\sigma^2=\frac{1}{n-2}\sum_{i=1}^{n}\left(y_i-\hat\beta_0-\hat\beta_1 x_i\right)^2=\frac{1}{n-2}\sum_{i=1}^{n}\hat\epsilon_i^2\]</span></p>
+</div>
+<div id="theorem-fracn-2s2sigma2simchi_n-22" class="section level4">
+<h4>Theorem: <span class="math inline">\(\frac{(n-2)S^2}{\sigma^2}\sim\chi_{n-2}^2\)</span></h4>
+<p>Under the conditional normal regression model, the sampling distributions of the estimators <span class="math inline">\(\hat\beta_0\)</span>, <span class="math inline">\(\hat\beta_1\)</span> and <span class="math inline">\(S^2\)</span> are <span class="math display">\[\hat\beta_0\sim\mathrm{n}\left(\beta_0, \sigma^2\left[\frac{\sum x_i^2}{nS_{xx}}\right]\right)\]</span>
+<span class="math display">\[\hat\beta_1\sim\mathrm{n}\left(\beta_1,\frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar x)^2}\right)\]</span></p>
+<p><span class="math display">\[\text{Cov}(\hat\beta_0,\hat\beta_1)=\sigma^2\left(\frac{-\bar{x}}{\sum(x_i-\bar{x})^2}\right)\]</span>
+Furthermore, <span class="math inline">\((\hat\beta_0,\hat\beta_1)\)</span> and <span class="math inline">\(S^2\)</span> are independent and <span class="math display">\[\frac{(n-2)S^2}{\sigma^2}\sim\chi_{n-2}^2\]</span></p>
+<p><strong>Proof:</strong></p>
+<p>To show that <span class="math inline">\(\hat\beta_0\)</span> and <span class="math inline">\(\hat\beta_1\)</span> are independent of <span class="math inline">\(S^2\)</span>, a fact that will follow from <a href="#lemma-the-covariance-of-linear-combinations-of-uncorrelated-random-variables">Lemma: the covariance of linear combinations of uncorrelated random variables</a> and <a href="#lemma-the-independence-of-linear-commbinations-of-normal-random-variables">Lemma: the independence of linear commbinations of normal random variables</a>. Since <span class="math display">\[\hat\epsilon_i=Y_i-\hat\beta_0-\hat\beta_1x_i,\]</span> we can write
+<span class="math display">\[\hat\epsilon_i=\sum_{j=1}^{n}\left[\delta_{ij}-(c_j+d_jx_i)\right]Y_i\]</span> where <span class="math display">\[\delta_{ij}=\begin{cases}
+1&amp;\text{if }i= j\\
+0&amp;\text{if }i\ne j
+\end{cases},\quad c_j=\frac{1}{n}-\frac{\bar{x}(x_j-\bar{x})}{\sum(x_j-\bar{x})^2},\quad d_j=\frac{x_j-\bar{x}}{\sum(x_j-\bar{x})^2}\]</span> Since <span class="math inline">\(\hat\beta_0=\sum c_iY_i\)</span> and <span class="math inline">\(\hat\beta_1=\sum d_iY_i\)</span>, application of <a href="#lemma-the-covariance-of-linear-combinations-of-uncorrelated-random-variables">Lemma: the covariance of linear combinations of uncorrelated random variables</a>, we have <span class="math display">\[\begin{align}
+\text{Cov}(\hat\epsilon_i,\hat\beta_0)&amp;=\text{Cov}\left((Y_i-\hat\beta_0-\hat\beta_1x_i),\hat\beta_0\right)\\
+&amp;=\sigma^2\left(\left[\frac{1}{n}-\frac{\bar{x}(x_i-\bar{x})}{S_{xx}}\right]-\frac{\sum x_i^2}{nS_{xx}}-\frac{-\bar{x}x_i}{S_{xx}}\right)\\
+&amp;=0
+\end{align}\]</span> and
+<span class="math display">\[\begin{align}
+\text{Cov}(\hat\epsilon_i,\hat\beta_1)&amp;=\text{Cov}\left((Y_i-\hat\beta_0-\hat\beta_1x_i),\hat\beta_1\right)\\
+&amp;=\sigma^2\left(\frac{x_i-\bar{x}}{\sum(x_i-\bar{x})^2}+\frac{\bar{x}}{\sum(x_i-\bar{x})^2}-\frac{x_i}{\sum(x_i-\bar x)^2}\right)\\
+&amp;=0
+\end{align}\]</span></p>
+<p>Thus by <a href="#lemma-the-independence-of-linear-commbinations-of-normal-random-variables">Lemma: the independence of linear commbinations of normal random variables</a>, under normal sampling, <span class="math inline">\(S^2=\sum\hat\epsilon_i^2/(n-2)\)</span> is independent of <span class="math inline">\(\hat\beta_0\)</span> and <span class="math inline">\(\hat\beta_1\)</span>.</p>
+<p>To prove that <span class="math inline">\((n-2)S^2/\sigma^2=\sum\hat\epsilon_i^2/\sigma^2\sim\chi^2_{n-2}\)</span>, we write <span class="math inline">\((n-2)S^2\)</span> as the sum of <span class="math inline">\((n-2)\)</span> independent random variables, each of which has a <span class="math inline">\(\chi^2_1\)</span> distribution. That is, we find constants
+<span class="math inline">\(a_{ij}, i = 1,\cdots,n \quad\text{and}\quad j = 1,\cdots, n-2\)</span>, that satisfy <span class="math display">\[\sum_{i=1}^{n}\hat\epsilon_i^2=\sum_{j=1}^{n-2}\left(\sum_{i=1}^{n}a_{ij}Y_i\right)^2,\]</span> where <span class="math inline">\(\sum_{i=1}^{n}a_{ij}=0,\quad j = 1,\cdots, n-2\)</span> and <span class="math inline">\(\sum_{i=1}^{n}a_{ij}a_{ij&#39;}=0,\quad j \ne j&#39;\)</span>.</p>
+<p>Inferences regarding the two parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are usually based on the following two Student’s <span class="math inline">\(t\)</span> distributions. Their derivations follow immediately from the normal and <span class="math inline">\(\chi^2\)</span> distributions and the independence in <a href="#theorem-fracn-2s2sigma2simchi_n-22">Theorem: <span class="math inline">\(\frac{(n-2)S^2}{\sigma^2}\sim\chi_{n-2}^2\)</span></a>. We have
+<span class="math display">\[\frac{\hat\beta_0-\beta_0}{\sqrt{\text{Var}(\hat\beta_0)}}=\frac{\hat\beta_0-\beta_0}{\sigma\sqrt{\frac{\sum x_i^2}{nS_{xx}}}}\sim\mathrm{n}(0,1)\]</span>
+<span class="math display">\[\frac{(n-2)S^2}{\sigma^2}\sim\chi_{n-2}^2\]</span> Then <span class="math display">\[\frac{Z}{\sqrt{\chi^2/df}}=\frac{\frac{\hat\beta_0-\beta_0}{\sigma\sqrt{\frac{\sum x_i^2}{nS_{xx}}}}}{\sqrt{\frac{S^2}{\sigma^2}}}=\frac{\hat\beta_0-\beta_0}{S\sqrt{\frac{\sum x_i^2}{nS_{xx}}}}\sim t_{n-2}\]</span></p>
+<p>And <span class="math display">\[\frac{\hat\beta_1-\beta_1}{\sqrt{\text{Var}(\hat\beta_1)}}=\frac{\hat\beta_1-\beta_1}{\sigma\sqrt{\frac{1}{\sum_{i=1}^{n}(x_i-\bar x)^2}}}\sim\mathrm{n}(0,1)\]</span></p>
+<p>Then <span class="math display">\[\frac{Z}{\sqrt{\chi^2/df}}=\frac{\frac{\hat\beta_1-\beta_1}{\sigma\sqrt{\frac{1}{\sum_{i=1}^{n}(x_i-\bar x)^2}}}}{\sqrt{\frac{S^2}{\sigma^2}}}=\frac{\hat\beta_1-\beta_1}{S/\sqrt{S_{xx}}}\sim t_{n-2}\]</span></p>
+<p>To test <span class="math inline">\(H_0:\beta_1=0\quad\text{versus}\quad H_1:\beta_1\ne 0\)</span>
+we reject <span class="math inline">\(H_0\)</span> at level <span class="math inline">\(\alpha\)</span> if <span class="math display">\[\left|\frac{\hat\beta_1-0}{S/\sqrt{S_{xx}}}\right|\ge t_{n-2,\alpha/2}\]</span> or equivalently, if <span class="math display">\[\frac{\hat\beta_1^2}{S^2/S_{xx}}&gt;F_{1,n-2,\alpha}.\]</span>
+Since <span class="math display">\[\frac{\hat\beta_1^2}{S^2/S_{xx}}=\frac{S_{xy}^2/S_{xx}^2}{S^2/S_{xx}}=\frac{S_{xy}^2/S_{xx}}{S^2}=\frac{S_{xy}^2/S_{xx}}{\frac{1}{n-2}\sum\hat\epsilon_i^2}=\frac{S_{xy}^2/S_{xx}}{\text{RSS}/(n-2)}=\frac{\text{Regression sum of squares}}{\text{Residual sum of squares/df}}.\]</span></p>
+</div>
+<div id="anova-table-fo-r-simple-linear-regression" class="section level4">
+<h4>ANOVA table fo r simple linear regression</h4>
+<p><span class="math display">\[
+\begin{array}{l|llll}
+\hline
+            \text{Source of}\\ \text{variation}   &amp; \text{df.} &amp; \text{Sum of squares} &amp; \text{Mean square} &amp; F\; \text{  statistic}   \\ \hline
+           \text{Regression}\\ \text{(slope)} &amp;   1 &amp; \mathrm{Reg.SS}=S^2_{xy}/S_{xx} &amp;   \mathrm{MS(Reg)}=\mathrm{\text{Reg.SS}} &amp; F=\frac{\mathrm{MS(Reg)}}{\mathrm{MS(Resid)}}   \\\hline
+           \text{Residual} &amp;   n-2 &amp;  \mathrm{RSS}=\sum\hat\epsilon_i^2  &amp;   \mathrm{MS(Resid)}=\mathrm{RSS}/(n-2) &amp;    \\ \hline
+              \text{Total} &amp;  n-1 &amp; \mathrm{SST}=\sum (y_{i}-\bar{y})^2 &amp;    &amp;   
+\end{array}
+\]</span></p>
+</div>
+<div id="the-coefficient-of-determination-r2" class="section level4">
+<h4>The coefficient of determination <span class="math inline">\(r^2\)</span>:</h4>
+<p><span class="math display">\[r^2=\frac{\text{Regression sum of squares}}{\text{Total sum of squares}}=\frac{\sum(\hat y_i-\bar y)^2}{\sum(y_i-\bar y)^2}=\frac{S_{xy}^2}{S_{xx}S_{yy}}\]</span></p>
+</div>
 </div>
 <div id="estimation-and-prediction-at-a-specified-x-x_0" class="section level3">
 <h3>Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></h3>
@@ -2352,6 +2584,67 @@ and the test statistic <span class="math inline">\(F\)</span> is called the ANOV
 </div>
 <div id="regression-models" class="section level1">
 <h1>12. Regression Models</h1>
+<div id="regression-with-errors-in-variables-eiv-or-measurement-error-model" class="section level2">
+<h2>Regression with Errors in Variables (EIV) (or measurement error model)</h2>
+<p>The simple linear regression models <span class="math display">\[Y_i=\beta_0+\beta_1x_i+\epsilon_i, \]</span> the <span class="math inline">\(x\)</span>s are known and fixed.</p>
+<p>Regression with errors in variables (EIV), also known as the <strong>measurement error model</strong>, are generalizations of simple linear regression models, we measure a random variable whose mean is <span class="math inline">\(x_i\)</span>.</p>
+<p>In the general EIV model we assume that we observe pairs <span class="math inline">\((x_i, y_i)\)</span> sampled from random variables <span class="math inline">\((X_i, Y_i)\)</span> whose means satisfy the linear relationship <span class="math display">\[\mathbb EY_i=\beta_0+\beta_1(\mathbb E X_i)\]</span></p>
+<div id="errors-in-variables-model-or-measurement-error-model" class="section level5">
+<h5>Errors in variables model (or measurement error model)</h5>
+<p>Let <span class="math inline">\(\mathbb E X_i=\xi_i\)</span>, errors in variables model: <span class="math display">\[Y_i=\beta_0+\beta_1\xi_i+\epsilon_i,\quad \epsilon_i\sim\mathrm{n}(0,\sigma^2_{\epsilon}),\]</span>
+<span class="math display">\[X_i=\xi_i+\delta_i,\quad \delta_i\sim\mathrm{n}(0,\sigma^2_{\delta}),\]</span>
+Note that the assumption of normality, although common, is not necessary. Other
+distributions can be used.</p>
+</div>
+<div id="functional-and-structural-relationships" class="section level3">
+<h3>Functional and Structural Relationships</h3>
+<div id="linear-functional-relationship-model" class="section level4">
+<h4>Linear functional relationship model</h4>
+<p><span class="math display">\[Y_i=\beta_0+\beta_1\xi_i+\epsilon_i,\quad \epsilon_i\sim\mathrm{n}(0,\sigma^2_{\epsilon}),\]</span>
+<span class="math display">\[X_i=\xi_i+\delta_i,\quad \delta_i\sim\mathrm{n}(0,\sigma^2_{\delta}),\]</span>
+where the <span class="math inline">\(\xi_i\)</span>s are fixed, unknown parameters and the <span class="math inline">\(\epsilon_i\)</span>s and <span class="math inline">\(\delta_i\)</span>s are independent. The parameters of main interest are <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, and inference on these parameters is made using the joint distribution of <span class="math inline">\(((X_1, Y_1),\cdots,(X_n, Y_n))\)</span>, conditional on <span class="math inline">\(\xi_1,\cdots,\xi_n.\)</span></p>
+</div>
+<div id="linear-structural-relationship-model" class="section level4">
+<h4>Linear structural relationship model</h4>
+<p>As in the functional relationship model, we have random variables <span class="math inline">\(X_i\)</span> and <span class="math inline">\(Y_i\)</span> , with <span class="math inline">\(\mathbb E X_i=\xi_i,\quad \mathbb E Y_i=\eta_i\)</span>, and we assume the
+<em>functional relationship</em> <span class="math inline">\(\eta_i=\beta_0+\beta_1\xi_i\)</span>. But now we assume that the parameters <span class="math inline">\(\xi_1,\cdots,\xi_n\)</span> are themselves a random sample from a common population. Thus, conditional on <span class="math inline">\(\xi_1,\cdots,\xi_n\)</span>, we observe pairs
+<span class="math inline">\((X_i, Y_i), i = 1 , \cdots , n\)</span>, according to
+<span class="math display">\[Y_i=\beta_0+\beta_1\xi_i+\epsilon_i,\quad \epsilon_i\sim\mathrm{n}(0,\sigma^2_{\epsilon}),\]</span>
+<span class="math display">\[X_i=\xi_i+\delta_i,\quad \delta_i\sim\mathrm{n}(0,\sigma^2_{\delta}),\]</span> and also <span class="math display">\[\xi_i\sim \mathrm{iid }\;\mathrm{n}(\xi,\sigma^2_{\xi}).\]</span>
+As before, <span class="math inline">\(\epsilon_i\)</span>s and <span class="math inline">\(\delta_i\)</span>s are independent and they are also independent of the <span class="math inline">\(\xi_i\)</span>s. As in the functional relationship model, the parameters of main interest are <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Here, however, the inference on these parameters is made using the joint distribution of <span class="math inline">\(((X_1, Y_1),\cdots,(X_n, Y_n))\)</span>, <em>unconditional</em> on <span class="math inline">\(\xi_1,\cdots,\xi_n.\)</span></p>
+</div>
+</div>
+<div id="a-least-squares-solution-orthogonal-least-squares" class="section level3">
+<h3>A Least Squares Solution: orthogonal least squares</h3>
+<p>One way to take account of the fact that the <span class="math inline">\(x\)</span>s also have error in their measurement is to perform <em>orthogonal least squares</em>, that is, to find the line that minimizes orthogonal (perpendicular to the line) distances rather than vertical distances.</p>
+<p>For a particular data point <span class="math inline">\((x&#39;, y&#39;)\)</span>, the point <span class="math inline">\((\hat x&#39;, \hat y&#39;)\)</span> on a line <span class="math inline">\(y = a + bx\)</span> that is closest when we measure distance orthogonally is given by <span class="math display">\[\hat x&#39;=\frac{by&#39;+x&#39;-ab}{1+b^2},\quad\text{and}\quad \hat y&#39;=a+\frac{b}{1+b^2}(by&#39;+x&#39;-ab).\]</span> and the norm line has slope <span class="math inline">\(-\frac{1}{b}\)</span></p>
+<p>The <strong>total least squares problem</strong> is to minimize, over all <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, the quantity
+<span class="math display">\[\begin{align}
+&amp;\sum_{i=1}^{n}\left((x_i-\hat x_i)^2+(y_i-\hat y_i)^2\right)\\
+&amp;=\frac{1}{1+b^2}\sum_{i=1}^{n}\left(y_i-(a+bx_i)\right)^2\\
+\end{align}\]</span></p>
+<p>If <span class="math inline">\(b\)</span> is fixed, the minimizing choice of <span class="math inline">\(a\)</span> in the sum is <span class="math inline">\(a=\bar{y} - b\bar {x}\)</span>. Then <span class="math display">\[\begin{align}
+&amp;\sum_{i=1}^{n}\left((x_i-\hat x_i)^2+(y_i-\hat y_i)^2\right)\\
+&amp;=\frac{1}{1+b^2}\sum_{i=1}^{n}\left(y_i-(a+bx_i)\right)^2\\
+&amp;=\frac{1}{1+b^2}\sum_{i=1}^{n}\left(y_i-(\bar{y} - b\bar {x}+bx_i)\right)^2\\
+&amp;=\frac{1}{1+b^2}\sum_{i=1}^{n}\left(y_i-\bar{y}) - b(x_i-\bar {x})\right)^2\\
+&amp;=\frac{1}{1+b^2}\left[S_{yy}-2bS_{xy}+b^2S_{xx}\right].
+\end{align}\]</span></p>
+<p>With <span class="math display">\[S_{xx}=\sum(x_i-\bar{x})^2,\quad S_{yy}=\sum(y_i-\bar{y})^2,\quad S_{xy}=\sum(x_i-\bar{x})(y_i-\bar{y}),\]</span></p>
+<p>The minimum is achieved at <span class="math inline">\(b=\frac{-(S_{xx}-S_{yy})+\sqrt{(S_{xx}-S_{yy})^2+4S_{xy}^2}}{2S_{xy}}\)</span></p>
+</div>
+<div id="maximum-likelihood-estimation" class="section level3">
+<h3>Maximum Likelihood Estimation</h3>
+</div>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic Regression</h2>
+<div id="the-model" class="section level3">
+<h3>The Model</h3>
+<p><span class="math display">\[\log\left(\frac{\pi_i}{1-\pi_i}\right)=\beta_0+\beta_1x_i\]</span> with
+<span class="math display">\[\pi_i=\frac{e^{\beta_0+\beta_1x_i}}{1+e^{\beta_0+\beta_1x_i}}\]</span></p>
+</div>
+</div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
