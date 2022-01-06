@@ -6,7 +6,25 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Longitudinal Analysis</title>
+      <link>/2021/10/27/longitudinal-analysis/</link>
+      <pubDate>Wed, 27 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/10/27/longitudinal-analysis/</guid>
+      <description>3. Overview of Linear Models for Longitudinal DataReferences3. Overview of Linear Models for Longitudinal DataReferences1. Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. John Wiley &amp;amp; Sons; 2012.2. Singer JD, Willett JB, Willett JB, et al. Applied longitudinal data analysis: Modeling change and event occurrence. Oxford university press; 2003.</description>
+    </item>
+    
+    <item>
+      <title>Stochastic Processes</title>
+      <link>/2021/10/25/stochastic-processes/</link>
+      <pubDate>Mon, 25 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/10/25/stochastic-processes/</guid>
+      <description>1. Measure and IntegrationMeasurable SpacesMeasurable FunctionsMeasuresIntegrationTransforms and Indefinite IntegralsKernels and Product Spaces2. Probability SpacesProbability Spaces and RandomExpectationsLp-spaces and Uniform IntegrabilityInformation and DeterminabilityIndependence3. Convergence4. Conditioning5. Martingales and Stochastics6. Poisson Random Measures7. L´evy Processes8. Brownian Motion9. Markov ProcessesReferences1. Measure and IntegrationMeasurable SpacesMonotone class theoremLet \(\mathcal C\) be a class of subset closed under finite intersections and containing \(\Omega\) (that is, \(\mathcal C\) is a \(\pi\)-system).</description>
+    </item>
+    
     <item>
       <title>Probability</title>
       <link>/2021/10/10/probability/</link>

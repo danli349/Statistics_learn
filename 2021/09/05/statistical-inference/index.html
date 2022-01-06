@@ -113,7 +113,7 @@
 </ul></li>
 <li><a href="#inequalities">Inequalities</a>
 <ul>
-<li><a href="#numerical-inequalities">Numerical Inequalities</a></li>
+<li><a href="#youngs-inequalities">Young’s Inequalities</a></li>
 <li><a href="#functional-inequalities">Functional Inequalities</a></li>
 </ul></li>
 </ul></li>
@@ -600,14 +600,20 @@ By iterating the expectation, we calculate the mean of <span class="math inline"
 </div>
 <div id="inequalities" class="section level2">
 <h2>Inequalities</h2>
-<div id="numerical-inequalities" class="section level3">
-<h3>Numerical Inequalities</h3>
+<div id="youngs-inequalities" class="section level3">
+<h3>Young’s Inequalities</h3>
 <p>Let <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> be any positive numbers and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy
 <span class="math inline">\(1/p + 1/q = 1\)</span>, then <span class="math display">\[p+q=pq\]</span>
 <span class="math display">\[q(p-1)=p\]</span>
 <span class="math display">\[1-1/q=1/p\]</span>
 <span class="math display">\[\frac1p a^p + \frac1q b^q \geq ab\]</span> with
 equality if and only if <span class="math inline">\(a^p = b^q\)</span>.</p>
+<p><strong>Proof</strong></p>
+<p>Put <span class="math inline">\(\displaystyle t=1/p\)</span> and <span class="math inline">\(\displaystyle (1-t)=1/q.\)</span> Because the logarithm function is concave,</p>
+<p><span class="math display">\[\displaystyle \ln \left(ta^{p}+(1-t)b^{q}\right)\geq t\ln \left(a^{p}\right)+(1-t)\ln \left(b^{q}\right)\\
+=tp\ln(a)+(1-t)q\ln(b)\\
+=\ln(a)+\ln(b)=\ln(ab)\]</span>
+with the equality holding if and only if <span class="math inline">\(\displaystyle a^{p}=b^{q}.\)</span> Young’s inequality follows by exponentiating.</p>
 <p><strong>H<span class="math inline">\(\ddot{o}\)</span>lder’s Inequality</strong> Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be any random
 variables and let <span class="math inline">\(p, q &gt; 1\)</span> satisfy <span class="math inline">\(1/p + 1/q = 1\)</span>, then
 <span class="math display">\[\lvert{\mathbb E{}[XY]}\lvert \leq \mathbb E{}[\lvert{XY}\lvert] \le \mathbb E{}[\lvert{X}\lvert^p]^{1/p} \mathbb E{}[\lvert{Y}\lvert^q]^{1/q}\]</span>
