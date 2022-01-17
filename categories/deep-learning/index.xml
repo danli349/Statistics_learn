@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deep Learning on A Hugo website</title>
+    <link>/categories/deep-learning/</link>
+    <description>Recent content in Deep Learning on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 16 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural Networks and Deep Learning</title>
+      <link>/2022/01/16/neural-networks-and-deep-learning/</link>
+      <pubDate>Sun, 16 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/01/16/neural-networks-and-deep-learning/</guid>
+      <description>1. Using neural nets to recognize handwritten digits2. How the backpropagation algorithm works3. Improving the way neural networks learn3.1 The sigmoid output and cross-entropy cost function3.2 Overfitting and regularization3.3 Weight initialization3.5 How to choose a neural network’s hyper-parameters?4. A visual proof that neural nets can compute any function5. Why are deep neural networks hard to train?6. Deep learning6.</description>
+    </item>
+    
+  </channel>
+</rss>

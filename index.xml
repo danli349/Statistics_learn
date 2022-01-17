@@ -6,7 +6,16 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural Networks and Deep Learning</title>
+      <link>/2022/01/16/neural-networks-and-deep-learning/</link>
+      <pubDate>Sun, 16 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/01/16/neural-networks-and-deep-learning/</guid>
+      <description>1. Using neural nets to recognize handwritten digits2. How the backpropagation algorithm works3. Improving the way neural networks learn3.1 The sigmoid output and cross-entropy cost function3.2 Overfitting and regularization3.3 Weight initialization3.5 How to choose a neural network’s hyper-parameters?4. A visual proof that neural nets can compute any function5. Why are deep neural networks hard to train?6. Deep learning6.</description>
+    </item>
+    
     <item>
       <title>Longitudinal Analysis</title>
       <link>/2021/10/27/longitudinal-analysis/</link>

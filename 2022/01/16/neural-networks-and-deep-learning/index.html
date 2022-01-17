@@ -1,0 +1,3697 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+<title>Neural Networks and Deep Learning - A Hugo website</title>
+<meta property="og:title" content="Neural Networks and Deep Learning - A Hugo website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">about</a></li>
+    
+    <li><a href="../../../../vitae/">CV</a></li>
+    
+    <li><a href="https://github.com/danli349">GitHub</a></li>
+    
+    <li><a href="https://scholar.google.com/citations?user=mNjLK8EAAAAJ&amp;hl=en">Googlr Scholar</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">80 min read</span>
+    
+
+    <h1 class="article-title">Neural Networks and Deep Learning</h1>
+
+    
+    <span class="article-date">2022-01-16</span>
+    
+
+    <div class="article-content">
+      
+<script src="../../../../2022/01/16/neural-networks-and-deep-learning/index_files/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#using-neural-nets-to-recognize-handwritten-digits">1. Using neural nets to recognize handwritten digits</a></li>
+<li><a href="#how-the-backpropagation-algorithm-works">2. How the backpropagation algorithm works</a></li>
+<li><a href="#improving-the-way-neural-networks-learn">3. Improving the way neural networks learn</a>
+<ul>
+<li><a href="#the-sigmoid-output-and-cross-entropy-cost-function">3.1 The sigmoid output and cross-entropy cost function</a></li>
+<li><a href="#overfitting-and-regularization">3.2 Overfitting and regularization</a></li>
+<li><a href="#weight-initialization">3.3 Weight initialization</a></li>
+<li><a href="#how-to-choose-a-neural-networks-hyper-parameters">3.5 How to choose a neural network’s hyper-parameters?</a></li>
+</ul></li>
+<li><a href="#a-visual-proof-that-neural-nets-can-compute-any-function">4. A visual proof that neural nets can compute any function</a></li>
+<li><a href="#why-are-deep-neural-networks-hard-to-train">5. Why are deep neural networks hard to train?</a></li>
+<li><a href="#deep-learning">6. Deep learning</a>
+<ul>
+<li><a href="#introducing-convolutional-networks">6.1 Introducing convolutional networks</a></li>
+</ul></li>
+<li><a href="#backpropagation">Backpropagation</a></li>
+<li><a href="#review-the-chain-rule">Review: The chain rule</a></li>
+<li><a href="#notation">Notation</a></li>
+<li><a href="#backpropagation-in-general">Backpropagation in general</a></li>
+<li><a href="#backpropagation-in-practice">Backpropagation in practice</a>
+<ul>
+<li><a href="#example-sigmoid-network-with-cross-entropy-loss-using-gradient-descent">Example: Sigmoid network with cross-entropy loss using gradient descent</a></li>
+</ul></li>
+<li><a href="#toy-python-example">Toy Python example</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="using-neural-nets-to-recognize-handwritten-digits" class="section level2">
+<h2>1. Using neural nets to recognize handwritten digits</h2>
+<pre class="python"><code># %load network.py
+
+&quot;&quot;&quot;
+network.py
+~~~~~~~~~~
+
+A module to implement the stochastic gradient descent learning
+algorithm for a feedforward neural network.  Gradients are calculated
+using backpropagation.  Note that I have focused on making the code
+simple, easily readable, and easily modifiable.  It is not optimized,
+and omits many desirable features.
+&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+import random
+
+# Third-party libraries
+import numpy as np
+
+class Network(object):
+
+    def __init__(self, sizes):
+        &quot;&quot;&quot;The list ``sizes`` contains the number of neurons in the
+        respective layers of the network.  For example, if the list
+        was [2, 3, 1] then it would be a three-layer network, with the
+        first layer containing 2 neurons, the second layer 3 neurons,
+        and the third layer 1 neuron.  The biases and weights for the
+        network are initialized randomly, using a Gaussian
+        distribution with mean 0, and variance 1.  Note that the first
+        layer is assumed to be an input layer, and by convention we
+        won&#39;t set any biases for those neurons, since biases are only
+        ever used in computing the outputs from later layers.&quot;&quot;&quot;
+        self.num_layers = len(sizes)
+        self.sizes = sizes
+        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
+        self.weights = [np.random.randn(y, x)
+                        for x, y in zip(sizes[:-1], sizes[1:])]
+
+    def feedforward(self, a):
+        &quot;&quot;&quot;Return the output of the network if ``a`` is input.&quot;&quot;&quot;
+        for b, w in zip(self.biases, self.weights):
+            a = sigmoid(np.dot(w, a)+b)
+        return a
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta,
+            test_data=None):
+        &quot;&quot;&quot;Train the neural network using mini-batch stochastic
+        gradient descent.  The ``training_data`` is a list of tuples
+        ``(x, y)`` representing the training inputs and the desired
+        outputs.  The other non-optional parameters are
+        self-explanatory.  If ``test_data`` is provided then the
+        network will be evaluated against the test data after each
+        epoch, and partial progress printed out.  This is useful for
+        tracking progress, but slows things down substantially.&quot;&quot;&quot;
+
+        training_data = list(training_data)
+        # n is 50000
+        n = len(training_data)
+
+        if test_data:
+            test_data = list(test_data)
+            n_test = len(test_data)
+
+        for j in range(epochs):
+            random.shuffle(training_data)
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in range(0, n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch(mini_batch, eta)
+            if test_data:
+                print(&quot;Epoch {} : {} / {}&quot;.format(j,self.evaluate(test_data),n_test))
+            else:
+                print(&quot;Epoch {} complete&quot;.format(j))
+
+    def update_mini_batch(self, mini_batch, eta):
+        &quot;&quot;&quot;Update the network&#39;s weights and biases by applying
+        gradient descent using backpropagation to a single mini batch.
+        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
+        is the learning rate.&quot;&quot;&quot;
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        for x, y in mini_batch:
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+        self.weights = [w-(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+
+    def backprop(self, x, y):
+        &quot;&quot;&quot;Return a tuple ``(nabla_b, nabla_w)`` representing the
+        gradient for the cost function C_x.  ``nabla_b`` and
+        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
+        to ``self.biases`` and ``self.weights``.&quot;&quot;&quot;
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # feedforward
+        activation = x
+        activations = [x] # list to store all the activations, layer by layer
+        zs = [] # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+            z = np.dot(w, activation)+b
+            zs.append(z)
+            activation = sigmoid(z)
+            activations.append(activation)
+        # backward pass
+        delta = self.cost_derivative(activations[-1], y) * \
+            sigmoid_prime(zs[-1])
+        nabla_b[-1] = delta
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
+        # Note that the variable l in the loop below is used a little
+        # differently to the notation in Chapter 2 of the book.  Here,
+        # l = 1 means the last layer of neurons, l = 2 is the
+        # second-last layer, and so on.  It&#39;s a renumbering of the
+        # scheme in the book, used here to take advantage of the fact
+        # that Python can use negative indices in lists.
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
+            nabla_b[-l] = delta
+            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+        return (nabla_b, nabla_w)
+
+    def evaluate(self, test_data):
+        &quot;&quot;&quot;Return the number of test inputs for which the neural
+        network outputs the correct result. Note that the neural
+        network&#39;s output is assumed to be the index of whichever
+        neuron in the final layer has the highest activation.&quot;&quot;&quot;
+        test_results = [(np.argmax(self.feedforward(x)), y)
+                        for (x, y) in test_data]
+        return sum(int(x == y) for (x, y) in test_results)
+
+    def cost_derivative(self, output_activations, y):
+        &quot;&quot;&quot;Return the vector of partial derivatives \partial C_x /
+        \partial a for the output activations.&quot;&quot;&quot;
+        return (output_activations-y)
+
+#### Miscellaneous functions
+def sigmoid(z):
+    &quot;&quot;&quot;The sigmoid function.&quot;&quot;&quot;
+    return 1.0/(1.0+np.exp(-z))
+
+def sigmoid_prime(z):
+    &quot;&quot;&quot;Derivative of the sigmoid function.&quot;&quot;&quot;
+    return sigmoid(z)*(1-sigmoid(z))</code></pre>
+<pre class="python"><code># %load mnist_loader.py
+&quot;&quot;&quot;
+mnist_loader
+~~~~~~~~~~~~
+A library to load the MNIST image data.  For details of the data
+structures that are returned, see the doc strings for ``load_data``
+and ``load_data_wrapper``.  In practice, ``load_data_wrapper`` is the
+function usually called by our neural network code.
+&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+import pickle
+import gzip
+
+# Third-party libraries
+import numpy as np
+
+def load_data():
+    &quot;&quot;&quot;Return the MNIST data as a tuple containing the training data,
+    the validation data, and the test data.
+    The ``training_data`` is returned as a tuple with two entries.
+    The first entry contains the actual training images.  This is a
+    numpy ndarray with 50,000 entries.  Each entry is, in turn, a
+    numpy ndarray with 784 values, representing the 28 * 28 = 784
+    pixels in a single MNIST image.
+    The second entry in the ``training_data`` tuple is a numpy ndarray
+    containing 50,000 entries.  Those entries are just the digit
+    values (0...9) for the corresponding images contained in the first
+    entry of the tuple.
+    The ``validation_data`` and ``test_data`` are similar, except
+    each contains only 10,000 images.
+    This is a nice data format, but for use in neural networks it&#39;s
+    helpful to modify the format of the ``training_data`` a little.
+    That&#39;s done in the wrapper function ``load_data_wrapper()``, see
+    below.
+    &quot;&quot;&quot;
+    f = gzip.open(&#39;mnist.pkl.gz&#39;, &#39;rb&#39;)
+    training_data, validation_data, test_data = pickle.load(f, encoding=&quot;latin1&quot;)
+    f.close()
+    return (training_data, validation_data, test_data)
+
+def load_data_wrapper():
+    &quot;&quot;&quot;Return a tuple containing ``(training_data, validation_data,
+    test_data)``. Based on ``load_data``, but the format is more
+    convenient for use in our implementation of neural networks.
+    In particular, ``training_data`` is a list containing 50,000
+    2-tuples ``(x, y)``.  ``x`` is a 784-dimensional numpy.ndarray
+    containing the input image.  ``y`` is a 10-dimensional
+    numpy.ndarray representing the unit vector corresponding to the
+    correct digit for ``x``.
+    ``validation_data`` and ``test_data`` are lists containing 10,000
+    2-tuples ``(x, y)``.  In each case, ``x`` is a 784-dimensional
+    numpy.ndarry containing the input image, and ``y`` is the
+    corresponding classification, i.e., the digit values (integers)
+    corresponding to ``x``.
+    Obviously, this means we&#39;re using slightly different formats for
+    the training data and the validation / test data.  These formats
+    turn out to be the most convenient for use in our neural network
+    code.&quot;&quot;&quot;
+    tr_d, va_d, te_d = load_data()
+    training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
+    training_results = [vectorized_result(y) for y in tr_d[1]]
+    training_data = zip(training_inputs, training_results)
+    validation_inputs = [np.reshape(x, (784, 1)) for x in va_d[0]]
+    validation_data = zip(validation_inputs, va_d[1])
+    test_inputs = [np.reshape(x, (784, 1)) for x in te_d[0]]
+    test_data = zip(test_inputs, te_d[1])
+    return (training_data, validation_data, test_data)
+
+def vectorized_result(j):
+    &quot;&quot;&quot;Return a 10-dimensional unit vector with a 1.0 in the jth
+    position and zeroes elsewhere.  This is used to convert a digit
+    (0...9) into a corresponding desired output from the neural
+    network.&quot;&quot;&quot;
+    e = np.zeros((10, 1))
+    e[j] = 1.0
+    return e</code></pre>
+<pre class="python"><code>sys.path.append(&#39;./src/&#39;)
+import mnist_loader
+import network
+
+training_data, validation_data, test_data = mnist_loader.load_data()
+test_data</code></pre>
+<pre><code>(array([[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]], dtype=float32),
+ array([7, 2, 1, ..., 4, 5, 6]))</code></pre>
+<pre class="python"><code>test_data[1]</code></pre>
+<pre><code>array([7, 2, 1, ..., 4, 5, 6])</code></pre>
+<pre class="python"><code>training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+test_data</code></pre>
+<pre><code>&lt;zip at 0x7f5eadbcdbc0&gt;</code></pre>
+<pre class="python"><code># list() can open the zip, 50000 samples in training_data, each sample is a tuple, which has 2 arrays of size (784,1) and (10, 1)
+list(training_data)[0][1]</code></pre>
+<pre><code>array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [1.],
+       [0.],
+       [0.],
+       [0.],
+       [0.]])</code></pre>
+<pre class="python"><code>net = network.Network([784, 30, 10])</code></pre>
+<pre class="python"><code>net.SGD(training_data, 30, 10, 3.0, test_data=test_data)</code></pre>
+<pre><code>Epoch 0 : 8984 / 10000
+Epoch 1 : 9213 / 10000
+Epoch 2 : 9262 / 10000
+Epoch 3 : 9343 / 10000
+Epoch 4 : 9375 / 10000
+Epoch 5 : 9384 / 10000
+Epoch 6 : 9435 / 10000
+Epoch 7 : 9421 / 10000
+Epoch 8 : 9451 / 10000
+Epoch 9 : 9465 / 10000
+Epoch 10 : 9457 / 10000
+Epoch 11 : 9437 / 10000
+Epoch 12 : 9486 / 10000
+Epoch 13 : 9495 / 10000
+Epoch 14 : 9489 / 10000
+Epoch 15 : 9513 / 10000
+Epoch 16 : 9466 / 10000
+Epoch 17 : 9486 / 10000
+Epoch 18 : 9504 / 10000
+Epoch 19 : 9499 / 10000
+Epoch 20 : 9517 / 10000
+Epoch 21 : 9490 / 10000
+Epoch 22 : 9508 / 10000
+Epoch 23 : 9505 / 10000
+Epoch 24 : 9520 / 10000
+Epoch 25 : 9522 / 10000
+Epoch 26 : 9509 / 10000
+Epoch 27 : 9531 / 10000
+Epoch 28 : 9502 / 10000
+Epoch 29 : 9508 / 10000</code></pre>
+<pre class="python"><code>#Let&#39;s rerun the above experiment, changing the number of hidden neurons to 100
+net = network.Network([784, 100, 10])
+net.SGD(training_data, 30, 10, 3.0, test_data=test_data)</code></pre>
+<pre><code>Epoch 0 : 5880 / 10000
+Epoch 1 : 5941 / 10000
+Epoch 2 : 5967 / 10000
+Epoch 3 : 6063 / 10000
+Epoch 4 : 6898 / 10000
+Epoch 5 : 7635 / 10000
+Epoch 6 : 7706 / 10000
+Epoch 7 : 7752 / 10000
+Epoch 8 : 7762 / 10000
+Epoch 9 : 7766 / 10000
+Epoch 10 : 7794 / 10000
+Epoch 11 : 7787 / 10000
+Epoch 12 : 7783 / 10000
+Epoch 13 : 7791 / 10000
+Epoch 14 : 7804 / 10000
+Epoch 15 : 7802 / 10000
+Epoch 16 : 7815 / 10000
+Epoch 17 : 7827 / 10000
+Epoch 18 : 7813 / 10000
+Epoch 19 : 7819 / 10000
+Epoch 20 : 7814 / 10000
+Epoch 21 : 7805 / 10000
+Epoch 22 : 7825 / 10000
+Epoch 23 : 7815 / 10000
+Epoch 24 : 7820 / 10000
+Epoch 25 : 7822 / 10000
+Epoch 26 : 7821 / 10000
+Epoch 27 : 7823 / 10000
+Epoch 28 : 7824 / 10000
+Epoch 29 : 7820 / 10000</code></pre>
+<pre class="python"><code>#Let&#39;s rerun the above experiment, changing the number of hidden neurons to 0
+net = network.Network([784, 0, 10])
+net.SGD(training_data, 30, 10, 3.0, test_data=test_data)</code></pre>
+<pre><code>Epoch 0 : 1010 / 10000
+Epoch 1 : 974 / 10000
+Epoch 2 : 1032 / 10000
+Epoch 3 : 1135 / 10000
+Epoch 4 : 1009 / 10000
+Epoch 5 : 1135 / 10000
+Epoch 6 : 1135 / 10000
+Epoch 7 : 1135 / 10000
+Epoch 8 : 980 / 10000
+Epoch 9 : 1032 / 10000
+Epoch 10 : 1009 / 10000
+Epoch 11 : 1135 / 10000
+Epoch 12 : 1135 / 10000
+Epoch 13 : 980 / 10000
+Epoch 14 : 1135 / 10000
+Epoch 15 : 1009 / 10000
+Epoch 16 : 1032 / 10000
+Epoch 17 : 980 / 10000
+Epoch 18 : 1135 / 10000
+Epoch 19 : 1010 / 10000
+Epoch 20 : 1135 / 10000
+Epoch 21 : 1135 / 10000
+Epoch 22 : 1135 / 10000
+Epoch 23 : 1009 / 10000
+Epoch 24 : 1135 / 10000
+Epoch 25 : 1135 / 10000
+Epoch 26 : 1135 / 10000
+Epoch 27 : 1135 / 10000
+Epoch 28 : 1032 / 10000
+Epoch 29 : 1135 / 10000</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;
+mnist_average_darkness
+~~~~~~~~~~~~~~~~~~~~~~
+
+A naive classifier for recognizing handwritten digits from the MNIST
+data set.  The program classifies digits based on how dark they are
+--- the idea is that digits like &quot;1&quot; tend to be less dark than digits
+like &quot;8&quot;, simply because the latter has a more complex shape.  When
+shown an image the classifier returns whichever digit in the training
+data had the closest average darkness.
+
+The program works in two steps: first it trains the classifier, and
+then it applies the classifier to the MNIST test data to see how many
+digits are correctly classified.
+
+Needless to say, this isn&#39;t a very good way of recognizing handwritten
+digits!  Still, it&#39;s useful to show what sort of performance we get
+from naive ideas.&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+from collections import defaultdict
+
+# My libraries
+import mnist_loader
+
+def main():
+    training_data, validation_data, test_data = mnist_loader.load_data()
+    # training phase: compute the average darknesses for each digit,
+    # based on the training data
+    avgs = avg_darknesses(training_data)
+    # testing phase: see how many of the test images are classified
+    # correctly
+    num_correct = sum(int(guess_digit(image, avgs) == digit)
+                      for image, digit in zip(test_data[0], test_data[1]))
+    print(&quot;Baseline classifier using average darkness of image.&quot;)
+    print(&quot;{0} of {1} values correct.&quot;.format(num_correct, len(test_data[1])))
+
+def avg_darknesses(training_data):
+    &quot;&quot;&quot; Return a defaultdict whose keys are the digits 0 through 9.
+    For each digit we compute a value which is the average darkness of
+    training images containing that digit.  The darkness for any
+    particular image is just the sum of the darknesses for each pixel.&quot;&quot;&quot;
+    digit_counts = defaultdict(int)
+    darknesses = defaultdict(float)
+    for image, digit in zip(training_data[0], training_data[1]):
+        digit_counts[digit] += 1
+        darknesses[digit] += sum(image)
+    avgs = defaultdict(float)
+    for digit, n in digit_counts.items():
+        avgs[digit] = darknesses[digit] / n
+    return avgs
+
+def guess_digit(image, avgs):
+    &quot;&quot;&quot;Return the digit whose average darkness in the training data is
+    closest to the darkness of ``image``.  Note that ``avgs`` is
+    assumed to be a defaultdict whose keys are 0...9, and whose values
+    are the corresponding average darknesses across the training data.&quot;&quot;&quot;
+    darkness = sum(image)
+    distances = {k: abs(v-darkness) for k, v in avgs.items()}
+    return min(distances, key=distances.get)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<pre><code>Baseline classifier using average darkness of image.
+2225 of 10000 values correct.</code></pre>
+<pre class="python"><code>#sys.path.append(&#39;./src/&#39;)
+import mnist_average_darkness
+mnist_average_darkness.main()</code></pre>
+<pre><code>Baseline classifier using average darkness of image.
+2225 of 10000 values correct.</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;
+mnist_svm
+~~~~~~~~~
+
+A classifier program for recognizing handwritten digits from the MNIST
+data set, using an SVM classifier.&quot;&quot;&quot;
+
+#### Libraries
+# My libraries
+import mnist_loader 
+
+# Third-party libraries
+from sklearn import svm
+
+def svm_baseline():
+    training_data, validation_data, test_data = mnist_loader.load_data()
+    # train
+    clf = svm.SVC()
+    clf.fit(training_data[0], training_data[1])
+    # test
+    predictions = [int(a) for a in clf.predict(test_data[0])]
+    num_correct = sum(int(a == y) for a, y in zip(predictions, test_data[1]))
+    print(&quot;Baseline classifier using an SVM.&quot;)
+    print(str(num_correct) + &quot; of &quot; + str(len(test_data[1])) + &quot; values correct.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    svm_baseline()</code></pre>
+<pre><code>Baseline classifier using an SVM.
+9785 of 10000 values correct.</code></pre>
+<pre class="python"><code>#sys.path.append(&#39;./src/&#39;)
+import mnist_svm
+mnist_svm.svm_baseline()</code></pre>
+<pre><code>Baseline classifier using an SVM.
+9785 of 10000 values correct.</code></pre>
+</div>
+<div id="how-the-backpropagation-algorithm-works" class="section level2">
+<h2>2. How the backpropagation algorithm works</h2>
+<p>We’ll use <span class="math inline">\(w_{jk}^l\)</span> to denote the weight for the connection from the <span class="math inline">\(k\)</span>-th neuron in the (<span class="math inline">\(l-1\)</span>)-th layer to the <span class="math inline">\(j\)</span>-th neuron in the <span class="math inline">\(l\)</span>-th layer.</p>
+<div class="figure">
+<img src="fig/weight_matrix.png" alt="" />
+<p class="caption">weight_matrix.png</p>
+</div>
+<p>We use <span class="math inline">\(b_j^l\)</span> for the bias of the <span class="math inline">\(j\)</span>-th neuron in the <span class="math inline">\(l\)</span>-th layer. And we use <span class="math inline">\(a_j^l\)</span> for the activation of the <span class="math inline">\(j\)</span>-th neuron in the <span class="math inline">\(l\)</span>-th layer.</p>
+<div class="figure">
+<img src="fig/layers.png" alt="" />
+<p class="caption">layers</p>
+</div>
+<p><span class="math display">\[a_j^l=\sigma\left(\sum_{k}w_{jk}^la_k^{l-1}+b_j^l\right),\tag{2.1}\]</span></p>
+<p>where the sum is over all neurons <span class="math inline">\(k\)</span> in the (<span class="math inline">\(l-1\)</span>)-th layer.</p>
+<p>Equation 2.1 can be rewritten in the beautiful and compact
+vectorized form
+<span class="math display">\[a^l=\sigma\left(w^la_k^{l-1}+b_j^l\right).\tag{2.3}\]</span></p>
+<p>We compute the intermediate quantity
+<span class="math display">\[z_j^l\equiv \sum_{k}w_{jk}^la_k^{l-1}+b_j^l\]</span>
+<span class="math display">\[z^l\equiv w^l a^{l-1}+b^l\]</span></p>
+<p>along the way. This quantity turns out to be useful enough to be worth naming:
+we call <span class="math inline">\(z^l\)</span> the <strong>weighted input</strong> to the neurons in layer <span class="math inline">\(l\)</span>. We’ll make considerable use of the weighted input <span class="math inline">\(z^l\)</span> later in the chapter.</p>
+<p>The quadratic cost has the form <span class="math display">\[C=\frac{1}{2n}\sum_{x}\left\lVert y(x)-a^L(x)\right\rVert^2,\tag{2.4}\]</span>
+where: <span class="math inline">\(n\)</span> is the total number of training examples; the sum is over individual training examples, <span class="math inline">\(x\)</span>; <span class="math inline">\(y = y(x)\)</span> is the corresponding desired output; <span class="math inline">\(L\)</span> denotes the number of layers in the network; and <span class="math inline">\(a^L = a^L(x)\)</span> is the vector of activations output from the network when <span class="math inline">\(x\)</span> is input.</p>
+<p><span class="math inline">\(Backpropagation\)</span> is about understanding how changing the weights and biases in a network changes the cost function. Ultimately, this means computing the partial derivatives <span class="math inline">\(\partial C/\partial w_{jk}^l\)</span> and <span class="math inline">\(\partial C/\partial b_j^l\)</span>. But to compute those, we first introduce an intermediate quantity, <span class="math inline">\(\delta_j^l\)</span>, which
+we call the <span class="math inline">\(error\)</span> in the <span class="math inline">\(j\)</span>-th neuron in the <span class="math inline">\(l\)</span>-th layer. Backpropagation will give us a procedure to compute the error <span class="math inline">\(\delta_j^l\)</span>, and then will relate <span class="math inline">\(\delta_j^l\)</span> to <span class="math inline">\(\partial C/\partial w_{jk}^l\)</span> and <span class="math inline">\(\partial C/\partial b_j^l\)</span>.</p>
+<p>To understand how the error is defined, imagine there is a demon in our neural network: The demon sits at the j-th neuron in layer <span class="math inline">\(l\)</span>. As the input to the neuron comes in, the demon messes with the neuron’s operation. It adds a little change <span class="math inline">\(\Delta z_j^l\)</span> to the neuron’s weighted input, so that instead of outputting <span class="math inline">\(\sigma(z_j^l)\)</span>, the neuron instead outputs <span class="math inline">\(\sigma(z_j^l+\Delta z_j^l)\)</span>. This change propagates through later layers in the network, causing the overall cost to change by an amount <span class="math display">\[\frac{\partial C}{\partial z_j^l}\Delta z_j^l.\]</span></p>
+<p>We define the error <span class="math inline">\(\delta_j^l\)</span> of neuron <span class="math inline">\(j\)</span> in layer <span class="math inline">\(l\)</span> by <span class="math display">\[\delta_j^l\equiv\frac{\partial C}{\partial z_j^l}, \tag{2.7}\]</span></p>
+<p>We use <span class="math inline">\(\delta^l\)</span> to denote the vector of errors associated with layer <span class="math inline">\(l\)</span>. Backpropagation will give us a way of computing <span class="math inline">\(\delta^l\)</span> for every layer, and then relating those errors to the quantities of real interest, <span class="math inline">\(\partial C/\partial w_{jk}^l\)</span> and <span class="math inline">\(\partial C/\partial b_{j}^l\)</span>.</p>
+<p><strong>An equation for the error in the output layer</strong>, <span class="math inline">\(\delta^L\)</span>: The components of <span class="math inline">\(\delta^L\)</span> are given by:
+<span class="math display">\[\begin{equation}
+\delta_j^L=\frac{\partial C}{\partial a_j^L}\sigma&#39;(z_j^L)\tag{BP1}
+\end{equation}\]</span></p>
+<p>If we’re using the quadratic cost function then <span class="math display">\[C = \frac{1}{2}\sum_{j}(y_j-a_j^L)^2,\]</span> and
+and so <span class="math display">\[\frac{\partial C}{\partial a_j^L}=(a_j^L-y_j)\]</span> which obviously is easily computable.
+It’s easy to rewrite the BP1 equation in a matrix-based form, as
+<span class="math display">\[\begin{equation}
+\delta^L=\nabla_a C\cdot\sigma&#39;(z^L)\tag{BP1a}
+\end{equation}\]</span></p>
+<p><strong>Proof</strong>
+By definition <span class="math display">\[\delta_j^L=\frac{\partial C}{\partial z_j^L}\]</span> then
+<span class="math display">\[\delta_j^L=\sum_k\frac{\partial C}{\partial a_k^L}\frac{\partial a_k^L}{\partial z_j^L},\]</span> where the sum is over all neurons <span class="math inline">\(k\)</span> in the output layer..</p>
+<p>The output activation <span class="math inline">\(a_k^L\)</span> of the <span class="math inline">\(k\)</span>-th neuron depends only on the weighted input <span class="math inline">\(z_j^L\)</span> for the <span class="math inline">\(j\)</span>-th neuron when <span class="math inline">\(k = j\)</span>. And so <span class="math inline">\(\frac{\partial a_k^L}{\partial z_j^L}\)</span> vanishes when <span class="math inline">\(k \ne j\)</span>. As a result we can simplify the previous equation to <span class="math display">\[\delta_j^L=\frac{\partial C}{\partial a_j^L}\frac{\partial a_j^L}{\partial z_j^L},\]</span> Recalling that <span class="math inline">\(a^L_j=\sigma(z_j^L)\)</span> the second term on the right can be written as <span class="math inline">\(\sigma&#39;(z_j^L)\)</span>, and the equation becomes <span class="math display">\[\delta_j^L=\frac{\partial C}{\partial a_j^L}\sigma&#39;(z_j^L),\tag{2.17}\]</span> which is just BP1.</p>
+<p><strong>An equation for the error <span class="math inline">\(\delta^l\)</span> in terms of the error in the next layer, <span class="math inline">\(\delta^{l+1}\)</span></strong>: In particular
+<span class="math display">\[\begin{equation}
+\delta^l=((w^{l+1})^T\delta^{l+1})\cdot\sigma&#39;(z^l)\tag{BP2}
+\end{equation}\]</span><br />
+When we apply the transpose weight matrix, <span class="math inline">\((w^{l+1})^T\)</span> , we can think intuitively of this as moving the error backward through the network, giving us
+some sort of measure of the error at the output of the <span class="math inline">\(l\)</span>-th layer. We then take the Hadamard product <span class="math inline">\(\cdot\sigma&#39;(z^l)\)</span>. This moves the error backward through the activation function in layer <span class="math inline">\(l\)</span>, giving us the error <span class="math inline">\(\delta^l\)</span> in the weighted input to layer <span class="math inline">\(l\)</span>.</p>
+<p>By combining BP1 with BP2 we can compute the error <span class="math inline">\(\delta^l\)</span> for any layer in the network. We start by using BP1 to compute <span class="math inline">\(\delta^L\)</span>, then apply Equation BP2 to compute <span class="math inline">\(\delta^{L-1}\)</span>, then
+Equation BP2 again to compute <span class="math inline">\(\delta^{L-2}\)</span>, and so on, all the way back through the network.</p>
+<p><strong>Proof</strong>
+BP2, the error <span class="math inline">\(\delta^l\)</span> in terms of the error in the next layer, <span class="math inline">\(\delta^{l+1}\)</span>. To do this, we want to rewrite <span class="math inline">\(\delta_j^l=\partial C/\partial z_j^l\)</span> in terms of <span class="math inline">\(\delta_k^{l+1}=\partial C/\partial z_k^{l+1}\)</span>. We can do this using the chain rule, <span class="math display">\[\delta_j^l=\frac{\partial C}{\partial z_j^l}=\sum_k\frac{\partial C}{\partial z_k^{l+1}}\frac{\partial z_k^{l+1}}{\partial z_j^l}=\sum_k\frac{\partial z_k^{l+1}}{\partial z_j^l}\delta_k^{l+1}\tag{2.18}\]</span>
+To evaluate the first term on the last line, note that <span class="math display">\[z_k^{l+1}=\sum_{j}w_{kj}^{l+1}a_j^l+b_k^{l+1}=\sum_j w_{kj}^{l+1}\sigma(z_j^l)+b_k^{l+1}\tag{2.19}\]</span>
+Differentiating, we obtain
+<span class="math display">\[\frac{\partial z_k^{l+1}}{\partial z_j^{l}}=w_{kj}^{l+1}\sigma&#39;(z_j^l)\tag{2.20}\]</span>
+Substituting back into (2.18) we obtain <span class="math display">\[\delta_j^l=\sum_k w_{kj}^{l+1}\delta_k^{l+1}\sigma&#39;(z_j^l).\tag{2.21}\]</span>
+This is just BP2 written in component form.</p>
+<p><strong>An equation for the rate of change of the cost with respect to any bias in the network</strong>: In particular:
+<span class="math display">\[\begin{equation}
+\frac{\partial C}{\partial b_j^l}=\delta_j^l\tag{BP3}
+\end{equation}\]</span> Since BP1 and BP2 have already told us how to compute <span class="math inline">\(\delta_j^l\)</span>. We can rewrite BP3 in shorthand as
+<span class="math display">\[\frac{\partial C}{\partial b}=\delta\tag{2.9}\]</span>
+where it is understood that <span class="math inline">\(\delta\)</span> is being evaluated at the same neuron as the bias <span class="math inline">\(b\)</span>.</p>
+<p><strong>An equation for the rate of change of the cost with respect to any weight in the network</strong>: In particular:
+<span class="math display">\[\begin{equation}
+\frac{\partial C}{\partial w_{jk}^l}=a_k^{l-1}\delta_j^l\tag{BP4}\label{BP4}
+\end{equation}\]</span>
+This tells us how to compute the partial derivatives <span class="math inline">\(\frac{\partial C}{\partial w_{jk}^l}\)</span> in terms of the quantities <span class="math inline">\(\delta^l\)</span> and <span class="math inline">\(a^{l-1}\)</span>, which we already know how to compute. The equation can be rewritten in a less index-heavy notation as <span class="math display">\[\frac{\partial C}{\partial w}=a_{in}\delta_{out},\tag{2.10}\]</span>
+where it’s understood that <span class="math inline">\(a_{in}\)</span> is the activation of the neuron input to the weight <span class="math inline">\(w\)</span>, and <span class="math inline">\(\delta_{out}\)</span> is the error of the neuron output from the weight <span class="math inline">\(w\)</span>.</p>
+<p>Consider the term <span class="math inline">\(\sigma&#39;(z_j^L)\)</span> in BP1. Recall from the graph
+of the sigmoid function in the last chapter that the <span class="math inline">\(\sigma\)</span> function becomes very flat when <span class="math inline">\(\sigma(z_j^L)\)</span> is approximately <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>. When this occurs we will have <span class="math inline">\(\sigma&#39;(z_j^L)\approx 0\)</span>. And so the lesson is that a weight in the final layer will learn slowly if the output neuron is either low activation <span class="math inline">\((\approx 0)\)</span> or high activation <span class="math inline">\((\approx 1)\)</span>. In this case it’s common to say the output neuron has <strong>saturated</strong> and, as a result, the weight has stopped learning (or is learning slowly). Similar remarks hold also for the biases of output neuron.</p>
+<p>We can obtain similar insights for earlier layers. In particular, note the <span class="math inline">\(\sigma&#39;(z^l)\)</span> term in BP2. This means that <span class="math inline">\(\delta_j^l\)</span> is likely to get small if the neuron is near saturation. And this, in turn, means that any weights input to a saturated neuron will learn slowly.</p>
+<p><strong>Summary: the equations of backpropagation</strong>
+<span class="math display">\[\begin{equation}
+\delta^L=\nabla_a C\cdot\sigma&#39;(z^L)\tag{BP1}
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\delta^l=((w^{l+1})^T\delta^{l+1})\cdot\sigma&#39;(z^l)\tag{BP2}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+\frac{\partial C}{\partial b_j^l}=\delta_j^l\tag{BP3}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+\frac{\partial C}{\partial w_{jk}^l}=a_k^{l-1}\delta_j^l\tag{BP4}
+\end{equation}\]</span></p>
+<p>BP1 may be rewritten as <span class="math display">\[\delta^L=\sum&#39;(z^L)\nabla_a C\tag{2.11}\]</span>
+where <span class="math inline">\(\sum&#39;(z^L)\)</span> is a square matrix whose diagonal entries are the values <span class="math inline">\(\sigma&#39;(z_j^L)\)</span>, and whose off-diagonal entries are zero. Note that this matrix acts on <span class="math inline">\(\nabla_a C\)</span> by conventional matrix multiplication.</p>
+<p>BP2 may be rewritten as
+<span class="math display">\[\delta^l=\sum&#39;(z^l)(w^{l+1})^T\cdots\sum&#39;(z^{L-1})(w^{L})^T\sum&#39;(z^L)\nabla_a C\tag{2.13}\]</span></p>
+<p>In particular, given a mini-batch of <span class="math inline">\(m\)</span> training examples, the following algorithm applies a gradient descent learning step based on that mini-batch:
+- 1. Input a set of training examples
+- 2. For each training example <span class="math inline">\(x\)</span>: Set the corresponding input activation <span class="math inline">\(a^{x,1}\)</span>, and perform the following steps:
+- Feedforward: For each <span class="math inline">\(l= 2,3, \cdots, L\)</span> compute <span class="math inline">\(z^{x,l}=w^la^{x, l-1}+b^l\)</span> and <span class="math inline">\(a^{x, l}=\sigma(z^{x,l})\)</span>.
+- Output error <span class="math inline">\(\delta^{x,L}\)</span>: Compute the vector <span class="math inline">\(\delta^{x,L}=\nabla_a C_x\cdot\sigma&#39;(z^{x,L})\)</span>.
+- Backpropagate the error: For each <span class="math inline">\(l = L -1, L - 2, \cdots, 2\)</span> compute <span class="math inline">\(\delta^{x,l}=((w^{l+1})^T\delta^{x,l+1})\cdot\sigma&#39;(z^{z^{x,l}})\)</span>.
+- 3. Gradient descent: For each <span class="math inline">\(l = L, L-1, L-2, \cdots, 2\)</span> update the weights according to the rule <span class="math display">\[w^l\to w^l-\frac{\eta}{m}\sum_k\delta^{x,l}(a^{x,l-1})^T,\]</span> and the biases according to the rule <span class="math display">\[b^l\to b^l-\frac{\eta}{m}\sum_x\delta^{x,l}\]</span></p>
+<p>The change <span class="math inline">\(\Delta C\)</span> in the cost is related to the change <span class="math inline">\(\Delta w_{jk}^l\)</span> in the weight by the equation <span class="math display">\[\Delta C\approx \frac{\partial C}{\partial w_{jk}^l}\Delta w_{jk}^l.\tag{2.23}\]</span> This suggests that a possible approach to computing <span class="math inline">\(\frac{\partial C}{\partial w_{jk}^l}\)</span> is to carefully track how a
+small change in <span class="math inline">\(w_{jk}^l\)</span> propagates to cause a small change in <span class="math inline">\(C\)</span>. If we can do that, being careful to express everything along the way in terms of easily computable quantities, then we should be able to compute <span class="math inline">\(\frac{\partial C}{\partial w_{jk}^l}\)</span>.</p>
+</div>
+<div id="improving-the-way-neural-networks-learn" class="section level2">
+<h2>3. Improving the way neural networks learn</h2>
+<div id="the-sigmoid-output-and-cross-entropy-cost-function" class="section level3">
+<h3>3.1 The sigmoid output and cross-entropy cost function</h3>
+<p>The quadratic cost function <span class="math display">\[C=\frac{(y-a)^2}{2},\tag{3.1}\]</span> where <span class="math inline">\(a\)</span> is the neuron’s output when the training input <span class="math inline">\(x = 1\)</span> is used, and <span class="math inline">\(y = 0\)</span> is the
+corresponding desired output. To write this more explicitly in terms of the weight and bias, recall that <span class="math inline">\(a = \sigma(z)\)</span>, where <span class="math inline">\(z = wx + b\)</span>. Using the chain rule to differentiate with respect to the weight and bias we get
+<span class="math display">\[\frac{\partial C}{\partial w}=(a-y)\sigma&#39;(z)x=a\sigma&#39;(z)x\tag{3.2}\]</span>
+<span class="math display">\[\frac{\partial C}{\partial b}=(a-y)\sigma&#39;(z)=a\sigma&#39;(z)\tag{3.3}\]</span>
+Since <span class="math display">\[\sigma&#39;(z)=\left(\frac{1}{1+e^{-x}}\right)&#39;=\sigma(z)(1-\sigma(z))\]</span> when the neuron’s output is close to <span class="math inline">\(1\)</span>, the <span class="math inline">\(\sigma&#39;(z)\)</span> gets very small and the learning slowdown.</p>
+<p>We define the cross-entropy cost function for this neuron by
+<span class="math display">\[C=-\frac{1}{n}\sum_x[y\ln a+(1-y)\ln(1-a)],\tag{3.4}\]</span> where <span class="math inline">\(n\)</span> is the total number of items of training data, the sum is over all training inputs, <span class="math inline">\(x\)</span>, and <span class="math inline">\(y\)</span> is the corresponding desired output.
+We substitute <span class="math inline">\(a=\sigma(z)\)</span> into (3.4), and apply the chain rule twice, obtaining:
+<span class="math display">\[\begin{align}
+\frac{\partial C}{\partial w_j}&amp;=-\frac{1}{n}\sum_x\left(\frac{y}{\sigma(z)}-\frac{1-y}{1-\sigma(z)}\right)\frac{\partial \sigma}{\partial w_j}\\
+&amp;=-\frac{1}{n}\sum_x\left(\frac{y}{\sigma(z)}-\frac{1-y}{1-\sigma(z)}\right)\sigma&#39;(z)x_j\\
+&amp;=\frac{1}{n}\sum_x\frac{\sigma(z)-y}{\sigma(z)(1-\sigma(z))}\sigma&#39;(z)x_j\\
+&amp;=\frac{1}{n}\sum_x(\sigma(z)-y)x_j\tag{3.5}
+\end{align}\]</span> It tells us that the rate at which the weight learns is controlled by <span class="math inline">\((\sigma(z)-y)\)</span>, i.e., by the error in the output.
+And <span class="math display">\[\frac{\partial C}{\partial b}=\frac{1}{n}\sum_x(\sigma(z)-y).\tag{3.8}\]</span>
+Again, this avoids the learning slowdown caused by the <span class="math inline">\(\sigma&#39;(z)\)</span> term in the analogous equation for the quadratic cost, Equation (3.3).</p>
+<p>It’s easy to generalize the cross-entropy to many-neuron multi-layer networks. In particular, suppose <span class="math inline">\(y = y_1, y_2, \cdots\)</span>, are the desired values at the output neurons, i.e., the neurons in the final layer, while <span class="math inline">\(a_1^L, a_2^L, \cdots\)</span> are the actual output values. Then we define the cross-entropy by
+<span class="math display">\[\sum_j\left[y_j\ln a_j^L+(1-y_i)\ln(1-a_j^L)\right].\tag{3.9}\]</span></p>
+<p>For the cross-entropy cost the output error <span class="math inline">\(\delta^L\)</span> for a single training example <span class="math inline">\(x\)</span> is given by <span class="math display">\[\delta^L=a^L-y.\tag{3.12}\]</span>
+The partial derivative with respect to the weights in the output layer is given by <span class="math display">\[\frac{\partial C}{\partial w_{jk}^L}=\frac{1}{n}\sum_x(\sigma(z_j^L)-y_j)x_k^{L-1}=\frac{1}{n}\sum_x(a_j^L-y_j)a_k^{L-1}\tag{3.13}\]</span></p>
+<p>The <span class="math inline">\(\sigma&#39;(z_j^L)\)</span> term has vanished, and so the cross-entropy avoids the problem of learning slowdown, not just when used with a single neuron, as we saw earlier, but also in many-layer multi-neuron networks. A simple variation on this analysis holds also for the biases.
+<span class="math display">\[\frac{\partial C}{\partial b_j^L}=\frac{1}{n}\sum_x(a_j^L-y_j). \tag{3.16}\]</span></p>
+<pre class="python"><code>&quot;&quot;&quot;network2.py
+~~~~~~~~~~~~~~
+
+An improved version of network.py, implementing the stochastic
+gradient descent learning algorithm for a feedforward neural network.
+Improvements include the addition of the cross-entropy cost function,
+regularization, and better initialization of network weights.  Note
+that I have focused on making the code simple, easily readable, and
+easily modifiable.  It is not optimized, and omits many desirable
+features.
+
+&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+import json
+import random
+import sys
+
+# Third-party libraries
+import numpy as np
+
+
+#### Define the quadratic and cross-entropy cost functions
+
+class QuadraticCost(object):
+
+    @staticmethod
+    def fn(a, y):
+        &quot;&quot;&quot;Return the cost associated with an output ``a`` and desired output
+        ``y``.
+
+        &quot;&quot;&quot;
+        return 0.5*np.linalg.norm(a-y)**2
+
+    @staticmethod
+    def delta(z, a, y):
+        &quot;&quot;&quot;Return the error delta from the output layer.&quot;&quot;&quot;
+        return (a-y) * sigmoid_prime(z)
+
+
+class CrossEntropyCost(object):
+
+    @staticmethod
+    def fn(a, y):
+        &quot;&quot;&quot;Return the cost associated with an output ``a`` and desired output
+        ``y``.  Note that np.nan_to_num is used to ensure numerical
+        stability.  In particular, if both ``a`` and ``y`` have a 1.0
+        in the same slot, then the expression (1-y)*np.log(1-a)
+        returns nan.  The np.nan_to_num ensures that that is converted
+        to the correct value (0.0).
+
+        &quot;&quot;&quot;
+        return np.sum(np.nan_to_num(-y*np.log(a)-(1-y)*np.log(1-a)))
+
+    @staticmethod
+    def delta(z, a, y):
+        &quot;&quot;&quot;Return the error delta from the output layer.  Note that the
+        parameter ``z`` is not used by the method.  It is included in
+        the method&#39;s parameters in order to make the interface
+        consistent with the delta method for other cost classes.
+
+        &quot;&quot;&quot;
+        return (a-y)
+
+
+#### Main Network class
+class Network(object):
+
+    def __init__(self, sizes, cost=CrossEntropyCost):
+        &quot;&quot;&quot;The list ``sizes`` contains the number of neurons in the respective
+        layers of the network.  For example, if the list was [2, 3, 1]
+        then it would be a three-layer network, with the first layer
+        containing 2 neurons, the second layer 3 neurons, and the
+        third layer 1 neuron.  The biases and weights for the network
+        are initialized randomly, using
+        ``self.default_weight_initializer`` (see docstring for that
+        method).
+
+        &quot;&quot;&quot;
+        self.num_layers = len(sizes)
+        self.sizes = sizes
+        self.default_weight_initializer()
+        self.cost=cost
+
+    def default_weight_initializer(self):
+        &quot;&quot;&quot;Initialize each weight using a Gaussian distribution with mean 0
+        and standard deviation 1 over the square root of the number of
+        weights connecting to the same neuron.  Initialize the biases
+        using a Gaussian distribution with mean 0 and standard
+        deviation 1.
+
+        Note that the first layer is assumed to be an input layer, and
+        by convention we won&#39;t set any biases for those neurons, since
+        biases are only ever used in computing the outputs from later
+        layers.
+
+        &quot;&quot;&quot;
+        self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
+        self.weights = [np.random.randn(y, x)/np.sqrt(x)
+                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
+
+    def large_weight_initializer(self):
+        &quot;&quot;&quot;Initialize the weights using a Gaussian distribution with mean 0
+        and standard deviation 1.  Initialize the biases using a
+        Gaussian distribution with mean 0 and standard deviation 1.
+
+        Note that the first layer is assumed to be an input layer, and
+        by convention we won&#39;t set any biases for those neurons, since
+        biases are only ever used in computing the outputs from later
+        layers.
+
+        This weight and bias initializer uses the same approach as in
+        Chapter 1, and is included for purposes of comparison.  It
+        will usually be better to use the default weight initializer
+        instead.
+
+        &quot;&quot;&quot;
+        self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
+        self.weights = [np.random.randn(y, x)
+                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
+
+    def feedforward(self, a):
+        &quot;&quot;&quot;Return the output of the network if ``a`` is input.&quot;&quot;&quot;
+        for b, w in zip(self.biases, self.weights):
+            a = sigmoid(np.dot(w, a)+b)
+        return a
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta,
+            lmbda = 0.0,
+            evaluation_data=None,
+            monitor_evaluation_cost=False,
+            monitor_evaluation_accuracy=False,
+            monitor_training_cost=False,
+            monitor_training_accuracy=False,
+            early_stopping_n = 0):
+        &quot;&quot;&quot;Train the neural network using mini-batch stochastic gradient
+        descent.  The ``training_data`` is a list of tuples ``(x, y)``
+        representing the training inputs and the desired outputs.  The
+        other non-optional parameters are self-explanatory, as is the
+        regularization parameter ``lmbda``.  The method also accepts
+        ``evaluation_data``, usually either the validation or test
+        data.  We can monitor the cost and accuracy on either the
+        evaluation data or the training data, by setting the
+        appropriate flags.  The method returns a tuple containing four
+        lists: the (per-epoch) costs on the evaluation data, the
+        accuracies on the evaluation data, the costs on the training
+        data, and the accuracies on the training data.  All values are
+        evaluated at the end of each training epoch.  So, for example,
+        if we train for 30 epochs, then the first element of the tuple
+        will be a 30-element list containing the cost on the
+        evaluation data at the end of each epoch. Note that the lists
+        are empty if the corresponding flag is not set.
+
+        &quot;&quot;&quot;
+
+        # early stopping functionality:
+        best_accuracy=1
+
+        n = len(training_data)
+
+        if evaluation_data:
+            evaluation_data = list(evaluation_data)
+            n_data = len(evaluation_data)
+
+        # early stopping functionality:
+        best_accuracy=0
+        no_accuracy_change=0
+
+        evaluation_cost, evaluation_accuracy = [], []
+        training_cost, training_accuracy = [], []
+        for j in range(epochs):
+            random.shuffle(training_data)
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in range(0, n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch(
+                    mini_batch, eta, lmbda, len(training_data))
+
+            print(&quot;Epoch %s training complete&quot; % j)
+
+            if monitor_training_cost:
+                cost = self.total_cost(training_data, lmbda)
+                training_cost.append(cost)
+                print(&quot;Cost on training data: {}&quot;.format(cost))
+            if monitor_training_accuracy:
+                accuracy = self.accuracy(training_data, convert=True)
+                training_accuracy.append(accuracy)
+                print(&quot;Accuracy on training data: {} / {}&quot;.format(accuracy, n))
+            if monitor_evaluation_cost:
+                cost = self.total_cost(evaluation_data, lmbda, convert=True)
+                evaluation_cost.append(cost)
+                print(&quot;Cost on evaluation data: {}&quot;.format(cost))
+            if monitor_evaluation_accuracy:
+                accuracy = self.accuracy(evaluation_data)
+                evaluation_accuracy.append(accuracy)
+                print(&quot;Accuracy on evaluation data: {} / {}&quot;.format(self.accuracy(evaluation_data), n_data))
+
+            # Early stopping:
+            if early_stopping_n &gt; 0:
+                if accuracy &gt; best_accuracy:
+                    best_accuracy = accuracy
+                    no_accuracy_change = 0
+                    #print(&quot;Early-stopping: Best so far {}&quot;.format(best_accuracy))
+                else:
+                    no_accuracy_change += 1
+
+                if (no_accuracy_change == early_stopping_n):
+                    #print(&quot;Early-stopping: No accuracy change in last epochs: {}&quot;.format(early_stopping_n))
+                    return evaluation_cost, evaluation_accuracy, training_cost, training_accuracy
+
+        return evaluation_cost, evaluation_accuracy, \
+            training_cost, training_accuracy
+
+    def update_mini_batch(self, mini_batch, eta, lmbda, n):
+        &quot;&quot;&quot;Update the network&#39;s weights and biases by applying gradient
+        descent using backpropagation to a single mini batch.  The
+        ``mini_batch`` is a list of tuples ``(x, y)``, ``eta`` is the
+        learning rate, ``lmbda`` is the regularization parameter, and
+        ``n`` is the total size of the training data set.
+
+        &quot;&quot;&quot;
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        for x, y in mini_batch:
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+        self.weights = [(1-eta*(lmbda/n))*w-(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+
+    def backprop(self, x, y):
+        &quot;&quot;&quot;Return a tuple ``(nabla_b, nabla_w)`` representing the
+        gradient for the cost function C_x.  ``nabla_b`` and
+        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
+        to ``self.biases`` and ``self.weights``.&quot;&quot;&quot;
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # feedforward
+        activation = x
+        activations = [x] # list to store all the activations, layer by layer
+        zs = [] # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+            z = np.dot(w, activation)+b
+            zs.append(z)
+            activation = sigmoid(z)
+            activations.append(activation)
+        # backward pass
+        delta = (self.cost).delta(zs[-1], activations[-1], y)
+        nabla_b[-1] = delta
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
+        # Note that the variable l in the loop below is used a little
+        # differently to the notation in Chapter 2 of the book.  Here,
+        # l = 1 means the last layer of neurons, l = 2 is the
+        # second-last layer, and so on.  It&#39;s a renumbering of the
+        # scheme in the book, used here to take advantage of the fact
+        # that Python can use negative indices in lists.
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
+            nabla_b[-l] = delta
+            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+        return (nabla_b, nabla_w)
+
+    def accuracy(self, data, convert=False):
+        &quot;&quot;&quot;Return the number of inputs in ``data`` for which the neural
+        network outputs the correct result. The neural network&#39;s
+        output is assumed to be the index of whichever neuron in the
+        final layer has the highest activation.
+
+        The flag ``convert`` should be set to False if the data set is
+        validation or test data (the usual case), and to True if the
+        data set is the training data. The need for this flag arises
+        due to differences in the way the results ``y`` are
+        represented in the different data sets.  In particular, it
+        flags whether we need to convert between the different
+        representations.  It may seem strange to use different
+        representations for the different data sets.  Why not use the
+        same representation for all three data sets?  It&#39;s done for
+        efficiency reasons -- the program usually evaluates the cost
+        on the training data and the accuracy on other data sets.
+        These are different types of computations, and using different
+        representations speeds things up.  More details on the
+        representations can be found in
+        mnist_loader.load_data_wrapper.
+
+        &quot;&quot;&quot;
+        if convert:
+            results = [(np.argmax(self.feedforward(x)), np.argmax(y))
+                       for (x, y) in data]
+        else:
+            results = [(np.argmax(self.feedforward(x)), y)
+                        for (x, y) in data]
+
+        result_accuracy = sum(int(x == y) for (x, y) in results)
+        return result_accuracy
+
+    def total_cost(self, data, lmbda, convert=False):
+        &quot;&quot;&quot;Return the total cost for the data set ``data``.  The flag
+        ``convert`` should be set to False if the data set is the
+        training data (the usual case), and to True if the data set is
+        the validation or test data.  See comments on the similar (but
+        reversed) convention for the ``accuracy`` method, above.
+        &quot;&quot;&quot;
+        cost = 0.0
+        for x, y in data:
+            a = self.feedforward(x)
+            if convert: y = vectorized_result(y)
+            cost += self.cost.fn(a, y)/len(data)
+            cost += 0.5*(lmbda/len(data))*sum(np.linalg.norm(w)**2 for w in self.weights) # &#39;**&#39; - to the power of.
+        return cost
+
+    def save(self, filename):
+        &quot;&quot;&quot;Save the neural network to the file ``filename``.&quot;&quot;&quot;
+        data = {&quot;sizes&quot;: self.sizes,
+                &quot;weights&quot;: [w.tolist() for w in self.weights],
+                &quot;biases&quot;: [b.tolist() for b in self.biases],
+                &quot;cost&quot;: str(self.cost.__name__)}
+        f = open(filename, &quot;w&quot;)
+        json.dump(data, f)
+        f.close()
+
+#### Loading a Network
+def load(filename):
+    &quot;&quot;&quot;Load a neural network from the file ``filename``.  Returns an
+    instance of Network.
+
+    &quot;&quot;&quot;
+    f = open(filename, &quot;r&quot;)
+    data = json.load(f)
+    f.close()
+    cost = getattr(sys.modules[__name__], data[&quot;cost&quot;])
+    net = Network(data[&quot;sizes&quot;], cost=cost)
+    net.weights = [np.array(w) for w in data[&quot;weights&quot;]]
+    net.biases = [np.array(b) for b in data[&quot;biases&quot;]]
+    return net
+
+#### Miscellaneous functions
+def vectorized_result(j):
+    &quot;&quot;&quot;Return a 10-dimensional unit vector with a 1.0 in the j&#39;th position
+    and zeroes elsewhere.  This is used to convert a digit (0...9)
+    into a corresponding desired output from the neural network.
+
+    &quot;&quot;&quot;
+    e = np.zeros((10, 1))
+    e[j] = 1.0
+    return e
+
+def sigmoid(z):
+    &quot;&quot;&quot;The sigmoid function.&quot;&quot;&quot;
+    return 1.0/(1.0+np.exp(-z))
+
+def sigmoid_prime(z):
+    &quot;&quot;&quot;Derivative of the sigmoid function.&quot;&quot;&quot;
+    return sigmoid(z)*(1-sigmoid(z))
+</code></pre>
+<pre class="python"><code>#sys.path.append(&#39;./src/&#39;)
+import mnist_loader
+training_data , validation_data , test_data = mnist_loader.load_data_wrapper()
+training_data = list(training_data)</code></pre>
+<pre class="python"><code>#sys.path.append(&#39;./src/&#39;)
+import network2
+net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
+net.large_weight_initializer()
+net.SGD(training_data , 30, 10, 0.5, evaluation_data=test_data , monitor_evaluation_accuracy=True)</code></pre>
+<pre><code>Epoch 0 training complete
+Accuracy on evaluation data: 9076 / 10000
+Epoch 1 training complete
+Accuracy on evaluation data: 9163 / 10000
+Epoch 2 training complete
+Accuracy on evaluation data: 9301 / 10000
+Epoch 3 training complete
+Accuracy on evaluation data: 9291 / 10000
+Epoch 4 training complete
+Accuracy on evaluation data: 9345 / 10000
+Epoch 5 training complete
+Accuracy on evaluation data: 9341 / 10000
+Epoch 6 training complete
+Accuracy on evaluation data: 9404 / 10000
+Epoch 7 training complete
+Accuracy on evaluation data: 9363 / 10000
+Epoch 8 training complete
+Accuracy on evaluation data: 9438 / 10000
+Epoch 9 training complete
+Accuracy on evaluation data: 9436 / 10000
+Epoch 10 training complete
+Accuracy on evaluation data: 9459 / 10000
+Epoch 11 training complete
+Accuracy on evaluation data: 9391 / 10000
+Epoch 12 training complete
+Accuracy on evaluation data: 9454 / 10000
+Epoch 13 training complete
+Accuracy on evaluation data: 9453 / 10000
+Epoch 14 training complete
+Accuracy on evaluation data: 9456 / 10000
+Epoch 15 training complete
+Accuracy on evaluation data: 9453 / 10000
+Epoch 16 training complete
+Accuracy on evaluation data: 9488 / 10000
+Epoch 17 training complete
+Accuracy on evaluation data: 9473 / 10000
+Epoch 18 training complete
+Accuracy on evaluation data: 9479 / 10000
+Epoch 19 training complete
+Accuracy on evaluation data: 9485 / 10000
+Epoch 20 training complete
+Accuracy on evaluation data: 9499 / 10000
+Epoch 21 training complete
+Accuracy on evaluation data: 9488 / 10000
+Epoch 22 training complete
+Accuracy on evaluation data: 9508 / 10000
+Epoch 23 training complete
+Accuracy on evaluation data: 9472 / 10000
+Epoch 24 training complete
+Accuracy on evaluation data: 9465 / 10000
+Epoch 25 training complete
+Accuracy on evaluation data: 9493 / 10000
+Epoch 26 training complete
+Accuracy on evaluation data: 9477 / 10000
+Epoch 27 training complete
+Accuracy on evaluation data: 9509 / 10000
+Epoch 28 training complete
+Accuracy on evaluation data: 9502 / 10000
+Epoch 29 training complete
+Accuracy on evaluation data: 9478 / 10000
+
+
+
+
+
+([],
+ [9076,
+  9163,
+  9301,
+  9291,
+  9345,
+  9341,
+  9404,
+  9363,
+  9438,
+  9436,
+  9459,
+  9391,
+  9454,
+  9453,
+  9456,
+  9453,
+  9488,
+  9473,
+  9479,
+  9485,
+  9499,
+  9488,
+  9508,
+  9472,
+  9465,
+  9493,
+  9477,
+  9509,
+  9502,
+  9478],
+ [],
+ [])</code></pre>
+<div id="softmax-output-and-log-likelihood-cost" class="section level4">
+<h4>Softmax output and log-likelihood cost</h4>
+<p>The weighted inputs are <span class="math display">\[z_j^L=\sum_k w_{jk}^L a_k^{L-1}+b_j^L\]</span></p>
+<p>In a softmax layer we apply the so-called softmax function to the <span class="math inline">\(z^L_j\)</span>. The activation <span class="math inline">\(a^L_j\)</span> of the <span class="math inline">\(j\)</span>-th output neuron is
+<span class="math display">\[a_j^L=\frac{e^{z_j^L}}{\sum_k e^{z_k^L}}\tag{3.24}\]</span></p>
+<p>Then the <strong>log-likelihood cost</strong> associated to this training input is
+<span class="math display">\[C\equiv -\ln a_j^L\tag{3.26}\]</span></p>
+<p>Then <span class="math display">\[\begin{align}
+\frac{\partial C}{\partial w_{jk}^L}&amp;=-\frac{1}{a_j^L}\frac{\partial a_j^L}{\partial w_{jk}^L}\\
+&amp;=-\frac{1}{a_j^L}\frac{a_k^{L-1}e^{z_j^L}\sum_k e^{z_k^L}-e^{z_j^L}a_k^{L-1}e^{z_j^L}}{\left(\sum_k e^{z_k^L}\right)^2}\\
+&amp;=-\frac{1}{a_j^L}a_k^{L-1}\frac{e^{z_j^L}\sum_k e^{z_k^L}-e^{z_j^L}e^{z_j^L}}{\left(\sum_k e^{z_k^L}\right)^2}\\
+&amp;=-\frac{1}{a_j^L}a_k^{L-1}a_j^L\frac{\sum_k e^{z_k^L}-e^{z_j^L}}{\sum_k e^{z_k^L}}\\
+&amp;=-\frac{1}{a_j^L}a_k^{L-1}a_j^L(1-a_j^L)\\
+&amp;=a_k^{L-1}(a_j^L-1)\\
+&amp;=a_k^{L-1}(a_j^L-y_j) \tag{3.28}
+\end{align}\]</span> (as <span class="math inline">\(y\)</span> is a vector with only one non-zero element, which is <span class="math inline">\(1\)</span>).
+And <span class="math display">\[\frac{\partial C}{\partial b_j^L}=a_j^L-y_j\tag{3.27}\]</span></p>
+</div>
+</div>
+<div id="overfitting-and-regularization" class="section level3">
+<h3>3.2 Overfitting and regularization</h3>
+<pre class="python"><code>&quot;&quot;&quot;
+overfitting
+~~~~~~~~~~~
+Plot graphs to illustrate the problem of overfitting.  
+&quot;&quot;&quot;
+
+# Standard library
+import json
+import random
+import sys
+
+# My library
+import mnist_loader
+import network2
+
+# Third-party libraries
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def main(filename, num_epochs,
+         training_cost_xmin=200, 
+         test_accuracy_xmin=200, 
+         test_cost_xmin=0, 
+         training_accuracy_xmin=0,
+         training_set_size=1000, 
+         lmbda=0.0):
+    &quot;&quot;&quot;``filename`` is the name of the file where the results will be
+    stored.  ``num_epochs`` is the number of epochs to train for.
+    ``training_set_size`` is the number of images to train on.
+    ``lmbda`` is the regularization parameter.  The other parameters
+    set the epochs at which to start plotting on the x axis.
+    &quot;&quot;&quot;
+    run_network(filename, num_epochs, training_set_size, lmbda)
+    make_plots(filename, num_epochs, 
+               training_cost_xmin,
+               test_accuracy_xmin,
+               test_cost_xmin, 
+               training_accuracy_xmin,
+               training_set_size)
+                       
+def run_network(filename, num_epochs, training_set_size=1000, lmbda=0.0):
+    &quot;&quot;&quot;Train the network for ``num_epochs`` on ``training_set_size``
+    images, and store the results in ``filename``.  Those results can
+    later be used by ``make_plots``.  Note that the results are stored
+    to disk in large part because it&#39;s convenient not to have to
+    ``run_network`` each time we want to make a plot (it&#39;s slow).
+    &quot;&quot;&quot;
+    # Make results more easily reproducible
+    random.seed(12345678)
+    np.random.seed(12345678)
+    training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+    training_data = list(training_data)
+    net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost())
+    net.large_weight_initializer()
+    test_cost, test_accuracy, training_cost, training_accuracy \
+        = net.SGD(training_data[:training_set_size], num_epochs, 10, 0.5,
+                  evaluation_data=test_data, lmbda = lmbda,
+                  monitor_evaluation_cost=True, 
+                  monitor_evaluation_accuracy=True, 
+                  monitor_training_cost=True, 
+                  monitor_training_accuracy=True)
+    f = open(filename, &quot;w&quot;)
+    json.dump([test_cost, test_accuracy, training_cost, training_accuracy], f)
+    f.close()
+
+def make_plots(filename, num_epochs, 
+               training_cost_xmin=200, 
+               test_accuracy_xmin=200, 
+               test_cost_xmin=0, 
+               training_accuracy_xmin=0,
+               training_set_size=1000):
+    &quot;&quot;&quot;Load the results from ``filename``, and generate the corresponding
+    plots. &quot;&quot;&quot;
+    f = open(filename, &quot;r&quot;)
+    test_cost, test_accuracy, training_cost, training_accuracy \
+        = json.load(f)
+    f.close()
+    plot_training_cost(training_cost, num_epochs, training_cost_xmin)
+    plot_test_accuracy(test_accuracy, num_epochs, test_accuracy_xmin)
+    plot_test_cost(test_cost, num_epochs, test_cost_xmin)
+    plot_training_accuracy(training_accuracy, num_epochs, 
+                           training_accuracy_xmin, training_set_size)
+    plot_overlay(test_accuracy, training_accuracy, num_epochs,
+                 min(test_accuracy_xmin, training_accuracy_xmin),
+                 training_set_size)
+
+def plot_training_cost(training_cost, num_epochs, training_cost_xmin):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(training_cost_xmin, num_epochs), 
+            training_cost[training_cost_xmin:num_epochs],
+            color=&#39;#2A6EA6&#39;)
+    ax.set_xlim([training_cost_xmin, num_epochs])
+    ax.grid(True)
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_title(&#39;Cost on the training data&#39;)
+    plt.show()
+
+def plot_test_accuracy(test_accuracy, num_epochs, test_accuracy_xmin):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(test_accuracy_xmin, num_epochs), 
+            [accuracy/100.0 
+             for accuracy in test_accuracy[test_accuracy_xmin:num_epochs]],
+            color=&#39;#2A6EA6&#39;)
+    ax.set_xlim([test_accuracy_xmin, num_epochs])
+    ax.grid(True)
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_title(&#39;Accuracy (%) on the test data&#39;)
+    plt.show()
+
+def plot_test_cost(test_cost, num_epochs, test_cost_xmin):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(test_cost_xmin, num_epochs), 
+            test_cost[test_cost_xmin:num_epochs],
+            color=&#39;#2A6EA6&#39;)
+    ax.set_xlim([test_cost_xmin, num_epochs])
+    ax.grid(True)
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_title(&#39;Cost on the test data&#39;)
+    plt.show()
+
+def plot_training_accuracy(training_accuracy, num_epochs, 
+                           training_accuracy_xmin, training_set_size):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(training_accuracy_xmin, num_epochs), 
+            [accuracy*100.0/training_set_size 
+             for accuracy in training_accuracy[training_accuracy_xmin:num_epochs]],
+            color=&#39;#2A6EA6&#39;)
+    ax.set_xlim([training_accuracy_xmin, num_epochs])
+    ax.grid(True)
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_title(&#39;Accuracy (%) on the training data&#39;)
+    plt.show()
+
+def plot_overlay(test_accuracy, training_accuracy, num_epochs, xmin,
+                 training_set_size):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(xmin, num_epochs), 
+            [accuracy/100.0 for accuracy in test_accuracy], 
+            color=&#39;#2A6EA6&#39;,
+            label=&quot;Accuracy on the test data&quot;)
+    ax.plot(np.arange(xmin, num_epochs), 
+            [accuracy*100.0/training_set_size 
+             for accuracy in training_accuracy], 
+            color=&#39;#FFA933&#39;,
+            label=&quot;Accuracy on the training data&quot;)
+    ax.grid(True)
+    ax.set_xlim([xmin, num_epochs])
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_ylim([80, 100])
+    plt.legend(loc=&quot;center right&quot;)
+    plt.show()</code></pre>
+<pre class="python"><code>sys.path.append(&#39;./src/&#39;)
+import overfitting
+overfitting.run_network(&#39;network2_epochs400&#39;, num_epochs = 400)</code></pre>
+<pre class="python"><code>sys.path.append(&#39;./src/&#39;)
+import overfitting
+overfitting.make_plots(&#39;network2_epochs400&#39;, num_epochs = 400)</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_37_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_37_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_37_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_37_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_37_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div id="overfitting-is-much-less-of-a-problem-with-the-full-50000-images" class="section level4">
+<h4>overfitting is much less of a problem with the full 50,000 images</h4>
+<pre class="python"><code>sys.path.append(&#39;./src/&#39;)
+import overfitting
+overfitting.run_network(&#39;network2_train50000_epochs30&#39;, 
+                        num_epochs = 30, training_set_size=50000)</code></pre>
+<pre class="python"><code>sys.path.append(&#39;./src/&#39;)
+import overfitting
+overfitting.make_plots(&#39;network2_train50000_epochs30&#39;, num_epochs = 30, 
+                       training_set_size=50000, training_cost_xmin=0, 
+                       test_accuracy_xmin=0)</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_40_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_40_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_40_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_40_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_40_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="regularization" class="section level4">
+<h4>Regularization</h4>
+<p>How to reduce overfitting?</p>
+<ul>
+<li>Increasing the amount of training data is one way of reducing overfitting.</li>
+<li>Reduce the size of our network.</li>
+<li>Regularization.</li>
+</ul>
+<p>L2 regularized cross-entropy:
+<span class="math display">\[C=-\frac{1}{n}\sum_{xj}\left[y_j\ln a_j^L+(1-y_j)\ln(1-a_j^L)\right]+\frac{\lambda}{2n}\sum_w w^2\tag{3.31}\]</span></p>
+<p>This is scaled by a factor <span class="math inline">\(\lambda/2n\)</span>, where <span class="math inline">\(\lambda&gt;0\)</span> is known as the regularization parameter, and <span class="math inline">\(n\)</span> is, as usual, the size of our training set.</p>
+<p>L2 regularized quadratic cost:
+<span class="math display">\[C=\frac{1}{2n}\sum_{x}\left\lVert y-a^L\right\rVert^2+\frac{\lambda}{2n}\sum_w w^2\tag{3.32}\]</span></p>
+<p>In both cases we can write the regularized cost function as
+<span class="math display">\[C=C_0+\frac{\lambda}{2n}\sum_w w^2\tag{3.33}\]</span>
+where <span class="math inline">\(C_0\)</span> is the original, unregularized cost function.</p>
+<p>Taking the partial derivatives of Equation (3.33) gives
+<span class="math display">\[\frac{\partial C}{\partial w}=\frac{\partial C_0}{\partial w}+\frac{\lambda}{n}w\tag{3.34}\]</span>
+<span class="math display">\[\frac{\partial C}{\partial b}=\frac{\partial C_0}{\partial b}\tag{3.35}\]</span></p>
+<p>and so the gradient descent learning rule for the biases doesn’t change from the usual rule:
+<span class="math display">\[b\to b-\eta\frac{\partial C_0}{\partial b}\tag{3.36}\]</span>
+<span class="math display">\[w\to w-\eta\frac{\partial C_0}{\partial w}-\frac{\eta\lambda}{n}w=(1-\frac{\eta\lambda}{n})w-\eta\frac{\partial C_0}{\partial w}\tag{3.37}\]</span></p>
+<p>This rescaling factor <span class="math inline">\((1-\frac{\eta\lambda}{n})\)</span> is sometimes referred to as <strong>weight decay</strong>, since it makes the weights smaller.</p>
+<p>What about stochastic gradient descent? just as in unregularized stochastic gradient descent, we can estimate <span class="math inline">\(\partial C_0/\partial w\)</span> by averaging
+over a mini-batch of <span class="math inline">\(m\)</span> training examples. Thus the regularized learning rule for stochastic gradient descent becomes
+<span class="math display">\[w\to (1-\frac{\eta\lambda}{n})w-\frac{\eta}{m}\sum_x\frac{\partial C_x}{\partial w}\tag{3.38}\]</span></p>
+<p><span class="math display">\[b\to b-\frac{\eta}{m}\sum_x\frac{\partial C_x}{\partial b}\tag{3.39}\]</span>
+where the sum is over training examples <span class="math inline">\(x\)</span> in the mini-batch, and <span class="math inline">\(C_x\)</span> is the (unregularized) cost for each training example. This is exactly the same as the usual rule for stochastic gradient descent, except for the <span class="math inline">\(1−\eta\lambda/n\)</span> weight decay factor.</p>
+</div>
+<div id="regularization-with-lambda0.1-1000-training-data-400-epochs" class="section level4">
+<h4>Regularization with lambda=0.1, 1000 training data, 400 epochs</h4>
+<pre class="python"><code>import overfitting
+overfitting.run_network(&#39;network2_train1000_epochs400lambda0.1&#39;, 
+                        num_epochs = 400,
+                        lmbda = 0.1,
+                        training_set_size=1000)</code></pre>
+<pre class="python"><code>import overfitting
+overfitting.make_plots(&#39;network2_train1000_epochs400lambda0.1&#39;, 
+                       num_epochs = 400, 
+                       training_set_size=1000, training_cost_xmin=0, 
+                       test_accuracy_xmin=0)</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_44_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_44_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_44_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_44_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_44_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<ul>
+<li>The cost on the training data decreases over the whole time, much as it did in the earlier, unregularized case.<br />
+</li>
+<li>This time the accuracy on the test_data continues to increase for the entire 400 epochs. Clearly, the use of regularization has suppressed overfitting.</li>
+</ul>
+</div>
+<div id="regularization-with-lambda0.1-50000-training-data-30-epochs" class="section level4">
+<h4>Regularization with lambda=0.1, 50,000 training data, 30 epochs</h4>
+<pre class="python"><code>import overfitting
+overfitting.run_network(&#39;network2_train50000_epochs30lambda5&#39;, 
+                        num_epochs = 30,
+                        lmbda = 5.0,
+                        training_set_size=50000)</code></pre>
+<pre class="python"><code>import overfitting
+overfitting.make_plots(&#39;network2_train50000_epochs30lambda5&#39;, 
+                       num_epochs = 30, 
+                       training_set_size=50000, 
+                       training_cost_xmin=0, 
+                       test_accuracy_xmin=0)</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_48_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_48_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_48_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_48_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_48_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>There’s lots of good news here.
+- First, our classification accuracy on the test data is up, from 95 percent when running unregularized, to 96.49 percent. That’s a big improvement.
+- Second, we can see that the gap between results on the training and test data is much narrower than before, running at under a percent. That’s still a significant gap, but we’ve obviously made substantial progress reducing overfitting.</p>
+</div>
+<div id="hidden-neurons-evaluation_datavalidation_data" class="section level4">
+<h4>100 hidden neurons, evaluation_data=validation_data</h4>
+<pre class="python"><code>import overfitting_size784_100_10
+overfitting.run_network(&#39;network2_train50000_epochs30lambda5_100_hidden_neurons&#39;, 
+                        num_epochs = 30,
+                        lmbda = 5.0,
+                        training_set_size=50000)</code></pre>
+<pre class="python"><code>import overfitting_size784_100_10
+overfitting.make_plots(&#39;network2_train50000_epochs30lambda5_100_hidden_neurons&#39;, 
+                       num_epochs = 30, 
+                       training_set_size=50000, 
+                       training_cost_xmin=0, 
+                       test_accuracy_xmin=0)</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_52_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_52_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_52_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_52_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_52_4.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>The final result is a classification accuracy of 96.5 percent on the validation data. That’s a
+big jump from the 30 hidden neuron case.</p>
+</div>
+<div id="artificially-expanding-the-training-data" class="section level4">
+<h4>Artificially expanding the training data</h4>
+<pre class="python"><code>&quot;&quot;&quot;more_data
+~~~~~~~~~~~~
+
+Plot graphs to illustrate the performance of MNIST when different size
+training sets are used.
+
+&quot;&quot;&quot;
+
+# Standard library
+import json
+import random
+import sys
+
+# My library
+import mnist_loader
+import network2_quiet
+
+# Third-party libraries
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import svm
+
+# The sizes to use for the different training sets
+SIZES = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000] 
+
+def main():
+    run_networks()
+    run_svms()
+    make_plots()
+                       
+def run_networks():
+    # Make results more easily reproducible
+    random.seed(12345678)
+    np.random.seed(12345678)
+    training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+    training_data = list(training_data)
+    validation_data = list(validation_data)
+    net = network2_quiet.Network([784, 30, 10], cost=network2_quiet.CrossEntropyCost())
+    accuracies = []
+    for size in SIZES:
+        print(&quot;\nTraining network with data set size %s&quot; % size)
+        net.large_weight_initializer()
+        num_epochs = int(1500000 / size)
+        net.SGD(training_data[:size], num_epochs, 10, 0.5, lmbda = size*0.0001)
+        accuracy = net.accuracy(validation_data)/100.0
+        print(&quot;Accuracy was %s percent&quot; % accuracy)
+        accuracies.append(accuracy)
+    f = open(&quot;more_data.json&quot;, &quot;w&quot;)
+    json.dump(accuracies, f)
+    f.close()
+
+def run_svms():
+    svm_training_data, svm_validation_data, svm_test_data \
+        = mnist_loader.load_data()
+    accuracies = []
+    for size in SIZES:
+        print(&quot;\nTraining SVM with data set size %s&quot; % size)
+        clf = svm.SVC()
+        clf.fit(svm_training_data[0][:size], svm_training_data[1][:size])
+        predictions = [int(a) for a in clf.predict(svm_validation_data[0])]
+        accuracy = sum(int(a == y) for a, y in 
+                       zip(predictions, svm_validation_data[1])) / 100.0
+        print(&quot;Accuracy was %s percent&quot; % accuracy)
+        accuracies.append(accuracy)
+    f = open(&quot;more_data_svm.json&quot;, &quot;w&quot;)
+    json.dump(accuracies, f)
+    f.close()
+
+def make_plots():
+    f = open(&quot;more_data.json&quot;, &quot;r&quot;)
+    accuracies = json.load(f)
+    f.close()
+    f = open(&quot;more_data_svm.json&quot;, &quot;r&quot;)
+    svm_accuracies = json.load(f)
+    f.close()
+    make_linear_plot(accuracies)
+    make_log_plot(accuracies)
+    make_combined_plot(accuracies, svm_accuracies)
+
+def make_linear_plot(accuracies):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(SIZES, accuracies, color=&#39;#2A6EA6&#39;)
+    ax.plot(SIZES, accuracies, &quot;o&quot;, color=&#39;#FFA933&#39;)
+    ax.set_xlim(0, 50000)
+    ax.set_ylim(60, 100)
+    ax.grid(True)
+    ax.set_xlabel(&#39;Training set size&#39;)
+    ax.set_title(&#39;Accuracy (%) on the validation data&#39;)
+    plt.show()
+
+def make_log_plot(accuracies):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(SIZES, accuracies, color=&#39;#2A6EA6&#39;)
+    ax.plot(SIZES, accuracies, &quot;o&quot;, color=&#39;#FFA933&#39;)
+    ax.set_xlim(100, 50000)
+    ax.set_ylim(60, 100)
+    ax.set_xscale(&#39;log&#39;)
+    ax.grid(True)
+    ax.set_xlabel(&#39;Training set size&#39;)
+    ax.set_title(&#39;Accuracy (%) on the validation data&#39;)
+    plt.show()
+
+def make_combined_plot(accuracies, svm_accuracies):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(SIZES, accuracies, color=&#39;#2A6EA6&#39;)
+    ax.plot(SIZES, accuracies, &quot;o&quot;, color=&#39;#2A6EA6&#39;, 
+            label=&#39;Neural network accuracy (%)&#39;)
+    ax.plot(SIZES, svm_accuracies, color=&#39;#FFA933&#39;)
+    ax.plot(SIZES, svm_accuracies, &quot;o&quot;, color=&#39;#FFA933&#39;,
+            label=&#39;SVM accuracy (%)&#39;)
+    ax.set_xlim(100, 50000)
+    ax.set_ylim(25, 100)
+    ax.set_xscale(&#39;log&#39;)
+    ax.grid(True)
+    ax.set_xlabel(&#39;Training set size&#39;)
+    plt.legend(loc=&quot;lower right&quot;)
+    plt.show()
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<pre class="python"><code>import sys
+sys.path.append(&#39;./src/&#39;)
+import more_data
+more_data.main()</code></pre>
+<pre><code>Training network with data set size 100
+Accuracy was 68.62 percent
+
+Training network with data set size 200
+Accuracy was 75.97 percent
+
+Training network with data set size 500
+Accuracy was 85.16 percent
+
+Training network with data set size 1000
+Accuracy was 89.05 percent
+
+Training network with data set size 2000
+Accuracy was 91.05 percent
+
+Training network with data set size 5000
+Accuracy was 93.25 percent
+
+Training network with data set size 10000
+Accuracy was 94.65 percent
+
+Training network with data set size 20000
+Accuracy was 95.52 percent
+
+Training network with data set size 50000
+Accuracy was 96.25 percent
+
+Training SVM with data set size 100
+Accuracy was 66.77 percent
+
+Training SVM with data set size 200
+Accuracy was 77.6 percent
+
+Training SVM with data set size 500
+Accuracy was 87.64 percent
+
+Training SVM with data set size 1000
+Accuracy was 91.38 percent
+
+Training SVM with data set size 2000
+Accuracy was 93.42 percent
+
+Training SVM with data set size 5000
+Accuracy was 95.65 percent
+
+Training SVM with data set size 10000
+Accuracy was 96.6 percent
+
+Training SVM with data set size 20000
+Accuracy was 97.25 percent
+
+Training SVM with data set size 50000
+Accuracy was 98.02 percent</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_56_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_56_2.png" alt="" />
+<p class="caption">png</p>
+</div>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_56_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<p>It seems clear that the graph is still going up toward the end. This suggests that if we used
+vastly more training data – say, millions or even billions of handwriting samples, instead of
+just 50,000 – then we’d likely get considerably better performance, even from this very small
+network.</p>
+</div>
+</div>
+<div id="weight-initialization" class="section level3">
+<h3>3.3 Weight initialization</h3>
+<pre class="python"><code>&quot;&quot;&quot;weight_initialization 
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This program shows how weight initialization affects training.  In
+particular, we&#39;ll plot out how the classification accuracies improve
+using either large starting weights, whose standard deviation is 1, or
+the default starting weights, whose standard deviation is 1 over the
+square root of the number of input neurons.
+
+&quot;&quot;&quot;
+
+# Standard library
+import json
+import random
+import sys
+
+# My library
+
+import mnist_loader
+import network2_quiet
+
+# Third-party libraries
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main(filename, n, eta):
+    run_network(filename, n, eta)
+    make_plot(filename)
+                       
+def run_network(filename, n, eta):
+    &quot;&quot;&quot;Train the network using both the default and the large starting
+    weights.  Store the results in the file with name ``filename``,
+    where they can later be used by ``make_plots``.
+
+    &quot;&quot;&quot;
+    # Make results more easily reproducible
+    random.seed(12345678)
+    np.random.seed(12345678)
+    training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+    training_data = list(training_data)
+
+    net = network2_quiet.Network([784, n, 10], cost=network2_quiet.CrossEntropyCost)
+    print(&quot;Train the network using the default starting weights.&quot;)
+    net.default_weight_initializer()
+    default_vc, default_va, default_tc, default_ta \
+        = net.SGD(training_data, 30, 10, eta, lmbda=5.0,
+                  evaluation_data=validation_data, 
+                  monitor_evaluation_accuracy=True,
+                  monitor_evaluation_cost=True,  
+                  monitor_training_cost=True, 
+                  monitor_training_accuracy=True)
+    training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+    training_data = list(training_data)
+    print(&quot;Train the network using the large starting weights.&quot;)
+    net2 = network2_quiet.Network([784, n, 10], cost=network2_quiet.CrossEntropyCost)
+    net2.large_weight_initializer()
+    large_vc, large_va, large_tc, large_ta \
+        = net2.SGD(training_data, 30, 10, eta, lmbda=5.0,
+                  evaluation_data=validation_data, 
+                  monitor_evaluation_accuracy=True,
+                  monitor_evaluation_cost=True,  
+                  monitor_training_cost=True, 
+                  monitor_training_accuracy=True)
+    f = open(filename, &quot;w&quot;)
+    json.dump({&quot;default_weight_initialization&quot;:
+               [default_vc, default_va, default_tc, default_ta],
+               &quot;large_weight_initialization&quot;:
+               [large_vc, large_va, large_tc, large_ta]}, 
+              f)
+    f.close()
+
+def make_plot(filename):
+    &quot;&quot;&quot;Load the results from the file ``filename``, and generate the
+    corresponding plot.
+
+    &quot;&quot;&quot;
+    f = open(filename, &quot;r&quot;)
+    results = json.load(f)
+    f.close()
+    default_vc, default_va, default_tc, default_ta = results[
+        &quot;default_weight_initialization&quot;]
+    large_vc, large_va, large_tc, large_ta = results[
+        &quot;large_weight_initialization&quot;]
+    # Convert raw classification numbers to percentages, for plotting
+    default_va = [x/100.0 for x in default_va]
+    large_va = [x/100.0 for x in large_va]
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(np.arange(0, 30, 1), large_va, color=&#39;#2A6EA6&#39;,
+            label=&quot;Old approach to weight initialization&quot;)
+    ax.plot(np.arange(0, 30, 1), default_va, color=&#39;#FFA933&#39;, 
+            label=&quot;New approach to weight initialization&quot;)
+    ax.set_xlim([0, 30])
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_ylim([80, 100])
+    ax.set_title(&#39;Classification accuracy&#39;)
+    plt.legend(loc=&quot;lower right&quot;)
+    plt.show()
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<pre class="python"><code>import sys
+sys.path.append(&#39;./src/&#39;)
+import weight_initialization
+weight_initialization.main(filename=&#39;weight_initialization_30&#39;, 
+                           n=30, eta=0.1)</code></pre>
+<pre><code>Train the network using the default starting weights.
+Train the network using the large starting weights.</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_60_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>import weight_initialization
+weight_initialization.main(filename=&#39;weight_initialization_100&#39;, 
+                           n=100, eta=0.1)</code></pre>
+<pre><code>Train the network using the default starting weights.
+Train the network using the large starting weights.</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_61_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="how-to-choose-a-neural-networks-hyper-parameters" class="section level3">
+<h3>3.5 How to choose a neural network’s hyper-parameters?</h3>
+<pre class="python"><code>&quot;&quot;&quot;multiple_eta
+~~~~~~~~~~~~~~~
+
+This program shows how different values for the learning rate affect
+training.  In particular, we&#39;ll plot out how the cost changes using
+three different values for eta.
+
+&quot;&quot;&quot;
+
+# Standard library
+import json
+import random
+import sys
+
+# My library
+import mnist_loader
+import network2_quiet
+
+# Third-party libraries
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Constants
+LEARNING_RATES = [0.025, 0.25, 2.5]
+COLORS = [&#39;#2A6EA6&#39;, &#39;#FFCD33&#39;, &#39;#FF7033&#39;]
+NUM_EPOCHS = 30
+
+def main():
+    run_networks()
+    make_plot()
+
+def run_networks():
+    &quot;&quot;&quot;Train networks using three different values for the learning rate,
+    and store the cost curves in the file ``multiple_eta.json``, where
+    they can later be used by ``make_plot``.
+
+    &quot;&quot;&quot;
+    # Make results more easily reproducible
+    random.seed(12345678)
+    np.random.seed(12345678)
+    training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+    training_data = list(training_data)
+    results = []
+    for eta in LEARNING_RATES:
+        print(&quot;\nTrain a network using eta = &quot;+str(eta))
+        net = network2_quiet.Network([784, 30, 10])
+        results.append(
+            net.SGD(training_data, NUM_EPOCHS, 10, eta, lmbda=5.0,
+                    evaluation_data=validation_data, 
+                    monitor_training_cost=True))
+    f = open(&quot;multiple_eta.json&quot;, &quot;w&quot;)
+    json.dump(results, f)
+    f.close()
+
+def make_plot():
+    f = open(&quot;multiple_eta.json&quot;, &quot;r&quot;)
+    results = json.load(f)
+    f.close()
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    for eta, result, color in zip(LEARNING_RATES, results, COLORS):
+        _, _, training_cost, _ = result
+        ax.plot(np.arange(NUM_EPOCHS), training_cost, &quot;o-&quot;,
+                label=&quot;$\eta$ = &quot;+str(eta),
+                color=color)
+    ax.set_xlim([0, NUM_EPOCHS])
+    ax.set_xlabel(&#39;Epoch&#39;)
+    ax.set_ylabel(&#39;Cost&#39;)
+    plt.legend(loc=&#39;upper right&#39;)
+    plt.show()
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<pre class="python"><code>import sys
+sys.path.append(&#39;./src/&#39;)
+import multiple_eta
+multiple_eta.main()</code></pre>
+<pre><code>Train a network using eta = 0.025
+
+Train a network using eta = 0.25
+
+Train a network using eta = 2.5</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_64_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+</div>
+<div id="a-visual-proof-that-neural-nets-can-compute-any-function" class="section level2">
+<h2>4. A visual proof that neural nets can compute any function</h2>
+</div>
+<div id="why-are-deep-neural-networks-hard-to-train" class="section level2">
+<h2>5. Why are deep neural networks hard to train?</h2>
+<pre class="python"><code>import mnist_loader
+import network2
+
+training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+training_data = list(training_data)
+net = network2.Network([784, 30, 30, 10])
+net.SGD(training_data , 30, 10, 0.1, lmbda=5.0, evaluation_data=validation_data, 
+        monitor_evaluation_accuracy=True)</code></pre>
+<pre><code>Epoch 0 training complete
+Accuracy on evaluation data: 9229 / 10000
+Epoch 1 training complete
+Accuracy on evaluation data: 9452 / 10000
+Epoch 2 training complete
+Accuracy on evaluation data: 9515 / 10000
+Epoch 3 training complete
+Accuracy on evaluation data: 9587 / 10000
+Epoch 4 training complete
+Accuracy on evaluation data: 9596 / 10000
+Epoch 5 training complete
+Accuracy on evaluation data: 9631 / 10000
+Epoch 6 training complete
+Accuracy on evaluation data: 9638 / 10000
+Epoch 7 training complete
+Accuracy on evaluation data: 9646 / 10000
+Epoch 8 training complete
+Accuracy on evaluation data: 9662 / 10000
+Epoch 9 training complete
+Accuracy on evaluation data: 9651 / 10000
+Epoch 10 training complete
+Accuracy on evaluation data: 9646 / 10000
+Epoch 11 training complete
+Accuracy on evaluation data: 9665 / 10000
+Epoch 12 training complete
+Accuracy on evaluation data: 9680 / 10000
+Epoch 13 training complete
+Accuracy on evaluation data: 9655 / 10000
+Epoch 14 training complete
+Accuracy on evaluation data: 9659 / 10000
+Epoch 15 training complete
+Accuracy on evaluation data: 9679 / 10000
+Epoch 16 training complete
+Accuracy on evaluation data: 9689 / 10000
+Epoch 17 training complete
+Accuracy on evaluation data: 9677 / 10000
+Epoch 18 training complete
+Accuracy on evaluation data: 9671 / 10000
+Epoch 19 training complete
+Accuracy on evaluation data: 9675 / 10000
+Epoch 20 training complete
+Accuracy on evaluation data: 9664 / 10000
+Epoch 21 training complete
+Accuracy on evaluation data: 9680 / 10000
+Epoch 22 training complete
+Accuracy on evaluation data: 9658 / 10000
+Epoch 23 training complete
+Accuracy on evaluation data: 9679 / 10000
+Epoch 24 training complete
+Accuracy on evaluation data: 9671 / 10000
+Epoch 25 training complete
+Accuracy on evaluation data: 9681 / 10000
+Epoch 26 training complete
+Accuracy on evaluation data: 9666 / 10000
+Epoch 27 training complete
+Accuracy on evaluation data: 9698 / 10000
+Epoch 28 training complete
+Accuracy on evaluation data: 9697 / 10000
+Epoch 29 training complete
+Accuracy on evaluation data: 9671 / 10000
+
+
+
+
+
+([],
+ [9229,
+  9452,
+  9515,
+  9587,
+  9596,
+  9631,
+  9638,
+  9646,
+  9662,
+  9651,
+  9646,
+  9665,
+  9680,
+  9655,
+  9659,
+  9679,
+  9689,
+  9677,
+  9671,
+  9675,
+  9664,
+  9680,
+  9658,
+  9679,
+  9671,
+  9681,
+  9666,
+  9698,
+  9697,
+  9671],
+ [],
+ [])</code></pre>
+<pre class="python"><code>&quot;&quot;&quot;generate_gradient.py
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Use network2 to figure out the average starting values of the gradient
+error terms \delta^l_j = \partial C / \partial z^l_j = \partial C /
+\partial b^l_j.
+
+&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+import json
+import math
+import random
+import shutil
+import functools
+import sys
+
+# My library
+import mnist_loader
+import network2_quiet
+
+# Third-party libraries
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main():
+    # Load the data
+    full_td, _, _ = mnist_loader.load_data_wrapper()
+    full_td=list(full_td)
+    td = full_td[:1000] # Just use the first 1000 items of training data
+    epochs = 500 # Number of epochs to train for
+
+    print(&quot;\nTwo hidden layers:&quot;)
+    net = network2_quiet.Network([784, 30, 30, 10])
+    initial_norms(td, net)
+    abbreviated_gradient = [
+        ag[:6] for ag in get_average_gradient(net, td)[:-1]] 
+    print(&quot;Saving the averaged gradient for the top six neurons in each &quot;+\
+        &quot;layer.\nWARNING: This will affect the look of the book, so be &quot;+\
+        &quot;sure to check the\nrelevant material (early chapter 5).&quot;)
+    f = open(&quot;initial_gradient.json&quot;, &quot;w&quot;)
+    json.dump(abbreviated_gradient, f)
+    f.close()
+    #shutil.copy(&quot;initial_gradient.json&quot;, &quot;../../js/initial_gradient.json&quot;)
+    training(td, net, epochs, &quot;norms_during_training_2_layers.json&quot;)
+    plot_training(
+        epochs, &quot;norms_during_training_2_layers.json&quot;, 2)
+
+    print(&quot;\nThree hidden layers:&quot;)
+    net = network2_quiet.Network([784, 30, 30, 30, 10])
+    initial_norms(td, net)
+    training(td, net, epochs, &quot;norms_during_training_3_layers.json&quot;)
+    plot_training(
+        epochs, &quot;norms_during_training_3_layers.json&quot;, 3)
+
+    print(&quot;\nFour hidden layers:&quot;)
+    net = network2_quiet.Network([784, 30, 30, 30, 30, 10])
+    initial_norms(td, net)
+    training(td, net, epochs, 
+             &quot;norms_during_training_4_layers.json&quot;)
+    plot_training(
+        epochs, &quot;norms_during_training_4_layers.json&quot;, 4)
+
+def initial_norms(training_data, net):
+    average_gradient = get_average_gradient(net, training_data)
+    norms = [list_norm(avg) for avg in average_gradient[:-1]]
+    print(&quot;Average gradient for the hidden layers: &quot;+str(norms))
+    
+def training(training_data, net, epochs, filename):
+    norms = []
+    for j in range(epochs):
+        average_gradient = get_average_gradient(net, training_data)
+        norms.append([list_norm(avg) for avg in average_gradient[:-1]])
+        #print(&quot;Epoch: %s&quot; % j)
+        net.SGD(training_data, 1, 1000, 0.1, lmbda=5.0)
+    f = open(filename, &quot;w&quot;)
+    json.dump(norms, f)
+    f.close()
+
+def plot_training(epochs, filename, num_layers):
+    f = open(filename, &quot;r&quot;)
+    norms = json.load(f)
+    f.close()
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    colors = [&quot;#2A6EA6&quot;, &quot;#FFA933&quot;, &quot;#FF5555&quot;, &quot;#55FF55&quot;, &quot;#5555FF&quot;]
+    for j in range(num_layers):
+        ax.plot(np.arange(epochs), 
+                [n[j] for n in norms], 
+                color=colors[j],
+                label=&quot;Hidden layer %s&quot; % (j+1,))
+    ax.set_xlim([0, epochs])
+    ax.grid(True)
+    ax.set_xlabel(&#39;Number of epochs of training&#39;)
+    ax.set_title(&#39;Speed of learning: %s hidden layers&#39; % num_layers)
+    ax.set_yscale(&#39;log&#39;)
+    plt.legend(loc=&quot;upper right&quot;)
+    fig_filename = &quot;training_speed_%s_layers.png&quot; % num_layers
+    plt.savefig(fig_filename)
+    #shutil.copy(fig_filename, &quot;../../images/&quot;+fig_filename)
+    plt.show()
+
+def get_average_gradient(net, training_data):
+    nabla_b_results = [net.backprop(x, y)[0] for x, y in training_data]
+    gradient = list_sum(nabla_b_results)
+    return [(np.reshape(g, len(g))/len(training_data)).tolist() 
+            for g in gradient]
+
+def zip_sum(a, b): 
+    return [x+y for (x, y) in zip(a, b)]
+
+def list_sum(l):
+    return functools.reduce(zip_sum, l)
+
+def list_norm(l):
+    return math.sqrt(sum([x*x for x in l]))
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<pre class="python"><code>import sys
+sys.path.append(&#39;./src/&#39;)
+import generate_gradient
+generate_gradient.main()</code></pre>
+<pre><code>Two hidden layers:
+Average gradient for the hidden layers: [0.07995550303221019, 0.35797820418358034]
+Saving the averaged gradient for the top six neurons in each layer.
+WARNING: This will affect the look of the book, so be sure to check the
+relevant material (early chapter 5).</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_69_1.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Three hidden layers:
+Average gradient for the hidden layers: [0.004753898777059166, 0.023478628329819392, 0.1462598055887548]</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_69_3.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre><code>Four hidden layers:
+Average gradient for the hidden layers: [0.002442800087315909, 0.014695951138216557, 0.07064677577913264, 0.2817046057228145]</code></pre>
+<div class="figure">
+<img src="neural-networks-and-deep-learning_files/neural-networks-and-deep-learning_69_5.png" alt="" />
+<p class="caption">png</p>
+</div>
+</div>
+<div id="deep-learning" class="section level2">
+<h2>6. Deep learning</h2>
+<div id="introducing-convolutional-networks" class="section level3">
+<h3>6.1 Introducing convolutional networks</h3>
+<pre class="python"><code>&quot;&quot;&quot;network3.py
+~~~~~~~~~~~~~~
+
+A Theano-based program for training and running simple neural
+networks.
+
+Supports several layer types (fully connected, convolutional, max
+pooling, softmax), and activation functions (sigmoid, tanh, and
+rectified linear units, with more easily added).
+
+When run on a CPU, this program is much faster than network.py and
+network2.py.  However, unlike network.py and network2.py it can also
+be run on a GPU, which makes it faster still.
+
+Because the code is based on Theano, the code is different in many
+ways from network.py and network2.py.  However, where possible I have
+tried to maintain consistency with the earlier programs.  In
+particular, the API is similar to network2.py.  Note that I have
+focused on making the code simple, easily readable, and easily
+modifiable.  It is not optimized, and omits many desirable features.
+
+This program incorporates ideas from the Theano documentation on
+convolutional neural nets (notably,
+http://deeplearning.net/tutorial/lenet.html ), from Misha Denil&#39;s
+implementation of dropout (https://github.com/mdenil/dropout ), and
+from Chris Olah (http://colah.github.io ).
+
+&quot;&quot;&quot;
+
+#### Libraries
+# Standard library
+import pickle
+import gzip
+
+# Third-party libraries
+import numpy as np
+import theano
+import theano.tensor as T
+from theano.tensor.nnet import conv
+from theano.tensor.nnet import conv2d
+from theano.tensor.nnet import softmax
+from theano.tensor import shared_randomstreams
+from theano.tensor.signal.pool import pool_2d
+
+# Activation functions for neurons
+def linear(z): return z
+def ReLU(z): return T.maximum(0.0, z)
+from theano.tensor.nnet import sigmoid
+from theano.tensor import tanh
+
+
+#### Constants
+GPU = False
+if GPU:
+    print(&quot;Trying to run under a GPU.  If this is not desired, then modify &quot;+\
+        &quot;network3.py\nto set the GPU flag to False.&quot;)
+    try: theano.config.device = &#39;gpu&#39;
+    except: pass # it&#39;s already set
+    theano.config.floatX = &#39;float32&#39;
+else:
+    print(&quot;Running with a CPU.  If this is not desired, then the modify &quot;+\
+        &quot;network3.py to set\nthe GPU flag to True.&quot;)
+
+#### Load the MNIST data
+def load_data_shared(filename=&quot;mnist.pkl.gz&quot;):
+    f = gzip.open(filename, &#39;rb&#39;)
+    training_data, validation_data, test_data = pickle.load(f, encoding=&quot;latin1&quot;)
+    f.close()
+    def shared(data):
+        &quot;&quot;&quot;Place the data into shared variables.  This allows Theano to copy
+        the data to the GPU, if one is available.
+
+        &quot;&quot;&quot;
+        shared_x = theano.shared(
+            np.asarray(data[0], dtype=theano.config.floatX), borrow=True)
+        shared_y = theano.shared(
+            np.asarray(data[1], dtype=theano.config.floatX), borrow=True)
+        return shared_x, T.cast(shared_y, &quot;int32&quot;)
+    return [shared(training_data), shared(validation_data), shared(test_data)]
+
+#### Main class used to construct and train networks
+class Network(object):
+
+    def __init__(self, layers, mini_batch_size):
+        &quot;&quot;&quot;Takes a list of `layers`, describing the network architecture, and
+        a value for the `mini_batch_size` to be used during training
+        by stochastic gradient descent.
+
+        &quot;&quot;&quot;
+        self.layers = layers
+        self.mini_batch_size = mini_batch_size
+        self.params = [param for layer in self.layers for param in layer.params]
+        self.x = T.matrix(&quot;x&quot;)
+        self.y = T.ivector(&quot;y&quot;)
+        init_layer = self.layers[0]
+        init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
+        for j in range(1, len(self.layers)): # xrange() was renamed to range() in Python 3.
+            prev_layer, layer  = self.layers[j-1], self.layers[j]
+            layer.set_inpt(
+                prev_layer.output, prev_layer.output_dropout, self.mini_batch_size)
+        self.output = self.layers[-1].output
+        self.output_dropout = self.layers[-1].output_dropout
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta,
+            validation_data, test_data, lmbda=0.0):
+        &quot;&quot;&quot;Train the network using mini-batch stochastic gradient descent.&quot;&quot;&quot;
+        training_x, training_y = training_data
+        validation_x, validation_y = validation_data
+        test_x, test_y = test_data
+
+        # compute number of minibatches for training, validation and testing
+        num_training_batches = int(size(training_data)/mini_batch_size)
+        num_validation_batches = int(size(validation_data)/mini_batch_size)
+        num_test_batches = int(size(test_data)/mini_batch_size)
+
+        # define the (regularized) cost function, symbolic gradients, and updates
+        l2_norm_squared = sum([(layer.w**2).sum() for layer in self.layers])
+        cost = self.layers[-1].cost(self)+\
+               0.5*lmbda*l2_norm_squared/num_training_batches
+        grads = T.grad(cost, self.params)
+        updates = [(param, param-eta*grad)
+                   for param, grad in zip(self.params, grads)]
+
+        # define functions to train a mini-batch, and to compute the
+        # accuracy in validation and test mini-batches.
+        i = T.lscalar() # mini-batch index
+        train_mb = theano.function(
+            [i], cost, updates=updates,
+            givens={
+                self.x:
+                training_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
+                self.y:
+                training_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
+            })
+        validate_mb_accuracy = theano.function(
+            [i], self.layers[-1].accuracy(self.y),
+            givens={
+                self.x:
+                validation_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
+                self.y:
+                validation_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
+            })
+        test_mb_accuracy = theano.function(
+            [i], self.layers[-1].accuracy(self.y),
+            givens={
+                self.x:
+                test_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
+                self.y:
+                test_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
+            })
+        self.test_mb_predictions = theano.function(
+            [i], self.layers[-1].y_out,
+            givens={
+                self.x:
+                test_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
+            })
+        # Do the actual training
+        best_validation_accuracy = 0.0
+        for epoch in range(epochs):
+            for minibatch_index in range(num_training_batches):
+                iteration = num_training_batches*epoch+minibatch_index
+                if iteration % 100000 == 0:
+                    print(&quot;Training mini-batch number {0}&quot;.format(iteration))
+                cost_ij = train_mb(minibatch_index)
+                if (iteration+1) % num_training_batches == 0:
+                    validation_accuracy = np.mean(
+                        [validate_mb_accuracy(j) for j in range(num_validation_batches)])
+                    print(&quot;Epoch {0}: validation accuracy {1:.2%}&quot;.format(
+                        epoch, validation_accuracy))
+                    if validation_accuracy &gt;= best_validation_accuracy:
+                        print(&quot;This is the best validation accuracy to date.&quot;)
+                        best_validation_accuracy = validation_accuracy
+                        best_iteration = iteration
+                        if test_data:
+                            test_accuracy = np.mean(
+                                [test_mb_accuracy(j) for j in range(num_test_batches)])
+                            print(&#39;The corresponding test accuracy is {0:.2%}&#39;.format(
+                                test_accuracy))
+        print(&quot;Finished training network.&quot;)
+        print(&quot;Best validation accuracy of {0:.2%} obtained at iteration {1}&quot;.format(
+            best_validation_accuracy, best_iteration))
+        print(&quot;Corresponding test accuracy of {0:.2%}&quot;.format(test_accuracy))
+
+#### Define layer types
+
+class ConvPoolLayer(object):
+    &quot;&quot;&quot;Used to create a combination of a convolutional and a max-pooling
+    layer.  A more sophisticated implementation would separate the
+    two, but for our purposes we&#39;ll always use them together, and it
+    simplifies the code, so it makes sense to combine them.
+
+    &quot;&quot;&quot;
+
+    def __init__(self, filter_shape, image_shape, poolsize=(2, 2),
+                 activation_fn=sigmoid):
+        &quot;&quot;&quot;`filter_shape` is a tuple of length 4, whose entries are the number
+        of filters, the number of input feature maps, the filter height, and the
+        filter width.
+
+        `image_shape` is a tuple of length 4, whose entries are the
+        mini-batch size, the number of input feature maps, the image
+        height, and the image width.
+
+        `poolsize` is a tuple of length 2, whose entries are the y and
+        x pooling sizes.
+
+        &quot;&quot;&quot;
+        self.filter_shape = filter_shape
+        self.image_shape = image_shape
+        self.poolsize = poolsize
+        self.activation_fn=activation_fn
+        # initialize weights and biases
+        n_out = (filter_shape[0]*np.prod(filter_shape[2:])/np.prod(poolsize))
+        self.w = theano.shared(
+            np.asarray(
+                np.random.normal(loc=0, scale=np.sqrt(1.0/n_out), size=filter_shape),
+                dtype=theano.config.floatX),
+            borrow=True)
+        self.b = theano.shared(
+            np.asarray(
+                np.random.normal(loc=0, scale=1.0, size=(filter_shape[0],)),
+                dtype=theano.config.floatX),
+            borrow=True)
+        self.params = [self.w, self.b]
+
+    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
+        self.inpt = inpt.reshape(self.image_shape)
+        conv_out = conv2d(
+            input=self.inpt, filters=self.w, filter_shape=self.filter_shape,
+            input_shape=self.image_shape)
+        pooled_out = pool_2d(
+            input=conv_out, ws=self.poolsize, ignore_border=True)
+        self.output = self.activation_fn(
+            pooled_out + self.b.dimshuffle(&#39;x&#39;, 0, &#39;x&#39;, &#39;x&#39;))
+        self.output_dropout = self.output # no dropout in the convolutional layers
+
+class FullyConnectedLayer(object):
+
+    def __init__(self, n_in, n_out, activation_fn=sigmoid, p_dropout=0.0):
+        self.n_in = n_in
+        self.n_out = n_out
+        self.activation_fn = activation_fn
+        self.p_dropout = p_dropout
+        # Initialize weights and biases
+        self.w = theano.shared(
+            np.asarray(
+                np.random.normal(
+                    loc=0.0, scale=np.sqrt(1.0/n_out), size=(n_in, n_out)),
+                dtype=theano.config.floatX),
+            name=&#39;w&#39;, borrow=True)
+        self.b = theano.shared(
+            np.asarray(np.random.normal(loc=0.0, scale=1.0, size=(n_out,)),
+                       dtype=theano.config.floatX),
+            name=&#39;b&#39;, borrow=True)
+        self.params = [self.w, self.b]
+
+    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
+        self.inpt = inpt.reshape((mini_batch_size, self.n_in))
+        self.output = self.activation_fn(
+            (1-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)
+        self.y_out = T.argmax(self.output, axis=1)
+        self.inpt_dropout = dropout_layer(
+            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)
+        self.output_dropout = self.activation_fn(
+            T.dot(self.inpt_dropout, self.w) + self.b)
+
+    def accuracy(self, y):
+        &quot;Return the accuracy for the mini-batch.&quot;
+        return T.mean(T.eq(y, self.y_out))
+
+class SoftmaxLayer(object):
+
+    def __init__(self, n_in, n_out, p_dropout=0.0):
+        self.n_in = n_in
+        self.n_out = n_out
+        self.p_dropout = p_dropout
+        # Initialize weights and biases
+        self.w = theano.shared(
+            np.zeros((n_in, n_out), dtype=theano.config.floatX),
+            name=&#39;w&#39;, borrow=True)
+        self.b = theano.shared(
+            np.zeros((n_out,), dtype=theano.config.floatX),
+            name=&#39;b&#39;, borrow=True)
+        self.params = [self.w, self.b]
+
+    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
+        self.inpt = inpt.reshape((mini_batch_size, self.n_in))
+        self.output = softmax((1-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)
+        self.y_out = T.argmax(self.output, axis=1)
+        self.inpt_dropout = dropout_layer(
+            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)
+        self.output_dropout = softmax(T.dot(self.inpt_dropout, self.w) + self.b)
+
+    def cost(self, net):
+        &quot;Return the log-likelihood cost.&quot;
+        return -T.mean(T.log(self.output_dropout)[T.arange(net.y.shape[0]), net.y])
+
+    def accuracy(self, y):
+        &quot;Return the accuracy for the mini-batch.&quot;
+        return T.mean(T.eq(y, self.y_out))
+
+
+#### Miscellanea
+def size(data):
+    &quot;Return the size of the dataset `data`.&quot;
+    return data[0].get_value(borrow=True).shape[0]
+
+def dropout_layer(layer, p_dropout):
+    srng = shared_randomstreams.RandomStreams(
+        np.random.RandomState(0).randint(999999))
+    mask = srng.binomial(n=1, p=1-p_dropout, size=layer.shape)
+    return layer*T.cast(mask, theano.config.floatX)
+</code></pre>
+<pre class="python"><code>import sys
+sys.path.append(&#39;./src/&#39;)
+import network3
+from network3 import Network
+from network3 import ConvPoolLayer , FullyConnectedLayer , SoftmaxLayer</code></pre>
+<pre><code>Running with a CPU.  If this is not desired, then the modify network3.py to set
+the GPU flag to True.</code></pre>
+<pre class="python"><code>training_data , validation_data , test_data = network3.load_data_shared()
+mini_batch_size = 10</code></pre>
+<pre class="python"><code>net = Network([FullyConnectedLayer(n_in=784, n_out=100),SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(training_data, 60, mini_batch_size, 0.1, validation_data, test_data)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 92.53%
+The corresponding test accuracy is 91.76%
+Epoch 1: validation accuracy 94.68%
+The corresponding test accuracy is 94.07%
+Epoch 2: validation accuracy 95.85%
+The corresponding test accuracy is 95.19%
+Epoch 3: validation accuracy 96.47%
+The corresponding test accuracy is 95.76%
+Epoch 4: validation accuracy 96.78%
+The corresponding test accuracy is 96.30%
+Epoch 5: validation accuracy 97.04%
+The corresponding test accuracy is 96.66%
+Epoch 6: validation accuracy 97.22%
+The corresponding test accuracy is 96.93%
+Epoch 7: validation accuracy 97.26%
+The corresponding test accuracy is 97.14%
+Epoch 8: validation accuracy 97.38%
+The corresponding test accuracy is 97.25%
+Epoch 9: validation accuracy 97.37%
+Epoch 10: validation accuracy 97.38%
+The corresponding test accuracy is 97.38%
+Epoch 11: validation accuracy 97.39%
+The corresponding test accuracy is 97.40%
+Epoch 12: validation accuracy 97.49%
+The corresponding test accuracy is 97.48%
+Epoch 13: validation accuracy 97.48%
+Epoch 14: validation accuracy 97.48%
+Epoch 15: validation accuracy 97.51%
+The corresponding test accuracy is 97.61%
+Epoch 16: validation accuracy 97.55%
+The corresponding test accuracy is 97.63%
+Epoch 17: validation accuracy 97.53%
+Epoch 18: validation accuracy 97.57%
+The corresponding test accuracy is 97.68%
+Epoch 19: validation accuracy 97.57%
+The corresponding test accuracy is 97.66%
+Training mini-batch number 100000
+Epoch 20: validation accuracy 97.59%
+The corresponding test accuracy is 97.66%
+Epoch 21: validation accuracy 97.55%
+Epoch 22: validation accuracy 97.56%
+Epoch 23: validation accuracy 97.57%
+Epoch 24: validation accuracy 97.60%
+The corresponding test accuracy is 97.59%
+Epoch 25: validation accuracy 97.64%
+The corresponding test accuracy is 97.60%
+Epoch 26: validation accuracy 97.65%
+The corresponding test accuracy is 97.60%
+Epoch 27: validation accuracy 97.68%
+The corresponding test accuracy is 97.61%
+Epoch 28: validation accuracy 97.68%
+The corresponding test accuracy is 97.60%
+Epoch 29: validation accuracy 97.68%
+The corresponding test accuracy is 97.62%
+Epoch 30: validation accuracy 97.68%
+Epoch 31: validation accuracy 97.68%
+Epoch 32: validation accuracy 97.66%
+Epoch 33: validation accuracy 97.67%
+Epoch 34: validation accuracy 97.67%
+Epoch 35: validation accuracy 97.66%
+Epoch 36: validation accuracy 97.67%
+Epoch 37: validation accuracy 97.70%
+The corresponding test accuracy is 97.73%
+Epoch 38: validation accuracy 97.70%
+The corresponding test accuracy is 97.73%
+Epoch 39: validation accuracy 97.71%
+The corresponding test accuracy is 97.73%
+Training mini-batch number 200000
+Epoch 40: validation accuracy 97.72%
+The corresponding test accuracy is 97.72%
+Epoch 41: validation accuracy 97.73%
+The corresponding test accuracy is 97.73%
+Epoch 42: validation accuracy 97.74%
+The corresponding test accuracy is 97.73%
+Epoch 43: validation accuracy 97.73%
+Epoch 44: validation accuracy 97.75%
+The corresponding test accuracy is 97.74%
+Epoch 45: validation accuracy 97.75%
+The corresponding test accuracy is 97.76%
+Epoch 46: validation accuracy 97.74%
+Epoch 47: validation accuracy 97.75%
+The corresponding test accuracy is 97.75%
+Epoch 48: validation accuracy 97.77%
+The corresponding test accuracy is 97.74%
+Epoch 49: validation accuracy 97.77%
+The corresponding test accuracy is 97.76%
+Epoch 50: validation accuracy 97.78%
+The corresponding test accuracy is 97.77%
+Epoch 51: validation accuracy 97.78%
+The corresponding test accuracy is 97.79%
+Epoch 52: validation accuracy 97.78%
+The corresponding test accuracy is 97.79%
+Epoch 53: validation accuracy 97.77%
+Epoch 54: validation accuracy 97.77%
+Epoch 55: validation accuracy 97.77%
+Epoch 56: validation accuracy 97.76%
+Epoch 57: validation accuracy 97.75%
+Epoch 58: validation accuracy 97.76%
+Epoch 59: validation accuracy 97.76%
+Finished training network.
+Best validation accuracy of 97.78% obtained at iteration 264999
+Corresponding test accuracy of 97.79%</code></pre>
+<p>I obtained a best classification accuracy of 97.79 percent.</p>
+<p>Let’s begin by inserting a convolutional layer, right at the beginning of the network. We’ll
+use 5 by 5 local receptive fields, a stride length of 1, and 20 feature maps. We’ll also insert
+a max-pooling layer, which combines the features using 2 by 2 pooling windows. So the
+overall network architecture looks much like the architecture discussed in the last section,
+but with an extra fully-connected layer:</p>
+<div class="figure">
+<img src="fig/convolutional_network.png" alt="" />
+<p class="caption">convolutional_network</p>
+</div>
+<pre class="python"><code>net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5),
+                             poolsize=(2, 2)),
+               FullyConnectedLayer(n_in=20*12*12, n_out=100),
+               SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(training_data, 60, mini_batch_size, 0.1, validation_data, test_data)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 94.32%
+The corresponding test accuracy is 93.55%
+Epoch 1: validation accuracy 96.35%
+The corresponding test accuracy is 95.89%
+Epoch 2: validation accuracy 97.25%
+The corresponding test accuracy is 96.92%
+Epoch 3: validation accuracy 97.75%
+The corresponding test accuracy is 97.42%
+Epoch 4: validation accuracy 97.96%
+The corresponding test accuracy is 97.75%
+Epoch 5: validation accuracy 98.15%
+The corresponding test accuracy is 97.90%
+Epoch 6: validation accuracy 98.28%
+The corresponding test accuracy is 98.10%
+Epoch 7: validation accuracy 98.34%
+The corresponding test accuracy is 98.26%
+Epoch 8: validation accuracy 98.39%
+The corresponding test accuracy is 98.45%
+Epoch 9: validation accuracy 98.44%
+The corresponding test accuracy is 98.51%
+Epoch 10: validation accuracy 98.51%
+The corresponding test accuracy is 98.52%
+Epoch 11: validation accuracy 98.54%
+The corresponding test accuracy is 98.55%
+Epoch 12: validation accuracy 98.58%
+The corresponding test accuracy is 98.59%
+Epoch 13: validation accuracy 98.60%
+The corresponding test accuracy is 98.59%
+Epoch 14: validation accuracy 98.61%
+The corresponding test accuracy is 98.67%
+Epoch 15: validation accuracy 98.60%
+Epoch 16: validation accuracy 98.62%
+The corresponding test accuracy is 98.72%
+Epoch 17: validation accuracy 98.63%
+The corresponding test accuracy is 98.70%
+Epoch 18: validation accuracy 98.64%
+The corresponding test accuracy is 98.75%
+Epoch 19: validation accuracy 98.66%
+The corresponding test accuracy is 98.75%
+Training mini-batch number 100000
+Epoch 20: validation accuracy 98.69%
+The corresponding test accuracy is 98.76%
+Epoch 21: validation accuracy 98.69%
+The corresponding test accuracy is 98.76%
+Epoch 22: validation accuracy 98.71%
+The corresponding test accuracy is 98.79%
+Epoch 23: validation accuracy 98.70%
+Epoch 24: validation accuracy 98.70%
+Epoch 25: validation accuracy 98.72%
+The corresponding test accuracy is 98.77%
+Epoch 26: validation accuracy 98.72%
+The corresponding test accuracy is 98.76%
+Epoch 27: validation accuracy 98.72%
+The corresponding test accuracy is 98.76%
+Epoch 28: validation accuracy 98.73%
+The corresponding test accuracy is 98.77%
+Epoch 29: validation accuracy 98.75%
+The corresponding test accuracy is 98.79%
+Epoch 30: validation accuracy 98.75%
+The corresponding test accuracy is 98.78%
+Epoch 31: validation accuracy 98.74%
+Epoch 32: validation accuracy 98.75%
+The corresponding test accuracy is 98.75%
+Epoch 33: validation accuracy 98.75%
+The corresponding test accuracy is 98.74%
+Epoch 34: validation accuracy 98.74%
+Epoch 35: validation accuracy 98.74%
+Epoch 36: validation accuracy 98.75%
+The corresponding test accuracy is 98.74%
+Epoch 37: validation accuracy 98.75%
+The corresponding test accuracy is 98.75%
+Epoch 38: validation accuracy 98.76%
+The corresponding test accuracy is 98.74%
+Epoch 39: validation accuracy 98.77%
+The corresponding test accuracy is 98.75%
+Training mini-batch number 200000
+Epoch 40: validation accuracy 98.76%
+Epoch 41: validation accuracy 98.76%
+Epoch 42: validation accuracy 98.77%
+The corresponding test accuracy is 98.77%
+Epoch 43: validation accuracy 98.77%
+The corresponding test accuracy is 98.76%
+Epoch 44: validation accuracy 98.77%
+The corresponding test accuracy is 98.78%
+Epoch 45: validation accuracy 98.77%
+The corresponding test accuracy is 98.79%
+Epoch 46: validation accuracy 98.77%
+The corresponding test accuracy is 98.79%
+Epoch 47: validation accuracy 98.77%
+The corresponding test accuracy is 98.79%
+Epoch 48: validation accuracy 98.77%
+The corresponding test accuracy is 98.78%
+Epoch 49: validation accuracy 98.78%
+The corresponding test accuracy is 98.78%
+Epoch 50: validation accuracy 98.78%
+The corresponding test accuracy is 98.79%
+Epoch 51: validation accuracy 98.79%
+The corresponding test accuracy is 98.79%
+Epoch 52: validation accuracy 98.80%
+The corresponding test accuracy is 98.79%
+Epoch 53: validation accuracy 98.80%
+The corresponding test accuracy is 98.79%
+Epoch 54: validation accuracy 98.80%
+The corresponding test accuracy is 98.80%
+Epoch 55: validation accuracy 98.82%
+The corresponding test accuracy is 98.80%
+Epoch 56: validation accuracy 98.81%
+Epoch 57: validation accuracy 98.81%
+Epoch 58: validation accuracy 98.81%
+Epoch 59: validation accuracy 98.81%
+Finished training network.
+Best validation accuracy of 98.82% obtained at iteration 279999
+Corresponding test accuracy of 98.80%</code></pre>
+<p>That gets us to 98.80 percent accuracy, which is a considerable improvement over any of
+our previous results.</p>
+<p>Let’s try inserting a second convolutional-pooling layer. We’ll make the insertion between
+the existing convolutional-pooling layer and the fully-connected hidden layer. Again, we’ll
+use a <span class="math inline">\(5\times 5\)</span> local receptive field, and pool over <span class="math inline">\(2 \times 2\)</span> regions. Let’s see what happens when
+we train using similar hyper-parameters to before:</p>
+<pre class="python"><code>net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5),
+                             poolsize=(2, 2)),
+               ConvPoolLayer(image_shape=(mini_batch_size , 20, 12, 12),
+                             filter_shape=(40, 20, 5, 5),
+                             poolsize=(2, 2)),
+               FullyConnectedLayer(n_in=40*4*4, n_out=100),
+               SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(training_data, 60, mini_batch_size, 0.1, validation_data, test_data)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 92.86%
+The corresponding test accuracy is 92.59%
+Epoch 1: validation accuracy 96.78%
+The corresponding test accuracy is 96.52%
+Epoch 2: validation accuracy 97.70%
+The corresponding test accuracy is 97.48%
+Epoch 3: validation accuracy 98.04%
+The corresponding test accuracy is 97.85%
+Epoch 4: validation accuracy 98.22%
+The corresponding test accuracy is 98.15%
+Epoch 5: validation accuracy 98.40%
+The corresponding test accuracy is 98.33%
+Epoch 6: validation accuracy 98.52%
+The corresponding test accuracy is 98.46%
+Epoch 7: validation accuracy 98.59%
+The corresponding test accuracy is 98.52%
+Epoch 8: validation accuracy 98.62%
+The corresponding test accuracy is 98.54%
+Epoch 9: validation accuracy 98.65%
+The corresponding test accuracy is 98.62%
+Epoch 10: validation accuracy 98.70%
+The corresponding test accuracy is 98.67%
+Epoch 11: validation accuracy 98.71%
+The corresponding test accuracy is 98.69%
+Epoch 12: validation accuracy 98.76%
+The corresponding test accuracy is 98.76%
+Epoch 13: validation accuracy 98.76%
+Epoch 14: validation accuracy 98.80%
+The corresponding test accuracy is 98.83%
+Epoch 15: validation accuracy 98.85%
+The corresponding test accuracy is 98.86%
+Epoch 16: validation accuracy 98.89%
+The corresponding test accuracy is 98.90%
+Epoch 17: validation accuracy 98.93%
+The corresponding test accuracy is 98.95%
+Epoch 18: validation accuracy 98.91%
+Epoch 19: validation accuracy 98.92%
+Training mini-batch number 100000
+Epoch 20: validation accuracy 98.91%
+Epoch 21: validation accuracy 98.92%
+Epoch 22: validation accuracy 98.91%
+Epoch 23: validation accuracy 98.92%
+Epoch 24: validation accuracy 98.95%
+The corresponding test accuracy is 98.99%
+Epoch 25: validation accuracy 98.97%
+The corresponding test accuracy is 98.99%
+Epoch 26: validation accuracy 98.97%
+The corresponding test accuracy is 99.01%
+Epoch 27: validation accuracy 98.98%
+The corresponding test accuracy is 99.03%
+Epoch 28: validation accuracy 99.01%
+The corresponding test accuracy is 99.01%
+Epoch 29: validation accuracy 99.04%
+The corresponding test accuracy is 99.00%
+Epoch 30: validation accuracy 99.05%
+The corresponding test accuracy is 99.01%
+Epoch 31: validation accuracy 99.05%
+The corresponding test accuracy is 99.02%
+Epoch 32: validation accuracy 99.08%
+The corresponding test accuracy is 99.02%
+Epoch 33: validation accuracy 99.10%
+The corresponding test accuracy is 99.01%
+Epoch 34: validation accuracy 99.08%
+Epoch 35: validation accuracy 99.08%
+Epoch 36: validation accuracy 99.07%
+Epoch 37: validation accuracy 99.07%
+Epoch 38: validation accuracy 99.06%
+Epoch 39: validation accuracy 99.06%
+Training mini-batch number 200000
+Epoch 40: validation accuracy 99.05%
+Epoch 41: validation accuracy 99.05%
+Epoch 42: validation accuracy 99.05%
+Epoch 43: validation accuracy 99.04%
+Epoch 44: validation accuracy 99.04%
+Epoch 45: validation accuracy 99.04%
+Epoch 46: validation accuracy 99.05%
+Epoch 47: validation accuracy 99.05%
+Epoch 48: validation accuracy 99.06%
+Epoch 49: validation accuracy 99.06%
+Epoch 50: validation accuracy 99.07%
+Epoch 51: validation accuracy 99.09%
+Epoch 52: validation accuracy 99.09%
+Epoch 53: validation accuracy 99.08%
+Epoch 54: validation accuracy 99.09%
+Epoch 55: validation accuracy 99.08%
+Epoch 56: validation accuracy 99.09%
+Epoch 57: validation accuracy 99.10%
+The corresponding test accuracy is 99.06%
+Epoch 58: validation accuracy 99.10%
+The corresponding test accuracy is 99.06%
+Epoch 59: validation accuracy 99.09%
+Finished training network.
+Best validation accuracy of 99.10% obtained at iteration 294999
+Corresponding test accuracy of 99.06%</code></pre>
+<p>Once again, we get an improvement: we’re now at 99.06 percent classification accuracy!</p>
+<div id="using-rectified-linear-units" class="section level4">
+<h4>Using rectified linear units</h4>
+<p>As a beginning, let’s change our neurons so that instead of using a sigmoid activation function, we use rectified linear units. That is, we’ll use the activation function <span class="math inline">\(f(z) \equiv max(0, z)\)</span>. We’ll train for <span class="math inline">\(60\)</span> epochs, with a learning rate of <span class="math inline">\(\eta = 0.03\)</span>. I also found that it helps a little to use some <span class="math inline">\(l2\)</span> regularization, with regularization parameter <span class="math inline">\(\lambda = 0.1\)</span>:</p>
+<pre class="python"><code>from network3 import ReLU
+net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5), poolsize=(2, 2), activation_fn=ReLU),
+               ConvPoolLayer(image_shape=(mini_batch_size , 20, 12, 12), filter_shape=(40, 20, 5, 5),
+                             poolsize=(2, 2), activation_fn=ReLU),
+               FullyConnectedLayer(n_in=40*4*4, n_out=100, activation_fn=ReLU),
+               SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(training_data , 60, mini_batch_size , 0.03, validation_data , test_data ,lmbda=0.1)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 97.37%
+The corresponding test accuracy is 96.92%
+Epoch 1: validation accuracy 98.00%
+The corresponding test accuracy is 98.14%
+Epoch 2: validation accuracy 98.23%
+The corresponding test accuracy is 98.40%
+Epoch 3: validation accuracy 98.39%
+The corresponding test accuracy is 98.50%
+Epoch 4: validation accuracy 98.38%
+Epoch 5: validation accuracy 98.45%
+The corresponding test accuracy is 98.58%
+Epoch 6: validation accuracy 98.74%
+The corresponding test accuracy is 98.68%
+Epoch 7: validation accuracy 98.76%
+The corresponding test accuracy is 98.72%
+Epoch 8: validation accuracy 98.64%
+Epoch 9: validation accuracy 98.22%
+Epoch 10: validation accuracy 98.86%
+The corresponding test accuracy is 98.79%
+Epoch 11: validation accuracy 98.65%
+Epoch 12: validation accuracy 99.05%
+The corresponding test accuracy is 98.92%
+Epoch 13: validation accuracy 98.78%
+Epoch 14: validation accuracy 98.84%
+Epoch 15: validation accuracy 98.77%
+Epoch 16: validation accuracy 98.92%
+Epoch 17: validation accuracy 98.84%
+Epoch 18: validation accuracy 98.98%
+Epoch 19: validation accuracy 98.85%
+Training mini-batch number 100000
+Epoch 20: validation accuracy 98.95%
+Epoch 21: validation accuracy 99.09%
+The corresponding test accuracy is 98.99%
+Epoch 22: validation accuracy 99.02%
+Epoch 23: validation accuracy 98.97%
+Epoch 24: validation accuracy 99.04%
+Epoch 25: validation accuracy 99.07%
+Epoch 26: validation accuracy 99.07%
+Epoch 27: validation accuracy 99.06%
+Epoch 28: validation accuracy 99.06%
+Epoch 29: validation accuracy 99.07%
+Epoch 30: validation accuracy 99.07%
+Epoch 31: validation accuracy 99.07%
+Epoch 32: validation accuracy 99.09%
+The corresponding test accuracy is 99.11%
+Epoch 33: validation accuracy 99.09%
+The corresponding test accuracy is 99.11%
+Epoch 34: validation accuracy 99.09%
+The corresponding test accuracy is 99.13%
+Epoch 35: validation accuracy 99.09%
+The corresponding test accuracy is 99.13%
+Epoch 36: validation accuracy 99.10%
+The corresponding test accuracy is 99.12%
+Epoch 37: validation accuracy 99.10%
+The corresponding test accuracy is 99.12%
+Epoch 38: validation accuracy 99.12%
+The corresponding test accuracy is 99.10%
+Epoch 39: validation accuracy 99.12%
+The corresponding test accuracy is 99.11%
+Training mini-batch number 200000
+Epoch 40: validation accuracy 99.12%
+The corresponding test accuracy is 99.11%
+Epoch 41: validation accuracy 99.13%
+The corresponding test accuracy is 99.10%
+Epoch 42: validation accuracy 99.13%
+The corresponding test accuracy is 99.11%
+Epoch 43: validation accuracy 99.13%
+The corresponding test accuracy is 99.11%
+Epoch 44: validation accuracy 99.13%
+The corresponding test accuracy is 99.11%
+Epoch 45: validation accuracy 99.14%
+The corresponding test accuracy is 99.12%
+Epoch 46: validation accuracy 99.14%
+The corresponding test accuracy is 99.12%
+Epoch 47: validation accuracy 99.15%
+The corresponding test accuracy is 99.12%
+Epoch 48: validation accuracy 99.15%
+The corresponding test accuracy is 99.12%
+Epoch 49: validation accuracy 99.16%
+The corresponding test accuracy is 99.12%
+Epoch 50: validation accuracy 99.16%
+The corresponding test accuracy is 99.12%
+Epoch 51: validation accuracy 99.17%
+The corresponding test accuracy is 99.12%
+Epoch 52: validation accuracy 99.16%
+Epoch 53: validation accuracy 99.16%
+Epoch 54: validation accuracy 99.17%
+The corresponding test accuracy is 99.11%
+Epoch 55: validation accuracy 99.17%
+The corresponding test accuracy is 99.11%
+Epoch 56: validation accuracy 99.17%
+The corresponding test accuracy is 99.10%
+Epoch 57: validation accuracy 99.17%
+The corresponding test accuracy is 99.10%
+Epoch 58: validation accuracy 99.17%
+The corresponding test accuracy is 99.10%
+Epoch 59: validation accuracy 99.17%
+The corresponding test accuracy is 99.10%
+Finished training network.
+Best validation accuracy of 99.17% obtained at iteration 299999
+Corresponding test accuracy of 99.10%</code></pre>
+<p>I obtained a classification accuracy of 99.12 percent.</p>
+<pre class="python"><code>&quot;&quot;&quot;expand_mnist.py
+~~~~~~~~~~~~~~~~~~
+
+Take the 50,000 MNIST training images, and create an expanded set of
+250,000 images, by displacing each training image up, down, left and
+right, by one pixel.  Save the resulting file to
+../data/mnist_expanded.pkl.gz.
+
+Note that this program is memory intensive, and may not run on small
+systems.
+
+&quot;&quot;&quot;
+
+from __future__ import print_function
+
+#### Libraries
+
+# Standard library
+import pickle
+import gzip
+import os.path
+import random
+
+# Third-party libraries
+import numpy as np
+
+print(&quot;Expanding the MNIST training set&quot;)
+
+if os.path.exists(&quot;../data/mnist_expanded.pkl.gz&quot;):
+    print(&quot;The expanded training set already exists.  Exiting.&quot;)
+else:
+    f = gzip.open(&quot;../data/mnist.pkl.gz&quot;, &#39;rb&#39;)
+    u = pickle._Unpickler(f)
+    u.encoding = &#39;latin1&#39;
+    training_data, validation_data, test_data = u.load()
+    f.close()
+    expanded_training_pairs = []
+    j = 0 # counter
+    for x, y in zip(training_data[0], training_data[1]):
+        expanded_training_pairs.append((x, y))
+        image = np.reshape(x, (-1, 28))
+        j += 1
+        if j % 1000 == 0: print(&quot;Expanding image number&quot;, j)
+        # iterate over data telling us the details of how to
+        # do the displacement
+        for d, axis, index_position, index in [
+                (1,  0, &quot;first&quot;, 0),
+                (-1, 0, &quot;first&quot;, 27),
+                (1,  1, &quot;last&quot;,  0),
+                (-1, 1, &quot;last&quot;,  27)]:
+            new_img = np.roll(image, d, axis)
+            if index_position == &quot;first&quot;: 
+                new_img[index, :] = np.zeros(28)
+            else: 
+                new_img[:, index] = np.zeros(28)
+            expanded_training_pairs.append((np.reshape(new_img, 784), y))
+    random.shuffle(expanded_training_pairs)
+    expanded_training_data = [list(d) for d in zip(*expanded_training_pairs)]
+    print(&quot;Saving expanded data. This may take a few minutes.&quot;)
+    f = gzip.open(&quot;../data/mnist_expanded.pkl.gz&quot;, &quot;w&quot;)
+    pickle.dump((expanded_training_data, validation_data, test_data), f)
+    f.close()
+</code></pre>
+<p>Running this program takes the 50,000 MNIST training images, and prepares an expanded
+training set, with 250,000 training images. We can then use those training images to train
+our network. We’ll use the same network as above, with rectified linear units.</p>
+<pre class="python"><code>expanded_training_data , _, _ = network3.load_data_shared(&quot;./data/mnist_expanded.pkl.gz&quot;)</code></pre>
+<pre class="python"><code>net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               ConvPoolLayer(image_shape=(mini_batch_size , 20, 12, 12),
+                             filter_shape=(40, 20, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               FullyConnectedLayer(n_in=40*4*4, n_out=100, activation_fn=ReLU),
+               SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(expanded_training_data, 60, mini_batch_size, 0.03, validation_data,test_data, lmbda=0.1)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 98.93%
+The corresponding test accuracy is 99.18%
+Epoch 1: validation accuracy 99.11%
+The corresponding test accuracy is 99.32%
+Epoch 2: validation accuracy 99.08%
+Epoch 3: validation accuracy 99.08%
+Training mini-batch number 100000
+Epoch 4: validation accuracy 99.10%
+Epoch 5: validation accuracy 99.13%
+The corresponding test accuracy is 99.20%
+Epoch 6: validation accuracy 98.97%
+Epoch 7: validation accuracy 99.12%
+Training mini-batch number 200000
+Epoch 8: validation accuracy 99.21%
+The corresponding test accuracy is 99.28%
+Epoch 9: validation accuracy 99.11%
+Epoch 10: validation accuracy 99.07%
+Epoch 11: validation accuracy 99.24%
+The corresponding test accuracy is 99.31%
+Training mini-batch number 300000
+Epoch 12: validation accuracy 99.19%
+Epoch 13: validation accuracy 99.28%
+The corresponding test accuracy is 99.31%
+Epoch 14: validation accuracy 99.30%
+The corresponding test accuracy is 99.23%
+Epoch 15: validation accuracy 99.26%
+Training mini-batch number 400000
+Epoch 16: validation accuracy 99.27%
+Epoch 17: validation accuracy 99.25%
+Epoch 18: validation accuracy 99.31%
+The corresponding test accuracy is 99.37%
+Epoch 19: validation accuracy 99.26%
+Training mini-batch number 500000
+Epoch 20: validation accuracy 99.35%
+The corresponding test accuracy is 99.36%
+Epoch 21: validation accuracy 99.30%
+Epoch 22: validation accuracy 99.32%
+Epoch 23: validation accuracy 99.34%
+Training mini-batch number 600000
+Epoch 24: validation accuracy 99.30%
+Epoch 25: validation accuracy 99.25%
+Epoch 26: validation accuracy 99.26%
+Epoch 27: validation accuracy 99.30%
+Training mini-batch number 700000
+Epoch 28: validation accuracy 99.29%
+Epoch 29: validation accuracy 99.39%
+The corresponding test accuracy is 99.43%
+Epoch 30: validation accuracy 99.29%
+Epoch 31: validation accuracy 99.42%
+The corresponding test accuracy is 99.42%
+Training mini-batch number 800000
+Epoch 32: validation accuracy 99.46%
+The corresponding test accuracy is 99.44%
+Epoch 33: validation accuracy 99.42%
+Epoch 34: validation accuracy 99.43%
+Epoch 35: validation accuracy 99.42%
+Training mini-batch number 900000
+Epoch 36: validation accuracy 99.42%
+Epoch 37: validation accuracy 99.42%
+Epoch 38: validation accuracy 99.42%
+Epoch 39: validation accuracy 99.43%
+Training mini-batch number 1000000
+Epoch 40: validation accuracy 99.44%
+Epoch 41: validation accuracy 99.44%
+Epoch 42: validation accuracy 99.44%
+Epoch 43: validation accuracy 99.45%
+Training mini-batch number 1100000
+Epoch 44: validation accuracy 99.45%
+Epoch 45: validation accuracy 99.45%
+Epoch 46: validation accuracy 99.45%
+Epoch 47: validation accuracy 99.44%
+Training mini-batch number 1200000
+Epoch 48: validation accuracy 99.44%
+Epoch 49: validation accuracy 99.44%
+Epoch 50: validation accuracy 99.44%
+Epoch 51: validation accuracy 99.44%
+Training mini-batch number 1300000
+Epoch 52: validation accuracy 99.44%
+Epoch 53: validation accuracy 99.44%
+Epoch 54: validation accuracy 99.44%
+Epoch 55: validation accuracy 99.45%
+Training mini-batch number 1400000
+Epoch 56: validation accuracy 99.45%
+Epoch 57: validation accuracy 99.45%
+Epoch 58: validation accuracy 99.46%
+The corresponding test accuracy is 99.42%
+Epoch 59: validation accuracy 99.46%
+The corresponding test accuracy is 99.42%
+Finished training network.
+Best validation accuracy of 99.46% obtained at iteration 1499999
+Corresponding test accuracy of 99.42%</code></pre>
+<p>Using 250,000 training images, we get 99.46% accurary.</p>
+</div>
+<div id="inserting-an-extra-fully-connected-layer" class="section level4">
+<h4>Inserting an extra fully-connected layer:</h4>
+<pre class="python"><code>net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               ConvPoolLayer(image_shape=(mini_batch_size , 20, 12, 12),
+                             filter_shape=(40, 20, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               FullyConnectedLayer(n_in=40*4*4, n_out=100, activation_fn=ReLU),
+               FullyConnectedLayer(n_in=100, n_out=100, activation_fn=ReLU),
+               SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(expanded_training_data , 60, mini_batch_size , 0.03, validation_data ,test_data , lmbda=0.1)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 98.63%
+The corresponding test accuracy is 98.64%
+Epoch 1: validation accuracy 99.06%
+The corresponding test accuracy is 99.11%
+Epoch 2: validation accuracy 99.07%
+The corresponding test accuracy is 99.12%
+Epoch 3: validation accuracy 98.90%
+Training mini-batch number 100000
+Epoch 4: validation accuracy 99.00%
+Epoch 5: validation accuracy 98.91%
+Epoch 6: validation accuracy 99.05%
+Epoch 7: validation accuracy 98.88%
+Training mini-batch number 200000
+Epoch 8: validation accuracy 98.89%
+Epoch 9: validation accuracy 98.88%
+Epoch 10: validation accuracy 98.97%
+Epoch 11: validation accuracy 99.01%
+Training mini-batch number 300000
+Epoch 12: validation accuracy 99.19%
+The corresponding test accuracy is 99.20%
+Epoch 13: validation accuracy 99.09%
+Epoch 14: validation accuracy 99.25%
+The corresponding test accuracy is 99.21%
+Epoch 15: validation accuracy 99.00%
+Training mini-batch number 400000
+Epoch 16: validation accuracy 99.22%
+Epoch 17: validation accuracy 99.29%
+The corresponding test accuracy is 99.29%
+Epoch 18: validation accuracy 99.23%
+Epoch 19: validation accuracy 99.16%
+Training mini-batch number 500000
+Epoch 20: validation accuracy 99.06%
+Epoch 21: validation accuracy 99.05%
+Epoch 22: validation accuracy 99.26%
+Epoch 23: validation accuracy 99.19%
+Training mini-batch number 600000
+Epoch 24: validation accuracy 99.23%
+Epoch 25: validation accuracy 99.10%
+Epoch 26: validation accuracy 99.27%
+Epoch 27: validation accuracy 99.21%
+Training mini-batch number 700000
+Epoch 28: validation accuracy 99.15%
+Epoch 29: validation accuracy 99.23%
+Epoch 30: validation accuracy 99.32%
+The corresponding test accuracy is 99.29%
+Epoch 31: validation accuracy 99.34%
+The corresponding test accuracy is 99.37%
+Training mini-batch number 800000
+Epoch 32: validation accuracy 99.31%
+Epoch 33: validation accuracy 99.30%
+Epoch 34: validation accuracy 99.33%
+Epoch 35: validation accuracy 99.36%
+The corresponding test accuracy is 99.22%
+Training mini-batch number 900000
+Epoch 36: validation accuracy 99.26%
+Epoch 37: validation accuracy 99.20%
+Epoch 38: validation accuracy 99.29%
+Epoch 39: validation accuracy 99.27%
+Training mini-batch number 1000000
+Epoch 40: validation accuracy 99.19%
+Epoch 41: validation accuracy 99.37%
+The corresponding test accuracy is 99.37%
+Epoch 42: validation accuracy 99.21%
+Epoch 43: validation accuracy 99.20%
+Training mini-batch number 1100000
+Epoch 44: validation accuracy 99.24%
+Epoch 45: validation accuracy 99.16%
+Epoch 46: validation accuracy 99.14%
+Epoch 47: validation accuracy 99.37%
+Training mini-batch number 1200000
+Epoch 48: validation accuracy 99.32%
+Epoch 49: validation accuracy 99.22%
+Epoch 50: validation accuracy 99.28%
+Epoch 51: validation accuracy 99.26%
+Training mini-batch number 1300000
+Epoch 52: validation accuracy 99.26%
+Epoch 53: validation accuracy 99.22%
+Epoch 54: validation accuracy 99.32%
+Epoch 55: validation accuracy 99.26%
+Training mini-batch number 1400000
+Epoch 56: validation accuracy 99.09%
+Epoch 57: validation accuracy 99.27%
+Epoch 58: validation accuracy 99.24%
+Epoch 59: validation accuracy 99.27%
+Finished training network.
+Best validation accuracy of 99.37% obtained at iteration 1049999
+Corresponding test accuracy of 99.37%</code></pre>
+</div>
+<div id="dropout" class="section level4">
+<h4>dropout</h4>
+<p>Let’s try applying dropout to the final fully-connected layers:</p>
+<pre class="python"><code>net = Network([ConvPoolLayer(image_shape=(mini_batch_size , 1, 28, 28),
+                             filter_shape=(20, 1, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               ConvPoolLayer(image_shape=(mini_batch_size , 20, 12, 12),
+                             filter_shape=(40, 20, 5, 5),
+                             poolsize=(2, 2),
+                             activation_fn=ReLU),
+               FullyConnectedLayer(n_in=40*4*4, n_out=1000, activation_fn=ReLU , p_dropout=0.5),
+               FullyConnectedLayer(n_in=1000, n_out=1000, activation_fn=ReLU , p_dropout=0.5),
+               SoftmaxLayer(n_in=1000, n_out=10, p_dropout=0.5)],mini_batch_size)</code></pre>
+<pre class="python"><code>net.SGD(expanded_training_data, 40, mini_batch_size, 0.03, validation_data , test_data)</code></pre>
+<pre><code>Training mini-batch number 0
+Epoch 0: validation accuracy 98.52%
+The corresponding test accuracy is 98.62%
+Epoch 1: validation accuracy 99.05%
+The corresponding test accuracy is 99.11%
+Epoch 2: validation accuracy 99.24%
+The corresponding test accuracy is 99.34%
+Epoch 3: validation accuracy 99.27%
+The corresponding test accuracy is 99.39%
+Training mini-batch number 100000
+Epoch 4: validation accuracy 99.35%
+The corresponding test accuracy is 99.49%
+Epoch 5: validation accuracy 99.32%
+Epoch 6: validation accuracy 99.39%
+The corresponding test accuracy is 99.50%
+Epoch 7: validation accuracy 99.46%
+The corresponding test accuracy is 99.56%
+Training mini-batch number 200000
+Epoch 8: validation accuracy 99.42%
+Epoch 9: validation accuracy 99.44%
+Epoch 10: validation accuracy 99.43%
+Epoch 11: validation accuracy 99.49%
+The corresponding test accuracy is 99.55%
+Training mini-batch number 300000
+Epoch 12: validation accuracy 99.43%
+Epoch 13: validation accuracy 99.50%
+The corresponding test accuracy is 99.54%
+Epoch 14: validation accuracy 99.51%
+The corresponding test accuracy is 99.58%
+Epoch 15: validation accuracy 99.49%
+Training mini-batch number 400000
+Epoch 16: validation accuracy 99.55%
+The corresponding test accuracy is 99.57%
+Epoch 17: validation accuracy 99.55%
+The corresponding test accuracy is 99.57%
+Epoch 18: validation accuracy 99.56%
+The corresponding test accuracy is 99.62%
+Epoch 19: validation accuracy 99.54%
+Training mini-batch number 500000
+Epoch 20: validation accuracy 99.60%
+The corresponding test accuracy is 99.64%
+Epoch 21: validation accuracy 99.62%
+The corresponding test accuracy is 99.60%
+Epoch 22: validation accuracy 99.55%
+Epoch 23: validation accuracy 99.62%
+The corresponding test accuracy is 99.59%
+Training mini-batch number 600000
+Epoch 24: validation accuracy 99.46%
+Epoch 25: validation accuracy 99.51%
+Epoch 26: validation accuracy 99.48%
+Epoch 27: validation accuracy 99.49%
+Training mini-batch number 700000
+Epoch 28: validation accuracy 99.50%
+Epoch 29: validation accuracy 99.57%
+Epoch 30: validation accuracy 99.56%
+Epoch 31: validation accuracy 99.61%
+Training mini-batch number 800000
+Epoch 32: validation accuracy 99.54%
+Epoch 33: validation accuracy 99.61%
+Epoch 34: validation accuracy 99.53%
+Epoch 35: validation accuracy 99.52%
+Training mini-batch number 900000
+Epoch 36: validation accuracy 99.58%
+Epoch 37: validation accuracy 99.63%
+The corresponding test accuracy is 99.66%
+Epoch 38: validation accuracy 99.62%
+Epoch 39: validation accuracy 99.66%
+The corresponding test accuracy is 99.60%
+Finished training network.
+Best validation accuracy of 99.66% obtained at iteration 999999
+Corresponding test accuracy of 99.60%</code></pre>
+</div>
+</div>
+</div>
+<div id="backpropagation" class="section level2">
+<h2>Backpropagation</h2>
+<p>Backpropagation is a method for efficiently computing the gradient of the cost function of a neural network with respect to its parameters. These partial derivatives can then be used to update the network’s parameters using, e.g., gradient descent. This may be the most common method for training neural networks. Deriving backpropagation involves numerous clever applications of the chain rule for functions of vectors. For a somewhat more accessible and readable (but slightly less complete) tutorial which uses notation similar to this one, please see
+<a href="http://neuralnetworksanddeeplearning.com/chap2.html" class="uri">http://neuralnetworksanddeeplearning.com/chap2.html</a></p>
+</div>
+<div id="review-the-chain-rule" class="section level2">
+<h2>Review: The chain rule</h2>
+<p>The chain rule is a way to compute the derivative of a function whose variables are themselves functions of other variables. If <span class="math inline">\(C\)</span> is a scalar-valued function of a scalar <span class="math inline">\(z\)</span> and <span class="math inline">\(z\)</span> is itself a scalar-valued function of another scalar variable <span class="math inline">\(w\)</span>, then the chain rule states that
+<span class="math display">\[
+\frac{\partial C}{\partial w} = \frac{\partial C}{\partial z}\frac{\partial z}{\partial w}
+\]</span>
+For scalar-valued functions of more than one variable, the chain rule essentially becomes additive. In other words, if <span class="math inline">\(C\)</span> is a scalar-valued function of <span class="math inline">\(N\)</span> variables <span class="math inline">\(z_1, \ldots, z_N\)</span>, each of which is a function of some variable <span class="math inline">\(w\)</span>, the chain rule states that
+<span class="math display">\[
+\frac{\partial C}{\partial w} = \sum_{i = 1}^N \frac{\partial C}{\partial z_i}\frac{\partial z_i}{\partial w}
+\]</span></p>
+</div>
+<div id="notation" class="section level2">
+<h2>Notation</h2>
+<p>In the following derivation, we’ll use the following notation:</p>
+<p><span class="math inline">\(L\)</span> - Number of layers in the network.</p>
+<p><span class="math inline">\(N^n\)</span> - Dimensionality of layer <span class="math inline">\(n \in \{0, \ldots, L\}\)</span>. <span class="math inline">\(N^0\)</span> is the dimensionality of the input; <span class="math inline">\(N^L\)</span> is the dimensionality of the output.</p>
+<p><span class="math inline">\(W^m \in \mathbb{R}^{N^m \times N^{m - 1}}\)</span> - Weight matrix for layer <span class="math inline">\(m \in \{1, \ldots, L\}\)</span>. <span class="math inline">\(W^m_{ij}\)</span> is the weight between the <span class="math inline">\(i^{th}\)</span> unit in layer <span class="math inline">\(m\)</span> and the <span class="math inline">\(j^{th}\)</span> unit in layer <span class="math inline">\(m - 1\)</span>.</p>
+<p><span class="math inline">\(b^m \in \mathbb{R}^{N^m}\)</span> - Bias vector for layer <span class="math inline">\(m\)</span>.</p>
+<p><span class="math inline">\(\sigma^m\)</span> - Nonlinear activation function of the units in layer <span class="math inline">\(m\)</span>, applied elementwise.</p>
+<p><span class="math inline">\(z^m \in \mathbb{R}^{N^m}\)</span> - Linear mix of the inputs to layer <span class="math inline">\(m\)</span>, computed by <span class="math inline">\(z^m = W^m a^{m - 1} + b^m\)</span>.</p>
+<p><span class="math inline">\(a^m \in \mathbb{R}^{N^m}\)</span> - Activation of units in layer <span class="math inline">\(m\)</span>, computed by <span class="math inline">\(a^m = \sigma^m(z^m) = \sigma^m(W^m a^{m - 1} + b^m)\)</span>. <span class="math inline">\(a^L\)</span> is the output of the network. We define the special case <span class="math inline">\(a^0\)</span> as the input of the network.</p>
+<p><span class="math inline">\(y \in \mathbb{R}^{N^L}\)</span> - Target output of the network.</p>
+<p><span class="math inline">\(C\)</span> - Cost/error function of the network, which is a function of <span class="math inline">\(a^L\)</span> (the network output) and <span class="math inline">\(y\)</span> (treated as a constant).</p>
+</div>
+<div id="backpropagation-in-general" class="section level2">
+<h2>Backpropagation in general</h2>
+<p>In order to train the network using a gradient descent algorithm, we need to know the gradient of each of the parameters with respect to the cost/error function <span class="math inline">\(C\)</span>; that is, we need to know <span class="math inline">\(\frac{\partial C}{\partial W^m}\)</span> and <span class="math inline">\(\frac{\partial C}{\partial b^m}\)</span>. It will be sufficient to derive an expression for these gradients in terms of the following terms, which we can compute based on the neural network’s architecture:</p>
+<ul>
+<li><span class="math inline">\(\frac{\partial C}{\partial a^L}\)</span>: The derivative of the cost function with respect to its argument, the output of the network</li>
+<li><span class="math inline">\(\frac{\partial a^m}{\partial z^m}\)</span>: The derivative of the nonlinearity used in layer <span class="math inline">\(m\)</span> with respect to its argument</li>
+</ul>
+<p>To compute the gradient of our cost/error function <span class="math inline">\(C\)</span> to <span class="math inline">\(W^m_{ij}\)</span> (a single entry in the weight matrix of the layer <span class="math inline">\(m\)</span>), we can first note that <span class="math inline">\(C\)</span> is a function of <span class="math inline">\(a^L\)</span>, which is itself a function of the linear mix variables <span class="math inline">\(z^m_k\)</span>, which are themselves functions of the weight matrices <span class="math inline">\(W^m\)</span> and biases <span class="math inline">\(b^m\)</span>. With this in mind, we can use the chain rule as follows:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial W^m_{ij}} = \sum_{k = 1}^{N^m} \frac{\partial C}{\partial z^m_k} \frac{\partial z^m_k}{\partial W^m_{ij}}\]</span></p>
+<p>Note that by definition
+<span class="math display">\[
+z^m_k = \sum_{l = 1}^{N^m} W^m_{kl} a_l^{m - 1} + b^m_k
+\]</span>
+It follows that <span class="math inline">\(\frac{\partial z^m_k}{\partial W^m_{ij}}\)</span> will evaluate to zero when <span class="math inline">\(i \ne k\)</span> because <span class="math inline">\(z^m_k\)</span> does not interact with any elements in <span class="math inline">\(W^m\)</span> except for those in the <span class="math inline">\(k\)</span><sup>th</sup> row, and we are only considering the entry <span class="math inline">\(W^m_{ij}\)</span>. When <span class="math inline">\(i = k\)</span>, we have</p>
+<p><span class="math display">\[\begin{align*}
+\frac{\partial z^m_i}{\partial W^m_{ij}} &amp;= \frac{\partial}{\partial W^m_{ij}}\left(\sum_{l = 1}^{N^m} W^m_{il} a_l^{m - 1} + b^m_i\right)\\
+&amp;= a^{m - 1}_j\\
+\rightarrow \frac{\partial z^m_k}{\partial W^m_{ij}} &amp;= \begin{cases}
+0 &amp; k \ne i\\
+a^{m - 1}_j &amp; k = i
+\end{cases}
+\end{align*}\]</span></p>
+<p>The fact that <span class="math inline">\(\frac{\partial C}{\partial a^m_k}\)</span> is <span class="math inline">\(0\)</span> unless <span class="math inline">\(k = i\)</span> causes the summation above to collapse, giving</p>
+<p><span class="math display">\[\frac{\partial C}{\partial W^m_{ij}} = \frac{\partial C}{\partial z^m_i} a^{m - 1}_j\]</span></p>
+<p>or in vector form</p>
+<p><span class="math display">\[\frac{\partial C}{\partial W^m} = \frac{\partial C}{\partial z^m} a^{m - 1 \top}\]</span></p>
+<p>Similarly for the bias variables <span class="math inline">\(b^m\)</span>, we have</p>
+<p><span class="math display">\[\frac{\partial C}{\partial b^m_i} = \sum_{k = 1}^{N^m} \frac{\partial C}{\partial z^m_k} \frac{\partial z^m_k}{\partial b^m_i}\]</span></p>
+<p>As above, it follows that <span class="math inline">\(\frac{\partial z^m_k}{\partial b^m_i}\)</span> will evaluate to zero when <span class="math inline">\(i \ne k\)</span> because <span class="math inline">\(z^m_k\)</span> does not interact with any element in <span class="math inline">\(b^m\)</span> except <span class="math inline">\(b^m_k\)</span>. When <span class="math inline">\(i = k\)</span>, we have</p>
+<p><span class="math display">\[\begin{align*}
+\frac{\partial z^m_i}{\partial b^m_i} &amp;= \frac{\partial}{\partial b^m_i}\left(\sum_{l = 1}^{N^m} W^m_{il} a_l^{m - 1} + b^m_i\right)\\
+&amp;= 1\\
+\rightarrow \frac{\partial z^m_i}{\partial b^m_i} &amp;= \begin{cases}
+0 &amp; k \ne i\\
+1 &amp; k = i
+\end{cases}
+\end{align*}\]</span></p>
+<p>The summation also collapses to give</p>
+<p><span class="math display">\[\frac{\partial C}{\partial b^m_i} = \frac{\partial C}{\partial z^m_i}\]</span></p>
+<p>or in vector form</p>
+<p><span class="math display">\[\frac{\partial C}{\partial b^m} = \frac{\partial C}{\partial z^m}\]</span></p>
+<p>Now, we must compute <span class="math inline">\(\frac{\partial C}{\partial z^m_k}\)</span>. For the final layer (<span class="math inline">\(m = L\)</span>), this term is straightforward to compute using the chain rule:</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial z^L_k} = \frac{\partial C}{\partial a^L_k} \frac{\partial a^L_k}{\partial z^L_k}
+\]</span></p>
+<p>or, in vector form</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial z^L} = \frac{\partial C}{\partial a^L} \frac{\partial a^L}{\partial z^L}
+\]</span></p>
+<p>The first term <span class="math inline">\(\frac{\partial C}{\partial a^L}\)</span> is just the derivative of the cost function with respect to its argument, whose form depends on the cost function chosen. Similarly, <span class="math inline">\(\frac{\partial a^m}{\partial z^m}\)</span> (for any layer <span class="math inline">\(m\)</span> includling <span class="math inline">\(L\)</span>) is the derivative of the layer’s nonlinearity with respect to its argument and will depend on the choice of nonlinearity. For other layers, we again invoke the chain rule:</p>
+<p><span class="math display">\[\begin{align*}
+\frac{\partial C}{\partial z^m_k} &amp;= \frac{\partial C}{\partial a^m_k} \frac{\partial a^m_k}{\partial z^m_k}\\
+&amp;= \left(\sum_{l = 1}^{N^{m + 1}}\frac{\partial C}{\partial z^{m + 1}_l}\frac{\partial z^{m + 1}_l}{\partial a^m_k}\right)\frac{\partial a^m_k}{\partial z^m_k}\\
+&amp;= \left(\sum_{l = 1}^{N^{m + 1}}\frac{\partial C}{\partial z^{m + 1}_l}\frac{\partial}{\partial a^m_k} \left(\sum_{h = 1}^{N^m} W^{m + 1}_{lh} a_h^m + b_l^{m + 1}\right)\right) \frac{\partial a^m_k}{\partial z^m_k}\\
+&amp;= \left(\sum_{l = 1}^{N^{m + 1}}\frac{\partial C}{\partial z^{m + 1}_l} W^{m + 1}_{lk}\right) \frac{\partial a^m_k}{\partial z^m_k}\\
+&amp;= \left(\sum_{l = 1}^{N^{m + 1}}W^{m + 1\top}_{kl} \frac{\partial C}{\partial z^{m + 1}_l}\right) \frac{\partial a^m_k}{\partial z^m_k}\\
+\end{align*}\]</span></p>
+<p>where the last simplification was made because by convention <span class="math inline">\(\frac{\partial C}{\partial z^{m + 1}_l}\)</span> is a column vector, allowing us to write the following vector form:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial z^m} = \left(W^{m + 1\top} \frac{\partial C}{\partial z^{m + 1}}\right) \circ \frac{\partial a^m}{\partial z^m}\]</span></p>
+<p>Note that we now have the ingredients to efficiently compute the gradient of the cost function with respect to the network’s parameters: First, we compute <span class="math inline">\(\frac{\partial C}{\partial z^L_k}\)</span> based on the choice of cost function and nonlinearity. Then, we recursively can compute <span class="math inline">\(\frac{\partial C}{\partial z^m}\)</span> layer-by-layer based on the term <span class="math inline">\(\frac{\partial C}{\partial z^{m + 1}}\)</span> computed from the previous layer and the nonlinearity of the layer (this is called the “backward pass”).</p>
+</div>
+<div id="backpropagation-in-practice" class="section level2">
+<h2>Backpropagation in practice</h2>
+<p>As discussed above, the exact form of the updates depends on both the chosen cost function and each layer’s chosen nonlinearity. The following two table lists the some common choices for nonlinearities and the required partial derivative for deriving the gradient for each layer:</p>
+<table>
+<colgroup>
+<col width="60%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nonlinearity</th>
+<th><span class="math inline">\(a^m = \sigma^m(z^m)\)</span></th>
+<th><span class="math inline">\(\frac{\partial a^m}{\partial z^m}\)</span></th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sigmoid</td>
+<td><span class="math inline">\(\frac{1}{1 + e^{z^m}}\)</span></td>
+<td><span class="math inline">\(\sigma^m(z^m)(1 - \sigma^m(z^m)) = a^m(1 - a^m)\)</span></td>
+<td>“Squashes” any input to the range <span class="math inline">\([0, 1]\)</span></td>
+</tr>
+<tr class="even">
+<td>Tanh</td>
+<td><span class="math inline">\(\frac{e^{z^m} - e^{-z^m}}{e^{z^m} + e^{-z^m}}\)</span></td>
+<td><span class="math inline">\(1 - (\sigma^m(z^m))^2 = 1 - (a^m)^2\)</span></td>
+<td>Equivalent, up to scaling, to the sigmoid function</td>
+</tr>
+<tr class="odd">
+<td>ReLU</td>
+<td><span class="math inline">\(\max(0, z^m)\)</span></td>
+<td><span class="math inline">\(0, z^m &lt; 0;\; 1, z^m \ge 0\)</span></td>
+<td>Commonly used in neural networks with many layers</td>
+</tr>
+</tbody>
+</table>
+<p>Similarly, the following table collects some common cost functions and the partial derivative needed to compute the gradient for the final layer:</p>
+<table style="width:100%;">
+<colgroup>
+<col width="16%" />
+<col width="41%" />
+<col width="38%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cost Function</th>
+<th><span class="math inline">\(C\)</span></th>
+<th><span class="math inline">\(\frac{\partial C}{\partial a^L}\)</span></th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Squared Error</td>
+<td><span class="math inline">\(\frac{1}{2}(y - a^L)^\top(y - a^L)\)</span></td>
+<td><span class="math inline">\(y - a^L\)</span></td>
+<td>Commonly used when the output is not constrained to a specific range</td>
+</tr>
+<tr class="even">
+<td>Cross-Entropy</td>
+<td><span class="math inline">\((y - 1)\log(1 - a^L) - y\log(a^L)\)</span></td>
+<td><span class="math inline">\(\frac{a^L - y}{a^L(1 - a^L)}\)</span></td>
+<td>Commonly used for binary classification tasks; can yield faster convergence</td>
+</tr>
+</tbody>
+</table>
+<p>In practice, backpropagation proceeds in the following manner for each training sample:</p>
+<ol style="list-style-type: decimal">
+<li>Forward pass: Given the network input <span class="math inline">\(a^0\)</span>, compute <span class="math inline">\(a^m\)</span> recursively by
+<span class="math display">\[a^1 = \sigma^1(W^1 a^0 + b^1), \ldots, a^L = \sigma^L(W^L a^{L - 1} + b^L)\]</span></li>
+<li>Backward pass: Compute
+<span class="math display">\[\frac{\partial C}{\partial z^L} = \frac{\partial C}{\partial a^L} \frac{\partial a^L}{\partial z^L}\]</span>
+for the final layer based on the tables above, then recursively compute
+<span class="math display">\[\frac{\partial C}{\partial z^m} = \left(W^{m + 1\top} \frac{\partial C}{\partial z^{m + 1}}\right) \circ \frac{\partial a^m}{\partial z^m}\]</span>
+for all other layers. Plug these values into
+<span class="math display">\[\frac{\partial C}{\partial W^m} = \frac{\partial C}{\partial z^m_i} a^{m - 1 \top}\]</span>
+and
+<span class="math display">\[\frac{\partial C}{\partial b^m} = \frac{\partial C}{\partial z^m}\]</span>
+to obtain the updates.</li>
+</ol>
+<div id="example-sigmoid-network-with-cross-entropy-loss-using-gradient-descent" class="section level3">
+<h3>Example: Sigmoid network with cross-entropy loss using gradient descent</h3>
+<p>A common network architecture is one with fully connected layers where each layer’s nonlinearity is the sigmoid function <span class="math inline">\(a^m = \frac{1}{1 + e^{z^m}}\)</span> and the cost function is the cross-entropy loss <span class="math inline">\((y - 1)\log(1 - a^L) - y\log(a^L)\)</span>. To compute the updates for gradient descent, we first compute (based on the tables above)
+<span class="math display">\[\begin{align*}
+\frac{\partial C}{\partial z^L} &amp;= \frac{\partial C}{\partial a^L} \frac{\partial a^L}{\partial z^L}\\
+&amp;= \left(\frac{a^L - y}{a^L(1 - a^L)}\right)a^L(1 - a^L)\\
+&amp;= a^L - y
+\end{align*}\]</span>
+From here, we can compute
+<span class="math display">\[\begin{align*}
+\frac{\partial C}{\partial z^{L - 1}} &amp;= \left(W^{L\top} \frac{\partial C}{\partial z^L} \right) \circ \frac{\partial a^{L - 1}}{\partial z^{L - 1}}\\
+&amp;= W^{L\top} (a^L - y) \circ a^{L - 1}(1 - a^{L - 1})\\
+\frac{\partial C}{\partial z^{L - 2}} &amp;= \left(W^{L - 1\top} \frac{\partial C}{\partial z^{L - 1}} \right) \circ \frac{\partial a^{L - 2}}{\partial z^{L - 2}}\\
+&amp;= W^{L - 1\top} \left(W^{L\top} (a^L - y) \circ a^{L - 1}(1 - a^{L - 1})\right) \circ a^{L - 2}(1 - a^{L - 2})
+\end{align*}\]</span>
+and so on, until we have computed <span class="math inline">\(\frac{\partial C}{\partial z^m}\)</span> for <span class="math inline">\(m \in \{1, \ldots, L\}\)</span>. This allows us to compute <span class="math inline">\(\frac{\partial C}{\partial W^m_{ij}}\)</span> and <span class="math inline">\(\frac{\partial C}{\partial b^m_i}\)</span>, e.g.
+<span class="math display">\[\begin{align*}
+\frac{\partial C}{\partial W^L} &amp;= \frac{\partial C}{\partial z^L} a^{L - 1 \top}\\
+&amp;= (a^L - y)a^{L - 1\top}\\
+\frac{\partial C}{\partial W^{L - 1}} &amp;= \frac{\partial C}{\partial z^{L - 1}} a^{L - 2 \top}\\
+&amp;= W^{L\top} (a^L - y) \circ a^{L - 1}(1 - a^{L - 1}) a^{L - 2\top}
+\end{align*}\]</span>
+and so on. Standard gradient descent then updates each parameter as follows:
+<span class="math display">\[W^m = W^m - \lambda \frac{\partial C}{\partial W^m}\]</span>
+<span class="math display">\[b^m = b^m - \lambda \frac{\partial C}{\partial b^m}\]</span>
+where <span class="math inline">\(\lambda\)</span> is the learning rate. This process is repeated until some stopping criteria is met.</p>
+</div>
+</div>
+<div id="toy-python-example" class="section level2">
+<h2>Toy Python example</h2>
+<p>Due to the recursive nature of the backpropagation algorithm, it lends itself well to software implementations. The following code implements a multi-layer perceptron which is trained using backpropagation with user-supplied nonlinearities, layer sizes, and cost function.</p>
+<pre class="python"><code># Ensure python 3 forward compatibility
+from __future__ import print_function
+import numpy as np
+
+def sigmoid(x):
+    return 1/(1 + np.exp(-x))
+
+class SigmoidLayer:
+    def __init__(self, n_input, n_output):
+        self.W = np.random.randn(n_output, n_input)
+        self.b = np.random.randn(n_output, 1)
+    def output(self, X):
+        if X.ndim == 1:
+            X = X.reshape(-1, 1)
+        return sigmoid(self.W.dot(X) + self.b)
+
+class SigmoidNetwork:
+
+    def __init__(self, layer_sizes):
+        &#39;&#39;&#39;
+        :parameters:
+            - layer_sizes : list of int
+                List of layer sizes of length L+1 (including the input dimensionality)
+        &#39;&#39;&#39;
+        self.layers = []
+        for n_input, n_output in zip(layer_sizes[:-1], layer_sizes[1:]):
+            self.layers.append(SigmoidLayer(n_input, n_output))
+    
+    def train(self, X, y, learning_rate=0.2):
+        X = np.array(X)
+        y = np.array(y)
+        if X.ndim == 1:
+            X = X.reshape(-1, 1)
+        if y.ndim == 1:
+            y = y.reshape(1, -1)
+        
+        # Forward pass - compute a^n for n in {0, ... L}
+        layer_outputs = [X]
+        for layer in self.layers:
+            layer_outputs.append(layer.output(layer_outputs[-1]))
+        
+        # Backward pass - compute \partial C/\partial z^m for m in {L, ..., 1}
+        cost_partials = [layer_outputs[-1] - y]
+        for layer, layer_output in zip(reversed(self.layers), reversed(layer_outputs[:-1])):
+            cost_partials.append(layer.W.T.dot(cost_partials[-1])*layer_output*(1 - layer_output))
+        cost_partials.reverse()
+        
+        # Compute weight gradient step
+        W_updates = []
+        for cost_partial, layer_output in zip(cost_partials[1:], layer_outputs[:-1]):
+            W_updates.append(cost_partial.dot(layer_output.T)/X.shape[1])
+        # and biases
+        b_updates = [cost_partial.mean(axis=1).reshape(-1, 1) for cost_partial in cost_partials[1:]]
+        
+        for W_update, b_update, layer in zip(W_updates, b_updates, self.layers):
+            layer.W -= W_update*learning_rate
+            layer.b -= b_update*learning_rate
+
+    def output(self, X):
+        a = np.array(X)
+        if a.ndim == 1:
+            a = a.reshape(-1, 1)
+        for layer in self.layers:
+            a = layer.output(a)
+        return a</code></pre>
+<pre class="python"><code>nn = SigmoidNetwork([2, 2, 1])
+X = np.array([[0, 1, 0, 1], 
+              [0, 0, 1, 1]])
+y = np.array([0, 1, 1, 0])
+for n in range(int(1e3)):
+    nn.train(X, y, learning_rate=1.)
+print(&quot;Input\tOutput\tQuantized&quot;)
+for i in [[0, 0], [1, 0], [0, 1], [1, 1]]:
+    print(&quot;{}\t{:.4f}\t{}&quot;.format(i, nn.output(i)[0, 0], 1*(nn.output(i)[0] &gt; .5)))</code></pre>
+<pre><code>Input   Output  Quantized
+[0, 0]  0.0143  [0]
+[1, 0]  0.9888  [1]
+[0, 1]  0.9892  [1]
+[1, 1]  0.0124  [0]</code></pre>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p><a href="http://neuralnetworksanddeeplearning.com/index.html">http://neuralnetworksanddeeplearning.com/index.html</a></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
