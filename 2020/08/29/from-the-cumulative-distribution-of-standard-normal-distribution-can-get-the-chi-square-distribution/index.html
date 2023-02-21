@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">From the Cumulative distribution of standard normal distribution can get the chi square distribution </h1>
@@ -70,7 +70,6 @@
 
     <div class="article-content">
       
-<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <p>The Cumulative distribution function of standard Normal distribution in the region <span class="math inline">\((-x,x),x&gt;0\)</span> is:
@@ -86,13 +85,66 @@
 is a special Gamma distribution with <span class="math inline">\(r=\frac{1}{2}, \lambda=\frac{1}{2}\)</span>. Here, the <span class="math inline">\(u=z^2\)</span>, where the <span class="math inline">\(z\)</span> is independent standard normal random variable.</p>
 <p>And the sum of several <span class="math inline">\(U=Z^2\)</span> variables
 <span class="math display">\[Y=\sum_{j=1}^{m} U_j=\sum_{j=1}^{m} Z_{j}^{2}\]</span> is still a Gamma distribution:<span class="math display">\[f_Y(y)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}y^{(\frac{m}{2})-1}e^{-\frac{1}{2}y}\]</span>,
-and we give the special Gamma distribution with <span class="math inline">\(r=\frac{m}{2}, \lambda=\frac{1}{2}\)</span> a new name: <span style="color: red;"><span class="math inline">\(\chi^2\)</span> distribution</span> with <span class="math inline">\(m\)</span> degrees of freedom.</p>
+and we give the special Gamma distribution with <span class="math inline">\(r=\frac{m}{2}, \lambda=\frac{1}{2}\)</span> a new name: <span style="color: red;"><span class="math inline">\(\chi^2\)</span> distribution</span> with <span class="math inline">\(m\)</span> degrees of freedom. <a href="https://www.wikiwand.com/en/Chi-squared_distribution">Chi-squared distribution</a>.</p>
 <p>And the average of several <span class="math inline">\(U=Z^2\)</span> variables <span class="math display">\[\overline Y=\frac{1}{m}\sum_{j=1}^{m} U_j=\frac{1}{m}\sum_{j=1}^{m} Z_{j}^{2}\]</span> is still a Gamma distribution with <span class="math inline">\(m\)</span> degrees of freedom:<br />
 <span class="math display">\[\begin{align}
 f_{\overline Y}(\omega)=f_{\frac{1}{m}Y}(\omega)&amp;=\frac{1}{m}f_{Y}(\frac{1}{m}\omega)\\
 &amp;=\frac{1}{m}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(\frac{1}{m}\omega)^{(\frac{m}{2})-1}e^{-\frac{1}{2}(\frac{1}{m}\omega)}\\
 &amp;=(\frac{1}{m})^{(\frac{m}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(\omega)^{(\frac{m}{2})-1}e^{-\frac{1}{2}(\frac{1}{m}\omega)}
 \end{align}\]</span></p>
+<p>Let <span class="math inline">\(Y\)</span> be a chi-square random variable with <span class="math inline">\(n\)</span> degrees of freedom. Then the square-root of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\sqrt Y\equiv \hat Y\)</span> is distributed as a <a href="https://www.wikiwand.com/en/Chi_distribution">chi-distribution</a> with <span class="math inline">\(n\)</span> degrees of freedom, which has density
+<span class="math display">\[\begin{align}
+f_{\hat Y}(\hat y) &amp;=2\hat y f_{\hat y^2}(\hat y^2) \\
+&amp;=2\hat y \frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}{\hat y}^{2(\frac{n}{2})-2}e^{-\frac{1}{2}\hat y^2} \\
+&amp;= \frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} \hat y^{n-1} \exp\Big \{{-\frac {\hat y^2}{2}} \Big\} \tag 1
+\end{align}\]</span></p>
+<p>Define <span class="math inline">\(X \equiv \frac {1}{\sqrt n}\hat Y\)</span>. Then <span class="math display">\[ \frac {\partial \hat Y}{\partial X} = \sqrt n\]</span> and by the change-of-variable formula we have that</p>
+<p><span class="math display">\[ f_{X}(x) = f_{\hat Y}(\sqrt nx)\Big |\frac {\partial \hat Y}{\partial X} \Big| = \frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} (\sqrt nx)^{n-1} \exp\Big \{{-\frac {(\sqrt nx)^2}{2}}  \Big\}\sqrt n\]</span></p>
+<p><span class="math display">\[=\frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} n^{\frac n2}x^{n-1} \exp\Big \{{-\frac {n}{2}x^2}  \Big\} \tag 2\]</span></p>
+<p>Let <span class="math inline">\(Z\)</span> be a standard normal random variable, independent from the previous ones, and define the random variable</p>
+<p><span class="math display">\[T = \frac{Z}{\sqrt \frac Yn}= \frac ZX \]</span>.</p>
+<p>By the standard formula for the density function of the ratio of two independent random variables,
+<span class="math display">\[\begin{aligned}
+\mathsf P(T\leq t)
+&amp;=\mathsf P(Z/X\leq t)\\
+&amp;=\mathsf P(Z/X\leq t,X&gt;0)+\mathsf P(Z/X\leq t,X&lt;0)\\
+&amp;=\mathsf P(Z\leq tX,X&gt;0)+\mathsf P(Z\geq tX,X&lt;0).
+\end{aligned}
+\]</span>
+Assuming <span class="math inline">\(Z\)</span> is independent of <span class="math inline">\(X\)</span> we then have
+<span class="math display">\[
+\begin{aligned}
+\mathsf P(T\leq t)
+&amp;=\int_0^\infty\int_{-\infty}^{tx}f_Z(z)f_X(x)\,\mathrm dz\mathrm dx+\int_{-\infty}^0\int_{tx}^\infty f_Z(z)f_X(x)\,\mathrm dz\mathrm dx
+\end{aligned}
+\]</span>
+Differentiating we have by the Leibniz integral rule:
+<span class="math display">\[
+\begin{aligned}
+f_T(t)=\partial_t\mathsf P(T\leq t)
+&amp;=\int_0^\infty xf_Z(xt)f_X(x)\,\mathrm dx-\int_{-\infty}^0 x f_Z(xt)f_X(x)\,\mathrm dx\\
+&amp;=\int_{-\infty}^\infty |x|f_Z(xt)f_X(x)\,\mathrm dx.
+\end{aligned}\]</span></p>
+<p><span class="math display">\[f_T(t) = \int_{-\infty}^{\infty} |x|f_Z(xt)f_X(x)dx \]</span></p>
+<p>But <span class="math inline">\(f_X(x) = 0\)</span> for the interval <span class="math inline">\([-\infty, 0]\)</span> because <span class="math inline">\(X\)</span> is a non-negative r.v. So we can eliminate the absolute value, and reduce the integral to</p>
+<p><span class="math display">\[f_T(t) = \int_{0}^{\infty} xf_Z(xt)f_X(x)dx   \]</span></p>
+<p><span class="math display">\[ = \int_{0}^{\infty} x \frac{1}{\sqrt{2\pi}}\exp \Big \{{-\frac{(xt)^2}{2}}\Big\}\frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} n^{\frac n2}x^{n-1} \exp\Big \{{-\frac {n}{2}x^2}  \Big\}dx \]</span></p>
+<p><span class="math display">\[ = \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} n^{\frac n2}\int_{0}^{\infty} x^n \exp \Big \{-\frac 12 (n+t^2) x^2\Big\} dx \tag{3}\]</span></p>
+<p>The integrand in <span class="math inline">\((3)\)</span> looks promising to eventually be transformed into a Gamma density function. The limits of integration are correct, so we need to manipulate the integrand into becoming a Gamma density function without changing the limits. Define the variable</p>
+<p><span class="math display">\[m \equiv x^2 \Rightarrow dm = 2xdx \Rightarrow dx = \frac {dm}{2x}, \; x = m^{\frac 12}\]</span>
+Making the substitution in the integrand we have</p>
+<p><span class="math display">\[I_3=\int_{0}^{\infty} x^n \exp \Big \{-\frac 12 (n+t^2) m\Big\} \frac {dm}{2x} \\
+= \frac 12\int_{0}^{\infty} m^{\frac {n-1}{2}} \exp \Big \{-\frac 12 (n+t^2) m\Big \} dm \tag{4}\]</span></p>
+<p>The Gamma density can be written</p>
+<p><span class="math display">\[ Gamma(m;k,\theta) = \frac {m^{k-1} \exp\Big\{-\frac{m}{\theta}\Big \}}{\theta^k\Gamma(k)}\]</span></p>
+<p>Matching coefficients, we must have</p>
+<p><span class="math display">\[k-1 = \frac {n-1}{2} \Rightarrow k^* = \frac {n+1}{2}, \qquad \frac 1\theta =\frac 12 (n+t^2) \Rightarrow \theta^* = \frac 2 {(n+t^2)} \]</span></p>
+<p>For these values of <span class="math inline">\(k^*\)</span> and <span class="math inline">\(\theta^*\)</span> the terms in the integrand involving the variable are the kernel of a gamma density. So if we divide the integrand by <span class="math inline">\((\theta^*)^{k^*}\Gamma(k^*)\)</span> and multiply outside the integral by the same magnitude, the integral will be the gamma distr. function and will equal unity. Therefore we have arrived at</p>
+<p><span class="math display">\[I_3 = \frac12(\theta^*)^{k^*}\Gamma(k^*) = \frac12 \Big (\frac 2 {n+t^2}\Big ) ^{\frac {n+1}{2}}\Gamma\left(\frac {n+1}{2}\right) = 2^ {\frac {n-1}{2}}n^{-\frac {n+1}{2}}\Gamma\left(\frac {n+1}{2}\right)\left(1+\frac {t^2}{n}\right)^{-\frac 12 (n+1)} \]</span></p>
+<p>Inserting the above into eq. <span class="math inline">\((3)\)</span> we get</p>
+<p><span class="math display">\[f_T(t) =  \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} n^{\frac n2}2^ {\frac {n-1}{2}}n^{-\frac {n+1}{2}}\Gamma\left(\frac {n+1}{2}\right)\left(1+\frac {t^2}{n}\right)^{-\frac 12 (n+1)}\]</span></p>
+<p><span class="math display">\[=\frac{\Gamma[(n+1)/2]}{\sqrt{n\pi}\,\Gamma(n/2)}\left(1+\frac {t^2}{n}\right)^{-\frac 12 (n+1)}\]</span></p>
+<p>…which is what is called the (density function of) the Student’s t-distribution, with <span class="math inline">\(n\)</span> degrees of freedom.</p>
 
     </div>
   </article>
