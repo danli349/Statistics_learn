@@ -144,7 +144,28 @@ Making the substitution in the integrand we have</p>
 <p>Inserting the above into eq. <span class="math inline">\((3)\)</span> we get</p>
 <p><span class="math display">\[f_T(t) =  \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac n2}}{\Gamma\left(\frac {n}{2}\right)} n^{\frac n2}2^ {\frac {n-1}{2}}n^{-\frac {n+1}{2}}\Gamma\left(\frac {n+1}{2}\right)\left(1+\frac {t^2}{n}\right)^{-\frac 12 (n+1)}\]</span></p>
 <p><span class="math display">\[=\frac{\Gamma[(n+1)/2]}{\sqrt{n\pi}\,\Gamma(n/2)}\left(1+\frac {t^2}{n}\right)^{-\frac 12 (n+1)}\]</span></p>
+<p><span class="math display">\[=\frac{n^{-1/2}}{B(1/2,n/2)}\left(1+\frac {1}{n}t^2\right)^{-\frac 12 (n+1)}\]</span>
+<span class="math display">\[=\frac{(1)^{n/2}(1/n)^{1/2}}{B(1/2,n/2)}\left(1+(1/n)t^2\right)^{-\frac 12 (n+1)}\]</span>where <span class="math inline">\(B(\cdot,\cdot)\)</span> is the Beta function.</p>
 <p>…which is what is called the (density function of) the Student’s t-distribution, with <span class="math inline">\(n\)</span> degrees of freedom.</p>
+<p>When V and U are two <span class="math inline">\(\chi^2\)</span> independent random variables: <span class="math inline">\(f_V(v)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}v^{(\frac{m}{2})-1}e^{-\frac{1}{2}v}\)</span><br />
+<span class="math inline">\(f_U(u)=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{(\frac{n}{2})-1}e^{-\frac{1}{2}u}\)</span><br />
+with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom, then, the pdf for <span class="math inline">\(W=V/U\)</span> is:<br />
+<span class="math display">\[\begin{align}
+f_{V/U}(\omega)&amp;=\int_{0}^{+\infty}|u|f_U(u)f_V(u\omega)du\\
+&amp;=\int_{0}^{+\infty}u\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{\frac{n}{2}-1}e^{-\frac{1}{2}u}  \frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(u\omega)^{\frac{m}{2}-1}e^{-\frac{1}{2}u\omega}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n}{2}}u^{\frac{m}{2}-1} e^{-\frac{1}{2}u(1+\omega)}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n+m}{2}-1} e^{-\frac{1}{2}u(1+\omega)}du\\
+&amp;=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} (\frac{\Gamma(\frac{n+m}{2})}{(\frac{1}{2}(1+\omega))^{\frac{n+m}{2}}})\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{\omega^{\frac{m}{2}-1}}{(1+\omega)^{\frac{n+m}{2}}}
+\end{align}\]</span></p>
+<p>Then, the pdf for <span class="math inline">\(W=\frac{V/m}{U/n}\)</span> is:
+<span class="math display">\[\begin{align}
+f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
+&amp;=\frac{m}{n}f_{V/U}(\frac{m}{n}\omega)\\
+&amp;=\frac{m}{n}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(1+\frac{m}{n}\omega)^{\frac{n+m}{2}}}\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m}{n}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}n^{\frac{n+m}{2}}\\
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}
+\end{align}\]</span>, which is a <span style="color: red;"><strong><span class="math inline">\(F\)</span> distribution</strong></span> with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom.</p>
 
     </div>
   </article>
