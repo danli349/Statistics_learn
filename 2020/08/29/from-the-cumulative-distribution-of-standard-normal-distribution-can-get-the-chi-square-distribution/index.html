@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">From the Cumulative distribution of standard normal distribution can get the chi square distribution </h1>
@@ -164,8 +164,36 @@ f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
 &amp;=\frac{m}{n}f_{V/U}(\frac{m}{n}\omega)\\
 &amp;=\frac{m}{n}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(1+\frac{m}{n}\omega)^{\frac{n+m}{2}}}\\
 &amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m}{n}\frac{(\frac{m}{n}\omega)^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}n^{\frac{n+m}{2}}\\
-&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}
+&amp;=\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}} \\
+&amp;=\frac{1}{B(\frac{n}{2},\frac{m}{2})}\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}\omega^{\frac{m}{2}-1}}{(n+m\omega)^{\frac{n+m}{2}}}
 \end{align}\]</span>, which is a <span style="color: red;"><strong><span class="math inline">\(F\)</span> distribution</strong></span> with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom.</p>
+<p>If <span class="math inline">\(T\)</span> is distributed as <span class="math inline">\((a/b)^{1/2}Z/U\)</span> where <span class="math inline">\(Z\sim N(0,1)\)</span> and <span class="math inline">\(U\sim \chi_\nu\)</span>,</p>
+<p><span class="math display">\[f_T(t) = \int_{0}^{\infty}  xf_Z(xt)f_U(x)dx   \]</span></p>
+<p>Because <span class="math display">\[\chi_{\nu}=\frac{1}{2^{\nu/2-1}\Gamma(\frac{\nu}{2})}x^{\nu-1}e^{-x^2/2}\]</span></p>
+<p><span class="math display">\[ f_T(t) = \int_{0}^{\infty}  xf_Z(xt)f_{U/\sqrt{\frac{a}{b}}}(x)dx = \\
+=\int_{0}^{\infty} x \frac{1}{\sqrt{2\pi}}\exp \Big \{{-\frac{( xt)^2}{2}}\Big\}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\sqrt{\frac{a}{b}}x)^{\nu-1} \exp\Big \{{-\frac {(\sqrt{\frac{a}{b}}x)^2}{2}}  \Big\}\sqrt{\frac{a}{b}} \\
+= \int_{0}^{\infty} x \frac{1}{\sqrt{2\pi}}\exp \Big \{{-\frac{( xt)^2}{2}}\Big\}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\frac{a}{b})^{\frac \nu2}x^{\nu-1} \exp\Big \{{-\frac {a}{2b}x^2}  \Big\}dx \]</span></p>
+<p><span class="math display">\[ = \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\frac{a}{b})^{\frac \nu2}\int_{0}^{\infty} x^\nu \exp \Big \{-\frac 12 \left(\frac ab+ t^2\right) x^2\Big\} dx\]</span></p>
+<p><span class="math display">\[=\frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\frac ab)^{\frac \nu2}\int_{0}^{\infty} x^\nu \exp \Big \{-\frac 12 \left(\frac ab+ t^2\right) m\Big\} \frac {dm}{2x} \\
+= \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\frac ab)^{\frac \nu2}\frac 12\int_{0}^{\infty} m^{\frac {\nu-1}{2}} \exp \Big \{-\frac 12 \left(\frac ab+ t^2\right) m\Big \} dm \\
+= \frac{1}{\sqrt{2\pi}}\frac {2^{1-\frac \nu2}}{\Gamma\left(\frac {\nu}{2}\right)} (\frac ab)^{\frac \nu2} 2^ {\frac {\nu-1}{2}}\Gamma\left(\frac {\nu+1}{2}\right)\left(\frac ab+ t^2\right)^{-\frac 12 (\nu+1)} \\
+=\frac{\Gamma[(\nu+1)/2]}{\sqrt{\pi}\,\Gamma(\nu/2)}(\frac ab)^{\frac \nu2}\left(\frac ab+ t^2\right)^{-\frac 12 (\nu+1)}\\
+=\frac{a^{\nu/2}b^{1/2}}{B(1/2,\nu/2)}\left(a+bt^2\right)^{-\frac 12 (\nu+1)}\]</span></p>
+<p>then <span class="math inline">\(T\)</span> has <span class="math inline">\(t\)</span> density function</p>
+<p><span class="math display">\[p(t)=\frac{a^{\nu/2}b^{1/2}}{B(1/2,\nu/2)}\left(a+b t^2\right)^{-\frac 12 (\nu+1)}\]</span></p>
+<p>When V and U are two <span class="math inline">\(\chi^2\)</span> independent random variables: <span class="math display">\[f_V(v)=\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}v^{(\frac{m}{2})-1}e^{-\frac{1}{2}v}\]</span></p>
+<p><span class="math display">\[f_U(u)=\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}u^{(\frac{n}{2})-1}e^{-\frac{1}{2}u}\]</span>
+with <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> degrees of freedom, then, the pdf for <span class="math inline">\(W=\sqrt{\frac ab}V/U\)</span> is:<br />
+<span class="math display">\[\begin{align}
+f_{V/U}(\omega)&amp;=\frac ab\int_{0}^{+\infty}|u|f_{U/\frac ab}(u)f_V(u\omega)du\\
+&amp;=\frac ab\int_{0}^{+\infty}u\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}(\frac ab u)^{\frac{n}{2}-1}e^{-\frac{1}{2}( \frac ab u)}  \frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}(u\omega)^{\frac{m}{2}-1}e^{-\frac{1}{2}u\omega}du\\
+&amp;=(\frac ab)^{\frac{n}{2}}\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n}{2}}u^{\frac{m}{2}-1} e^{-\frac{1}{2}u(\frac ab+\omega)}du\\
+&amp;=(\frac ab)^{\frac{n}{2}}\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} \int_{0}^{+\infty}u^{\frac{n+m}{2}-1} e^{-\frac{1}{2}u(\frac ab+\omega)}du\\
+&amp;=(\frac ab)^{\frac{n}{2}}\frac{(\frac{1}{2})^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}\frac{(\frac{1}{2})^{\frac{m}{2}}}{\Gamma(\frac{m}{2})}  \omega^{\frac{m}{2}-1} (\frac{\Gamma(\frac{n+m}{2})}{(\frac{1}{2}(\frac ab+\omega))^{\frac{n+m}{2}}})\\
+&amp;=(\frac ab)^{\frac{n}{2}}b^{\frac{n+m}{2}}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{\omega^{\frac{m}{2}-1}}{(a+b\omega)^{\frac{n+m}{2}}} \\
+&amp;=a^{\frac{n}{2}}b^{\frac{m}{2}}\frac{\Gamma(\frac{n+m}{2})}{\Gamma(\frac{n}{2})\Gamma(\frac{m}{2})}\frac{\omega^{\frac{m}{2}-1}}{(a+b\omega)^{\frac{n+m}{2}}} \\
+&amp;=\frac{a^{\frac{n}{2}}b^{\frac{m}{2}}}{B(\frac{m}{2},\frac{n}{2})}\frac{\omega^{\frac{m}{2}-1}}{(a+b\omega)^{\frac{n+m}{2}}} \\
+\end{align}\]</span></p>
 
     </div>
   </article>
