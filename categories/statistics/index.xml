@@ -228,7 +228,7 @@ Proof.
       <pubDate>Mon, 12 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/04/12/aos-chapter04-expectation/</guid>
-      <description>4. Expectation4.1 Expectation of a Random Variable4.2 Properties of Expectations4.3 Variance and Covariance4.4 Expectation and Variance of Important Random Variables4.5 Conditional Expectation4.6 Technical Appendix4.7 Exercises4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling4.9 Beta distribution and Order StatisticsReferences4. Expectation4.1 Expectation of a Random VariableThe expected value, mean or first moment of \(X\) is defined to be</description>
+      <description>4. Expectation4.1 Expectation of a Random Variable4.2 Properties of Expectations4.3 Variance and Covariance4.4 Expectation and Variance of Important Random Variables4.5 Conditional Expectation4.6 Technical Appendix4.7 Exercises4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling4.9 Beta distribution and Order Statistics4.10 The conditional log-likelihood (CML) of NB distributionReferences4. Expectation4.1 Expectation of a Random VariableThe expected value, mean or first moment of \(X\) is defined to be</description>
     </item>
     
     <item>

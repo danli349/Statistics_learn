@@ -6,7 +6,16 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Modern Statistics for Modern Biology</title>
+      <link>/2023/04/28/modern-statistics-for-modern-biology/</link>
+      <pubDate>Fri, 28 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/04/28/modern-statistics-for-modern-biology/</guid>
+      <description>1 Generative Models for Discrete Data2 Statistical Modeling3 High Quality Graphics in R4 Mixture Models5 Clustering6 TestingMultivariate AnalysisHigh-Throughput Count Data9 Multivariate methods for heterogeneous data10 Networks and Trees11 Image data12 Supervised Learning13 Design of High Throughput Experiments and their Analyses1 Generative Models for Discrete Data## -----------------------------------------------------------------------------dpois(x = 3, lambda = 5)## [1] 0.</description>
+    </item>
+    
     <item>
       <title>Neural Networks and Deep Learning</title>
       <link>/2022/01/16/neural-networks-and-deep-learning/</link>
@@ -328,7 +337,7 @@ Proof.
       <pubDate>Mon, 12 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/04/12/aos-chapter04-expectation/</guid>
-      <description>4. Expectation4.1 Expectation of a Random Variable4.2 Properties of Expectations4.3 Variance and Covariance4.4 Expectation and Variance of Important Random Variables4.5 Conditional Expectation4.6 Technical Appendix4.7 Exercises4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling4.9 Beta distribution and Order StatisticsReferences4. Expectation4.1 Expectation of a Random VariableThe expected value, mean or first moment of \(X\) is defined to be</description>
+      <description>4. Expectation4.1 Expectation of a Random Variable4.2 Properties of Expectations4.3 Variance and Covariance4.4 Expectation and Variance of Important Random Variables4.5 Conditional Expectation4.6 Technical Appendix4.7 Exercises4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling4.9 Beta distribution and Order Statistics4.10 The conditional log-likelihood (CML) of NB distributionReferences4. Expectation4.1 Expectation of a Random VariableThe expected value, mean or first moment of \(X\) is defined to be</description>
     </item>
     
     <item>

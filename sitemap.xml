@@ -4,12 +4,37 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2022-01-16T00:00:00+00:00</lastmod>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/bioinformatics/</loc>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/biostatistics/</loc>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2022-01-16T00:00:00+00:00</lastmod>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2023/04/28/modern-statistics-for-modern-biology/</loc>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2023-04-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -19,11 +44,6 @@
   
   <url>
     <loc>/2022/01/16/neural-networks-and-deep-learning/</loc>
-    <lastmod>2022-01-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2022-01-16T00:00:00+00:00</lastmod>
   </url>
   
@@ -89,11 +109,6 @@
   
   <url>
     <loc>/categories/statistics/</loc>
-    <lastmod>2021-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2021-05-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -265,11 +280,6 @@
   <url>
     <loc>/2021/02/03/c/</loc>
     <lastmod>2021-02-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/bioinformatics/</loc>
-    <lastmod>2021-01-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>

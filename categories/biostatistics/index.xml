@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Biostatistics on A Hugo website</title>
+    <link>/categories/biostatistics/</link>
+    <description>Recent content in Biostatistics on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/biostatistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Modern Statistics for Modern Biology</title>
+      <link>/2023/04/28/modern-statistics-for-modern-biology/</link>
+      <pubDate>Fri, 28 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/04/28/modern-statistics-for-modern-biology/</guid>
+      <description>1 Generative Models for Discrete Data2 Statistical Modeling3 High Quality Graphics in R4 Mixture Models5 Clustering6 TestingMultivariate AnalysisHigh-Throughput Count Data9 Multivariate methods for heterogeneous data10 Networks and Trees11 Image data12 Supervised Learning13 Design of High Throughput Experiments and their Analyses1 Generative Models for Discrete Data## -----------------------------------------------------------------------------dpois(x = 3, lambda = 5)## [1] 0.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -64,7 +64,7 @@
 
   <article class="article">
     
-    <span class="article-duration">67 min read</span>
+    <span class="article-duration">68 min read</span>
     
 
     <h1 class="article-title">AOS chapter04 Expectation, negative binomial distribution and gene counts, beta distribution and Order Statistics</h1>
@@ -75,23 +75,24 @@
 
     <div class="article-content">
       
-<script src="../../../../2021/04/12/aos-chapter04-expectation/index_files/header-attrs/header-attrs.js"></script>
+
 
 <div id="TOC">
 <ul>
-<li><a href="#expectation">4. Expectation</a>
+<li><a href="#expectation" id="toc-expectation">4. Expectation</a>
 <ul>
-<li><a href="#expectation-of-a-random-variable">4.1 Expectation of a Random Variable</a></li>
-<li><a href="#properties-of-expectations">4.2 Properties of Expectations</a></li>
-<li><a href="#variance-and-covariance">4.3 Variance and Covariance</a></li>
-<li><a href="#expectation-and-variance-of-important-random-variables">4.4 Expectation and Variance of Important Random Variables</a></li>
-<li><a href="#conditional-expectation">4.5 Conditional Expectation</a></li>
-<li><a href="#technical-appendix">4.6 Technical Appendix</a></li>
-<li><a href="#exercises">4.7 Exercises</a></li>
-<li><a href="#negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling">4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</a></li>
-<li><a href="#beta-distribution-and-order-statistics">4.9 Beta distribution and Order Statistics</a></li>
+<li><a href="#expectation-of-a-random-variable" id="toc-expectation-of-a-random-variable">4.1 Expectation of a Random Variable</a></li>
+<li><a href="#properties-of-expectations" id="toc-properties-of-expectations">4.2 Properties of Expectations</a></li>
+<li><a href="#variance-and-covariance" id="toc-variance-and-covariance">4.3 Variance and Covariance</a></li>
+<li><a href="#expectation-and-variance-of-important-random-variables" id="toc-expectation-and-variance-of-important-random-variables">4.4 Expectation and Variance of Important Random Variables</a></li>
+<li><a href="#conditional-expectation" id="toc-conditional-expectation">4.5 Conditional Expectation</a></li>
+<li><a href="#technical-appendix" id="toc-technical-appendix">4.6 Technical Appendix</a></li>
+<li><a href="#exercises" id="toc-exercises">4.7 Exercises</a></li>
+<li><a href="#negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling" id="toc-negative-binomial-or-gamma-poisson-distribution-and-gene-expression-counts-modeling">4.8 Negative binomial (or gamma-Poisson) distribution and gene expression counts modeling</a></li>
+<li><a href="#beta-distribution-and-order-statistics" id="toc-beta-distribution-and-order-statistics">4.9 Beta distribution and Order Statistics</a></li>
+<li><a href="#the-conditional-log-likelihood-cml-of-nb-distribution" id="toc-the-conditional-log-likelihood-cml-of-nb-distribution">4.10 The conditional log-likelihood (CML) of NB distribution</a></li>
 </ul></li>
-<li><a href="#references">References</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
 
@@ -142,7 +143,7 @@
 <p>and the <strong>sample variance</strong> to be</p>
 <p><span class="math display">\[ S_n^2 = \frac{1}{n - 1} \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \]</span></p>
 <p><strong>Theorem 4.16</strong>. Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID and let <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span>, <span class="math inline">\(\sigma^2 = \mathbb{V}(X_i)\)</span>. Then</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \mathbb{E}\left(\overline{X}_n\right) = \mu,
 \quad
 \mathbb{V}\left(\overline{X}_n\right) = \frac{\sigma^2}{n},
@@ -160,7 +161,7 @@
 <p><span class="math display">\[ -1 \leq \rho(X, Y) \leq 1 \]</span></p>
 <p>If <span class="math inline">\(Y = a + bX\)</span> for some constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> then <span class="math inline">\(\rho(X, Y) = 1\)</span> if <span class="math inline">\(b &gt; 0\)</span> and <span class="math inline">\(\rho(X, Y) = -1\)</span> if <span class="math inline">\(b &lt; 0\)</span>. If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, then <span class="math inline">\(\text{Cov}(X, Y) = \rho = 0\)</span>. The converse is not true in general.</p>
 <p><strong>Theorem 4.19</strong>.</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \mathbb{V}(X + Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2 \text{Cov}(X, Y)
 \quad \text{ and } \quad
 \mathbb{V}(X - Y) = \mathbb{V}(X) + \mathbb{V}(Y) - 2 \text{Cov}(X, Y)
@@ -208,7 +209,7 @@ t_\nu                        &amp; 0 \text{ (if } \nu &gt; 1 \text{)} &amp; \nu 
 \text{Cov}(X_k, X_1) &amp; \text{Cov}(X_k, X_2) &amp; \cdots &amp; \mathbb{V}(X_k)
 \end{pmatrix} \]</span></p>
 <p>If <span class="math inline">\(X \sim \text{Multinomial}(n, p)\)</span> then</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \mathbb{E}(X) = np = n(p_1, \dots, p_k)
 \quad \text{and} \quad
 \mathbb{V}(X) = \begin{pmatrix}
@@ -260,7 +261,7 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 \quad \text{and} \quad
 \mathbb{E}[\mathbb{E}(r(X, Y) | Y)] = \mathbb{E}(r(X, Y)) \]</span></p>
 <p><strong>Proof</strong>. We will prove the first equation.</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}[\mathbb{E}(Y | X)] &amp;= \int \mathbb{E}(Y | X = x) f_X(x) dx = \int \int y f(y | x) dy f(x) dx \\
 &amp;= \int \int y f(y|x) f(x) dx dy = \int \int y f(x, y) dx dy = \mathbb{E}(Y)
@@ -284,7 +285,7 @@ np_1(1 - p_1) &amp; -np_1p_2 &amp; \cdots &amp; np_1p_k \\
 <p><span class="math display">\[ \psi_X(t) = \mathbb{E}(e^{tX}) = \int e^{tx} dF(x) \]</span></p>
 <p>where <span class="math inline">\(t\)</span> varies over the real numbers.</p>
 <p>In what follows, we assume the mgf is well defined for all <span class="math inline">\(t\)</span> in small neighborhood of 0. A related function is the characteristic function, defined by <span class="math inline">\(\mathbb{E}(e^{itX})\)</span> where <span class="math inline">\(i = \sqrt{-1}\)</span>. This function is always defined for all <span class="math inline">\(t\)</span>. The mgf is useful for several reasons. First, it helps us compute the moments of a distribution. Second, it helps us find the distribution of sums of random variables. Third, it is used to prove the central limit theorem.</p>
-<p>When the mgf is well defined, it can be shown that we can interchange the operations of differentiation and “taking expectation.” This leads to</p>
+<p>When the mgf is well defined, it can be shown that we can interchange the operations of differentiation and “taking expectation”. This leads to</p>
 <p><span class="math display">\[ \psi&#39;(0) = \left[ \frac{d}{dt} \mathbb{E} e^{tX} \right]_{t = 0} = \mathbb{E} \left[ \frac{d}{dt} e^{tX} \right]_{t = 0}
 = \mathbb{E}[X e^{tX}]_{t = 0} = \mathbb{E}(X)
 \]</span></p>
@@ -370,7 +371,7 @@ M(t)&amp;=\mathbb E[e^{tX}]\\
 &amp;=\int_{0}^{\infty}e^{tx}\frac{1}{\Gamma(k/2)2^{k/2}}e^{-\frac{x}{2}}x^{k/2-1}dx\\
 &amp;=\left(\frac{1}{1-2 t}\right)^{k/2}\quad(t&lt;\frac{1}{2})\\
 \end{align}\]</span></p>
-<p><strong>non-central chi-squared distribution</strong> Let <span class="math inline">\(Z\)</span> have a standard normal distribution, with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>, then <span class="math inline">\((Z+\mu)^2\)</span> has a noncentral chi-squared distribution with one degree of freedom. The moment-generating function of <span class="math inline">\((Z+\mu)^2\)</span> then is <span class="math display">\[\begin{align} 
+<p><strong>non-central chi-squared distribution</strong> Let <span class="math inline">\(Z\)</span> have a standard normal distribution, with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>, then <span class="math inline">\((Z+\mu)^2\)</span> has a noncentral chi-squared distribution with one degree of freedom. The moment-generating function of <span class="math inline">\((Z+\mu)^2\)</span> then is <span class="math display">\[\begin{align}
 M(t)&amp;=\mathbb E[e^{tX}]\\
 &amp;=\mathbb E[e^{t(Z+\mu)^2}]\\
 &amp;=\int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}e^{t(z+\mu)^2}e^{-z^2/2}dz\\
@@ -387,7 +388,7 @@ M(t)&amp;=\mathbb E[e^{tX}]\\
 The probability density function (pdf) is given by</p>
 <p><span class="math display">\[f_{X}(x;k,\lambda)=\sum_{i=0}^{\infty}\frac {e^{-\lambda /2}(\lambda /2)^{i}}{i!}f_{Y_{k+2i}}(x),\]</span>
 where <span class="math inline">\(Y_{q}\)</span> is distributed as chi-squared with <span class="math inline">\(q\)</span> degrees of freedom. From this representation, the noncentral chi-squared distribution is seen to be a Poisson-weighted mixture of central chi-squared distributions. Suppose that a random variable <span class="math inline">\(J\)</span> has a Poisson distribution with mean <span class="math inline">\(\lambda/2\)</span>, and the conditional distribution of <span class="math inline">\(Z\)</span> given <span class="math inline">\(J = i\)</span> is chi-squared with <span class="math inline">\(k + 2i\)</span> degrees of freedom. Then the unconditional distribution of <span class="math inline">\(Z\)</span> is non-central chi-squared with <span class="math inline">\(k\)</span> degrees of freedom, and non-centrality parameter <span class="math inline">\(\lambda\)</span>.</p>
-<p>Because all terms are jointly independent and using the above result, we have <span class="math display">\[\begin{align} 
+<p>Because all terms are jointly independent and using the above result, we have <span class="math display">\[\begin{align}
 M(t)&amp;=\mathbb E[e^{t\chi^2_{k,\lambda}}]\\
 &amp;=\mathbb E[e^{t\sum_{i=1}^{k}(Z_i+\mu_i)^2}]\\
 &amp;=\mathbb E\left[\prod_{i}\exp\left[t(Z_i+\mu_i)^2\right]\right]\\
@@ -506,7 +507,7 @@ M(t)&amp;=\mathbb E[e^{tx}]\\
 <p>The result follows by imposing <span class="math inline">\(\mathbb{P}(X &gt; 0) = 1\)</span>, which implies <span class="math inline">\(\int_{-\infty}^0 F_X(y) dy = 0\)</span>.</p>
 <p><strong>Exercise 4.7.8</strong>. Prove Theorem 4.16.</p>
 <p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be IID and let <span class="math inline">\(\mu = \mathbb{E}(X_i)\)</span>, <span class="math inline">\(\sigma^2 = \mathbb{V}(X_i)\)</span>. Then</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \mathbb{E}\left(\overline{X}_n\right) = \mu,
 \quad
 \mathbb{V}\left(\overline{X}_n\right) = \frac{\sigma^2}{n},
@@ -515,17 +516,17 @@ M(t)&amp;=\mathbb E[e^{tx}]\\
 \]</span></p>
 <p><strong>Solution</strong>.</p>
 <p>For the expected value of sample mean:</p>
-<p><span class="math display">\[ \mathbb{E}\left(\overline{X}_n\right) 
+<p><span class="math display">\[ \mathbb{E}\left(\overline{X}_n\right)
 = \mathbb{E}\left( \frac{1}{n} \sum_{i=1}^n X_i \right)
 = \frac{1}{n} \sum_{i=1}^n \mathbb{E}(X_i)
 = \frac{1}{n} n\mu = \mu \]</span></p>
 <p>For the variance of sample mean:</p>
-<p><span class="math display">\[ \mathbb{V}\left(\overline{X}_n\right) 
+<p><span class="math display">\[ \mathbb{V}\left(\overline{X}_n\right)
 = \mathbb{V}\left( \frac{1}{n} \sum_{i=1}^n X_i \right)
 = \frac{1}{n^2} \sum_{i=1}^n \mathbb{V}(X_i)
 = \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n} \]</span></p>
 <p>For the expected value of sample variance:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}(S_n^2) &amp;= \mathbb{E}\left(\frac{1}{n - 1} \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \right) \\
 &amp;= \frac{1}{n - 1} \mathbb{E} \left( \sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2 \right) \\
@@ -593,7 +594,7 @@ plt.show()</code></pre>
 <p><strong>(a)</strong> We have:</p>
 <p><span class="math display">\[ \mathbb{E}(X_n) = \mathbb{E}\left( \sum_{i=1}^n Y_i \right) = \sum_{i=1}^n \mathbb{E}(Y_i) = 0 \]</span></p>
 <p>and</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}(X_n^2) &amp;= \mathbb{E}\left( \left( \sum_{i=1}^n Y_i \right)^2 \right) \\
 &amp;= \mathbb{E}\left( \sum_{i=1}^n Y_i^2 + \sum_{i=1}^n \sum_{j = 1, j \neq i}^n Y_i Y_j \right) \\
@@ -633,7 +634,7 @@ plt.show()</code></pre>
 <img src="Chapter%2004%20-%20Expectation_files/Chapter%2004%20-%20Expectation_68_0.png" alt="" />
 <p class="caption">png</p>
 </div>
-<p>The standard deviation is <span class="math inline">\(\sqrt{n}\)</span> – it scales up with the square root of the “time.” The plot above draws <span class="math inline">\(z_{\alpha / 2} \sqrt{n}\)</span> curves – confidence bands for <span class="math inline">\(1 - \alpha = 95\%\)</span> – that contain most of the randomly generated path.</p>
+<p>The standard deviation is <span class="math inline">\(\sqrt{n}\)</span> – it scales up with the square root of the “time”. The plot above draws <span class="math inline">\(z_{\alpha / 2} \sqrt{n}\)</span> curves – confidence bands for <span class="math inline">\(1 - \alpha = 95\%\)</span> – that contain most of the randomly generated path.</p>
 <p><strong>Exercise 4.7.12</strong>. Prove the formulas given in the table at the beginning of Section 4.4 for the Bernoulli, Poisson, Uniform, Exponential, Gamma, and Beta. Here are some hints. For the mean of the Poisson, use the fact that <span class="math inline">\(e^a = \sum_{x=0}^a a^x / x!\)</span>. To compute the variance, first compute <span class="math inline">\(\mathbb{E}(X(X - 1))\)</span>. For the mean of the Gamma, it will help to multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) / \beta^{\alpha + 1}\)</span> and use the fact that a Gamma density integrates to 1. For the Beta, multiply and divide by <span class="math inline">\(\Gamma(\alpha + 1) \Gamma(\beta) / \Gamma(\alpha + \beta + 1)\)</span>.</p>
 <p><strong>Solution</strong>.</p>
 <p>We will do all expressions in the table instead (other than multinomial and multivariate normal, where proofs are already provided in the book).</p>
@@ -666,7 +667,7 @@ plt.show()</code></pre>
 <div id="geometric" class="section level4">
 <h4>Geometric</h4>
 <p>Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^{k-1}, \quad k = 1,2,3,\cdots \]</span> The expectation:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}(X) &amp;= \sum_{k=1}^\infty k p (1 - p)^{k - 1}  \\
 &amp;= \sum_{k=1}^\infty p(1-p)^{k-1} + \sum_{k=2}^\infty (k - 1) p(1-p)^{k - 1} \\
@@ -690,7 +691,7 @@ plt.show()</code></pre>
 \]</span></p>
 <p>from where we get <span class="math display">\[\mathbb{E}(X) = (1-p)/p\]</span></p>
 <p>For the variance we also have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}(X^2) &amp;= \sum_{k=1}^\infty k^2 p (1 - p)^{k - 1}  \\
 &amp;= \sum_{k=1}^\infty k p(1-p)^{k-1} + \sum_{k=2}^\infty (k^2 - k) p(1-p)^{k - 1} \\
@@ -703,7 +704,7 @@ plt.show()</code></pre>
 <p>Finally,</p>
 <p><span class="math display">\[ \mathbb{V}(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} \]</span></p>
 <p>For the variant version of Geometric distribution: <span class="math display">\[ f_X(k) = p (1 - p)^k, \quad k = 0, 1,2,3,\cdots \]</span>
-<span class="math display">\[ 
+<span class="math display">\[
 \begin{align}
 \mathbb{E}(X^2) &amp;= \sum_{k=0}^\infty k^2 p (1 - p)^{k}  \\
 &amp;= \sum_{k=1}^\infty k^2 p(1-p)^{k}\\
@@ -781,9 +782,9 @@ And then the variance:
 <p>Let <span class="math inline">\(X \sim \text{Gamma}(\alpha, \beta)\)</span>. The PDF is</p>
 <p><span class="math display">\[ f_X(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} \quad \text{for } x &gt; 0 \]</span></p>
 <p>We have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
-\mathbb{E}(X) 
+\mathbb{E}(X)
 &amp;= \int x f_X(x) dx \\
 &amp;= \int_0^\infty x \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx \\
 &amp;= \frac{\alpha}{\beta} \int_0^\infty\frac{\beta^{\alpha + 1}}{\Gamma(\alpha + 1)} x^\alpha e^{-\beta x} dx \\
@@ -796,9 +797,9 @@ And then the variance:
 <li>and last integral is the PDF of <span class="math inline">\(\text{Gamma}(\alpha + 1, \beta)\)</span>, integrated over its entire domain.</li>
 </ul>
 <p>We also have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
-\mathbb{E}(X^2) 
+\mathbb{E}(X^2)
 &amp;= \int x^2 f_X(x) dx \\
 &amp;= \int_0^\infty x^2 \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\beta x} dx \\
 &amp;= \frac{\alpha (\alpha + 1)}{\beta^2} \int_0^\infty\frac{\beta^{\alpha + 2}}{\Gamma(\alpha + 2)} x^{\alpha + 1} e^{-\beta x} dx \\
@@ -817,9 +818,9 @@ And then the variance:
 <p>Let <span class="math inline">\(X \sim \text{Beta}(\alpha, \beta)\)</span>. The PDF is</p>
 <p><span class="math display">\[f_X(x) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} \quad \text{for } x &gt; 0\]</span></p>
 <p>We have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
-\mathbb{E}(X) 
+\mathbb{E}(X)
 &amp;= \int x f_X(x) dx \\
 &amp;= \int_0^\infty x \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} dx \\
 &amp;= \frac{\alpha}{\alpha + \beta} \int_0^\infty \frac{\Gamma(\alpha + \beta + 1)}{\Gamma(\alpha + 1) \Gamma(\beta)} x^{\alpha}(1 - x)^{\beta - 1} dx \\
@@ -833,9 +834,9 @@ And then the variance:
 <li>and the last integral is the PDF of <span class="math inline">\(\text{Beta}(\alpha + 1, \beta)\)</span>, integrated over its entire domain.</li>
 </ul>
 <p>We also have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
-\mathbb{E}(X^2) 
+\mathbb{E}(X^2)
 &amp;= \int x^2 f_X(x) dx \\
 &amp;= \int_0^\infty x^2 \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} dx \\
 &amp;= \frac{\alpha (\alpha + 1)}{(\alpha + \beta)(\alpha + \beta + 1)} \int_0^\infty \frac{\Gamma(\alpha + \beta + 2)}{\Gamma(\alpha + 2) \Gamma(\beta)} x^{\alpha + 1}(1 - x)^{\beta - 1} dx \\
@@ -998,7 +999,7 @@ f_{\frac{V/m}{U/n}}&amp;=f_{\frac{n}{m}V/U}\\
 <p><span class="math display">\[\frac{1}{X} = \frac{ \frac{B}{m} } { \frac{A}{n} }\]</span> which is also a Fisher distribution variable, and have <span class="math inline">\(m\)</span>, <span class="math inline">\(n\)</span> degrees of freedom respectively.</p>
 <p>Since
 <span class="math display">\[
-1/F_{(m,n)} = F_{(n,m)}, 
+1/F_{(m,n)} = F_{(n,m)},
 \]</span>
 by the reciprocal of the chi square distributions,
 then let <span class="math inline">\(X\sim F_{(m,n)}\)</span> hence <span class="math inline">\(1/X\sim F_{(n,m)}\)</span>, so
@@ -1012,7 +1013,7 @@ then let <span class="math inline">\(X\sim F_{(m,n)}\)</span> hence <span class=
 thus,
 <span class="math display">\[\begin{align}
 1-\alpha =&amp; F_{(n,m)}(1/F_{a, (m,n)})\\
-F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}. 
+F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}.
 \end{align}\]</span></p>
 <p><a href="https://math.stackexchange.com/questions/2371494/show-prove-that-f-alpha-n-m-1-f-1-alpha-m-n/2372564#2372564">ref</a></p>
 </div>
@@ -1029,7 +1030,7 @@ F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}.
 <p><strong>(b)</strong></p>
 <p><span class="math display">\[ X^2 = (CU_1 + (1 - C)U_2)^2 = C^2U_1^2 + (1 - C)^2 U_2^2 + 2C(1 - C)U_1U_2 = C^2U_1^2 + (1 - C)^2 U_2^2 \]</span></p>
 <p>so</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \mathbb{E}(X^2) &amp;= \mathbb{E}(C^2)\mathbb{E}(U_1^2) + \mathbb{E}((1 - C)^2) \mathbb{E}(U_2^2) \\
 &amp;= \mathbb{E}(C) \mathbb{E}(U_1^2) + \mathbb{E}(1 - C) \mathbb{E}(U_2^2) \\
@@ -1042,7 +1043,7 @@ F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}.
 <p><strong>Exercise 4.17.14</strong>. Let <span class="math inline">\(X_1, \dots, X_m\)</span> and <span class="math inline">\(Y_1, \dots, Y_n\)</span> be random variables and let <span class="math inline">\(a_1, \dots, a_m\)</span> and <span class="math inline">\(b_1, \dots, b_n\)</span> be constants. Show that</p>
 <p><span class="math display">\[ \text{Cov}\left( \sum_{i=1}^m a_i X_i , \sum_{j=1}^n b_j Y_j \right) = \sum_{i=1}^m \sum_{j=1}^n a_i b_j \text{Cov}(X_i, Y_j) \]</span></p>
 <p><strong>Solution</strong>. We have:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 \begin{align}
 \text{Cov}\left(\sum_{i=1}^m a_i X_i, Y\right) &amp;= \mathbb{E}\left(\left( \sum_{i=1}^m a_i X_i \right) Y\right) - \mathbb{E}\left( \sum_{i=1}^m a_i X_i \right) \mathbb{E}(Y) \\
 &amp;= \sum_{i=1}^m \mathbb{E}(a_i X_i Y) - \left( \sum_{i=1}^m a_i \mathbb{E}(X_i) \right) \mathbb{E}(Y) \\
@@ -1062,7 +1063,7 @@ F_{1-\alpha, (n,m)}         =&amp; 1/F_{a, (m,n)}.
 <p><strong>Solution</strong>. Let <span class="math inline">\(r(x, y) = 2x - 3y\)</span>. Then:</p>
 <p><span class="math display">\[ \mathbb{V}(2X - 3Y + 8) = \mathbb{V}(2X - 3Y) = \mathbb{V}(r(X, Y)) \]</span></p>
 <p>Calculating the expectation of <span class="math inline">\(r(X, Y)\)</span> and <span class="math inline">\(r(X, Y)^2\)</span>:</p>
-<p><span class="math display">\[ \mathbb{E}(r(X, Y)) = \int_0^1 \int_0^2 r(x, y) f(x, y) dy dx = \int_0^1 \int_0^2 \frac{1}{3}(2x - 3y)(x + y) dy dx\\ 
+<p><span class="math display">\[ \mathbb{E}(r(X, Y)) = \int_0^1 \int_0^2 r(x, y) f(x, y) dy dx = \int_0^1 \int_0^2 \frac{1}{3}(2x - 3y)(x + y) dy dx\\
 = \int_0^1 \frac{2}{3}(2x^2 - x - 4) dx = -\frac{23}{9} \]</span></p>
 <p>and</p>
 <p><span class="math display">\[ \mathbb{E}(r(X, Y)^2) = \int_0^1 \int_0^2 r(x, y)^2 f(x, y) dy dx = \int_0^1 \int_0^2 \frac{1}{3}(2x - 3y)^2(x + y) dy dx \\
@@ -1431,7 +1432,7 @@ Let’s continue with our description of the variables in this dataset. The tabl
 <ul>
 <li><p><em>Negative binomial regression</em> - Negative binomial regression can be used for over-dispersed count data, that is when the conditional variance exceeds the conditional mean. It can be considered as a generalization of Poisson regression since it has the same mean structure as Poisson regression and it has an extra parameter to model the over-dispersion. If the conditional distribution of the outcome variable is over-dispersed, the confidence intervals for the Negative binomial regression are likely to be narrower as compared to those from a Poisson regression model.</p></li>
 <li><p><em>Poisson regression</em> - Poisson regression is often used for modeling count data. Poisson regression has a number of extensions useful for count models.</p></li>
-<li><p><em>Zero-inflated regression model</em> - Zero-inflated models attempt to account for excess zeros. In other words, two kinds of zeros are thought to exist in the data, “true zeros” and “excess zeros.” Zero-inflated models estimate two equations simultaneously, one for the count model and one for the excess zeros.</p></li>
+<li><p><em>Zero-inflated regression model</em> - Zero-inflated models attempt to account for excess zeros. In other words, two kinds of zeros are thought to exist in the data, “true zeros” and “excess zeros”. Zero-inflated models estimate two equations simultaneously, one for the count model and one for the excess zeros.</p></li>
 <li><p><em>OLS regression</em> - Count outcome variables are sometimes log-transformed and analyzed using OLS regression. Many issues arise with this approach, including loss of data due to undefined values generated by taking the log of zero (which is undefined), as well as the lack of capacity to model the dispersion.</p></li>
 </ul>
 <p><strong>Negative binomial regression analysis</strong></p>
@@ -1545,6 +1546,8 @@ newdata2 &lt;- within(newdata2, {
   geom_ribbon(aes(ymin = LL, ymax = UL, fill = prog), alpha = .25) +
   geom_line(aes(colour = prog), size = 2) +
   labs(x = &quot;Math Score&quot;, y = &quot;Predicted Days Absent&quot;)</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.</code></pre>
 <p><img src="../../../../2021/04/12/aos-chapter04-expectation/index_files/figure-html/unnamed-chunk-13-1.svg" width="576" /></p>
 <p>The graph shows the expected count across the range of math scores, for each type of program along with 95 percent confidence intervals. Note that the lines are not straight because this is a log linear model, and what is plotted are the expected values, not the log of the expected values.</p>
 </div>
@@ -1601,7 +1604,7 @@ events. The only fundamental difference is that <span class="math inline">\(Y&#3
 can be parceled into three groups such that the <span class="math inline">\(i\)</span>th largest is at the point <span class="math inline">\(y\)</span>. Moreover, the likelihood associated with any particular set of points having the configuration will be the probability that <span class="math inline">\(i − 1\)</span> (independent) observations are all less than <span class="math inline">\(y\)</span>, <span class="math inline">\(n − i\)</span> observations are greater than
 <span class="math inline">\(y\)</span>, and one observation is at <span class="math inline">\(y\)</span>. The probability density associated with those constraints for a given set of points would be <span class="math display">\[[F_Y (y)]^{i−1}[1−F_Y (y)]^{n−i} f_Y (y)\]</span>. The probability
 density, then, that the <span class="math inline">\(i\)</span>th order statistic is located at the point <span class="math inline">\(y\)</span> is the product</p>
-<p><span class="math display">\[\begin{align} 
+<p><span class="math display">\[\begin{align}
 f_{Y&#39;_i} (y) &amp;= \frac{n!}{(i − 1)!(n − i)!}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
 &amp;=\frac{\Gamma(n+1)}{\Gamma(i)\Gamma(n-i+1)}[F_Y (y)]^{i−1}[1 − F_Y (y)]^{n−i} f_Y(y) \\
 &amp;=B\bigg(F_Y (y);i,n-i+1\bigg)f_Y(y)
@@ -1627,7 +1630,7 @@ for <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">
 <h4>4.9.4 range and midrange</h4>
 <p>Let <span class="math inline">\(X_1, \cdots, X_n\)</span> be iid <span class="math inline">\(uniform(0, a)\)</span> and let <span class="math inline">\(X_{(1)}, \cdots, X_{(n)}\)</span> denote the order statistics. The range was defined as <span class="math inline">\(R = X_{(n)}- X_{(1)}\)</span> . The midrange, a measure of location like the sample median or the sample mean, is defined by <span class="math inline">\(V=\left(X_{(1)} + X_{(n)}\right)/2\)</span>. We will derive
 the joint pdf of <span class="math inline">\(R\)</span> and <span class="math inline">\(V\)</span> from the joint pdf of <span class="math inline">\(X_{(1)}\)</span> and <span class="math inline">\(X_{(n)}\)</span>. We have that
-<span class="math display">\[\begin{align} 
+<span class="math display">\[\begin{align}
 f_{X_{(1)} ,X_{(n)}} (x_1, x_n) &amp;= \frac{n!}{(1 − 1)!( n − 1 − 1)!(n − n)!}
 [F_{X_{(1)}} (x_1)]^{1−1}[F_{X_{(n)}} (x_n) − F_{X_{(1)}} (x_1)]^{n−1−1} \cdot
 [1 − F_{X_{(n)}} (x_n)]^{n−n} f_{X_{(1)}} (x_1) f_{X_{(n)}} (x_n)\\
@@ -1651,11 +1654,26 @@ of integration of <span class="math inline">\(r\)</span> depends on whether <spa
 <img src="2.png" alt="" />
 <p class="caption">Figure 2</p>
 </div>
-<p>Thus, the marginal pdf of <span class="math inline">\(V\)</span> is given by <span class="math display">\[f_{V} (v)=\int_{0}^{2v}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n(2v)^{n-1}}{a^n},\quad 
+<p>Thus, the marginal pdf of <span class="math inline">\(V\)</span> is given by <span class="math display">\[f_{V} (v)=\int_{0}^{2v}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n(2v)^{n-1}}{a^n},\quad
 0&lt;v\leq a/2\]</span></p>
-<p><span class="math display">\[f_{V} (v)=\int_{0}^{2(a-v)}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n[2(a-v)]^{n-1}}{a^n},\quad 
+<p><span class="math display">\[f_{V} (v)=\int_{0}^{2(a-v)}\frac{n(n-1)r^{n-2}}{a^n}dr=\frac{n[2(a-v)]^{n-1}}{a^n},\quad
 a/2 &lt;v\leq a\]</span></p>
 </div>
+</div>
+<div id="the-conditional-log-likelihood-cml-of-nb-distribution" class="section level3">
+<h3>4.10 The conditional log-likelihood (CML) of NB distribution</h3>
+<p>In the paper <a href="https://academic.oup.com/biostatistics/article/9/2/321/353777">Small-sample estimation of negative binomial dispersion, with applications to SAGE data</a>, section 4.1 Conditional maximum likelihood:</p>
+<p>For RNA sequencing data, assume the counts for a single tag across <span class="math inline">\(n\)</span> libraries is a negative binomial random variable. Consider
+<span class="math inline">\(Y_1, \cdots , Y_n\)</span> as independent and <span class="math inline">\(NB(\mu_i = m_i \lambda, \phi)\)</span>, where <span class="math inline">\(m_i\)</span> is the library size (i.e. total number of tags sequenced for library <span class="math inline">\(i\)</span>) and <span class="math inline">\(\lambda\)</span> represents the proportion of the library that is a particular tag. The probability mass function is:</p>
+<p><span class="math display">\[f(y_i;\mu,\phi)=P(Y=y_i)=\frac{\Gamma(\phi^{-1}+y_i)}{\Gamma(\phi^{-1})\Gamma(y_i+1)}\left(\frac{1}{\phi^{-1}\mu^{-1}+1}\right)^{y_i}\left(\frac{1}{\phi\mu+1}\right)^{\phi^{-1}} \tag 1\]</span></p>
+<p><span class="math display">\[\text{E}(Y)=\mu\]</span> and <span class="math display">\[\text{Var}(Y)=\mu+\phi\mu^2\]</span></p>
+<p>If all libraries are the same size (i.e. <span class="math inline">\(m_i ≡ m\)</span>), the sum
+<span class="math display">\[Z = Y_1 + \cdots + Y_n \sim NB(nm\lambda, \phi n^{−1})\]</span> is a sufficient statistic for <span class="math inline">\(\lambda\)</span>. Hence we can form an exact conditional likelihood for <span class="math inline">\(\phi\)</span> that is independent of <span class="math inline">\(\lambda\)</span> and estimation can be done univariately using conditional maximum likelihood (CML).</p>
+<p>The conditional log-likelihood for <span class="math inline">\(\phi\)</span> of <span class="math inline">\(Y\)</span> conditioned on <span class="math inline">\(Z\)</span>, dropping terms that don’t involve <span class="math inline">\(\phi\)</span>, is:
+<span class="math display">\[l_{Y|Z=z}(\mathbf y; \phi)=\log f(\mathbf y;\mu,\phi)-\log f_{z}(z;n\mu,n^{-1}\phi)\\
+=\sum\log \Gamma(y_i+\phi^{-1}) - n \log\Gamma(\phi^{-1}) + \sum y_i\log\left({\phi\mu \over 1 + \phi\mu}\right) + n\phi^{-1}\log\left({1 \over 1 + \phi\mu}\right)\\
+-\log\Gamma(z+n\phi^{-1})+\log\Gamma(n\phi^{-1})-z\log\left({\phi\mu \over 1 + \phi\mu}\right) - n\phi^{-1}\log\left({1 \over 1 + \phi\mu}\right)\\
+=\left[\sum_{i=1}^{n}\log\Gamma(y_i+\phi^{-1})\right]+\log\Gamma(n\phi^{-1})-\log\Gamma(z+n\phi^{-1})-n\log\Gamma(\phi^{-1})\]</span></p>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
@@ -1668,7 +1686,7 @@ a/2 &lt;v\leq a\]</span></p>
 2. Https://github.com/telmo-correa/all-of-statistics.
 </div>
 <div id="ref-Negative-binomial-distribution" class="csl-entry">
-3.
+3. Https://www.wikiwand.com/en/negative_binomial_distribution.
 </div>
 <div id="ref-negative-binomial-theorem" class="csl-entry">
 4. Https://brilliant.org/wiki/negative-binomial-theorem/.
