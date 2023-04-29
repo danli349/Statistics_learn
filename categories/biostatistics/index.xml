@@ -6,14 +6,32 @@
     <description>Recent content in Biostatistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/biostatistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/biostatistics/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Modern Statistics for Modern Biology</title>
-      <link>/2023/04/28/modern-statistics-for-modern-biology/</link>
+      <title>Modern Statistics for Modern Biology-2</title>
+      <link>/2023/04/29/modern-statistics-for-modern-biology-2/</link>
+      <pubDate>Sat, 29 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/04/29/modern-statistics-for-modern-biology-2/</guid>
+      <description>5 Clustering6 Testing7 Multivariate Analysis8 High-Throughput Count Data9 Multivariate methods for heterogeneous data5 Clustering## -----------------------------------------------------------------------------library(&amp;quot;MASS&amp;quot;)library(&amp;quot;RColorBrewer&amp;quot;)set.seed(101)n &amp;lt;- 60000S1=matrix(c(1,.72,.72,1), ncol=2)S2=matrix(c(1.5,-0.6,-0.6,1.5),ncol=2)mu1=c(.5,2.5)mu2=c(6.5,4)X1 = mvrnorm(n, mu=c(.5,2.5), Sigma=matrix(c(1,.72,.72,1), ncol=2))X2 = mvrnorm(n,mu=c(6.5,4), Sigma=matrix(c(1.5,-0.6,-0.6,1.5),ncol=2))# A color palette from blue to yellow to redk = 11my.cols &amp;lt;- rev(brewer.pal(k, &amp;quot;RdYlBu&amp;quot;))plot(X1, xlim=c(-4,12),ylim=c(-2,9), xlab=&amp;quot;Orange&amp;quot;, ylab=&amp;quot;Red&amp;quot;, pch=&amp;#39;.</description>
+    </item>
+    
+    <item>
+      <title>Modern Statistics for Modern Biology-3</title>
+      <link>/2023/04/29/modern-statistics-for-modern-biology-3/</link>
+      <pubDate>Sat, 29 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/04/29/modern-statistics-for-modern-biology-3/</guid>
+      <description>10 Networks and Trees11 Image data12 Supervised Learning13 Design of High Throughput Experiments and their Analyses10 Networks and Trees## -----------------------------------------------------------------------------dats = read.table(&amp;quot;../data/small_chemokine.txt&amp;quot;, header = TRUE)library(&amp;quot;ggtree&amp;quot;)## ggtree v3.4.0 For help: https://yulab-smu.top/treedata-book/## ## If you use the ggtree package suite in published research, please cite## the appropriate paper(s):## ## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam.</description>
+    </item>
+    
+    <item>
+      <title>Modern Statistics for Modern Biology-1</title>
+      <link>/2023/04/28/modern-statistics-for-modern-biology-1/</link>
       <pubDate>Fri, 28 Apr 2023 00:00:00 +0000</pubDate>
       
-      <guid>/2023/04/28/modern-statistics-for-modern-biology/</guid>
-      <description>1 Generative Models for Discrete Data2 Statistical Modeling3 High Quality Graphics in R4 Mixture Models5 Clustering6 TestingMultivariate AnalysisHigh-Throughput Count Data9 Multivariate methods for heterogeneous data10 Networks and Trees11 Image data12 Supervised Learning13 Design of High Throughput Experiments and their Analyses1 Generative Models for Discrete Data## -----------------------------------------------------------------------------dpois(x = 3, lambda = 5)## [1] 0.</description>
+      <guid>/2023/04/28/modern-statistics-for-modern-biology-1/</guid>
+      <description>1 Generative Models for Discrete Data2 Statistical Modeling3 High Quality Graphics in R4 Mixture Models1 Generative Models for Discrete Data## -----------------------------------------------------------------------------dpois(x = 3, lambda = 5)## [1] 0.1403739## -----------------------------------------------------------------------------.oldopt = options(digits = 2)0:12## [1] 0 1 2 3 4 5 6 7 8 9 10 11 12dpois(x = 0:12, lambda = 5)## [1] 0.</description>
     </item>
     
   </channel>

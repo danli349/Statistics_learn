@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="432pt" height="360pt" viewBox="0 0 432 360" version="1.1">
+<defs>
+<clipPath id="clip1">
+  <path d="M 59.039063 59.039063 L 401.757813 59.039063 L 401.757813 286.558594 L 59.039063 286.558594 Z M 59.039063 59.039063 "/>
+</clipPath>
+<image id="image6734" width="100" height="10" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAKCAIAAADNfmwpAAAABmJLR0QA/wD/AP+gvaeTAAAAZElEQVRIie2QQQqAMAwEG60+1d/6oSxGDxUqbUX3vkMPYekmMLZvyeale2ud8yh8Jvm9e2/oix8n4jQggHA/ygDUwX2YtD+ZblsfLpyS+I1kEUgWgWQRSBaBZBFIFoFkEUgWwQU+xpWfvLkWgAAAAABJRU5ErkJggg=="/>
+</defs>
+<g id="surface6730">
+<rect x="0" y="0" width="432" height="360" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
+<path style="fill:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 59.039063 286.558594 L 401.761719 286.558594 L 401.761719 59.039063 L 59.039063 59.039063 Z M 59.039063 286.558594 "/>
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<use xlink:href="#image6734" transform="matrix(3.4272,0,0,22.752,59.04,59.04)"/>
+</g>
+</g>
+</svg>
