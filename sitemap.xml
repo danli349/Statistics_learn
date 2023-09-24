@@ -4,7 +4,47 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2023-04-29T00:00:00+00:00</lastmod>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/regression/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/statistics/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2023-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2023/08/28/introducing-monte-carlo-methods-with-r/</loc>
+    <lastmod>2023-08-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/monte-carlo/</loc>
+    <lastmod>2023-08-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -18,27 +58,12 @@
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2023-04-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/2023/04/29/modern-statistics-for-modern-biology-2/</loc>
     <lastmod>2023-04-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/2023/04/29/modern-statistics-for-modern-biology-3/</loc>
-    <lastmod>2023-04-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2023-04-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2023-04-29T00:00:00+00:00</lastmod>
   </url>
   
@@ -114,11 +139,6 @@
   
   <url>
     <loc>/tags/distribution/</loc>
-    <lastmod>2021-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/statistics/</loc>
     <lastmod>2021-05-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -249,11 +269,6 @@
   
   <url>
     <loc>/2021/04/03/esl-chapter-4-linear-methods-for-classification/</loc>
-    <lastmod>2021-04-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/regression/</loc>
     <lastmod>2021-04-03T00:00:00+00:00</lastmod>
   </url>
   

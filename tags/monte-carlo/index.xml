@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Monte Carlo on A Hugo website</title>
+    <link>/tags/monte-carlo/</link>
+    <description>Recent content in Monte Carlo on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="/tags/monte-carlo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing Monte Carlo Methods with R</title>
+      <link>/2023/08/28/introducing-monte-carlo-methods-with-r/</link>
+      <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/08/28/introducing-monte-carlo-methods-with-r/</guid>
+      <description>1. Basic R ProgrammingBivariate Normal distributionsthe t value of Pearson correlationKolmogorov-Smirnov Goodness-of-Fit TestShapiro–Wilk normality testWilcoxon signed rank testNewton’s method for calculating the square root1. Basic R Programminglibrary(MASS)e &amp;lt;- c(1:5)d &amp;lt;- c(6:10)e*d## [1] 6 14 24 36 50t(e)*d## [,1] [,2] [,3] [,4] [,5]## [1,] 6 14 24 36 50sum(t(e)*d)## [1] 130t(e)%*%d## [,1]## [1,] 130d%*%t(e)## [,1] [,2] [,3] [,4] [,5]## [1,] 6 12 18 24 30## [2,] 7 14 21 28 35## [3,] 8 16 24 32 40## [4,] 9 18 27 36 45## [5,] 10 20 30 40 50x1=matrix(1:20,nrow=5) #build the numeric matrix x1 of dimension#5  4 with rst row 1, 6, 11, 16x2=matrix(1:20,nrow=5,byrow=T) #build the numeric matrix x2 of dimension#5  4 with rst row 1, 2, 3, 4x3=t(x2) #transpose the matrix x2b=x3%*%x2b## [,1] [,2] [,3] [,4]## [1,] 565 610 655 700## [2,] 610 660 710 760## [3,] 655 710 765 820## [4,] 700 760 820 880sum(b)## [1] 11380c=x2%*%x3c## [,1] [,2] [,3] [,4] [,5]## [1,] 30 70 110 150 190## [2,] 70 174 278 382 486## [3,] 110 278 446 614 782## [4,] 150 382 614 846 1078## [5,] 190 486 782 1078 1374sum(c)## [1] 11150m &amp;lt;- runif(16)m2 &amp;lt;- matrix(m, nrow=4)m2## [,1] [,2] [,3] [,4]## [1,] 0.</description>
+    </item>
+    
+  </channel>
+</rss>

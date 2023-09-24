@@ -6,7 +6,16 @@
     <description>Recent content in Regression on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Common statistical tests are linear models</title>
+      <link>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</link>
+      <pubDate>Sun, 24 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</guid>
+      <description>Interpretation of R’s lm() outputFive point summaryCoefficients and \(\hat{\beta_i}s\)\(t\)-statisticsResidual standard errorAdjusted \(R^2\)\(F\)-statisticThe simplicity underlying common testsSettings and toy dataPearson and Spearman correlationTheory: As linear modelsTheory: rank-transformationR code: Pearson correlationR code: Spearman correlationOne meanOne sample t-test and Wilcoxon signed-rankTheory: As linear modelsR code: One-sample t-testR code: Wilcoxon signed-rank testPaired samples t-test and Wilcoxon matched pairsTheory: As linear modelsR code: Paired sample t-testR code: Wilcoxon matched pairsTwo meansIndependent t-test and Mann-Whitney UTheory: As linear modelsTheory: Dummy codingTheory: Dummy coding (continued)R code: independent t-testR code: Mann-Whitney UWelch’s t-testThree or more meansOne-way ANOVA and Kruskal-WallisTheory: As linear modelsExample dataR code: one-way ANOVAR code: Kruskal-WallisTwo-way ANOVATheory: As linear modelsR code: Two-way ANOVAANCOVAProportions: Chi-square is a log-linear modelGoodness of fitTheory: As log-linear modelExample dataR code: Goodness of fitContingency tablesTheory: As log-linear modelExample dataR code: Chi-square testSources and further equivalencesExplicit GLM(M) Equivalents for Standard TestsExplicit GLM Test: PoissonBinomial Test: Logistic RegressionClassical Test: Exact Binomial TestExplicit GLM: Logit (or Probit)Probability density function of Logistic distributionProportion Test: (Multinomial) Logistic or Poisson ModelClassical Test: Test for Equality of ProportionsExplicit GLM: LogitExplicit GLM: PoissonClassical Test: Poisson TestReferences#share-buttons img {width: 40px;padding-right: 15px;border: 0;box-shadow: 0;display: inline;vertical-align: top;}# Options for building this documentknitr::opts_chunk$set(fig.</description>
+    </item>
+    
     <item>
       <title>ESL chapter 4 Linear Methods for Classification</title>
       <link>/2021/04/03/esl-chapter-4-linear-methods-for-classification/</link>

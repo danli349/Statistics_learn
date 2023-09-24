@@ -6,7 +6,25 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Common statistical tests are linear models</title>
+      <link>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</link>
+      <pubDate>Sun, 24 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</guid>
+      <description>Interpretation of R’s lm() outputFive point summaryCoefficients and \(\hat{\beta_i}s\)\(t\)-statisticsResidual standard errorAdjusted \(R^2\)\(F\)-statisticThe simplicity underlying common testsSettings and toy dataPearson and Spearman correlationTheory: As linear modelsTheory: rank-transformationR code: Pearson correlationR code: Spearman correlationOne meanOne sample t-test and Wilcoxon signed-rankTheory: As linear modelsR code: One-sample t-testR code: Wilcoxon signed-rank testPaired samples t-test and Wilcoxon matched pairsTheory: As linear modelsR code: Paired sample t-testR code: Wilcoxon matched pairsTwo meansIndependent t-test and Mann-Whitney UTheory: As linear modelsTheory: Dummy codingTheory: Dummy coding (continued)R code: independent t-testR code: Mann-Whitney UWelch’s t-testThree or more meansOne-way ANOVA and Kruskal-WallisTheory: As linear modelsExample dataR code: one-way ANOVAR code: Kruskal-WallisTwo-way ANOVATheory: As linear modelsR code: Two-way ANOVAANCOVAProportions: Chi-square is a log-linear modelGoodness of fitTheory: As log-linear modelExample dataR code: Goodness of fitContingency tablesTheory: As log-linear modelExample dataR code: Chi-square testSources and further equivalencesExplicit GLM(M) Equivalents for Standard TestsExplicit GLM Test: PoissonBinomial Test: Logistic RegressionClassical Test: Exact Binomial TestExplicit GLM: Logit (or Probit)Probability density function of Logistic distributionProportion Test: (Multinomial) Logistic or Poisson ModelClassical Test: Test for Equality of ProportionsExplicit GLM: LogitExplicit GLM: PoissonClassical Test: Poisson TestReferences#share-buttons img {width: 40px;padding-right: 15px;border: 0;box-shadow: 0;display: inline;vertical-align: top;}# Options for building this documentknitr::opts_chunk$set(fig.</description>
+    </item>
+    
+    <item>
+      <title>Introducing Monte Carlo Methods with R</title>
+      <link>/2023/08/28/introducing-monte-carlo-methods-with-r/</link>
+      <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/08/28/introducing-monte-carlo-methods-with-r/</guid>
+      <description>1. Basic R ProgrammingBivariate Normal distributionsthe t value of Pearson correlationKolmogorov-Smirnov Goodness-of-Fit TestShapiro–Wilk normality testWilcoxon signed rank testNewton’s method for calculating the square root1. Basic R Programminglibrary(MASS)e &amp;lt;- c(1:5)d &amp;lt;- c(6:10)e*d## [1] 6 14 24 36 50t(e)*d## [,1] [,2] [,3] [,4] [,5]## [1,] 6 14 24 36 50sum(t(e)*d)## [1] 130t(e)%*%d## [,1]## [1,] 130d%*%t(e)## [,1] [,2] [,3] [,4] [,5]## [1,] 6 12 18 24 30## [2,] 7 14 21 28 35## [3,] 8 16 24 32 40## [4,] 9 18 27 36 45## [5,] 10 20 30 40 50x1=matrix(1:20,nrow=5) #build the numeric matrix x1 of dimension#5  4 with rst row 1, 6, 11, 16x2=matrix(1:20,nrow=5,byrow=T) #build the numeric matrix x2 of dimension#5  4 with rst row 1, 2, 3, 4x3=t(x2) #transpose the matrix x2b=x3%*%x2b## [,1] [,2] [,3] [,4]## [1,] 565 610 655 700## [2,] 610 660 710 760## [3,] 655 710 765 820## [4,] 700 760 820 880sum(b)## [1] 11380c=x2%*%x3c## [,1] [,2] [,3] [,4] [,5]## [1,] 30 70 110 150 190## [2,] 70 174 278 382 486## [3,] 110 278 446 614 782## [4,] 150 382 614 846 1078## [5,] 190 486 782 1078 1374sum(c)## [1] 11150m &amp;lt;- runif(16)m2 &amp;lt;- matrix(m, nrow=4)m2## [,1] [,2] [,3] [,4]## [1,] 0.</description>
+    </item>
+    
     <item>
       <title>AOS chapter25 Simulation Methods</title>
       <link>/2021/05/24/aos-chapter25-simulation-methods/</link>
