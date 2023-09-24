@@ -270,9 +270,10 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <pre><code>Residual standard error: 0.407 on 148 degrees of freedom</code></pre>
 <p><span class="math inline">\(\sqrt{ \frac{1}{n-p} \epsilon^T\epsilon }\)</span>, I guess. But why do we calculate that, and what does it tell us?</p>
 <pre><code>Multiple R-squared: 0.134,	Adjusted R-squared: 0.1282 </code></pre>
-<p>$ R^2 = $, which is $ $. The ratio is close to 1 if the points lie on a straight line, and 0 if they are random. What is the adjusted R-squared?</p>
+<p><span class="math display">\[R^2 = \frac{s_\hat{y}^2}{s_y^2}\]</span>, which is <span class="math inline">\(\frac{\sum_{i=1}^n (\hat{y_i}-\bar{y})^2}{\sum_{i=1}^n (y_i-\bar{y})^2}\)</span>. The ratio is close to 1 if the points lie on a straight line, and 0 if they are random. What is the adjusted R-squared?</p>
 <pre><code>F-statistic: 22.91 on 1 and 148 DF,  p-value: 4.073e-06 </code></pre>
-<p>F and p for the <strong>whole</strong> model, not only for single <span class="math inline">\(\beta_i\)</span>s as previous. The F value is $ $. The bigger it grows, the more unlikely it is that the <span class="math inline">\(\beta\)</span>’s do not have any effect at all.</p>
+<p>F and p for the <strong>whole</strong> model, not only for single <span class="math inline">\(\beta_i\)</span>s as previous. The F value is
+<span class="math inline">\(\frac{s^2_{\hat{y}}}{\sum\epsilon_i}\)</span>. The bigger it grows, the more unlikely it is that the <span class="math inline">\(\beta\)</span>’s do not have any effect at all.</p>
 <div id="five-point-summary" class="section level2">
 <h2>Five point summary</h2>
 <p>yes, the idea is to give a quick summary of the distribution. It should be roughly symmetrical about mean, the median should be close to 0, the 1Q and 3Q values should ideally be roughly similar values.</p>
