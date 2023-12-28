@@ -70,197 +70,197 @@
 
     <div class="article-content">
       
-<script src="../../../../2021/09/05/statistical-inference/index_files/header-attrs/header-attrs.js"></script>
+
 
 <div id="TOC">
 <ul>
-<li><a href="#probability-theory">1. Probability Theory</a>
+<li><a href="#probability-theory" id="toc-probability-theory">1. Probability Theory</a>
 <ul>
-<li><a href="#set-theory">Set Theory</a></li>
-<li><a href="#basics-of-probability-theory">Basics of Probability Theory</a></li>
-<li><a href="#conditional-probability-and-independence">Conditional Probability and Independence</a></li>
-<li><a href="#random-variables">Random Variables</a></li>
-<li><a href="#distribution-functions">Distribution Functions</a></li>
-<li><a href="#density-and-mass-functions">Density and Mass Functions</a></li>
+<li><a href="#set-theory" id="toc-set-theory">Set Theory</a></li>
+<li><a href="#basics-of-probability-theory" id="toc-basics-of-probability-theory">Basics of Probability Theory</a></li>
+<li><a href="#conditional-probability-and-independence" id="toc-conditional-probability-and-independence">Conditional Probability and Independence</a></li>
+<li><a href="#random-variables" id="toc-random-variables">Random Variables</a></li>
+<li><a href="#distribution-functions" id="toc-distribution-functions">Distribution Functions</a></li>
+<li><a href="#density-and-mass-functions" id="toc-density-and-mass-functions">Density and Mass Functions</a></li>
 </ul></li>
-<li><a href="#transformations-and-expectations">2. Transformations and Expectations</a>
+<li><a href="#transformations-and-expectations" id="toc-transformations-and-expectations">2. Transformations and Expectations</a>
 <ul>
-<li><a href="#distributions-of-functions-of-a-random-variable-theorem">Distributions of Functions of a Random Variable Theorem</a></li>
+<li><a href="#distributions-of-functions-of-a-random-variable-theorem" id="toc-distributions-of-functions-of-a-random-variable-theorem">Distributions of Functions of a Random Variable Theorem</a></li>
 </ul></li>
-<li><a href="#common-families-of-distributions">3. Common Families of Distributions</a>
+<li><a href="#common-families-of-distributions" id="toc-common-families-of-distributions">3. Common Families of Distributions</a>
 <ul>
-<li><a href="#continuous-distributions">ContinuouS Distributions</a>
+<li><a href="#continuous-distributions" id="toc-continuous-distributions">ContinuouS Distributions</a>
 <ul>
-<li><a href="#gamma-distribution">Gamma Distribution</a></li>
-<li><a href="#normal-distribution">Normal Distribution</a></li>
-<li><a href="#chi-squared-distribution">Chi-Squared Distribution</a></li>
-<li><a href="#students-t-distribution">Student’s <span class="math inline">\(t\)</span>-Distribution</a></li>
-<li><a href="#snedcors-f-distribution">Snedcor’s <span class="math inline">\(F\)</span>-Distribution</a></li>
-<li><a href="#multinomial-distribution">Multinomial Distribution</a></li>
+<li><a href="#gamma-distribution" id="toc-gamma-distribution">Gamma Distribution</a></li>
+<li><a href="#normal-distribution" id="toc-normal-distribution">Normal Distribution</a></li>
+<li><a href="#chi-squared-distribution" id="toc-chi-squared-distribution">Chi-Squared Distribution</a></li>
+<li><a href="#students-t-distribution" id="toc-students-t-distribution">Student’s <span class="math inline">\(t\)</span>-Distribution</a></li>
+<li><a href="#snedcors-f-distribution" id="toc-snedcors-f-distribution">Snedcor’s <span class="math inline">\(F\)</span>-Distribution</a></li>
+<li><a href="#multinomial-distribution" id="toc-multinomial-distribution">Multinomial Distribution</a></li>
 </ul></li>
-<li><a href="#exponential-families">Exponential Families</a></li>
-<li><a href="#location-and-scale-families">Location and Scale Families</a></li>
-<li><a href="#inequalities-and-identities">Inequalities and Identities</a></li>
+<li><a href="#exponential-families" id="toc-exponential-families">Exponential Families</a></li>
+<li><a href="#location-and-scale-families" id="toc-location-and-scale-families">Location and Scale Families</a></li>
+<li><a href="#inequalities-and-identities" id="toc-inequalities-and-identities">Inequalities and Identities</a></li>
 </ul></li>
-<li><a href="#multiple-random-variables">4. Multiple Random Variables</a>
+<li><a href="#multiple-random-variables" id="toc-multiple-random-variables">4. Multiple Random Variables</a>
 <ul>
-<li><a href="#facts">Facts</a></li>
-<li><a href="#bivariate-relations">Bivariate Relations</a></li>
-<li><a href="#hierarchical-models-and-mixture-distributions">Hierarchical Models and Mixture Distributions</a>
+<li><a href="#facts" id="toc-facts">Facts</a></li>
+<li><a href="#bivariate-relations" id="toc-bivariate-relations">Bivariate Relations</a></li>
+<li><a href="#hierarchical-models-and-mixture-distributions" id="toc-hierarchical-models-and-mixture-distributions">Hierarchical Models and Mixture Distributions</a>
 <ul>
-<li><a href="#beta-binomial-hierarchy">Beta-binomial hierarchy</a></li>
-<li><a href="#conditional-variance-identity">Conditional variance identity</a></li>
+<li><a href="#beta-binomial-hierarchy" id="toc-beta-binomial-hierarchy">Beta-binomial hierarchy</a></li>
+<li><a href="#conditional-variance-identity" id="toc-conditional-variance-identity">Conditional variance identity</a></li>
 </ul></li>
-<li><a href="#inequalities">Inequalities</a>
+<li><a href="#inequalities" id="toc-inequalities">Inequalities</a>
 <ul>
-<li><a href="#youngs-inequalities">Young’s Inequalities</a></li>
-<li><a href="#functional-inequalities">Functional Inequalities</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#properties-of-a-random-sample">5. Properties of a Random Sample</a>
-<ul>
-<li><a href="#basic-concepts-of-random-sample">Basic Concepts of Random Sample</a></li>
-<li><a href="#sums-of-random-variables-from-a-random-sample">Sums of Random Variables from a Random Sample</a></li>
-<li><a href="#sampling-from-the-normal-distribution">Sampling from the Normal Distribution</a>
-<ul>
-<li><a href="#properties-of-the-sample-mean-and-variance">Prope’rties of the Sample Mean and Va’riance</a></li>
-<li><a href="#the-derived-distributions-students-t-and-snedecors-f">The Derived Distributions: Student’s <span class="math inline">\(t\)</span> and Snedecor’s <span class="math inline">\(F\)</span></a></li>
-</ul></li>
-<li><a href="#convergence-concepts">Convergence Concepts</a>
-<ul>
-<li><a href="#convergence-in-probability">Convergence in Probability</a></li>
-<li><a href="#almost-sure-convergence">Almost Sure Convergence</a></li>
-<li><a href="#convergence-in-distribution">Convergence in Distribution</a></li>
-<li><a href="#the-delta-method">The Delta Method</a></li>
-<li><a href="#the-second-order-delta-method">The second-order Delta Method</a></li>
-<li><a href="#multivariate-delta-method">Multivariate Delta Method</a></li>
-</ul></li>
-<li><a href="#generating-a-random-sample">Generating A Random Sample</a>
-<ul>
-<li><a href="#direct-method">Direct Method</a></li>
-<li><a href="#indirect-methods">Indirect Methods</a></li>
-<li><a href="#the-acceptreject-algorithm">The Accept/Reject Algorithm</a></li>
-</ul></li>
-<li><a href="#order-statistics">Order Statistics</a></li>
-</ul></li>
-<li><a href="#principles-of-data-reduction">6. Principles of Data Reduction</a>
-<ul>
-<li><a href="#the-sufficiency-principle">The Sufficiency Principle</a></li>
-<li><a href="#ancillary-statistic">Ancillary Statistic</a></li>
-<li><a href="#complete-statistic">Complete Statistic</a></li>
-<li><a href="#the-likelihood-principle">The Likelihood Principle</a></li>
-<li><a href="#a-slightly-more-formal-construction">A Slightly More Formal Construction</a></li>
-<li><a href="#the-equivariance-principle">The Equivariance Principle</a></li>
-</ul></li>
-<li><a href="#point-estimation">7. Point Estimation</a>
-<ul>
-<li><a href="#methods-of-finding-estimators">Methods of Finding Estimators</a>
-<ul>
-<li><a href="#method-of-moments">Method of Moments</a></li>
-<li><a href="#maximum-likelihood-estimators">Maximum Likelihood Estimators</a></li>
-<li><a href="#bayes-estimators">Bayes Estimators</a></li>
-<li><a href="#the-em-expectation-maximization-algorithm">The EM (Expectation-Maximization) Algorithm</a></li>
-</ul></li>
-<li><a href="#methods-of-evaluating-estimators">Methods of Evaluating Estimators</a>
-<ul>
-<li><a href="#mean-squared-error">Mean Squared Error</a></li>
-<li><a href="#best-unbiased-estimators">Best Unbiased Estimators</a></li>
-<li><a href="#fisher-information">Fisher Information</a></li>
-<li><a href="#sufficiency-and-unbiasedness">Sufficiency and Unbiasedness</a></li>
-<li><a href="#uniqueness-of-best-unbiased-estimator">Uniqueness of best unbiased estimator</a></li>
-<li><a href="#completeness-and-best-unbiasedness">completeness and best unbiasedness</a></li>
-<li><a href="#loss-function-optimality">Loss Function Optimality</a></li>
+<li><a href="#youngs-inequalities" id="toc-youngs-inequalities">Young’s Inequalities</a></li>
+<li><a href="#functional-inequalities" id="toc-functional-inequalities">Functional Inequalities</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#hypothesis-testing">8. Hypothesis Testing</a>
+<li><a href="#properties-of-a-random-sample" id="toc-properties-of-a-random-sample">5. Properties of a Random Sample</a>
 <ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#methods-of-finding-tests">Methods of Finding Tests</a>
+<li><a href="#basic-concepts-of-random-sample" id="toc-basic-concepts-of-random-sample">Basic Concepts of Random Sample</a></li>
+<li><a href="#sums-of-random-variables-from-a-random-sample" id="toc-sums-of-random-variables-from-a-random-sample">Sums of Random Variables from a Random Sample</a></li>
+<li><a href="#sampling-from-the-normal-distribution" id="toc-sampling-from-the-normal-distribution">Sampling from the Normal Distribution</a>
 <ul>
-<li><a href="#likelihood-ratio-tests">Likelihood Ratio Tests</a></li>
-<li><a href="#likelihood-ratio-tests-using-the-sufficiency-statistic">Likelihood Ratio Tests using the sufficiency statistic</a></li>
-<li><a href="#bayesian-tests">Bayesian tests</a></li>
-<li><a href="#union-intersection-and-intersection-union-tests">Union-intersection and intersection-union tests</a></li>
+<li><a href="#properties-of-the-sample-mean-and-variance" id="toc-properties-of-the-sample-mean-and-variance">Properties of the Sample Mean and Variance</a></li>
+<li><a href="#the-derived-distributions-students-t-and-snedecors-f" id="toc-the-derived-distributions-students-t-and-snedecors-f">The Derived Distributions: Student’s <span class="math inline">\(t\)</span> and Snedecor’s <span class="math inline">\(F\)</span></a></li>
 </ul></li>
-<li><a href="#methods-of-evaluating-tests">Methods of Evaluating Tests</a>
+<li><a href="#convergence-concepts" id="toc-convergence-concepts">Convergence Concepts</a>
 <ul>
-<li><a href="#error-probabilities-and-the-power-function">Error Probabilities and the Power Function</a></li>
-<li><a href="#most-powerful-tests-ump">Most Powerful Tests (UMP)</a></li>
-<li><a href="#sizes-of-union-intersection-and-intersection-union-tests">Sizes of Union-Intersection and Intersection-Union Tests</a></li>
-<li><a href="#p-values"><span class="math inline">\(p\)</span>-Values</a></li>
-<li><a href="#loss-function-optimality-1">Loss Function Optimality</a></li>
+<li><a href="#convergence-in-probability" id="toc-convergence-in-probability">Convergence in Probability</a></li>
+<li><a href="#almost-sure-convergence" id="toc-almost-sure-convergence">Almost Sure Convergence</a></li>
+<li><a href="#convergence-in-distribution" id="toc-convergence-in-distribution">Convergence in Distribution</a></li>
+<li><a href="#the-delta-method" id="toc-the-delta-method">The Delta Method</a></li>
+<li><a href="#the-second-order-delta-method" id="toc-the-second-order-delta-method">The second-order Delta Method</a></li>
+<li><a href="#multivariate-delta-method" id="toc-multivariate-delta-method">Multivariate Delta Method</a></li>
 </ul></li>
+<li><a href="#generating-a-random-sample" id="toc-generating-a-random-sample">Generating A Random Sample</a>
+<ul>
+<li><a href="#direct-method" id="toc-direct-method">Direct Method</a></li>
+<li><a href="#indirect-methods" id="toc-indirect-methods">Indirect Methods</a></li>
+<li><a href="#the-acceptreject-algorithm" id="toc-the-acceptreject-algorithm">The Accept/Reject Algorithm</a></li>
 </ul></li>
-<li><a href="#interval-estimation">9. Interval Estimation</a>
-<ul>
-<li><a href="#introduction-1">Introduction</a></li>
-<li><a href="#methods-of-finding-interval-estimators">Methods of Finding Interval Estimators</a>
-<ul>
-<li><a href="#inverting-a-test-statistic">Inverting a Test Statistic</a></li>
-<li><a href="#pivotal-quantities">Pivotal Quantities</a></li>
-<li><a href="#pivoting-the-cdf">Pivoting the CDF</a></li>
+<li><a href="#order-statistics" id="toc-order-statistics">Order Statistics</a></li>
 </ul></li>
-<li><a href="#methods-of-evaluating-interval-estimators">Methods of Evaluating Interval Estimators</a>
+<li><a href="#principles-of-data-reduction" id="toc-principles-of-data-reduction">6. Principles of Data Reduction</a>
 <ul>
-<li><a href="#size-and-coverage-probability">Size and Coverage Probability</a></li>
-<li><a href="#test-related-optimality">Test-Related Optimality</a></li>
+<li><a href="#the-sufficiency-principle" id="toc-the-sufficiency-principle">The Sufficiency Principle</a></li>
+<li><a href="#ancillary-statistic" id="toc-ancillary-statistic">Ancillary Statistic</a></li>
+<li><a href="#complete-statistic" id="toc-complete-statistic">Complete Statistic</a></li>
+<li><a href="#the-likelihood-principle" id="toc-the-likelihood-principle">The Likelihood Principle</a></li>
+<li><a href="#a-slightly-more-formal-construction" id="toc-a-slightly-more-formal-construction">A Slightly More Formal Construction</a></li>
+<li><a href="#the-equivariance-principle" id="toc-the-equivariance-principle">The Equivariance Principle</a></li>
 </ul></li>
+<li><a href="#point-estimation" id="toc-point-estimation">7. Point Estimation</a>
+<ul>
+<li><a href="#methods-of-finding-estimators" id="toc-methods-of-finding-estimators">Methods of Finding Estimators</a>
+<ul>
+<li><a href="#method-of-moments" id="toc-method-of-moments">Method of Moments</a></li>
+<li><a href="#maximum-likelihood-estimators" id="toc-maximum-likelihood-estimators">Maximum Likelihood Estimators</a></li>
+<li><a href="#bayes-estimators" id="toc-bayes-estimators">Bayes Estimators</a></li>
+<li><a href="#the-em-expectation-maximization-algorithm" id="toc-the-em-expectation-maximization-algorithm">The EM (Expectation-Maximization) Algorithm</a></li>
 </ul></li>
-<li><a href="#asymptotic-evaluations">10. Asymptotic Evaluations</a>
+<li><a href="#methods-of-evaluating-estimators" id="toc-methods-of-evaluating-estimators">Methods of Evaluating Estimators</a>
 <ul>
-<li><a href="#point-estimation-1">Point Estimation</a>
-<ul>
-<li><a href="#consistency">Consistency</a></li>
-<li><a href="#efficiency">Efficiency</a></li>
-<li><a href="#calculations-and-comparisons">Calculations and Comparisons</a></li>
-<li><a href="#bootstrap-standard-errors">Bootstrap Standard Errors</a></li>
-</ul></li>
-<li><a href="#robustness">Robustness</a>
-<ul>
-<li><a href="#the-mean-and-the-median">The Mean and the Median</a></li>
-<li><a href="#m-estimators">M-Estimators</a></li>
-</ul></li>
-<li><a href="#hypothesis-testing-1">Hypothesis Testing</a>
-<ul>
-<li><a href="#asymptotic-distribution-of-lrts">Asymptotic Distribution of LRTs</a></li>
-</ul></li>
-<li><a href="#interval-estimation-1">Interval Estimation</a></li>
-</ul></li>
-<li><a href="#analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
-<ul>
-<li><a href="#oneway-analysis-of-variance">Oneway Analysis of Variance</a>
-<ul>
-<li><a href="#model-and-distribution-assumptions">Model and Distribution Assumptions</a></li>
-<li><a href="#the-classic-anova-hypothesis">The Classic ANOVA Hypothesis</a></li>
-<li><a href="#inferences-regarding-linear-combinations-of-means">Inferences Regarding Linear Combinations of Means</a></li>
-<li><a href="#the-anova-f-test">The ANOVA F Test</a></li>
-<li><a href="#simultaneous-estimation-of-contrasts">Simultaneous Estimation of Contrasts</a></li>
-<li><a href="#partitioning-sums-of-squares">Partitioning Sums of Squares</a></li>
-</ul></li>
-<li><a href="#simple-linear-regression">Simple Linear Regression</a>
-<ul>
-<li><a href="#least-squares">Least Squares</a></li>
-<li><a href="#best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a></li>
-<li><a href="#models-and-distribution-assumptions">Models and Distribution Assumptions</a></li>
-<li><a href="#estimation-and-testing-with-normal-errors">Estimation and Testing with Normal Errors</a></li>
-<li><a href="#estimation-and-prediction-at-a-specified-x-x_0">Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></a></li>
-<li><a href="#simultaneous-estimation-and-confidence-bands">Simultaneous Estimation and Confidence Bands</a></li>
+<li><a href="#mean-squared-error" id="toc-mean-squared-error">Mean Squared Error</a></li>
+<li><a href="#best-unbiased-estimators" id="toc-best-unbiased-estimators">Best Unbiased Estimators</a></li>
+<li><a href="#fisher-information" id="toc-fisher-information">Fisher Information</a></li>
+<li><a href="#sufficiency-and-unbiasedness" id="toc-sufficiency-and-unbiasedness">Sufficiency and Unbiasedness</a></li>
+<li><a href="#uniqueness-of-best-unbiased-estimator" id="toc-uniqueness-of-best-unbiased-estimator">Uniqueness of best unbiased estimator</a></li>
+<li><a href="#completeness-and-best-unbiasedness" id="toc-completeness-and-best-unbiasedness">completeness and best unbiasedness</a></li>
+<li><a href="#loss-function-optimality" id="toc-loss-function-optimality">Loss Function Optimality</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#regression-models">12. Regression Models</a>
+<li><a href="#hypothesis-testing" id="toc-hypothesis-testing">8. Hypothesis Testing</a>
 <ul>
-<li><a href="#regression-with-errors-in-variables-eiv-or-measurement-error-model">Regression with Errors in Variables (EIV) (or measurement error model)</a>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#methods-of-finding-tests" id="toc-methods-of-finding-tests">Methods of Finding Tests</a>
 <ul>
-<li><a href="#functional-and-structural-relationships">Functional and Structural Relationships</a></li>
-<li><a href="#a-least-squares-solution-orthogonal-least-squares">A Least Squares Solution: orthogonal least squares</a></li>
-<li><a href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+<li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests">Likelihood Ratio Tests</a></li>
+<li><a href="#likelihood-ratio-tests-using-the-sufficiency-statistic" id="toc-likelihood-ratio-tests-using-the-sufficiency-statistic">Likelihood Ratio Tests using the sufficiency statistic</a></li>
+<li><a href="#bayesian-tests" id="toc-bayesian-tests">Bayesian tests</a></li>
+<li><a href="#union-intersection-and-intersection-union-tests" id="toc-union-intersection-and-intersection-union-tests">Union-intersection and intersection-union tests</a></li>
 </ul></li>
-<li><a href="#logistic-regression">Logistic Regression</a>
+<li><a href="#methods-of-evaluating-tests" id="toc-methods-of-evaluating-tests">Methods of Evaluating Tests</a>
 <ul>
-<li><a href="#the-model">The Model</a></li>
+<li><a href="#error-probabilities-and-the-power-function" id="toc-error-probabilities-and-the-power-function">Error Probabilities and the Power Function</a></li>
+<li><a href="#most-powerful-tests-ump" id="toc-most-powerful-tests-ump">Most Powerful Tests (UMP)</a></li>
+<li><a href="#sizes-of-union-intersection-and-intersection-union-tests" id="toc-sizes-of-union-intersection-and-intersection-union-tests">Sizes of Union-Intersection and Intersection-Union Tests</a></li>
+<li><a href="#p-values" id="toc-p-values"><span class="math inline">\(p\)</span>-Values</a></li>
+<li><a href="#loss-function-optimality-1" id="toc-loss-function-optimality-1">Loss Function Optimality</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#references">References</a></li>
+<li><a href="#interval-estimation" id="toc-interval-estimation">9. Interval Estimation</a>
+<ul>
+<li><a href="#introduction-1" id="toc-introduction-1">Introduction</a></li>
+<li><a href="#methods-of-finding-interval-estimators" id="toc-methods-of-finding-interval-estimators">Methods of Finding Interval Estimators</a>
+<ul>
+<li><a href="#inverting-a-test-statistic" id="toc-inverting-a-test-statistic">Inverting a Test Statistic</a></li>
+<li><a href="#pivotal-quantities" id="toc-pivotal-quantities">Pivotal Quantities</a></li>
+<li><a href="#pivoting-the-cdf" id="toc-pivoting-the-cdf">Pivoting the CDF</a></li>
+</ul></li>
+<li><a href="#methods-of-evaluating-interval-estimators" id="toc-methods-of-evaluating-interval-estimators">Methods of Evaluating Interval Estimators</a>
+<ul>
+<li><a href="#size-and-coverage-probability" id="toc-size-and-coverage-probability">Size and Coverage Probability</a></li>
+<li><a href="#test-related-optimality" id="toc-test-related-optimality">Test-Related Optimality</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#asymptotic-evaluations" id="toc-asymptotic-evaluations">10. Asymptotic Evaluations</a>
+<ul>
+<li><a href="#point-estimation-1" id="toc-point-estimation-1">Point Estimation</a>
+<ul>
+<li><a href="#consistency" id="toc-consistency">Consistency</a></li>
+<li><a href="#efficiency" id="toc-efficiency">Efficiency</a></li>
+<li><a href="#calculations-and-comparisons" id="toc-calculations-and-comparisons">Calculations and Comparisons</a></li>
+<li><a href="#bootstrap-standard-errors" id="toc-bootstrap-standard-errors">Bootstrap Standard Errors</a></li>
+</ul></li>
+<li><a href="#robustness" id="toc-robustness">Robustness</a>
+<ul>
+<li><a href="#the-mean-and-the-median" id="toc-the-mean-and-the-median">The Mean and the Median</a></li>
+<li><a href="#m-estimators" id="toc-m-estimators">M-Estimators</a></li>
+</ul></li>
+<li><a href="#hypothesis-testing-1" id="toc-hypothesis-testing-1">Hypothesis Testing</a>
+<ul>
+<li><a href="#asymptotic-distribution-of-lrts" id="toc-asymptotic-distribution-of-lrts">Asymptotic Distribution of LRTs</a></li>
+</ul></li>
+<li><a href="#interval-estimation-1" id="toc-interval-estimation-1">Interval Estimation</a></li>
+</ul></li>
+<li><a href="#analysis-of-variance-and-regression" id="toc-analysis-of-variance-and-regression">11. Analysis of Variance and Regression</a>
+<ul>
+<li><a href="#oneway-analysis-of-variance" id="toc-oneway-analysis-of-variance">Oneway Analysis of Variance</a>
+<ul>
+<li><a href="#model-and-distribution-assumptions" id="toc-model-and-distribution-assumptions">Model and Distribution Assumptions</a></li>
+<li><a href="#the-classic-anova-hypothesis" id="toc-the-classic-anova-hypothesis">The Classic ANOVA Hypothesis</a></li>
+<li><a href="#inferences-regarding-linear-combinations-of-means" id="toc-inferences-regarding-linear-combinations-of-means">Inferences Regarding Linear Combinations of Means</a></li>
+<li><a href="#the-anova-f-test" id="toc-the-anova-f-test">The ANOVA F Test</a></li>
+<li><a href="#simultaneous-estimation-of-contrasts" id="toc-simultaneous-estimation-of-contrasts">Simultaneous Estimation of Contrasts</a></li>
+<li><a href="#partitioning-sums-of-squares" id="toc-partitioning-sums-of-squares">Partitioning Sums of Squares</a></li>
+</ul></li>
+<li><a href="#simple-linear-regression" id="toc-simple-linear-regression">Simple Linear Regression</a>
+<ul>
+<li><a href="#least-squares" id="toc-least-squares">Least Squares</a></li>
+<li><a href="#best-linear-unbiased-estimators" id="toc-best-linear-unbiased-estimators">Best Linear Unbiased Estimators</a></li>
+<li><a href="#models-and-distribution-assumptions" id="toc-models-and-distribution-assumptions">Models and Distribution Assumptions</a></li>
+<li><a href="#estimation-and-testing-with-normal-errors" id="toc-estimation-and-testing-with-normal-errors">Estimation and Testing with Normal Errors</a></li>
+<li><a href="#estimation-and-prediction-at-a-specified-x-x_0" id="toc-estimation-and-prediction-at-a-specified-x-x_0">Estimation and Prediction at a Specified <span class="math inline">\(x = x_0\)</span></a></li>
+<li><a href="#simultaneous-estimation-and-confidence-bands" id="toc-simultaneous-estimation-and-confidence-bands">Simultaneous Estimation and Confidence Bands</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#regression-models" id="toc-regression-models">12. Regression Models</a>
+<ul>
+<li><a href="#regression-with-errors-in-variables-eiv-or-measurement-error-model" id="toc-regression-with-errors-in-variables-eiv-or-measurement-error-model">Regression with Errors in Variables (EIV) (or measurement error model)</a>
+<ul>
+<li><a href="#functional-and-structural-relationships" id="toc-functional-and-structural-relationships">Functional and Structural Relationships</a></li>
+<li><a href="#a-least-squares-solution-orthogonal-least-squares" id="toc-a-least-squares-solution-orthogonal-least-squares">A Least Squares Solution: orthogonal least squares</a></li>
+<li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+</ul></li>
+<li><a href="#logistic-regression" id="toc-logistic-regression">Logistic Regression</a>
+<ul>
+<li><a href="#the-model" id="toc-the-model">The Model</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
 
@@ -468,7 +468,7 @@ family.</p>
 <em>location-scale family with standard pdf <span class="math inline">\(f(x)\)</span></em>; <span class="math inline">\(\mu\)</span> is the <em>location
 parameter</em> and <span class="math inline">\(\sigma\)</span> is the <em>scale parameter</em>.</p>
 <p>[Standardisation] Let <span class="math inline">\(f\)</span> be any pdf, <span class="math inline">\(\mu \in \mathbb R{}\)</span> and
-<span class="math inline">\(\sigma \in \mathbb R{}_{&gt;0}\)</span>. Then <span class="math inline">\(X\)</span> is a random variable with pdf
+<span class="math inline">\(\sigma \in \mathbb R&gt;0\)</span>. Then <span class="math inline">\(X\)</span> is a random variable with pdf
 <span class="math inline">\(\frac{1}{\sigma}f(\frac{x - \mu}{\sigma})\)</span> if and only if there exists
 a random variable <span class="math inline">\(Z\)</span> with pdf <span class="math inline">\(f(z)\)</span> and <span class="math inline">\(X = \sigma Z + \mu\)</span>.</p>
 <p>Probabilities of location-scale families can be computed in terms of
@@ -568,7 +568,7 @@ to show the following</p>
 <ol style="list-style-type: lower-alpha">
 <li><p><span class="math inline">\(-1 \leq \rho_{XY} \leq 1\)</span>,</p></li>
 <li><p><span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> if and only if there are constants
-<span class="math inline">\(a \text{n}eq 0, b\)</span> such that <span class="math inline">\(\text{P}{}(Y = aX + b) = 1\)</span>. If
+<span class="math inline">\(a \neq 0, b\)</span> such that <span class="math inline">\(\text{P}{}(Y = aX + b) = 1\)</span>. If
 <span class="math inline">\(\lvert{\rho_{XY}}\lvert = 1\)</span> then <span class="math inline">\(\text{sign}(\rho) = \text{sign}(a)\)</span>.</p></li>
 </ol>
 <p>Let <span class="math inline">\(X_1, \cdots , X_n\)</span> be independent random vectors. Let <span class="math inline">\(g_i(x_i)\)</span> be a function only of <span class="math inline">\(x_i, i = 1 , \cdots, n\)</span>. Then the random variables <span class="math inline">\(U_i = g_i(X_i), i = 1,\cdots, n\)</span>, are mutually independent.</p>
@@ -750,7 +750,7 @@ result.</p>
 <div id="sampling-from-the-normal-distribution" class="section level2">
 <h2>Sampling from the Normal Distribution</h2>
 <div id="properties-of-the-sample-mean-and-variance" class="section level3">
-<h3>Prope’rties of the Sample Mean and Va’riance</h3>
+<h3>Properties of the Sample Mean and Variance</h3>
 <div class="theorem">
 <p><span id="thm:unlabeled-div-9" class="theorem"><strong>Theorem 4  </strong></span>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be a random sample from a <span class="math inline">\(\text{n}(\mu, \sigma^2)\)</span>
 distribution. Then,</p>
@@ -1180,7 +1180,7 @@ then we conclude <span class="math display">\[\mathbb{E}_{\theta}[g(t)-P(S \in A
 <blockquote>
 <p>If you have a function <span class="math inline">\(h(T)\)</span> that</p>
 <ul>
-<li>does not depend on the parameter <span class="math inline">\(\theta\)</span> directly, but only on <span class="math inline">\(T\)</span> (as it is written, “<span class="math inline">\(h(T)\)</span>,” and</li>
+<li>does not depend on the parameter <span class="math inline">\(\theta\)</span> directly, but only on <span class="math inline">\(T\)</span> (as it is written, “<span class="math inline">\(h(T)\)</span>”, and</li>
 <li>for which <span class="math inline">\(\mathbb E_{\theta}(h(T)) = 0\)</span> for whatever <span class="math inline">\(\theta\)</span> you pick,</li>
 </ul>
 </blockquote>
@@ -1522,8 +1522,8 @@ Since
 then the Fisher information can
 be written
 <span class="math display" id="eq:Fisherinformation">\[\begin{equation}
- \mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] =\mathbb E_{\theta}\left[   \left(\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right)^2 \right]= - \mathbb E_{\theta}\left[ \frac{\partial^2}{\partial  \theta^2} \log f(X \vert{} \theta) \right]
- \tag{1}
+\mathbb E_{\theta}\left[ \left(\frac{\partial}{\partial \theta} \log f(X \vert{} \theta) \right)^2 \right] =\mathbb E_{\theta}\left[   \left(\frac{\frac{\partial}{\partial \theta} f(X \vert{} \theta)}{f(X \vert{} \theta)}\right)^2 \right]= - \mathbb E_{\theta}\left[ \frac{\partial^2}{\partial  \theta^2} \log f(X \vert{} \theta) \right]
+\tag{1}
 \end{equation}\]</span></p>
 <p>Even if the Cramér-Rao bound is applicable, it may not be sharp – there
 may not be an estimator that attains this bound.</p>
@@ -1566,7 +1566,7 @@ I_X(p)&amp;=E_p\left[\left(\frac{d}{dp}\log\left(p^X(1-p)^{1-X}\right)\right)^2\
 </ul>
 <p><span class="math display">\[
 \begin{array}{llll}
- &amp; \text{Fisher Information} &amp; \text{Cramér-Rao lower bound}           \\
+&amp; \text{Fisher Information} &amp; \text{Cramér-Rao lower bound}           \\
 \hline
 \text{Exponential}(\beta) &amp; \frac{n}{\beta^2}        &amp;    \frac{\beta^2}{n}   \\
 \text{Bernoulli}(p)          &amp; \frac{1}{p(1-p)}             &amp;   p(1-p)       \\

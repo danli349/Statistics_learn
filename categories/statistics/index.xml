@@ -6,7 +6,16 @@
     <description>Recent content in statistics on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Introduction to Generalized Linear Models (4th edition)</title>
+      <link>/2023/12/28/an-introduction-to-generalized-linear-models/</link>
+      <pubDate>Thu, 28 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/2023/12/28/an-introduction-to-generalized-linear-models/</guid>
+      <description>Chapter2 Model Fitting2.5 ExercisesChapter3 Exponential Family and Generalized Linear ModelsExercisesChapter4 EstimationChapter5 InferenceChapter6 Normal Linear ModelsChapter7 Binary Variables and Logistic RegressionChapter8 Nominal and Ordinal Logistic Regression8.2 Multinomial distributionExercisesChapter9 Poisson Regression and Log-Linear Models9.2 Poisson regressionChapter10 Survival AnalysisChapter11 Clustered and Longitudinal DataChapter12 Bayesian AnalysisChapter13 Markov Chain Monte Carlo MethodsChapter14 Example Bayesian AnalysesChapter2 Model Fittinglibrary(dobson)library(ggprism)library(tidyverse)birthweight## # A tibble: 12 × 4## `boys gestational age` `boys weight` `girls gestational age` `girls weight`## &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;## 1 40 2968 40 3317## 2 38 2795 36 2729## 3 40 3163 40 2935## 4 35 2925 38 2754## 5 36 2625 42 3210## 6 37 2847 39 2817## 7 41 3292 40 3126## 8 40 3473 37 2539## 9 37 2628 36 2412## 10 38 3176 38 2991## 11 40 3421 39 2875## 12 38 2975 40 3231dim(birthweight)## [1] 12 4library(tidyverse)birthweight |&amp;gt; ggplot(aes(x=`boys gestational age`,y=`boys weight`)) + geom_point(shape=1, size=3) + geom_point(aes(x=`girls gestational age`, y=`girls weight`), shape=19, size=3) +theme_bw() + theme(# Hide panel borders and remove grid lines#panel.</description>
+    </item>
+    
     <item>
       <title>Common statistical tests are linear models</title>
       <link>/2023/09/24/common-statistical-tests-are-linear-models-or-how-to-teach-stats/</link>

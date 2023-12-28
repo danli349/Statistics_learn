@@ -456,9 +456,9 @@ sum(anova(mod)$`Sum Sq`)</code></pre>
 <span class="math display">\[
 Y = \beta_{0} + \beta_{1}X + \epsilon
 \]</span>
-where $ $ is an error term independent of $ X $.</p>
-<p>If $ <em>{0} $ and $ </em>{1} $ are known, we still cannot perfectly predict Y using X due to $ $. Therefore, we use RSE as a judgement value of the Standard Deviation of $ $.</p>
-<p>RSE is s just an estimate of the Standard Deviation of $ $, i.e. the residual. It’s also known as the residual standard deviation (RSD), and it can be defined as <span class="math inline">\(RSE=\sqrt{\frac{RSS}{(n−2)}}\)</span></p>
+where <span class="math inline">\(\epsilon\)</span> is an error term independent of <span class="math inline">\(X\)</span>.</p>
+<p>If <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are known, we still cannot perfectly predict Y using X due to <span class="math inline">\(\epsilon\)</span>. Therefore, we use RSE as a judgement value of the Standard Deviation of <span class="math inline">\(\epsilon\)</span>.</p>
+<p>RSE is s just an estimate of the Standard Deviation of <span class="math inline">\(\epsilon\)</span>, i.e. the residual. It’s also known as the residual standard deviation (RSD), and it can be defined as <span class="math inline">\(RSE=\sqrt{\frac{RSS}{(n−2)}}\)</span></p>
 <p>The R squared value ranges between 0 to 1 and is represented by the below formula:</p>
 <p><span class="math display">\[R2= 1- SSres / SStot\]</span></p>
 <p>Here,</p>
